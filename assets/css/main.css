@@ -3310,7 +3310,7 @@ input, select, textarea {
 		cursor: default;
 		text-align: center;
 		z-index: 1;
-		min-height: 100vh;
+		min-height: 50vh;
 	}
 
 		#intro input, #intro select, #intro textarea {
@@ -3464,7 +3464,7 @@ input, select, textarea {
 					margin-top: -14rem;
 				}
 
-		}
+		}w
 
 		@media screen and (max-width: 736px) {
 
@@ -3584,7 +3584,7 @@ input, select, textarea {
 		@media screen and (max-width: 980px) {
 
 			#header {
-				height: 14rem;
+				height: 2rem;
 				padding-bottom: 4rem;
 			}
 
