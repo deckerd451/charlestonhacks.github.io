@@ -12,32 +12,34 @@
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
     <style>
         /* Additional CSS for adjusting padding and margin */
-        #nav ul.links li a {
-            padding: 10px 15px;
+        #nav ul.links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #nav ul.icons {
+            display: none; /* Hide icons on larger screens */
+        }
+        #nav .icon {
+            margin: 0 10px;
         }
         #main {
-            padding-bottom: 60px; /* Adjust padding to make space for footer */
-            max-height: calc(100vh - 60px); /* Subtract footer height from viewport height */
-            overflow-y: scroll;
+            padding-top: 20px; /* Add some space from the top */
         }
         #main article.post.featured header.major a.image.main {
             margin-bottom: 20px;
-        }
-        /* Adjust the footer positioning */
-        #footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #f3f3f3;
-            padding: 20px 0;
         }
     </style>
 </head>
 <body class="is-preload">
 
-<!-- Nav -->
+<!-- Social Media Icons -->
 <nav id="nav">
-    <!-- Your navigation content -->
+    <ul class="icons">
+        <li><a href="https://twitter.com/CofC" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+        <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+        <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+        <li><a href="https://github.com/deckerd451/chshackathon.github.io" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+    </ul>
 </nav>
 
 <!-- Main -->
@@ -53,22 +55,6 @@
         <!-- Your content -->
     </article>
 </div>
-
-<!-- Footer -->
-<footer id="footer">
-    <section class="alt">
-        <h3>harborHack Address</h3>
-        <p><a href="https://maps.google.com/maps?q=Harbor+Walk+360+Concord+St.,Charleston,+SC+29401" target="_blank">Harbor Walk East and West, 360 Concord St.,<br />Charleston, SC 29401</a></p>
-    </section>
-    <section>
-        <h3>Phone</h3>
-        <p><a href="#">(843) 819-2947</a></p>
-    </section>
-    <section>
-        <h3>Email</h3>
-        <p><a href="#">dmhamilton1@live.com</a></p>
-    </section>
-</footer>
 
 <!-- Footer code and Scripts go here... -->
 
