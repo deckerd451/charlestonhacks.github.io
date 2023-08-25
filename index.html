@@ -16,6 +16,15 @@
             overflow-y: scroll;
         }
     </style>
+	<!-- Inside the <head> section -->
+<script>
+    // Function to toggle visibility of additional information
+    function toggleInfo() {
+        var info = document.getElementById('additional-info');
+        info.style.display = (info.style.display === 'none') ? 'block' : 'none';
+    }
+</script>
+
 </head>
 <body class="is-preload">
 
@@ -28,6 +37,22 @@
         <li><a href="aboutus.html">IN/F8</a></li>
     </ul>
 </nav>
+	<!-- Inside the <body> section, after the existing content -->
+<div class="content">
+    <!-- Existing content here -->
+
+    <!-- Button to toggle additional information -->
+    <button onclick="toggleInfo()">Toggle Additional Info</button>
+    
+    <!-- Additional information that starts hidden -->
+    <div id="additional-info" style="display: none;">
+        <p>This is additional information that can be toggled on and off.</p>
+    </div>
+
+    <!-- Learn More button (as provided) -->
+    <a class="button" href="harborhack.html">Learn More</a>
+</div>
+
 
 <!-- Main -->
 <div id="main">
