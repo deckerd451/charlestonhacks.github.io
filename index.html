@@ -10,15 +10,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Your+Custom+Font&display=swap" rel="stylesheet">
     <style>
         body {
             max-height: 100vh;
             overflow-y: scroll;
+            font-family: 'Your Custom Font', sans-serif;
         }
         .content {
             padding: 2em;
             max-width: 800px;
             margin: 0 auto;
+            line-height: 1.6;
+        }
+        .links li a:hover {
+            color: #ff9900;
+        }
+        .links li.active a {
+            background-color: #ff9900;
+            color: white;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff9900;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
+        }
+        .image.main img:hover {
+            transform: scale(1.05);
+        }
+        .post.featured {
+            background: linear-gradient(to bottom, #f9f9f9, #ffffff);
         }
     </style>
 </head>
@@ -52,6 +80,7 @@
             <p><b>Sunday, October 8th, 12-5pm</b> - Submission, Judging and Awards (Harbor Walk West Auditorium)</p>
             <p>We can't wait to meet you and witness your incredible journey!</p><br>
 
+            <a class="button" href="harborhack.html">Learn More</a>
             <a class="image main" href="harborhack.html"><img src="images/CHARLESTONHACKS GREY SMALL LOGO ONLY right.png" alt="" /></a>
         </div>
     </article>
