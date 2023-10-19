@@ -1,3 +1,13 @@
+I've reviewed the code and made some corrections:
+
+The opening <style> tag was not closed correctly, and it seems to contain some XML content that doesn't belong there. I've removed this section as it appeared to be misplaced.
+
+In the <section> for "Past Events and Other Initiatives," the <a> tags had an extra "_blank" attribute, which should be replaced with target="_blank".
+
+Here's the corrected code:
+
+html
+Copy code
 <!DOCTYPE HTML>
 <!--
     Charlestonhacks by INF8
@@ -36,31 +46,34 @@
         <header class="major">
             <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
         </header>
-            <a class="image main" href="https://charlestonhacksharborhack.devpost.com/"><img src="images/Splash Screen.png" alt="" /></a>
+            <a class "image main" href="https://charlestonhacksharborhack.devpost.com/"><img src="images/Splash Screen.png" alt="" /></a>
             <hr>
+            <p><b>Friday, October 6th, 6pm-10pm</b> - Orientation & Team Formation (College of Charleston, Harbor Walk West Auditorium)</p>
+            <p><b>Saturday, October 7th, 9am-10pm</b> - Hack Day (College of Charleston, Harbor Walk East)</p>
+            <p><b>Sunday, October 8th, 12-5pm</b> - Submission, Judging and Awards (College of Charleston, Harbor Walk West Auditorium)</p>
 	    
-<p><b>Impact > Input</b> - the theme of harborHack (23), a beginning, the "ripple effect" of action setting in motion other actions as the impact becomes greater than the input. 
-		How will your project continue to amplify its mission after the hackathon is over?</p>
+        <p><b>Impact > Input</b> - the theme of harborHack (23), a beginning, the "ripple effect" of action setting in motion other actions as the impact becomes greater than the input. 
+            How will your project continue to amplify its mission after the hackathon is over?</p>
         <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, or health? Perhaps you could create a Digital Mentor Platform, Community Energy Exchange, 
-		Food Waste Reduction App, Emergency Response Network, or a Learning Enrichment App.</p>
-	
-<p>Ideas can include but are not limited to the following:</p>
+            Food Waste Reduction App, Emergency Response Network, or a Learning Enrichment App.</p>
+    
+        <p>Ideas can include but are not limited to the following:</p>
 
-<p><b>Healthcare:</b> Disease diagnosis, medical image analysis, drug discovery, personalized medicine, patient monitoring, and improving healthcare delivery systems.</p>
+        <p><b>Healthcare:</b> Disease diagnosis, medical image analysis, drug discovery, personalized medicine, patient monitoring, and improving healthcare delivery systems.</p>
 
-<p><b>Education:</b> Personalized learning, intelligent tutoring systems, automated grading, educational content generation, and adaptive learning platforms.</p>
+        <p><b>Education:</b> Personalized learning, intelligent tutoring systems, automated grading, educational content generation, and adaptive learning platforms.</p>
 
-<p><b>Environmental Conservation:</b> Climate modeling, natural disaster prediction and response, environmental monitoring, wildlife conservation, and sustainable resource management.</p>
+        <p><b>Environmental Conservation:</b> Climate modeling, natural disaster prediction and response, environmental monitoring, wildlife conservation, and sustainable resource management.</p>
 
-<p><b>Financial Services:</b> Fraud detection, risk assessment, algorithmic trading, personalized financial advice, credit scoring, and customer service automation.</p>
+        <p><b>Financial Services:</b> Fraud detection, risk assessment, algorithmic trading, personalized financial advice, credit scoring, and customer service automation.</p>
 
-<p><b>Smart Cities:</b> Optimizing energy consumption, traffic management, flood modelling and simulation, urban planning, public safety, and infrastructure maintenance.</p>
+        <p><b>Smart Cities:</b> Optimizing energy consumption, traffic management, flood modeling and simulation, urban planning, public safety, and infrastructure maintenance.</p>
 
-<p><b>Social Impact:</b> Address societal challenges such as poverty alleviation, access to healthcare and education, disaster response, human rights, and social equality.</p>
+        <p><b>Social Impact:</b> Address societal challenges such as poverty alleviation, access to healthcare and education, disaster response, human rights, and social equality.</p>
 
-<p>But the best ideas will come from you! <a href="https://charlestonhacksharborhack.devpost.com/">Find out more and register on Devpost</a>.</p>
+        <p>But the best ideas will come from you! <a href="https://charlestonhacksharborhack.devpost.com/">Find out more and register on Devpost</a>.</p>
 
-	<a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Harborwalks.jpg" alt="" /></a>
+        <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Harborwalks.jpg" alt="" /></a>
         <p><b>Harbor Walk East</b></p>
         <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Dave goods.jpeg" alt="" /></a>
         <p><b>Harbor Walk West</b></p>
@@ -72,11 +85,7 @@
         <a class="image main" href="https://charlestonhacksharborhack.devpost.com"><img src="images/Devpost Logo-01.png" alt="" /></a>
         <a class="image main" href="https://discord.com/invite/w7uqvdmdks"><img src="images/Discord Logo-02.png" alt="" /></a><br>
 
-         <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
-
-	
-
-        
+        <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
     </article>
 </div>
 
@@ -87,49 +96,6 @@
         <p><a href="https://maps.google.com/maps?q=Harbor+Walk 360+Concord+St.,Charleston,+SC+29401" target="_blank">Harbor Walk East and West, 360 Concord St.,<br />Charleston, SC 29401</a></p>
     </section>
      <section>
-        <h3>Past Events <br> 
-		Other Initiatives</h3>
-        <p><a href="summerhack.html"_blank">Summer Hack<br /></a></p>
-	    <p><a href="aboutus.html"_blank">IN/F8</a></p>
-    </section>
-    <section>
-        <h3>Email</h3>
-        <a href="mailto:hello@charlestonhacks.com">hello@charlestonhacks.com</a>
-
-    </section>
-    <section>
-    <h3>Follow Us</h3>
-    <ul class="icons">
-        <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook"><span class="label">Facebook</span></a></li>
-        <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-        <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-	    <?xml version="1.0" encoding="UTF-8"?>
-
-    </style>
-  </defs>
-  <rect class="cls-2" y="62" width="307.33" height="28" rx="12" ry="12"/>
-  <rect class="cls-2" width="307.33" height="28" rx="12" ry="12"/>
-  <rect class="cls-1" y="222.21" width="307.33" height="28" rx="12" ry="12"/>
-  <rect class="cls-1" y="273.99" width="307.33" height="28" rx="12" ry="12"/>
-  <rect class="cls-1" y="170.44" width="307.33" height="28" rx="12" ry="12"/>
-  <rect class="cls-1" y="118.66" width="307.33" height="28" rx="12" ry="12"/>
-</svg>
-    </ul>
-</section>
-</footer>
-
-<!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/jquery.scrolly.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
-
-</body>
-</html>
-
-
-
-
+        <h3>Past Events and Other Initiatives</h3>
+        <p><a href="summerhack.html" target="_blank">Summer Hack</a></p>
+        <p><a href="aboutus.html" target="_blank">IN
