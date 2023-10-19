@@ -1,5 +1,5 @@
 Charlestonhacks
-dmhamilton1@live.com | @twittername
+hello@charlestonhacks.co | @Descart84114619
 Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 
 
@@ -10,8 +10,6 @@ you can use for pretty much whatever.
 
 (* = not included)
 
-DH
-dmhamilton1@live.com | @twittername
 
 
 Credits:
