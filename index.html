@@ -1,4 +1,7 @@
+Certainly, to replace the space at the top with the navigation menu, you can modify your HTML structure as follows:
 
+html
+Copy code
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -13,7 +16,7 @@
     <!-- Navigation Menu -->
     <nav id="nav">
         <ul class="links">
-            <li> class="active"><a href="index.html">Home</a></li>
+            <li class="active"><a href="index.html">Home</a></li>
             <li><a href="harborhack.html">Harborhack</a></li>
             <li><a href="summerhack.html">Other Hacks</a></li>
             <li><a href="aboutus.html">IN/F8</a></li>
@@ -21,7 +24,7 @@
     </nav>
 
     <!-- Main Content -->
-    <div id="main">
+    <div id="wrapper">
         <!-- Intro -->
         <div id="intro">
             <h2>Our other<br />Events</h2>
@@ -31,8 +34,7 @@
         <!-- Post -->
         <article class="post featured">
             <header class="major">
-                <img src="images/Charlestonhacks logo-black Web.png
-" alt="" class="image main" />
+                <img src="images/Charlestonhacks logo-black Web.png" alt="" class="image main" />
             </header>
             <a class="image main" href="hello@charlestonhacks.com"><img src="images/Transformer-H-Small-orange.jpg" alt="" /></a>
             <hr>
@@ -76,14 +78,13 @@
             </ul>
         </section>
     </footer>
-</div>
-
-<!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<!-- Other scripts go here -->
+    
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <!-- Other scripts go here -->
 
 </body>
 </html>
 
 
-I have removed duplicated <html>, <head>, and <body> elements, corrected the navigation menu by setting the "Other Hacks" page as active, and organized your content for better clarity. You can further style and customize the appearance as needed.
+In this modified code, the navigation menu is placed at the top, effectively replacing the space, and the content is enclosed within a div with the id="wrapper". This layout should eliminate the extra space at the top of the page.
