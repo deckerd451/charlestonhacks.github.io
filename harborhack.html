@@ -97,7 +97,7 @@
             <hr>
             <p><b>Impact > Input</b> - the theme of harborHack (23), a beginning, the "ripple effect" of action setting in motion other actions as the impact becomes greater than the input. How will your project continue to amplify its mission after the hackathon is over?</p>
             <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, or health? Perhaps you could create a Digital Mentor Platform, Community Energy Exchange, Food Waste Reduction App, Emergency Response Network, or a Learning Enrichment App.</p>
-		<p><b> What we expect from you is your best work, and what you can expect from us is a network to support you!</b></p>
+        <p><b> What we expect from you is your best work, and what you can expect from us is a network to support you!</b></p>
 	
 		<!-- Collapsible Section -->
            <button class="collapsible">More Info</button>
@@ -115,7 +115,7 @@
                     <img class="modal-content" src="images/doug-presenting good.jpg" alt="Harbor Walk West">
                 </div>
                 <img src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space" />
-                <div id="modal3" class a"modal">
+                <div id="modal3" class="modal">
                     <span class="close" onclick="closeModal('modal3')">&times;</span>
                     <img class="modal-content" src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space">
                 </div>
@@ -146,7 +146,7 @@
             <h3>Contact</h3>
             <ul class="icons alt">
                 <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                <li><a href="#" class "icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
                 <li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
                 <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
                 <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
@@ -166,38 +166,35 @@
     <script src="assets/js/main.js"></script>
 
    <!-- JavaScript for collapsible sections -->
-<script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
 
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block"; // Fix the typo here
-            }
-        });
-    }
-</script>
-
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
 
     <!-- JavaScript for image modals -->
-    function openModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "block";
-    }
+    <script>
+        function openModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "block";
+        }
 
-    function closeModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "none";
-    }
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
     </script>
 </div>
 </body>
 </html>
-
-
-
