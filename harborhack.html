@@ -100,8 +100,8 @@ Copy code
             <hr>
             <p><b>Impact > Input</b> - the theme of harborHack (23), a beginning, the "ripple effect" of action setting in motion other actions as the impact becomes greater than the input. How will your project continue to amplify its mission after the hackathon is over?</p>
             <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, or health? Perhaps you could create a Digital Mentor Platform, Community Energy Exchange, Food Waste Reduction App, Emergency Response Network, or a Learning Enrichment App.</p>
-        <p><b> What we expect from you is your best work, and what you can expect from us is a network to support you!</b></p>
-    <!-- Collapsible Section -->
+		<p><b> What we expect from you is your best work, and what you can expect from us is a network to support you!</b></p>
+	<!-- Collapsible Section -->
            <button class="collapsible">More Info</button>
             <div class="content">
                 <p><b>Photos from harborHack (23)</b></p>
@@ -117,28 +117,19 @@ Copy code
                     <img class="modal-content" src="images/doug-presenting good.jpg" alt="Harbor Walk West">
                 </div>
                 <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space" /></a>
-                <div id="modal3" class "modal">
+                <div id="modal3" class="modal">
                     <span class="close" onclick="closeModal('modal3')">&times;</span>
                     <img class="modal-content" src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space">
                 </div>
-              <img class="image main" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space" onclick="openModal('modal4')">
-<div id="modal4" class="modal">
-    <span class="close" onclick="closeModal('modal4')">&times;</span>
-    <img class="modal-content" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space">
-</div>
-
-
-This code replaces the <a> tag with an <img> tag and attaches the onclick event directly to the image. It will trigger the modal when the image is clicked.
+                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space" /></a>
+                <div id="modal4" class="modal">
+                    <span class="close" onclick="closeModal('modal4')">&times;</span>
+                    <img class="modal-content" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space">
                 </div>
                 <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/The team.JPG" alt="CharlestonHacks Team" /></a>
                 <div id="modal5" class="modal">
                     <span class="close" onclick="closeModal('modal5')">&times;</span>
                     <img class="modal-content" src="images/The team.JPG" alt="CharlestonHacks Team">
-                </div>
-		     <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Water Watch.jpeg" alt="Team Water Watch" /></a>
-                <div id="modal3" class "modal">
-                    <span class="close" onclick="closeModal('modal3')">&times;</span>
-                    <img class="modal-content" src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space">
                 </div>
                 <a class="image main" href="https://charlestonhacksharborhack.devpost.com"><img src="images/Devpost Logo-check it out-01.png" alt="Devpost" /></a>
                 <a class="image main" href="https://discord.com/invite/w7uqvdmdks"><img src="images/Discord Logo-02.png" alt="Discord" /></a><br>
@@ -188,25 +179,26 @@ This code replaces the <a> tag with an <img> tag and attaches the onclick event 
                 if (content.style.display === "block") {
                     content.style.display = "none";
                 } else {
-                    content.style display = "block";
+                    content.style.display = "block";
                 }
             });
         }
     </script>
 
     <!-- JavaScript for image modals -->
-    <script>
-        function openModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "block";
-        }
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
 
-        function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
     </script>
 </div>
 </body>
 </html>
 
+
+I've added a close button to each modal and provided JavaScript functions to open and close the modals. This allows you to close the photos with an X button.
