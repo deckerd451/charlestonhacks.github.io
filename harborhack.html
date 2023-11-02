@@ -1,9 +1,8 @@
+
+
+html
+Copy code
 <!DOCTYPE HTML>
-<!--
-	INF8 Page
-	dmhamilton1@live.com
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 <head>
     <meta charset="utf-8" />
@@ -26,12 +25,11 @@
             display: none;
         }
 
-        /* Style for the image modal */
-        .modal {
+        .image-modal {
             display: none;
             position: fixed;
             z-index: 1;
-            padding-top: 100px;
+            padding-top: 50px;
             left: 0;
             top: 0;
             width: 100%;
@@ -40,166 +38,123 @@
             background-color: rgba(0, 0, 0, 0.9);
         }
 
-        .modal-content {
+        .image-modal-content {
             margin: auto;
             display: block;
             max-width: 80%;
             max-height: 80%;
         }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            font-size: 35px;
-            color: #f1f1f1;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: #f44336;
-        }
-
-        /* Style for images to limit max width and height */
-        .modal-content img {
-            max-width: 100%;
-            max-height: 100%;
-        }
     </style>
 </head>
 <body class="is-preload">
+    <div id="wrapper" class="fade-in">
+        <div id="intro">
+            <h2>Harbor Hack</h2>
+            <p>Immersive events hosted by <a href="https://www.linkedin.com/company/douglas-hamilton-by-request/?viewAsMember=true">INF8</a></p>
+        </div>
 
-<!-- Wrapper -->
-<div id="wrapper" class="fade-in">
-    
-    <!-- Intro -->
-    <div id="intro">
-        <h2>Harbor Hack</h2>
-        <p>Immersive events hosted by <a href="https://www.linkedin.com/company/douglas-hamilton-by-request/?viewAsMember=true">INF8</a></p>
-    </div>
-
-    <!-- Nav -->
-    <nav id="nav">
-        <ul class="links">
-            <li><a href="index.html">Home</a></li>
-            <li class="active"><a href="harborhack.html">Harborhack</a></li>
-            <li><a href="summerhack.html">Other Events</a></li>
-            <li><a href="aboutus.html">About Us</a></li>
-        </ul>
-    </nav>
-
-    <!-- Main -->
-    <div id="main">
-        <!-- Post -->
-        <article class="post featured">
-            <header class="major">
-                <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
-            </header>
-            <a class="image main" href="https://charlestonhacksharborhack.devpost.com/"><img src="images/Splash Screen.png" alt="" /></a>
-           
-            <p><b>harborHack (23) is over, but the journey continues!</p>
-            
-            <hr>
-            <p><b>Impact > Input</b> - the theme of harborHack (23), a beginning, the "ripple effect" of action setting in motion other actions as the impact becomes greater than the input. How will your project continue to amplify its mission after the hackathon is over?</p>
-            <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, or health? Perhaps you could create a Digital Mentor Platform, Community Energy Exchange, Food Waste Reduction App, Emergency Response Network, or a Learning Enrichment App.</p>
-        <p><b> What we expect from you is your best work, and what you can expect from us is a network to support you!</b></p>
-	
-		<!-- Collapsible Section -->
-           <button class="collapsible">More Info</button>
-            <div class="content">
-                <p><b>Photos from harborHack (23)</b></p>
-                <!-- Pictures Section -->
-                <img src="images/Harborwalks.jpg" alt="Harbor Walk East" />
-                <div id="modal1" class="modal">
-                    <span class="close" onclick="closeModal('modal1')">&times;</span>
-                    <img class="modal-content" src="images/Harborwalks.jpg" alt="Harbor Walk East">
-                </div>
-                <img src="images/doug-presenting good.jpg" alt="Harbor Walk West" />
-                <div id="modal2" class="modal">
-                    <span class="close" onclick="closeModal('modal2')">&times;</span>
-                    <img class="modal-content" src="images/doug-presenting good.jpg" alt="Harbor Walk West">
-                </div>
-                <img src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space" />
-                <div id="modal3" class="modal">
-                    <span class="close" onclick="closeModal('modal3')">&times;</span>
-                    <img class="modal-content" src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space">
-                </div>
-                <img src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space" />
-                <div id="modal4" class="modal">
-                    <span class="close" onclick="closeModal('modal4')">&times;</span>
-                    <img class="modal-content" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space">
-                </div>
-                <img src="images/The team.JPG" alt="CharlestonHacks Team" />
-                <div id="modal5" class="modal">
-                    <span class="close" onclick="closeModal('modal5')">&times;</span>
-                    <img class="modal-content" src="images/The team.JPG" alt="CharlestonHacks Team">
-                </div>
-                <img src="images/Devpost Logo-check it out-01.png" alt="Devpost" />
-                <img src="images/Discord Logo-02.png" alt="Discord" /><br>
-            </div>
-        </article>
-    </div>
-  <!-- End Collapsible Section -->
-
-    <!-- Footer -->
-    <footer id="footer">
-        <section>
-            <h3>About Us</h3>
-            <p>Learn more about our team and organization <a href="aboutus.html">here</a>.</p>
-        </section>
-        <section>
-            <h3>Contact</h3>
-            <ul class="icons alt">
-                <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                <li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-                <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-                <li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+        <nav id="nav">
+            <ul class="links">
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="harborhack.html">Harborhack</a></li>
+                <li><a href="summerhack.html">Other Hacks</a></li>
+                <li><a href="aboutus.html">IN/F8</a></li>
             </ul>
-        </section>
-    </footer>
-    <!-- End Footer -->
+        </nav>
 
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
+        <div id="main">
+            <article class="post featured">
+                <header class="major">
+                    <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
+                </header>
+                <a class="image main" href="https://charlestonhacksharborhack.devpost.com/"><img src="images/Splash Screen.png" alt="" /></a>
+                <p><b>harborHack (23) is over, but the journey continues!</p>
+                <hr>
+                <p><b>Impact > Input</b> - the theme of harborHack (23), a beginning, the "ripple effect" of action setting in motion other actions as the impact becomes greater than the input. How will your project continue to amplify its mission after the hackathon is over?</p>
+                <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, or health? Perhaps you could create a Digital Mentor Platform, Community Energy Exchange, Food Waste Reduction App, Emergency Response Network, or a Learning Enrichment App.</p>
 
-   <!-- JavaScript for collapsible sections -->
-<script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
+                <button class="collapsible">More Info</button>
+                <div class="content">
+                    <p><b>Photos from harborHack (23)</b></p>
 
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block"; // Fix the typo here
+                    <!-- Pictures Section -->
+                    <a class="image main" href="images/Harborwalks.jpg" onclick="openImageModal('images/Harborwalks.jpg')">
+                        <img src="images/Harborwalks.jpg" alt="" />
+                    </a>
+                    <p><b>Harbor Walk East</b></p>
+
+                    <a class="image main" href="images/doug-presenting good.jpg" onclick="openImageModal('images/doug-presenting good.jpg')">
+                        <img src="images/doug-presenting good.jpg" alt="" />
+                    </a>
+                    <p><b>Harbor Walk West</b></p>
+
+                    <a class="image main" href="images/Circular classrooms.jpeg" onclick="openImageModal('images/Circular classrooms.jpeg')">
+                        <img src="images/Circular classrooms.jpeg" alt="" />
+                    </a>
+                    <p><b>Harbor Walk East Work Space</b></p>
+
+                    <a class="image main" href="images/Breakout spaces.jpeg" onclick="openImageModal('images/Breakout spaces.jpeg')">
+                        <img src="images/Breakout spaces.jpeg" alt="" />
+                    </a>
+                    <p><b>Harbor Walk East Work Space</b></p>
+
+                    <a class="image main" href="images/The team.JPG" onclick="openImageModal('images/The team.JPG')">
+                        <img src="images/The team.JPG" alt="" />
+                    </a>
+                    <p><b>CharlestonHacks Team</b></p>
+                </div>
+            </article>
+        </div>
+
+        <footer id="footer">
+            <!-- Add your footer content here -->
+        </footer>
+
+        <!-- Image Modal -->
+        <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+            <span class="close" onclick="closeImageModal()">&times;</span>
+            <img class="image-modal-content" id="modalImage" />
+        </div>
+
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/jquery.scrolly.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.display === "block") {
+                        content.style.display = "none";
+                    } else {
+                        content.style.display = "block";
+                    }
+                });
             }
-        });
-    }
-</script>
 
-    <!-- JavaScript for image modals -->
-    <script>
-        function openModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "block";
-        }
+            function openImageModal(imageUrl) {
+                var modal = document.getElementById('imageModal');
+                var modalImg = document.getElementById('modalImage');
 
-        function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
-    </script>
-</div>
+                modal.style.display = 'block';
+                modalImg.src = imageUrl;
+            }
+
+            function closeImageModal() {
+                var modal = document.getElementById('imageModal');
+                modal.style.display = 'none';
+            }
+        </script>
+    </div>
 </body>
 </html>
+
+
