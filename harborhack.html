@@ -1,4 +1,4 @@
-
+To remove the links from the photos, you can simply remove the href attribute from the anchor (<a>) tags that wrap the images. Here's your updated code with the links removed:
 
 html
 Copy code
@@ -106,33 +106,33 @@ Copy code
             <div class="content">
                 <p><b>Photos from harborHack (23)</b></p>
                 <!-- Pictures Section -->
-                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Harborwalks.jpg" alt="Harbor Walk East" /></a>
+                <img src="images/Harborwalks.jpg" alt="Harbor Walk East" />
                 <div id="modal1" class="modal">
                     <span class="close" onclick="closeModal('modal1')">&times;</span>
                     <img class="modal-content" src="images/Harborwalks.jpg" alt="Harbor Walk East">
                 </div>
-                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php" onclick="openModal('modal1')"><img src="images/doug-presenting good.jpg" alt="Harbor Walk West" /></a>
+                <img src="images/doug-presenting good.jpg" alt="Harbor Walk West" />
                 <div id="modal2" class="modal">
                     <span class="close" onclick="closeModal('modal2')">&times;</span>
                     <img class="modal-content" src="images/doug-presenting good.jpg" alt="Harbor Walk West">
                 </div>
-                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space" /></a>
-                <div id="modal3" class="modal">
+                <img src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space" />
+                <div id="modal3" class a"modal">
                     <span class="close" onclick="closeModal('modal3')">&times;</span>
                     <img class="modal-content" src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space">
                 </div>
-                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space" /></a>
+                <img src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space" />
                 <div id="modal4" class="modal">
                     <span class="close" onclick="closeModal('modal4')">&times;</span>
                     <img class="modal-content" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space">
                 </div>
-                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/The team.JPG" alt="CharlestonHacks Team" /></a>
+                <img src="images/The team.JPG" alt="CharlestonHacks Team" />
                 <div id="modal5" class="modal">
                     <span class="close" onclick="closeModal('modal5')">&times;</span>
                     <img class="modal-content" src="images/The team.JPG" alt="CharlestonHacks Team">
                 </div>
-                <a class="image main" href="https://charlestonhacksharborhack.devpost.com"><img src="images/Devpost Logo-check it out-01.png" alt="Devpost" /></a>
-                <a class="image main" href="https://discord.com/invite/w7uqvdmdks"><img src="images/Discord Logo-02.png" alt="Discord" /></a><br>
+                <img src="images/Devpost Logo-check it out-01.png" alt="Devpost" />
+                <img src="images/Discord Logo-02.png" alt="Discord" /><br>
             </div>
         </article>
     </div>
@@ -179,7 +179,7 @@ Copy code
                 if (content.style.display === "block") {
                     content.style.display = "none";
                 } else {
-                    content.style.display = "block";
+                    content.style display = "block";
                 }
             });
         }
@@ -201,4 +201,4 @@ Copy code
 </html>
 
 
-I've added a close button to each modal and provided JavaScript functions to open and close the modals. This allows you to close the photos with an X button.
+I've removed the href attributes from the anchor tags that wrap the images, so clicking the images won't activate any links. Now, they are displayed as plain images without hyperlinks.
