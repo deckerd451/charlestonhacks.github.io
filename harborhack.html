@@ -121,10 +121,14 @@ Copy code
                     <span class="close" onclick="closeModal('modal3')">&times;</span>
                     <img class="modal-content" src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space">
                 </div>
-                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space" /></a>
-                <div id="modal4" class="modal">
-                    <span class="close" onclick="closeModal('modal4')">&times;</span>
-                    <img class="modal-content" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space">
+              <img class="image main" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space" onclick="openModal('modal4')">
+<div id="modal4" class="modal">
+    <span class="close" onclick="closeModal('modal4')">&times;</span>
+    <img class="modal-content" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space">
+</div>
+
+
+This code replaces the <a> tag with an <img> tag and attaches the onclick event directly to the image. It will trigger the modal when the image is clicked.
                 </div>
                 <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/The team.JPG" alt="CharlestonHacks Team" /></a>
                 <div id="modal5" class="modal">
