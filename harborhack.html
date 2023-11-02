@@ -1,4 +1,4 @@
-
+I apologize for the oversight. To make the photos closable with an X, you can add a close button to each modal. Here's the updated code:
 
 html
 Copy code
@@ -41,7 +41,7 @@ Copy code
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0, 0, 0, 0.9);
         }
 
         .modal-content {
@@ -107,20 +107,56 @@ Copy code
                 <p><b>Photos from harborHack (23)</b></p>
                 <!-- Pictures Section -->
                 <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Harborwalks.jpg" alt="Harbor Walk East" /></a>
-                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/doug-presenting good.jpg" alt="Harbor Walk West" /></a>
-                <a class "image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space" /></a>
+                <div id="modal1" class="modal">
+                    <span class="close" onclick="closeModal('modal1')">&times;</span>
+                    <img class="modal-content" src="images/Harborwalks.jpg" alt="Harbor Walk East">
+                </div>
+                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php" onclick="openModal('modal1')"><img src="images/doug-presenting good.jpg" alt="Harbor Walk West" /></a>
+                <div id="modal2" class="modal">
+                    <span class="close" onclick="closeModal('modal2')">&times;</span>
+                    <img class="modal-content" src="images/doug-presenting good.jpg" alt="Harbor Walk West">
+                </div>
+                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space" /></a>
+                <div id="modal3" class="modal">
+                    <span class="close" onclick="closeModal('modal3')">&times;</span>
+                    <img class="modal-content" src="images/Circular classrooms.jpeg" alt="Harbor Walk East Work Space">
+                </div>
                 <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space" /></a>
-                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/The team.JPG" alt="CharlestonHacks Team" /></a><br>
+                <div id="modal4" class="modal">
+                    <span class="close" onclick="closeModal('modal4')">&times;</span>
+                    <img class="modal-content" src="images/Breakout spaces.jpeg" alt="Harbor Walk East Work Space">
+                </div>
+                <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/The team.JPG" alt="CharlestonHacks Team" /></a>
+                <div id="modal5" class="modal">
+                    <span class="close" onclick="closeModal('modal5')">&times;</span>
+                    <img class="modal-content" src="images/The team.JPG" alt="CharlestonHacks Team">
+                </div>
                 <a class="image main" href="https://charlestonhacksharborhack.devpost.com"><img src="images/Devpost Logo-check it out-01.png" alt="Devpost" /></a>
                 <a class="image main" href="https://discord.com/invite/w7uqvdmdks"><img src="images/Discord Logo-02.png" alt="Discord" /></a><br>
             </div>
         </article>
     </div>
   <!-- End Collapsible Section -->
+
     <!-- Footer -->
     <footer id="footer">
-        <!-- Add your footer content here -->
+        <section>
+            <h3>About Us</h3>
+            <p>Learn more about our team and organization <a href="aboutus.html">here</a>.</p>
+        </section>
+        <section>
+            <h3>Contact</h3>
+            <ul class="icons alt">
+                <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                <li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+                <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                <li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+            </ul>
+        </section>
     </footer>
+    <!-- End Footer -->
 
     <!-- Scripts -->
     <script src="assets/js/jquery.min.js"></script>
@@ -131,43 +167,38 @@ Copy code
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
 
-    <!-- JavaScript for collapsible sections and image modals -->
+    <!-- JavaScript for collapsible sections -->
     <script>
         var coll = document.getElementsByClassName("collapsible");
-        var modal = document.getElementById('myModal');
-        var modalImg = document.getElementById('img01');
-        var captionText = document.getElementById('caption');
+        var i;
 
-        for (var i = 0; i < coll.length; i++) {
-            coll[i].addEventListener('click', function () {
-                this.classList.toggle('active');
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
                 var content = this.nextElementSibling;
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
+                if (content.style.display === "block") {
+                    content.style.display = "none";
                 } else {
-                    content.style.display = 'block';
+                    content.style.display = "block";
                 }
             });
         }
-
-        var images = document.querySelectorAll('.image.main');
-
-        for (var i = 0; i < images.length; i++) {
-            images[i].addEventListener('click', function() {
-                modal.style.display = 'block';
-                modalImg.src = this.src;
-                captionText.innerHTML = this.alt;
-            });
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            modal.style.display = 'none';
-        }
     </script>
-    <!-- End JavaScript for collapsible sections and image modals -->
+
+    <!-- JavaScript for image modals -->
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+    </script>
 </div>
 </body>
 </html>
 
 
+I've added a close button to each modal and provided JavaScript functions to open and close the modals. This allows you to close the photos with an X button.
