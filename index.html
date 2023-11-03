@@ -1,32 +1,12 @@
+
 <!DOCTYPE HTML>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CharlestonHacks</title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/noscript.css" noscript>
-    <style>
-        /* Default light mode */
-        html {
-            --bg-color: white;
-            --text-color: black;
-        }
-
-        /* Dark mode */
-        html[data-theme='dark'] {
-            --bg-color: black;
-            --text-color: white;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        /* Additional CSS styles for your page */
-        /* ... */
-    </style>
 </head>
 <body class="is-preload">
 
@@ -81,24 +61,10 @@
             <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
         </ul>
     </section>
-    
-    <!-- Dark Mode Toggle Button in Footer -->
-    <div class="dark-mode-toggle" style="text-align: center; margin-top: 20px;">
-        <button id="darkModeToggle">Toggle Dark Mode</button>
-    </div>
 </footer>
 
-<!-- Scripts and JavaScript for Dark Mode and Collapsible Sections -->
+<!-- Scripts and JavaScript for Collapsible Sections -->
 <script>
-    document.getElementById("darkModeToggle").addEventListener("click", function() {
-        const html = document.querySelector("html");
-        if (html.getAttribute("data-theme") === "dark") {
-            html.setAttribute("data-theme", "light");
-        } else {
-            html.setAttribute("data-theme", "dark");
-        }
-    });
-    
     var coll = document.querySelectorAll(".collapsible");
     coll.forEach(function (item) {
         item.addEventListener("click", function () {
@@ -110,3 +76,5 @@
 </script>
 </body>
 </html>
+
+
