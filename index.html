@@ -1,35 +1,13 @@
 
 
-html
-Copy code
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>CharlestonHacks</title> <!-- Include your desired title here -->
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-    <style>
-        body {
-            max-height: 100vh;
-            overflow-y: scroll;
-        }
-
-        /* Custom CSS for collapsible sections */
-        .collapsible {
-            cursor: pointer;
-            padding: 18px;
-            border: none;
-            text-align: left;
-            outline: none;
-            background-color: #f1f1f1;
-        }
-
-        .content {
-            display: none;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CharlestonHacks</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/noscript.css" noscript>
 </head>
 <body class="is-preload">
 
@@ -48,21 +26,15 @@ Copy code
     <!-- Post -->
     <article class="post featured">
         <header class="major">
-           <a class="image main"><img src="images/H-_landing.jp" alt="" /></a>   
+            <a class="image main" href="#"><img src="images/H-landing.jpg" alt="CharlestonHacks" /></a>
         </header>
-      
-        
 
         <!-- Collapsible Section 1 -->
         <button class="collapsible">More Info</button>
         <div class="content">
             <hr>
-            <p><b>Charlestonhacks</b> organizes dynamic events where individuals from all different backgrounds and skill levels work together to develop 
-                solutions to real-world problems. This includes software developers, designers, business professionals, subject matter experts, entrepreneurs, 
-                and students. Participants often have an interest in technology, innovation, and social impact. We will be hosting four events in 2024, scheduled 
-                around the seasons and each with a different focus. Our events will be held at inspiring venues throughout Charleston, South Carolina.</p>
-        
-            <a class="image main" href="harborhack.html"><img src="images/CHARLESTONHACKS GREY SMALL LOGO ONLY right.png" alt="" /></a>
+            <p><b>Charlestonhacks</b> organizes dynamic events where individuals from all different backgrounds and skill levels work together to develop solutions to real-world problems. This includes software developers, designers, business professionals, subject matter experts, entrepreneurs, and students. Participants often have an interest in technology, innovation, and social impact. We will be hosting four events in 2024, scheduled around the seasons and each with a different focus. Our events will be held at inspiring venues throughout Charleston, South Carolina.</p>
+            <a class="image main" href="harborhack.html"><img src="images/CHARLESTONHACKS GREY SMALL LOGO ONLY right.png" alt="CharlestonHacks Logo" /></a>
         </div>
     </article>
 </div>
@@ -81,15 +53,15 @@ Copy code
     </section>
     <section>
         <h3>Email</h3>
-        <p><a href="#">hello@charlestonhacks.com</a></p>
+        <p><a href="mailto:hello@charlestonhacks.com">hello@charlestonhacks.com</a></p>
     </section>
     <section>
         <h3>Follow Us</h3>
         <ul class="icons">
-            <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook"><span class="label">Facebook</span></a></li>
-            <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+            <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+            <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+            <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
         </ul>
     </section>
 </footer>
@@ -105,22 +77,15 @@ Copy code
 
 <!-- JavaScript for collapsible sections -->
 <script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
+    var coll = document.querySelectorAll(".collapsible");
+    coll.forEach(function (item) {
+        item.addEventListener("click", function () {
             this.classList.toggle("active");
             var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
+            content.style.display = content.style.display === "block" ? "none" : "block";
         });
-    }
+    });
 </script>
-
 </body>
 </html>
 
