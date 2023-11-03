@@ -1,15 +1,40 @@
 
-
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CharlestonHacks</title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/noscript.css" noscript>
+    <style>
+        /* Default light mode */
+        html {
+            --bg-color: white;
+            --text-color: black;
+        }
+
+        /* Dark mode */
+        html[data-theme='dark'] {
+            --bg-color: black;
+            --text-color: white;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Additional CSS styles for your page */
+        /* ... */
+    </style>
 </head>
 <body class="is-preload">
+
+<!-- Dark Mode Toggle Button -->
+<div class="dark-mode-toggle">
+    <button id="darkModeToggle">Toggle Dark Mode</button>
+</div>
 
 <!-- Nav -->
 <nav id="nav">
@@ -60,7 +85,7 @@
         <ul class="icons">
             <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
             <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
-            <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+            <li><a href="https://www.instagram.com/charlestonhacks/" class "icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
             <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
         </ul>
     </section>
@@ -74,6 +99,18 @@
 <script src="assets/js/breakpoints.min.js"></script>
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
+
+<!-- JavaScript for dark mode toggle -->
+<script>
+    document.getElementById("darkModeToggle").addEventListener("click", function() {
+        const html = document.querySelector("html");
+        if (html.getAttribute("data-theme") === "dark") {
+            html.setAttribute("data-theme", "light");
+        } else {
+            html.setAttribute("data-theme", "dark");
+        }
+    });
+</script>
 
 <!-- JavaScript for collapsible sections -->
 <script>
