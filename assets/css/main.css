@@ -112,6 +112,19 @@ input, select, textarea {
 			-ms-transition: none !important;
 			transition: none !important;
 		}
+/* Your existing CSS rules */
+
+/* Add the new CSS for the static image */
+.static-image {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1; /* to position it behind other content */
+}
+
+/* Other CSS rules */
+
 
 /* Type */
 
