@@ -114,8 +114,6 @@ input, select, textarea {
 		}
 /* Your existing CSS rules */
 
-/* Add the new CSS for the static image */
-.static-image {
 /* Existing CSS for .static-image class */
 .static-image {
     width: 100%;
