@@ -7,33 +7,9 @@
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
     <style>
-        /* Add the new CSS for the static image */
-        .static-image {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: -1; /* to position it behind other content */
-        }
-
-        /* Header (Intro Section) */
-        header#intro {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: #fff; /* White background color */
-            z-index: 1000; /* To ensure it's above other content */
-        }
-
-        /* Footer */
-        footer#footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #fff; /* White background color */
-            z-index: 1000; /* To ensure it's above other content */
+        /* CSS for white header and footer */
+        header, footer {
+            background-color: white;
         }
     </style>
 </head>
@@ -74,8 +50,11 @@
                 <div class="content" style="display: none;">
                     <br>
                     <h3>CharlestonHacks mission is clear: we're dedicated to building a thriving community of world-class software developers, entrepreneurs, and creative technologists. Our ultimate goal is to shape Charleston, South Carolina, into a dynamic center for technology, entrepreneurship, and creative innovation.</h3>
+
                     <p><b>To achieve this mission, we organize immersive and transformational events within Charleston, South Carolina. These events are designed to bring together diverse talents and ideas, fostering collaboration, innovation, and growth. Our responsibility to participants consists of supporting our network with mentors, facilitators, employers, startup resources, and funding opportunities.</b></p>
+
                     <p>Each of our events is unique, featuring distinct focuses, venues, and scales. However, a common thread runs through all of them: participants will connect with a team of like-minded people, create prototypes, develop materials for presentation, and pitch their innovative ideas to our judges. Through these endeavors, we aim to drive progress, spark creativity, and nurture the next generation of leaders in technology, entrepreneurship, and the creative arts.</p>
+
                     <br>
                     <p>Create our culture, be inspired and inspire others, seek opportunity and have a breakthrough.</p>
                     <br>
@@ -87,54 +66,47 @@
             <!-- Static Image Positioned Under Scrollable Content -->
             <img src="images/staticbackground.jpg" alt="Static Background" class="static-image">
 
+            <!-- Footer -->
+            <footer id="footer">
+                <section class="alt">
+                    <h2>Our Previous Events</h2>
+                    <p><h3><a href="harborhack.html" target="_blank">harborHack (23)</a></h3></p>
+                    <p><h3><a href="summerhack.html" target="_blank">summerHack (23)</a></h3></p>
+                </section>
+                <section>
+                    <h2>Our Events in 2024</h2>
+
+                    <p><h3><a href="cultureHack.html" target="_blank">culture</a></h3></p>
+                    <p><h3><a href="opportunityHack.html" target="_blank">opportunity</a></h3></p>
+                    <p><h3><a href="inspireHack.html" target="_blank">inspire</a></h3></p>
+                    <p><h3><a href="breakthroughHack.html" target="_blank">breakthrough</a></h3></p>
+                </section>
+                <section>
+                    <h2>Other Initiatives</h2>
+                    <p><h3><a href="inf8.html" target="_blank">IN/F8</a></h3></p>
+                    <p><h3><a href="techweek.html" target="_blank">tech week</a></h3></p>
+
+                    <h2>Email Us</h2>
+                    <p><h3><a href="mailto:hello@charlestonhacks.com">hello@charlestonhacks.com</a></h3></p>
+                </section>
+                <section>
+                    <h2>Who We Are</h2>
+                    <p><h3><a href="aboutus.html" target="_blank">About Us</a></h3></p>
+                    <br>
+                    <h2>Follow Us</h2>
+                    <ul class="icons">
+                        <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                        <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+                        <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+                        <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                    </ul>
+                </section>
+            </footer>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer id="footer">
-        <section class="alt">
-            <h2>Our Previous Events</h2>
-            <p><h3><a href="harborhack.html" target="_blank">harborHack (23)</a></h3></p>
-            <p><h3><a href="summerhack.html" target="_blank">summerHack (23)</a></h3></p>
-        </section>
-        <section>
-            <h2>Our Events in 2024</h2>
-            <p><h3><a href="cultureHack.html" target="_blank">culture</a></h3></p>
-            <p><h3><a href="opportunityHack.html" target="_blank">opportunity</a></h3></p>
-            <p><h3><a href="inspireHack.html" target="_blank">inspire</a></h3></p>
-            <p><h3><a href="breakthroughHack.html" target="_blank">breakthrough</a></h3></p>
-        </section>
-        <section>
-            <h2>Other Initiatives</h2>
-            <p><h3><a href="inf8.html" target="_blank">IN/F8</a></h3></p>
-            <p><h3><a href="techweek.html" target="_blank">tech week</a></h3></p>
-            <h2>Email Us</h2>
-            <p><h3><a href="mailto:hello@charlestonhacks.com">hello@charlestonhacks.com</a></h3></p>
-        </section>
-        <section>
-            <h2>Who We Are</h2>
-            <p><h3><a href="aboutus.html" target="_blank">About Us</a></h3></p>
-            <br>
-            <h2>Follow Us</h2>
-            <ul class="icons">
-                <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
-                <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
-                <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
-                <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" target="_blank"><span class "label">LinkedIn</span></a></li>
-            </ul>
-        </section>
-    </footer>
 
     <!-- Scripts and JavaScript for Collapsible Sections -->
     <script>
         var coll = document.querySelectorAll(".collapsible");
         coll.forEach(function (item) {
-            item.addEventListener("click", function () {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                content.style.display = content.style.display === "block" ? "none" : "block";
-            });
-        });
-    </script>
-</body>
-</html>
+            item.addEventListener("click
