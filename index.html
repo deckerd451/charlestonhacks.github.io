@@ -6,12 +6,6 @@
     <title>Home</title>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-    <style>
-        /* CSS for white header and footer */
-        header, footer {
-            background-color: white;
-        }
-    </style>
 </head>
 <body class="is-preload">
     <div id="wrapper" class="fade-in">
@@ -49,6 +43,9 @@
                 <button class="collapsible">Our Mission</button>
                 <div class="content" style="display: none;">
                     <br>
+                   
+                  
+
                     <h3>CharlestonHacks mission is clear: we're dedicated to building a thriving community of world-class software developers, entrepreneurs, and creative technologists. Our ultimate goal is to shape Charleston, South Carolina, into a dynamic center for technology, entrepreneurship, and creative innovation.</h3>
 
                     <p><b>To achieve this mission, we organize immersive and transformational events within Charleston, South Carolina. These events are designed to bring together diverse talents and ideas, fostering collaboration, innovation, and growth. Our responsibility to participants consists of supporting our network with mentors, facilitators, employers, startup resources, and funding opportunities.</b></p>
@@ -66,47 +63,59 @@
             <!-- Static Image Positioned Under Scrollable Content -->
             <img src="images/staticbackground.jpg" alt="Static Background" class="static-image">
 
-            <!-- Footer -->
-            <footer id="footer">
-                <section class="alt">
-                    <h2>Our Previous Events</h2>
-                    <p><h3><a href="harborhack.html" target="_blank">harborHack (23)</a></h3></p>
-                    <p><h3><a href="summerhack.html" target="_blank">summerHack (23)</a></h3></p>
-                </section>
-                <section>
-                    <h2>Our Events in 2024</h2>
-
-                    <p><h3><a href="cultureHack.html" target="_blank">culture</a></h3></p>
-                    <p><h3><a href="opportunityHack.html" target="_blank">opportunity</a></h3></p>
-                    <p><h3><a href="inspireHack.html" target="_blank">inspire</a></h3></p>
-                    <p><h3><a href="breakthroughHack.html" target="_blank">breakthrough</a></h3></p>
-                </section>
-                <section>
-                    <h2>Other Initiatives</h2>
-                    <p><h3><a href="inf8.html" target="_blank">IN/F8</a></h3></p>
-                    <p><h3><a href="techweek.html" target="_blank">tech week</a></h3></p>
-
-                    <h2>Email Us</h2>
-                    <p><h3><a href="mailto:hello@charlestonhacks.com">hello@charlestonhacks.com</a></h3></p>
-                </section>
-                <section>
-                    <h2>Who We Are</h2>
-                    <p><h3><a href="aboutus.html" target="_blank">About Us</a></h3></p>
-                    <br>
-                    <h2>Follow Us</h2>
-                    <ul class="icons">
-                        <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
-                        <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
-                        <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
-                        <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-                    </ul>
-                </section>
-            </footer>
         </div>
     </div>
+
+
+     <!-- Footer -->
+        <footer id="footer">
+            <section class="alt">
+                <h2>Our Previous Events</h2>
+                <p><h3><a href="harborhack.html" target="_blank">harborHack (23)</a></h3></p>
+                <p><h3><a href="summerhack.html" target="_blank">summerHack (23)</a></h3></p>
+            </section>
+            <section>
+                <h2>Our Events in 2024</h2>
+
+                <p><h3><a href="cultureHack.html" target="_blank">culture</a></h3></p>
+                <p><h3><a href="opportunityHack.html" target="_blank">opportunity</a></h3></p>
+                <p><h3><a href="inspireHack.html" target="_blank">inspire</a></h3></p>
+                <p><h3><a href="breakthroughHack.html" target="_blank">breakthrough</a></h3></p>
+            </section>
+            <section>
+                <h2>Other Initiatives</h2>
+                <p><h3><a href="inf8.html" target="_blank">IN/F8</a></h3></p>
+                <p><h3><a href="techweek.html" target="_blank">tech week</a></h3></p>
+
+                <h2>Email Us</h2>
+                <p><h3><a href="mailto:hello@charlestonhacks.com">hello@charlestonhacks.com</a></h3></p>
+            </section>
+            <section>
+                <h2>Who We Are</h2>
+                <p><h3><a href="aboutus.html" target="_blank">About Us</a></h3></p>
+                <br>
+                <h2>Follow Us</h2>
+                <ul class="icons">
+                    <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                    <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+                    <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+                    <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" target="_blank"><span class "label">LinkedIn</span></a></li>
+                </ul>
+            </section>
+        </footer>
 
     <!-- Scripts and JavaScript for Collapsible Sections -->
     <script>
         var coll = document.querySelectorAll(".collapsible");
         coll.forEach(function (item) {
-            item.addEventListener("click
+            item.addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                content.style.display = content.style.display === "block" ? "none" : "block";
+            });
+        });
+    </script>
+</body>
+</html>
+
+
