@@ -116,12 +116,18 @@ input, select, textarea {
 
 /* Add the new CSS for the static image */
 .static-image {
-    position: fixed;
-    bottom: 0;
-    left: 0;
     width: 100%;
-    z-index: -1; /* to position it behind other content */
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
+
+.static-image-container {
+    position: relative; /* Create a positioning context for the image */
+}
+
 
 /* Other CSS rules */
 
