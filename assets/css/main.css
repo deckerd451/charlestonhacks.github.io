@@ -124,8 +124,6 @@ input, select, textarea {
     z-index: -1;
 }
 
-.static-image-container {
-    position: relative; /* Create a positioning context for the image */
 }
 
 
