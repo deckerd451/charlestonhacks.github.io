@@ -114,20 +114,6 @@ input, select, textarea {
 		}
 /* Your existing CSS rules */
 
-/* Existing CSS for .static-image class */
-.static-image {
-    width: 100%;
-    height: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
-/* Add the new CSS for the static background */
-body {
-    background-attachment: fixed;
-}
 
 
 /* Other CSS rules */
