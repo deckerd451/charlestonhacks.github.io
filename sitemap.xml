@@ -1,0 +1,48 @@
+
+xml
+Copy code
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://charlestonhacks.com/</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Example page -->
+  <url>
+    <loc>https://charlestonhacks.com/example-page</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Another page -->
+  <url>
+    <loc>https://charlestonhacks.com/another-page</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Index page -->
+  <url>
+    <loc>https://charlestonhacks.com/index.html</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Images, if applicable -->
+  <url>
+    <loc>https://charlestonhacks.com/images/example-image.jpg</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
+
