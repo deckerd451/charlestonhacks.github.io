@@ -30,8 +30,7 @@ Copy code
 
  <!-- Another page -->
   <url>
-    <loc>https://charlestonhacks.com/a
-inspireHack.html</loc>
+    <loc>https://charlestonhacks.com/inspireHack.html</loc>
     <lastmod>2023-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -39,8 +38,7 @@ inspireHack.html</loc>
 
  <!-- Another page -->
   <url>
-    <loc>https://charlestonhacks.com/a
-breakthroughHack.html</loc>
+    <loc>https://charlestonhacks.com/breakthroughHack.html</loc>
     <lastmod>2023-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -48,8 +46,7 @@ breakthroughHack.html</loc>
 
  <!-- Another page -->
   <url>
-    <loc>https://charlestonhacks.com/a
-cultureHack.html</loc>
+    <loc>https://charlestonhacks.com/cultureHack.html</loc>
     <lastmod>2023-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -58,8 +55,7 @@ cultureHack.html</loc>
 
 <!-- Another page -->
   <url>
-    <loc>https://charlestonhacks.com/a
-opportunityHack.html</loc>
+    <loc>https://charlestonhacks.com/opportunityHack.html</loc>
     <lastmod>2023-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
