@@ -14,7 +14,8 @@ Copy code
 
   <!-- Example page -->
   <url>
-    <loc>https://charlestonhacks.com/example-page</loc>
+    <loc>https://charlestonhacks.com/e
+harborhack.html</loc>
     <lastmod>2023-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -22,7 +23,7 @@ Copy code
 
   <!-- Another page -->
   <url>
-    <loc>https://charlestonhacks.com/another-page</loc>
+    <loc>https://charlestonhacks.com/aboutus.html</loc>
     <lastmod>2023-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
