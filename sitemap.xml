@@ -14,8 +14,7 @@ Copy code
 
   <!-- Example page -->
   <url>
-    <loc>https://charlestonhacks.com/e
-harborhack.html</loc>
+    <loc>https://charlestonhacks.com/harborhack.html</loc>
     <lastmod>2023-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -29,6 +28,42 @@ harborhack.html</loc>
     <priority>0.8</priority>
   </url>
 
+ <!-- Another page -->
+  <url>
+    <loc>https://charlestonhacks.com/a
+inspireHack.html</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+ <!-- Another page -->
+  <url>
+    <loc>https://charlestonhacks.com/a
+breakthroughHack.html</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+ <!-- Another page -->
+  <url>
+    <loc>https://charlestonhacks.com/a
+cultureHack.html</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+
+<!-- Another page -->
+  <url>
+    <loc>https://charlestonhacks.com/a
+opportunityHack.html</loc>
+    <lastmod>2023-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <!-- Index page -->
   <url>
     <loc>https://charlestonhacks.com/index.html</loc>
