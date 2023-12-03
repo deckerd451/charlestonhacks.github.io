@@ -2612,17 +2612,7 @@ input, select, textarea {
 				width: 100%;
 			}
 
-		.image.left {
-			float: left;
-			margin: 0 2rem 2rem 0;
-			top: 0.75rem;
-		}
-
-		.image.right {
-			float: right;
-			margin: 0 0 2rem 2rem;
-			top: 0.75rem;
-		}
+		
 
 		.image.fit {
 			display: block;
@@ -2676,10 +2666,10 @@ input, select, textarea {
 		}
 
 		a.image:hover img {
-			-moz-transform: scale(1.05);
-			-webkit-transform: scale(1.05);
-			-ms-transform: scale(1.05);
-			transform: scale(1.05);
+			-moz-transform: scale(1.0);
+			-webkit-transform: scale(1.0);
+			-ms-transform: scale(1.0);
+			transform: scale(1.0);
 		}
 
 /* Actions */
