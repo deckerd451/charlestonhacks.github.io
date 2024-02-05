@@ -33,35 +33,43 @@
                    <a class="image main" href="#">
  <div style="display: flex; justify-content: center; align-items: center;">
   
-  <img src="images/orangehnobackground.png" alt="CharlestonHacks" style="width: 60%; display: inline-block;" />
-
-
+  <div class="header-content">
+    <a class="image main" href="javascript:void(0);" onclick="scrollToMission()"><img src="images/orangehnobackground.png" alt="CharlestonHacks" style="width: 60%; display: inline-block;" /></a>
 </div>
 
-</a>
+<header>
+    <!-- Collapsible Section 1 -->
+    <button class="collapsible">Our Mission</button>
+    <div class="content" id="missionContent" style="display: none;">
+        <br>
+        <!-- Create a line -->
+        <hr>
 
-                </header>
+        <h3>CharlestonHacks mission is to help grow South Carolina into a thriving center for technology, entrepreneurship, and creative innovation.</h3>
 
-                <!-- Collapsible Section 1 -->
-                <button class="collapsible">Our Mission</button>
-                <div class="content" style="display: none;">
-                    <br>
-                    <!-- Create a line -->
-                    <hr>
+        <p><b>To achieve this mission, we organize immersive, transformational events. 
+            These events are designed to bring together a diverse community of software developers, entrepreneurs, and creative technologists.</b></p>
 
-                    <h3>CharlestonHacks mission is to help grow South Carolina into a thriving center for technology, entrepreneurship, and creative innovation.</h3>
+        <p>Each of our events is unique, featuring distinct focuses, venues, and scales. Participants will connect with a team of like-minded people, create prototypes, develop 
+            materials for presentation, and pitch their innovative ideas to our judges. In 2024 we will focus on being inspired and inspiring others, seeking opportunity, shaping our culture and having a breakthrough.</p>
+        <br>
+        <p><b>Reach out to us to find out more about what we have in store for South Carolina in 2024.</b></p>
+        <br>
+    </div>
+</header>
 
-                    <p><b>To achieve this mission, we organize immersive, transformational events. 
-                        These events are designed to bring together a diverse community of software developers, entrepreneurs, and creative technologists.</b></p>
-
-                    <p>Each of our events is unique, featuring distinct focuses, venues, and scales. Participants will connect with a team of like-minded people, create prototypes, develop 
-                        materials for presentation, and pitch their innovative ideas to our judges. In 2024 we will focus on being inspired and inspiring others, seeking opportunity, shaping our culture and having a breakthrough.</p>
-                    <br>
-                    <p><b>Reach out to us to find out more about what we have in store for South Carolina in 2024.</b></p>
-                    <br>
-                </div>
-            </article>
-        </div>
+<script>
+    function scrollToMission() {
+        var missionContent = document.getElementById("missionContent");
+        if (missionContent.style.display === "none") {
+            missionContent.style.display = "block";
+        } else {
+            missionContent.style.display = "none";
+        }
+        // Scroll to the mission content
+        missionContent.scrollIntoView({ behavior: "smooth" });
+    }
+</script>
 
 
 
