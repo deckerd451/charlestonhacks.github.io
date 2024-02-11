@@ -166,4 +166,11 @@
         missionImage.style.opacity = 0; // Set initial opacity to 0
         missionImage.style.transition = "opacity 1s"; // Add transition effect
         setTimeout(function() {
-            missionImage.style
+            missionImage.style.opacity = 1; // Fade in the image by setting opacity to 1
+            missionImage.style.width = '100%'; // Resize the image to fit the viewport width
+        }, 100); // Delay the execution for 100 milliseconds to ensure smooth transition
+    }
+</script>
+
+</body>
+</html>
