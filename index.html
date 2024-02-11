@@ -4,12 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>Home</title>
-    <link rel="stylesheet" href="assets/css/main.css" />
     <style>
         /* Your CSS styles go here */
         body {
             background-color: black; /* Setting the background color to black */
             color: white; /* Setting text color to white for better contrast */
+            margin: 0; /* Removing default margin */
+            padding: 0; /* Removing default padding */
+            font-family: Arial, sans-serif; /* Setting a default font */
         }
 
         /* Other styles */
@@ -23,6 +25,35 @@
             height: auto;
             display: block;
             margin: 0 auto;
+        }
+
+        .post {
+            padding: 20px;
+            border-bottom: 1px solid #444;
+        }
+
+        .post h2 {
+            margin-top: 0;
+        }
+
+        #footer {
+            background-color: #333;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        #footer h2 {
+            margin-top: 0;
+        }
+
+        #footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        #footer a:hover {
+            text-decoration: underline;
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
