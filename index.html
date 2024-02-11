@@ -32,7 +32,7 @@
         }
 
         .panel img {
-            max-width: 100%;
+            width: 100%; /* Make the image fit the screen */
             height: auto;
             display: block;
             margin: 0 auto;
@@ -88,7 +88,7 @@
         <header class="major">
             <div class="panel">
                 <a class="image main" href="javascript:void(0);" onclick="toggleMissionContent()">
-                    <img id="missionImage" src="images/Principle Card Splash-01.png" alt="CharlestonHacks" style="width: 60%; display: inline-block;" />
+                    <img id="missionImage" src="images/Principle Card Splash-01.png" alt="CharlestonHacks" />
                 </a>
             </div>
         </header>
@@ -107,7 +107,7 @@
     <section class="alt">
     </section>
     <section>
-        <h2 id="eventToggle" style="cursor: pointer;">Events in 2024</h2> <!-- Making the heading clickable -->
+        <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2> <!-- Making the heading clickable -->
         <div id="eventLinks">
             <p><h3><a href="opportunityHack.html" style="color: white;">Hackops (Spring 2024)</a></h3></p>
             <p><h3><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></h3></p>
@@ -126,4 +126,33 @@
             <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" style="color: white;"><span class="label">Facebook</span></a></li>
             <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" style="color: white;"><span class="label">Twitter</span></a></li>
             <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" style="color: white;"><span class="label">Instagram</span></a></li>
-            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" style="color: white;"><span class
+            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" style="color: white;"><span class="label">LinkedIn</span></a></li>
+        </ul>
+    </section>
+</footer>
+
+<script>
+    function toggleMissionContent() {
+        var missionContent = document.getElementById("missionContent");
+        var missionImage = document.getElementById("missionImage");
+        if (missionContent.style.display === "none") {
+            missionContent.style.display = "block";
+            missionImage.src = 'images/Principle Card300.png'; // Change the image path to "images/Principle Card300.png"
+        } else {
+            missionContent.style.display = "none";
+            missionImage.src = 'images/Principle Card Splash-01.png'; // Set the path to your original image
+        }
+    }
+
+    function toggleEventLinks() {
+        var eventLinks = document.getElementById("eventLinks");
+        if (eventLinks.style.display === "none") {
+            eventLinks.style.display = "block";
+        } else {
+            eventLinks.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
