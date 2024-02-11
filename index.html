@@ -71,6 +71,15 @@
             transform: scale(1.1); /* Enlarge the button on hover */
         }
 
+        /* Smaller button and centering on mobile */
+        @media screen and (max-width: 480px) {
+            .button {
+                width: 50%; /* Adjust width as needed */
+                font-size: 0.8em; /* Adjust font size as needed */
+                margin-top: 10px; /* Adjust margin as needed */
+            }
+        }
+
         /* Footer styles */
         #footer {
             background-color: #333;
@@ -163,48 +172,4 @@
 
 <script>
     // Function to toggle mission content visibility
-    function toggleMissionContent() {
-        var missionContent = document.getElementById("missionContent");
-        var missionImage = document.getElementById("missionImage");
-        if (missionContent.style.display === "none") {
-            missionContent.style.display = "block";
-            missionImage.src = 'images/Principle Card mood-02.png'; // Change the image path to "images/Principle Card mood-02.png"
-        } else {
-            missionContent.style.display = "none";
-            missionImage.src = 'images/Principle Card mood-01.png'; // Set the path to your original image
-        }
-    }
-
-    // Function to toggle event links visibility
-    function toggleEventLinks() {
-        var eventLinks = document.getElementById("eventLinks");
-        if (eventLinks.style.display === "none") {
-            eventLinks.style.display = "block";
-        } else {
-            eventLinks.style.display = "none";
-        }
-    }
-
-    // Function to toggle previous events visibility
-    function togglePreviousEvents() {
-        var previousEvents = document.getElementById("previousEvents");
-        if (previousEvents.style.display === "none") {
-            previousEvents.style.display = "block";
-        } else {
-            previousEvents.style.display = "none";
-        }
-    }
-
-    // Fade out and resize the main image after page load
-    window.onload = function() {
-        var missionImage = document.getElementById("missionImage");
-        missionImage.style.opacity = 0; // Set initial opacity to 0
-        missionImage.style.transition = "opacity 1s"; // Add transition effect
-        setTimeout(function() {
-            missionImage.style.opacity = 1; // Fade in the image by setting opacity to 1
-        }, 100); // Delay the execution for 100 milliseconds to ensure smooth transition
-    }
-</script>
-
-</body>
-</html>
+    function toggleMissionContent
