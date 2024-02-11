@@ -1,3 +1,7 @@
+Of course! To ensure that the main image is correctly proportioned for both web and mobile screens, we can set a maximum width for the image while maintaining its aspect ratio. Here's the updated code:
+
+html
+Copy code
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -34,8 +38,8 @@
         }
 
         .panel img {
-            width: 100vw; /* Make the image take full width of viewport */
-            height: 100vh; /* Make the image take full height of viewport */
+            max-width: 100%; /* Set maximum width to 100% */
+            height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto;
         }
@@ -167,10 +171,12 @@
         missionImage.style.transition = "opacity 1s"; // Add transition effect
         setTimeout(function() {
             missionImage.style.opacity = 1; // Fade in the image by setting opacity to 1
-            missionImage.style.width = '100%'; // Resize the image to fit the viewport width
         }, 100); // Delay the execution for 100 milliseconds to ensure smooth transition
     }
 </script>
 
 </body>
 </html>
+
+
+In this code, I've set the maximum width of the main image to 100% of its container while maintaining its aspect ratio. This ensures that the image fits properly on both web and mobile screens.
