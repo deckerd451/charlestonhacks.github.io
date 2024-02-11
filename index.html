@@ -29,10 +29,22 @@
             <article class="post featured">
                 <header class="major">
                     <div class="panel">
-                        <a class="image main" href="javascript:void(0);" onclick="toggleMission()">
-                            <img src="images/Principle Card Splash-01.png" alt="CharlestonHacks" style="width: 60%; display: inline-block;" />
-                        </a>
-                    </div>
+    <a class="image main" href="javascript:void(0);" onclick="toggleMission()">
+        <img id="missionImage" src="images/Principle Card Splash-01.png" alt="CharlestonHacks" style="width: 60%; display: inline-block;" />
+    </a>
+</div>
+
+<script>
+    function toggleMission() {
+        var imgElement = document.getElementById('missionImage');
+        if (imgElement.src.includes('Principle Card Splash-01.png')) {
+            imgElement.src = 'images/other-image.png'; // Set the path to your other image
+        } else {
+            imgElement.src = 'images/Principle Card Splash-01.png'; // Set the path to your original image
+        }
+    }
+</script>
+
                 </header>
                 <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" >HACKOPS, APRIL 19-21ST </a></h2>
 
