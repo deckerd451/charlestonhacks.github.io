@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -18,6 +17,7 @@
             background-color: black; /* Setting the background color to black */
             color: white; /* Setting text color to white for better contrast */
             font-family: Arial, sans-serif; /* Setting a default font */
+            overflow-x: hidden; /* Hide horizontal scrollbar */
         }
 
         /* Container for the main content */
@@ -34,8 +34,8 @@
         }
 
         .panel img {
-            width: 100%; /* Make the image fit the screen */
-            height: auto;
+            width: 100vw; /* Make the image take full width of viewport */
+            height: 100vh; /* Make the image take full height of viewport */
             display: block;
             margin: 0 auto;
         }
@@ -137,6 +137,7 @@
 </footer>
 
 <script>
+    // Function to toggle mission content visibility
     function toggleMissionContent() {
         var missionContent = document.getElementById("missionContent");
         var missionImage = document.getElementById("missionImage");
@@ -149,6 +150,7 @@
         }
     }
 
+    // Function to toggle event links visibility
     function toggleEventLinks() {
         var eventLinks = document.getElementById("eventLinks");
         if (eventLinks.style.display === "none") {
@@ -157,8 +159,11 @@
             eventLinks.style.display = "none";
         }
     }
-</script>
 
-</body>
-</html>
-
+    // Fade out and resize the main image after page load
+    window.onload = function() {
+        var missionImage = document.getElementById("missionImage");
+        missionImage.style.opacity = 0; // Set initial opacity to 0
+        missionImage.style.transition = "opacity 1s"; // Add transition effect
+        setTimeout(function() {
+            missionImage.style
