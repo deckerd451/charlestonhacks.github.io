@@ -65,6 +65,13 @@
             transition: transform 0.3s; /* Adding transition effect */
         }
 
+        /* Center the button on smaller screens */
+        @media (max-width: 768px) {
+            .button {
+                margin-top: 20px; /* Add some space between the button and the image */
+            }
+        }
+
         /* Apply hover effect */
         .button:hover {
             transform: scale(1.1); /* Enlarge the button on hover */
