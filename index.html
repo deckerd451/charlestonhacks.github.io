@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -76,8 +75,8 @@
         }
 
         /* Event links container */
-        #eventLinks {
-            display: none; /* Hide the event links by default */
+        #previousEvents {
+            display: none; /* Hide the previous events by default */
         }
 
         /* Remove social media icons */
@@ -124,9 +123,11 @@
             <p><h3><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></h3></p>
         </div>
         <hr>
-        <h2>Previous Events</h2>
-        <p><h3><a href="harborhack.html" style="color: white;">harborHack (23)</a></h3></p>
-        <p><h3><a href="summerhack.html" style="color: white;">summerHack (23)</a></h3></p>         
+        <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2> <!-- Making the heading clickable -->
+        <div id="previousEvents">
+            <p><h3><a href="harborhack.html" style="color: white;">harborHack (23)</a></h3></p>
+            <p><h3><a href="summerhack.html" style="color: white;">summerHack (23)</a></h3></p>
+        </div>
     </section>
     <section>
         <p><b><h2><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email us</a></h2></b></p>
@@ -161,6 +162,16 @@
         }
     }
 
+    // Function to toggle previous events visibility
+    function togglePreviousEvents() {
+        var previousEvents = document.getElementById("previousEvents");
+        if (previousEvents.style.display === "none") {
+            previousEvents.style.display = "block";
+        } else {
+            previousEvents.style.display = "none";
+        }
+    }
+
     // Fade out and resize the main image after page load
     window.onload = function() {
         var missionImage = document.getElementById("missionImage");
@@ -174,5 +185,3 @@
 
 </body>
 </html>
-
-
