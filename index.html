@@ -23,89 +23,65 @@
 </head>
 <body class="is-preload">
    
-        <!-- Main -->
-        <div id="main">
-            <!-- Post -->
-            <article class="post featured">
-                <header class="major">
-                    <div class="panel">
-    <a class="image main" href="javascript:void(0);" onclick="toggleMission()">
-        <img id="missionImage" src="images/Principle Card Splash-01.png" alt="CharlestonHacks" style="width: 60%; display: inline-block;" />
-    </a>
+<!-- Main -->
+<div id="main">
+    <!-- Post -->
+    <article class="post featured">
+        <header class="major">
+            <div class="panel">
+                <a class="image main" href="javascript:void(0);" onclick="toggleMissionContent()">
+                    <img id="missionImage" src="images/Principle Card Splash-01.png" alt="CharlestonHacks" style="width: 60%; display: inline-block;" />
+                </a>
+            </div>
+        </header>
+        <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" >HACKOPS, APRIL 19-21ST </a></h2>
+
+        <div id="missionContent" style="display: none;">
+            <p><b>We organize transformational events bringing together diverse communities of software developers, entrepreneurs, and creative technologists.</b></p>
+        </div>
+    </article>
 </div>
 
+<!-- Footer -->
+<footer id="footer">
+    <section class="alt">
+    </section>
+    <section>
+        <h2>Events in 2024</h2>
+        <p><h3><a href="opportunityHack.html" >Hackops (Spring 2024)</a></h3></p>
+        <p><h3><a href="inspireHack.html" >summerHack (Summer 2024)</a></h3></p>
+        <p><h3><a href="breakthroughHack.html" >harborHack (Fall 2024) </a></h3></p>
+        <p><h3><a href="cultureHack.html" >TBD:Culture (Winter 2024)</a></h3></p>
+        <hr>
+        <h2>Previous Events</h2>
+        <p><h3><a href="harborhack.html" >harborHack (23)</a></h3></p>
+        <p><h3><a href="summerhack.html" >summerHack (23)</a></h3></p>         
+    </section>
+    <section>
+        <p><b><h2><a href="mailto:hello@charlestonhacks.com">Email us</a></h2></b></p>
+        <p><b><h2><a href="aboutus.html" target="_blank">About Us</a></h2></b></p>
+        <ul class="icons">
+            <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" ><span class="label">Facebook</span></a></li>
+            <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" ><span class="label">Twitter</span></a></li>
+            <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" ><span class="label">Instagram</span></a></li>
+            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" ><span class="label">LinkedIn</span></a></li>
+        </ul>
+    </section>
+</footer>
+
 <script>
-    function toggleMission() {
-        var imgElement = document.getElementById('missionImage');
-        if (imgElement.src.includes('Principle Card Splash-01.png')) {
-            imgElement.src = 'images/PrincipleCardToggle.png'; // Set the path to your other image
+    function toggleMissionContent() {
+        var missionContent = document.getElementById("missionContent");
+        var missionImage = document.getElementById("missionImage");
+        if (missionContent.style.display === "none") {
+            missionContent.style.display = "block";
+            missionImage.src = 'images/PrincipleCardToggle.png'; // Set the path to your other image
         } else {
-            imgElement.src = 'images/Principle Card Splash-01.png'; // Set the path to your original image
+            missionContent.style.display = "none";
+            missionImage.src = 'images/Principle Card Splash-01.png'; // Set the path to your original image
         }
     }
 </script>
 
-                </header>
-                <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" >HACKOPS, APRIL 19-21ST </a></h2>
-
-                <div id="missionContent" style="display: none;">
-                    <p><b>We organize transformational events bringing together diverse communities of software developers, entrepreneurs, and creative technologists.</b></p>
-
-               
-                </div>
-            </article>
-        </div>
-
-        <!-- Footer -->
-        <footer id="footer">
-            <section class="alt">
-                
-            </section>
-            <section>
-                <h2>Events in 2024</h2>
-
-<p><h3><a href="opportunityHack.html" >Hackops (Spring 2024)</a></h3></p>
-                <p><h3><a href="inspireHack.html" >summerHack (Summer 2024)</a></h3></p>
-                <p><h3><a href="breakthroughHack.html" >harborHack (Fall 2024) </a></h3></p>
-                <p><h3><a href="cultureHack.html" >TBD:Culture (Winter 2024)</a></h3></p>
-<hr>
-
-       <h2>Previous Events</h2>
-                <p><h3><a href="harborhack.html" >harborHack (23)</a></h3></p>
-                <p><h3><a href="summerhack.html" >summerHack (23)</a></h3></p>         
-
-               
-
-            </section>
-            
-            <section>
-              <p><b><h2><a href="mailto:hello@charlestonhacks.com">Email us</a></h2></b></p>
-            <p><b><h2><a href="aboutus.html" target="_blank">About Us</a></h2></b></p>
-              
-                <ul class="icons">
-                    <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook" ><span class="label">Facebook</span></a></li>
-                    <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" ><span class="label">Twitter</span></a></li>
-                    <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" ><span class="label">Instagram</span></a></li>
-                    <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" ><span class="label">LinkedIn</span></a></li>
-                </ul>
-            </section>
-        </footer>
-    
-    </div>
-
-    <script>
-        function toggleMission() {
-            var missionContent = document.getElementById("missionContent");
-            if (missionContent.style.display === "none") {
-                missionContent.style.display = "block";
-            } else {
-                missionContent.style.display = "none";
-            }
-        }
-    </script>
 </body>
 </html>
-
-
-      
-
