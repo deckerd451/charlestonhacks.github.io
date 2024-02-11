@@ -58,9 +58,16 @@
             text-align: center; /* Centering the text */
         }
 
-        .post h2 a {
-            color: gold; /* Setting the link color to gold */
-            text-decoration: none; /* Removing underline from links */
+        .button {
+            display: block;
+            margin: 0 auto; /* Center the button */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: transform 0.3s; /* Adding transition effect */
+        }
+
+        /* Apply hover effect */
+        .button:hover {
+            transform: scale(1.1); /* Enlarge the button on hover */
         }
 
         /* Footer styles */
@@ -103,11 +110,11 @@
         <header class="major">
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()">
-                    <img id="missionImage" src="images/Principle Card Clean-01.png" alt="CharlestonHacks" />
+                    <img id="missionImage" src="images/Principle Card mood-01.png" alt="CharlestonHacks" />
                 </a>
             </div>
         </header>
-        <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" style="color: white;">HACKOPS, APRIL 19-21ST, 2024</a></h2>
+        <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" class="button"><img src="path/to/your/custom-button.png" alt="HACKOPS Button"></a></h2>
 
         <div id="missionContent" style="display: none; text-align: center;">
              <br> <!-- Adding a line break -->
@@ -160,10 +167,10 @@
         var missionImage = document.getElementById("missionImage");
         if (missionContent.style.display === "none") {
             missionContent.style.display = "block";
-            missionImage.src = 'images/Principle Card Clean-02.png'; // Change the image path to "images/Principle Card Clean-02.png"
+            missionImage.src = 'images/Principle Card mood-02.png'; // Change the image path to "images/Principle Card mood-02.png"
         } else {
             missionContent.style.display = "none";
-            missionImage.src = 'images/Principle Card Clean-01.png'; // Set the path to your original image
+            missionImage.src = 'images/Principle Card mood-01.png'; // Set the path to your original image
         }
     }
 
