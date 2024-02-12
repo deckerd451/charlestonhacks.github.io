@@ -51,7 +51,7 @@
         /* Button styles */
         .button {
             display: block;
-            margin: 20px auto; /* Adjusted margin */
+            margin: 0 auto 20px auto; /* Adjusted margin */
             cursor: pointer;
             transition: transform 0.3s;
             max-width: 200px; /* Max width for proper alignment */
@@ -111,6 +111,14 @@
                 <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
             </div>
         </article>
+        <!-- Button placed below "Events in 2024" title -->
+        <section>
+            <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2>
+            <div id="eventLinks" style="display: none;">
+                <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" class="button"><img src="images/hackbutton.png" alt="HACKOPS Button"></a></h2>
+                <!-- Rest of the event links -->
+            </div>
+        </section>
     </div>
 
     <!-- Footer -->
@@ -118,19 +126,8 @@
         <section class="alt">
         </section>
         <section>
-            <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2>
-            <br>
-            <div id="eventLinks">
-                <p><h3><a href="opportunityHack.html" style="color: white;">Hackops (Spring 2024)</a></h3></p>
-                <br>
-                <p><h3><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></h3></p>
-                <br>
-                <p><h3><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024) </a></h3></p>
-                <br>
-                <p><h3><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></h3></p>
-                <!-- Button moved here -->
-                <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" class="button"><img src="images/hackbutton.png" alt="HACKOPS Button"></a></h2>
-            </div>
+            <!-- Button removed from here -->
+            <!-- Rest of the event links -->
             <hr>
             <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2>
             <div id="previousEvents">
