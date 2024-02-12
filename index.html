@@ -30,7 +30,7 @@
         /* Panel style */
         .panel {
             text-align: center;
-            margin: 10px auto; /* Adjust the margins as needed */
+            margin-bottom: 20px;
         }
 
         .panel img {
@@ -38,6 +38,14 @@
             height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto;
+            transition: transform 0.3s; /* Adding transition effect */
+        }
+
+        /* Apply hover effect for mobile devices */
+        @media (hover: hover) {
+            .panel img:hover {
+                transform: scale(1.1); /* Enlarge the image on hover */
+            }
         }
 
         /* Post styles */
@@ -48,12 +56,25 @@
 
         .post h2 {
             text-align: center; /* Centering the text */
-            margin-bottom: 0; /* Remove the bottom margin */
         }
 
-        .post h2 a {
-            color: gold; /* Setting the link color to gold */
-            text-decoration: none; /* Removing underline from links */
+        .button {
+            display: block;
+            margin: 0 auto; /* Center the button */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: transform 0.3s; /* Adding transition effect */
+        }
+
+        /* Center the button on smaller screens */
+        @media (max-width: 768px) {
+            .button {
+                margin-top: 20px; /* Add some space between the button and the image */
+            }
+        }
+
+        /* Apply hover effect */
+        .button:hover {
+            transform: scale(1.1); /* Enlarge the button on hover */
         }
 
         /* Footer styles */
@@ -100,7 +121,7 @@
                 </a>
             </div>
         </header>
-        <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" style="color: white;">HACKOPS, APRIL 19-21ST, 2024</a></h2>
+        <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" class="button"><img src="images/hackbutton.png" alt="HACKOPS Button"></a></h2>
 
         <div id="missionContent" style="display: none; text-align: center;">
              <br> <!-- Adding a line break -->
@@ -193,5 +214,3 @@
 
 </body>
 </html>
-
-
