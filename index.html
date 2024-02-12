@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CSS link -->
     <style>
-        /* Resetting default margin and padding */
+        /* Reset default margin and padding */
         body, h1, h2, h3, p, ul {
             margin: 0;
             padding: 0;
@@ -14,17 +14,17 @@
 
         /* Your CSS styles go here */
         body {
-            background-color: black; /* Setting the background color to black */
+            background-color: black; /* Setting background color to black */
             color: gold; /* Setting text color to gold */
-            font-family: 'Britannic Bold', Arial, sans-serif; /* Setting a default font */
+            font-family: 'Britannic Bold', Arial, sans-serif; /* Setting default font */
             overflow-x: hidden; /* Hide horizontal scrollbar */
         }
 
         /* Container for the main content */
         #main {
             width: 80%; /* Adjust width as needed */
-            margin: 0 auto; /* Centering the container */
-            padding: 20px; /* Adding some padding */
+            margin: 0 auto; /* Center the container */
+            padding: 20px; /* Adding padding */
         }
 
         /* Panel style */
@@ -44,7 +44,7 @@
         /* Apply hover effect for mobile devices */
         @media (hover: hover) {
             .panel img:hover {
-                transform: scale(1.1); /* Enlarge the image on hover */
+                transform: scale(1.1); /* Enlarge image on hover */
             }
         }
 
@@ -55,7 +55,7 @@
         }
 
         .post h2 {
-            text-align: center; /* Centering the text */
+            text-align: center; /* Center text */
         }
 
         .button {
@@ -68,7 +68,7 @@
 
         /* Apply hover effect */
         .button:hover {
-            transform: scale(1.1); /* Enlarge the button on hover */
+            transform: scale(1.1); /* Enlarge button on hover */
         }
 
         /* Smaller button and centering on mobile */
@@ -86,7 +86,7 @@
             padding: 20px;
             color: white;
             text-align: center;
-            margin-top: 50px; /* Adding some space at the top */
+            margin-top: 50px; /* Add space at the top */
         }
 
         /* Footer link styles */
@@ -101,7 +101,7 @@
 
         /* Event links container */
         #previousEvents {
-            display: none; /* Hide the previous events by default */
+            display: none; /* Hide previous events by default */
         }
 
         /* Remove social media icons */
@@ -109,7 +109,7 @@
             display: none;
         }
     </style>
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css"></noscript>
 </head>
 <body class="is-preload">
    
@@ -120,7 +120,7 @@
         <header class="major">
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()">
-                    <img id="missionImage" src="images/Principle Card mood-01.png" alt="CharlestonHacks" />
+                    <img id="missionImage" src="images/Principle Card mood-01.png" alt="CharlestonHacks">
                 </a>
             </div>
         </header>
@@ -140,7 +140,7 @@
     <section class="alt">
     </section>
     <section>
-        <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2> <!-- Making the heading clickable -->
+        <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2> <!-- Make heading clickable -->
         <br>
         <div id="eventLinks">
             <p><h3><a href="opportunityHack.html" style="color: white;">Hackops (Spring 2024)</a></h3></p>
@@ -152,7 +152,7 @@
             <p><h3><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></h3></p>
         </div>
         <hr>
-        <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2> <!-- Making the heading clickable -->
+        <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2> <!-- Make heading clickable -->
         <div id="previousEvents">
             <br>
             <p><h3><a href="harborhack.html" style="color: white;">harborHack (23)</a></h3></p>
@@ -172,4 +172,6 @@
 
 <script>
     // Function to toggle mission content visibility
-    function toggleMissionContent
+    function toggleMissionContent() {
+        var missionContent = document.getElementById("missionContent");
+        if (
