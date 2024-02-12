@@ -55,6 +55,11 @@
             cursor: pointer;
             transition: transform 0.3s;
             max-width: 200px; /* Max width for proper alignment */
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            text-decoration: underline;
         }
 
         /* Apply hover effect */
@@ -95,12 +100,33 @@
 <body>
     <!-- Main -->
     <div id="main">
+        <!-- Post -->
+        <article class="post featured">
+            <header class="major">
+                <div class="panel">
+                    <a class="image main" onclick="toggleMissionContent()">
+                        <img id="missionImage" src="images/Splashcards-01.png" alt="CharlestonHacks">
+                    </a>
+                </div>
+                <br>
+            </header>
+            <div id="missionContent" style="display: none; text-align: center;">
+                <br>
+                <p><b>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon in 2024.</b></p>
+
+                <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
+            </div>
+        </article>
         <!-- Button moved to "Events in 2024" section -->
         <section>
             <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2>
             <div id="eventLinks" style="display: none;">
-                <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" class="button"><img src="images/hackbutton.png" alt="HACKOPS Button"></a></h2>
-                <!-- Rest of the event links -->
+                <!-- HackOps event -->
+                <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" class="button">HackOps (Spring 2024)</a></h2>
+                <!-- Other events -->
+                <p><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></p>
+                <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
+                <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
             </div>
         </section>
     </div>
@@ -131,6 +157,19 @@
     </footer>
 
     <script>
+        // Function to toggle mission content visibility
+        function toggleMissionContent() {
+            var missionContent = document.getElementById("missionContent");
+            var missionImage = document.getElementById("missionImage");
+            if (missionContent.style.display === "none") {
+                missionContent.style.display = "block";
+                missionImage.src = 'images/Splashcards-02.png';
+            } else {
+                missionContent.style.display = "none";
+                missionImage.src = 'images/Splashcards-01.png';
+            }
+        }
+
         // Function to toggle event links visibility
         function toggleEventLinks() {
             var eventLinks = document.getElementById("eventLinks");
