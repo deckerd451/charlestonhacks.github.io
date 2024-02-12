@@ -51,17 +51,10 @@
         /* Button styles */
         .button {
             display: block;
-            margin: 0 auto;
+            margin: 20px auto; /* Adjusted margin */
             cursor: pointer;
             transition: transform 0.3s;
-        }
-
-        /* Center the button on smaller screens */
-        @media (max-width: 768px) {
-            .button {
-                margin-top: 20px;
-                width: 70%;
-            }
+            max-width: 200px; /* Max width for proper alignment */
         }
 
         /* Apply hover effect */
@@ -111,8 +104,6 @@
                     </a>
                 </div>
             </header>
-            <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" class="button"><img src="images/hackbutton.png" alt="HACKOPS Button"></a></h2>
-
             <div id="missionContent" style="display: none; text-align: center;">
                 <br>
                 <p><b>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon in 2024.</b></p>
@@ -137,6 +128,8 @@
                 <p><h3><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024) </a></h3></p>
                 <br>
                 <p><h3><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></h3></p>
+                <!-- Button moved here -->
+                <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" class="button"><img src="images/hackbutton.png" alt="HACKOPS Button"></a></h2>
             </div>
             <hr>
             <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2>
