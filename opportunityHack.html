@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -7,106 +6,84 @@
     <title>CharlestonHacks</title>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-   
 </head>
 <body class="is-preload">
-   
-<!-- Nav -->
-        <nav id="nav">
-            <ul class="links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
-                <li><a href="cultureHack.html">Culture</a></li>
-                <li class="active"><a href="opportunityHack.html"Opportunity</a></li>
-                <li><a href="inspireHack.html">Inspire</a></li>
-                <li><a href="breakthroughHack.html">Breakthrough</a></li>
-                <li><a href="summerhack.html">SummerHack(23)</a></li>
-                <li><a href="harborhack.html">Harborhack(23)</a></li>
-                <li><a href="inf8.html">IN/F8</a></li>
-                <li><a href="techweek.html">Tech Week</a></li>
-            </ul>
-        </nav>
-        <div id="main">
-            <article class="post featured">
-                <header class="major">
-                    <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
-                </header>
-                <a class="image main" href="https://hackops.devpost.com/"><img src="images/Make it Real.png" alt="" /></a>
-                
-                <p><b>Opportunity</b> - the theme of HackOps (24), The stars have aligned, opportunity presents itself, but can you take action and build something that will grow after the hackathon is over?</p>
-                <p><b>Your idea</b> - What problem will make you excited to get up in the morning and work after everyone else is done for the day? Capitalize on our resources and the resources of your teams and seize the opportunity at HackOps(24). </p>
-
-                      <button class="collapsible">More Info</button>
-                <div class="content" style="display: none;">
-                    <br>
-			<p>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon in 2024</p>
-                    <p><b><p><b>The Harbor Entrepreneur Center (HEC) The Harbor EC is a 501(c)3 nonprofit organization founded in 2013 by two local entrepreneurs + advocates. We’ve supported more than 200 companies 
-			    through our programs for more than 10 years. Our alumni have received over $7 million in private sector investments. Many local businesses partner with us annually to support the growth 
-			    of new companies and the continued development of Charleston’s entrepreneurial community.</b></p>
-
-
-		  <!-- Pictures Section -->	
-		<a href="https://harborec.com/" class="image fit"><img src="images/hecfront.jpeg" alt="" /></a><br>
-									
-                   <p><b>HACKOPS</b></p>
-                    <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
-
-                    
-                </div>
-            </article>
-        </div>
-
-        <footer id="footer">
- <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
-        </footer>
-
-        <!-- Image Modal -->
-        <div id="imageModal" class="image-modal" onclick="closeImageModal()">
-            <span class="close" onclick="closeImageModal()">&times;</span>
-            <img class="image-modal-content" id="modalImage" />
-        </div>
-
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/jquery.scrollex.min.js"></script>
-        <script src="assets/js/jquery.scrolly.min.js"></script>
-        <script src="assets/js/browser.min.js"></script>
-        <script src="assets/js/breakpoints.min.js"></script>
-        <script src="assets/js/util.js"></script>
-        <script src="assets/js/main.js"></script>
-
-        <script>
-            var coll = document.getElementsByClassName("collapsible");
-            var i;
-
-            for (i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function () {
-                    this.classList.toggle("active");
-                    var content = this.nextElementSibling;
-                    if (content.style.display === "block") {
-                        content.style.display = "none";
-                    } else {
-                        content.style.display = "block";
-                    }
-                });
-            }
-
-            function openImageModal(imageUrl) {
-                var modal = document.getElementById('imageModal');
-                var modalImg = document.getElementById('modalImage');
-
-                modal.style.display = 'block';
-                modalImg.src = imageUrl;
-            }
-
-            function closeImageModal() {
-                var modal = document.getElementById('imageModal');
-                modal.style.display = 'none';
-            }
-        </script>
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="cultureHack.html">Culture</a></li>
+            <li class="active"><a href="opportunityHack.html">Opportunity</a></li>
+            <li><a href="inspireHack.html">Inspire</a></li>
+            <li><a href="breakthroughHack.html">Breakthrough</a></li>
+            <li><a href="summerhack.html">SummerHack(23)</a></li>
+            <li><a href="harborhack.html">Harborhack(23)</a></li>
+            <li><a href="inf8.html">IN/F8</a></li>
+            <li><a href="techweek.html">Tech Week</a></li>
+        </ul>
+    </nav>
+    <div id="main">
+        <article class="post featured">
+            <header class="major">
+                <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
+            </header>
+            <a class="image main" href="https://hackops.devpost.com/"><img src="images/Make it Real.png" alt="" /></a>
+            <p><b>Opportunity</b> - the theme of HackOps (24), The stars have aligned, opportunity presents itself, but can you take action and build something that will grow after the hackathon is over?</p>
+            <p><b>Your idea</b> - What problem will make you excited to get up in the morning and work after everyone else is done for the day? Capitalize on our resources and the resources of your teams and seize the opportunity at HackOps(24).</p>
+            <button class="collapsible">More Info</button>
+            <div class="content" style="display: none;">
+                <br>
+                <p>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon in 2024</p>
+                <p><b>The Harbor Entrepreneur Center (HEC)</b> - The Harbor EC is a 501(c)3 nonprofit organization founded in 2013 by two local entrepreneurs + advocates. We’ve supported more than 200 companies through our programs for more than 10 years. Our alumni have received over $7 million in private sector investments. Many local businesses partner with us annually to support the growth of new companies and the continued development of Charleston’s entrepreneurial community.</p>
+                <a href="https://harborec.com/" class="image fit"><img src="images/hecfront.jpeg" alt="" /></a><br>
+                <p><b>HACKOPS</b></p>
+                <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
+                <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'" style="margin-top: 20px;">HackOps Devpost</button>
+            </div>
+        </article>
     </div>
+    <footer id="footer">
+        <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
+    </footer>
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="close" onclick="closeImageModal()">&times;</span>
+        <img class="image-modal-content" id="modalImage" />
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+
+        function openImageModal(imageUrl) {
+            var modal = document.getElementById('imageModal');
+            var modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = imageUrl;
+        }
+
+        function closeImageModal() {
+            var modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+    </script>
 </body>
 </html>
-
-
-
-
