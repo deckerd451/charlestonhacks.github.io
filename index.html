@@ -40,25 +40,6 @@
             margin: 0 auto;
         }
 
-        /* Center the video */
-        .panel video {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* Post styles */
-        .post {
-            padding: 20px;
-            border-bottom: 1px solid #444;
-        }
-
-        .post h2 {
-            text-align: center; /* Centering the text */
-            margin-bottom: 0; /* Remove the bottom margin */
-        }
-
         /* Footer styles */
         footer {
             background-color: #000000;
@@ -78,19 +59,9 @@
             text-decoration: underline;
         }
 
-        /* Event links container */
-        .event-links {
-            display: none; /* Hide the event links by default */
-        }
-
         /* Center the main image on mobile devices */
         @media (max-width: 768px) {
             .panel img {
-                margin-left: auto;
-                margin-right: auto;
-                display: block;
-            }
-            .panel video {
                 margin-left: auto;
                 margin-right: auto;
                 display: block;
@@ -144,10 +115,6 @@
             <p><a href="summerhack.html" style="color: white;">summerHack (23)</a></p>
         </div>
     </section>
-    <section>
-        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
-    </section>
 </footer>
 
 <script>
@@ -174,25 +141,6 @@
     function togglePreviousEvents() {
         var previousEvents = document.querySelector('.previous-events');
         previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
-    }
-
-    // Function to toggle mission content and video
-    function toggleMissionContent() {
-        var missionContent = document.getElementById("missionContent");
-        var missionVideo = document.getElementById("missionVideo");
-        var missionImage = document.getElementById("missionImage");
-        
-        if (missionContent.style.display === "none") {
-            missionContent.style.display = "block";
-            missionVideo.style.display = "block";
-            missionImage.style.display = "none";
-            missionVideo.play();
-        } else {
-            missionContent.style.display = "none";
-            missionVideo.style.display = "none";
-            missionImage.style.display = "block";
-            missionVideo.pause();
-        }
     }
 </script>
 
