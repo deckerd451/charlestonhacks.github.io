@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CSS link -->
+    <title>CharlestonHacks</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
     <style>
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
@@ -58,7 +58,6 @@
 
         /* Footer styles */
         #footer {
-            background-color: #333;
             padding: 20px;
             color: white;
             text-align: center;
@@ -84,11 +83,6 @@
         .icons {
             display: none;
         }
-
-        /* Hide elements initially */
-        .hide {
-            display: none;
-        }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
@@ -106,7 +100,7 @@
             </div>
         </header>
 
-        <div id="missionContent" class="hide" style="text-align: center;">
+        <div id="missionContent" style="display: none; text-align: center;">
           
         </div>
     </article>
@@ -119,7 +113,7 @@
     <section>
         <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2> <!-- Making the heading clickable -->
         <br>
-        <div id="eventLinks" class="hide">
+        <div id="eventLinks" style="display: none;">
             <p><h3><a href="opportunityHack.html" style="color: white;">HackOps (APRIL 19-21ST, 2024)</a></h3></p>
             <br>
             <p><h3><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></h3></p>
@@ -130,7 +124,7 @@
         </div>
         <hr>
         <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2> <!-- Making the heading clickable -->
-        <div id="previousEvents" class="hide">
+        <div id="previousEvents">
             <br>
             <p><h3><a href="harborhack.html" style="color: white;">harborHack (23)</a></h3></p>
                 <br>
