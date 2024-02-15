@@ -18,6 +18,7 @@
             color: gold; /* Setting text color to gold */
             font-family: 'Britannic Bold', Arial, sans-serif; /* Setting a default font */
             overflow-x: hidden; /* Hide horizontal scrollbar */
+            text-align: center; /* Center align all text */
         }
 
         /* Container for the main content */
@@ -38,6 +39,7 @@
             height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto;
+            cursor: pointer; /* Add pointer cursor to indicate clickable */
         }
 
         /* Post styles */
@@ -51,13 +53,28 @@
             margin-bottom: 0; /* Remove the bottom margin */
         }
 
-        /* Center the main image on mobile devices */
-        @media (max-width: 768px) {
-            .panel img {
-                margin-left: auto;
-                margin-right: auto;
-                display: block;
-            }
+        /* Footer styles */
+        footer {
+            background-color: #000000;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            margin-top: 50px; /* Adding some space at the top */
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px; /* Add margin between links */
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Event links container */
+        .event-links {
+            display: none; /* Hide the event links by default */
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -80,30 +97,16 @@
             </div>
         </header>
 
-        <div id="missionContent" style="display: none; text-align: center;">
-            <p style="font-size: 24px;"><b>Make a plan, form a team, build the future: HackOps</b></p>
+        <div id="missionContent" style="display: none;">
+            <p style="font-size: larger;"><b>Make a plan, form a team, build the future: HackOps</b></p>
         </div>
     </article>
 </div>
 
 <footer>
-    <section class="alt">
-        <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">2024</h2> <!-- Making the heading clickable -->
-        <div class="event-links" style="display: none;">
-            <p><a href="opportunityHack.html" style="color: white;">HackOps (APRIL 19-21ST, 2024)</a></p>
-            <p><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></p>
-            <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
-            <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
-        </div>
-        <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">2023</h2> <!-- Making the heading clickable -->
-        <div class="previous-events" style="display: none;">
-            <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
-            <p><a href="summerhack.html" style="color: white;">summerHack (23)</a></p>
-        </div>
-    </section>
     <section>
-        <p style="font-size: 18px;"><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        <p style="font-size: 18px;"><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
+        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
+        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
     </section>
 </footer>
 
@@ -111,26 +114,19 @@
     // Function to toggle mission content visibility
     function toggleMissionContent() {
         var missionContent = document.getElementById("missionContent");
+        var missionImage = document.getElementById("missionImage");
         var missionVideo = document.getElementById("missionVideo");
         if (missionContent.style.display === "none") {
             missionContent.style.display = "block";
+            missionImage.style.display = "none";
+            missionVideo.style.display = "block";
             missionVideo.play();
         } else {
             missionContent.style.display = "none";
+            missionImage.style.display = "block";
+            missionVideo.style.display = "none";
             missionVideo.pause();
         }
-    }
-
-    // Function to toggle event links visibility
-    function toggleEventLinks() {
-        var eventLinks = document.querySelector('.event-links');
-        eventLinks.style.display = (eventLinks.style.display === 'none') ? 'block' : 'none';
-    }
-
-    // Function to toggle previous events visibility
-    function togglePreviousEvents() {
-        var previousEvents = document.querySelector('.previous-events');
-        previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
     }
 </script>
 
