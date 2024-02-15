@@ -18,7 +18,7 @@
             color: gold; /* Setting text color to gold */
             font-family: 'Britannic Bold', Arial, sans-serif; /* Setting a default font */
             overflow-x: hidden; /* Hide horizontal scrollbar */
-            text-align: center; /* Center align all text */
+            text-align: center; /* Center align text */
         }
 
         /* Container for the main content */
@@ -39,7 +39,6 @@
             height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto;
-            cursor: pointer; /* Add pointer cursor to indicate clickable */
         }
 
         /* Post styles */
@@ -53,28 +52,18 @@
             margin-bottom: 0; /* Remove the bottom margin */
         }
 
-        /* Footer styles */
-        footer {
-            background-color: #000000;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            margin-top: 50px; /* Adding some space at the top */
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px; /* Add margin between links */
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
         /* Event links container */
         .event-links {
             display: none; /* Hide the event links by default */
+        }
+
+        /* Center the main image on mobile devices */
+        @media (max-width: 768px) {
+            .panel img {
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -97,34 +86,23 @@
             </div>
         </header>
 
-        <div id="missionContent" style="display: none;">
+        <div id="missionContent" style="display: none; text-align: center;">
             <p style="font-size: larger;"><b>Make a plan, form a team, build the future: HackOps</b></p>
+            <button onclick="toggleMissionContent()">Toggle Video</button>
         </div>
     </article>
 </div>
-
-<footer>
-    <section>
-        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
-    </section>
-</footer>
 
 <script>
     // Function to toggle mission content visibility
     function toggleMissionContent() {
         var missionContent = document.getElementById("missionContent");
-        var missionImage = document.getElementById("missionImage");
         var missionVideo = document.getElementById("missionVideo");
         if (missionContent.style.display === "none") {
             missionContent.style.display = "block";
-            missionImage.style.display = "none";
-            missionVideo.style.display = "block";
             missionVideo.play();
         } else {
             missionContent.style.display = "none";
-            missionImage.style.display = "block";
-            missionVideo.style.display = "none";
             missionVideo.pause();
         }
     }
