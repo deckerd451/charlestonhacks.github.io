@@ -73,23 +73,6 @@
         /* Event links container */
         .event-links {
             display: none; /* Hide the event links by default */
-            text-align: center; /* Center the event links */
-        }
-
-        /* Center the event links headings */
-        .event-links h2 {
-            margin-top: 20px; /* Add some top margin */
-        }
-
-        /* Center the previous events */
-        .previous-events {
-            display: none; /* Hide the previous events by default */
-            text-align: center; /* Center the previous events */
-        }
-
-        /* Center the previous events headings */
-        .previous-events h2 {
-            margin-top: 20px; /* Add some top margin */
         }
 
         /* Center the main image on mobile devices */
@@ -97,19 +80,8 @@
             .panel img {
                 margin-left: auto;
                 margin-right: auto;
+                display: block;
             }
-        }
-
-        /* Center the mission content */
-        #missionContentWrapper {
-            text-align: center;
-        }
-
-        #missionContent {
-            display: none; /* Hide the mission content by default */
-            max-width: 600px; /* Set maximum width for the content */
-            margin: 0 auto; /* Center the content horizontally */
-            text-align: center; /* Center the text within the content */
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -128,25 +100,19 @@
             </div>
         </header>
 
-        <div id="missionContentWrapper">
-            <div id="missionContent">
-                <p><b>Make a plan, form a team, build the future: HackOps</b></p>
-                <br>
-                <a href="https://harborec.com/" class="image fit"><img src="images/hecfront.jpeg" alt="" style="max-width: 100%; height: auto;" /></a>
-                <p><b>HACKOPS 2024</b></p>
-                <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
-                <p>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon</p>
-                <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'">Registration Opens Soon</button>
-            </div>
+        <div id="missionContent" style="display: none; text-align: center;">
+            <p><b>Make a plan, form a team, build the future: HackOps</b></p>
+            <br>
+            <a href="https://harborec.com/" class="image fit"><img src="images/hecfront.jpeg" alt="" style="max-width: 100%; height: auto;" /></a>
+            <p><b>HACKOPS 2024</b></p>
+            <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
+            <p>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon</p>
+            <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'">Registration Opens Soon</button>
         </div>
     </article>
 </div>
 
 <footer>
-    <section>
-        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
-    </section>
     <section class="alt">
         <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">2024</h2> <!-- Making the heading clickable -->
         <div class="event-links">
@@ -155,13 +121,15 @@
             <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
             <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
         </div>
-    </section>
-    <section>
         <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">2023</h2> <!-- Making the heading clickable -->
-        <div class="previous-events">
+        <div class="previous-events" style="display: none;">
             <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
             <p><a href="summerhack.html" style="color: white;">summerHack (23)</a></p>
         </div>
+    </section>
+    <section>
+        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
+        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
     </section>
 </footer>
 
