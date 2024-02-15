@@ -92,10 +92,10 @@
 <!-- Main -->
 <div id="main">
     <!-- Post -->
-    <article class="post featured">
+    <article class="post featured" onclick="toggleAllContent()">
         <header class="major">
             <div class="panel">
-                <a class="image main" onclick="toggleMissionContent()">
+                <a class="image main">
                     <img id="missionImage" src="images/Splashcards-01.png" alt="CharlestonHacks" />
                 </a>
             </div>
@@ -147,17 +147,16 @@
 </footer>
 
 <script>
-    // Function to toggle mission content visibility
-    function toggleMissionContent() {
-        var missionContent = document.getElementById("missionContent");
-        var missionImage = document.getElementById("missionImage");
-        if (missionContent.style.display === "none") {
-            missionContent.style.display = "block";
-            missionImage.src = 'images/Principle Card mood-02.png'; // Change the image path to "images/Principle Card mood-02.png"
-        } else {
-            missionContent.style.display = "none";
-            missionImage.src = 'images/Splashcards-01.png'; // Set the path to your original image
-        }
+    // Function to toggle all content visibility
+    function toggleAllContent() {
+        var elementsToToggle = document.querySelectorAll(".post.featured *");
+        elementsToToggle.forEach(element => {
+            if (element.style.display === "none") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        });
     }
 
     // Function to toggle event links visibility
@@ -193,4 +192,3 @@
 
 </body>
 </html>
-
