@@ -73,6 +73,23 @@
         /* Event links container */
         .event-links {
             display: none; /* Hide the event links by default */
+            text-align: center; /* Center the event links */
+        }
+
+        /* Center the event links headings */
+        .event-links h2 {
+            margin-top: 20px; /* Add some top margin */
+        }
+
+        /* Center the previous events */
+        .previous-events {
+            display: none; /* Hide the previous events by default */
+            text-align: center; /* Center the previous events */
+        }
+
+        /* Center the previous events headings */
+        .previous-events h2 {
+            margin-top: 20px; /* Add some top margin */
         }
 
         /* Center the main image on mobile devices */
@@ -141,7 +158,7 @@
     </section>
     <section>
         <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">2023</h2> <!-- Making the heading clickable -->
-        <div class="previous-events" style="display: none;">
+        <div class="previous-events">
             <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
             <p><a href="summerhack.html" style="color: white;">summerHack (23)</a></p>
         </div>
@@ -170,4 +187,20 @@
 
     // Function to toggle previous events visibility
     function togglePreviousEvents() {
-        var previousEvents =
+        var previousEvents = document.querySelector('.previous-events');
+        previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
+    }
+
+    // Fade out and resize the main image after page load
+    window.onload = function() {
+        var missionImage = document.getElementById("missionImage");
+        missionImage.style.opacity = 0; // Set initial opacity to 0
+        missionImage.style.transition = "opacity 1s"; // Add transition effect
+        setTimeout(function() {
+            missionImage.style.opacity = 1; // Fade in the image by setting opacity to 1
+        }, 100); // Delay the execution for 100 milliseconds to ensure smooth transition
+    }
+</script>
+
+</body>
+</html>
