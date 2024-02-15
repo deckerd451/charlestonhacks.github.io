@@ -78,9 +78,24 @@
         /* Center the main image on mobile devices */
         @media (max-width: 768px) {
             .panel img {
-                margin-left: auto !important;
-                margin-right: auto !important;
+                margin-left: auto;
+                margin-right: auto;
             }
+        }
+
+        /* Align the event headings to the top */
+        footer section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        /* Style the event headings */
+        footer section h2 {
+            width: 100%;
+            cursor: pointer;
+            margin-top: 0;
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -112,6 +127,10 @@
 </div>
 
 <footer>
+    <section>
+        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
+        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
+    </section>
     <section class="alt">
         <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">2024</h2> <!-- Making the heading clickable -->
         <div class="event-links">
@@ -120,15 +139,13 @@
             <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
             <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
         </div>
+    </section>
+    <section>
         <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">2023</h2> <!-- Making the heading clickable -->
         <div class="previous-events" style="display: none;">
             <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
             <p><a href="summerhack.html" style="color: white;">summerHack (23)</a></p>
         </div>
-    </section>
-    <section>
-        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
     </section>
 </footer>
 
