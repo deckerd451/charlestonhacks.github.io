@@ -144,14 +144,27 @@
         var missionVideo = document.getElementById("missionVideo");
         if (missionContent.style.display === "none") {
             missionContent.style.display = "block";
+            missionVideo.style.display = "block";
             missionVideo.play();
         } else {
             missionContent.style.display = "none";
             missionVideo.pause();
+            missionVideo.style.display = "none";
         }
     }
 
     // Function to toggle event links visibility
     function toggleEventLinks() {
         var eventLinks = document.querySelector('.event-links');
-        eventLinks.style.display = (
+        eventLinks.style.display = (eventLinks.style.display === 'none') ? 'block' : 'none';
+    }
+
+    // Function to toggle previous events visibility
+    function togglePreviousEvents() {
+        var previousEvents = document.querySelector('.previous-events');
+        previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
+    }
+</script>
+
+</body>
+</html>
