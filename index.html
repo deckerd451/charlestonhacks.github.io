@@ -63,6 +63,7 @@
         footer a {
             color: white;
             text-decoration: none;
+            margin: 0 10px; /* Add margin between links */
         }
 
         footer a:hover {
@@ -85,7 +86,7 @@
         <header class="major">
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()">
-                    <img id="missionImage" src="images/Splashcards-01.png" alt="CharlestonHacks" />
+                    <img id="missionImage" src="images/Splashcards-01.png" alt="CharlestonHacks" style="max-width: 100vw; max-height: 100vh;" />
                 </a>
             </div>
         </header>
@@ -150,4 +151,14 @@
 
     // Fade out and resize the main image after page load
     window.onload = function() {
-        var missionImage = document.getElementById
+        var missionImage = document.getElementById("missionImage");
+        missionImage.style.opacity = 0; // Set initial opacity to 0
+        missionImage.style.transition = "opacity 1s"; // Add transition effect
+        setTimeout(function() {
+            missionImage.style.opacity = 1; // Fade in the image by setting opacity to 1
+        }, 100); // Delay the execution for 100 milliseconds to ensure smooth transition
+    }
+</script>
+
+</body>
+</html>
