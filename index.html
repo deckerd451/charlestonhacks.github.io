@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CSS link -->
+    <title>CharlestonHacks</title>
     <style>
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
@@ -25,19 +24,6 @@
             width: 80%; /* Adjust width as needed */
             margin: 0 auto; /* Centering the container */
             padding: 20px; /* Adding some padding */
-        }
-
-        /* Panel style */
-        .panel {
-            text-align: center;
-            margin: 10px auto; /* Adjust the margins as needed */
-        }
-
-        .panel img {
-            max-width: 100%; /* Set maximum width to 100% */
-            height: auto; /* Maintain aspect ratio */
-            display: block;
-            margin: 0 auto;
         }
 
         /* Post styles */
@@ -84,6 +70,23 @@
         .icons {
             display: none;
         }
+
+        /* Override existing styles */
+        nav, .image, .major {
+            display: none !important; /* Hide the navigation, image, and major elements */
+        }
+
+        #main {
+            padding-top: 0; /* Remove top padding */
+        }
+
+        .center-text {
+            text-align: center;
+        }
+
+        #footer hr {
+            display: none; /* Hide horizontal rule in footer */
+        }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
@@ -94,15 +97,17 @@
     <!-- Post -->
     <article class="post featured">
         <header class="major">
-            <div class="panel">
-                <a class="image main" onclick="toggleMissionContent()">
-                    <img id="missionImage" src="images/Splashcards-01.png" alt="CharlestonHacks" />
-                </a>
-            </div>
+            <a class="image main" onclick="toggleMissionContent()">
+                <img id="missionImage" src="images/Splashcards-01.png" alt="CharlestonHacks" />
+            </a>
         </header>
-
         <div id="missionContent" style="display: none; text-align: center;">
-          
+            <p class="center-text"><b>Make a plan, form a team, build the future: HackOps</b></p>
+            <a href="https://harborec.com/" class="image fit"><img src="images/hecfront.jpeg" alt="" /></a><br>
+            <p><b>HACKOPS 2024</b></p>
+            <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
+            <p>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon</p>
+            <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'" style="margin-top: 20px;">Registration Opens Soon</button>
         </div>
     </article>
 </div>
@@ -110,25 +115,23 @@
 <!-- Footer -->
 <footer id="footer">
     <section class="alt">
-    </section>
-    <section>
-        <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2> <!-- Making the heading clickable -->
+        <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2>
         <br>
         <div id="eventLinks" style="display: none;">
             <p><h3><a href="opportunityHack.html" style="color: white;">HackOps (APRIL 19-21ST, 2024)</a></h3></p>
             <br>
             <p><h3><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></h3></p>
-                <br>
+            <br>
             <p><h3><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024) </a></h3></p>
-                <br>
+            <br>
             <p><h3><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></h3></p>
         </div>
         <hr>
-        <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2> <!-- Making the heading clickable -->
+        <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2>
         <div id="previousEvents">
             <br>
             <p><h3><a href="harborhack.html" style="color: white;">harborHack (23)</a></h3></p>
-                <br>
+            <br>
             <p><h3><a href="summerhack.html" style="color: white;">summerHack (23)</a></h3></p>
         </div>
     </section>
@@ -144,7 +147,7 @@
     function toggleMissionContent() {
         var missionContent = document.getElementById("missionContent");
         var missionImage = document.getElementById("missionImage");
-        if (missionContent.style.display === "none") {
+        if (missionContent.style.display === "none" || missionContent.style.display === "") {
             missionContent.style.display = "block";
             missionImage.src = 'images/Principle Card mood-02.png'; // Change the image path to "images/Principle Card mood-02.png"
         } else {
@@ -182,10 +185,12 @@
             missionImage.style.opacity = 1; // Fade in the image by setting opacity to 1
         }, 100); // Delay the execution for 100 milliseconds to ensure smooth transition
     }
+
+    function closeImageModal() {
+        var modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
+    }
 </script>
 
 </body>
 </html>
-
-
-          
