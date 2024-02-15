@@ -18,7 +18,6 @@
             color: gold; /* Setting text color to gold */
             font-family: 'Britannic Bold', Arial, sans-serif; /* Setting a default font */
             overflow-x: hidden; /* Hide horizontal scrollbar */
-            text-align: center; /* Center align text */
         }
 
         /* Container for the main content */
@@ -32,6 +31,7 @@
         .panel {
             text-align: center;
             margin: 10px auto; /* Adjust the margins as needed */
+            position: relative; /* Add relative positioning */
         }
 
         .panel img {
@@ -52,6 +52,25 @@
             margin-bottom: 0; /* Remove the bottom margin */
         }
 
+        /* Footer styles */
+        footer {
+            background-color: #000000;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            margin-top: 50px; /* Adding some space at the top */
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px; /* Add margin between links */
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
         /* Event links container */
         .event-links {
             display: none; /* Hide the event links by default */
@@ -64,6 +83,16 @@
                 margin-right: auto;
                 display: block;
             }
+        }
+
+        /* CSS for the video */
+        #missionVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; /* Hide the video initially */
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -78,7 +107,7 @@
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()">
                     <img id="missionImage" src="images/Splashcards-01.png" alt="CharlestonHacks" style="max-width: 100vw; max-height: 100vh;" />
-                    <video id="missionVideo" controls style="visibility: hidden; max-width: 100%; height: auto;">
+                    <video id="missionVideo" controls>
                         <source src="images/VID_40430923_151654_462.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -88,10 +117,36 @@
 
         <div id="missionContent" style="display: none; text-align: center;">
             <p style="font-size: larger;"><b>Make a plan, form a team, build the future: HackOps</b></p>
-            <button onclick="toggleMissionContent()">Toggle Video</button>
+            <br>
+            <a href="https://harborec.com/" class="image fit"><img src="images/hecfront.jpeg" alt="" style="max-width: 100%; height: auto;" /></a>
+            <p><b>HACKOPS 2024</b></p>
+            <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
+            <p>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon</p>
+            <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'">Registration Opens Soon</button>
         </div>
     </article>
 </div>
+
+<footer>
+    <section class="alt">
+        <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">2024</h2> <!-- Making the heading clickable -->
+        <div class="event-links">
+            <p><a href="opportunityHack.html" style="color: white;">HackOps (APRIL 19-21ST, 2024)</a></p>
+            <p><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></p>
+            <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
+            <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
+        </div>
+        <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">2023</h2> <!-- Making the heading clickable -->
+        <div class="previous-events" style="display: none;">
+            <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
+            <p><a href="summerhack.html" style="color: white;">summerHack (23)</a></p>
+        </div>
+    </section>
+    <section>
+        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
+        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
+    </section>
+</footer>
 
 <script>
     // Function to toggle mission content visibility
@@ -100,13 +155,24 @@
         var missionVideo = document.getElementById("missionVideo");
         if (missionContent.style.display === "none") {
             missionContent.style.display = "block";
-            missionVideo.style.visibility = "visible";
-            missionVideo.play();
+            missionVideo.style.display = "block";
         } else {
             missionContent.style.display = "none";
-            missionVideo.style.visibility = "hidden";
+            missionVideo.style.display = "none";
             missionVideo.pause();
         }
+    }
+
+    // Function to toggle event links visibility
+    function toggleEventLinks() {
+        var eventLinks = document.querySelector('.event-links');
+        eventLinks.style.display = (eventLinks.style.display === 'none') ? 'block' : 'none';
+    }
+
+    // Function to toggle previous events visibility
+    function togglePreviousEvents() {
+        var previousEvents = document.querySelector('.previous-events');
+        previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
     }
 </script>
 
