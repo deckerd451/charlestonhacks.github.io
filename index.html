@@ -61,7 +61,7 @@
 
         /* Center the main image on mobile devices */
         @media (max-width: 768px) {
-            .panel img {
+            .panel img, .panel video {
                 margin-left: auto;
                 margin-right: auto;
                 display: block;
@@ -71,6 +71,11 @@
         /* Larger text for the main message */
         .main-message {
             font-size: 24px; /* Adjust the font size as needed */
+        }
+
+        /* Hide the 2024 event links initially */
+        .event-links {
+            display: none;
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -153,6 +158,12 @@
         var previousEvents = document.querySelector('.previous-events');
         previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
     }
+
+    // Hide the 2024 event links initially
+    window.onload = function() {
+        var eventLinks = document.querySelector('.event-links');
+        eventLinks.style.display = 'none';
+    };
 </script>
 
 </body>
