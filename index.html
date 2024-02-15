@@ -83,19 +83,16 @@
             }
         }
 
-        /* Align the event headings to the top */
-        footer section {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
+        /* Center the mission content */
+        #missionContentWrapper {
+            text-align: center;
         }
 
-        /* Style the event headings */
-        footer section h2 {
-            width: 100%;
-            cursor: pointer;
-            margin-top: 0;
+        #missionContent {
+            display: none; /* Hide the mission content by default */
+            max-width: 600px; /* Set maximum width for the content */
+            margin: 0 auto; /* Center the content horizontally */
+            text-align: center; /* Center the text within the content */
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -114,14 +111,16 @@
             </div>
         </header>
 
-        <div id="missionContent" style="display: none; text-align: center;">
-            <p><b>Make a plan, form a team, build the future: HackOps</b></p>
-            <br>
-            <a href="https://harborec.com/" class="image fit"><img src="images/hecfront.jpeg" alt="" style="max-width: 100%; height: auto;" /></a>
-            <p><b>HACKOPS 2024</b></p>
-            <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
-            <p>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon</p>
-            <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'">Registration Opens Soon</button>
+        <div id="missionContentWrapper">
+            <div id="missionContent">
+                <p><b>Make a plan, form a team, build the future: HackOps</b></p>
+                <br>
+                <a href="https://harborec.com/" class="image fit"><img src="images/hecfront.jpeg" alt="" style="max-width: 100%; height: auto;" /></a>
+                <p><b>HACKOPS 2024</b></p>
+                <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
+                <p>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon</p>
+                <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'">Registration Opens Soon</button>
+            </div>
         </div>
     </article>
 </div>
@@ -171,20 +170,4 @@
 
     // Function to toggle previous events visibility
     function togglePreviousEvents() {
-        var previousEvents = document.querySelector('.previous-events');
-        previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
-    }
-
-    // Fade out and resize the main image after page load
-    window.onload = function() {
-        var missionImage = document.getElementById("missionImage");
-        missionImage.style.opacity = 0; // Set initial opacity to 0
-        missionImage.style.transition = "opacity 1s"; // Add transition effect
-        setTimeout(function() {
-            missionImage.style.opacity = 1; // Fade in the image by setting opacity to 1
-        }, 100); // Delay the execution for 100 milliseconds to ensure smooth transition
-    }
-</script>
-
-</body>
-</html>
+        var previousEvents =
