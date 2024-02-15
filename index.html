@@ -42,7 +42,6 @@
 
         /* Post styles */
         .post {
-            display: none; /* Hide all posts by default */
             padding: 20px;
             border-bottom: 1px solid #444;
         }
@@ -101,52 +100,104 @@
                 </a>
             </div>
         </header>
-    </article>
-    
-    <!-- Other content to be toggled -->
-    <div id="otherContent" style="display: none;">
-        <div id="missionContent">
-            <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" style="color: white;">HACKOPS, APRIL 19-21ST, 2024</a></h2>
+        <h2><a href="https://youtu.be/t5rny_xCxLA?si=JsU2fpLKdvCW-mRp" style="color: white;">HACKOPS, APRIL 19-21ST, 2024</a></h2>
+
+        <div id="missionContent" style="display: none; text-align: center;">
+             <br> <!-- Adding a line break -->
             <p><b>The Harbor Entrepreneur Center will be the venue for our HackOps hackathon in 2024.</b></p>
+           
             <p><b>APRIL 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</b></p>
         </div>
-        <footer id="footer">
-            <section class="alt"></section>
-            <section>
-                <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2> <!-- Making the heading clickable -->
-                <br>
-                <div id="eventLinks">
-                    <p><h3><a href="opportunityHack.html" style="color: white;">HackOps (APRIL 19-21ST, 2024)</a></h3></p>
-                    <br>
-                    <p><h3><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></h3></p>
-                    <br>
-                    <p><h3><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024) </a></h3></p>
-                    <br>
-                    <p><h3><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></h3></p>
-                </div>
-                <hr>
-                <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2> <!-- Making the heading clickable -->
-                <div id="previousEvents">
-                    <br>
-                    <p><h3><a href="harborhack.html" style="color: white;">harborHack (23)</a></h3></p>
-                    <br>
-                    <p><h3><a href="summerhack.html" style="color: white;">summerHack (23)</a></h3></p>
-                </div>
-            </section>
-            <section>
-                <br>
-                <p><b><h2><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email us</a></h2></b></p>
-                <p><b><h2><a href="aboutus.html" target="_blank" style="color: white;">About Us</a></h2></b></p>
-                <ul class="icons">
-                    <!-- Removed social media icons -->
-                </ul>
-            </section>
-        </footer>
-    </div>
+    </article>
 </div>
+
+<!-- Footer -->
+<footer id="footer">
+    <section class="alt">
+    </section>
+    <section>
+        <h2 id="eventToggle" style="cursor: pointer;" onclick="toggleEventLinks()">Events in 2024</h2> <!-- Making the heading clickable -->
+        <br>
+        <div id="eventLinks">
+            <p><h3><a href="opportunityHack.html" style="color: white;">HackOps (APRIL 19-21ST, 2024)</a></h3></p>
+            <br>
+            <p><h3><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></h3></p>
+                <br>
+            <p><h3><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024) </a></h3></p>
+                <br>
+            <p><h3><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></h3></p>
+        </div>
+        <hr>
+        <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">Previous Events</h2> <!-- Making the heading clickable -->
+        <div id="previousEvents">
+            <br>
+            <p><h3><a href="harborhack.html" style="color: white;">harborHack (23)</a></h3></p>
+                <br>
+            <p><h3><a href="summerhack.html" style="color: white;">summerHack (23)</a></h3></p>
+        </div>
+    </section>
+    <section>
+        <br>
+        <p><b><h2><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email us</a></h2></b></p>
+        <p><b><h2><a href="aboutus.html" target="_blank" style="color: white;">About Us</a></h2></b></p>
+        <ul class="icons">
+            <!-- Removed social media icons -->
+        </ul>
+    </section>
+</footer>
 
 <script>
     // Function to toggle all content visibility
     function toggleAllContent() {
-        var otherContent = document.getElementById("otherContent");
-        if (otherContent.style.display === "
+        var elementsToToggle = document.querySelectorAll(".post.featured *");
+        elementsToToggle.forEach(element => {
+            if (element.id !== "missionImage") {
+                if (element.style.display === "none") {
+                    element.style.display = "block";
+                } else {
+                    element.style.display = "none";
+                }
+            }
+        });
+
+        var missionImage = document.getElementById("missionImage");
+        if (missionImage.src.includes("Splashcards-01.png")) {
+            missionImage.src = "images/Principle Card mood-02.png";
+        } else {
+            missionImage.src = "images/Splashcards-01.png";
+        }
+    }
+
+    // Function to toggle event links visibility
+    function toggleEventLinks() {
+        var eventLinks = document.getElementById("eventLinks");
+        if (eventLinks.style.display === "none") {
+            eventLinks.style.display = "block";
+        } else {
+            eventLinks.style.display = "none";
+        }
+    }
+
+    // Function to toggle previous events visibility
+    function togglePreviousEvents() {
+        var previousEvents = document.getElementById("previousEvents");
+        if (previousEvents.style.display === "none") {
+            previousEvents.style.display = "block";
+        } else {
+            previousEvents.style.display = "none";
+        }
+    }
+
+    // Fade out and resize the main image after page load
+    window.onload = function() {
+        var missionImage = document.getElementById("missionImage");
+        missionImage.style.opacity = 0; // Set initial opacity to 0
+        missionImage.style.transition = "opacity 1s"; // Add transition effect
+        setTimeout(function() {
+            missionImage.style.opacity = 1; // Fade in the image by setting opacity to 1
+        }, 100); // Delay the execution for 100 milliseconds to ensure smooth transition
+    }
+</script>
+
+</body>
+</html>
