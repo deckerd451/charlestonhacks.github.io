@@ -32,6 +32,7 @@
             text-align: center;
             margin: 10px auto; /* Adjust the margins as needed */
             position: relative; /* Add relative positioning */
+            width: 100%; /* Set panel width to 100% */
         }
 
         .panel img {
@@ -98,6 +99,24 @@ footer a:hover {
             max-width: 100vw;
             max-height: 100vh;
         }
+
+        /* Centering the mission content */
+        #missionContent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%; /* Adjust width as needed */
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            padding: 20px; /* Adding some padding */
+            text-align: center;
+            display: none; /* Hide the content initially */
+        }
+
+        /* Make the mission content text white */
+        #missionContent p, #missionContent button {
+            color: white;
+        }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
@@ -116,16 +135,15 @@ footer a:hover {
                         Your browser does not support the video tag.
                     </video>
                 </a>
+                <div id="missionContent">
+                    <p style="font-size: larger;"><b>Make a plan, form a team, build the future: HackOps</b></p>
+                    <br>
+                    <p>The Harbor Entrepreneur Center, April 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</p>
+                    <br>
+                    <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'">Registration Opens Soon</button>
+                </div>
             </div>
         </header>
-
-        <div id="missionContent" style="display: none; text-align: center;">
-            <p style="font-size: larger;"><b>Make a plan, form a team, build the future: HackOps</b></p>
-         <br>
-            <p>The Harbor Entrepreneur Center, April 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</p>
-            <br>
-            <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'">Registration Opens Soon</button>
-        </div>
     </article>
 </div>
 
