@@ -46,6 +46,7 @@
             height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto;
+            transition: opacity 1s ease; /* Smooth fade transition */
         }
 
         /* Post styles */
@@ -166,62 +167,4 @@
         </div>
         <h2 id="previousEventsToggle" style="cursor: pointer;" onclick="togglePreviousEvents()">2023</h2> <!-- Making the heading clickable -->
         <div class="previous-events" style="display: none;">
-            <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
-            <p><a href="summerhack.html" style="color: white;">summerHack (23)</a></p>
-        </div>
-    </section>
-    <section>
-        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
-    </section>
-</footer>
-
-<script>
-    var missionVideo = document.getElementById("missionVideo");
-
-    // Function to toggle mission content visibility
-    function toggleMissionContent() {
-        var missionContent = document.getElementById("missionContent");
-        if (missionContent.style.display === "none") {
-            missionContent.style.display = "block";
-            missionVideo.style.display = "block";
-            missionVideo.play(); // Autoplay the video
-        } else {
-            missionContent.style.display = "none";
-            missionVideo.style.display = "none";
-            missionVideo.pause();
-        }
-    }
-
-    // Function to toggle event links visibility
-    function toggleEventLinks() {
-        var eventLinks = document.querySelector('.event-links');
-        eventLinks.style.display = (eventLinks.style.display === 'none') ? 'block' : 'none';
-    }
-
-    // Function to toggle previous events visibility
-    function togglePreviousEvents() {
-        var previousEvents = document.querySelector('.previous-events');
-        previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
-    }
-
-    // Function to hide the Splash image
-    function hideSplash() {
-        var missionImage = document.getElementById("missionImage");
-        missionImage.style.display = "none";
-    }
-
-    // Function to show the Splash image
-    function showSplash() {
-        var missionImage = document.getElementById("missionImage");
-        missionImage.style.display = "block";
-    }
-
-    // Add event listener to detect when the video has ended
-    missionVideo.addEventListener('ended', function() {
-        showSplash();
-    });
-</script>
-
-</body>
-</html>
+            <p><a href="
