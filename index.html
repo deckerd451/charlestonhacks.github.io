@@ -164,7 +164,7 @@
            
            
         </div>
-        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: inherit;" onclick="togglePreviousEvents()">Other Events</h1><!-- 
+        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: inherit;" onclick="toggleVisibility('previous-events')">Other Events</h1><!-- 
         Making the heading clickable and inherit the size of HackOps-->
         <div class="previous-events" style="display: none;">
             <p><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></p>
@@ -201,16 +201,10 @@
         }
     }
 
-    // Function to toggle event links visibility
-    function toggleEventLinks() {
-        var eventLinks = document.querySelector('.event-links');
-        eventLinks.style.display = (eventLinks.style.display === 'none') ? 'block' : 'none';
-    }
-
-    // Function to toggle previous events visibility
-    function togglePreviousEvents() {
-        var previousEvents = document.querySelector('.previous-events');
-        previousEvents.style.display = (previousEvents.style.display === 'none') ? 'block' : 'none';
+    // Function to toggle visibility of elements by class name
+    function toggleVisibility(className) {
+        var element = document.querySelector('.' + className);
+        element.style.display = (element.style.display === 'none') ? 'block' : 'none';
     }
 
     // Function to hide the Splash image
