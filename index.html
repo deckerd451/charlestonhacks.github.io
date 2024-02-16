@@ -46,6 +46,7 @@
             height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto;
+            transition: opacity 0.5s; /* Add a transition for opacity */
         }
 
         /* Post styles */
@@ -123,7 +124,7 @@
 
         /* Make the mission content text white */
         #missionContent p, #missionContent button {
-            color: white;
+            color: black;
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -178,6 +179,7 @@
 
 <script>
     var missionVideo = document.getElementById("missionVideo");
+    var missionImage = document.getElementById("missionImage");
 
     // Function to toggle mission content visibility
     function toggleMissionContent() {
@@ -186,10 +188,12 @@
             missionContent.style.display = "block";
             missionVideo.style.display = "block";
             missionVideo.play(); // Autoplay the video
+            missionImage.style.opacity = 0; // Fade out the image
         } else {
             missionContent.style.display = "none";
             missionVideo.style.display = "none";
             missionVideo.pause();
+            missionImage.style.opacity = 1; // Fade in the image
         }
     }
 
@@ -207,14 +211,12 @@
 
     // Function to hide the Splash image
     function hideSplash() {
-        var missionImage = document.getElementById("missionImage");
-        missionImage.style.display = "none";
+        missionImage.style.opacity = 0;
     }
 
     // Function to show the Splash image
     function showSplash() {
-        var missionImage = document.getElementById("missionImage");
-        missionImage.style.display = "block";
+        missionImage.style.opacity = 1;
     }
 
     // Add event listener to detect when the video has ended
