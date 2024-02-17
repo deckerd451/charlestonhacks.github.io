@@ -81,11 +81,6 @@
             color: green;
         }
 
-        /* Event links container */
-        .event-links {
-            display: none; /* Hide the event links by default */
-        }
-
         /* Center the main image on mobile devices */
         @media (max-width: 768px) {
             .panel img {
@@ -93,10 +88,6 @@
                 margin-right: auto;
                 display: block;
             }
-        }
-
-        /* Center the footer text and position it at a similar distance from the Splash image */
-        @media (max-width: 768px) {
             footer {
                 margin-top: 10px; /* Adjust the margin as needed */
             }
@@ -166,71 +157,12 @@
 
 <footer>
     <section class="alt">
-       
-            <p><b><a href="opportunityHack.html" style="color: white;">HackOps (APRIL 19-21ST, 2024)</a></p></b>
-            
-           
-           
-        </div>
+        <p><b><a href="opportunityHack.html" style="color: white;">HackOps (APRIL 19-21ST, 2024)</a></b></p>
         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: inherit;" onclick="toggleVisibility('previous-events')">Other Events</h1><!-- 
         Making the heading clickable and inherit the size of HackOps-->
         <div class="previous-events" style="display: none;">
             <p><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></p>
-             <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
-             <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
+            <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
+            <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
             <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
-            <p><a href="summerhack.html" style="color: white;">summerHack (23)</a></p>
-        </div>
-    </section>
-    <section>
-        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
-        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        
-    </section>
-</footer>
-
-<script>
-    var missionVideo = document.getElementById("missionVideo");
-    var missionImage = document.getElementById("missionImage");
-
-    // Function to toggle mission content visibility
-    function toggleMissionContent() {
-        var missionContent = document.getElementById("missionContent");
-        if (missionContent.style.display === "none") {
-            missionContent.style.display = "block";
-            missionVideo.style.display = "block";
-            missionVideo.play(); // Autoplay the video
-            missionImage.style.opacity = 0; // Fade out the image
-        } else {
-            missionContent.style.display = "none";
-            missionVideo.style.display = "none";
-            missionVideo.pause();
-            missionImage.style.opacity = 1; // Fade in the image
-        }
-    }
-
-    // Function to toggle visibility of elements by class name
-    function toggleVisibility(className) {
-        var element = document.querySelector('.' + className);
-        element.style.display = (element.style.display === 'none') ? 'block' : 'none';
-    }
-
-    // Function to hide the Splash image
-    function hideSplash() {
-        missionImage.style.opacity = 0;
-    }
-
-    // Function to show the Splash image
-    function showSplash() {
-        missionImage.style.opacity = 1;
-    }
-
-    // Add event listener to detect when the video has ended
-    missionVideo.addEventListener('ended', function() {
-        showSplash();
-    });
-</script>
-
-</body>
-</html>
-
+            <p><a href="summerhack.html
