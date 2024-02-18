@@ -81,29 +81,27 @@
             color: green;
         }
 
-        /* Center the main image on mobile devices */
+      /* Center the main image and video on mobile devices */
 @media (max-width: 768px) {
     .panel img {
         margin-left: auto;
         margin-right: auto;
         display: block;
     }
-    #missionContent {
-        text-align: center; /* Center text and buttons */
+    #missionVideo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        display: none;
+        z-index: -1;
     }
+    
 }
 
-            footer {
-                margin-top: 10px; /* Adjust the margin as needed */
-            }
-        }
-
-        /* CSS for the video */
-        #missionVideo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             width: 100vw; /* Set video width to 100% of viewport width */
             height: 100vh; /* Set video height to 100% of viewport height */
             object-fit: cover; /* Maintain aspect ratio and cover whole container */
