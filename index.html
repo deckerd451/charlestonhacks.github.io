@@ -20,7 +20,17 @@
             overflow-x: hidden; /* Hide horizontal scrollbar */
             position: relative; /* Set body position to relative */
         }
-
+/* Center the main image and video on web */
+        @media (min-width: 769px) {
+            .panel {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #missionImage,
+            #missionVideo {
+                object-fit: cover;
+            }
         /* Container for the main content */
         #main {
             width: 100%; /* Adjust width as needed */
