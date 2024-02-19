@@ -25,7 +25,7 @@
         #main {
             width: 100%; /* Adjust width as needed */
             margin: 0 auto; /* Centering the container */
-            padding: 10px; /* Adding some padding */
+            padding: 5px; /* Adding some padding */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -33,12 +33,14 @@
             height: 100vh;
         }
 
-        /* Panel style */
         .panel {
-            text-align: center;
-            margin: 10px auto; /* Adjust the margins as needed */
-            position: relative; /* Add relative positioning */
-            width: 100%; /* Set panel width to 100% */
+    text-align: center;
+    margin: 5px auto; /* Adjust the margins as needed */
+    position: relative; /* Add relative positioning */
+    width: 100%; /* Set panel width to 100% */
+    border-top: none; /* Add or modify the border-top property */
+}
+
         }
 
         .panel img {
@@ -46,7 +48,7 @@
             height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto;
-            transition: opacity 0.5s; /* Add a transition for opacity */
+            transition: opacity 1s; /* Add a transition for opacity */
         }
 
         /* Post styles */
@@ -63,16 +65,16 @@
         /* Footer styles */
         footer {
             background-color: #000000;
-            padding: 10px;
+            padding: 0px;
             color: white;
             text-align: center;
-            margin-top: 10px; /* Adding some space at the top */
+            margin-top: 2px; /* Adding some space at the top */
         }
 
         footer a {
             color: white;
             text-decoration: none;
-            margin: 0 10px; /* Add margin between links */
+            margin: 10px; /* Add margin between links */
         }
 
         /* Add underline and change color on hover */
@@ -81,24 +83,27 @@
             color: green;
         }
 
-        /* Center the main image on mobile devices */
-        @media (max-width: 768px) {
-            .panel img {
-                margin-left: auto;
-                margin-right: auto;
-                display: block;
-            }
-            footer {
-                margin-top: 10px; /* Adjust the margin as needed */
-            }
-        }
+      /* Center the main image and video on mobile devices */
+@media (max-width: 768px) {
+    .panel img {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    #missionVideo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        display: none;
+        z-index: -1;
+    }
+    
+}
 
-        /* CSS for the video */
-        #missionVideo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             width: 100vw; /* Set video width to 100% of viewport width */
             height: 100vh; /* Set video height to 100% of viewport height */
             object-fit: cover; /* Maintain aspect ratio and cover whole container */
@@ -119,10 +124,33 @@
             display: none; /* Hide the content initially */
             z-index: 1; /* Ensure content is above video */
         }
+#missionContent {
+    display: none; /* Hide the content initially */
+    /* Other styles */
+}
 
         /* Make the mission content text white */
         #missionContent p, #missionContent button {
             color: white;
+        }
+
+        /* Text overlay */
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none; /* Ensure text doesn't interfere with click */
+        }
+
+        .panel:hover .overlay-text {
+            opacity: 1;
         }
 
     </style>
@@ -138,6 +166,7 @@
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()">
                     <img id="missionImage" src="images/splash.png" alt="CharlestonHacks" style="max-width: 100vw; max-height: 100vh;" />
+                    <div class="overlay-text">HackOps(24)</div>
                     <video id="missionVideo">
                         <source src="images/VID_40430923_151654_462.mp4" type="video/mp4">
                         Your browser does not support the video tag.
@@ -148,7 +177,7 @@
                     <br>
                     <p>The Harbor Entrepreneur Center, April 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</p>
                     <br>
-                   <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'" style="background-color: orange;">Registration Opens Soon</button>
+                    <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'" style="background-color: orange;">Registration Opens Soon</button>
 
                 </div>
             </div>
@@ -158,11 +187,10 @@
 
 <footer>
     <script src="ho-script.js"></script> <!-- Link to the external JavaScript file -->
-</body>
-</html>
     <section>
+<p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
         <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
+        
     </section>
     <section>
         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: inherit;" onclick="toggleVisibility('previous-events')">Other Events</h1>
@@ -171,4 +199,8 @@
             <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
             <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
             <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
-            <
+      
+    </section>
+</footer>
+</body>
+</html>
