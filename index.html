@@ -12,25 +12,8 @@
             padding: 0;
         }
 
-        /* Your CSS styles go here */
-        body {
-            background-color: black; /* Setting the background color to black */
-            color: white; /* Setting text color to white */
-            font-family: 'Britannic Bold', Arial, sans-serif; /* Setting a default font */
-            overflow-x: hidden; /* Hide horizontal scrollbar */
-            position: relative; /* Set body position to relative */
-        }
-/* Center the main image and video on web */
-        @media (min-width: 769px) {
-            .panel {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            #missionImage,
-            #missionVideo {
-                object-fit: cover;
-            }
+        /* Your existing CSS styles go here */
+
         /* Container for the main content */
         #main {
             width: 100%; /* Adjust width as needed */
@@ -44,13 +27,11 @@
         }
 
         .panel {
-    text-align: center;
-    margin: 5px auto; /* Adjust the margins as needed */
-    position: relative; /* Add relative positioning */
-    width: 100%; /* Set panel width to 100% */
-    border-top: none; /* Add or modify the border-top property */
-}
-
+            text-align: center;
+            margin: 5px auto; /* Adjust the margins as needed */
+            position: relative; /* Add relative positioning */
+            width: 100%; /* Set panel width to 100% */
+            border-top: none; /* Add or modify the border-top property */
         }
 
         .panel img {
@@ -93,35 +74,40 @@
             color: green;
         }
 
-      /* Center the main image and video on mobile devices */
-@media (max-width: 768px) {
-    .panel img {
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-    }
-    #missionVideo {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-        display: none;
-        z-index: -1;
-    }
-    
-}
-
-            width: 100vw; /* Set video width to 100% of viewport width */
-            height: 100vh; /* Set video height to 100% of viewport height */
-            object-fit: cover; /* Maintain aspect ratio and cover whole container */
-            display: none; /* Hide the video initially */
-            z-index: -1; /* Move video behind other content */
+        /* Center the main image and video on mobile devices */
+        @media (max-width: 768px) {
+            .panel img {
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
+            #missionVideo {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100vw;
+                height: 100vh;
+                object-fit: cover;
+                display: none;
+                z-index: -1;
+            }
         }
 
-        /* Centering the mission content */
+        /* Center the main image and video on web */
+        @media (min-width: 769px) {
+            .panel {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #missionImage,
+            #missionVideo {
+                object-fit: cover;
+            }
+        }
+
+        /* Other styles for the mission content */
         #missionContent {
             position: absolute;
             top: 50%;
@@ -134,13 +120,10 @@
             display: none; /* Hide the content initially */
             z-index: 1; /* Ensure content is above video */
         }
-#missionContent {
-    display: none; /* Hide the content initially */
-    /* Other styles */
-}
 
         /* Make the mission content text white */
-        #missionContent p, #missionContent button {
+        #missionContent p,
+        #missionContent button {
             color: white;
         }
 
@@ -162,7 +145,6 @@
         .panel:hover .overlay-text {
             opacity: 1;
         }
-
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
@@ -188,7 +170,6 @@
                     <p>The Harbor Entrepreneur Center, April 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</p>
                     <br>
                     <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'" style="background-color: orange;">Registration Opens Soon</button>
-
                 </div>
             </div>
         </header>
@@ -198,9 +179,8 @@
 <footer>
     <script src="ho-script.js"></script> <!-- Link to the external JavaScript file -->
     <section>
-<p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
+        <p><b><a href="aboutus.html" target="_blank" style="color: white;">About</a></b></p>
         <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white;">Email</a></b></p>
-        
     </section>
     <section>
         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: inherit;" onclick="toggleVisibility('previous-events')">Other Events</h1>
@@ -209,7 +189,7 @@
             <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
             <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
             <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
-      
+        </div>
     </section>
 </footer>
 </body>
