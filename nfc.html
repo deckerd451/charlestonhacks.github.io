@@ -48,7 +48,7 @@
                 }
             };
 
-            axios.post(`https://us12.api.mailchimp.com/3.0/lists/${58a7061dfa}/members`, data, {
+            axios.post(`https://us12.api.mailchimp.com/3.0/lists/${ListId}/members`, data, {
                 headers: {
                     'Authorization': `Basic ${btoa('anystring:' + apiKey)}`,
                     'Content-Type': 'application/json'
