@@ -21,7 +21,14 @@
     <div id="rejected" style="display: none;">
         <p>Sorry for the mistake.</p>
     </div>
+    <div id="scan-message"></div> <!-- This is the new div for displaying the scan message -->
     <script>
+        // Check if the page was opened via NFC scan
+        if (window.location.protocol === 'nfc:') {
+            // Display a message confirming the NFC card was scanned
+            document.getElementById('scan-message').innerText = 'NFC card scanned successfully!';
+        }
+
         function join() {
             document.getElementById('content').style.display = 'none';
             document.getElementById('join-form').style.display = 'block';
