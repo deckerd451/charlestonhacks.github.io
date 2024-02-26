@@ -7,7 +7,14 @@
         body {
             background-color: black;
             color: white;
+        }
+
+        h1, h2, p, button {
             font-size: 24px;
+        }
+
+        button {
+            background-color: orange;
         }
     </style>
 </head>
@@ -44,8 +51,8 @@
         function submitForm() {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
-            const apiKey = '58a7061dfa';
-            const listId = '75fadb58e91157e4ac345c2b4b9fb8ad';
+            const apiKey = '75fadb58e91157e4ac345c2b4b9fb8ad-us12';
+            const listId = '58a7061dfa';
 
             const data = {
                 email_address: email,
