@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CharlestonHacks NFC Page</title>
+</head>
+<body>
+    <div id="content">
+        <h1>Welcome to CharlestonHacks!</h1>
+        <p>Would you like to join CharlestonHacks?</p>
+        <button onclick="join()">Yes</button>
+        <button onclick="reject()">No</button>
+    </div>
+    <div id="join-form" style="display: none;">
+        <h2>Join CharlestonHacks</h2>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address"><br><br>
+        <button onclick="submitForm()">Submit</button>
+    </div>
+    <div id="rejected" style="display: none;">
+        <p>Sorry for the mistake.</p>
+    </div>
+    <script>
+        function join() {
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('join-form').style.display = 'block';
+        }
+
+        function reject() {
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('rejected').style.display = 'block';
+        }
+
+        function submitForm() {
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            // You can add code here to handle the form submission, such as sending the data to a server
+            // For demonstration purposes, we'll just show a message
+            alert(`Thank you, ${name}! You will receive a CharlestonHacks business card at ${address}.`);
+        }
+    </script>
+</body>
+</html>
