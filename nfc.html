@@ -24,11 +24,6 @@
     </div>
     <div id="scan-message"></div>
     <script>
-        // Check if the page was opened via NFC scan
-        if (window.location.protocol !== 'nfc:') {
-            window.location.href = 'https://yourwebsite.com/error.html';
-        }
-
         function join() {
             document.getElementById('content').style.display = 'none';
             document.getElementById('join-form').style.display = 'block';
@@ -42,8 +37,9 @@
         function submitForm() {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
-            const audienceId = '58a7061dfa'; // Replace with your Mailchimp audience ID
-            const apiKey = '75fadb58e91157e4ac345c2b4b9fb8ad-us12'; // Replace with your Mailchimp API key
+            const audienceId = '75fadb58e91157e4ac345c2b4b9fb8ad-us12';
+            const apiKey = '58a7061dfa';
+            const dataCenter = 'US12';
 
             const data = {
                 email_address: email,
@@ -53,7 +49,7 @@
                 }
             };
 
-            axios.post(`https://usX.api.mailchimp.com/3.0/lists/${audienceId}/members`, data, {
+            axios.post(`https://${dataCenter}.api.mailchimp.com/3.0/lists/${audienceId}/members`, data, {
                 headers: {
                     'Authorization': `Basic ${btoa('anystring:' + apiKey)}`,
                     'Content-Type': 'application/json'
