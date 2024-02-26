@@ -24,9 +24,9 @@
     <div id="scan-message"></div> <!-- This is the new div for displaying the scan message -->
     <script>
         // Check if the page was opened via NFC scan
-        if (window.location.protocol === 'nfc:') {
-            // Display a message confirming the NFC card was scanned
-            document.getElementById('scan-message').innerText = 'NFC card scanned successfully!';
+        if (window.location.protocol !== 'nfc:') {
+            // Redirect the user to another page or display an error message
+            window.location.href = 'https://yourwebsite.com/error.html';
         }
 
         function join() {
