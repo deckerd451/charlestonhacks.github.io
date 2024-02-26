@@ -2,11 +2,12 @@
 <html>
 <head>
     <title>CharlestonHacks NFC Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div id="content">
-        <h1>Welcome to CharlestonHacks</h1>
-        <p>Would you like to join us?</p>
+        <h1>Welcome to CharlestonHacks!</h1>
+        <p>Would you like to join CharlestonHacks?</p>
         <button onclick="join()">Yes</button>
         <button onclick="reject()">No</button>
     </div>
@@ -14,18 +15,17 @@
         <h2>Join CharlestonHacks</h2>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name"><br><br>
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address"><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
         <button onclick="submitForm()">Submit</button>
     </div>
     <div id="rejected" style="display: none;">
         <p>Sorry for the mistake.</p>
     </div>
-    <div id="scan-message"></div> <!-- This is the new div for displaying the scan message -->
+    <div id="scan-message"></div>
     <script>
         // Check if the page was opened via NFC scan
         if (window.location.protocol !== 'nfc:') {
-            // Redirect the user to another page or display an error message
             window.location.href = 'https://yourwebsite.com/error.html';
         }
 
@@ -41,10 +41,31 @@
 
         function submitForm() {
             const name = document.getElementById('name').value;
-            const address = document.getElementById('address').value;
-            // You can add code here to handle the form submission, such as sending the data to a server
-            // For demonstration purposes, we'll just show a message
-            alert(`Thank you, ${name}! You will receive a CharlestonHacks business card at ${address}.`);
+            const email = document.getElementById('email').value;
+            const audienceId = 'YOUR_AUDIENCE_ID'; // Replace with your Mailchimp audience ID
+            const apiKey = 'YOUR_API_KEY'; // Replace with your Mailchimp API key
+
+            const data = {
+                email_address: email,
+                status: 'subscribed',
+                merge_fields: {
+                    FNAME: name
+                }
+            };
+
+            axios.post(`https://usX.api.mailchimp.com/3.0/lists/${audienceId}/members`, data, {
+                headers: {
+                    'Authorization': `Basic ${btoa('anystring:' + apiKey)}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                alert(`Thank you, ${name}! You will receive a CharlestonHacks business card at ${email}.`);
+            })
+            .catch(error => {
+                console.error(error);
+                alert('There was an error processing your request. Please try again later.');
+            });
         }
     </script>
 </body>
