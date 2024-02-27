@@ -31,6 +31,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            position: relative; /* Set position to relative */
         }
 
         /* Panel style */
@@ -40,7 +41,7 @@
             position: relative; /* Add relative positioning */
             width: 100%; /* Set panel width to 100% */
             display: flex;
-    justify-content: center; /* Center the content horizontally */
+            justify-content: center; /* Center the content horizontally */
         }
 
         .panel img {
@@ -91,7 +92,6 @@
                 display: block;
             }
            
-            
             footer {
                 margin-top: 10px; /* Adjust the margin as needed */
             }
@@ -103,8 +103,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100vw; /* Set video width to 100% of viewport width */
-            height: 100vh; /* Set video height to 100% of viewport height */
+            max-width: 100%; /* Set max-width to 100% */
+            max-height: 100%; /* Set max-height to 100% */
             object-fit: cover; /* Maintain aspect ratio and cover whole container */
             display: none; /* Hide the video initially */
             z-index: -1; /* Move video behind other content */
@@ -164,7 +164,7 @@
                     <p style="font-size: larger;"><b>Make a plan, form a team, create a proto,</p> <p>build the future: HackOps</b></p>
                     <br>
                     <p>The Harbor Entrepreneur Center, April 19TH-21ST, </p>
-<p>11 Ewall St, Mt Pleasant, SC 29464</p>
+                    <p>11 Ewall St, Mt Pleasant, SC 29464</p>
                     <br>
                    <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'" style="background-color: orange; font-size: 20px; padding: 10px 20px;">Register Here</button>
 
@@ -177,19 +177,21 @@
 
 <footer>
     <script src="ho-script.js"></script> <!-- Link to the external JavaScript file -->
+</footer>
+<section>
+    <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white; font-size: 20px;">Email</a></b></p>
+    <p><b><a href="aboutus.html" target="_blank" style="color: white; font-size: 20px;">About</a></b></p>
+</section>
+<section>
+    <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px;" onclick="toggleVisibility('previous-events')">Other Events</h1>
+    <div class="previous-events" style="display: none;">
+        <p><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></p>
+        <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
+        <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
+        <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
+    </div>
+</section>
+
 </body>
 </html>
-    <section>
-        <p><b><a href="mailto:hello@charlestonhacks.com" style="color: white; font-size: 20px;">Email</a></b></p>
-       <p><b><a href="aboutus.html" target="_blank" style="color: white; font-size: 20px;">About</a></b></p>
-</section>
-    <section>
-        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px;" onclick="toggleVisibility('previous-events')">Other Events</h1>
-        <div class="previous-events" style="display: none;">
-            <p><a href="inspireHack.html" style="color: white;">summerHack (Summer 2024)</a></p>
-            <p><a href="breakthroughHack.html" style="color: white;">harborHack (Fall 2024)</a></p>
-            <p><a href="cultureHack.html" style="color: white;">TBD:Culture (Winter 2024)</a></p>
-            <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
-        </div>
-    </section>
-</footer>
+
