@@ -78,29 +78,23 @@ footer {
     align-items: center; /* Center items vertically */
 }
 
-
-
 footer section {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Center the links horizontally */
     width: 100%;
 }
 
 footer section a {
-    margin: 0 10px;
+    color: white;
+    text-decoration: none;
 }
 
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px; /* Add margin between links */
-        }
+/* Add underline and change color on hover */
+footer section a:hover {
+    text-decoration: underline;
+    color: green;
+}
 
-        /* Add underline and change color on hover */
-        footer a:hover {
-            text-decoration: underline;
-            color: green;
-        }
 
         /* Center the main image on mobile devices */
         @media (max-width: 768px) {
