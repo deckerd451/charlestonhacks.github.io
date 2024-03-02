@@ -1,10 +1,12 @@
 const functions = require('firebase-functions');
 const axios = require('axios');
 
+// Get the Mailchimp API key from the environment variables
+const apiKey = functions.config().mailchimp.api_key;
+const listId = 'YOUR_MAILCHIMP_LIST_ID';
+
 exports.processNfcScan = functions.https.onRequest(async (req, res) => {
   const { name, email } = req.body;
-  const apiKey = 'YOUR_MAILCHIMP_API_KEY';
-  const listId = 'YOUR_MAILCHIMP_LIST_ID';
 
   const data = {
     email_address: email,
@@ -28,4 +30,3 @@ exports.processNfcScan = functions.https.onRequest(async (req, res) => {
     res.status(500).send('Error');
   }
 });
-
