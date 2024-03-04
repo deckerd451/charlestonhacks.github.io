@@ -111,15 +111,17 @@
             }
         }
 
-        /* CSS for the video */
-        #missionVideo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 120%;
-            height: 120%;
-            object-fit: cover;
-        }
+       /* CSS for the video */
+#missionVideo {
+    position: absolute;
+    top: 50%; /* Center the video vertically */
+    left: 50%; /* Center the video horizontally */
+    transform: translate(-50%, -50%);
+    width: 120%; /* Increase the width to zoom in */
+    height: 120%; /* Increase the height to zoom in */
+    object-fit: cover;
+}
+
 
         /* Centering the mission content */
         #missionContent {
