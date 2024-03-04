@@ -117,13 +117,15 @@ footer section a:hover {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.2); /* Zoom in by 20% (scale 1.2) */
+    transform: translate(-50%, -50%) scale(1.2); /* Adjust the scale value for the desired zoom level */
     width: 100%; /* Set width to 100% */
-    max-height: 100%; /* Set max-height to 100% */
-    object-fit: cover; /* Maintain aspect ratio and cover whole container */
+    height: 100%; /* Set height to 100% */
+    object-fit: cover; /* Zoom in the video to cover the container */
+    object-position: center center; /* Center the video within the container */
     display: none; /* Hide the video initially */
     z-index: -1; /* Move video behind other content */
 }
+
 
         /* Centering the mission content */
         #missionContent {
