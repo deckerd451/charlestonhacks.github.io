@@ -112,22 +112,18 @@ footer section a:hover {
             }
         }
 
-       /* CSS for the video */
-#missionVideo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1.2); /* Adjust the scale value for the desired zoom level */
-    width: 100vw; /* Set width to 100% of the viewport width */
-    height: 100vh; /* Set height to 100% of the viewport height */
-    max-width: 100%; /* Ensure the video does not exceed the image's dimensions */
-    max-height: 100%; /* Ensure the video does not exceed the image's dimensions */
-    object-fit: contain; /* Maintain aspect ratio without cropping */
-    display: none; /* Hide the video initially */
-    z-index: -1; /* Move video behind other content */
-}
-
-
+        /* CSS for the video */
+        #missionVideo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; /* Set width to 100% */
+            max-height: 100%; /* Set max-height to 100% */
+            object-fit: cover; /* Maintain aspect ratio and cover whole container */
+            display: none; /* Hide the video initially */
+            z-index: -1; /* Move video behind other content */
+        }
 
         /* Centering the mission content */
         #missionContent {
