@@ -172,22 +172,6 @@
             video.style.display = 'none';
         }
     }
-
-    // Check if the image should be displayed or the video
-    window.onload = function() {
-        if (localStorage.getItem('showVideo') === 'true') {
-            image.style.display = 'none';
-            video.style.display = 'block';
-        } else {
-            image.style.display = 'block';
-            video.style.display = 'none';
-        }
-    };
-
-    // Save the state in localStorage
-    window.onbeforeunload = function() {
-        localStorage.setItem('showVideo', video.style.display === 'block');
-    };
 </script>
 
 </body>
