@@ -281,25 +281,31 @@
 <script>
     var flipCount = 0; // Track the number of clicks
     
-    function toggleMissionContent() {
-        // Get the image element
-        var image = document.getElementById('missionImage');
-        
-        // Increment the flip count
-        flipCount++;
-        
-        // Check the flip count to determine the action
-        if (flipCount === 1) {
-            // Change the image source to cardback.png
-            image.src = "images/cardback.png";
-        } else if (flipCount === 2) {
-            // Add the class to trigger the flip and fade animation
-            image.classList.add('flip-image');
-            
-            // Reset the flip count
-            flipCount = 0;
-        }
+  function toggleMissionContent() {
+    // Get the image and video elements
+    var image = document.getElementById('missionImage');
+    var video = document.getElementById('missionVideo');
+
+    // Increment the flip count
+    flipCount++;
+
+    // Check the flip count to determine the action
+    if (flipCount === 1) {
+        // Hide the image
+        image.style.display = 'none';
+        // Show the video
+        video.style.display = 'block';
+        // Start the video playback
+        video.play();
+    } else if (flipCount === 2) {
+        // Add the class to trigger the flip and fade animation
+        image.classList.add('flip-image');
+
+        // Reset the flip count
+        flipCount = 0;
     }
+}
+
 </script>
 
 </body>
