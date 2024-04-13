@@ -168,6 +168,9 @@
     0% {
         opacity: 1;
     }
+    50% {
+        opacity: 1; /* Keep opacity at 1 for 50% of the animation duration */
+    }
     100% {
         opacity: 0;
     }
@@ -175,8 +178,9 @@
 
 /* Apply animation to the image */
 .flip-image {
-    animation: flipImage 2s ease forwards, fadeOut 2s ease forwards 2s; /* Increase the fadeOut duration to 4 seconds */
+    animation: flipImage 2s ease forwards, fadeOut 5s ease forwards 3s; /* Increase the fadeOut duration to 5 seconds and delay it by 3 seconds */
 }
+
 
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
