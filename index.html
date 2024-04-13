@@ -355,26 +355,33 @@
     }, 1000);
 
    function toggleMissionContent() {
-    // Get the image element
-    var image = document.getElementById('missionImage');
+    // Increment click count
+    clickCount++;
 
-    // Change the source of the image to "images/cardback.png"
-    image.src = "images/cardback.png";
+    // Show or hide the mission content based on click count
+    if (clickCount % 2 === 0) {
+        // Get the image element
+        var image = document.getElementById('missionImage');
 
-    // Show the video
-    document.getElementById('missionVideo').style.display = 'block';
+        // Change the source of the image to "images/cardback.png"
+        image.src = "images/cardback.png";
 
-    // Show the mission content
-    document.getElementById('missionContent').style.display = 'block';
+        // Show the video
+        document.getElementById('missionVideo').style.display = 'block';
 
-    // Start the video playback
-    document.getElementById('missionVideo').play();
+        // Show the mission content
+        document.getElementById('missionContent').style.display = 'block';
 
-    // Add the class to trigger the animation after a short delay
-    setTimeout(function() {
-        image.classList.add('flip-image');
-    }, 100);
+        // Start the video playback
+        document.getElementById('missionVideo').play();
+
+        // Add the class to trigger the animation after a short delay
+        setTimeout(function () {
+            image.classList.add('flip-image');
+        }, 100);
+    }
 }
+
 
 
 </script>
