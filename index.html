@@ -127,19 +127,20 @@
         }
 
         /* Animation for fading */
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
-        }
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 
-        /* Apply animation to the image */
-        .flip-image {
-            animation: flipImage 2s ease forwards, fadeOut 4s ease forwards 2s;
-        }
+/* Apply animation to the image */
+.flip-image {
+    animation: flipImage 2s ease forwards, fadeOut 4s ease forwards 2s; /* Increase the fadeOut duration to 4 seconds */
+}
+
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
