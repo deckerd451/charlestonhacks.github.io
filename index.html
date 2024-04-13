@@ -278,6 +278,36 @@
         }
     }, 1000);
 </script>
+    <script>
+    var isFirstClick = true; // Flag to track the first click
+
+    function toggleMissionContent() {
+        // Get the image element
+        var image = document.getElementById('missionImage');
+
+        // Check if it's the first click
+        if (isFirstClick) {
+            // Change the source of the image to "cardback.png"
+            image.src = "images/cardback.png";
+            
+            // Remove the animation class if it was added
+            image.classList.remove('flip-image');
+            
+            // Set the flag to false to indicate it's not the first click anymore
+            isFirstClick = false;
+        } else {
+            // Show the video
+            document.getElementById('missionVideo').style.display = 'block';
+
+            // Show the mission content
+            document.getElementById('missionContent').style.display = 'block';
+
+            // Start the video playback
+            document.getElementById('missionVideo').play();
+        }
+    }
+</script>
+
 
 </body>
 </html>
