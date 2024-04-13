@@ -294,8 +294,14 @@
     // Get the image element
     var image = document.getElementById('missionImage');
 
-    // Change the source of the image to "images/cardback.png"
-    image.src = "images/cardback.png";
+    // Add the class to trigger the animation
+    image.classList.add('flip-image');
+
+    // Delay changing the image source until animation reaches 50%
+    setTimeout(function() {
+        // Change the source of the image to "images/cardback.png"
+        image.src = "images/cardback.png";
+    }, 1000); // Adjust the delay as needed (1000 milliseconds = 1 second)
 
     // Show the video
     document.getElementById('missionVideo').style.display = 'block';
@@ -306,6 +312,7 @@
     // Start the video playback
     document.getElementById('missionVideo').play();
 }
+
 
 </script>
 
