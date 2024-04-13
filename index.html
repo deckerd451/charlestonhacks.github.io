@@ -278,22 +278,26 @@
         }
     }, 1000);
 
-    function toggleMissionContent() {
-        // Get the image element
-        var image = document.getElementById('missionImage');
+   function toggleMissionContent() {
+    // Get the image element
+    var image = document.getElementById('missionImage');
 
-        // Add the class to trigger the animation
-        image.classList.add('flip-image');
+    // Add the class to trigger the animation
+    image.classList.add('flip-image');
 
-        // Show the video
-        document.getElementById('missionVideo').style.display = 'block';
+    // Change the source of the image to "images/cardback.png"
+    image.src = "images/cardback.png";
 
-        // Show the mission content
-        document.getElementById('missionContent').style.display = 'block';
+    // Show the video
+    document.getElementById('missionVideo').style.display = 'block';
 
-        // Start the video playback
-        document.getElementById('missionVideo').play();
-    }
+    // Show the mission content
+    document.getElementById('missionContent').style.display = 'block';
+
+    // Start the video playback
+    document.getElementById('missionVideo').play();
+}
+
 </script>
 
 </body>
