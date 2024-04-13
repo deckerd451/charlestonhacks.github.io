@@ -210,10 +210,67 @@
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()" style="display: flex; justify-content: center;">
                     <img id="missionImage" src="images/cardfront.png" alt="CharlestonHacks" style="max-width: 100vw; max-height: 100vh;" />
-         <video id="missionVideo" volume="0.05" onplay="startAnimation()">
-    <source src="images/Untitled.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
+                    <video id="missionVideo" volume="0.05" onplay="startAnimation()">
+                        <source src="images/Untitled.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </a>
+                <div id="missionContent">
+                    <!-- Mission content -->
+                </div>
+            </div>
+        </header>
+    </article>
+</div>
+
+<!-- Footer -->
+<footer>
+    <script>
+        var clickCount = 0; // Variable to track click count
+
+        function toggleMissionContent() {
+            // Get the image element
+            var image = document.getElementById('missionImage');
+
+            // Increment click count
+            clickCount++;
+
+            // Change the source of the image to "images/cardback.png" if it's the first click, otherwise revert it back
+            if (clickCount % 2 !== 0) {
+                image.src = "images/cardback.png";
+            } else {
+                image.src = "images/cardfront.png";
+            }
+
+            // Show or hide the video based on click count
+            if (clickCount % 2 !== 0) {
+                document.getElementById('missionVideo').style.display = 'block';
+            } else {
+                document.getElementById('missionVideo').style.display = 'none';
+            }
+
+            // Show or hide the mission content based on click count
+            if (clickCount % 2 !== 0) {
+                document.getElementById('missionContent').style.display = 'block';
+            } else {
+                document.getElementById('missionContent').style.display = 'none';
+            }
+
+            // Start or pause the video based on click count
+            if (clickCount % 2 !== 0) {
+                document.getElementById('missionVideo').play();
+            } else {
+                document.getElementById('missionVideo').pause();
+            }
+
+            // Add the class to trigger the animation after a short delay
+            setTimeout(function() {
+                image.classList.add('flip-image');
+            }, 100);
+        }
+    </script>
+</footer>
+
 <script>
     var video = document.getElementById('missionVideo');
     video.volume = 0.05; // Set the volume to 5%
