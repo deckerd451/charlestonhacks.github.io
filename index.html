@@ -224,8 +224,14 @@
 
         // Add the class to trigger the animation
         image.classList.add('flip-image');
+
+        // Remove the class after the animation completes
+        setTimeout(function() {
+            image.classList.remove('flip-image');
+        }, 2000); // Adjust the time to match the duration of the animation
     }
 </script>
+
 
 
                 </a>
