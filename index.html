@@ -113,18 +113,27 @@
             color: white;
         }
 
-        /* Animation for image rotation */
-        @keyframes flipImage {
-            0% {
-                transform: rotateY(0deg);
-            }
-            50% {
-                transform: rotateY(180deg);
-            }
-            100% {
-                transform: rotateY(360deg);
-            }
-        }
+       /* Animation for image rotation */
+@keyframes flipImage {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(180deg);
+    }
+    95% {
+        opacity: 1; /* Start fading in the last 5% of the animation */
+    }
+    100% {
+        transform: rotateY(360deg);
+        opacity: 0; /* Completely fade out at the end of the animation */
+    }
+}
+
+/* Apply animation to the image */
+.flip-image {
+    animation: flipImage 2s ease forwards; /* Keep the flip animation duration the same */
+}
 
         /* Animation for fading */
 @keyframes fadeOut {
