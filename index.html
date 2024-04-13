@@ -359,7 +359,7 @@
     clickCount++;
 
     // Show or hide the mission content based on click count
-    if (clickCount % 2 === 0) {
+    if (clickCount % 2 !== 0) {
         // Get the image element
         var image = document.getElementById('missionImage');
 
@@ -379,8 +379,15 @@
         setTimeout(function () {
             image.classList.add('flip-image');
         }, 100);
+    } else {
+        // Hide the video
+        document.getElementById('missionVideo').style.display = 'none';
+
+        // Hide the mission content
+        document.getElementById('missionContent').style.display = 'none';
     }
 }
+
 
 
 
