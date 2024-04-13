@@ -174,16 +174,18 @@
             margin-top: 20px;
         }
 
-        /* Animation for image rotation and fading */
-        @keyframes flipAndFade {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            100% { transform: rotateY(180deg); opacity: 0; }
-        }
+       /* Animation for image rotation and fading */
+@keyframes flipAndFade {
+    0% { transform: rotateY(0deg); opacity: 1; }
+    90% { transform: rotateY(180deg); opacity: 1; }
+    100% { opacity: 0; }
+}
 
-        /* Apply animation to the image */
-        .flip-image {
-            animation: flipAndFade 3s ease forwards;
-        }
+/* Apply animation to the image */
+.flip-image {
+    animation: flipAndFade 5s ease forwards; /* Adjusted animation timing */
+}
+
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
