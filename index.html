@@ -205,8 +205,10 @@
         var image = document.getElementById('missionImage');
         image.src = "images/cardback.png";
         document.getElementById('missionVideo').style.display = 'block';
-        document.getElementById('missionContent').style.display = 'block';
         document.getElementById('missionVideo').play();
+        setTimeout(function() {
+            document.getElementById('missionContent').style.display = 'block';
+        }, 3000); // Adjust the delay time as needed (3000 milliseconds = 3 seconds)
         setTimeout(function() {
             image.classList.add('flip-image');
         }, 100);
