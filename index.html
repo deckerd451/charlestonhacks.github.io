@@ -49,7 +49,7 @@
             height: auto; /* Maintain aspect ratio */
             display: block;
             margin: 0 auto;
-            transition: opacity 5s; /* Add a transition for opacity */
+            transition: transform 1s; /* Add a transition for transform */
         }
 
         /* Post styles */
@@ -174,15 +174,15 @@ footer section a:hover {
             margin-top: 20px;
         }
 
-        /* Animation for button rotation and fade-out */
-        @keyframes flipAndFade {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            100% { transform: rotateY(180deg); opacity: 0; }
+        /* Animation for image rotation */
+        @keyframes flipImage {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(180deg); }
         }
 
-        /* Apply animation to the button */
-        .rotate-and-fade {
-            animation: flipAndFade 1s ease forwards;
+        /* Apply animation to the image */
+        .flip-image {
+            animation: flipImage 1s ease forwards;
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -206,16 +206,11 @@ footer section a:hover {
     video.volume = 0.05; // Set the volume to 5%
     
     function startAnimation() {
-        // Get the button element
-        var button = document.getElementById('registerButton');
+        // Get the image element
+        var image = document.getElementById('missionImage');
         
         // Add the class to trigger the animation
-        button.classList.add('rotate-and-fade');
-        
-        // Set a timeout to hide the button after animation ends
-        setTimeout(function() {
-            button.style.display = 'none';
-        }, 1000); // Adjust timing as needed (should match animation duration)
+        image.classList.add('flip-image');
     }
 </script>
 
@@ -227,7 +222,7 @@ footer section a:hover {
                     <p>The Harbor Entrepreneur Center, April 19TH-21ST, </p>
                     <p>11 Ewall St, Mt Pleasant, SC 29464</p>
                     <br>
-                    <button id="registerButton" onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'" style="background-color: rgba(255, 165, 0, 0.8); font-size: 20px; padding: 15px 50px;margin-bottom: 20px;">Register Here for HackOps (24)</button>
+                    <button onclick="window.location.href='https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D'" style="background-color: rgba(255, 165, 0, 0.8); font-size: 20px; padding: 15px 50px;margin-bottom: 20px;">Register Here for HackOps (24)</button>
                     <section>
                         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin-top: 30px;margin-bottom: 30px;">About</a>
                         <a href="mailto:hello@charlestonhacks.com" style="color: #00FF00; font-size: 20px; margin-top: 30px;margin-bottom: 30px;">Email</a>
