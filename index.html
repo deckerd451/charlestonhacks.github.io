@@ -22,15 +22,16 @@
         }
 
         .panel {
-            text-align: center;
-            margin: 10px auto;
-            position: relative;
-            width: 100%;
-            height: 100vh; /* Set the panel height to full viewport height */
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Center vertically */
-        }
+    text-align: center;
+    margin: 10px auto;
+    /* Remove absolute positioning */
+    /* position: relative; */
+    width: 100%;
+    height: 100vh; /* Set the panel height to full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center both horizontally and vertically */
+}
 
         .panel img {
             max-width: 100%;
@@ -123,21 +124,22 @@
 
         /* Apply animation to the mission content */
         #missionContent {
-            animation: fadeIn 7s ease forwards; /* Adjust duration and timing function as needed */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%; /* Adjusted width for better display on smaller screens */
-            max-width: 400px; /* Maximum width to ensure content remains readable on larger screens */
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 1;
-            opacity: 0; /* Set the initial opacity to 0 */
-        }
-
+    /* Remove absolute positioning */
+    /* position: absolute; */
+    /* Remove top, left, and transform properties */
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    width: 90%; /* Adjusted width for better display on smaller screens */
+    max-width: 400px; /* Maximum width to ensure content remains readable on larger screens */
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    text-align: center;
+    /* Remove display and opacity properties */
+    /* display: none; */
+    /* opacity: 0; */
+    z-index: 1;
+}
         #missionContent p,
         #missionContent button {
             color: white;
