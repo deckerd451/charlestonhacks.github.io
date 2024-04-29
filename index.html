@@ -178,7 +178,7 @@
 
         /* Apply animation to the image */
         .flip-image {
-            animation: flipImage 1.1s ease forwards, fadeOut 5s ease forwards; /* Adjust the timing to start fadeOut at the same time as flipImage */
+            animation: flipImage 1.2s ease forwards, fadeOut 5s ease forwards; /* Adjust the timing to start fadeOut at the same time as flipImage */
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -190,7 +190,7 @@
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()" style="display: flex; justify-content: center;">
                     <img id="missionImage" src="images/Tron H no background.png" alt="CharlestonHacks" style="max-width: 100vw; max-height: 100vh;" />
-                    <video id="missionVideo" volume="0.05" onplay="startAnimation()">
+                    <video id="missionVideo" volume="0.02" onplay="startAnimation()">
                         <source src="images/Jeds.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -225,7 +225,7 @@
 </footer>
 <script>
     var countdownElement = document.getElementById('countdown');
-    var countDownDate = new Date("Apr 19, 2024 18:00:00").getTime();
+    var countDownDate = new Date("Jun 24, 2024 17:30:00").getTime();
     var countdownFunction = setInterval(function () {
         var now = new Date().getTime();
         var distance = countDownDate - now;
@@ -243,7 +243,7 @@
 
     function toggleMissionContent() {
         var image = document.getElementById('missionImage');
-        image.src = "images/cardback.png";
+        image.src = "images/ourcode.png";
         document.getElementById('missionVideo').style.display = 'block';
         document.getElementById('missionVideo').play();
         setTimeout(function() {
