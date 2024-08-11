@@ -108,15 +108,29 @@
         /* Apply animation to the video */
         #missionVideo {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
             width: 100%;
-            max-height: 100%;
+            height: 100%;
             object-fit: cover;
             display: none;
             z-index: -1;
             animation: fadeInVideo 16s ease forwards; /* Adjust duration and timing function as needed */
+        }
+
+        /* Add overlay to cover the entire screen */
+        #missionVideo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Transparent black overlay */
+            z-index: 1;
+            display: block;
+            opacity: 0; /* Initially hidden */
+            animation: fadeOutVideo 5s ease forwards; /* Adjust timing to match your needs */
         }
 
         /* Animation for fading in */
@@ -142,7 +156,7 @@
             padding: 20px;
             text-align: center;
             display: none;
-            z-index: 1;
+            z-index: 2; /* Ensure it’s above the overlay */
             opacity: 0; /* Set the initial opacity to 0 */
         }
 
