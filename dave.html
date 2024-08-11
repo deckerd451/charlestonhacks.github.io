@@ -2,14 +2,32 @@
 <html>
 <head>
     <title>Dave Ingram</title>
-   
+    <style>
+        /* Resetting default margin and padding */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensuring the image is responsive */
+        .image.main img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Optional: Centering the image on the page */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0; /* Light grey background color */
+        }
+    </style>
 </head>
 <body>
-        <a class="image main"><img src="images/spotdave.jpg" alt="" /></a>
-       
-    </div>
+    <a class="image main"><img src="images/spotdave.jpg" alt="Dave Ingram" /></a>
 </body>
 </html>
-
-
-
