@@ -120,6 +120,11 @@
             }
         }
 
+        /* Apply animation to the video and card */
+        #missionVideo.fadeOut, #missionContent.fadeOut {
+            animation: fadeOut 10s ease forwards; /* Adjust duration as needed */
+        }
+
         /* Apply animation to the mission content */
         #missionContent {
             animation: fadeIn 7s ease forwards; /* Adjust duration and timing function as needed */
@@ -163,11 +168,6 @@
         .flip-image {
             animation: flipImage 2s ease forwards;
         }
-
-        /* Apply fadeOut animation to the video */
-        #missionVideo.fadeOut {
-            animation: fadeOut 10s ease forwards; /* Adjust duration for slower fade-out */
-        }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
@@ -202,52 +202,3 @@
                             <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
                         </div>
                     </section>
-                    <div id="countdown"></div>
-                </div>
-            </div>
-        </header>
-    </article>
-</div>
-<footer>
-    <script src="ho-script.js"></script>
-</footer>
-<script>
-    var countdownElement = document.getElementById('countdown');
-    var countDownDate = new Date("Oct 18, 2024 17:30:00").getTime();
-    var countdownFunction = setInterval(function () {
-        var now = new Date().getTime();
-        var distance = countDownDate - now;
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        countdownElement.innerHTML = days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s ";
-        if (distance < 0) {
-            clearInterval(countdownFunction);
-            countdownElement.innerHTML = "Countdown to our next event HarborHack 2024";
-        }
-    }, 1000);
-
-    function toggleMissionContent() {
-        var image = document.getElementById('missionImage');
-        image.src = "images/Back.png";
-        var video = document.getElementById('missionVideo');
-        video.style.display = 'block';
-        video.play();
-        video.classList.add('fadeOut'); // Add fadeOut class to trigger animation
-        setTimeout(function() {
-            document.getElementById('missionContent').style.display = 'block';
-        }, 3000); // Adjust the delay time as needed (3000 milliseconds = 3 seconds)
-        setTimeout(function() {
-            image.classList.add('flip-image');
-        }, 100);
-    }
-
-    function startAnimation() {
-        var video = document.getElementById('missionVideo');
-        video.playbackRate = 0.75; // Set video playback speed to 0.75x
-    }
-</script>
-</body>
-</html>
