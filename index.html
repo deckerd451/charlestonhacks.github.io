@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CSS link -->
     <style>
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
@@ -26,10 +26,10 @@
             margin: 10px auto;
             position: relative;
             width: 100%;
-            height: 100vh;
+            height: 100vh; /* Set the panel height to full viewport height */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; /* Center vertically */
         }
 
         .panel img {
@@ -72,29 +72,17 @@
             color: green;
         }
 
-        /* Transparent overlay to cover entire screen */
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000; /* Ensure it's on top of other content */
-            display: none;
-        }
-
-        /* Apply animation to the video */
-        #missionVideo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            display: none;
-            z-index: 1001; /* Ensure it's above the overlay */
-            animation: fadeInVideo 20s ease forwards;
+        /* Media query for responsive design */
+        @media (max-width: 768px) {
+            .panel img {
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                max-width: 90%; /* Adjusted width for better display on smaller screens */
+            }
+            footer {
+                margin-top: 10px;
+            }
         }
 
         /* Animation for fading in the video */
@@ -107,31 +95,45 @@
             }
         }
 
+        /* Apply animation to the video */
+        #missionVideo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            display: none;
+            z-index: -1;
+            animation: fadeInVideo 16s ease forwards; /* Adjust duration and timing function as needed */
+        }
+
         /* Animation for fading in */
         @keyframes fadeIn {
             0% {
                 opacity: 0;
             }
             100% {
-                opacity: .5;
+                opacity: 1;
             }
         }
 
         /* Apply animation to the mission content */
         #missionContent {
-            animation: fadeIn 7s ease forwards;
+            animation: fadeIn 7s ease forwards; /* Adjust duration and timing function as needed */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100%;
-            max-width: 800px;
+            width: 90%; /* Adjusted width for better display on smaller screens */
+            max-width: 400px; /* Maximum width to ensure content remains readable on larger screens */
             background-color: rgba(0, 0, 0, 0.5);
-            padding: 0px;
+            padding: 20px;
             text-align: center;
             display: none;
-            z-index: 1002; /* Ensure it's above the video */
-            opacity: 0;
+            z-index: 1;
+            opacity: 0; /* Set the initial opacity to 0 */
         }
 
         #missionContent p,
@@ -148,23 +150,40 @@
                 transform: rotateY(180deg);
             }
             95% {
-                opacity: 1;
+                opacity: 1; /* Start fading in the last 5% of the animation */
             }
             100% {
                 transform: rotateY(360deg);
+                opacity: 0; /* Completely fade out at the end of the animation */
+            }
+        }
+
+        /* Apply animation to the image */
+        .flip-image {
+            animation: flipImage 2s ease forwards; /* Keep the flip animation duration the same */
+        }
+
+        /* Animation for fading */
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 1; /* Keep opacity at 1 for 50% of the animation duration */
+            }
+            100% {
                 opacity: 0;
             }
         }
 
         /* Apply animation to the image */
         .flip-image {
-            animation: flipImage 1.2s ease forwards;
+            animation: flipImage 1.2s ease forwards, fadeOut 5s ease forwards; /* Adjust the timing to start fadeOut at the same time as flipImage */
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
 <body class="is-preload">
-<div id="overlay"></div> <!-- Add the overlay div here -->
 <div id="main">
     <article class="post featured">
         <header class="major">
@@ -173,25 +192,28 @@
                     <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" style="max-width: 100vw; max-height: 100vh;" />
                     <video id="missionVideo" volume="0.01" muted onplay="startAnimation()">
                       <source src="images/teams.mp4" type="video/mp4">
+
                         Your browser does not support the video tag.
                     </video>
                 </a>
                 <div id="missionContent">
+
                     <p style="font-size: larger;"><b>Make a plan, form a team, create a proto,</b></p>
                     <p><b>build the future</b></p>
                     <br>
                     <p>HarborHack 2025 is coming, stay tuned!</p>
+                    
                     <br>
                     <button onclick="window.location.href='https://hack-nights.devpost.com/'" style="background-color: rgba(255, 165, 0, 0.8); font-size: 20px; padding: 15px 20px;margin-bottom: 20px;">see the last hackathon's projects here</button>
-                    <section>
+ <section>
                         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin-top: 30px;margin-bottom: 30px;">About</a>
                         <a href="mailto:hello@charlestonhacks.com" style="color: #00FF00; font-size: 20px; margin-top: 30px;margin-bottom: 30px;">Email</a>
                         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px;" onclick="toggleVisibility('previous-events')">Events</h1>
                         <div class="previous-events" style="display: none;">
-                            <p><a href="breakthroughHack.html" style="color: white;">HarborHack (Fall 2024)</a></p>
+                             <p><a href="breakthroughHack.html" style="color: white;">HarborHack (Fall 2024)</a></p>
                             <p><a href="inspireHack.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
                             <p><a href="https://hackops.devpost.com/" style="color: white;">HackOps (Spring 2024)</a></p>
-                            <p><a href="cultureHack.html" style="color: white;">TBD:Art + Tech (Winter 2024)</a></p>
+                           <p><a href="cultureHack.html" style="color: white;">TBD:Art + Tech (Winter 2024)</a></p>
                             <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
                         </div>
                     </section>
@@ -227,7 +249,6 @@
         image.src = "images/Back.png";
         document.getElementById('missionVideo').style.display = 'block';
         document.getElementById('missionVideo').play();
-        document.getElementById('overlay').style.display = 'block'; // Show overlay
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
         }, 3000); // Adjust the delay time as needed (3000 milliseconds = 3 seconds)
@@ -235,6 +256,8 @@
             image.classList.add('flip-image');
         }, 100);
     }
+
+
 </script>
 </body>
 </html>
