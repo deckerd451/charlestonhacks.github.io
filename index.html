@@ -95,42 +95,18 @@
             }
         }
 
-        /* Animation for fading out the video */
-        @keyframes fadeOutVideo {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
-        }
-
         /* Apply animation to the video */
         #missionVideo {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 100%;
-            height: 100%;
+            max-height: 100%;
             object-fit: cover;
             display: none;
             z-index: -1;
             animation: fadeInVideo 16s ease forwards; /* Adjust duration and timing function as needed */
-        }
-
-        /* Add overlay to cover the entire screen */
-        #missionVideo::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Transparent black overlay */
-            z-index: 1;
-            display: block;
-            opacity: 0; /* Initially hidden */
-            animation: fadeOutVideo 5s ease forwards; /* Adjust timing to match your needs */
         }
 
         /* Animation for fading in */
@@ -156,7 +132,7 @@
             padding: 20px;
             text-align: center;
             display: none;
-            z-index: 2; /* Ensure it’s above the overlay */
+            z-index: 1;
             opacity: 0; /* Set the initial opacity to 0 */
         }
 
@@ -187,9 +163,22 @@
             animation: flipImage 2s ease forwards; /* Keep the flip animation duration the same */
         }
 
-        /* Apply fade out animation to the video */
-        .fade-out-video {
-            animation: fadeOutVideo 5s ease forwards; /* Adjust timing to match your needs */
+        /* Animation for fading */
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 1; /* Keep opacity at 1 for 50% of the animation duration */
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Apply animation to the image */
+        .flip-image {
+            animation: flipImage 1.2s ease forwards, fadeOut 5s ease forwards; /* Adjust the timing to start fadeOut at the same time as flipImage */
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -203,17 +192,20 @@
                     <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" style="max-width: 100vw; max-height: 100vh;" />
                     <video id="missionVideo" volume="0.01" muted onplay="startAnimation()">
                       <source src="images/teams.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
+
+                        Your browser does not support the video tag.
                     </video>
                 </a>
                 <div id="missionContent">
+
                     <p style="font-size: larger;"><b>Make a plan, form a team, create a proto,</b></p>
                     <p><b>build the future</b></p>
                     <br>
                     <p>HarborHack 2025 is coming, stay tuned!</p>
+                    
                     <br>
                     <button onclick="window.location.href='https://hack-nights.devpost.com/'" style="background-color: rgba(255, 165, 0, 0.8); font-size: 20px; padding: 15px 20px;margin-bottom: 20px;">see the last hackathon's projects here</button>
-                    <section>
+ <section>
                         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin-top: 30px;margin-bottom: 30px;">About</a>
                         <a href="mailto:hello@charlestonhacks.com" style="color: #00FF00; font-size: 20px; margin-top: 30px;margin-bottom: 30px;">Email</a>
                         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px;" onclick="toggleVisibility('previous-events')">Events</h1>
@@ -254,28 +246,18 @@
 
     function toggleMissionContent() {
         var image = document.getElementById('missionImage');
-        var video = document.getElementById('missionVideo');
-        var missionContent = document.getElementById('missionContent');
-
         image.src = "images/Back.png";
-        video.style.display = 'block';
-        video.play();
-        
-        video.onended = function() {
-            video.classList.add('fade-out-video');
-            setTimeout(function() {
-                video.style.display = 'none';
-            }, 5000); // Hide video after fade out animation completes
-        };
-
+        document.getElementById('missionVideo').style.display = 'block';
+        document.getElementById('missionVideo').play();
         setTimeout(function() {
-            missionContent.style.display = 'block';
+            document.getElementById('missionContent').style.display = 'block';
         }, 3000); // Adjust the delay time as needed (3000 milliseconds = 3 seconds)
-
         setTimeout(function() {
             image.classList.add('flip-image');
         }, 100);
     }
+
+
 </script>
 </body>
 </html>
