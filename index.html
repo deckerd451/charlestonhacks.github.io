@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CSS link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
@@ -26,10 +26,10 @@
             margin: 10px auto;
             position: relative;
             width: 100%;
-            height: 100vh; /* Set the panel height to full viewport height */
+            height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center; /* Center vertically */
+            align-items: center;
         }
 
         .panel img {
@@ -72,29 +72,16 @@
             color: green;
         }
 
-        /* Media query for responsive design */
-        @media (max-width: 768px) {
-            .panel img {
-                margin-left: auto;
-                margin-right: auto;
-                display: block;
-                max-width: 90%; /* Adjusted width for better display on smaller screens */
-            }
-            footer {
-                margin-top: 10px;
-            }
-        }
-
         /* Transparent overlay to cover entire screen */
         #overlay {
-            position: fixed; /* Use fixed positioning to cover the entire viewport */
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5); /* Adjust transparency as needed */
-            z-index: 1; /* Ensure it's above the content */
-            display: none; /* Initially hidden */
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* Ensure it's on top of other content */
+            display: none;
         }
 
         /* Apply animation to the video */
@@ -102,12 +89,12 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw; /* Full viewport width */
-            height: 100vh; /* Full viewport height */
-            object-fit: cover; /* Ensure video covers the area */
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
             display: none;
-            z-index: 2; /* Ensure it's above the overlay */
-            animation: fadeInVideo 16s ease forwards; /* Adjust duration and timing function as needed */
+            z-index: 1001; /* Ensure it's above the overlay */
+            animation: fadeInVideo 16s ease forwards;
         }
 
         /* Animation for fading in the video */
@@ -132,19 +119,19 @@
 
         /* Apply animation to the mission content */
         #missionContent {
-            animation: fadeIn 7s ease forwards; /* Adjust duration and timing function as needed */
+            animation: fadeIn 7s ease forwards;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%; /* Adjusted width for better display on smaller screens */
-            max-width: 400px; /* Maximum width to ensure content remains readable on larger screens */
+            width: 90%;
+            max-width: 400px;
             background-color: rgba(0, 0, 0, 0.5);
             padding: 20px;
             text-align: center;
             display: none;
-            z-index: 3; /* Ensure it's above both the video and overlay */
-            opacity: 0; /* Set the initial opacity to 0 */
+            z-index: 1002; /* Ensure it's above the video */
+            opacity: 0;
         }
 
         #missionContent p,
@@ -161,17 +148,17 @@
                 transform: rotateY(180deg);
             }
             95% {
-                opacity: 1; /* Start fading in the last 5% of the animation */
+                opacity: 1;
             }
             100% {
                 transform: rotateY(360deg);
-                opacity: 0; /* Completely fade out at the end of the animation */
+                opacity: 0;
             }
         }
 
         /* Apply animation to the image */
         .flip-image {
-            animation: flipImage 1.2s ease forwards; /* Adjust the timing to start fadeOut at the same time as flipImage */
+            animation: flipImage 1.2s ease forwards;
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
