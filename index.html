@@ -1,4 +1,4 @@
- <!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -194,13 +194,28 @@
         }
     }, 1000);
 
+    // Array containing the paths to the three card images
+    var cardImages = [
+        "images/Front.png",
+        "images/Back.png",
+        "images/Another.png" // Replace with the actual path of the third image
+    ];
+
+    function getRandomImage() {
+        // Generate a random index to select an image
+        var randomIndex = Math.floor(Math.random() * cardImages.length);
+        return cardImages[randomIndex];
+    }
+
     function toggleMissionContent() {
         var image = document.getElementById('missionImage');
-        image.src = "images/Back.png";
+        image.src = getRandomImage(); // Set the image source to a random image
+
         var video = document.getElementById('missionVideo');
         video.style.visibility = 'visible';
         video.style.opacity = 1;
         video.play();
+
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
         }, 3000);
