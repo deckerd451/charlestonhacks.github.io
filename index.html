@@ -70,6 +70,11 @@
             100% { opacity: 0; }
         }
 
+        @keyframes fadeOutImage {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
         @keyframes flipImage {
             0% { transform: rotateY(0deg); }
             100% { transform: rotateY(360deg); }
@@ -78,6 +83,10 @@
         .flip-image {
             animation: flipImage 3s ease forwards;
             transform-style: preserve-3d; /* Ensures the 3D effect */
+        }
+
+        .fade-out-image {
+            animation: fadeOutImage 3s ease forwards; /* Adjust duration as needed */
         }
 
         #missionContent {
@@ -214,6 +223,8 @@
         setTimeout(function() {
             image.src = getRandomImage(); // Change the image source after the flip starts
             image.classList.remove('flip-image'); // Ensure the flip animation can be retriggered
+            // Add fade-out effect after the image appears
+            image.classList.add('fade-out-image');
         }, 1500); // Wait for half of the flip animation to complete
 
         var video = document.getElementById('missionVideo');
