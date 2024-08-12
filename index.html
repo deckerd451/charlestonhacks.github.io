@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+ <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -37,7 +37,7 @@
             height: auto;
             display: block;
             margin: 0 auto;
-            transition: transform 1s ease-in-out;
+            transition: transform 3s, opacity 3s;
         }
 
         .panel video {
@@ -48,8 +48,9 @@
             height: 100%;
             object-fit: cover;
             visibility: hidden;
+            z-index: -1;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 3s ease-in-out;
         }
 
         @media (max-width: 768px) {
@@ -58,20 +59,30 @@
             }
         }
 
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
         #missionContent {
+            animation: fadeIn 7s ease forwards;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 400px;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0);
             padding: 20px;
             text-align: center;
             display: none;
             z-index: 1;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
         }
 
         #missionContent p, #missionContent button {
@@ -85,11 +96,12 @@
         }
 
         .flip-image {
-            animation: flipImage 1s ease-in-out forwards;
+            animation: flipImage 4s ease forwards;
+            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
         }
 
-        .fade-out {
-            opacity: 0;
+        #missionVideo.fadeOut {
+            animation: fadeOut 10s ease forwards; /* Adjusted duration */
         }
 
         #countdownWrapper {
@@ -184,27 +196,26 @@
 
     function toggleMissionContent() {
         var image = document.getElementById('missionImage');
+        image.src = "images/Back.png";
         var video = document.getElementById('missionVideo');
-        var content = document.getElementById('missionContent');
-
-        // Start the flip animation and video
-        image.classList.add('flip-image');
+        video.style.visibility = 'visible';
+        video.style.opacity = 1;
+        video.play();
         setTimeout(function() {
-            image.src = "images/Back.png";
-            video.style.visibility = 'visible';
-            video.style.opacity = 1;
-            video.play();
-            content.style.display = 'block';
-            content.style.opacity = 1;
-        }, 100);
+            document.getElementById('missionContent').style.display = 'block';
+        }, 3000);
 
-        // Fade out the video after it has started
+        // Apply fadeOut class to video and hide it after animation
         setTimeout(function() {
-            video.classList.add('fade-out');
+            video.classList.add('fadeOut');
             setTimeout(function() {
                 video.style.visibility = 'hidden';
-            }, 1000); // Adjust this duration to match the fade-out timing
-        }, 3000); // Adjust this timing based on how long the flip animation lasts
+            }, 10000); // Match this duration with the fadeOut animation
+        }, 100);
+
+        setTimeout(function() {
+            image.classList.add('flip-image');
+        }, 100);
     }
 
     // Ensure the video starts playing at a slightly reduced speed
