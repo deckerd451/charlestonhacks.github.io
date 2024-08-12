@@ -29,6 +29,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
 
         .panel img {
@@ -106,15 +107,32 @@
             animation: fadeOut 10s ease forwards;
         }
 
-        #previousEventsToggle {
-            margin-top: 40px;
-            margin-bottom: 20px;
+        #countdownWrapper {
+            margin-top: 20px;
+            text-align: center;
         }
 
         #countdown {
-            margin-top: 20px;
             font-size: 48px;
             color: #FFFF00;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .event-logo {
+            margin-bottom: 20px;
+        }
+
+        .info {
+            color: #FFFF00;
+            font-size: 20px;
+        }
+
+        #previousEventsToggle {
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -131,12 +149,14 @@
                     </video>
                 </a>
                 <div id="missionContent">
-                    <img src="images/logo.png" alt="CharlestonHacks Logo" style="max-width: 70%; height: auto;">
+                    <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                    <div id="countdownWrapper">
+                        <p class="info"><b>Countdown to next event:</b></p>
+                        <div id="countdown"></div>
+                    </div>
                     <a href="https://harborhack-24.devpost.com/">
-                        <img src="images/hh.png" alt="HarborHack 2024" style="width: 900px; height: auto; margin-bottom: 40px;">
+                        <img src="images/hh.png" alt="HarborHack 2024" class="event-logo" style="width: 900px; height: auto;">
                     </a>
-                    <p style="color: #FFFF00; font-size: 20px;"><b>Countdown to next event:</b></p>
-                    <div id="countdown"></div>
                 </div>
             </div>
         </header>
