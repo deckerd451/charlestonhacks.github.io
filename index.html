@@ -97,11 +97,11 @@
 
         .flip-image {
             animation: flipImage 4s ease forwards;
-            -webkit-animation: flipImage 8s ease forwards; /* For iOS */
+            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
         }
 
         #missionVideo.fadeOut {
-            animation: fadeOut 4s ease forwards; /* Adjust duration to fit your needs */
+            animation: fadeOut 10s ease forwards; /* Adjusted duration */
         }
 
         #countdownWrapper {
@@ -204,13 +204,15 @@
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
         }, 3000);
+
+        // Apply fadeOut class to video and hide it after animation
         setTimeout(function() {
             video.classList.add('fadeOut');
             setTimeout(function() {
                 video.style.visibility = 'hidden';
-                video.style.opacity = 0;
-            }, 3000); // Match this duration with the fadeOut animation
+            }, 10000); // Match this duration with the fadeOut animation
         }, 100);
+
         setTimeout(function() {
             image.classList.add('flip-image');
         }, 100);
