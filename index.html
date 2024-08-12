@@ -47,19 +47,16 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
+            visibility: hidden;
             z-index: -1;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
         }
 
         @media (max-width: 768px) {
             .panel img {
                 max-width: 90%;
             }
-        }
-
-        @keyframes fadeInVideo {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
         }
 
         @keyframes fadeIn {
@@ -105,6 +102,7 @@
 
         #missionVideo.fadeOut {
             animation: fadeOut 10s ease forwards;
+            opacity: 0;
         }
 
         #countdownWrapper {
@@ -201,8 +199,8 @@
         var image = document.getElementById('missionImage');
         image.src = "images/Back.png";
         var video = document.getElementById('missionVideo');
-        video.style.display = 'block';
-        video.classList.add('fadeOut');
+        video.style.visibility = 'visible';
+        video.style.opacity = 1;
         video.play();
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
