@@ -1,5 +1,4 @@
-
-<div><br class="Apple-interchange-newline"><!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -48,20 +47,16 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
+            visibility: hidden;
             z-index: -1;
-            animation: fadeInVideo 16s ease forwards;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
         }
 
         @media (max-width: 768px) {
             .panel img {
                 max-width: 90%;
             }
-        }
-
-        @keyframes fadeInVideo {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
         }
 
         @keyframes fadeIn {
@@ -102,10 +97,11 @@
 
         .flip-image {
             animation: flipImage 4s ease forwards;
+            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
         }
 
         #missionVideo.fadeOut {
-            animation: fadeOut 10s ease forwards;
+            animation: fadeOut 10s ease forwards; /* Adjusted duration */
         }
 
         #countdownWrapper {
@@ -144,22 +140,22 @@
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()">
                     <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
-                    <video id="missionVideo" muted onplay="startAnimation()">
+                    <video id="missionVideo" muted>
                         <source src="images/teams.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </a>
-             <div id="missionContent">
-    <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
-    <a href="https://harborhack-24.devpost.com/">
-        <img src="images/hh.png" alt="HarborHack 2024" class="event-logo" style="width: 900px; height: auto;">
-    </a>
-    <div id="countdownWrapper">
-        <p class="info"><b>Countdown to next event:</b></p>
-        <div id="countdown"></div>
-    </div>
-</div>
-
+                <div id="missionContent">
+                    <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                    <a href="https://harborhack-24.devpost.com/">
+                        <img src="images/hh.png" alt="HarborHack 2024" class="event-logo" style="width: 900px; height: auto;">
+                    </a>
+                    <div id="countdownWrapper">
+                        <p class="info"><b>Countdown to next event:</b></p>
+                        <div id="countdown"></div>
+                    </div>
+                </div>
+            </div>
         </header>
     </article>
 </div>
@@ -202,21 +198,30 @@
         var image = document.getElementById('missionImage');
         image.src = "images/Back.png";
         var video = document.getElementById('missionVideo');
-        video.style.display = 'block';
+        video.style.visibility = 'visible';
+        video.style.opacity = 1;
         video.play();
-        video.classList.add('fadeOut');
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
         }, 3000);
+
+        // Apply fadeOut class to video and hide it after animation
+        setTimeout(function() {
+            video.classList.add('fadeOut');
+            setTimeout(function() {
+                video.style.visibility = 'hidden';
+            }, 10000); // Match this duration with the fadeOut animation
+        }, 100);
+
         setTimeout(function() {
             image.classList.add('flip-image');
         }, 100);
     }
 
-    function startAnimation() {
-        var video = document.getElementById('missionVideo');
-        video.playbackRate = 0.75;
-    }
+    // Ensure the video starts playing at a slightly reduced speed
+    document.getElementById('missionVideo').onloadeddata = function() {
+        this.playbackRate = 0.75;
+    };
 </script>
 </body>
-</html></div>
+</html>
