@@ -38,7 +38,7 @@
             height: auto;
             display: block;
             margin: 0 auto;
-            transition: transform 7s, opacity 3s;
+            transition: transform 3s, opacity 3s;
         }
 
         .panel video {
@@ -51,7 +51,7 @@
             visibility: hidden;
             z-index: -1;
             opacity: 0;
-            transition: opacity 10s ease-in-out;
+            transition: opacity 3s ease-in-out;
         }
 
         @media (max-width: 768px) {
@@ -81,7 +81,7 @@
         }
 
         .flip-image {
-            animation: flipImage 7s ease forwards; /* Slower flip animation */
+            animation: flipImage 3s ease forwards;
         }
 
         .fade-out-image {
@@ -224,7 +224,7 @@
             image.src = getRandomImage(); // Change the image source after a shorter delay
             image.classList.remove('flip-image'); // Ensure the flip animation can be retriggered
             image.classList.add('fade-out-image'); // Add fade-out effect after the image appears
-        }, 3000); // Change this value to synchronize with flip duration
+        }, 500); // Reduce this value to change the image earlier
 
         var video = document.getElementById('missionVideo');
         video.style.visibility = 'visible';
@@ -235,4 +235,6 @@
             document.getElementById('missionContent').style.display = 'block';
         }, 3000);
 
-        // Apply fadeOut class to video and hide
+        // Apply fadeOut class to video and hide it after animation
+        setTimeout(function() {
+           
