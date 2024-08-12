@@ -30,6 +30,35 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            perspective: 1000px; /* Added perspective for 3D effect */
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 3s;
+            transform-style: preserve-3d; /* 3D effect for flip */
+        }
+
+        .card img, .card video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hide backface when flipped */
+        }
+
+        .card .front {
+            /* Front image styles */
+        }
+
+        .card .back {
+            /* Back image styles */
+            transform: rotateY(180deg);
+        }
+
+        .flip {
+            transform: rotateY(180deg);
         }
 
         .panel img {
@@ -89,17 +118,6 @@
             color: white;
         }
 
-        @keyframes flipImage {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            50% { transform: rotateY(180deg); opacity: 1; }
-            100% { transform: rotateY(360deg); opacity: 0; }
-        }
-
-        .flip-image {
-            animation: flipImage 4s ease forwards;
-            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
-        }
-
         #missionVideo.fadeOut {
             animation: fadeOut 10s ease forwards; /* Adjusted duration */
         }
@@ -138,13 +156,14 @@
     <article class="post featured">
         <header class="major">
             <div class="panel">
-                <a class="image main" onclick="toggleMissionContent()">
-                    <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
+                <div class="card" id="card">
+                    <img class="front" id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
+                    <img class="back" id="missionImageBack" src="images/Back.png" alt="CharlestonHacks Back" />
                     <video id="missionVideo" muted>
                         <source src="images/teams.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                </a>
+                </div>
                 <div id="missionContent">
                     <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                     <a href="https://harborhack-24.devpost.com/">
@@ -195,30 +214,26 @@
     }, 1000);
 
     function toggleMissionContent() {
-        var image = document.getElementById('missionImage');
-        image.src = "images/Back.png";
-        var video = document.getElementById('missionVideo');
-        video.style.visibility = 'visible';
-        video.style.opacity = 1;
-        video.play();
+        var card = document.getElementById('card');
+        card.classList.add('flip');
+        
         setTimeout(function() {
+            var video = document.getElementById('missionVideo');
+            video.style.visibility = 'visible';
+            video.style.opacity = 1;
+            video.play();
+
             document.getElementById('missionContent').style.display = 'block';
-        }, 3000);
+        }, 1500); // Adjust delay to match flip duration
 
-        // Apply fadeOut class to video and hide it after animation
         setTimeout(function() {
-            video.classList.add('fadeOut');
+            document.getElementById('missionVideo').classList.add('fadeOut');
             setTimeout(function() {
-                video.style.visibility = 'hidden';
+                document.getElementById('missionVideo').style.visibility = 'hidden';
             }, 10000); // Match this duration with the fadeOut animation
-        }, 100);
-
-        setTimeout(function() {
-            image.classList.add('flip-image');
-        }, 100);
+        }, 2000); // Delay to ensure video is fully visible before starting fadeOut
     }
 
-    // Ensure the video starts playing at a slightly reduced speed
     document.getElementById('missionVideo').onloadeddata = function() {
         this.playbackRate = 0.75;
     };
