@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -67,25 +66,7 @@
 
         @keyframes fadeOut {
             0% { opacity: 1; }
-            100% { opacity: 0.45; } /* Set final opacity to 45% */
-        }
-
-        @keyframes flipImage {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-
-        @keyframes videoFadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; } /* Set final opacity to 0% */
-        }
-
-        .flip-image {
-            animation: flipImage 3s ease forwards;
-        }
-
-        .fade-out-image {
-            animation: fadeOut 3s ease forwards; /* Adjust duration as needed */
+            100% { opacity: 0; }
         }
 
         #missionContent {
@@ -108,8 +89,19 @@
             color: white;
         }
 
+        @keyframes flipImage {
+            0% { transform: rotateY(0deg); opacity: 1; }
+            50% { transform: rotateY(180deg); opacity: 1; }
+            100% { transform: rotateY(360deg); opacity: 0; }
+        }
+
+        .flip-image {
+            animation: flipImage 4s ease forwards;
+            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
+        }
+
         #missionVideo.fadeOut {
-            animation: videoFadeOut 10s ease forwards; /* Adjusted duration */
+            animation: fadeOut 10s ease forwards; /* Adjusted duration */
         }
 
         #countdownWrapper {
@@ -202,29 +194,24 @@
         }
     }, 1000);
 
+    // Array containing the paths to the three card images
     var cardImages = [
         "images/Back.png",
         "images/Back2.png",
-        "images/Back3.png",
-        "images/Back4.png",
-        "images/Back5.png"
+         "images/Back3.png",
+         "images/Back4.png",
+        "images/Back5.png" // Replace with the actual path of the third image
     ];
 
     function getRandomImage() {
+        // Generate a random index to select an image
         var randomIndex = Math.floor(Math.random() * cardImages.length);
         return cardImages[randomIndex];
     }
 
     function toggleMissionContent() {
         var image = document.getElementById('missionImage');
-        image.classList.add('flip-image'); // Start the flip animation
-
-        // Change the image source earlier in the flip animation
-        setTimeout(function() {
-            image.src = getRandomImage(); // Change the image source after a shorter delay
-            image.classList.remove('flip-image'); // Ensure the flip animation can be retriggered
-            image.classList.add('fade-out-image'); // Add fade-out effect after the image appears
-        }, 500); // Reduce this value to change the image earlier
+        image.src = getRandomImage(); // Set the image source to a random image
 
         var video = document.getElementById('missionVideo');
         video.style.visibility = 'visible';
@@ -237,4 +224,21 @@
 
         // Apply fadeOut class to video and hide it after animation
         setTimeout(function() {
-           
+            video.classList.add('fadeOut');
+            setTimeout(function() {
+                video.style.visibility = 'hidden';
+            }, 10000); // Match this duration with the fadeOut animation
+        }, 100);
+
+        setTimeout(function() {
+            image.classList.add('flip-image');
+        }, 100);
+    }
+
+    // Ensure the video starts playing at a slightly reduced speed
+    document.getElementById('missionVideo').onloadeddata = function() {
+        this.playbackRate = 0.75;
+    };
+</script>
+</body>
+</html>
