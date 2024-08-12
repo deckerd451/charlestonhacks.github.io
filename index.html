@@ -51,11 +51,6 @@
             animation: fadeInVideo 16s ease forwards;
         }
 
-       
-
-        
-        }
-
         /* Media query for responsive design */
         @media (max-width: 768px) {
             .panel img {
@@ -116,30 +111,38 @@
         }
 
         /* Animation for image rotation */
-@keyframes flipImage {
-    0% {
-        transform: rotateY(0deg);
-        opacity: 1;
-    }
-    50% {
-        transform: rotateY(180deg);
-        opacity: 1;
-    }
-    100% {
-        transform: rotateY(360deg);
-        opacity: 0; /* Fade out the card at the end of the flip */
-    }
-}
+        @keyframes flipImage {
+            0% {
+                transform: rotateY(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: rotateY(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: rotateY(360deg);
+                opacity: 0; /* Fade out the card at the end of the flip */
+            }
+        }
 
-/* Apply animation to the image */
-.flip-image {
-    animation: flipImage 4s ease forwards;
-}
-
+        /* Apply animation to the image */
+        .flip-image {
+            animation: flipImage 4s ease forwards;
+        }
 
         /* Apply fadeOut animation to the video */
         #missionVideo.fadeOut {
             animation: fadeOut 10s ease forwards; /* Adjust duration for slower fade-out */
+        }
+
+        /* Add space below "Events" and above the countdown timer */
+        #previousEventsToggle {
+            margin-bottom: 20px; /* Adjust the value as needed */
+        }
+
+        #countdown {
+            margin-top: 20px; /* Adjust the value as needed */
         }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
