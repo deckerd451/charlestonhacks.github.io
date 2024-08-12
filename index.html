@@ -35,8 +35,9 @@
 
         .card {
             position: relative;
-            width: 100%;
-            height: 100%;
+            width: 80%; /* Adjust width as needed */
+            max-width: 600px; /* Max width to avoid exceeding screen size */
+            height: auto;
             transition: transform 3s;
             transform-style: preserve-3d; /* 3D effect for flip */
         }
@@ -83,8 +84,8 @@
         }
 
         @media (max-width: 768px) {
-            .panel img {
-                max-width: 90%;
+            .card {
+                width: 90%;
             }
         }
 
