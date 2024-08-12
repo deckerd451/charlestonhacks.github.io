@@ -39,7 +39,6 @@
             display: block;
             margin: 0 auto;
             transition: transform 3s, opacity 3s;
-            backface-visibility: hidden; /* Ensures the back side is hidden */
         }
 
         .panel video {
@@ -78,7 +77,6 @@
 
         .flip-image {
             animation: flipImage 3s ease forwards;
-            transform-style: preserve-3d; /* Ensures the 3D effect */
         }
 
         .fade-out-image {
@@ -235,4 +233,8 @@
         // Apply fadeOut class to video and hide it after animation
         setTimeout(function() {
             video.classList.add('fadeOut');
-            setTimeout(function() {
+        }, 5000);
+    }
+</script>
+</body>
+</html>
