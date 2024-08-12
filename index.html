@@ -67,12 +67,7 @@
 
         @keyframes fadeOut {
             0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        @keyframes fadeOutImage {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
+            100% { opacity: 0.5; } /* Set final opacity to 50% */
         }
 
         @keyframes flipImage {
@@ -86,7 +81,7 @@
         }
 
         .fade-out-image {
-            animation: fadeOutImage 3s ease forwards; /* Adjust duration as needed */
+            animation: fadeOut 3s ease forwards; /* Adjust duration as needed */
         }
 
         #missionContent {
