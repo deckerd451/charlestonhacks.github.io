@@ -54,20 +54,22 @@
             transition: opacity 3s ease-in-out;
         }
 
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+            z-index: 0;
+        }
+
         @media (max-width: 768px) {
             .panel img {
                 max-width: 90%;
             }
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0.5; } /* Set final opacity to 50% */
         }
 
         @keyframes flipImage {
@@ -102,10 +104,6 @@
 
         #missionContent p, #missionContent button {
             color: white;
-        }
-
-        #missionVideo.fadeOut {
-            animation: fadeOut 10s ease forwards; /* Adjusted duration */
         }
 
         #countdownWrapper {
@@ -148,6 +146,7 @@
                         <source src="images/teams.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
+                    <div id="videoOverlay" class="video-overlay"></div>
                 </a>
                 <div id="missionContent">
                     <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
@@ -223,9 +222,16 @@
         }, 1500); // Wait for half of the flip animation to complete
 
         var video = document.getElementById('missionVideo');
+        var overlay = document.getElementById('videoOverlay');
+
         video.style.visibility = 'visible';
         video.style.opacity = 1;
         video.play();
+
+        overlay.style.opacity = 0; // Ensure the overlay starts as transparent
+        setTimeout(function() {
+            overlay.style.opacity = 1; // Fade in the black overlay
+        }, 100);
 
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
