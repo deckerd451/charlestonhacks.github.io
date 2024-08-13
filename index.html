@@ -6,56 +6,56 @@
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Resetting default margin and padding */
+        /* Resetting default margin and padding for all major elements */
         body, h1, h2, h3, p, ul {
             margin: 0;
             padding: 0;
         }
 
-        /* General styles */
+        /* General styles for the body */
         body {
-            background-color: black;
-            color: white;
-            font-family: 'Britannic Bold', Arial, sans-serif;
-            overflow-x: hidden;
+            background-color: black; /* Background color */
+            color: white; /* Text color */
+            font-family: 'Britannic Bold', Arial, sans-serif; /* Font family */
+            overflow-x: hidden; /* Hide horizontal overflow */
             position: relative;
-            text-align: center;
+            text-align: center; /* Center text alignment */
         }
 
         .panel {
             position: relative;
             width: 100%;
-            height: 100vh;
+            height: 100vh; /* Full viewport height */
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
             flex-direction: column;
         }
 
         .panel img {
-            max-width: 100%;
-            height: auto;
+            max-width: 100%; /* Responsive image width */
+            height: auto; /* Maintain aspect ratio */
             display: block;
-            margin: 0 auto;
-            transition: transform 3s, opacity 3s;
+            margin: 0 auto; /* Center image horizontally */
+            transition: transform 3s, opacity 3s; /* Smooth transitions */
         }
 
         .panel video {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            visibility: hidden;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 3s ease-in-out;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            object-fit: cover; /* Cover the container */
+            visibility: hidden; /* Initially hidden */
+            z-index: -1; /* Behind other content */
+            opacity: 0; /* Initially invisible */
+            transition: opacity 3s ease-in-out; /* Smooth opacity transition */
         }
 
         @media (max-width: 768px) {
             .panel img {
-                max-width: 90%;
+                max-width: 90%; /* Responsive image width for mobile */
             }
         }
 
@@ -70,47 +70,38 @@
         }
 
         #missionContent {
-            animation: fadeIn 7s ease forwards;
+            animation: fadeIn 7s ease forwards; /* Fade in animation */
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); /* Center content */
             width: 90%;
             max-width: 400px;
             background-color: rgba(0, 0, 0, 0);
             padding: 20px;
             text-align: center;
-            display: none;
+            display: none; /* Hidden by default */
             z-index: 1;
             opacity: 0;
         }
 
         #missionContent p, #missionContent button {
-            color: white;
-   @keyframes flipImage {
-    0% { 
-        transform: rotateY(0deg); 
-        opacity: 1; 
-    }
-    50% { 
-        transform: rotateY(180deg); 
-        opacity: 1; 
-    }
-    100% { 
-        transform: rotateY(360deg); 
-        opacity: 0.43; /* Final opacity at 43% */
-    }
-}
+            color: white; /* Text color for mission content */
+        }
 
-.flip-image {
-    animation: flipImage 4s ease forwards;
-    -webkit-animation: flipImage 4s ease forwards; /* For iOS */
-}
+        @keyframes flipImage {
+            0% { transform: rotateY(0deg); opacity: 1; }
+            50% { transform: rotateY(180deg); opacity: 1; }
+            100% { transform: rotateY(360deg); opacity: 0; }
+        }
 
-
+        .flip-image {
+            animation: flipImage 4s ease forwards; /* Flip animation */
+            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
+        }
 
         #missionVideo.fadeOut {
-            animation: fadeOut 10s ease forwards; /* Adjusted duration */
+            animation: fadeOut 10s ease forwards; /* Fade out animation */
         }
 
         #countdownWrapper {
@@ -120,7 +111,7 @@
 
         #countdown {
             font-size: 48px;
-            color: #FFFF00;
+            color: #FFFF00; /* Countdown color */
         }
 
         .logo {
@@ -132,7 +123,7 @@
         }
 
         .info {
-            color: #FFFF00;
+            color: #FFFF00; /* Info color */
             font-size: 20px;
         }
 
@@ -147,6 +138,7 @@
     <article class="post featured">
         <header class="major">
             <div class="panel">
+                <!-- Image and video container with toggle functionality -->
                 <a class="image main" onclick="toggleMissionContent()">
                     <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
                     <video id="missionVideo" muted>
@@ -154,6 +146,7 @@
                         Your browser does not support the video tag.
                     </video>
                 </a>
+                <!-- Hidden content that appears after image click -->
                 <div id="missionContent">
                     <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                     <a href="https://harborhack-24.devpost.com/">
@@ -169,6 +162,7 @@
     </article>
 </div>
 <footer>
+    <!-- Footer links -->
     <a href="https://hack-nights.devpost.com/" style="color: #00FF00; font-size: 20px; margin: 0 15px;">Previous Event</a>
     <br>
     <section>
@@ -189,6 +183,8 @@
 <script>
     var countdownElement = document.getElementById('countdown');
     var countDownDate = new Date("Oct 18, 2024 17:30:00").getTime();
+
+    // Function to update the countdown timer
     var countdownFunction = setInterval(function () {
         var now = new Date().getTime();
         var distance = countDownDate - now;
@@ -203,13 +199,14 @@
         }
     }, 1000);
 
-    // Array containing the paths to the three card images
+    // Array containing the paths to the card images
     var cardImages = [
         "images/Back.png",
         "images/Back2.png",
-         "images/Back3.png",
-         "images/Back4.png",
-        "images/Back5.png" // card images toggle;
+        "images/Back3.png",
+        "images/Back4.png",
+        "images/Back5.png"
+    ];
 
     function getRandomImage() {
         // Generate a random index to select an image
@@ -222,279 +219,32 @@
         image.src = getRandomImage(); // Set the image source to a random image
 
         var video = document.getElementById('missionVideo');
-        video.style.visibility = 'visible';
-        video.style.opacity = 1;
-        video.play();
+        var content = document.getElementById('missionContent');
 
-        setTimeout(function() {
-            document.getElementById('missionContent').style.display = 'block';
-        }, 3000);
-
-        // Apply fadeOut class to video and hide it after animation
-        setTimeout(function() {
-            video.classList.add('fadeOut');
+        if (video.style.visibility === 'hidden') {
+            video.style.visibility = 'visible';
+            video.style.opacity = '1';
+            image.style.opacity = '0';
+            content.style.display = 'block';
+            content.style.opacity = '1';
+            video.play();
+        } else {
+            video.style.opacity = '0';
             setTimeout(function() {
                 video.style.visibility = 'hidden';
-            }, 10000); // Match this duration with the fadeOut animation
-        }, 100);
-
-        setTimeout(function() {
-            image.classList.add('flip-image');
-        }, 100);
+                image.style.opacity = '1';
+                content.style.display = 'none';
+            }, 3000); // Wait for 3 seconds before hiding the video
+            video.pause();
+        }
     }
 
-    // Ensure the video starts playing at a slightly reduced speed
-    document.getElementById('missionVideo').onloadeddata = function() {
-        this.playbackRate = 0.75;
-    };
+    function toggleVisibility(className) {
+        var elements = document.getElementsByClassName(className);
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].style.display = elements[i].style.display === 'none' ? 'block' : 'none';
+        }
+    }
 </script>
 </body>
 </html>
-
-————————
-<!DOCTYPE HTML>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Resetting default margin and padding */
-        body, h1, h2, h3, p, ul {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* General styles */
-        body {
-            background-color: black;
-            color: white;
-            font-family: 'Britannic Bold', Arial, sans-serif;
-            overflow-x: hidden;
-            position: relative;
-            text-align: center;
-        }
-
-        .panel {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .panel img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            transition: transform 3s, opacity 3s;
-        }
-
-        .panel video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            visibility: hidden;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 3s ease-in-out;
-        }
-
-        @media (max-width: 768px) {
-            .panel img {
-                max-width: 90%;
-            }
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        #missionContent {
-            animation: fadeIn 7s ease forwards;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: rgba(0, 0, 0, 0);
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 1;
-            opacity: 0;
-        }
-
-        #missionContent p, #missionContent button {
-            color: white;
-        }
-
-        @keyframes flipImage {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            50% { transform: rotateY(180deg); opacity: 1; }
-            100% { transform: rotateY(360deg); opacity: 0; }
-        }
-
-        .flip-image {
-            animation: flipImage 4s ease forwards;
-            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
-        }
-
-        #missionVideo.fadeOut {
-            animation: fadeOut 10s ease forwards; /* Adjusted duration */
-        }
-
-        #countdownWrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #countdown {
-            font-size: 48px;
-            color: #FFFF00;
-        }
-
-        .logo {
-            margin-bottom: 20px;
-        }
-
-        .event-logo {
-            margin-bottom: 20px;
-        }
-
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
-        }
-
-        #previousEventsToggle {
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body class="is-preload">
-<div id="main">
-    <article class="post featured">
-        <header class="major">
-            <div class="panel">
-                <a class="image main" onclick="toggleMissionContent()">
-                    <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
-                    <video id="missionVideo" muted>
-                        <source src="images/teams.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </a>
-                <div id="missionContent">
-                    <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
-                    <a href="https://harborhack-24.devpost.com/">
-                        <img src="images/hh.png" alt="HarborHack 2024" class="event-logo" style="width: 900px; height: auto;">
-                    </a>
-                    <div id="countdownWrapper">
-                        <p class="info"><b>Countdown to next event:</b></p>
-                        <div id="countdown"></div>
-                    </div>
-                </div>
-            </div>
-        </header>
-    </article>
-</div>
-<footer>
-    <a href="https://hack-nights.devpost.com/" style="color: #00FF00; font-size: 20px; margin: 0 15px;">Previous Event</a>
-    <br>
-    <section>
-        <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin: 0 15px;">About</a>
-        <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;">Email</a>
-        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility('previous-events')">All Events</h1>
-        <br>
-        <div class="previous-events" style="display: none;">
-            <p><a href="breakthroughHack.html" style="color: white;">HarborHack (Fall 2024)</a></p>
-            <p><a href="inspireHack.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
-            <p><a href="https://hackops.devpost.com/" style="color: white;">HackOps (Spring 2024)</a></p>
-            <p><a href="cultureHack.html" style="color: white;">TBD: Art + Tech (Winter 2024)</a></p>
-            <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
-        </div>
-    </section>
-</footer>
-<script src="ho-script.js"></script>
-<script>
-    var countdownElement = document.getElementById('countdown');
-    var countDownDate = new Date("Oct 18, 2024 17:30:00").getTime();
-    var countdownFunction = setInterval(function () {
-        var now = new Date().getTime();
-        var distance = countDownDate - now;
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-        if (distance < 0) {
-            clearInterval(countdownFunction);
-            countdownElement.innerHTML = "Countdown to our next event HarborHack 2024";
-        }
-    }, 1000);
-
-    // Array containing the paths to the three card images
-    var cardImages = [
-        "images/Back.png",
-        "images/Back2.png",
-         "images/Back3.png",
-         "images/Back4.png",
-        "images/Back5.png" // Replace with the actual path of the third image
-    ];
-
-    function getRandomImage() {
-        // Generate a random index to select an image
-        var randomIndex = Math.floor(Math.random() * cardImages.length);
-        return cardImages[randomIndex];
-    }
-
-    function toggleMissionContent() {
-    var image = document.getElementById('missionImage');
-    image.src = getRandomImage(); // Set the image source to a random image
-
-    var video = document.getElementById('missionVideo');
-    video.style.visibility = 'visible';
-    video.style.opacity = 1;
-    video.play();
-
-    setTimeout(function() {
-        document.getElementById('missionContent').style.display = 'block';
-    }, 3000);
-
-    // Apply fadeOut class to video and hide it after animation
-    setTimeout(function() {
-        video.classList.add('fadeOut');
-        setTimeout(function() {
-            video.style.visibility = 'hidden';
-        }, 10000); // Match this duration with the fadeOut animation
-    }, 100);
-
-    setTimeout(function() {
-        image.classList.add('flip-image');
-    }, 100);  // Make sure this delay matches when you want the flip to happen
-}
-
-
-    // Ensure the video starts playing at a slightly reduced speed
-    document.getElementById('missionVideo').onloadeddata = function() {
-        this.playbackRate = 0.75;
-    };
-</script>
-</body>
-</html>
-
