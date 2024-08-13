@@ -221,6 +221,14 @@
         video.style.opacity = 1;
         video.play();
 panel.classList.add('fade-to-43'); // Add the fade effect
+         } else {
+        content.style.display = 'none';
+        content.style.opacity = 0;
+        video.style.opacity = 0;
+        video.pause();
+        panel.classList.remove('fade-to-43'); // Remove the fade effect
+    }
+}
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
         }, 3000);
