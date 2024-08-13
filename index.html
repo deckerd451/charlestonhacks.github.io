@@ -464,30 +464,31 @@
     }
 
     function toggleMissionContent() {
-        var image = document.getElementById('missionImage');
-        image.src = getRandomImage(); // Set the image source to a random image
+    var image = document.getElementById('missionImage');
+    image.src = getRandomImage(); // Set the image source to a random image
 
-        var video = document.getElementById('missionVideo');
-        video.style.visibility = 'visible';
-        video.style.opacity = 1;
-        video.play();
+    var video = document.getElementById('missionVideo');
+    video.style.visibility = 'visible';
+    video.style.opacity = 1;
+    video.play();
 
+    setTimeout(function() {
+        document.getElementById('missionContent').style.display = 'block';
+    }, 3000);
+
+    // Apply fadeOut class to video and hide it after animation
+    setTimeout(function() {
+        video.classList.add('fadeOut');
         setTimeout(function() {
-            document.getElementById('missionContent').style.display = 'block';
-        }, 3000);
+            video.style.visibility = 'hidden';
+        }, 10000); // Match this duration with the fadeOut animation
+    }, 100);
 
-        // Apply fadeOut class to video and hide it after animation
-        setTimeout(function() {
-            video.classList.add('fadeOut');
-            setTimeout(function() {
-                video.style.visibility = 'hidden';
-            }, 10000); // Match this duration with the fadeOut animation
-        }, 100);
+    setTimeout(function() {
+        image.classList.add('flip-image');
+    }, 100);  // Make sure this delay matches when you want the flip to happen
+}
 
-        setTimeout(function() {
-            image.classList.add('flip-image');
-        }, 100);
-    }
 
     // Ensure the video starts playing at a slightly reduced speed
     document.getElementById('missionVideo').onloadeddata = function() {
