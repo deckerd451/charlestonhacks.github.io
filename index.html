@@ -87,18 +87,26 @@
 
         #missionContent p, #missionContent button {
             color: white;
-        }
-
         @keyframes flipImage {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            50% { transform: rotateY(180deg); opacity: 1; }
-            100% { transform: rotateY(360deg); opacity: 0; }
-        }
+    0% { 
+        transform: rotateY(0deg); 
+        opacity: 1; 
+    }
+    50% { 
+        transform: rotateY(180deg); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: rotateY(360deg); 
+        opacity: 0.43; /* Final opacity at 43% */
+    }
+}
 
-        .flip-image {
-            animation: flipImage 4s ease forwards;
-            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
-        }
+.flip-image {
+    animation: flipImage 4s ease forwards;
+    -webkit-animation: flipImage 4s ease forwards; /* For iOS */
+}
+
 
         #missionVideo.fadeOut {
             animation: fadeOut 10s ease forwards; /* Adjusted duration */
