@@ -47,7 +47,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            visibility: hidden;
+            display: none; /* Change from visibility: hidden */
             z-index: -1;
             opacity: 0;
             transition: opacity 3s ease-in-out;
@@ -64,7 +64,17 @@
             100% { opacity: 1; }
         }
 
+        @-webkit-keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
         @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @-webkit-keyframes fadeOut {
             0% { opacity: 1; }
             100% { opacity: 0; }
         }
@@ -101,7 +111,7 @@
         }
 
         #missionVideo.fadeOut {
-            animation: fadeOut 10s ease forwards; /* Adjusted duration */
+            animation: fadeOut 8s ease forwards; /* Adjusted duration */
         }
 
         #countdownWrapper {
@@ -131,6 +141,18 @@
             margin-top: 40px;
             margin-bottom: 20px;
         }
+
+        .body-text {
+            margin: 30px 0;
+        }
+
+        .body-text a {
+            color: white;
+        }
+
+        .body-text p {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body class="is-preload">
@@ -140,16 +162,30 @@
             <div class="panel">
                 <a class="image main" onclick="toggleMissionContent()">
                     <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
-                    <video id="missionVideo" muted>
+                    <video id="missionVideo" muted playsinline>
                         <source src="images/teams.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </a>
                 <div id="missionContent">
                     <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
-                    <a href="https://harborhack-24.devpost.com/">
-                        <img src="images/hh.png" alt="HarborHack 2024" class="event-logo" style="width: 900px; height: auto;">
-                    </a>
+                    <div class="body-text">
+                        <p>
+                            <a href="https://harborhack-24.devpost.com/">
+                                <img src="images/hh.png" alt="HarborHack 2024" class="event-logo" style="width: 900px; height: auto;">
+                            </a>
+                        </p>
+                        <p>
+                            <a href="https://harborhack-24.devpost.com/">
+                                Register for the Harbor Hack
+                            </a>
+                        </p>
+                        <p>
+                            <a href="mailto:hello@charlestonhacks.com?subject=Mailing List Request&body=Please add me to your mailing list">
+                                Join the Mailing List
+                            </a>
+                        </p>
+                    </div>
                     <div id="countdownWrapper">
                         <p class="info"><b>Countdown to next event:</b></p>
                         <div id="countdown"></div>
@@ -214,7 +250,7 @@
         image.src = getRandomImage(); // Set the image source to a random image
 
         var video = document.getElementById('missionVideo');
-        video.style.visibility = 'visible';
+        video.style.display = 'block';
         video.style.opacity = 1;
         video.play();
 
@@ -226,8 +262,8 @@
         setTimeout(function() {
             video.classList.add('fadeOut');
             setTimeout(function() {
-                video.style.visibility = 'hidden';
-            }, 10000); // Match this duration with the fadeOut animation
+                video.style.display = 'none';
+            }, 8000); // Match this duration with the fadeOut animation
         }, 100);
 
         setTimeout(function() {
