@@ -102,7 +102,7 @@
         @keyframes flipImage {
             0% { transform: rotateY(0deg); opacity: 1; }
             50% { transform: rotateY(180deg); opacity: 1; }
-            100% { transform: rotateY(360deg); opacity: 0; }
+            100% { transform: rotateY(360deg); opacity: 0.4; } /* card remains visible at 40% */
         }
 
         .flip-image {
@@ -237,7 +237,7 @@
          "images/Back3.png",
          "images/Back4.png",
         "images/Back5.png",
-         "images/Back6.png"
+         "images/Back6.png" /* added card */
         ];
 
     function getRandomImage() {
