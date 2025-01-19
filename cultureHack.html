@@ -29,6 +29,15 @@
             padding: 20px;
             display: none;
         }
+
+        /* Zoom effect for image */
+        .image.main img {
+            transition: transform 0.3s ease; /* Smooth transition */
+        }
+
+        .image.main img:hover {
+            transform: scale(1.2); /* Zoom in the image */
+        }
     </style>
 </head>
 <body class="is-preload">
@@ -44,8 +53,8 @@
             <div>
                 <h3>30 Second AI Film Fest</h3>
                 
-                <!-- Lightbox-enabled Images -->
-                    <a href="images/AIFF.png" data-lightbox="about" data-title="30 Second AI Film Fest">
+                <!-- Image with zoom effect on hover -->
+                <a href="images/AIFF.png">
                     <img src="images/AIFF.png" alt="Descartes" style="width:200px; height:auto;">
                 </a><br>
             </div>
