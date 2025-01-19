@@ -38,6 +38,15 @@
         .image.main img:hover {
             transform: scale(1.2); /* Zoom in the image */
         }
+
+        /* Add zoom effect to the image within the anchor tag */
+        .image.main a img {
+            transition: transform 0.3s ease;
+        }
+
+        .image.main a:hover img {
+            transform: scale(1.2); /* Zoom in the image on hover */
+        }
     </style>
 </head>
 <body class="is-preload">
