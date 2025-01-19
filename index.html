@@ -200,7 +200,7 @@
     <br>
     <section>
         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin: 0 15px;">About</a>
-        <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;">Email</a>
+        <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;" id="emailLink">Email</a>
         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility('previous-events')">All Events</h1>
         <br>
         <div class="previous-events" style="display: none;">
@@ -212,6 +212,19 @@
         </div>
     </section>
 </footer>
+
+<!-- Email check script -->
+<script>
+    document.getElementById("emailLink").addEventListener("click", function(event) {
+        // Check if the mailto link is handled by the default email client
+        var mailClient = window.navigator;
+        if (!mailClient || !mailClient.email) {
+            event.preventDefault();
+            alert("It seems like you don't have a default email client configured. Please open your email app manually.");
+        }
+    });
+</script>
+
 <script src="ho-script.js"></script>
 <script>
     var countdownElement = document.getElementById('countdown');
@@ -226,64 +239,39 @@
         countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
         if (distance < 0) {
             clearInterval(countdownFunction);
-            countdownElement.innerHTML = "Countdown-Global Game Jam";
+            countdownElement.innerHTML = "EXPIRED";
         }
     }, 1000);
-
-    // Array containing the paths to the card images
-    var cardImages = [
-        "images/Back.png",
-        "images/Back2.png",
-         "images/Back3.png",
-         "images/Back4.png",
-        "images/Back5.png",
-        "images/Elara2.png",
-        "images/A.png",
-        "images/C.png",
-        "images/H.png",
-        "images/I.png",
-        "images/Aegis.png",
-        "images/R.png",
-        "images/Astrid.png",
-         "images/Back6.png" /* added card */
-        ];
-
-    function getRandomImage() {
-        // Generate a random index to select an image
-        var randomIndex = Math.floor(Math.random() * cardImages.length);
-        return cardImages[randomIndex];
-    }
-
+</script>
+<script>
     function toggleMissionContent() {
-        var image = document.getElementById('missionImage');
-        image.src = getRandomImage(); // Set the image source to a random image
+        var missionContent = document.getElementById("missionContent");
+        var missionImage = document.getElementById("missionImage");
+        var missionVideo = document.getElementById("missionVideo");
 
-        var video = document.getElementById('missionVideo');
-        video.style.display = 'block';
-        video.style.opacity = 1;
-        video.play();
-
-        setTimeout(function() {
-            document.getElementById('missionContent').style.display = 'block';
-        }, 3000);
-
-        // Apply fadeOut class to video and hide it after animation
-        setTimeout(function() {
-            video.classList.add('fadeOut');
-            setTimeout(function() {
-                video.style.display = 'none';
-            }, 8000); // Match this duration with the fadeOut animation
-        }, 100);
-
-        setTimeout(function() {
-            image.classList.add('flip-image');
-        }, 100);
+        if (missionContent.style.display === "none") {
+            missionContent.style.display = "block";
+            missionImage.style.animation = "flipImage 4s ease forwards";
+            missionVideo.style.display = "block";
+            missionVideo.style.opacity = "1";
+            missionVideo.play();
+        } else {
+            missionContent.style.display = "none";
+            missionImage.style.animation = "none";
+            missionVideo.style.display = "none";
+            missionVideo.style.opacity = "0";
+            missionVideo.pause();
+        }
     }
 
-    // Ensure the video starts playing at a slightly reduced speed
-    document.getElementById('missionVideo').onloadeddata = function() {
-        this.playbackRate = 0.75;
-    };
+    function toggleVisibility(id) {
+        var element = document.getElementById(id);
+        if (element.style.display === "none") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
 </script>
 </body>
 </html>
