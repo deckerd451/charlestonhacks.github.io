@@ -37,6 +37,8 @@
         /* Zoom effect for image */
         .image.main img {
             transition: transform 0.3s ease; /* Smooth transition */
+            width: 100%; /* Ensure the image scales properly */
+            height: auto; /* Maintain aspect ratio */
         }
 
         .image.main img:hover {
@@ -46,6 +48,8 @@
         /* Add zoom effect to the image within the anchor tag */
         .image.main a img {
             transition: transform 0.3s ease;
+            width: 100%; /* Ensure the image scales properly */
+            height: auto; /* Maintain aspect ratio */
         }
 
         .image.main a:hover img {
@@ -104,7 +108,7 @@
                 
                 <!-- Image with zoom effect on hover -->
                 <a href="images/AIFF.png">
-                    <img src="images/AIFF.png" alt="30 Second AI Film Fest Poster" style="width:200px; height:auto;">
+                    <img src="images/AIFF.png" alt="30 Second AI Film Fest Poster" class="zoom-image">
                 </a><br>
             </div>
 
