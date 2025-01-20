@@ -34,26 +34,26 @@
             display: none;
         }
 
-        /* Zoom effect for image */
-        .image.main img {
-            transition: transform 0.3s ease; /* Smooth transition */
-            width: 100%; /* Ensure the image scales properly */
+        /* Fixed size for the AIFF image with media queries */
+        .zoom-image {
+            width: 500px; /* Default width for desktop */
             height: auto; /* Maintain aspect ratio */
+            display: block;
+            margin: 0 auto; /* Center image */
         }
 
-        .image.main img:hover {
+        /* Adjust size for mobile */
+        @media (max-width: 768px) {
+            .zoom-image {
+                width: 100%; /* Full width on smaller screens */
+                height: auto; /* Maintain aspect ratio */
+            }
+        }
+
+        /* Zoom effect for image on hover */
+        .zoom-image:hover {
             transform: scale(1.2); /* Zoom in the image */
-        }
-
-        /* Add zoom effect to the image within the anchor tag */
-        .image.main a img {
             transition: transform 0.3s ease;
-            width: 100%; /* Ensure the image scales properly */
-            height: auto; /* Maintain aspect ratio */
-        }
-
-        .image.main a:hover img {
-            transform: scale(1.2); /* Zoom in the image on hover */
         }
 
         /* Footer styling */
@@ -106,7 +106,7 @@
             <div>
                 <h2>30 Second AI Film Fest</h2>
                 
-                <!-- Image with zoom effect on hover -->
+                <!-- Image with fixed size and zoom effect -->
                 <a href="images/AIFF.png">
                     <img src="images/AIFF.png" alt="30 Second AI Film Fest Poster" class="zoom-image">
                 </a><br>
