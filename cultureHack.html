@@ -56,6 +56,18 @@
             transition: transform 0.3s ease;
         }
 
+        /* Countdown Timer Styles */
+        .countdown {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            color: #800020; /* Burgundy */
+            font-weight: bold;
+        }
+
         /* Footer styling */
         footer#footer {
             text-align: center;
@@ -129,6 +141,8 @@
             <!-- Tech Week Button as Link -->
             <a class="collapsible" href="https://charlestontechweek.org/" target="_blank">Tech Week</a> 
             
+            <!-- Countdown Timer -->
+            <div id="countdown" class="countdown"></div>
         </article>
     </div>
 
@@ -148,5 +162,28 @@
         </section>
     </footer>
 
+    <script>
+        // Countdown Timer Script
+        function updateCountdown() {
+            const eventDate = new Date('May 1, 2025 19:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML =
+                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('countdown').innerHTML = "Event has started!";
+            }
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
 </body>
 </html>
