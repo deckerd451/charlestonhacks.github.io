@@ -230,17 +230,28 @@
         }
     }, 1000);
 
-    function toggleVisibility(id) {
-        var element = document.getElementById(id);
-        if (element.style.display === "none") {
-            element.style.display = "block";
-            window.scrollTo({
-                top: element.offsetTop,
-                behavior: "smooth"
-            });
-        } else {
-            element.style.display = "none";
-        }
+    // Array containing the paths to the card images
+    var cardImages = [
+        "images/Back.png",
+        "images/Back2.png",
+         "images/Back3.png",
+         "images/Back4.png",
+        "images/Back5.png",
+        "images/Elara2.png",
+        "images/A.png",
+        "images/C.png",
+        "images/H.png",
+        "images/I.png",
+        "images/Aegis.png",
+        "images/R.png",
+        "images/Astrid.png",
+         "images/Back6.png" /* added card */
+        ];
+
+    function getRandomImage() {
+        // Generate a random index to select an image
+        var randomIndex = Math.floor(Math.random() * cardImages.length);
+        return cardImages[randomIndex];
     }
 
     function toggleMissionContent() {
