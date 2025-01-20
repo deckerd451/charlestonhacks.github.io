@@ -59,6 +59,26 @@
             }
         }
 
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @-webkit-keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @-webkit-keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
         #missionContent {
             animation: fadeIn 7s ease forwards;
             position: absolute;
@@ -75,27 +95,23 @@
             opacity: 0;
         }
 
-        .scroll-indicator {
-            position: absolute;
-            bottom: 10%;
-            font-size: 30px;
-            color: #FFFFFF;
-            animation: bounce 1.5s infinite;
-            cursor: pointer;
-            display: none;
+        #missionContent p, #missionContent button {
+            color: white;
         }
 
-        /* Bounce animation for the arrow */
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(15px); }
-            100% { transform: translateY(0); }
+        @keyframes flipImage {
+            0% { transform: rotateY(0deg); opacity: 1; }
+            50% { transform: rotateY(180deg); opacity: 1; }
+            100% { transform: rotateY(360deg); opacity: 0.2; } /* card remains visible at 40% */
         }
 
-        /* Fade-in effect */
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        .flip-image {
+            animation: flipImage 4s ease forwards;
+            -webkit-animation: flipImage 4s ease forwards; /* For iOS */
+        }
+
+        #missionVideo.fadeOut {
+            animation: fadeOut 8s ease forwards; /* Adjusted duration */
         }
 
         #countdownWrapper {
@@ -214,41 +230,60 @@
         }
     }, 1000);
 
-    // Display the down arrow indicator when the user scrolls near the top of the page
-    window.addEventListener('scroll', function() {
-        var scrollIndicator = document.querySelector('.scroll-indicator');
-        if (window.scrollY < 100) {  // Show when user is near the top
-            scrollIndicator.style.display = 'block';
-        } else {  // Hide when scrolled down
-            scrollIndicator.style.display = 'none';
-        }
-    });
+    // Array containing the paths to the card images
+    var cardImages = [
+        "images/Back.png",
+        "images/Back2.png",
+         "images/Back3.png",
+         "images/Back4.png",
+        "images/Back5.png",
+        "images/Elara2.png",
+        "images/A.png",
+        "images/C.png",
+        "images/H.png",
+        "images/I.png",
+        "images/Aegis.png",
+        "images/R.png",
+        "images/Astrid.png",
+         "images/Back6.png" /* added card */
+        ];
+
+    function getRandomImage() {
+        // Generate a random index to select an image
+        var randomIndex = Math.floor(Math.random() * cardImages.length);
+        return cardImages[randomIndex];
+    }
 
     function toggleMissionContent() {
-        var missionContent = document.getElementById('missionContent');
-        var missionVideo = document.getElementById('missionVideo');
-        var missionImage = document.getElementById('missionImage');
-        if (missionContent.style.display === 'none') {
-            missionContent.style.display = 'block';
-            missionVideo.style.display = 'block';
-            missionImage.style.display = 'none';
-            missionVideo.play();
-        } else {
-            missionContent.style.display = 'none';
-            missionVideo.style.display = 'none';
-            missionImage.style.display = 'block';
-            missionVideo.pause();
-        }
+        var image = document.getElementById('missionImage');
+        image.src = getRandomImage(); // Set the image source to a random image
+
+        var video = document.getElementById('missionVideo');
+        video.style.display = 'block';
+        video.style.opacity = 1;
+        video.play();
+
+        setTimeout(function() {
+            document.getElementById('missionContent').style.display = 'block';
+        }, 3000);
+
+        // Apply fadeOut class to video and hide it after animation
+        setTimeout(function() {
+            video.classList.add('fadeOut');
+            setTimeout(function() {
+                video.style.display = 'none';
+            }, 8000); // Match this duration with the fadeOut animation
+        }, 100);
+
+        setTimeout(function() {
+            image.classList.add('flip-image');
+        }, 100);
     }
 
-    function toggleVisibility(id) {
-        var element = document.getElementById(id);
-        if (element.style.display === 'none') {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-    }
+    // Ensure the video starts playing at a slightly reduced speed
+    document.getElementById('missionVideo').onloadeddata = function() {
+        this.playbackRate = 0.75;
+    };
 </script>
 </body>
 </html>
