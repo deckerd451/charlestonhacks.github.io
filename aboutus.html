@@ -33,6 +33,25 @@
             transform: scale(1.1);
             transition: transform 0.3s ease;
         }
+        /* Footer and social media links */
+        footer#footer {
+            text-align: center;
+            padding: 20px 0;
+        }
+        footer#footer .icons alt {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: inline-flex;
+            gap: 20px;
+        }
+        footer#footer .icons alt li a {
+            font-size: 24px;
+            color: #333;
+        }
+        footer#footer .icons alt li a:hover {
+            color: #800020; /* Burgundy color for hover */
+        }
     </style>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
@@ -55,38 +74,30 @@
                 <a href="will.html">Will Horn</a><br>
                 <a href="amin.html">Amin Yachnes</a><br>
                 <a href="aya.html">Aya Hojadova</a><br>
-                <!--
-
- Lightbox-enabled Astrid Images -->
                 <a href="images/Astridstory.png" data-lightbox="about" data-title="Astrid - A Valkyrie’s Tale">
                     <img src="images/Astridstory.png" alt="Astrid" style="width:200px; height:auto;">
-                    <a href="images/Descartesbackstory.png" data-lightbox="about" data-title="Descartes - The Hidden Path">
-                    <img src="images/Descartesbackstory.png" alt="Descartes" style="width:200px; height:auto;">
-                        <a href="images/Medusastory.png" data-lightbox="about" data-title="Medusa - An Otherworldly Force">
-                    <img src="images/Medusastory.png" alt="Medusa" style="width:200px; height:auto;">
-                             <a href="images/Elarastory.png" data-lightbox="about" data-title="Elara - The Rogue">
-                    <img src="images/Elarastory.png" alt="Elara" style="width:200px; height:auto;">
                 </a><br>
             </div>
-
-            <!-- Social Media Links -->
-            <section>
-                <ul class="icons alt">
-                    <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                    <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                    <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                    <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-                </ul>
-            </section>
         </section>
     </div>
 
     <!-- Footer -->
-    <div id="copyright">
-        <ul>
-            <li>Copyright © CharlestonHacks</li>
-        </ul>
-    </div>
+    <footer id="footer">
+        <!-- Social Media Links -->
+        <section>
+            <ul class="icons alt">
+                <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+            </ul>
+        </section>
+        <div>
+            <ul>
+                <li>Copyright © CharlestonHacks</li>
+            </ul>
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="assets/js/jquery.min.js"></script>
