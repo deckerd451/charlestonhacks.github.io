@@ -13,108 +13,62 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     
     <style>
-        /* General body and text alignment */
-        body, h1, h2, h3, p, ul, li, a {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Main container styling */
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
         /* Panel and image styling */
-        .panel {
-            width: 100%;
-            max-width: 400px;
-            margin: 15px;
-            display: inline-block;
-            vertical-align: top;
+        .container {
+            text-align: center;
         }
-
+        .panel {
+            width: 45%;
+            margin: 10px;
+            display: inline-block;
+        }
         .panel img {
             max-width: 100%;
             height: auto;
-            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Center text and elements */
+        body, h1, h2, h3, p, ul, li, a {
+            text-align: center;
+        }
+        img:hover {
+            transform: scale(1.1);
             transition: transform 0.3s ease;
         }
 
-        /* Hover effect for images */
-        .panel img:hover {
-            transform: scale(1.1);
-        }
-
-        /* Header logo */
-        header.major .image.main img {
-            width: 60%;
-            max-width: 400px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-
-        /* Story images */
-        .story-images a {
-            display: inline-block;
-            margin: 10px;
-        }
-
-        .story-images img {
-            width: 200px;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        /* Footer styling */
+        /* Footer and social media links */
         footer#footer {
             text-align: center;
-            padding: 40px 0;
-            background-color: #f8f8f8;
+            padding: 20px 0;
         }
-
-        /* Social media icons */
         footer#footer .icons.alt {
             list-style: none;
             padding: 0;
             margin: 0;
             display: inline-flex;
-            gap: 15px;
+            gap: 20px;
         }
-
         footer#footer .icons.alt li a {
-            font-size: 30px;
+            font-size: 24px;
             color: #333;
-            transition: color 0.3s;
         }
-
         footer#footer .icons.alt li a:hover {
             color: #800020; /* Burgundy color for hover */
         }
 
-        /* About section styling */
-        .about-section {
-            background-color: #f4f4f4;
-            padding: 40px 20px;
-            border-radius: 8px;
-            margin-bottom: 40px;
+        /* Remove bullet points from unordered list */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        /* Responsive styling */
-        @media (max-width: 768px) {
-            header.major .image.main img {
-                width: 80%;
-            }
-
-            .panel {
-                width: 100%;
-                margin: 10px 0;
-            }
-
-            .story-images img {
-                width: 100%;
-            }
+        /* Adjust list item styles */
+        li {
+            display: inline-block;
+            margin: 10px;
         }
     </style>
 
@@ -122,18 +76,16 @@
 </head>
 <body class="is-preload">
 
-    <!-- Main Content -->
-    <div id="main" class="container">
-        <!-- Header Section -->
+    <!-- Main -->
+    <div id="main">
+        <!-- Header -->
         <section class="post">
             <header class="major">
-                <a class="image main" href="index.html">
-                    <img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" />
-                </a>
+                <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" /></a>
             </header>
 
-            <!-- About Us Section -->
-            <div class="about-section">
+            <!-- About Section -->
+            <div>
                 <h2>About Us</h2>
                 <ul>
                     <li><a href="https://southcarolinavoyager.com/?post_type=interview&p=117049" target="_blank">Doug Hamilton</a></li>
@@ -147,24 +99,25 @@
                 <h3>Our Stories</h3>
                 <div class="story-images">
                     <a href="images/Astridstory.png" data-lightbox="about" data-title="Astrid - A Valkyrie’s Tale">
-                        <img src="images/Astridstory.png" alt="Astrid" />
+                        <img src="images/Astridstory.png" alt="Astrid" style="width:200px; height:auto;" />
                     </a>
                     <a href="images/Descartesbackstory.png" data-lightbox="about" data-title="Descartes - The Hidden Path">
-                        <img src="images/Descartesbackstory.png" alt="Descartes" />
+                        <img src="images/Descartesbackstory.png" alt="Descartes" style="width:200px; height:auto;" />
                     </a>
                     <a href="images/Medusastory.png" data-lightbox="about" data-title="Medusa - An Otherworldly Force">
-                        <img src="images/Medusastory.png" alt="Medusa" />
+                        <img src="images/Medusastory.png" alt="Medusa" style="width:200px; height:auto;" />
                     </a>
                     <a href="images/Elarastory.png" data-lightbox="about" data-title="Elara - The Rogue">
-                        <img src="images/Elarastory.png" alt="Elara" />
+                        <img src="images/Elarastory.png" alt="Elara" style="width:200px; height:auto;" />
                     </a>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- Footer Section -->
+    <!-- Footer -->
     <footer id="footer">
+        <!-- Social Media Links -->
         <section>
             <ul class="icons alt">
                 <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
