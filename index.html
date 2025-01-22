@@ -202,8 +202,8 @@
         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin: 0 15px;">About</a>
         <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;">Email</a>
         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility('previous-events')">
-            All Events <i id="arrowIcon" class="fas fa-chevron-down"></i> <!-- Font Awesome arrow -->
-        </h1>
+    All Events <i class="fas fa-chevron-down"></i> <!-- Font Awesome arrow -->
+</h1>
 
         <br>
         <div class="previous-events" style="display: none;">
@@ -251,41 +251,42 @@
          "images/Back6.png" /* added card */
         ];
 
+    function getRandomImage() {
+        // Generate a random index to select an image
+        var randomIndex = Math.floor(Math.random() * cardImages.length);
+        return cardImages[randomIndex];
+    }
 
-    // Function to toggle between the main image and the video
     function toggleMissionContent() {
-        var missionContent = document.getElementById("missionContent");
-        var missionImage = document.getElementById("missionImage");
-        var missionVideo = document.getElementById("missionVideo");
+        var image = document.getElementById('missionImage');
+        image.src = getRandomImage(); // Set the image source to a random image
 
-        if (missionContent.style.display === "none" || missionContent.style.display === "") {
-            missionContent.style.display = "block";
-            missionImage.style.display = "none";
-            missionVideo.style.display = "block";
-            missionVideo.play();
-        } else {
-            missionContent.style.display = "none";
-            missionImage.style.display = "block";
-            missionVideo.style.display = "none";
-            missionVideo.pause();
-        }
+        var video = document.getElementById('missionVideo');
+        video.style.display = 'block';
+        video.style.opacity = 1;
+        video.play();
+
+        setTimeout(function() {
+            document.getElementById('missionContent').style.display = 'block';
+        }, 3000);
+
+        // Apply fadeOut class to video and hide it after animation
+        setTimeout(function() {
+            video.classList.add('fadeOut');
+            setTimeout(function() {
+                video.style.display = 'none';
+            }, 8000); // Match this duration with the fadeOut animation
+        }, 100);
+
+        setTimeout(function() {
+            image.classList.add('flip-image');
+        }, 100);
     }
 
-    // Function to toggle visibility of previous events
-    function toggleVisibility(elementId) {
-        var previousEvents = document.querySelector('.previous-events');
-        var arrowIcon = document.getElementById('arrowIcon');
-        
-        if (previousEvents.style.display === "none" || previousEvents.style.display === "") {
-            previousEvents.style.display = "block";
-            arrowIcon.classList.remove('fa-chevron-down');
-            arrowIcon.classList.add('fa-chevron-up');
-        } else {
-            previousEvents.style.display = "none";
-            arrowIcon.classList.remove('fa-chevron-up');
-            arrowIcon.classList.add('fa-chevron-down');
-        }
-    }
+    // Ensure the video starts playing at a slightly reduced speed
+    document.getElementById('missionVideo').onloadeddata = function() {
+        this.playbackRate = 0.75;
+    };
 </script>
 </body>
 </html>
