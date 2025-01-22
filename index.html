@@ -153,13 +153,6 @@
         .body-text p {
             margin-bottom: 10px;
         }
-
-        /* Active state for the "All Events" button */
-        .active-btn {
-            color: #FF00FF; /* Change the color to indicate it's active */
-            font-weight: bold; /* Make the font bold */
-            text-decoration: underline; /* Optional: underline the text */
-        }
     </style>
 </head>
 <body class="is-preload">
@@ -265,40 +258,35 @@
     }
 
     function toggleMissionContent() {
-        var missionContent = document.getElementById('missionContent');
-        var missionImage = document.getElementById('missionImage');
-        var missionVideo = document.getElementById('missionVideo');
-        var previousEventsToggle = document.getElementById('previousEventsToggle');
+        var image = document.getElementById('missionImage');
+        image.src = getRandomImage(); // Set the image source to a random image
 
-        // Toggle mission content visibility
-        if (missionContent.style.display === 'none') {
-            missionContent.style.display = 'block';
-            missionVideo.style.display = 'block';
-            missionImage.style.opacity = '0';
-            missionVideo.style.opacity = '1';
-            previousEventsToggle.style.display = 'block';
-        } else {
-            missionContent.style.display = 'none';
-            missionVideo.style.display = 'none';
-            missionImage.style.opacity = '1';
-            missionVideo.style.opacity = '0';
-            previousEventsToggle.style.display = 'none';
-        }
+        var video = document.getElementById('missionVideo');
+        video.style.display = 'block';
+        video.style.opacity = 1;
+        video.play();
+
+        setTimeout(function() {
+            document.getElementById('missionContent').style.display = 'block';
+        }, 3000);
+
+        // Apply fadeOut class to video and hide it after animation
+        setTimeout(function() {
+            video.classList.add('fadeOut');
+            setTimeout(function() {
+                video.style.display = 'none';
+            }, 8000); // Match this duration with the fadeOut animation
+        }, 100);
+
+        setTimeout(function() {
+            image.classList.add('flip-image');
+        }, 100);
     }
 
-    function toggleVisibility(id) {
-        var element = document.getElementById(id);
-        var toggleButton = document.getElementById('previousEventsToggle');
-
-        // Toggle visibility of the events section
-        if (element.style.display === "none") {
-            element.style.display = "block";
-            toggleButton.classList.add('active-btn');
-        } else {
-            element.style.display = "none";
-            toggleButton.classList.remove('active-btn');
-        }
-    }
+    // Ensure the video starts playing at a slightly reduced speed
+    document.getElementById('missionVideo').onloadeddata = function() {
+        this.playbackRate = 0.75;
+    };
 </script>
 </body>
 </html>
