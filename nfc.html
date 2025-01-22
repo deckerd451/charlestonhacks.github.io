@@ -8,8 +8,9 @@
         body {
             background-color: black;
             color: white;
-            font-size: 32px;
+            font-family: Arial, sans-serif;
             text-align: center;
+            padding: 20px;
         }
 
         h1, h2, p, button {
@@ -19,13 +20,31 @@
 
         button {
             background-color: orange;
+            color: black;
             padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        button:hover {
+            background-color: darkorange;
         }
 
         input {
             font-size: 24px;
-            padding: 5px;
-            margin: 5px;
+            padding: 10px;
+            margin: 10px;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #scan-message {
+            margin: 20px;
+            font-size: 24px;
         }
     </style>
 </head>
@@ -39,10 +58,10 @@
 
     <div id="join-form" style="display: none;">
         <h2>Join CharlestonHacks</h2>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name"><br><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email"><br><br>
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" placeholder="Enter your name"><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" placeholder="Enter your email"><br>
         <button onclick="submitForm()">Submit</button>
     </div>
 
@@ -50,20 +69,20 @@
         <p>Sorry for the mistake.</p>
     </div>
 
-    <div id="scan-message"></div> <!-- Placeholder for NFC scan message -->
+    <div id="scan-message"></div> <!-- NFC message area -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // Function to display the join form
         function join() {
-            document.getElementById("content").style.display = "none"; // Hide the main content
-            document.getElementById("join-form").style.display = "block"; // Show the join form
+            document.getElementById("content").style.display = "none"; // Hide main content
+            document.getElementById("join-form").style.display = "block"; // Show join form
         }
 
         // Function to display the rejection message
         function reject() {
-            document.getElementById("content").style.display = "none"; // Hide the main content
-            document.getElementById("rejected").style.display = "block"; // Show the rejection message
+            document.getElementById("content").style.display = "none"; // Hide main content
+            document.getElementById("rejected").style.display = "block"; // Show rejection message
         }
 
         // Function to handle form submission
@@ -85,9 +104,9 @@
                 }
             };
 
-            const MAILCHIMP_API_KEY = '477c49fbc2409a14d027b734fedb0c1f-us12'; // Replace with your Mailchimp API key
-            const LIST_ID = '3b95e0177a'; // Replace with your Mailchimp Audience ID
-            const MAILCHIMP_URL = `https://<us12>.api.mailchimp.com/3.0/lists/${LIST_ID}/members`; // Replace <dc> with your data center
+            const MAILCHIMP_API_KEY = 'your_mailchimp_api_key'; // Replace with your Mailchimp API key
+            const LIST_ID = 'your_list_id'; // Replace with your Mailchimp Audience ID
+            const MAILCHIMP_URL = `https://<dc>.api.mailchimp.com/3.0/lists/${LIST_ID}/members`; // Replace <dc> with your data center
 
             axios.post(MAILCHIMP_URL, data, {
                 headers: {
@@ -106,15 +125,38 @@
             });
         }
 
-        // Simulate NFC functionality (placeholder)
+        // Web NFC functionality
         document.addEventListener("DOMContentLoaded", () => {
             const scanMessage = document.getElementById("scan-message");
 
-            // Simulate detecting an NFC tag
-            // Replace this with actual NFC logic if required
-            setTimeout(() => {
-                scanMessage.innerText = "NFC Tag Scanned! Welcome to CharlestonHacks.";
-            }, 1000); // Simulates a 1-second delay before showing the message
+            if ('NDEFReader' in window) {
+                const ndef = new NDEFReader();
+
+                async function startNFC() {
+                    try {
+                        await ndef.scan();
+                        console.log("NFC Scan started successfully.");
+
+                        ndef.onreading = event => {
+                            const record = event.message.records[0];
+                            if (record && record.data) {
+                                const textDecoder = new TextDecoder();
+                                const payload = textDecoder.decode(record.data);
+                                scanMessage.innerText = `NFC Tag Scanned! Message: ${payload}`;
+                            }
+                        };
+                    } catch (error) {
+                        console.error("NFC scan failed:", error);
+                        scanMessage.innerText = "Failed to start NFC scan. Please try again.";
+                    }
+                }
+
+                // Start NFC scanning
+                scanMessage.innerText = "Scanning for NFC tags... Please tap your tag.";
+                startNFC();
+            } else {
+                scanMessage.innerText = "NFC is not supported on your device or browser.";
+            }
         });
     </script>
 </body>
