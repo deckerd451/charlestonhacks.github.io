@@ -37,15 +37,9 @@
                 <p><b>AI for Humanity</b> - the theme of Hack Nights (24), the deeper motivation behind our actions setting in motion other actions to help change our world. How will your project actually change the way we experience the world? How will its mission continue after the hackathon is over?</p>
                 <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, health, or something else? Work on something you really believe in and make us believe in it too.</p>
 
-                <button class="collapsible">More Info</button>
-                <div class="content" style="display: none;">
-                    <br>
-                    <p>The Ripple Fund was the venue for the Hack Nights hackathon in 2024 </p>
-                    <p><b>RIPPLE NURTURES AND INCUBATES NONPROFITS IN THE LOWCOUNTRY TO GROW THEIR REACH AND DEVELOP SUSTAINABLE IMPACT.</b></p>
+                <!-- Button now directly links to Devpost -->
+                <a href="https://hack-nights.devpost.com/" class="button" target="_blank">More Info on Hack Nights</a>
 
-                    <!-- Pictures Section -->    
-                    <a href="https://hack-nights.devpost.com/" class="image fit" target="_blank"><img src="images/hncommunity.jpg" alt="" /></a><br>
-                </div>
             </article>
         </div>
 
@@ -67,35 +61,8 @@
         <script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
 
-        <script>
-            var coll = document.getElementsByClassName("collapsible");
-            var i;
-
-            for (i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function () {
-                    this.classList.toggle("active");
-                    var content = this.nextElementSibling;
-                    if (content.style.display === "block") {
-                        content.style.display = "none";
-                    } else {
-                        content.style.display = "block";
-                    }
-                });
-            }
-
-            function openImageModal(imageUrl) {
-                var modal = document.getElementById('imageModal');
-                var modalImg = document.getElementById('modalImage');
-
-                modal.style.display = 'block';
-                modalImg.src = imageUrl;
-            }
-
-            function closeImageModal() {
-                var modal = document.getElementById('imageModal');
-                modal.style.display = 'none';
-            }
-        </script>
-    </div>
+    <script>
+        // No collapsible functionality is needed anymore
+    </script>
 </body>
 </html>
