@@ -1,46 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>CharlestonHacks NFC Page</title>
-    <style>
-        body {
-            background-color: black;
-            color: white;
-            font-size: 32px;
-            text-align: center;
-        }
+// Function to display the join form
+function join() {
+    document.getElementById("content").style.display = "none"; // Hide the main content
+    document.getElementById("join-form").style.display = "block"; // Show the join form
+}
 
-        h1, h2, p, button {
-            font-size: 32px;
-            margin: 10px;
-        }
+// Function to display the rejection message
+function reject() {
+    document.getElementById("content").style.display = "none"; // Hide the main content
+    document.getElementById("rejected").style.display = "block"; // Show the rejection message
+}
 
-        button {
-            background-color: orange;
-            padding: 10px 20px;
-        }
-    </style>
-</head>
-<body>
-    <div id="content">
-        <h1>Welcome to CharlestonHacks!</h1>
-        <p>Would you like to join CharlestonHacks?</p>
-        <button onclick="join()">Yes</button>
-        <button onclick="reject()">No</button>
-    </div>
-    <div id="join-form" style="display: none;">
-        <h2>Join CharlestonHacks</h2>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name"><br><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email"><br><br>
-        <button onclick="submitForm()">Submit</button>
-    </div>
-    <div id="rejected" style="display: none;">
-        <p>Sorry for the mistake.</p>
-    </div>
-    <div id="scan-message"></div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+// Function to handle form submission
+function submitForm() {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    if (!name || !email) {
+        alert("Please fill out both your name and email.");
+        return;
+    }
+
+    // Post the data to a backend or an API
+    axios.post("https://example.com/api/join", { name, email })
+        .then(response => {
+            alert("Thank you for joining CharlestonHacks!");
+            // Optionally clear the form and reset the UI
+            document.getElementById("join-form").style.display = "none";
+            document.getElementById("scan-message").innerText = "You're now part of CharlestonHacks!";
+        })
+        .catch(error => {
+            console.error("Error submitting the form:", error);
+            alert("An error occurred while submitting your information. Please try again.");
+        });
+}
+
+// NFC functionality placeholder
+document.addEventListener("DOMContentLoaded", () => {
+    const scanMessage = document.getElementById("scan-message");
+
+    // Simulate detecting an NFC tag
+    // Replace this with actual NFC logic if required
+    setTimeout(() => {
+        scanMessage.innerText = "NFC Tag Scanned! Welcome to CharlestonHacks.";
+    }, 1000); // Simulates a 1-second delay before showing the message
+});
