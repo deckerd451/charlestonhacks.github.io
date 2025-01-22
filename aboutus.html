@@ -70,6 +70,20 @@
             display: inline-block;
             margin: 10px;
         }
+
+        /* NFC button styling */
+        .button {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #ff9a00; /* Slightly lighter orange */
+        }
     </style>
 
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -95,7 +109,6 @@
                     <li><a href="amin.html">Amin Yachnes</a></li>
                     <li><a href="aya.html">Aya Hojadova</a></li>
                 </ul>
-
                 <h3>Back Stories</h3>
                 <div class="story-images">
                     <a href="images/Astridstory.png" data-lightbox="about" data-title="Astrid - A Valkyrie’s Tale">
@@ -111,6 +124,12 @@
                         <img src="images/Elarastory.png" alt="Elara" style="width:200px; height:auto;" />
                     </a>
                 </div>
+
+                <h3>NFC Membership</h3>
+                <p>
+                    Use our NFC integration to join CharlestonHacks!
+                    <a href="nfc/index.html" class="button">Join with NFC</a>
+                </p>
             </div>
         </section>
     </div>
