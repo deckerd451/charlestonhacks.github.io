@@ -201,9 +201,10 @@
     <section>
         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin: 0 15px;">About</a>
         <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;">Email</a>
-        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility('previous-events')">
-    All Events <i class="fas fa-chevron-down"></i> <!-- Font Awesome arrow -->
+        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility()">
+    All Events <i id="arrowIcon" class="fas fa-chevron-down"></i> <!-- Font Awesome arrow -->
 </h1>
+
 
         <br>
         <div class="previous-events" style="display: none;">
@@ -287,6 +288,21 @@
     document.getElementById('missionVideo').onloadeddata = function() {
         this.playbackRate = 0.75;
     };
+    function toggleVisibility() {
+    var previousEvents = document.querySelector('.previous-events');
+    var arrowIcon = document.getElementById('arrowIcon');
+    
+    if (previousEvents.style.display === "none" || previousEvents.style.display === "") {
+        previousEvents.style.display = "block";
+        arrowIcon.classList.remove('fa-chevron-down');
+        arrowIcon.classList.add('fa-chevron-up');
+    } else {
+        previousEvents.style.display = "none";
+        arrowIcon.classList.remove('fa-chevron-up');
+        arrowIcon.classList.add('fa-chevron-down');
+    }
+}
+
 </script>
 </body>
 </html>
