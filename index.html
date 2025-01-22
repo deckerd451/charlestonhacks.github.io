@@ -201,7 +201,7 @@
     <section>
         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin: 0 15px;">About</a>
         <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;">Email</a>
-        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility('previous-events')">All Events</h1>
+        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleTextAndColor()">All Events</h1>
         <br>
         <div class="previous-events" style="display: none;">
             <p><a href="cultureHack.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
@@ -284,6 +284,12 @@
     document.getElementById('missionVideo').onloadeddata = function() {
         this.playbackRate = 0.75;
     };
+
+    function toggleTextAndColor() {
+        var eventsToggle = document.getElementById('previousEventsToggle');
+        eventsToggle.textContent = "SCROLL TO VIEW";
+        eventsToggle.style.color = "yellow";
+    }
 </script>
 </body>
 </html>
