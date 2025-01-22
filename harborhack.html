@@ -23,12 +23,19 @@
             padding: 0; /* Remove default body padding */
         }
 
-        /* Make the Devpost link button larger and responsive */
+        /* Style for the new Devpost link button */
         .devpost-link {
-            max-width: 90%; /* Ensure it doesn't exceed the screen width */
-            width: 300px; /* Set a fixed width for larger screens */
-            height: auto; /* Keep the aspect ratio */
-            margin: 20px auto; /* Center it horizontally */
+            text-align: center; /* Center the button */
+            margin: 20px auto; /* Center the button with margin */
+        }
+
+        /* Ensure the button scales correctly */
+        .devpost-link .button.large {
+            max-width: 90%;
+            width: 300px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
 
         /* Make the Devpost image scale based on the width of the container */
@@ -59,8 +66,8 @@ Judges convened in a separate room, while Emma, Gavin, and Amin engaged with the
                     and first-place went to team, "HIVR." We are all immensely proud of the work achieved during harborHack (23) and eagerly anticipate continuing to support your future endeavors. Check out all the teams amazing work by clicking the Devpost link below.
 <hr>
                      <div class="devpost-link">
-                         <a href="https://charlestonhacksharborhack.devpost.com/project-gallery">
-                             <img src="images/Devpost Logo-check it out-01.png" alt="Devpost Link" />
+                         <a href="https://charlestonhacksharborhack.devpost.com/">
+                             <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" class="button large" />
                          </a>
                      </div>
                     <hr>
