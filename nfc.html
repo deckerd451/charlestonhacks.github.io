@@ -5,47 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CharlestonHacks - Join Us</title>
     <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-
-        h1, h2, p, button {
-            font-size: 32px;
-            margin: 10px;
-        }
-
-        button {
-            background-color: orange;
-            color: black;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 24px;
-        }
-
-        button:hover {
-            background-color: darkorange;
-        }
-
-        input {
-            font-size: 24px;
-            padding: 10px;
-            margin: 10px;
-            width: 80%;
-            max-width: 300px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        #scan-message {
-            margin: 20px;
-            font-size: 24px;
-        }
+        /* Your existing styles here */
     </style>
 </head>
 <body>
@@ -58,11 +18,12 @@
 
     <div id="join-form" style="display: none;">
         <h2>Join CharlestonHacks</h2>
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" placeholder="Enter your name"><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" placeholder="Enter your email"><br>
-        <button onclick="submitForm()">Submit</button>
+        <!-- Your Formspree Form Code Below -->
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <input type="text" name="name" placeholder="Enter your name" required>
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Submit</button>
+        </form>
     </div>
 
     <div id="rejected" style="display: none;">
