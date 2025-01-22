@@ -19,9 +19,9 @@
     <div id="join-form" style="display: none;">
         <h2>Join CharlestonHacks</h2>
         <!-- Your Formspree Form Code Below -->
-        <form action="https://formspree.io/f/mzzdbbzl" method="POST">
-            <input type="text" name="name" placeholder="Enter your name" required>
-            <input type="email" name="email" placeholder="Enter your email" required>
+        <form action="https://formspree.io/f/mzzdbbzl" method="POST" onsubmit="submitForm(event)">
+            <input type="text" name="name" id="name" placeholder="Enter your name" required>
+            <input type="email" name="email" id="email" placeholder="Enter your email" required>
             <button type="submit">Submit</button>
         </form>
     </div>
@@ -32,17 +32,62 @@
 
     <div id="scan-message"></div> <!-- NFC message area -->
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // Function to display the join form
         function join() {
+            console.log('User clicked Yes to join.');
             document.getElementById("content").style.display = "none";
             document.getElementById("join-form").style.display = "block";
         }
 
         // Function to display the rejection message
         function reject() {
+            console.log('User clicked No to join.');
             document.getElementById("content").style.display = "none";
             document.getElementById("rejected").style.display = "block";
+        }
+
+        // Function to handle form submission
+        function submitForm(event) {
+            event.preventDefault(); // Prevent default form submission
+            console.log('Form submission triggered');
+            
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+
+            if (!name || !email) {
+                alert("Please fill out both your name and email.");
+                console.log('Missing name or email');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                alert("Please enter a valid email address.");
+                console.log('Invalid email:', email);
+                return;
+            }
+
+            // Log data for debugging
+            console.log('Form Data:', { name, email });
+
+            // Send data to backend
+            axios.post('https://your-backend-server.com/api/subscribe', { name, email })
+                .then(response => {
+                    alert("You have successfully joined CharlestonHacks!");
+                    console.log('Form submitted successfully:', response);
+                    document.getElementById("join-form").style.display = "none";
+                })
+                .catch(error => {
+                    alert("There was an error with your submission. Please try again.");
+                    console.error('Form submission error:', error);
+                });
+        }
+
+        // Email validation function
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
         }
 
         // Web NFC functionality
@@ -54,6 +99,7 @@
 
                 async function startNFC() {
                     try {
+                        console.log("Starting NFC scan...");
                         await ndef.scan();
                         console.log("NFC Scan started successfully.");
 
@@ -63,6 +109,7 @@
                                 const textDecoder = new TextDecoder();
                                 const payload = textDecoder.decode(record.data);
                                 scanMessage.innerText = `NFC Tag Scanned! Message: ${payload}`;
+                                console.log('NFC Tag Data:', payload);
                             }
                         };
                     } catch (error) {
@@ -75,6 +122,7 @@
                 startNFC();
             } else {
                 scanMessage.innerText = "NFC is not supported on your device or browser.";
+                console.log('NFC not supported on this device');
             }
         });
     </script>
