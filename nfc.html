@@ -29,6 +29,10 @@
         <p>Sorry for the mistake.</p>
     </div>
 
+    <div id="already-subscribed" style="display: none;">
+        <p>You are already subscribed to CharlestonHacks.</p>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // Function to display the join form
@@ -87,8 +91,15 @@
                 document.getElementById("join-form").style.display = "none";
             })
             .catch(error => {
-                alert("There was an error with your submission. Please try again.");
-                console.error('Form submission error:', error);
+                if (error.response && error.response.data.title === 'Member Exists') {
+                    // Handle already subscribed case
+                    alert("You are already subscribed to CharlestonHacks.");
+                    console.log('User already subscribed:', error.response.data);
+                    document.getElementById("already-subscribed").style.display = "block";
+                } else {
+                    alert("There was an error with your submission. Please try again.");
+                    console.error('Form submission error:', error);
+                }
             });
         }
 
