@@ -20,13 +20,10 @@
         <h2>Join CharlestonHacks</h2>
         <!-- Your Formspree Form Code Below -->
         <form action="https://formspree.io/f/mzzdbbzl" method="POST">
-    <input type="text" name="name" placeholder="Enter your name" required>
-    <input type="email" name="email" placeholder="Enter your email" required>
-    <button type="submit">Submit</button>
-</form>
-
-        
-
+            <input type="text" name="name" placeholder="Enter your name" required>
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Submit</button>
+        </form>
     </div>
 
     <div id="rejected" style="display: none;">
@@ -35,7 +32,6 @@
 
     <div id="scan-message"></div> <!-- NFC message area -->
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // Function to display the join form
         function join() {
@@ -47,39 +43,6 @@
         function reject() {
             document.getElementById("content").style.display = "none";
             document.getElementById("rejected").style.display = "block";
-        }
-
-        // Function to handle form submission
-        function submitForm() {
-            const name = document.getElementById("name").value.trim();
-            const email = document.getElementById("email").value.trim();
-
-            if (!name || !email) {
-                alert("Please fill out both your name and email.");
-                return;
-            }
-
-            if (!validateEmail(email)) {
-                alert("Please enter a valid email address.");
-                return;
-            }
-
-            // Send data to backend
-            axios.post('https://your-backend-server.com/api/subscribe', { name, email })
-                .then(response => {
-                    alert("You have successfully joined CharlestonHacks!");
-                    document.getElementById("join-form").style.display = "none";
-                })
-                .catch(error => {
-                    alert("There was an error with your submission. Please try again.");
-                    console.error(error);
-                });
-        }
-
-        // Email validation function
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
         }
 
         // Web NFC functionality
