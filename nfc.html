@@ -75,14 +75,14 @@
     <script>
         // Function to display the join form
         function join() {
-            document.getElementById("content").style.display = "none"; // Hide main content
-            document.getElementById("join-form").style.display = "block"; // Show join form
+            document.getElementById("content").style.display = "none";
+            document.getElementById("join-form").style.display = "block";
         }
 
         // Function to display the rejection message
         function reject() {
-            document.getElementById("content").style.display = "none"; // Hide main content
-            document.getElementById("rejected").style.display = "block"; // Show rejection message
+            document.getElementById("content").style.display = "none";
+            document.getElementById("rejected").style.display = "block";
         }
 
         // Function to handle form submission
@@ -95,34 +95,27 @@
                 return;
             }
 
-            // Mailchimp API call
-            const data = {
-                email_address: email,
-                status: 'subscribed',
-                merge_fields: {
-                    FNAME: name
-                }
-            };
+            if (!validateEmail(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
 
-            const MAILCHIMP_API_KEY = '477c49fbc2409a14d027b734fedb0c1f-us12'; // Replace with your Mailchimp API key
-            const LIST_ID = '3b95e0177a'; // Replace with your Mailchimp Audience ID
-            const MAILCHIMP_URL = `https://<us12>.api.mailchimp.com/3.0/lists/${LIST_ID}/members`; // Replace <dc> with your data center
+            // Send data to backend
+            axios.post('https://your-backend-server.com/api/subscribe', { name, email })
+                .then(response => {
+                    alert("You have successfully joined CharlestonHacks!");
+                    document.getElementById("join-form").style.display = "none";
+                })
+                .catch(error => {
+                    alert("There was an error with your submission. Please try again.");
+                    console.error(error);
+                });
+        }
 
-            axios.post(MAILCHIMP_URL, data, {
-                headers: {
-                    'Authorization': `apikey ${MAILCHIMP_API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                alert("You have successfully joined CharlestonHacks!");
-                document.getElementById("join-form").style.display = "none"; // Hide the form
-                document.getElementById("scan-message").innerText = "You're now part of CharlestonHacks!"; // Display success message
-            })
-            .catch(error => {
-                alert("There was an error with your submission. Please try again.");
-                console.error(error);
-            });
+        // Email validation function
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
         }
 
         // Web NFC functionality
@@ -151,7 +144,6 @@
                     }
                 }
 
-                // Start NFC scanning
                 scanMessage.innerText = "Scanning for NFC tags... Please tap your tag.";
                 startNFC();
             } else {
