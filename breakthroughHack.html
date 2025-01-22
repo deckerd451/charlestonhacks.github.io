@@ -9,6 +9,30 @@
         .button {
             text-decoration: none;
         }
+        /* Style for the collapsible button */
+        .collapsible {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            font-size: 15px;
+            margin: 10px 0;
+        }
+
+        /* Style for the collapsible content (initially hidden) */
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+
+        .image-modal-content {
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -37,8 +61,14 @@
                 <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" class="button large" />
             </a>
 
-            <!-- Pictures Section -->    
-            <a href="https://harborhack-24.devpost.com/" class="image fit"><img src="images/Harborwalk.jpg" alt="" /></a><br>
+            <!-- Collapsible Button to Reveal Photos -->
+            <button class="collapsible">Show Harborwalk Image</button>
+            <div class="content">
+                <a href="https://harborhack-24.devpost.com/" class="image fit">
+                    <img src="images/Harborwalk.jpg" alt="" />
+                </a>
+            </div>
+
         </article>
     </div>
 
@@ -57,6 +87,20 @@
     <script src="assets/js/main.js"></script>
 
     <script>
+        // Collapsible Button Toggle Functionality
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+
         function openImageModal(imageUrl) {
             var modal = document.getElementById('imageModal');
             var modalImg = document.getElementById('modalImage');
