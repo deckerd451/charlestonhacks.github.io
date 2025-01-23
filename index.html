@@ -308,6 +308,51 @@
                 arrowIcon.classList.add("fa-chevron-down");
             }
         }
+        var selectedImages = []; // Array to store the selected images
+
+function toggleMissionContent(event) {
+    var image = event.target;  // Capture the clicked image element
+    var newImage = getRandomImage();  // Get a new random image for the clicked card
+    image.src = newImage;  // Change the image of the clicked card
+
+    // Store the image for comparison
+    selectedImages.push(newImage);
+
+    // If two cards have been selected
+    if (selectedImages.length === 2) {
+        // Check if the selected images match
+        if (selectedImages[0] === selectedImages[1]) {
+            // If they match, redirect to poster.html
+            window.location.href = 'poster.html';
+        }
+
+        // Clear the selectedImages array after checking
+        selectedImages = [];
+    }
+
+    var video = document.getElementById('missionVideo');
+    video.style.display = 'block';
+    video.style.opacity = 1;
+    video.play();
+
+    setTimeout(function() {
+        document.getElementById('missionContent').style.display = 'block';
+    }, 3000);
+
+    setTimeout(function() {
+        video.classList.add('fadeOut');
+        setTimeout(function() {
+            video.style.display = 'none';
+        }, 8000);
+    }, 100);
+
+    // Random flip effect on each image
+    var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+    setTimeout(function() {
+        image.classList.add(randomFlip);
+    }, 100);
+}
+
     </script>
 </body>
 </html>
