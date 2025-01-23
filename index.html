@@ -202,10 +202,8 @@
         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin: 0 15px;">About</a>
         <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;">Email</a>
         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility()">
-    All Events <i id="arrowIcon" class="fas fa-chevron-down"></i> <!-- Font Awesome arrow -->
-</h1>
-
-
+            All Events <i id="arrowIcon" class="fas fa-chevron-down"></i> <!-- Font Awesome arrow -->
+        </h1>
         <br>
         <div class="previous-events" style="display: none;">
             <p><a href="cultureHack.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
@@ -216,6 +214,7 @@
         </div>
     </section>
 </footer>
+
 <script src="ho-script.js"></script>
 <script>
     var countdownElement = document.getElementById('countdown');
@@ -269,40 +268,29 @@
 
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
-        }, 3000);
+            document.getElementById('missionContent').style.opacity = 1;
+        }, 3000); // Delay to ensure smooth transition
 
-        // Apply fadeOut class to video and hide it after animation
-        setTimeout(function() {
-            video.classList.add('fadeOut');
-            setTimeout(function() {
-                video.style.display = 'none';
-            }, 8000); // Match this duration with the fadeOut animation
-        }, 100);
-
-        setTimeout(function() {
-            image.classList.add('flip-image');
-        }, 100);
+        setTimeout(function () {
+            video.style.opacity = 0;
+            video.pause();
+        }, 15000); // Fade video out after 15 seconds
     }
 
-    // Ensure the video starts playing at a slightly reduced speed
-    document.getElementById('missionVideo').onloadeddata = function() {
-        this.playbackRate = 0.75;
-    };
     function toggleVisibility() {
-    var previousEvents = document.querySelector('.previous-events');
-    var arrowIcon = document.getElementById('arrowIcon');
-    
-    if (previousEvents.style.display === "none" || previousEvents.style.display === "") {
-        previousEvents.style.display = "block";
-        arrowIcon.classList.remove('fa-chevron-down');
-        arrowIcon.classList.add('fa-chevron-up');
-    } else {
-        previousEvents.style.display = "none";
-        arrowIcon.classList.remove('fa-chevron-up');
-        arrowIcon.classList.add('fa-chevron-down');
-    }
-}
+        var previousEvents = document.querySelector('.previous-events');
+        var arrowIcon = document.getElementById('arrowIcon');
 
+        if (previousEvents.style.display === "none") {
+            previousEvents.style.display = "block";
+            arrowIcon.classList.remove('fa-chevron-down');
+            arrowIcon.classList.add('fa-chevron-up');
+        } else {
+            previousEvents.style.display = "none";
+            arrowIcon.classList.remove('fa-chevron-up');
+            arrowIcon.classList.add('fa-chevron-down');
+        }
+    }
 </script>
 </body>
 </html>
