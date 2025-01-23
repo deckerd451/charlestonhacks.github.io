@@ -16,6 +16,69 @@
         body {
             max-height: 100vh;
             overflow-y: scroll;
+            font-family: Arial, sans-serif; /* Added font family for better styling */
+        }
+
+        .image {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #lightbox-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #lightbox-gallery a {
+            width: 100%;
+            max-width: 300px;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        #lightbox-gallery a:hover {
+            transform: scale(1.05);
+        }
+
+        #lightbox-gallery img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .main {
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            background-color: #f8f8f8;
+        }
+
+        footer ul.icons {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul.icons li {
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        footer ul.icons li a {
+            font-size: 24px;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        footer ul.icons li a:hover {
+            color: #0073e6;
         }
     </style>
 </head>
