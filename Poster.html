@@ -1,15 +1,17 @@
 <!DOCTYPE HTML>
-<!--
-    Charlestonhacks by INF8
-    dmhamilton1@live.com
-    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    
+    <!-- LightGallery CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/css/lightgallery.min.css">
+
+    <!-- LightGallery JS -->
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/lightgallery.umd.min.js"></script>
+
     <style>
         body {
             max-height: 100vh;
@@ -25,27 +27,53 @@
         <header class="major">
             <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
         </header>
-        <img src="images/Ab logo.png" alt="" class="image main" />
-        <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Dave good.jpg" alt="" /></a>
-        <p><b>Poster 1</b></p>
-        <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/All Tech.jpeg" alt="" /></a><br>
-	    <p><b>Poster 2</b></p>
-	      <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Hackers Wanted.jpeg" alt="" /></a><br>
-	    <p><b>Poster 3</b></p>
-	     <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Poster 3.jpeg" alt="" /></a><br>
-	    <p><b>Poster 4</b></p>
-	    <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Possum Poster 5.jpeg" alt="" /></a><br>
-	    <p><b>Poster 5</b></p>
-	    <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Final-Countdown-8-days-left.jpg" alt="" /></a><br>
-	    <p><b>Poster 6</b></p>
-	    <a class="image main" href="https://compsci.cofc.edu/harbor-walk.php"><img src="images/Possum-QR.jpg" alt="" /></a><br>
-	    <p><b>Poster 7</b></p>
-       
+        
+        <!-- Lightbox Gallery -->
+        <div id="lightbox-gallery">
+            <a href="images/Ab logo.png" data-lightbox="gallery">
+                <img src="images/Ab logo.png" alt="" class="image main" />
+            </a>
+            
+            <a href="images/Dave good.jpg" data-lightbox="gallery">
+                <img src="images/Dave good.jpg" alt="" />
+            </a>
+            <p><b>Poster 1</b></p>
+
+            <a href="images/All Tech.jpeg" data-lightbox="gallery">
+                <img src="images/All Tech.jpeg" alt="" />
+            </a><br>
+            <p><b>Poster 2</b></p>
+
+            <a href="images/Hackers Wanted.jpeg" data-lightbox="gallery">
+                <img src="images/Hackers Wanted.jpeg" alt="" />
+            </a><br>
+            <p><b>Poster 3</b></p>
+
+            <a href="images/Poster 3.jpeg" data-lightbox="gallery">
+                <img src="images/Poster 3.jpeg" alt="" />
+            </a><br>
+            <p><b>Poster 4</b></p>
+
+            <a href="images/Possum Poster 5.jpeg" data-lightbox="gallery">
+                <img src="images/Possum Poster 5.jpeg" alt="" />
+            </a><br>
+            <p><b>Poster 5</b></p>
+
+            <a href="images/Final-Countdown-8-days-left.jpg" data-lightbox="gallery">
+                <img src="images/Final-Countdown-8-days-left.jpg" alt="" />
+            </a><br>
+            <p><b>Poster 6</b></p>
+
+            <a href="images/Possum-QR.jpg" data-lightbox="gallery">
+                <img src="images/Possum-QR.jpg" alt="" />
+            </a><br>
+            <p><b>Poster 7</b></p>
+        </div>
+
         <a class="image main" href="https://discord.gg/2dJxjUbK"><img src="images/Discord Logo-02.png" alt="" /></a><br>
 
-         <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
+        <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
 
-        
     </article>
 </div>
 
@@ -53,28 +81,27 @@
 <footer id="footer">
     <section class="alt">
         <h3>harborHack Address</h3>
-        <p><a href="https://maps.google.com/maps?q=Harbor+Walk 360+Concord+St.,Charleston,+SC+29401" target="_blank">Harbor Walk East and West, 360 Concord St.,<br />Charleston, SC 29401</a></p>
+        <p><a href="https://maps.google.com/maps?q=Harbor+Walk+360+Concord+St.,Charleston,+SC+29401" target="_blank">Harbor Walk East and West, 360 Concord St.,<br />Charleston, SC 29401</a></p>
     </section>
      <section>
         <h3>Past Events <br> 
-		Other Initiatives</h3>
+        Other Initiatives</h3>
         <p><a href="summerhack.html"_blank">Summer Hack<br /></a></p>
-	    <p><a href="aboutus.html"_blank">About Us</a></p>
+        <p><a href="aboutus.html"_blank">About Us</a></p>
     </section>
     <section>
         <h3>Email</h3>
         <a href="mailto:hello@charlestonhacks.com">hello@charlestonhacks.com</a>
-
     </section>
     <!-- Social Media Links in Footer -->
-        <section>
-            <ul class="icons">
-                <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-            </ul>
-        </section>
+    <section>
+        <ul class="icons">
+            <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+        </ul>
+    </section>
 </footer>
 
 <!-- Scripts -->
@@ -86,10 +113,10 @@
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
 
+<script>
+    // Initialize the lightbox
+    lightGallery(document.getElementById('lightbox-gallery'));
+</script>
+
 </body>
 </html>
-
-
-
-
-
