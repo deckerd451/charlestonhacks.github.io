@@ -105,40 +105,46 @@
             color: #FF6347;
         }
 
-        /* Mobile Responsive Adjustments */
-        @media (max-width: 768px) {
-            .game-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile screens */
-                gap: 15px;
-                padding: 10px;
-            }
+      <style>
+    /* Other styles remain the same */
 
-            .card {
-                height: 180px; /* Slightly smaller height for mobile */
-            }
+    /* Mobile Responsive Adjustments */
+    @media (max-width: 768px) {
+        .game-container {
+            grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile screens */
+            gap: 15px;
+            padding: 10px;
+            grid-auto-rows: 180px; /* Automatically adjust row height */
         }
 
-        /* Small Screen (Mobile) Adjustments */
-        @media (max-width: 480px) {
-            .game-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
-                gap: 10px;
-                padding: 5px;
-            }
-
-            .card {
-                height: 150px; /* Smaller height for small mobile screens */
-            }
-
-            .card-front img, .card-back img {
-                object-fit: cover;
-            }
-
-            .backstory {
-                font-size: 14px; /* Smaller text on mobile for better readability */
-                padding: 15px;
-            }
+        .card {
+            height: 180px; /* Consistent card height for mobile */
         }
+    }
+
+    /* Small Screen (Mobile) Adjustments */
+    @media (max-width: 480px) {
+        .game-container {
+            grid-template-columns: repeat(2, 1fr); /* 2 columns on small mobile */
+            gap: 10px;
+            padding: 5px;
+            grid-auto-rows: 150px; /* Adjust for smaller screens */
+        }
+
+        .card {
+            height: 150px; /* Smaller height for very small mobile screens */
+        }
+
+        .card-front img, .card-back img {
+            object-fit: cover;
+        }
+
+        .backstory {
+            font-size: 14px; /* Smaller text for better readability */
+            padding: 15px;
+        }
+    }
+
     </style>
 </head>
 <body>
