@@ -70,26 +70,6 @@
             100% { opacity: 0; }
         }
 
-        #missionContent {
-            animation: fadeIn 7s ease forwards;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: rgba(0, 0, 0, 0);
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 1;
-            opacity: 0;
-        }
-
-        #missionContent p, #missionContent button {
-            color: white;
-        }
-
         @keyframes flipImageX {
             0% { transform: rotateX(0deg); opacity: 1; }
             50% { transform: rotateX(180deg); opacity: 1; }
@@ -108,6 +88,26 @@
 
         .flip-image-y {
             animation: flipImageY 4s ease forwards;
+        }
+
+        #missionContent {
+            animation: fadeIn 7s ease forwards;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: rgba(0, 0, 0, 0);
+            padding: 20px;
+            text-align: center;
+            display: none;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        #missionContent p, #missionContent button {
+            color: white;
         }
 
         #countdownWrapper {
@@ -170,10 +170,10 @@
             <header class="major">
                 <div class="panel">
                     <div class="card-container">
-                        <a class="image main" id="missionImage" onclick="toggleMissionContent()">
+                        <a class="image main" id="missionImage" onclick="toggleMissionContent(event)">
                             <img src="images/Front.png" alt="CharlestonHacks" />
                         </a>
-                        <a class="image main" id="missionImage2" onclick="toggleMissionContent()">
+                        <a class="image main" id="missionImage2" onclick="toggleMissionContent(event)">
                             <img src="images/Front.png" alt="CharlestonHacks" />
                         </a>
                     </div>
@@ -268,9 +268,9 @@
             return cardImages[randomIndex];
         }
 
-        function toggleMissionContent() {
-            var image = document.querySelector('#missionImage, #missionImage2');
-            image.src = getRandomImage();
+        function toggleMissionContent(event) {
+            var image = event.target;  // Capture the clicked image element
+            image.src = getRandomImage();  // Change the image of the clicked card
 
             var video = document.getElementById('missionVideo');
             video.style.display = 'block';
@@ -288,6 +288,7 @@
                 }, 8000);
             }, 100);
 
+            // Random flip effect on each image
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             setTimeout(function() {
                 image.classList.add(randomFlip);
