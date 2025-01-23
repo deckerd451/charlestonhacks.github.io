@@ -30,13 +30,15 @@
 
         .card {
             width: 100%;
-            height: 200px; /* Fixed height for consistency */
+            height: 0;
+            padding-bottom: 150%; /* Maintains aspect ratio */
             perspective: 1000px;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .card-inner {
@@ -134,10 +136,11 @@
                 grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile screens */
                 gap: 15px;
                 padding: 10px;
+                grid-template-rows: repeat(3, auto); /* 3 rows for 6 cards */
             }
 
             .card {
-                height: 180px; /* Slightly smaller height for mobile */
+                padding-bottom: 150%; /* Maintains aspect ratio */
             }
         }
 
@@ -147,10 +150,11 @@
                 grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
                 gap: 10px;
                 padding: 5px;
+                grid-template-rows: repeat(3, auto); /* 3 rows for 6 cards */
             }
 
             .card {
-                height: 150px; /* Smaller height for small mobile screens */
+                padding-bottom: 150%; /* Keeps original aspect ratio */
             }
 
             .card-front img, .card-back img {
