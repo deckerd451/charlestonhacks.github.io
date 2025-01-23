@@ -7,6 +7,18 @@
         <title>Home</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
+            .logo-container {
+    display: inline-block; /* Allows the container to size itself around the content */
+    padding: 0; /* Remove any default padding */
+    margin: 0; /* Remove any default margin */
+}
+
+.logo-container img {
+    display: block; /* Removes any space below the image */
+    width: auto; /* Ensures the logo keeps its original size */
+    height: auto; /* Ensures the logo keeps its original aspect ratio */
+}
+
             /* Resetting default margin and padding */
             body, h1, h2, h3, p, ul {
                 margin: 0;
@@ -179,14 +191,19 @@
                                 Your browser does not support the video tag.
                             </video>
                         </a>
-                        <div id="missionContent">
-                            <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
-                            <div class="body-text">
-                                <p>
-                                    <a href="https://www.meetup.com/charlestonhacks/events/305361555/">
-                                        <img src="images/GGJ.png" alt="Global Game Jam" class="event-logo" style="width: 900px; height: auto;">
-                                    </a>
-                                </p>
+                        <div class="logo-container">
+    <a href="https://charlestonhacks.mailchimpsites.com/" target="_blank">
+        <img src="images/charlestonhacks-logo.png" alt="CharlestonHacks Logo" class="lightbox-trigger">
+    </a>
+</div>
+
+                                <div class="event-logo-container">
+    <a href="https://www.meetup.com/charlestonhacks/events/305361555/">
+        <img src="images/GGJ.png" alt="Global Game Jam" class="event-logo" style="width: 900px; height: auto;">
+    </a>
+</div>
+
+
                                 <p>
                                     <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
                                         CharlestonHacks in the news
