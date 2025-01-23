@@ -29,10 +29,12 @@
         }
 
         .card {
-            width: 150px;
+            width: 100%;
+            max-width: 150px;
             height: 200px;
             perspective: 1000px;
             cursor: pointer;
+            transition: transform 0.3s ease-in-out;
         }
 
         .card-inner {
@@ -94,6 +96,45 @@
         footer a:hover {
             color: #FF6347;
         }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on larger mobile screens */
+                grid-template-rows: repeat(3, 1fr);    /* 3 rows */
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .card {
+                max-width: 100%;
+                height: 180px; /* Slightly smaller height for better mobile experience */
+            }
+        }
+
+        /* Small Screen (Mobile) Adjustments */
+        @media (max-width: 480px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+                grid-template-rows: repeat(3, 1fr);    /* 3 rows on mobile */
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .card {
+                max-width: 100%;
+                height: 150px; /* Reduced height for smaller screens */
+            }
+
+            .card-front img {
+                object-fit: cover; /* Ensure image covers the front without distortion */
+            }
+
+            .backstory {
+                font-size: 14px; /* Smaller text on mobile for better readability */
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -121,7 +162,9 @@
                 <div class="card-front">
                     <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
                 </div>
-                <div class="card-back">Descartes</div>
+                <div class="card-back">
+                    <img src="images/descartes.png" alt="Descartes Card Back" style="width:100%; height:100%; object-fit: cover;">
+                </div>
             </div>
         </div>
 
@@ -130,7 +173,9 @@
                 <div class="card-front">
                     <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
                 </div>
-                <div class="card-back">Descartes</div>
+                <div class="card-back">
+                    <img src="images/descartes.png" alt="Descartes Card Back" style="width:100%; height:100%; object-fit: cover;">
+                </div>
             </div>
         </div>
 
@@ -157,7 +202,6 @@
 
     <footer>
         <a href="index.html">Home</a>
-        <a href="mailto:hello@charlestonhacks.com">Email</a>
     </footer>
 
     <script>
@@ -179,8 +223,8 @@
             const shuffledCards = allCards.sort(() => Math.random() - 0.5);
 
             shuffledCards.forEach((card, index) => {
-                const gridColumn = index % 3 + 1;  // 3 columns in grid
-                const gridRow = Math.floor(index / 3) + 1;  // 2 rows in grid
+                const gridColumn = index % 2 + 1;  // 2 columns in grid
+                const gridRow = Math.floor(index / 2) + 1;  // 3 rows in grid
 
                 card.style.gridColumn = gridColumn;
                 card.style.gridRow = gridRow;
