@@ -14,26 +14,21 @@
 
         /* General styles */
         body {
-            background-image: url('images/image1.png'); /* Your image path */
+            background-image: url('images/image1.png'); /* Initial image as background */
             background-size: cover;
             background-position: center;
-            color: black;
+            color: white;
             font-family: 'Britannic Bold', Arial, sans-serif;
             overflow-x: hidden;
             position: relative;
             text-align: center;
+            height: 100vh; /* Ensure full height */
+            margin: 0;
+            transition: background-color 1s ease-in-out; /* Smooth transition for background change */
         }
 
-        .image-wrapper {
-            background-color: black; /* Black background behind the image */
-            display: inline-block; /* Makes the wrapper only as wide as the image */
-            padding: 10px; /* Optional, add padding around the image */
-        }
-
-        #image1 {
-            display: block; /* Ensures the image takes up the full width of its container */
-            margin: 0 auto; /* Centers the image horizontally inside the div */
-            max-width: 100%; /* Makes the image responsive */
+        body.video-mode {
+            background-color: black; /* Black background when video is shown */
         }
 
         .panel {
@@ -46,56 +41,47 @@
             flex-direction: column;
         }
 
-        .panel img {
+        #missionImage {
             max-width: 100%;
             height: auto;
             display: block;
             margin: 0 auto;
-            transition: transform 3s, opacity 3s;
+            transition: opacity 1s ease-in-out;
         }
 
-        .panel video {
+        #missionVideo {
+            display: none; /* Hide video initially */
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 3s ease-in-out;
-        }
-
-        @media (max-width: 768px) {
-            .panel img {
-                max-width: 90%;
-            }
         }
 
         #missionContent {
-            animation: fadeIn 7s ease forwards;
+            display: none; /* Hidden initially */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 400px;
-            background-color: rgba(0, 0, 0, 0);
             padding: 20px;
-            text-align: center;
-            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
             z-index: 1;
-            opacity: 0;
         }
 
-        #missionContent p, #missionContent button {
-            color: white;
+        .logo {
+            margin-bottom: 20px;
+            width: 70%;
+            height: auto;
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        .event-logo {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
         }
 
         #countdownWrapper {
@@ -108,38 +94,25 @@
             color: #FFFF00;
         }
 
-        .logo {
-            margin-bottom: 20px;
-        }
-
-        .event-logo {
-            margin-bottom: 20px;
-        }
-
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
-        }
-
-        #previousEventsToggle {
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-
-        .body-text {
-            margin: 30px 0;
-        }
-
-        .body-text a {
+        .body-text p, .body-text a {
             color: white;
         }
 
-        .body-text p {
-            margin-bottom: 10px;
+        footer {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+        }
+
+        footer a {
+            color: #FFFF00;
+            font-size: 20px;
+            margin: 0 15px;
         }
     </style>
 </head>
-<body class="is-preload">
+<body>
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -152,11 +125,11 @@
                         </video>
                     </a>
                     <div id="missionContent">
-                        <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                        <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo">
                         <div class="body-text">
                             <p>
                                 <a href="https://www.meetup.com/charlestonhacks/events/305361555/">
-                                    <img src="images/GGJ.png" alt="Global Game Jam" class="event-logo" style="width: 900px; height: auto;">
+                                    <img src="images/GGJ.png" alt="Global Game Jam" class="event-logo">
                                 </a>
                             </p>
                             <p>
@@ -171,7 +144,7 @@
                             </p>
                         </div>
                         <div id="countdownWrapper">
-                            <p class="info"><b>Countdown to Global Game Jam:</b></p>
+                            <p><b>Countdown to Global Game Jam:</b></p>
                             <div id="countdown"></div>
                         </div>
                     </div>
@@ -181,26 +154,27 @@
     </div>
 
     <footer>
-        <a href="https://harborhack-24.devpost.com/" style="color: #00FF00; font-size: 20px; margin: 0 15px;">Previous Event</a>
-        <section>
-            <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin: 0 15px;">About</a>
-            <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;">Email</a>
-            <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility()">
-                All Events <i id="arrowIcon" class="fas fa-chevron-down"></i>
-            </h1>
-            <div class="previous-events" style="display: none;">
-                <p><a href="cultureHack.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
-                <p><a href="breakthroughHack.html" style="color: white;">HarborHack (Fall 2024)</a></p>
-                <p><a href="inspireHack.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
-                <p><a href="https://hackops.devpost.com/" style="color: white;">HackOps (Spring 2024)</a></p>
-                <p><a href="harborhack.html" style="color: white;">harborHack (23)</a></p>
-            </div>
-        </section>
+        <a href="https://harborhack-24.devpost.com/">Previous Event</a>
+        <a href="aboutus.html" target="_blank">About</a>
+        <a href="mailto:hello@charlestonhacks.com">Email</a>
     </footer>
 
-    <script src="ho-script.js"></script>
     <script>
-        // Your script logic here...
+        // Function to handle the click on the mission image to show content and video
+        function toggleMissionContent() {
+            // Change background color to black
+            document.body.classList.add('video-mode');
+
+            // Hide the image and show the video
+            const missionImage = document.getElementById('missionImage');
+            const missionVideo = document.getElementById('missionVideo');
+            const missionContent = document.getElementById('missionContent');
+
+            missionImage.style.display = 'none'; // Hide the image
+            missionVideo.style.display = 'block'; // Show the video
+            missionVideo.play(); // Start the video
+            missionContent.style.display = 'block'; // Show the mission content
+        }
     </script>
 </body>
 </html>
