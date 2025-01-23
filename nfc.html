@@ -20,7 +20,7 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+            grid-template-columns: repeat(4, 1fr); /* 4 columns */
             gap: 20px;
             justify-content: center;
             margin-top: 50px;
@@ -30,21 +30,24 @@
 
         .card {
             width: 100%;
-            position: relative; /* For maintaining aspect ratio */
-            padding-bottom: 150%; /* Aspect ratio trick (2:3) */
+            height: 200px; /* Fixed height for consistency */
             perspective: 1000px;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;  /* Ensure it's clickable */
+            z-index: 10;  /* Make sure it's above other elements */
         }
 
         .card-inner {
-            position: absolute; /* Take full size of card */
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
             transition: transform 0.5s;
+            position: absolute; /* Position it relative to the card */
+            z-index: 5;  /* Lower than card */
         }
 
         .card.flipped .card-inner {
@@ -56,6 +59,7 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
+            z-index: 10;  /* Ensure the front and back are on top */
         }
 
         .card-front img, .card-back img {
@@ -136,6 +140,10 @@
                 gap: 15px;
                 padding: 10px;
             }
+
+            .card {
+                height: 180px; /* Slightly smaller height for mobile */
+            }
         }
 
         /* Small Screen (Mobile) Adjustments */
@@ -147,7 +155,7 @@
             }
 
             .card {
-                padding-bottom: 150%; /* Ensures aspect ratio is maintained on small screens */
+                height: 150px; /* Smaller height for small mobile screens */
             }
 
             .card-front img, .card-back img {
@@ -232,13 +240,83 @@
 
     <div class="backstory" id="backstory"></div>
 
+    <!-- Lightbox for Astrid -->
+    <div id="astridLightbox" class="lightbox">
+        <a href="#" class="close-lightbox">&times;</a>
+        <img src="images/Astridstory.png" alt="Astrid Backstory">
+    </div>
+
     <footer>
         <a href="index.html">Home</a>
         <a href="mailto:hello@charlestonhacks.com">Email</a>
     </footer>
 
     <script>
-        // Add your game logic here (e.g., card flipping, matching)
+        const cards = document.querySelectorAll('.card');
+        let flippedCards = [];
+        let matchedCards = [];
+
+        const backstoryContainer = document.getElementById('backstory');
+        const astridLightbox = document.getElementById('astridLightbox');
+
+        // Backstory data
+        const backstories = {
+            'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+            'descartes': 'Descartes - The Hidden Path: A brilliant philosopher on a journey to uncover the truth.',
+            'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.'
+        };
+
+        function shuffleCards() {
+            const allCards = Array.from(cards);
+            const shuffledCards = allCards.sort(() => Math.random() - 0.5);
+
+            shuffledCards.forEach((card, index) => {
+                const gridColumn = index % 4 + 1;  // 4 columns in grid
+                const gridRow = Math.floor(index / 4) + 1;  // dynamic rows
+
+                card.style.gridColumn = gridColumn;
+                card.style.gridRow = gridRow;
+            });
+        }
+
+        shuffleCards(); // Randomize the position of the cards when the game loads
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (flippedCards.length < 2 && !card.classList.contains('flipped') && !matchedCards.includes(card)) {
+                    card.classList.add('flipped');
+                    flippedCards.push(card);
+
+                    if (flippedCards.length === 2) {
+                        checkMatch();
+                    }
+                }
+            });
+        });
+
+        function checkMatch() {
+            const [firstCard, secondCard] = flippedCards;
+
+            if (firstCard.dataset.character === secondCard.dataset.character) {
+                matchedCards.push(firstCard, secondCard);
+                showBackstory(firstCard.dataset.character);
+                flippedCards = [];
+            } else {
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function showBackstory(character) {
+            if (character === 'astrid') {
+                astridLightbox.style.display = 'flex';  // Show lightbox
+            }
+            backstoryContainer.style.display = 'block';
+            backstoryContainer.textContent = backstories[character];
+        }
     </script>
 </body>
 </html>
