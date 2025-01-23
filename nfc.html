@@ -30,15 +30,16 @@
 
         .card {
             width: 100%;
-            height: 200px; /* Fixed height for consistency */
+            max-width: 200px; /* Maximum width for smaller cards */
+            aspect-ratio: 2/3; /* Maintain original aspect ratio */
             perspective: 1000px;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;  /* Ensure it's clickable */
-            z-index: 10;  /* Make sure it's above other elements */
+            position: relative;
+            z-index: 10;
         }
 
         .card-inner {
@@ -46,8 +47,8 @@
             height: 100%;
             transform-style: preserve-3d;
             transition: transform 0.5s;
-            position: absolute; /* Position it relative to the card */
-            z-index: 5;  /* Lower than card */
+            position: absolute;
+            z-index: 5;
         }
 
         .card.flipped .card-inner {
@@ -59,7 +60,7 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            z-index: 10;  /* Ensure the front and back are on top */
+            z-index: 10;
         }
 
         .card-front img, .card-back img {
@@ -142,7 +143,8 @@
             }
 
             .card {
-                height: 180px; /* Slightly smaller height for mobile */
+                max-width: 150px; /* Smaller max width for mobile */
+                aspect-ratio: 2/3; /* Maintain original aspect ratio */
             }
         }
 
@@ -155,7 +157,8 @@
             }
 
             .card {
-                height: 150px; /* Smaller height for small mobile screens */
+                max-width: 120px; /* Smaller max width for small mobile screens */
+                aspect-ratio: 2/3; /* Maintain original aspect ratio */
             }
 
             .card-front img, .card-back img {
