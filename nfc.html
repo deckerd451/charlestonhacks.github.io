@@ -24,6 +24,9 @@
             justify-content: center;
             gap: 20px;
             margin-top: 50px;
+            position: relative;
+            width: 900px; /* Adjust the width of the container */
+            height: 600px; /* Adjust the height of the container */
         }
 
         .card {
@@ -31,6 +34,7 @@
             height: 200px;
             perspective: 1000px;
             cursor: pointer;
+            position: absolute;
         }
 
         .card-inner {
@@ -95,7 +99,7 @@
     </style>
 </head>
 <body>
-    <div class="game-container">
+    <div class="game-container" id="game-container">
         <div class="card" data-character="astrid">
             <div class="card-inner">
                 <div class="card-Front">?</div>
@@ -148,6 +152,7 @@
 
     <script>
         const cards = document.querySelectorAll('.card');
+        const gameContainer = document.getElementById('game-container');
         let flippedCards = [];
         let matchedCards = [];
 
@@ -159,6 +164,21 @@
             'descartes': 'Descartes - The Hidden Path: A brilliant philosopher on a journey to uncover the truth.',
             'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.'
         };
+
+        function shuffleCards() {
+            const allCards = Array.from(cards);
+            const shuffledCards = allCards.sort(() => Math.random() - 0.5);
+
+            shuffledCards.forEach((card, index) => {
+                const x = Math.random() * (gameContainer.offsetWidth - card.offsetWidth);
+                const y = Math.random() * (gameContainer.offsetHeight - card.offsetHeight);
+
+                card.style.left = `${x}px`;
+                card.style.top = `${y}px`;
+            });
+        }
+
+        shuffleCards(); // Randomize the position of the cards when the game loads
 
         cards.forEach(card => {
             card.addEventListener('click', () => {
