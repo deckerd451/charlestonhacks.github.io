@@ -20,8 +20,8 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: repeat(3, 150px); /* 3 columns, 150px wide */
-            grid-template-rows: repeat(2, 200px);    /* 2 rows, 200px tall */
+            grid-template-columns: repeat(3, 150px); /* Default 3 columns for larger screens */
+            grid-template-rows: repeat(2, 200px);    /* Default 2 rows */
             gap: 20px;
             justify-content: center;
             margin-top: 50px;
@@ -93,6 +93,26 @@
 
         footer a:hover {
             color: #FF6347;
+        }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: repeat(2, 150px);  /* 2 columns on medium screens */
+                grid-template-rows: repeat(3, 200px);     /* 3 rows */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                grid-template-columns: 1fr;  /* 1 column on small screens */
+                grid-template-rows: repeat(6, 200px); /* 6 rows */
+            }
+
+            .card {
+                width: 100px;  /* Smaller card size for mobile */
+                height: 150px;
+            }
         }
     </style>
 </head>
