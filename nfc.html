@@ -12,7 +12,6 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
 
         h2, h3 {
@@ -21,38 +20,28 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 columns */
-            gap: 30px; /* Increased gap between cards */
+            grid-template-columns: repeat(4, minmax(80px, 1fr)); /* Dynamically fit 4 columns */
+            gap: 15px;
             justify-content: center;
             margin-top: 50px;
-            padding: 40px; /* Added more padding around the game container */
-            position: relative;
-            max-width: 100%; /* Ensure it doesn't exceed the screen size */
-            overflow-x: hidden; /* Prevent horizontal overflow */
+            padding: 20px;
         }
 
         .card {
             width: 100%;
-            max-width: 180px; /* Maximum width for smaller cards */
-            aspect-ratio: 3/4; /* Fix the aspect ratio */
+            max-width: 120px; /* Limit maximum size for larger screens */
+            aspect-ratio: 3/4; /* Maintain aspect ratio */
             perspective: 1000px;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 10;
-            border-radius: 10px; /* Added rounded corners for a smoother look */
+            border-radius: 10px;
         }
 
         .card-inner {
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
-            transition: transform 0.5s;
-            position: absolute;
-            z-index: 5;
+            transition: transform 0.5s ease;
+            position: relative;
         }
 
         .card.flipped .card-inner {
@@ -64,32 +53,17 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            z-index: 10;
-            border-radius: 10px; /* Match the rounded corners on both sides */
+            border-radius: 10px;
         }
 
         .card-front img, .card-back img {
             object-fit: cover;
             width: 100%;
             height: 100%;
-            border-radius: 10px; /* Ensure image fits within rounded corners */
-        }
-
-        .card-front {
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #000;
+            border-radius: 10px;
         }
 
         .card-back {
-            background-color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
             transform: rotateY(180deg);
         }
 
@@ -102,32 +76,8 @@
             font-size: 16px;
         }
 
-        /* Lightbox styles */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .lightbox img {
-            max-width: 80%;
-            max-height: 80%;
-        }
-
-        .lightbox:target {
-            display: flex;
-        }
-
         footer {
             margin-top: 50px;
-            text-align: center;
         }
 
         footer a {
@@ -141,43 +91,28 @@
             color: #FF6347;
         }
 
-        /* Mobile Responsive Adjustments */
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .game-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile screens */
-                gap: 20px; /* Reduced gap for smaller screens */
-                padding: 20px;
-                justify-items: center;
+                grid-template-columns: repeat(3, 1fr); /* 3 columns for tablets */
             }
 
             .card {
-                max-width: 150px; /* Smaller max width for mobile */
-                aspect-ratio: 3/4; /* Fix aspect ratio for mobile */
-                border-radius: 8px; /* Smaller radius on mobile */
+                max-width: 100px; /* Smaller max width for tablets */
             }
         }
 
-        /* Small Screen (Mobile) Adjustments */
         @media (max-width: 480px) {
             .game-container {
-                grid-template-columns: repeat(1, 1fr); /* 1 column on small mobile screens */
-                gap: 15px; /* Smaller gap on very small screens */
-                padding: 10px;
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for small devices */
             }
 
             .card {
-                max-width: 100%; /* Cards take full width on very small screens */
-                aspect-ratio: 3/4; /* Fix aspect ratio for small screens */
-                border-radius: 6px; /* Even smaller radius on very small screens */
-            }
-
-            .card-front img, .card-back img {
-                object-fit: cover;
+                max-width: 90px; /* Smaller cards for small screens */
             }
 
             .backstory {
-                font-size: 14px; /* Smaller text on mobile for better readability */
-                padding: 15px;
+                font-size: 14px; /* Smaller backstory text */
             }
         }
     </style>
@@ -253,81 +188,9 @@
 
     <div class="backstory" id="backstory"></div>
 
-    <!-- Lightbox for Astrid -->
-    <div id="astridLightbox" class="lightbox">
-        <a href="#" class="close-lightbox">&times;</a>
-        <img src="images/Astridstory.png" alt="Astrid Backstory">
-    </div>
-
     <footer>
         <a href="index.html">Home</a>
         <a href="mailto:hello@charlestonhacks.com">Email</a>
     </footer>
-
-    <script>
-        const cards = document.querySelectorAll('.card');
-        let flippedCards = [];
-        let matchedCards = [];
-
-        const backstoryContainer = document.getElementById('backstory');
-        const astridLightbox = document.getElementById('astridLightbox');
-
-        // Backstory data
-        const backstories = {
-            'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
-            'descartes': 'Descartes - The Hidden Path: A brilliant philosopher on a journey to uncover the truth.',
-            'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.'
-        };
-
-        function shuffleCards() {
-            const allCards = Array.from(cards);
-            const shuffledCards = allCards.sort(() => Math.random() - 0.5);
-
-            shuffledCards.forEach((card, index) => {
-                const gridColumn = index % 4 + 1;  // 4 columns in grid
-                const gridRow = Math.floor(index / 4) + 1;  // dynamic rows
-
-                card.style.gridColumn = gridColumn;
-                card.style.gridRow = gridRow;
-            });
-        }
-
-        shuffleCards(); // Randomize the position of the cards when the game loads
-
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                if (flippedCards.length < 2 && !card.classList.contains('flipped') && !matchedCards.includes(card)) {
-                    card.classList.add('flipped');
-                    flippedCards.push(card);
-
-                    if (flippedCards.length === 2) {
-                        checkMatch();
-                    }
-                }
-            });
-        });
-
-        function checkMatch() {
-            const [firstCard, secondCard] = flippedCards;
-
-            if (firstCard.dataset.character === secondCard.dataset.character) {
-                matchedCards.push(firstCard, secondCard);
-                showBackstory(firstCard.dataset.character);
-                flippedCards = [];
-            } else {
-                setTimeout(() => {
-                    firstCard.classList.remove('flipped');
-                    secondCard.classList.remove('flipped');
-                    flippedCards = [];
-                }, 1000);
-            }
-        }
-
-        function showBackstory(character) {
-            const backstory = backstories[character];
-            backstoryContainer.textContent = backstory;
-            backstoryContainer.style.display = 'block';
-        }
-    </script>
 </body>
 </html>
