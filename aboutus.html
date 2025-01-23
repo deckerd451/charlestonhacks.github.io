@@ -1,118 +1,106 @@
 <!DOCTYPE HTML>
-<!-- CharlestonHacks Page -->
-<!-- Author: Doug Hamilton -->
-<!-- Free for personal and commercial use under the CCA 3.0 license (html5up.net/license) -->
-
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>CharlestonHacks - Community for Tech Innovators</title>
-    
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
-    
+    <title>About Us - CharlestonHacks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Panel and image styling */
-        .container {
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Britannic Bold', Arial, sans-serif;
             text-align: center;
-        }
-        .panel {
-            width: 45%;
-            margin: 10px;
-            display: inline-block;
-        }
-        .panel img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Center text and elements */
-        body, h1, h2, h3, p, ul, li, a {
-            text-align: center;
+        h2, h3, p {
+            margin: 10px 0;
         }
-        img:hover {
-            transform: scale(1.1);
+
+        a {
+            color: #FFFF00;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #FF00FF;
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .panel img {
+            max-width: 90%;
+            height: auto;
+            margin: 10px 0;
+        }
+
+        .story-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .story-images img {
+            width: 200px;
+            height: auto;
             transition: transform 0.3s ease;
         }
 
-        /* Footer and social media links */
-        footer#footer {
+        .story-images img:hover {
+            transform: scale(1.1);
+        }
+
+        footer {
+            margin-top: 40px;
             text-align: center;
-            padding: 20px 0;
-        }
-        footer#footer .icons.alt {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: inline-flex;
-            gap: 20px;
-        }
-        footer#footer .icons.alt li a {
-            font-size: 24px;
-            color: #333;
-        }
-        footer#footer .icons.alt li a:hover {
-            color: #800020; /* Burgundy color for hover */
         }
 
-        /* Remove bullet points from unordered list */
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        /* Adjust list item styles */
-        li {
+        footer a {
             display: inline-block;
-            margin: 10px;
+            margin: 10px 20px;
+            font-size: 18px;
+            color: #89CFF0;
+        }
+
+        footer a:hover {
+            color: #FF6347;
         }
     </style>
-
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
-<body class="is-preload">
-
-    <!-- Main -->
+<body>
     <div id="main">
-        <!-- Header -->
-        <section class="post">
+        <article class="post featured">
             <header class="major">
-                <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" /></a>
-            </header>
-
-            <!-- About Section -->
-            <div>
-                <h2>About Us</h2>
-                <ul>
-                    <li><a href="https://southcarolinavoyager.com/?post_type=interview&p=117049" target="_blank">Doug Hamilton</a></li>
-                    <li><a href="dave.html">Dave Ingram</a></li>
-                    <li><a href="bradley.html">Bradley Dalton-Oates</a></li>
-                    <li><a href="will.html">Will Horn</a></li>
-                    <li><a href="amin.html">Amin Yachnes</a></li>
-                    <li><a href="aya.html">Aya Hojadova</a></li>
-                </ul>
-
-                <h3>Back Stories</h3>
-                <div class="story-images">
-                    <a href="images/Astridstory.png" data-lightbox="about" data-title="Astrid - A Valkyrie’s Tale">
-                        <img src="images/Astridstory.png" alt="Astrid" style="width:200px; height:auto;" />
-                    </a>
-                    <a href="images/Descartesbackstory.png" data-lightbox="about" data-title="Descartes - The Hidden Path">
-                        <img src="images/Descartesbackstory.png" alt="Descartes" style="width:200px; height:auto;" />
-                    </a>
-                    <a href="images/Medusastory.png" data-lightbox="about" data-title="Medusa - An Otherworldly Force">
-                        <img src="images/Medusastory.png" alt="Medusa" style="width:200px; height:auto;" />
-                    </a>
-                    <a href="images/Elarastory.png" data-lightbox="about" data-title="Elara - The Rogue">
-                        <img src="images/Elarastory.png" alt="Elara" style="width:200px; height:auto;" />
-                    </a>
+                <div class="panel">
+                    <h2>About Us</h2>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="https://southcarolinavoyager.com/?post_type=interview&p=117049" target="_blank">Doug Hamilton</a></li>
+                        <li><a href="dave.html">Dave Ingram</a></li>
+                        <li><a href="bradley.html">Bradley Dalton-Oates</a></li>
+                        <li><a href="will.html">Will Horn</a></li>
+                        <li><a href="amin.html">Amin Yachnes</a></li>
+                        <li><a href="aya.html">Aya Hojadova</a></li>
+                    </ul>
+                    <h3>Back Stories</h3>
+                    <div class="story-images">
+                        <img src="images/Astridstory.png" alt="Astrid - A Valkyrie’s Tale">
+                        <img src="images/Descartesbackstory.png" alt="Descartes - The Hidden Path">
+                        <img src="images/Medusastory.png" alt="Medusa - An Otherworldly Force">
+                        <img src="images/Elarastory.png" alt="Elara - The Rogue">
+                    </div>
                 </div>
-            </div>
-        </section>
+            </header>
+        </article>
     </div>
 
     <!-- Footer -->
@@ -127,15 +115,5 @@
             </ul>
         </section>
     </footer>
-
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 </body>
 </html>
