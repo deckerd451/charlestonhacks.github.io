@@ -20,28 +20,26 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, minmax(80px, 1fr)); /* Dynamically fit 4 columns */
-            gap: 15px;
+            grid-template-columns: repeat(3, 150px); /* 3 columns, 150px wide */
+            grid-template-rows: repeat(2, 200px);    /* 2 rows, 200px tall */
+            gap: 20px;
             justify-content: center;
             margin-top: 50px;
-            padding: 20px;
+            position: relative;
         }
 
         .card {
-            width: 100%;
-            max-width: 120px; /* Limit maximum size for larger screens */
-            aspect-ratio: 3/4; /* Maintain aspect ratio */
+            width: 150px;
+            height: 200px;
             perspective: 1000px;
             cursor: pointer;
-            border-radius: 10px;
         }
 
         .card-inner {
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-            position: relative;
+            transition: transform 0.5s;
         }
 
         .card.flipped .card-inner {
@@ -53,17 +51,23 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 10px;
         }
 
-        .card-front img, .card-back img {
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
+        .card-front {
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
         }
 
         .card-back {
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             transform: rotateY(180deg);
         }
 
@@ -73,11 +77,11 @@
             background-color: #222;
             padding: 20px;
             border-radius: 5px;
-            font-size: 16px;
         }
 
         footer {
             margin-top: 50px;
+            text-align: center;
         }
 
         footer a {
@@ -90,31 +94,6 @@
         footer a:hover {
             color: #FF6347;
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .game-container {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns for tablets */
-            }
-
-            .card {
-                max-width: 100px; /* Smaller max width for tablets */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .game-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns for small devices */
-            }
-
-            .card {
-                max-width: 90px; /* Smaller cards for small screens */
-            }
-
-            .backstory {
-                font-size: 14px; /* Smaller backstory text */
-            }
-        }
     </style>
 </head>
 <body>
@@ -122,66 +101,54 @@
         <div class="card" data-character="astrid">
             <div class="card-inner">
                 <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
                 </div>
-                <div class="card-back">
-                    <img src="images/Astrid.png" alt="Astrid Card Back">
-                </div>
+                <div class="card-back">Astrid</div>
             </div>
         </div>
 
         <div class="card" data-character="astrid">
             <div class="card-inner">
                 <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
                 </div>
-                <div class="card-back">
-                    <img src="images/Astrid.png" alt="Astrid Card Back">
-                </div>
+                <div class="card-back">Astrid</div>
             </div>
         </div>
 
         <div class="card" data-character="descartes">
             <div class="card-inner">
                 <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
                 </div>
-                <div class="card-back">
-                    <img src="images/descartes.png" alt="Descartes Card Back">
-                </div>
+                <div class="card-back">Descartes</div>
             </div>
         </div>
 
         <div class="card" data-character="descartes">
             <div class="card-inner">
                 <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
                 </div>
-                <div class="card-back">
-                    <img src="images/descartes.png" alt="Descartes Card Back">
-                </div>
+                <div class="card-back">Descartes</div>
             </div>
         </div>
 
         <div class="card" data-character="medusa">
             <div class="card-inner">
                 <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
                 </div>
-                <div class="card-back">
-                    <img src="images/Back5.png" alt="Medusa Card Back">
-                </div>
+                <div class="card-back">Medusa</div>
             </div>
         </div>
 
         <div class="card" data-character="medusa">
             <div class="card-inner">
                 <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
                 </div>
-                <div class="card-back">
-                    <img src="images/Back5.png" alt="Medusa Card Back">
-                </div>
+                <div class="card-back">Medusa</div>
             </div>
         </div>
     </div>
@@ -192,5 +159,69 @@
         <a href="index.html">Home</a>
         <a href="mailto:hello@charlestonhacks.com">Email</a>
     </footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        let flippedCards = [];
+        let matchedCards = [];
+
+        const backstoryContainer = document.getElementById('backstory');
+
+        // Backstory data
+        const backstories = {
+            'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+            'descartes': 'Descartes - The Hidden Path: A brilliant philosopher on a journey to uncover the truth.',
+            'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.'
+        };
+
+        function shuffleCards() {
+            const allCards = Array.from(cards);
+            const shuffledCards = allCards.sort(() => Math.random() - 0.5);
+
+            shuffledCards.forEach((card, index) => {
+                const gridColumn = index % 3 + 1;  // 3 columns in grid
+                const gridRow = Math.floor(index / 3) + 1;  // 2 rows in grid
+
+                card.style.gridColumn = gridColumn;
+                card.style.gridRow = gridRow;
+            });
+        }
+
+        shuffleCards(); // Randomize the position of the cards when the game loads
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (flippedCards.length < 2 && !card.classList.contains('flipped') && !matchedCards.includes(card)) {
+                    card.classList.add('flipped');
+                    flippedCards.push(card);
+
+                    if (flippedCards.length === 2) {
+                        checkMatch();
+                    }
+                }
+            });
+        });
+
+        function checkMatch() {
+            const [firstCard, secondCard] = flippedCards;
+
+            if (firstCard.dataset.character === secondCard.dataset.character) {
+                matchedCards.push(firstCard, secondCard);
+                showBackstory(firstCard.dataset.character);
+                flippedCards = [];
+            } else {
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function showBackstory(character) {
+            backstoryContainer.style.display = 'block';
+            backstoryContainer.textContent = backstories[character];
+        }
+    </script>
 </body>
 </html>
