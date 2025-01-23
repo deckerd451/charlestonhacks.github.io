@@ -1,40 +1,271 @@
-<style>
-    /* Other styles remain the same */
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Card Matching Game - CharlestonHacks</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
 
-    /* Mobile Responsive Adjustments */
-    @media (max-width: 768px) {
+        h2, h3 {
+            margin: 20px;
+        }
+
         .game-container {
-            grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile screens */
-            gap: 15px;
-            padding: 10px;
-            grid-auto-rows: 180px; /* Automatically adjust row height */
+            display: grid;
+            grid-template-columns: repeat(3, 150px); /* 3 columns, 150px wide */
+            grid-template-rows: repeat(2, 200px);    /* 2 rows, 200px tall */
+            gap: 20px;
+            justify-content: center;
+            margin-top: 50px;
+            position: relative;
         }
 
         .card {
-            height: 180px; /* Consistent card height for mobile */
-        }
-    }
-
-    /* Small Screen (Mobile) Adjustments */
-    @media (max-width: 480px) {
-        .game-container {
-            grid-template-columns: repeat(2, 1fr); /* 2 columns on small mobile */
-            gap: 10px;
-            padding: 5px;
-            grid-auto-rows: 150px; /* Adjust for smaller screens */
+            width: 100%;
+            max-width: 150px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .card {
-            height: 150px; /* Smaller height for very small mobile screens */
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
         }
 
-        .card-front img, .card-back img {
-            object-fit: cover;
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .card-front {
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
+        }
+
+        .card-back {
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transform: rotateY(180deg);
         }
 
         .backstory {
-            font-size: 14px; /* Smaller text for better readability */
-            padding: 15px;
+            display: none;
+            margin-top: 20px;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 5px;
         }
-    }
-</style>
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        footer a {
+            display: inline-block;
+            margin: 10px 20px;
+            font-size: 18px;
+            color: #89CFF0;
+        }
+
+        footer a:hover {
+            color: #FF6347;
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on larger mobile screens */
+                grid-template-rows: repeat(3, 1fr);    /* 3 rows */
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .card {
+                max-width: 100%;
+                height: 180px; /* Slightly smaller height for better mobile experience */
+            }
+        }
+
+        /* Small Screen (Mobile) Adjustments */
+        @media (max-width: 480px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+                grid-template-rows: repeat(3, 1fr);    /* 3 rows on mobile */
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .card {
+                max-width: 100%;
+                height: 150px; /* Reduced height for smaller screens */
+            }
+
+            .card-front img {
+                object-fit: cover; /* Ensure image covers the front without distortion */
+            }
+
+            .backstory {
+                font-size: 14px; /* Smaller text on mobile for better readability */
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container" id="game-container">
+        <div class="card" data-character="astrid">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+                <div class="card-back">Astrid</div>
+            </div>
+        </div>
+
+        <div class="card" data-character="astrid">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+                <div class="card-back">Astrid</div>
+            </div>
+        </div>
+
+        <div class="card" data-character="descartes">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+                <div class="card-back">
+                    <img src="images/descartes.png" alt="Descartes Card Back" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="descartes">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+                <div class="card-back">
+                    <img src="images/descartes.png" alt="Descartes Card Back" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="medusa">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+                <div class="card-back">Medusa</div>
+            </div>
+        </div>
+
+        <div class="card" data-character="medusa">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+                <div class="card-back">Medusa</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="backstory" id="backstory"></div>
+
+    <footer>
+        <a href="index.html">Home</a>
+    </footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        let flippedCards = [];
+        let matchedCards = [];
+
+        const backstoryContainer = document.getElementById('backstory');
+
+        // Backstory data
+        const backstories = {
+            'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+            'descartes': 'Descartes - The Hidden Path: A brilliant philosopher on a journey to uncover the truth.',
+            'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.'
+        };
+
+        function shuffleCards() {
+            const allCards = Array.from(cards);
+            const shuffledCards = allCards.sort(() => Math.random() - 0.5);
+
+            shuffledCards.forEach((card, index) => {
+                const gridColumn = index % 2 + 1;  // 2 columns in grid
+                const gridRow = Math.floor(index / 2) + 1;  // 3 rows in grid
+
+                card.style.gridColumn = gridColumn;
+                card.style.gridRow = gridRow;
+            });
+        }
+
+        shuffleCards(); // Randomize the position of the cards when the game loads
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (flippedCards.length < 2 && !card.classList.contains('flipped') && !matchedCards.includes(card)) {
+                    card.classList.add('flipped');
+                    flippedCards.push(card);
+
+                    if (flippedCards.length === 2) {
+                        checkMatch();
+                    }
+                }
+            });
+        });
+
+        function checkMatch() {
+            const [firstCard, secondCard] = flippedCards;
+
+            if (firstCard.dataset.character === secondCard.dataset.character) {
+                matchedCards.push(firstCard, secondCard);
+                showBackstory(firstCard.dataset.character);
+                flippedCards = [];
+            } else {
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function showBackstory(character) {
+            backstoryContainer.style.display = 'block';
+            backstoryContainer.textContent = backstories[character];
+        }
+    </script>
+</body>
+</html>
