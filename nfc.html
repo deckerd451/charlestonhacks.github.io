@@ -12,6 +12,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
 
         h2, h3 {
@@ -21,17 +22,19 @@
         .game-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr); /* 4 columns */
-            gap: 20px;
+            gap: 30px; /* Increased gap between cards */
             justify-content: center;
             margin-top: 50px;
-            padding: 20px;
+            padding: 40px; /* Added more padding around the game container */
             position: relative;
+            max-width: 100%; /* Ensure it doesn't exceed the screen size */
+            overflow-x: hidden; /* Prevent horizontal overflow */
         }
 
         .card {
             width: 100%;
-            max-width: 200px; /* Maximum width for smaller cards */
-            aspect-ratio: 2/3; /* Maintain original aspect ratio */
+            max-width: 180px; /* Maximum width for smaller cards */
+            aspect-ratio: 3/4; /* Fix the aspect ratio */
             perspective: 1000px;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
@@ -40,6 +43,7 @@
             align-items: center;
             position: relative;
             z-index: 10;
+            border-radius: 10px; /* Added rounded corners for a smoother look */
         }
 
         .card-inner {
@@ -61,12 +65,14 @@
             height: 100%;
             backface-visibility: hidden;
             z-index: 10;
+            border-radius: 10px; /* Match the rounded corners on both sides */
         }
 
         .card-front img, .card-back img {
             object-fit: cover;
             width: 100%;
             height: 100%;
+            border-radius: 10px; /* Ensure image fits within rounded corners */
         }
 
         .card-front {
@@ -139,27 +145,30 @@
         @media (max-width: 768px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile screens */
-                gap: 15px;
-                padding: 10px;
+                gap: 20px; /* Reduced gap for smaller screens */
+                padding: 20px;
+                justify-items: center;
             }
 
             .card {
                 max-width: 150px; /* Smaller max width for mobile */
-                aspect-ratio: 2/3; /* Maintain original aspect ratio */
+                aspect-ratio: 3/4; /* Fix aspect ratio for mobile */
+                border-radius: 8px; /* Smaller radius on mobile */
             }
         }
 
         /* Small Screen (Mobile) Adjustments */
         @media (max-width: 480px) {
             .game-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
-                gap: 10px;
-                padding: 5px;
+                grid-template-columns: repeat(1, 1fr); /* 1 column on small mobile screens */
+                gap: 15px; /* Smaller gap on very small screens */
+                padding: 10px;
             }
 
             .card {
-                max-width: 120px; /* Smaller max width for small mobile screens */
-                aspect-ratio: 2/3; /* Maintain original aspect ratio */
+                max-width: 100%; /* Cards take full width on very small screens */
+                aspect-ratio: 3/4; /* Fix aspect ratio for small screens */
+                border-radius: 6px; /* Even smaller radius on very small screens */
             }
 
             .card-front img, .card-back img {
@@ -315,11 +324,9 @@
         }
 
         function showBackstory(character) {
-            if (character === 'astrid') {
-                astridLightbox.style.display = 'flex';  // Show lightbox
-            }
+            const backstory = backstories[character];
+            backstoryContainer.textContent = backstory;
             backstoryContainer.style.display = 'block';
-            backstoryContainer.textContent = backstories[character];
         }
     </script>
 </body>
