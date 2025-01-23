@@ -158,10 +158,36 @@
 
         .card-container {
     display: flex;
-    flex-direction: column; /* Stack the cards vertically */
+    flex-direction: column;
     justify-content: center;
-    gap: 20px; /* Space between the cards */
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    min-height: 100vh; /* Ensures that the container takes the full height of the viewport */
 }
+
+.card-container .image.main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+.card-container .image.main.hidden {
+    opacity: 0; /* Hide second card initially */
+}
+
+.card-container .image.main:nth-child(2) {
+    opacity: 0; /* Hide the second card initially */
+    transition: opacity 1s ease-in-out;
+}
+
+.card-container .image.main:nth-child(2).visible {
+    opacity: 1; /* Show second card when it is scrolled into view */
+}
+
 
     </style>
 </head>
@@ -309,6 +335,24 @@
                 arrowIcon.classList.add("fa-chevron-down");
             }
         }
+        // Function to check when the second card is in the viewport
+function handleScroll() {
+    const secondCard = document.querySelector(".card-container .image.main:nth-child(2)");
+
+    // Check if the second card is in the viewport
+    if (secondCard.getBoundingClientRect().top <= window.innerHeight) {
+        secondCard.classList.add("visible"); // Make it visible
+    } else {
+        secondCard.classList.remove("visible"); // Keep it hidden when not in view
+    }
+}
+
+// Add the scroll event listener
+window.addEventListener('scroll', handleScroll);
+
+// Initial check in case the second card is already in the viewport
+handleScroll();
+
     </script>
-</body>
+    </body>
 </html>
