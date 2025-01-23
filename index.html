@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<div><br class="Apple-interchange-newline"><!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -202,8 +202,10 @@
         <a href="aboutus.html" target="_blank" style="color: #FF00FF; font-size: 20px; margin: 0 15px;">About</a>
         <a href="mailto:hello@charlestonhacks.com" style="color: #89CFF0; font-size: 20px; margin: 0 15px;">Email</a>
         <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility()">
-            All Events <i id="arrowIcon" class="fas fa-chevron-down"></i> <!-- Font Awesome arrow -->
-        </h1>
+    All Events <i id="arrowIcon" class="fas fa-chevron-down"></i> <!-- Font Awesome arrow -->
+</h1>
+
+
         <br>
         <div class="previous-events" style="display: none;">
             <p><a href="cultureHack.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
@@ -214,7 +216,6 @@
         </div>
     </section>
 </footer>
-
 <script src="ho-script.js"></script>
 <script>
     var countdownElement = document.getElementById('countdown');
@@ -268,29 +269,439 @@
 
         setTimeout(function() {
             document.getElementById('missionContent').style.display = 'block';
-            document.getElementById('missionContent').style.opacity = 1;
-        }, 3000); // Delay to ensure smooth transition
+        }, 3000);
 
-        setTimeout(function () {
-            video.style.opacity = 0;
-            video.pause();
-        }, 15000); // Fade video out after 15 seconds
+        // Apply fadeOut class to video and hide it after animation
+        setTimeout(function() {
+            video.classList.add('fadeOut');
+            setTimeout(function() {
+                video.style.display = 'none';
+            }, 8000); // Match this duration with the fadeOut animation
+        }, 100);
+
+        setTimeout(function() {
+            image.classList.add('flip-image');
+        }, 100);
     }
 
+    // Ensure the video starts playing at a slightly reduced speed
+    document.getElementById('missionVideo').onloadeddata = function() {
+        this.playbackRate = 0.75;
+    };
     function toggleVisibility() {
-        var previousEvents = document.querySelector('.previous-events');
-        var arrowIcon = document.getElementById('arrowIcon');
-
-        if (previousEvents.style.display === "none") {
-            previousEvents.style.display = "block";
-            arrowIcon.classList.remove('fa-chevron-down');
-            arrowIcon.classList.add('fa-chevron-up');
-        } else {
-            previousEvents.style.display = "none";
-            arrowIcon.classList.remove('fa-chevron-up');
-            arrowIcon.classList.add('fa-chevron-down');
-        }
+    var previousEvents = document.querySelector('.previous-events');
+    var arrowIcon = document.getElementById('arrowIcon');
+    
+    if (previousEvents.style.display === "none" || previousEvents.style.display === "") {
+        previousEvents.style.display = "block";
+        arrowIcon.classList.remove('fa-chevron-down');
+        arrowIcon.classList.add('fa-chevron-up');
+    } else {
+        previousEvents.style.display = "none";
+        arrowIcon.classList.remove('fa-chevron-up');
+        arrowIcon.classList.add('fa-chevron-down');
     }
+}
+
 </script>
 </body>
-</html>
+</html></div>
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
