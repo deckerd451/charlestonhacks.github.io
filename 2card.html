@@ -106,12 +106,21 @@
             opacity: 0;
         }
 
-        #missionContent p {
+        #missionContent p, #missionContent button {
             color: white;
         }
 
         .logo {
             margin-bottom: 20px;
+        }
+
+        .event-logo {
+            margin-bottom: 20px;
+        }
+
+        .info {
+            color: #FFFF00;
+            font-size: 20px;
         }
 
         footer a {
@@ -125,6 +134,23 @@
             display: flex;
             justify-content: center;
             gap: 20px; /* Space between the cards */
+        }
+
+        .game-button {
+            background-color: #FF6347;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .game-button:hover {
+            background-color: #FF4500;
         }
     </style>
 </head>
@@ -160,14 +186,13 @@
         <a href="index.html">Home</a>
     </footer>
 
-    <!-- Add your script here before closing </body> -->
     <script>
         var cardImages = [
-           "images/Back3.png",
+            "images/Back3.png",
             "images/Back4.png",
             "images/Back5.png",
             "images/Elara2.png",
-           "images/H.png",
+            "images/H.png",
             "images/I.png",
             "images/Aegis.png",
             "images/R.png",
@@ -177,6 +202,7 @@
 
         var selectedImages = []; // Array to store the selected images
         var selectedCards = []; // Array to store the selected card elements
+        var matchFound = false;  // Flag to track if a match has been found
 
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
@@ -196,8 +222,10 @@
             if (selectedImages.length === 2) {
                 // Check if the selected images match
                 if (selectedImages[0] === selectedImages[1]) {
-                    // If they match, open the link to the Poster.html page
-                    window.location.href = 'Poster.html';
+                    matchFound = true;  // Set flag to true when there's a match
+                    setTimeout(function() {
+                        window.location.href = 'Poster.html';  // Redirect to the Poster page
+                    }, 1000);  // Redirect with a slight delay to allow user to see the match
                 }
 
                 // Clear the selectedImages and selectedCards arrays after checking
@@ -218,7 +246,9 @@
                 video.classList.add('fadeOut');
                 setTimeout(function() {
                     video.style.display = 'none';
-                    window.location.href = 'cardmatchgame.html';  // Redirect to the game page
+                    if (!matchFound) {
+                        window.location.href = 'cardmatchgame.html';  // Redirect to the card game page if no match
+                    }
                 }, 8000);
             }, 100);
 
