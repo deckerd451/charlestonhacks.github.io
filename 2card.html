@@ -188,72 +188,105 @@
 
     <script>
         var cardImages = [
-            "images/Back3.png",
-            "images/Back4.png",
-            "images/Back5.png",
-            "images/Elara2.png",
-            "images/Aegis.png",
-            "images/Astrid.png",
-            "images/Back6.png"
-        ];
+    "images/Back3.png",
+    "images/Back4.png",
+    "images/Back5.png",
+    "images/Elara2.png",
 
-        var selectedImages = []; // Array to store the selected images
-        var selectedCards = []; // Array to store the selected card elements
-        var matchFound = false;  // Flag to track if a match has been found
+    "images/Aegis.png",
+    
+    "images/Astrid.png",
+    "images/Back6.png"
+];
 
-        function getRandomImage() {
-            var randomIndex = Math.floor(Math.random() * cardImages.length);
-            return cardImages[randomIndex];
-        }
+var selectedImages = []; // Array to store the selected images
+var selectedCards = []; // Array to store the selected card elements
+var matchFound = false;  // Flag to track if a match has been found
 
-        function toggleMissionContent(event) {
-            var image = event.target;  // Capture the clicked image element
-            var newImage = getRandomImage();  // Get a new random image for the clicked card
-            image.src = newImage;  // Change the image of the clicked card
+function getRandomImage() {
+    var randomIndex = Math.floor(Math.random() * cardImages.length);
+    return cardImages[randomIndex];
+}
 
-            // Store the image and the card element for comparison
-            selectedImages.push(newImage);
-            selectedCards.push(image);
+function toggleMissionContent(event) {
+    var image = event.target;  // Capture the clicked image element
+    var newImage = getRandomImage();  // Get a new random image for the clicked card
+    image.src = newImage;  // Change the image of the clicked card
 
-            // If two cards have been selected
-            if (selectedImages.length === 2) {
-                // Check if the selected images match
-                if (selectedImages[0] === selectedImages[1]) {
-                    matchFound = true;  // Set flag to true when there's a match
+    // Store the image and the card element for comparison
+    selectedImages.push(newImage);
+    selectedCards.push(image);
 
-                    // Special cases
-                    if (selectedImages[0] === "images/Back3.png") {
-                        setTimeout(() => window.location.href = 'images/Spotlight-Doug-insta.jpg', 1000);
-                        setTimeout(() => window.history.back(), 10000);
-                    } else if (selectedImages[0] === "images/Back5.png") {
-                        setTimeout(() => window.location.href = 'images/aya.jpg', 1000);
-                        setTimeout(() => window.history.back(), 10000);
-                    } else {
-                        setTimeout(() => window.location.href = 'Poster.html', 1000);
-                    }
-                }
-                selectedImages = [];
-                selectedCards = [];
+    // If two cards have been selected
+    if (selectedImages.length === 2) {
+        // Check if the selected images match
+        if (selectedImages[0] === selectedImages[1]) {
+            matchFound = true;  // Set flag to true when there's a match
+
+            // Special case: if both cards are "Back3.png", redirect to 'images/Spotlight-Doug-insta.jpg'
+            if (selectedImages[0] === "images/Back3.png") {
+                setTimeout(function() {
+                    window.location.href = 'images/Spotlight-Doug-insta.jpg';  // Redirect to the special image
+                }, 1000);  // Redirect with a slight delay to allow user to see the match
+
+                // Return to the previous page after 10 seconds
+                setTimeout(function() {
+                    window.history.back();  // Goes back to the previous screen after 10 seconds
+                }, 10000);  // Delay for 10 seconds before going back
             }
 
-            var video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 1;
-            video.play();
+            // Special case: if both cards are "Back5.png", redirect to 'images/aya.jpg'
+            else if (selectedImages[0] === "images/Back5.png") {
+                setTimeout(function() {
+                    window.location.href = 'images/aya.jpg';  // Redirect to the special image for Back5
+                }, 1000);  // Redirect with a slight delay to allow user to see the match
 
-            setTimeout(() => document.getElementById('missionContent').style.display = 'block', 3000);
+                // Return to the previous page after 10 seconds
+                setTimeout(function() {
+                    window.history.back();  // Goes back to the previous screen after 10 seconds
+                }, 10000);  // Delay for 10 seconds before going back
+            } 
 
-            setTimeout(() => {
-                video.classList.add('fadeOut');
-                setTimeout(() => {
-                    video.style.display = 'none';
-                    if (!matchFound) window.location.href = 'cardmatchgame.html';
-                }, 8000);
-            }, 100);
-
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            setTimeout(() => image.classList.add(randomFlip), 100);
+            // Default case: redirect to 'Poster.html'
+            else {
+                setTimeout(function() {
+                    window.location.href = 'Poster.html';  // Redirect to the Poster page
+                }, 1000);  // Redirect with a slight delay to allow user to see the match
+            }
         }
+
+        // Clear the selectedImages and selectedCards arrays after checking
+        selectedImages = [];
+        selectedCards = [];
+    }
+
+    var video = document.getElementById('missionVideo');
+    video.style.display = 'block';
+    video.style.opacity = 1;
+    video.play();
+
+    setTimeout(function() {
+        document.getElementById('missionContent').style.display = 'block';
+    }, 3000);
+
+    setTimeout(function() {
+        video.classList.add('fadeOut');
+        setTimeout(function() {
+            video.style.display = 'none';
+            if (!matchFound) {
+                window.location.href = 'cardmatchgame.html';  // Redirect to the card game page if no match
+            }
+        }, 8000);
+    }, 100);
+
+    // Random flip effect on each image
+    var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+    setTimeout(function() {
+        image.classList.add(randomFlip);
+    }, 100);
+}
+
+
     </script>
 </body>
 </html>
