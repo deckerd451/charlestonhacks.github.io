@@ -286,7 +286,10 @@
         const character = firstCard.dataset.character;
         const backstory = backstories[character]; // Get the backstory object
         
-        // Set the text content
+        // Clear previous content
+        backstoryContainer.innerHTML = ''; 
+        
+        // Set the new backstory text content
         backstoryContainer.innerHTML = `<p>${backstory.text}</p>`;
         
         // Add the image to the backstory container
@@ -307,6 +310,7 @@
         }, 1000);
     }
 }
+
 
 
         cards.forEach(card => card.addEventListener('click', () => {
