@@ -110,16 +110,6 @@
             color: white;
         }
 
-        #countdownWrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #countdown {
-            font-size: 42px;
-            color: #FFFF00;
-        }
-
         .logo {
             margin-bottom: 20px;
         }
@@ -133,23 +123,6 @@
             font-size: 20px;
         }
 
-        #previousEventsToggle {
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-
-        .body-text {
-            margin: 30px 0;
-        }
-
-        .body-text a {
-            color: white;
-        }
-
-        .body-text p {
-            margin-bottom: 10px;
-        }
-
         footer a {
             color: white;
             font-size: 20px;
@@ -161,6 +134,23 @@
             display: flex;
             justify-content: center;
             gap: 20px; /* Space between the cards */
+        }
+
+        .game-button {
+            background-color: #FF6347;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .game-button:hover {
+            background-color: #FF4500;
         }
     </style>
 </head>
@@ -186,14 +176,9 @@
                     <div id="missionContent">
                         <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                         <div class="body-text">
-                            <p>
-                                <a href="cardmatchgame.html" target="_blank">Play the Card Match Game</a>
-                            </p>
+                            <p>Join us for the fun and challenge of the card game!</p>
                         </div>
-                        <div id="countdownWrapper">
-                            <p class="info"><b>Countdown to Global Game Jam:</b></p>
-                            <div id="countdown"></div>
-                        </div>
+                        <a href="cardgame.html" class="game-button">Play the Card Game</a>
                     </div>
                 </div>
             </header>
@@ -205,23 +190,6 @@
     </footer>
 
     <script>
-        var countdownElement = document.getElementById('countdown');
-        var countDownDate = new Date("January 24, 2025 17:00:00").getTime();
-
-        var countdownFunction = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                countdownElement.innerHTML = "Countdown-Global Game Jam";
-            }
-        }, 1000);
-
         var cardImages = [
             "images/Back.png",
             "images/Back2.png",
