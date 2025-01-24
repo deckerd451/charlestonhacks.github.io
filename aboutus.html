@@ -3,89 +3,99 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>About Us - CharlestonHacks</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Card Matching Game - CharlestonHacks</title>
     <style>
         body {
             background-color: black;
             color: white;
-            font-family: 'Britannic Bold', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
-            overflow-x: hidden;
             margin: 0;
             padding: 0;
         }
 
-        h2, h3, p {
-            margin: 10px 0;
-        }
-
-        a {
-            color: #FFFF00;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: #FF00FF;
-        }
-
-        .panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        h2, h3 {
             margin: 20px;
         }
 
-        .panel img {
-            max-width: 90%;
-            height: auto;
-            margin: 10px 0;
-            cursor: pointer;
-        }
-
-        .story-images {
-            display: flex;
-            flex-wrap: wrap;
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 150px); /* 4 columns */
+            grid-template-rows: repeat(2, 200px); /* 2 rows */
+            gap: 20px;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            margin-top: 50px;
+            position: relative;
         }
 
-        .story-images img {
-            width: 200px;
-            height: auto;
-            transition: transform 0.3s ease;
+        .card {
+            width: 100%;
+            max-width: 150px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .story-images img:hover {
-            transform: scale(1.1);
-        }
-
-        /* Lightbox Styles */
-        .lightbox-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        .card-inner {
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
         }
 
-        .lightbox-content {
-            max-width: 80%;
-            max-height: 80%;
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
         }
 
-        .lightbox-content img {
+        .card-front, .card-back {
+            position: absolute;
             width: 100%;
-            height: auto;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .card-front {
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
+        }
+
+        .card-back {
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* New style for card-front to match the proportions of the back */
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .backstory {
+            display: none;
+            margin-top: 20px;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 5px;
         }
 
         footer {
-            margin-top: 40px;
+            margin-top: 50px;
             text-align: center;
         }
 
@@ -99,67 +109,178 @@
         footer a:hover {
             color: #FF6347;
         }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .card {
+                height: 180px;
+            }
+        }
+
+        /* Small Screen (Mobile) Adjustments */
+        @media (max-width: 480px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .card {
+                height: 150px;
+            }
+
+            .backstory {
+                font-size: 14px;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="main">
-        <article class="post featured">
-            <header class="major">
-                <div class="panel">
-                    <h2>About Us</h2>
-                    <ul style="list-style: none; padding: 0;">
-                        <li><a href="https://southcarolinavoyager.com/?post_type=interview&p=117049" target="_blank">Doug Hamilton</a></li>
-                        <li><a href="dave.html">Dave Ingram</a></li>
-                        <li><a href="bradley.html">Bradley Dalton-Oates</a></li>
-                        <li><a href="will.html">Will Horn</a></li>
-                        <li><a href="amin.html">Amin Yachnes</a></li>
-                        <li><a href="aya.html">Aya Hojadova</a></li>
-                    </ul>
-                    <h3>Back Stories</h3>
-                    <div class="story-images">
-                        <img src="images/Astridstory.png" alt="Astrid - A Valkyrie’s Tale" class="lightbox-trigger">
-                        <img src="images/Descartesbackstory.png" alt="Descartes - The Hidden Path" class="lightbox-trigger">
-                        <img src="images/Medusastory.png" alt="Medusa - An Otherworldly Force" class="lightbox-trigger">
-                        <img src="images/Elarastory.png" alt="Elara - The Rogue" class="lightbox-trigger">
-                    </div>
+    <div class="game-container" id="game-container">
+        <div class="card" data-character="astrid">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
                 </div>
-            </header>
-        </article>
-    </div>
+                <div class="card-back">
+                    <img src="images/Astrid.png" alt="Astrid Card Back">
+                </div>
+            </div>
+        </div>
 
-    <!-- Lightbox Overlay -->
-    <div class="lightbox-overlay" id="lightbox-overlay">
-        <div class="lightbox-content">
-            <img id="lightbox-image" src="" alt="Lightbox Image">
+        <div class="card" data-character="astrid">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Astrid.png" alt="Astrid Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="medusa">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back5.png" alt="Medusa Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="medusa">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back5.png" alt="Medusa Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="alexandor">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back4.png" alt="Alexandor Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="alexandor">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back4.png" alt="Alexandor Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="aegis">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Aegis.png" alt="Aegis Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="aegis">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Aegis.png" alt="Aegis Card Back">
+                </div>
+            </div>
         </div>
     </div>
 
+    <div class="backstory" id="backstory"></div>
+
     <footer>
         <a href="index.html">Home</a>
-        <a href="mailto:hello@charlestonhacks.com">Email</a>
-        <a href="https://harborhack-24.devpost.com/">Previous Event</a>
+        <a href="cardmatchgame.html">Back Stories</a> <!-- Updated link -->
     </footer>
 
     <script>
-        // Get the lightbox elements
-        const lightboxOverlay = document.getElementById("lightbox-overlay");
-        const lightboxImage = document.getElementById("lightbox-image");
+        const cards = document.querySelectorAll('.card');
+        let flippedCards = [];
+        let matchedCards = [];
 
-        // Get all images with the class "lightbox-trigger"
-        const lightboxTriggers = document.querySelectorAll(".lightbox-trigger");
+        const backstoryContainer = document.getElementById('backstory');
 
-        // Add event listeners to open the lightbox
-        lightboxTriggers.forEach(img => {
-            img.addEventListener("click", (event) => {
-                lightboxOverlay.style.display = "flex";
-                lightboxImage.src = event.target.src; // Set the lightbox image to the clicked image
-            });
-        });
+        const backstories = {
+            'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+            'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
+            'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
+            'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.'
+        };
 
-        // Close the lightbox when clicking the overlay
-        lightboxOverlay.addEventListener("click", () => {
-            lightboxOverlay.style.display = "none";
-        });
+        function checkMatch() {
+            const [firstCard, secondCard] = flippedCards;
+
+            if (firstCard.dataset.character === secondCard.dataset.character) {
+                matchedCards.push(firstCard, secondCard);
+                backstoryContainer.textContent = backstories[firstCard.dataset.character];
+                backstoryContainer.style.display = 'block';
+                flippedCards = [];
+            } else {
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        cards.forEach(card => card.addEventListener('click', () => {
+            if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+                card.classList.add('flipped');
+                flippedCards.push(card);
+
+                if (flippedCards.length === 2) checkMatch();
+            }
+        }));
     </script>
 </body>
 </html>
