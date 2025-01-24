@@ -106,21 +106,12 @@
             opacity: 0;
         }
 
-        #missionContent p, #missionContent button {
+        #missionContent p {
             color: white;
         }
 
         .logo {
             margin-bottom: 20px;
-        }
-
-        .event-logo {
-            margin-bottom: 20px;
-        }
-
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
         }
 
         footer a {
@@ -134,23 +125,6 @@
             display: flex;
             justify-content: center;
             gap: 20px; /* Space between the cards */
-        }
-
-        .game-button {
-            background-color: #FF6347;
-            color: white;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .game-button:hover {
-            background-color: #FF4500;
         }
     </style>
 </head>
@@ -175,10 +149,7 @@
 
                     <div id="missionContent">
                         <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
-                        <div class="body-text">
-                            
-                        </div>
-                        <a href="cardmatchgame.html" class="game-button">Play the Card Game</a>
+                        <div class="body-text"></div>
                     </div>
                 </div>
             </header>
@@ -247,6 +218,7 @@
                 video.classList.add('fadeOut');
                 setTimeout(function() {
                     video.style.display = 'none';
+                    window.location.href = 'cardmatchgame.html';  // Redirect to the game page
                 }, 8000);
             }, 100);
 
