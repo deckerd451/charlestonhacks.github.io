@@ -258,29 +258,56 @@
 
         const backstoryContainer = document.getElementById('backstory');
 
-        const backstories = {
-            'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
-            'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
-            'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
-            'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.'
+       const backstories = {
+    'astrid': {
+        text: 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+        image: 'images/Astridstory.png'
+    },
+    'medusa': {
+        text: 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
+        image: 'images/Medusastory.png'
+    },
+    'alexandor': {
+        text: 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
+        image: 'images/Alexandorstory.png'
+    },
+    'aegis': {
+        text: 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
+        image: 'images/Aegisstory.png'
+    }
         };
 
         function checkMatch() {
-            const [firstCard, secondCard] = flippedCards;
+    const [firstCard, secondCard] = flippedCards;
 
-            if (firstCard.dataset.character === secondCard.dataset.character) {
-                matchedCards.push(firstCard, secondCard);
-                backstoryContainer.textContent = backstories[firstCard.dataset.character];
-                backstoryContainer.style.display = 'block';
-                flippedCards = [];
-            } else {
-                setTimeout(() => {
-                    firstCard.classList.remove('flipped');
-                    secondCard.classList.remove('flipped');
-                    flippedCards = [];
-                }, 1000);
-            }
-        }
+    if (firstCard.dataset.character === secondCard.dataset.character) {
+        matchedCards.push(firstCard, secondCard);
+        
+        const character = firstCard.dataset.character;
+        const backstory = backstories[character]; // Get the backstory object
+        
+        // Set the text content
+        backstoryContainer.innerHTML = `<p>${backstory.text}</p>`;
+        
+        // Add the image to the backstory container
+        const backstoryImage = document.createElement('img');
+        backstoryImage.src = backstory.image;
+        backstoryImage.alt = `${character} Backstory Image`;
+        backstoryImage.style.width = '100%'; // Optional: Adjust image size if necessary
+        backstoryContainer.appendChild(backstoryImage);
+        
+        backstoryContainer.style.display = 'block';
+        
+        flippedCards = [];
+    } else {
+        setTimeout(() => {
+            firstCard.classList.remove('flipped');
+            secondCard.classList.remove('flipped');
+            flippedCards = [];
+        }, 1000);
+    }
+}
+
 
         cards.forEach(card => card.addEventListener('click', () => {
             if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
