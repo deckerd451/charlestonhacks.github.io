@@ -175,14 +175,17 @@
 
         /* New styles for icons container */
         footer .icons-container {
-            display: flex;
-            justify-content: center;  /* Centers icons horizontally */
-            align-items: center;      /* Centers icons vertically */
-            gap: 20px;                /* Adds space between the icons */
-            margin-top: -20px;        /* Raises the icons up by 10px, adjust as needed */
-        }
-            
+    display: flex;
+    justify-content: center;  /* Centers icons horizontally */
+    align-items: center;      /* Centers icons vertically */
+    gap: 20px;                /* Adds space between the icons */
+    margin-top: -10px;        /* Raises the icons by 10px, adjust as needed */
+}
 
+footer .icons-container a {
+    position: relative;
+    top: -10px;  /* Adjust this value to raise the icons */
+}
         </style>
     </head>
     <body class="is-preload">
