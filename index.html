@@ -172,45 +172,25 @@
             margin-right: 8px; /* Space between icon and text */
         }
 
-        footer .icons-container {
-            display: flex;
-            justify-content: space-evenly; /* Distribute icons evenly across the width */
-            align-items: center;      /* Centers icons vertically */
-            gap: 30px;                /* Adds space between the icons */
-            position: fixed;          /* Use fixed to keep it always at the bottom */
-            bottom: 0;                /* Aligns the icons at the bottom */
-            width: 100%;              /* Ensures full-width */
-            background-color: rgba(0, 0, 0, 0.5); /* Optional: background color */
-            padding: 10px 0;          /* Space around the icons */
-            z-index: 10;              /* Ensures icons appear above video */
-        }
+footer .icons-container {
+    display: flex;
+    justify-content: space-evenly; /* Distribute icons evenly across the width */
+    align-items: center;      /* Centers icons vertically */
+    gap: 30px;                /* Adds space between the icons */
+    position: fixed;          /* Use fixed to keep it always at the bottom */
+    bottom: 0;                /* Aligns the icons at the bottom */
+    width: 100%;              /* Ensures full-width */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: background color */
+    padding: 10px 0;          /* Space around the icons */
+    z-index: 10;              /* Ensures icons appear above video */
+}
 
-        footer .icons-container a {
-            position: relative;
-            top: -50px;  /* Adjust this value to raise the icons */
-        }
 
-        /* Optional: Adding a visual cue or feedback on swipe */
-        .swipe-feedback {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            color: #39FF14;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+footer .icons-container a {
+    position: relative;
+    top: -50px;  /* Adjust this value to raise the icons */
+}
 
-        /* Adding a smooth scroll or fade effect to simulate the transition */
-        .fade-out {
-            animation: fadeOut 0.5s forwards;
-        }
-
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
     </style>
 </head>
 <body class="is-preload">
@@ -251,9 +231,6 @@
             </header>
         </article>
     </div>
-    <!-- Optional swipe feedback message -->
-    <div class="swipe-feedback" id="swipeFeedback">Swipe up to continue</div>
-
     <footer>
         <section style="display: flex; justify-content: center; align-items: center;">
             <a href="2card.html"><i class="fas fa-info-circle icon"></i></a>
@@ -261,6 +238,7 @@
                 <i class="fas fa-chevron-down icon"></i>
             </h1>
             <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
+            
         </section>
         <div class="previous-events" style="display: none;">
             <p><a href="cultureHack.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
@@ -289,62 +267,68 @@
             }
         }, 1000);
 
-        // Swipe detection code
-        let touchStartY = 0;
-        let touchEndY = 0;
+        var cardImages = [
+            "images/Back.png",
+            "images/Back2.png",
+            "images/Back3.png",
+            "images/Back4.png",
+            "images/Back5.png",
+            "images/Elara2.png",
+            "images/A.png",
+            "images/C.png",
+            "images/H.png",
+            "images/I.png",
+            "images/Aegis.png",
+            "images/R.png",
+            "images/Astrid.png",
+            "images/Back6.png"
+        ];
 
-        function handleTouchStart(e) {
-            touchStartY = e.changedTouches[0].screenY;
-            // Show swipe feedback to the user
-            document.getElementById('swipeFeedback').style.opacity = 1;
+        function getRandomImage() {
+            var randomIndex = Math.floor(Math.random() * cardImages.length);
+            return cardImages[randomIndex];
         }
 
-        function handleTouchEnd(e) {
-            touchEndY = e.changedTouches[0].screenY;
-            const swipeDistance = touchStartY - touchEndY;
+        function toggleMissionContent() {
+            var image = document.getElementById('missionImage');
+            image.src = getRandomImage();
 
-            // Check if swipe-up is detected with a more responsive threshold
-            if (swipeDistance > 60) {  // A more natural threshold for swipe-up gesture
-                triggerTransition();
-            } else {
-                // Hide feedback if swipe is not sufficient
-                document.getElementById('swipeFeedback').style.opacity = 0;
-            }
-        }
+            var video = document.getElementById('missionVideo');
+            video.style.display = 'block';
+            video.style.opacity = 1;
+            video.play();
 
-        // For Desktop mouse swipe detection
-        let mouseStartY = 0;
-        let mouseEndY = 0;
-
-        function handleMouseStart(e) {
-            mouseStartY = e.clientY;
-        }
-
-        function handleMouseEnd(e) {
-            mouseEndY = e.clientY;
-            const swipeDistance = mouseStartY - mouseEndY;
-
-            if (swipeDistance > 60) {
-                triggerTransition();
-            }
-        }
-
-        function triggerTransition() {
-            var panel = document.querySelector('.panel');
-            panel.classList.add('flip-image-y');
-            panel.addEventListener('animationend', () => {
-                panel.style.display = 'none';
+            setTimeout(function() {
                 document.getElementById('missionContent').style.display = 'block';
-                setTimeout(function () {
-                    document.getElementById('missionContent').style.opacity = '1';
-                }, 500);
-            });
+            }, 3000);
+
+            setTimeout(function() {
+                video.classList.add('fadeOut');
+                setTimeout(function() {
+                    video.style.display = 'none';
+                }, 8000);
+            }, 100);
+
+            // Randomly apply X or Y flip
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            setTimeout(function() {
+                image.classList.add(randomFlip);
+            }, 100);
         }
 
-        document.addEventListener('touchstart', handleTouchStart);
-        document.addEventListener('touchend', handleTouchEnd);
-        document.addEventListener('mousedown', handleMouseStart);
-        document.addEventListener('mouseup', handleMouseEnd);
+        function toggleVisibility() {
+            var eventsDiv = document.querySelector('.previous-events');
+            var arrowIcon = document.getElementById("arrowIcon");
+            if (eventsDiv.style.display === "none") {
+                eventsDiv.style.display = "block";
+                arrowIcon.classList.remove("fa-chevron-down");
+                arrowIcon.classList.add("fa-chevron-up");
+            } else {
+                eventsDiv.style.display = "none";
+                arrowIcon.classList.remove("fa-chevron-up");
+                arrowIcon.classList.add("fa-chevron-down");
+            }
+        }
     </script>
 </body>
 </html>
