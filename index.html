@@ -172,19 +172,25 @@
             margin-right: 8px; /* Space between icon and text */
         }
 
-        /* New styles for icons container */
-        footer .icons-container {
-            display: flex;
-            justify-content: center;  /* Centers icons horizontally */
-            align-items: center;      /* Centers icons vertically */
-            gap: 20px;                /* Adds space between the icons */
-            margin-top: -10px;        /* Raises the icons by 10px, adjust as needed */
-        }
+footer .icons-container {
+    display: flex;
+    justify-content: center;  /* Centers icons horizontally */
+    align-items: center;      /* Centers icons vertically */
+    gap: 20px;                /* Adds space between the icons */
+    position: fixed;          /* Use fixed to keep it always at the bottom */
+    bottom: 0;                /* Aligns the icons at the bottom */
+    width: 100%;              /* Ensures full-width */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: background color */
+    padding: 10px 0;          /* Space around the icons */
+    z-index: 10;              /* Ensures icons appear above video */
+}
 
-        footer .icons-container a {
-            position: relative;
-            top: -10px;  /* Adjust this value to raise the icons */
-        }
+
+footer .icons-container a {
+    position: relative;
+    top: -10px;  /* Adjust this value to raise the icons */
+}
+
     </style>
 </head>
 <body class="is-preload">
