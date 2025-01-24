@@ -502,88 +502,107 @@ footer .icons-container a {
     </footer>
 
     <script src="ho-script.js"></script>
-    <script>
-        var countdownElement = document.getElementById('countdown');
-        var countDownDate = new Date("January 24, 2025 17:00:00").getTime();
-        var countdownFunction = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                countdownElement.innerHTML = "Countdown-Global Game Jam";
-            }
-        }, 1000);
+<script>
+    var countdownElement = document.getElementById('countdown');
+    var countDownDate = new Date("January 24, 2025 17:00:00").getTime();
+    var countdownFunction = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        if (distance < 0) {
+            clearInterval(countdownFunction);
+            countdownElement.innerHTML = "Countdown-Global Game Jam";
+        }
+    }, 1000);
 
-        var cardImages = [
-            "images/Back.png",
-            "images/Back2.png",
-            "images/Back3.png",
-            "images/Back4.png",
-            "images/Back5.png",
-            "images/Elara2.png",
-            "images/A.png",
-            "images/C.png",
-            "images/H.png",
-            "images/I.png",
-            "images/Aegis.png",
-            "images/R.png",
-            "images/Astrid.png",
-            "images/Back6.png"
+    var cardImages = [
+        "images/Back.png",
+        "images/Back2.png",
+        "images/Back3.png",
+        "images/Back4.png",
+        "images/Back5.png",
+        "images/Elara2.png",
+        "images/A.png",
+        "images/C.png",
+        "images/H.png",
+        "images/I.png",
+        "images/Aegis.png",
+        "images/R.png",
+        "images/Astrid.png",
+        "images/Back6.png"
+    ];
+
+    function getRandomImage() {
+        var randomIndex = Math.floor(Math.random() * cardImages.length);
+        return cardImages[randomIndex];
+    }
+
+    var currentImageIndex = 0; // Tracks which mission image to show
+
+    function toggleMissionContent() {
+        var image = document.getElementById('missionImage');
+        var missionImages = [
+            "images/mission02.png",
+            "images/mission03.png",
+            "images/mission04.png",
+            "images/mission05.png",
+            "images/mission06.png",
+            "images/mission07.png"
         ];
 
-        function getRandomImage() {
-            var randomIndex = Math.floor(Math.random() * cardImages.length);
-            return cardImages[randomIndex];
-        }
+        // Switch to the next mission image
+        image.src = missionImages[currentImageIndex];
 
-        function toggleMissionContent() {
-            var image = document.getElementById('missionImage');
-            image.src = getRandomImage();
+        // Increment the index, wrapping around when we reach the end
+        currentImageIndex = (currentImageIndex + 1) % missionImages.length;
 
-            var video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 1;
-            video.play();
+        // Pause for 4 seconds and then switch back to the normal image
+        setTimeout(function() {
+            image.src = "images/Front.png";  // Switch back to normal card image
+        }, 4000);
 
+        var video = document.getElementById('missionVideo');
+        video.style.display = 'block';
+        video.style.opacity = 1;
+        video.play();
+
+        setTimeout(function() {
+            document.getElementById('missionContent').style.display = 'block';
+        }, 3000);
+
+        setTimeout(function() {
+            video.classList.add('fadeOut');
             setTimeout(function() {
-                document.getElementById('missionContent').style.display = 'block';
-            }, 3000);
+                video.style.display = 'none';
+            }, 8000);
+        }, 100);
 
-            setTimeout(function() {
-                video.classList.add('fadeOut');
-                setTimeout(function() {
-                    video.style.display = 'none';
-                }, 8000);
-            }, 100);
+        // Randomly apply X or Y flip
+        var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+        setTimeout(function() {
+            image.classList.add(randomFlip);
+        }, 100);
+    }
 
-            // Randomly apply X or Y flip
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            setTimeout(function() {
-                image.classList.add(randomFlip);
-            }, 100);
+    function toggleVisibility() {
+        var eventsDiv = document.querySelector('.previous-events');
+        var arrowIcon = document.getElementById("arrowIcon");
+        if (eventsDiv.style.display === "none") {
+            eventsDiv.style.display = "block";
+            arrowIcon.classList.remove("fa-chevron-down");
+            arrowIcon.classList.add("fa-chevron-up");
+        } else {
+            eventsDiv.style.display = "none";
+            arrowIcon.classList.remove("fa-chevron-up");
+            arrowIcon.classList.add("fa-chevron-down");
         }
+    }
+</script>
 
-        function toggleVisibility() {
-            var eventsDiv = document.querySelector('.previous-events');
-            var arrowIcon = document.getElementById("arrowIcon");
-            if (eventsDiv.style.display === "none") {
-                eventsDiv.style.display = "block";
-                arrowIcon.classList.remove("fa-chevron-down");
-                arrowIcon.classList.add("fa-chevron-up");
-            } else {
-                eventsDiv.style.display = "none";
-                arrowIcon.classList.remove("fa-chevron-up");
-                arrowIcon.classList.add("fa-chevron-down");
-            }
-        }
-    </script>
-</body>
-</html>
 
 </body>
 </html>
