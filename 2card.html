@@ -189,6 +189,7 @@
         <a href="index.html">Home</a>
     </footer>
 
+    <!-- Add your script here before closing </body> -->
     <script>
         var cardImages = [
             "images/Back.png",
@@ -207,6 +208,9 @@
             "images/Back6.png"
         ];
 
+        var selectedImages = []; // Array to store the selected images
+        var selectedCards = []; // Array to store the selected card elements
+
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
@@ -214,7 +218,25 @@
 
         function toggleMissionContent(event) {
             var image = event.target;  // Capture the clicked image element
-            image.src = getRandomImage();  // Change the image of the clicked card
+            var newImage = getRandomImage();  // Get a new random image for the clicked card
+            image.src = newImage;  // Change the image of the clicked card
+
+            // Store the image and the card element for comparison
+            selectedImages.push(newImage);
+            selectedCards.push(image);
+
+            // If two cards have been selected
+            if (selectedImages.length === 2) {
+                // Check if the selected images match
+                if (selectedImages[0] === selectedImages[1]) {
+                    // If they match, open the link to the Poster.html page
+                    window.location.href = 'Poster.html';
+                }
+
+                // Clear the selectedImages and selectedCards arrays after checking
+                selectedImages = [];
+                selectedCards = [];
+            }
 
             var video = document.getElementById('missionVideo');
             video.style.display = 'block';
