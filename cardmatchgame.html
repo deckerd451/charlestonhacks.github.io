@@ -258,72 +258,76 @@
     <footer>
         <a href="index.html">Home</a>
     </footer>
+<script>
+    // Shuffle the cards
+    function shuffleCards() {
+        const gameContainer = document.getElementById('game-container');
+        const cardsArray = Array.from(gameContainer.children);
+        cardsArray.sort(() => Math.random() - 0.5);
+        cardsArray.forEach(card => gameContainer.appendChild(card));
+    }
 
-    <script>
-        // Shuffle the cards
-        function shuffleCards() {
-            const gameContainer = document.getElementById('game-container');
-            const cardsArray = Array.from(gameContainer.children);
-            cardsArray.sort(() => Math.random() - 0.5);
-            // Re-append the shuffled cards to the container
-            cardsArray.forEach(card => gameContainer.appendChild(card));
-        }
+    const cards = document.querySelectorAll('.card');
+    let flippedCards = [];
+    let matchedCards = [];
 
-        // Select all the cards and initialize variables for the game logic
-        const cards = document.querySelectorAll('.card');
-        let flippedCards = [];
-        let matchedCards = [];
+    const backstoryContainer = document.getElementById('backstory');
 
-        const backstoryContainer = document.getElementById('backstory');
+    const backstories = {
+        'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+        'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
+        'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
+        'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
+        'placeholder': 'Placeholder - A mysterious figure yet to reveal their story.'
+    };
 
-        const backstories = {
-            'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
-            'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
-            'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
-            'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
-            'placeholder': 'Placeholder - A mysterious figure yet to reveal their story.'
-        };
+    function checkMatch() {
+        const [firstCard, secondCard] = flippedCards;
 
-        // Function to handle card match checking
-        function checkMatch() {
-            const [firstCard, secondCard] = flippedCards;
+        console.log('First card:', firstCard.dataset.character);
+        console.log('Second card:', secondCard.dataset.character);
 
-            // If characters match
-            if (firstCard.dataset.character === secondCard.dataset.character) {
-                matchedCards.push(firstCard, secondCard);
-                backstoryContainer.textContent = backstories[firstCard.dataset.character];
+        if (firstCard.dataset.character === secondCard.dataset.character) {
+            matchedCards.push(firstCard, secondCard);
+
+            // Display backstory
+            const backstory = backstories[firstCard.dataset.character];
+            if (backstory) {
+                backstoryContainer.textContent = backstory;
                 backstoryContainer.style.display = 'block';
-                flippedCards = [];
+                console.log('Backstory displayed:', backstory);
             } else {
-                // Flip back the cards after a delay
-                setTimeout(() => {
-                    firstCard.classList.remove('flipped');
-                    secondCard.classList.remove('flipped');
-                    flippedCards = [];
-                }, 1000);
+                console.error('No backstory found for:', firstCard.dataset.character);
             }
+
+            flippedCards = [];
+        } else {
+            // Flip back the cards after a delay
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                flippedCards = [];
+            }, 1000);
         }
+    }
 
-        // Add click event listeners to all cards
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                // Prevent flipping more than 2 cards or flipping the same card twice
-                if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
-                    card.classList.add('flipped');
-                    flippedCards.push(card);
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+                card.classList.add('flipped');
+                flippedCards.push(card);
 
-                    // Check for a match when 2 cards are flipped
-                    if (flippedCards.length === 2) {
-                        checkMatch();
-                    }
+                if (flippedCards.length === 2) {
+                    checkMatch();
                 }
-            });
+            }
         });
+    });
 
-        // Shuffle the cards when the page loads
-        document.addEventListener("DOMContentLoaded", () => {
-            shuffleCards();
-        });
-    </script>
+    document.addEventListener('DOMContentLoaded', () => {
+        shuffleCards();
+    });
+</script>
+
 </body>
 </html>
