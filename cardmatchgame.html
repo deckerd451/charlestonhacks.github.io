@@ -91,21 +91,6 @@
             border-radius: 5px;
         }
 
-        .backstory-button {
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            margin-top: 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            border-radius: 5px;
-        }
-
-        .backstory-button:hover {
-            background-color: #FF6347;
-        }
-
         footer {
             margin-top: 50px;
             text-align: center;
@@ -122,11 +107,40 @@
             color: #FF6347;
         }
 
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(6, 1fr);
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .card {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(6, 1fr);
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .card {
+                height: 150px;
+            }
+
+            .backstory {
+                font-size: 14px;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="game-container" id="game-container">
-        <!-- Example cards here (unchanged from your code) -->
         <div class="card" data-character="astrid">
             <div class="card-inner">
                 <div class="card-front">
@@ -137,18 +151,113 @@
                 </div>
             </div>
         </div>
-        <!-- More cards go here -->
+
+        <div class="card" data-character="astrid">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Astrid.png" alt="Astrid Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="medusa">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back5.png" alt="Medusa Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="medusa">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back5.png" alt="Medusa Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="alexandor">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back4.png" alt="Alexandor Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="alexandor">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back4.png" alt="Alexandor Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="aegis">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Aegis.png" alt="Aegis Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="aegis">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Aegis.png" alt="Aegis Card Back">
+                </div>
+            </div>
+        </div>
+
+        <!-- New placeholder cards -->
+        <div class="card" data-character="placeholder">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back3.png" alt="Descartes Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="placeholder">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back3.png" alt="Descartes Card Back">
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="backstory" id="backstory"></div>
-    <button class="backstory-button" id="backstoryButton" style="display: none;">See Backstory</button>
 
     <footer>
         <a href="index.html">Home</a>
     </footer>
-
-    <!-- Audio for card flip sound -->
-    <audio id="flip-sound" src="assets/cardflip.mp3" preload="auto"></audio>
 
     <script>
         // Shuffle the cards
@@ -156,47 +265,34 @@
             const gameContainer = document.getElementById('game-container');
             const cardsArray = Array.from(gameContainer.children);
             cardsArray.sort(() => Math.random() - 0.5);
+            // Re-append the shuffled cards to the container
             cardsArray.forEach(card => gameContainer.appendChild(card));
         }
 
+        // Select all the cards and initialize variables for the game logic
         const cards = document.querySelectorAll('.card');
         let flippedCards = [];
         let matchedCards = [];
 
         const backstoryContainer = document.getElementById('backstory');
-        const backstoryButton = document.getElementById('backstoryButton');
 
         const backstories = {
             'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
             'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
             'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
             'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
-            'descartes': 'Descartes - A mysterious figure yet to reveal their story.'
+            'placeholder': 'Placeholder - A mysterious figure yet to reveal their story.'
         };
 
+        // Function to handle card match checking
         function checkMatch() {
             const [firstCard, secondCard] = flippedCards;
 
+            // If characters match
             if (firstCard.dataset.character === secondCard.dataset.character) {
                 matchedCards.push(firstCard, secondCard);
-
-                // Display backstory
-                const backstory = backstories[firstCard.dataset.character];
-                if (backstory) {
-                    backstoryContainer.textContent = backstory;
-                    backstoryContainer.style.display = 'block';
-
-                    // Show the See Backstory button
-                    backstoryButton.style.display = 'inline-block';
-
-                    // Add functionality for backstory button
-                    if (firstCard.dataset.character === 'astrid') {
-                        backstoryButton.onclick = () => {
-                            window.open('images/Astridstory.png', '_blank');
-                        };
-                    }
-                }
-
+                backstoryContainer.textContent = backstories[firstCard.dataset.character];
+                backstoryContainer.style.display = 'block';
                 flippedCards = [];
             } else {
                 // Flip back the cards after a delay
@@ -208,18 +304,15 @@
             }
         }
 
-        // Get the card flip sound element
-        const flipSound = document.getElementById('flip-sound');
-
+        // Add click event listeners to all cards
         cards.forEach(card => {
             card.addEventListener('click', () => {
+                // Prevent flipping more than 2 cards or flipping the same card twice
                 if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
                     card.classList.add('flipped');
                     flippedCards.push(card);
 
-                    // Play the flip sound
-                    flipSound.play();
-
+                    // Check for a match when 2 cards are flipped
                     if (flippedCards.length === 2) {
                         checkMatch();
                     }
@@ -227,10 +320,10 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // Shuffle the cards when the page loads
+        document.addEventListener("DOMContentLoaded", () => {
             shuffleCards();
         });
     </script>
-
 </body>
 </html>
