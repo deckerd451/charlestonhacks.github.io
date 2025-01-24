@@ -277,7 +277,7 @@
     }
         };
 
-        function checkMatch() {
+       function checkMatch() {
     const [firstCard, secondCard] = flippedCards;
 
     if (firstCard.dataset.character === secondCard.dataset.character) {
@@ -302,6 +302,11 @@
         backstoryContainer.style.display = 'block';
         
         flippedCards = [];
+
+        // Add a click event listener to hide the backstory when clicked
+        backstoryContainer.addEventListener('click', () => {
+            backstoryContainer.style.display = 'none';
+        });
     } else {
         setTimeout(() => {
             firstCard.classList.remove('flipped');
