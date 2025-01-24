@@ -187,16 +187,6 @@
                         <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                         <div class="body-text">
                             <p>
-                                <a href="https://www.meetup.com/charlestonhacks/events/305361555/">
-                                    <img src="images/GGJ.png" alt="Global Game Jam" class="event-logo" style="width: 900px; height: auto;">
-                                </a>
-                            </p>
-                            <p>
-                                <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
-                                    CharlestonHacks in the news
-                                </a>
-                            </p>
-                            <p>
                                 <a href="subscribe.html" target="_blank">Join the Mailing List</a>
                             </p>
                         </div>
@@ -211,21 +201,7 @@
     </div>
 
     <footer>
-        <a href="https://harborhack-24.devpost.com/">Previous Event</a>
-        <br>
-        <section>
-            <a href="aboutus.html" target="_blank">About</a>
-            <a href="mailto:hello@charlestonhacks.com">Email</a>
-            <h1 id="previousEventsToggle" onclick="toggleVisibility()">All Events <i id="arrowIcon" class="fas fa-chevron-down"></i></h1>
-            <br>
-            <div class="previous-events" style="display: none;">
-                <p><a href="cultureHack.html">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
-                <p><a href="breakthroughHack.html">HarborHack (Fall 2024)</a></p>
-                <p><a href="inspireHack.html">Hack Nights (Summer 2024)</a></p>
-                <p><a href="https://hackops.devpost.com/">HackOps (Spring 2024)</a></p>
-                <p><a href="harborhack.html">harborHack (23)</a></p>
-            </div>
-        </section>
+        <a href="index.html">Home</a>
     </footer>
 
     <script>
@@ -294,65 +270,6 @@
                 image.classList.add(randomFlip);
             }, 100);
         }
-
-        function toggleVisibility() {
-            var eventsDiv = document.querySelector('.previous-events');
-            var arrowIcon = document.getElementById("arrowIcon");
-            if (eventsDiv.style.display === "none") {
-                eventsDiv.style.display = "block";
-                arrowIcon.classList.remove("fa-chevron-down");
-                arrowIcon.classList.add("fa-chevron-up");
-            } else {
-                eventsDiv.style.display = "none";
-                arrowIcon.classList.remove("fa-chevron-up");
-                arrowIcon.classList.add("fa-chevron-down");
-            }
-        }
-        var selectedImages = []; // Array to store the selected images
-
-function toggleMissionContent(event) {
-    var image = event.target;  // Capture the clicked image element
-    var newImage = getRandomImage();  // Get a new random image for the clicked card
-    image.src = newImage;  // Change the image of the clicked card
-
-    // Store the image for comparison
-    selectedImages.push(newImage);
-
-    // If two cards have been selected
-    if (selectedImages.length === 2) {
-        // Check if the selected images match
-        if (selectedImages[0] === selectedImages[1]) {
-            // If they match, redirect to poster.html
-            window.location.href = 'Poster.html';
-        }
-
-        // Clear the selectedImages array after checking
-        selectedImages = [];
-    }
-
-    var video = document.getElementById('missionVideo');
-    video.style.display = 'block';
-    video.style.opacity = 1;
-    video.play();
-
-    setTimeout(function() {
-        document.getElementById('missionContent').style.display = 'block';
-    }, 3000);
-
-    setTimeout(function() {
-        video.classList.add('fadeOut');
-        setTimeout(function() {
-            video.style.display = 'none';
-        }, 8000);
-    }, 100);
-
-    // Random flip effect on each image
-    var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-    setTimeout(function() {
-        image.classList.add(randomFlip);
-    }, 100);
-}
-
     </script>
 </body>
 </html>
