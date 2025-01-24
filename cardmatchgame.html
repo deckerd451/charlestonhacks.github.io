@@ -89,6 +89,23 @@
             background-color: #222;
             padding: 20px;
             border-radius: 5px;
+            font-size: 16px;
+            color: white;
+        }
+
+        #backstoryButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #222;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #backstoryButton:hover {
+            background-color: #444;
         }
 
         footer {
@@ -141,114 +158,11 @@
 </head>
 <body>
     <div class="game-container" id="game-container">
-        <!-- Example cards -->
-        <div class="card" data-character="astrid">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Astrid.png" alt="Astrid Card Back">
-                </div>
-            </div>
-        </div>
-        <div class="card" data-character="astrid">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Astrid.png" alt="Astrid Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="medusa">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back5.png" alt="Medusa Card Back">
-                </div>
-            </div>
-        </div>
-        <div class="card" data-character="medusa">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back5.png" alt="Medusa Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="alexandor">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back4.png" alt="Alexandor Card Back">
-                </div>
-            </div>
-        </div>
-        <div class="card" data-character="alexandor">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back4.png" alt="Alexandor Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="aegis">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Aegis.png" alt="Aegis Card Back">
-                </div>
-            </div>
-        </div>
-        <div class="card" data-character="aegis">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Aegis.png" alt="Aegis Card Back">
-                </div>
-            </div>
-        </div>
-
-        <!-- More placeholder cards -->
-        <div class="card" data-character="descartes">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back3.png" alt="Descartes Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="descartes">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back3.png" alt="Descartes Card Back">
-                </div>
-            </div>
-        </div>
+        <!-- Cards here -->
     </div>
+
+    <!-- Backstory Button (styled like the backstory) -->
+    <button id="backstoryButton" style="display:none;">Show Backstory</button>
 
     <div class="backstory" id="backstory"></div>
 
@@ -273,6 +187,7 @@
         let matchedCards = [];
 
         const backstoryContainer = document.getElementById('backstory');
+        const backstoryButton = document.getElementById('backstoryButton');
 
         const backstories = {
             'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
@@ -288,11 +203,17 @@
             if (firstCard.dataset.character === secondCard.dataset.character) {
                 matchedCards.push(firstCard, secondCard);
 
-                // Display backstory
+                // Display backstory (only for Astrid, the rest stay text)
                 const backstory = backstories[firstCard.dataset.character];
                 if (backstory) {
-                    backstoryContainer.textContent = backstory;
+                    if (firstCard.dataset.character === 'astrid') {
+                        // If it's Astrid, show the image instead of text
+                        backstoryContainer.innerHTML = `<img src="images/Astridstory.png" alt="Astrid Story" style="max-width: 100%; height: auto;">`;
+                    } else {
+                        backstoryContainer.textContent = backstory;
+                    }
                     backstoryContainer.style.display = 'block';
+                    backstoryButton.style.display = 'inline'; // Show the button
                 }
 
                 flippedCards = [];
@@ -323,6 +244,16 @@
                     }
                 }
             });
+        });
+
+        // Backstory button click event
+        backstoryButton.addEventListener('click', () => {
+            // Toggle the visibility of the backstory
+            if (backstoryContainer.style.display === 'none') {
+                backstoryContainer.style.display = 'block';
+            } else {
+                backstoryContainer.style.display = 'none';
+            }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
