@@ -2,12 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>Card Matching Game - CharlestonHacks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             background-color: black;
@@ -24,12 +21,11 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, 150px); /* 4 columns */
-            grid-template-rows: repeat(2, 200px); /* 2 rows */
-            gap: 20px;
+            grid-template-columns: repeat(4, 150px);
+            grid-template-rows: repeat(3, 200px);
+            gap: 15px;
             justify-content: center;
-            margin-top: 50px;
-            position: relative;
+            padding: 20px;
         }
 
         .card {
@@ -38,7 +34,6 @@
             height: 200px;
             perspective: 1000px;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out;
         }
 
         .card-inner {
@@ -73,21 +68,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             transform: rotateY(180deg);
-        }
-
-        .card-back img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* New style for card-front to match the proportions of the back */
-        .card-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .backstory {
@@ -100,153 +81,44 @@
 
         footer {
             margin-top: 50px;
-            text-align: center;
         }
 
         footer a {
-            display: inline-block;
-            margin: 10px 20px;
-            font-size: 18px;
             color: #89CFF0;
+            font-size: 32px;
         }
 
         footer a:hover {
             color: #FF6347;
         }
 
-        /* Mobile Responsive Adjustments */
         @media (max-width: 768px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(4, 1fr);
-                gap: 15px;
+                gap: 10px;
                 padding: 10px;
-            }
-
-            .card {
-                height: 180px;
             }
         }
 
-        /* Small Screen (Mobile) Adjustments */
         @media (max-width: 480px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(4, 1fr);
-                gap: 10px;
-                padding: 5px;
-            }
-
-            .card {
-                height: 150px;
-            }
-
-            .backstory {
-                font-size: 14px;
-                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="game-container" id="game-container">
-        <div class="card" data-character="astrid">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Astrid.png" alt="Astrid Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="astrid">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Astrid.png" alt="Astrid Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="medusa">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back5.png" alt="Medusa Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="medusa">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back5.png" alt="Medusa Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="alexandor">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back4.png" alt="Alexandor Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="alexandor">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back4.png" alt="Alexandor Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="aegis">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Aegis.png" alt="Aegis Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="aegis">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Aegis.png" alt="Aegis Card Back">
-                </div>
-            </div>
-        </div>
+    <div id="game-container" class="game-container">
+        <!-- Cards go here -->
     </div>
 
     <div class="backstory" id="backstory"></div>
 
     <footer>
-    <a href="index.html" style="color: #39ff14; font-size: 32px;">
-        <i class="fas fa-home"></i>
-    </a>
-</footer>
-
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+        </a>
+    </footer>
 
     <script>
         // Shuffle the cards
@@ -254,89 +126,58 @@
             const gameContainer = document.getElementById('game-container');
             const cardsArray = Array.from(gameContainer.children);
             cardsArray.sort(() => Math.random() - 0.5);
-            // Re-append the shuffled cards to the container
             cardsArray.forEach(card => gameContainer.appendChild(card));
         }
 
-        // Existing card matching logic
         const cards = document.querySelectorAll('.card');
         let flippedCards = [];
         let matchedCards = [];
 
         const backstoryContainer = document.getElementById('backstory');
 
-       const backstories = {
-    'astrid': {
-        text: 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
-        image: 'images/Astridstory.png'
-    },
-    'medusa': {
-        text: 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
-        image: 'images/Medusastory.png'
-    },
-    'alexandor': {
-        text: 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
-        image: 'images/davestory.png'
-    },
-    'aegis': {
-        text: 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
-        image: 'images/aegisbackstory.png'
-    }
+        const backstories = {
+            // Backstories here
         };
 
-       function checkMatch() {
-    const [firstCard, secondCard] = flippedCards;
+        function checkMatch() {
+            const [firstCard, secondCard] = flippedCards;
 
-    if (firstCard.dataset.character === secondCard.dataset.character) {
-        matchedCards.push(firstCard, secondCard);
-        
-        const character = firstCard.dataset.character;
-        const backstory = backstories[character]; // Get the backstory object
-        
-        // Clear previous content
-        backstoryContainer.innerHTML = ''; 
-        
-        // Set the new backstory text content
-        backstoryContainer.innerHTML = `<p>${backstory.text}</p>`;
-        
-        // Add the image to the backstory container
-        const backstoryImage = document.createElement('img');
-        backstoryImage.src = backstory.image;
-        backstoryImage.alt = `${character} Backstory Image`;
-        backstoryImage.style.width = '100%'; // Optional: Adjust image size if necessary
-        backstoryContainer.appendChild(backstoryImage);
-        
-        backstoryContainer.style.display = 'block';
-        
-        flippedCards = [];
+            if (firstCard.dataset.character === secondCard.dataset.character) {
+                matchedCards.push(firstCard, secondCard);
+                const character = firstCard.dataset.character;
+                const backstory = backstories[character];
 
-        // Add a click event listener to hide the backstory when clicked
-        backstoryContainer.addEventListener('click', () => {
-            backstoryContainer.style.display = 'none';
-        });
-    } else {
-        setTimeout(() => {
-            firstCard.classList.remove('flipped');
-            secondCard.classList.remove('flipped');
-            flippedCards = [];
-        }, 1000);
-    }
-}
+                backstoryContainer.innerHTML = `<p>${backstory.text}</p>`;
+                const backstoryImage = document.createElement('img');
+                backstoryImage.src = backstory.image;
+                backstoryImage.alt = `${character} Backstory Image`;
+                backstoryContainer.appendChild(backstoryImage);
+                backstoryContainer.style.display = 'block';
 
-
+                flippedCards = [];
+            } else {
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
 
         cards.forEach(card => card.addEventListener('click', () => {
             if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
                 card.classList.add('flipped');
                 flippedCards.push(card);
-
                 if (flippedCards.length === 2) checkMatch();
             }
         }));
 
-        // Shuffle the cards when the page loads
         document.addEventListener("DOMContentLoaded", () => {
             shuffleCards();
+        });
+
+        backstoryContainer.addEventListener('click', () => {
+            backstoryContainer.style.display = 'none';
         });
     </script>
 </body>
