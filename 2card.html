@@ -53,6 +53,19 @@
             transition: opacity 3s ease-in-out;
         }
 
+        /* Black overlay */
+        #blackOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            z-index: 10;
+            transition: opacity 2s ease-in-out;
+        }
+
         @media (max-width: 768px) {
             .panel img {
                 max-width: 90%;
@@ -187,23 +200,10 @@
                         <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                         <div class="body-text">
                             <p>
-    <button onclick="window.location.href='cardmatchgame.html'" style="background-color: #4CAF50; color: white; padding: 15px 32px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer;">
-        Go to Card Match Game
-    </button>
-</p>
-
-                            <p>
-                                <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
-                                    CharlestonHacks in the news
-                                </a>
+                                <button onclick="window.location.href='cardmatchgame.html'" style="background-color: #4CAF50; color: white; padding: 15px 32px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer;">
+                                    Go to Card Match Game
+                                </button>
                             </p>
-                            <p>
-                                <a href="subscribe.html" target="_blank">Join the Mailing List</a>
-                            </p>
-                        </div>
-                        <div id="countdownWrapper">
-                            <p class="info"><b>Countdown to Global Game Jam:</b></p>
-                            <div id="countdown"></div>
                         </div>
                     </div>
                 </div>
@@ -211,9 +211,11 @@
         </article>
     </div>
 
-     <footer>
+    <footer>
         <a href="index.html">Home</a>
     </footer>
+
+    <div id="blackOverlay"></div>
 
     <script>
         var countdownElement = document.getElementById('countdown');
@@ -233,33 +235,12 @@
             }
         }, 1000);
 
-        var cardImages = [
-            "images/Back.png",
-            "images/Back2.png",
-            "images/Back3.png",
-            "images/Back4.png",
-            "images/Back5.png",
-            "images/Elara2.png",
-            "images/A.png",
-            "images/C.png",
-            "images/H.png",
-            "images/I.png",
-            "images/Aegis.png",
-            "images/R.png",
-            "images/Astrid.png",
-            "images/Back6.png"
-        ];
-
-        function getRandomImage() {
-            var randomIndex = Math.floor(Math.random() * cardImages.length);
-            return cardImages[randomIndex];
-        }
-
         function toggleMissionContent(event) {
             var image = event.target;  // Capture the clicked image element
             image.src = getRandomImage();  // Change the image of the clicked card
 
             var video = document.getElementById('missionVideo');
+            var overlay = document.getElementById('blackOverlay');
             video.style.display = 'block';
             video.style.opacity = 1;
             video.play();
@@ -269,11 +250,14 @@
             }, 3000);
 
             setTimeout(function() {
-                video.classList.add('fadeOut');
-                setTimeout(function() {
-                    video.style.display = 'none';
-                }, 8000);
-            }, 100);
+                video.style.opacity = 0;
+                overlay.style.opacity = 1; // Fade the overlay to black
+            }, 3000);
+
+            setTimeout(function() {
+                video.style.display = 'none';
+                overlay.style.opacity = 0; // Reset overlay opacity
+            }, 8000);
 
             // Random flip effect on each image
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
@@ -282,64 +266,26 @@
             }, 100);
         }
 
-        function toggleVisibility() {
-            var eventsDiv = document.querySelector('.previous-events');
-            var arrowIcon = document.getElementById("arrowIcon");
-            if (eventsDiv.style.display === "none") {
-                eventsDiv.style.display = "block";
-                arrowIcon.classList.remove("fa-chevron-down");
-                arrowIcon.classList.add("fa-chevron-up");
-            } else {
-                eventsDiv.style.display = "none";
-                arrowIcon.classList.remove("fa-chevron-up");
-                arrowIcon.classList.add("fa-chevron-down");
-            }
+        function getRandomImage() {
+            var cardImages = [
+                "images/Back.png",
+                "images/Back2.png",
+                "images/Back3.png",
+                "images/Back4.png",
+                "images/Back5.png",
+                "images/Elara2.png",
+                "images/A.png",
+                "images/C.png",
+                "images/H.png",
+                "images/I.png",
+                "images/Aegis.png",
+                "images/R.png",
+                "images/Astrid.png",
+                "images/Back6.png"
+            ];
+            var randomIndex = Math.floor(Math.random() * cardImages.length);
+            return cardImages[randomIndex];
         }
-        var selectedImages = []; // Array to store the selected images
-
-function toggleMissionContent(event) {
-    var image = event.target;  // Capture the clicked image element
-    var newImage = getRandomImage();  // Get a new random image for the clicked card
-    image.src = newImage;  // Change the image of the clicked card
-
-    // Store the image for comparison
-    selectedImages.push(newImage);
-
-    // If two cards have been selected
-    if (selectedImages.length === 2) {
-        // Check if the selected images match
-        if (selectedImages[0] === selectedImages[1]) {
-            // If they match, redirect to poster.html
-            window.location.href = 'Poster.html';
-        }
-
-        // Clear the selectedImages array after checking
-        selectedImages = [];
-    }
-
-    var video = document.getElementById('missionVideo');
-    video.style.display = 'block';
-    video.style.opacity = 1;
-    video.play();
-
-    setTimeout(function() {
-        document.getElementById('missionContent').style.display = 'block';
-    }, 3000);
-
-    setTimeout(function() {
-        video.classList.add('fadeOut');
-        setTimeout(function() {
-            video.style.display = 'none';
-        }, 8000);
-    }, 100);
-
-    // Random flip effect on each image
-    var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-    setTimeout(function() {
-        image.classList.add(randomFlip);
-    }, 100);
-}
-
     </script>
 </body>
 </html>
