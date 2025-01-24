@@ -223,12 +223,32 @@ function toggleMissionContent(event) {
         if (selectedImages[0] === selectedImages[1]) {
             matchFound = true;  // Set flag to true when there's a match
 
-            // Special case: if both cards are "Back5.png", redirect to 'images/aya.jpg'
-            if (selectedImages[0] === "images/Back5.png") {
+            // Special case: if both cards are "Back3.png", redirect to 'images/Spotlight-Doug-insta.jpg'
+            if (selectedImages[0] === "images/Back3.png") {
                 setTimeout(function() {
-                    window.location.href = 'images/aya.jpg';  // Redirect to the special image
+                    window.location.href = 'images/Spotlight-Doug-insta.jpg';  // Redirect to the special image
                 }, 1000);  // Redirect with a slight delay to allow user to see the match
-            } else {
+
+                // Return to the previous page after 10 seconds
+                setTimeout(function() {
+                    window.history.back();  // Goes back to the previous screen after 10 seconds
+                }, 10000);  // Delay for 10 seconds before going back
+            }
+
+            // Special case: if both cards are "Back5.png", redirect to 'images/aya.jpg'
+            else if (selectedImages[0] === "images/Back5.png") {
+                setTimeout(function() {
+                    window.location.href = 'images/aya.jpg';  // Redirect to the special image for Back5
+                }, 1000);  // Redirect with a slight delay to allow user to see the match
+
+                // Return to the previous page after 10 seconds
+                setTimeout(function() {
+                    window.history.back();  // Goes back to the previous screen after 10 seconds
+                }, 10000);  // Delay for 10 seconds before going back
+            } 
+
+            // Default case: redirect to 'Poster.html'
+            else {
                 setTimeout(function() {
                     window.location.href = 'Poster.html';  // Redirect to the Poster page
                 }, 1000);  // Redirect with a slight delay to allow user to see the match
@@ -265,6 +285,7 @@ function toggleMissionContent(event) {
         image.classList.add(randomFlip);
     }, 100);
 }
+
 
     </script>
 </body>
