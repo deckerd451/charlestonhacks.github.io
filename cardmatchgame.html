@@ -141,7 +141,6 @@
 </head>
 <body>
     <div class="game-container" id="game-container">
-        <!-- Cards go here (same as in the original HTML) -->
         <!-- Example cards -->
         <div class="card" data-character="astrid">
             <div class="card-inner">
@@ -153,7 +152,102 @@
                 </div>
             </div>
         </div>
-        <!-- (More cards as needed) -->
+        <div class="card" data-character="astrid">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Astrid.png" alt="Astrid Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="medusa">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back5.png" alt="Medusa Card Back">
+                </div>
+            </div>
+        </div>
+        <div class="card" data-character="medusa">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back5.png" alt="Medusa Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="alexandor">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back4.png" alt="Alexandor Card Back">
+                </div>
+            </div>
+        </div>
+        <div class="card" data-character="alexandor">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back4.png" alt="Alexandor Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="aegis">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Aegis.png" alt="Aegis Card Back">
+                </div>
+            </div>
+        </div>
+        <div class="card" data-character="aegis">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Aegis.png" alt="Aegis Card Back">
+                </div>
+            </div>
+        </div>
+
+        <!-- More placeholder cards -->
+        <div class="card" data-character="descartes">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back3.png" alt="Descartes Card Back">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-character="descartes">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="images/Front.png" alt="Card Front">
+                </div>
+                <div class="card-back">
+                    <img src="images/Back3.png" alt="Descartes Card Back">
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="backstory" id="backstory"></div>
@@ -191,9 +285,6 @@
         function checkMatch() {
             const [firstCard, secondCard] = flippedCards;
 
-            console.log('First card:', firstCard.dataset.character);
-            console.log('Second card:', secondCard.dataset.character);
-
             if (firstCard.dataset.character === secondCard.dataset.character) {
                 matchedCards.push(firstCard, secondCard);
 
@@ -202,9 +293,6 @@
                 if (backstory) {
                     backstoryContainer.textContent = backstory;
                     backstoryContainer.style.display = 'block';
-                    console.log('Backstory displayed:', backstory);
-                } else {
-                    console.error('No backstory found for:', firstCard.dataset.character);
                 }
 
                 flippedCards = [];
