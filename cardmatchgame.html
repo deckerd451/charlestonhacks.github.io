@@ -313,10 +313,10 @@
                     backstoryContainer.style.display = 'block';
                     backstoryButton.style.display = 'inline-block';
 
-                    if (firstCard.dataset.character === 'astrid') {
-                        // Handle Astrid's special backstory image link
+                    if (firstCard.dataset.character === 'medusa') {
+                        // Handle Medusa's special backstory image link
                         backstoryButton.onclick = () => {
-                            window.open('images/Astridstory.png', '_blank');
+                            window.open('images/Medusastory.png', '_blank');  // Open Medusa's backstory image
                             backstoryContainer.style.display = 'none'; // Hide the backstory after click
                         };
                     } else {
