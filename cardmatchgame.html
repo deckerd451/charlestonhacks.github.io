@@ -242,6 +242,16 @@
     </footer>
 
     <script>
+        // Shuffle the cards
+        function shuffleCards() {
+            const gameContainer = document.getElementById('game-container');
+            const cardsArray = Array.from(gameContainer.children);
+            cardsArray.sort(() => Math.random() - 0.5);
+            // Re-append the shuffled cards to the container
+            cardsArray.forEach(card => gameContainer.appendChild(card));
+        }
+
+        // Existing card matching logic
         const cards = document.querySelectorAll('.card');
         let flippedCards = [];
         let matchedCards = [];
@@ -280,6 +290,11 @@
                 if (flippedCards.length === 2) checkMatch();
             }
         }));
+
+        // Shuffle the cards when the page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            shuffleCards();
+        });
     </script>
 </body>
 </html>
