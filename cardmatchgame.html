@@ -96,12 +96,23 @@
         }
 
         .backstory {
-            display: none;
-            margin-top: 20px;
-            background-color: #222;
-            padding: 20px;
-            border-radius: 5px;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #222;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    display: none;
+}
+
 
         footer {
             margin-top: 50px;
