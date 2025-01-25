@@ -96,94 +96,31 @@
             height: 60px;
             background-image: url('images/ship.png');
             background-size: cover;
-            display: none; /* Hide initially */
+            display: none; /* Hidden initially */
             cursor: pointer;
         }
 
         .laser {
             position: absolute;
-            width: 20px;
-            height: 50px;
-            background-image: url('images/laser.png');
-            background-size: cover;
+            width: 10px;
+            height: 20px;
+            background-color: red;
             animation: moveLaser 1s linear forwards;
-        }
-
-        @keyframes moveLaser {
-            to {
-                top: -100px;
-            }
-        }
-
-        .stats {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-        }
-
-        footer {
-            margin-top: 50px;
-            text-align: center;
-        }
-
-        footer a {
-            display: inline-block;
-            margin: 10px 20px;
-            font-size: 18px;
-            color: #89CFF0;
-        }
-
-        footer a:hover {
-            color: #FF6347;
         }
     </style>
 </head>
 <body>
     <img src="images/Hackerdiscoverylogo.png" alt="Hacker Discovery Logo" class="logo">
-    <div class="stats">
-        <span id="timer">Time: 0s</span>
-        <span id="moves">Moves: 0</span>
-    </div>
-
     <div class="game-container" id="game-container"></div>
-    
     <div class="spacecraft" id="spacecraft"></div>
-
-    <button id="restart-button">Restart Game</button>
-
-    <footer>
-        <a href="#" id="theme-toggle">Toggle Theme</a>
-        <a href="index.html">Home</a>
-    </footer>
 
     <script>
         (function () {
             const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara'];
             const gameContainer = document.getElementById('game-container');
             const spacecraft = document.getElementById('spacecraft');
-            const restartButton = document.getElementById('restart-button');
-            const timerDisplay = document.getElementById('timer');
-            const movesDisplay = document.getElementById('moves');
-            const themeToggle = document.getElementById('theme-toggle');
 
-            let flippedCards = [];
             let matchedCards = [];
-            let timer = 0;
-            let moves = 0;
-            let intervalId;
-            let laserElements = [];
-
-            function startTimer() {
-                intervalId = setInterval(() => {
-                    timer++;
-                    timerDisplay.textContent = `Time: ${timer}s`;
-                }, 1000);
-            }
-
-            function stopTimer() {
-                clearInterval(intervalId);
-            }
 
             function createCards() {
                 const cards = [];
@@ -192,16 +129,6 @@
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.character = character;
-                        card.innerHTML = `
-                            <div class="card-inner">
-                                <div class="card-front">
-                                    <img src="images/Front.png" alt="Front of ${character} card">
-                                </div>
-                                <div class="card-back">
-                                    <img src="images/${character.charAt(0).toUpperCase() + character.slice(1)}.png" alt="${character} character">
-                                </div>
-                            </div>
-                        `;
                         cards.push(card);
                     }
                 });
@@ -217,36 +144,56 @@
 
             function checkAllMatched() {
                 if (matchedCards.length === characters.length * 2) {
-                    stopTimer();
                     spacecraft.style.display = 'block'; // Show spacecraft
                 }
             }
 
             function moveSpacecraft(e) {
                 const spacecraftWidth = spacecraft.offsetWidth;
-                const windowWidth = window.innerWidth;
-                const newLeft = e.clientX || e.touches[0].clientX;
-                const spacecraftLeft = Math.min(Math.max(newLeft - spacecraftWidth / 2, 0), windowWidth - spacecraftWidth);
-                spacecraft.style.left = `${spacecraftLeft}px`;
+                const newLeft = Math.min(Math.max(e.clientX - spacecraftWidth / 2, 0), window.innerWidth - spacecraftWidth);
+                spacecraft.style.left = `${newLeft}px`;
             }
 
             function fireLaser() {
                 const laser = document.createElement('div');
                 laser.classList.add('laser');
-                laser.style.left = `${spacecraft.offsetLeft + spacecraft.offsetWidth / 2 - 10}px`;
-                laser.style.bottom = `80px`;
+                laser.style.left = `${spacecraft.offsetLeft + spacecraft.offsetWidth / 2 - 5}px`;
+                laser.style.bottom = '80px';
                 gameContainer.appendChild(laser);
 
-                laser.addEventListener('animationend', () => {
-                    gameContainer.removeChild(laser);
-                });
+                const laserInterval = setInterval(() => {
+                    const laserRect = laser.getBoundingClientRect();
+                    const cards = document.querySelectorAll('.card');
+
+                    for (const card of cards) {
+                        const cardRect = card.getBoundingClientRect();
+                        if (
+                            laserRect.top <= cardRect.bottom &&
+                            laserRect.left >= cardRect.left &&
+                            laserRect.right <= cardRect.right
+                        ) {
+                            card.remove(); // Remove the card
+                            laser.remove(); // Remove the laser
+                            clearInterval(laserInterval);
+                            return;
+                        }
+                    }
+
+                    // Move laser upward
+                    const laserBottom = parseInt(laser.style.bottom, 10);
+                    if (laserBottom > window.innerHeight) {
+                        laser.remove(); // Remove laser when it moves out of bounds
+                        clearInterval(laserInterval);
+                    } else {
+                        laser.style.bottom = `${laserBottom + 10}px`;
+                    }
+                }, 30);
             }
 
             window.addEventListener('mousemove', moveSpacecraft);
             spacecraft.addEventListener('click', fireLaser);
 
             shuffleCards();
-            startTimer();
         })();
     </script>
 </body>
