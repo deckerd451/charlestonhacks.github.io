@@ -1,310 +1,134 @@
-<!DOCTYPE HTML>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>Card Matching Game - CharlestonHacks</title>
-    <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
 
-        h2, h3 {
-            margin: 20px;
-        }
+h2, h3 {
+    margin: 20px;
+}
 
-        .game-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Set up grid with 4 columns */
-            justify-content: center;
-            gap: 20px;
-            margin-top: 50px;
-            padding: 10px;
-        }
+.game-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Set up grid with 4 columns */
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;
+    padding: 10px;
+}
 
-        .card {
-            width: 100%;
-            max-width: 150px;
-            height: 200px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
+.card {
+    width: 100%;
+    max-width: 150px; /* Max width stays for desktop */
+    height: auto;
+    aspect-ratio: 1 / 1.33; /* Maintain aspect ratio for consistent sizing */
+    perspective: 1000px;
+    cursor: pointer;
+}
 
-        .card-inner {
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease-in-out;
-        }
+.card-inner {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out;
+}
 
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
 
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-        }
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
 
-        .card-front {
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #000;
-        }
+.card-front {
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #000;
+}
 
-        .card-back {
-            background-color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transform: rotateY(180deg);
-        }
+.card-back {
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transform: rotateY(180deg);
+}
 
-        .card.matched {
-            border: 3px solid #00ff00;
-            pointer-events: none;
-        }
+.card.matched {
+    border: 3px solid #00ff00;
+    pointer-events: none;
+}
 
-        .backstory {
-            display: none;
-            margin-top: 20px;
-            background-color: #222;
-            padding: 20px;
-            border-radius: 5px;
-        }
+.backstory {
+    display: none;
+    margin-top: 20px;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 5px;
+}
 
-        .stats {
-            margin-top: 20px;
-        }
+.stats {
+    margin-top: 20px;
+}
 
-        .stats span {
-            margin: 0 10px;
-        }
+.stats span {
+    margin: 0 10px;
+}
 
-        footer {
-            margin-top: 50px;
-            text-align: center;
-        }
+footer {
+    margin-top: 50px;
+    text-align: center;
+}
 
-        footer a {
-            display: inline-block;
-            margin: 10px 20px;
-            font-size: 18px;
-            color: #89CFF0;
-        }
+footer a {
+    display: inline-block;
+    margin: 10px 20px;
+    font-size: 18px;
+    color: #89CFF0;
+}
 
-        footer a:hover {
-            color: #FF6347;
-        }
+footer a:hover {
+    color: #FF6347;
+}
 
-        @media (max-width: 768px) {
-            .game-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-                padding: 10px;
-            }
+@media (max-width: 768px) {
+    .game-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 10px;
+    }
 
-            .card {
-                height: 180px;
-            }
-        }
+    .card {
+        max-width: 120px; /* Reduce card size on smaller screens */
+        height: auto;
+    }
+}
 
-        @media (max-width: 480px) {
-            .game-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-                padding: 5px;
-            }
+@media (max-width: 480px) {
+    .game-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 5px;
+    }
 
-            .card {
-                height: 150px;
-            }
+    .card {
+        max-width: 100px; /* Further reduce card size on mobile */
+        height: auto;
+    }
 
-            .backstory {
-                font-size: 14px;
-                padding: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <h1>Card Matching Game</h1>
-    <div class="stats">
-        <span id="timer">Time: 0s</span>
-        <span id="moves">Moves: 0</span>
-    </div>
-
-    <div class="game-container" id="game-container"></div>
-
-    <div class="backstory" id="backstory"></div>
-
-    <button id="restart-button">Restart Game</button>
-
-    <footer>
-        <a href="#" id="theme-toggle">Toggle Theme</a>
-        <a href="index.html">Home</a>
-    </footer>
-
-    <script>
-        (function () {
-            const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes'];
-            const backstories = {
-                'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
-                'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
-                'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
-                'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
-                'descartes': 'Descartes - A mysterious figure yet to reveal their story.'
-            };
-
-            const gameContainer = document.getElementById('game-container');
-            const backstoryContainer = document.getElementById('backstory');
-            const restartButton = document.getElementById('restart-button');
-            const timerDisplay = document.getElementById('timer');
-            const movesDisplay = document.getElementById('moves');
-            const themeToggle = document.getElementById('theme-toggle');
-
-            let flippedCards = [];
-            let matchedCards = [];
-            let timer = 0;
-            let moves = 0;
-            let intervalId;
-
-            // Timer function
-            function startTimer() {
-                intervalId = setInterval(() => {
-                    timer++;
-                    timerDisplay.textContent = `Time: ${timer}s`;
-                }, 1000);
-            }
-
-            function stopTimer() {
-                clearInterval(intervalId);
-            }
-
-            // Function to create cards dynamically
-            function createCards() {
-                const cards = [];
-                characters.forEach(character => {
-                    for (let i = 0; i < 2; i++) {
-                        const card = document.createElement('div');
-                        card.classList.add('card');
-                        card.dataset.character = character;
-                        card.setAttribute('tabindex', '0');
-                        card.innerHTML = `
-                            <div class="card-inner">
-                                <div class="card-front">
-                                    <img src="images/Front.png" alt="Front of ${character} card">
-                                </div>
-                                <div class="card-back">
-                                    <img src="images/${character.charAt(0).toUpperCase() + character.slice(1)}.png" alt="${character} character">
-                                </div>
-                            </div>
-                        `;
-                        cards.push(card);
-                    }
-                });
-                return cards;
-            }
-
-            // Shuffle cards and append them to the container
-            function shuffleCards() {
-                const cards = createCards();
-                cards.sort(() => Math.random() - 0.5);
-                gameContainer.innerHTML = '';
-                cards.forEach(card => gameContainer.appendChild(card));
-            }
-
-            // Check for a match
-            function checkMatch() {
-                const [firstCard, secondCard] = flippedCards;
-                if (firstCard.dataset.character === secondCard.dataset.character) {
-                    matchedCards.push(firstCard, secondCard);
-                    backstoryContainer.textContent = backstories[firstCard.dataset.character];
-                    backstoryContainer.style.display = 'block';
-                    firstCard.classList.add('matched');
-                    secondCard.classList.add('matched');
-                    flippedCards = [];
-
-                    // Check for win condition
-                    if (matchedCards.length === characters.length * 2) {
-                        stopTimer();
-                        setTimeout(() => {
-                            alert(`You win! Time: ${timer}s, Moves: ${moves}`);
-                        }, 500);
-                    }
-                } else {
-                    setTimeout(() => {
-                        firstCard.classList.remove('flipped');
-                        secondCard.classList.remove('flipped');
-                        flippedCards = [];
-                    }, 1000);
-                }
-            }
-
-            // Event delegation for card flipping
-            gameContainer.addEventListener('click', (e) => {
-                const card = e.target.closest('.card');
-                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
-
-                card.classList.add('flipped');
-                flippedCards.push(card);
-                moves++;
-                movesDisplay.textContent = `Moves: ${moves}`;
-
-                if (flippedCards.length === 2) checkMatch();
-            });
-
-            // Keyboard support for flipping cards
-            gameContainer.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    const card = document.activeElement;
-                    if (card && card.classList.contains('card') && !card.classList.contains('flipped')) {
-                        card.classList.add('flipped');
-                        flippedCards.push(card);
-                        moves++;
-                        movesDisplay.textContent = `Moves: ${moves}`;
-
-                        if (flippedCards.length === 2) checkMatch();
-                    }
-                }
-            });
-
-            // Restart the game
-            restartButton.addEventListener('click', () => {
-                matchedCards = [];
-                flippedCards = [];
-                timer = 0;
-                moves = 0;
-                timerDisplay.textContent = 'Time: 0s';
-                movesDisplay.textContent = 'Moves: 0';
-                backstoryContainer.style.display = 'none';
-                shuffleCards();
-                stopTimer();
-                startTimer();
-            });
-
-            // Theme toggle
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                document.body.style.backgroundColor = document.body.classList.contains('light-theme') ? 'white' : 'black';
-                document.body.style.color = document.body.classList.contains('light-theme') ? 'black' : 'white';
-            });
-
-            // Initialize the game
-            shuffleCards();
-            startTimer();
-        })();
-    </script>
-</body>
-</html>
+    .backstory {
+        font-size: 14px;
+        padding: 15px;
+    }
+}
