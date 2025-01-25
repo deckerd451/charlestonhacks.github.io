@@ -316,6 +316,14 @@
                 video.pause();
             });
 
+            // Close video if clicking outside the video container
+            document.addEventListener('click', (e) => {
+                if (!videoContainer.contains(e.target)) {
+                    videoContainer.style.display = 'none';
+                    video.pause();
+                }
+            });
+
             function checkMatch() {
                 const [firstCard, secondCard] = flippedCards;
                 if (firstCard.dataset.character === secondCard.dataset.character) {
