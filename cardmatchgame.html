@@ -33,7 +33,7 @@
         .game-container {
             display: grid;
             grid-template-columns: repeat(4, 150px); /* 4 columns */
-            grid-template-rows: repeat(3, 200px); /* 3 rows for more cards */
+            grid-template-rows: repeat(4, 200px); /* 4 rows for more cards */
             gap: 20px;
             justify-content: center;
             margin-top: 50px;
@@ -132,7 +132,7 @@
         @media (max-width: 768px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(6, 1fr);
+                grid-template-rows: repeat(8, 1fr);
                 gap: 15px;
                 padding: 10px;
             }
@@ -145,7 +145,7 @@
         @media (max-width: 480px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(6, 1fr);
+                grid-template-rows: repeat(8, 1fr);
                 gap: 10px;
                 padding: 5px;
             }
@@ -227,13 +227,14 @@
 
     <script>
         (function () {
-            const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes'];
+            const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara'];
             const backstories = {
                 'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
                 'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
                 'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
                 'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
-                'descartes': 'Descartes - A mysterious figure yet to reveal their story.'
+                'descartes': 'Descartes - A mysterious figure yet to reveal their story.',
+                'elara': 'Elara - The Silent Guardian: A watchful protector who stands in the shadows.'
             };
 
             const gameContainer = document.getElementById('game-container');
@@ -302,6 +303,8 @@
                     videoSource.src = 'images/Medusavideo.mp4';
                 } else if (character === 'alexandor') {
                     videoSource.src = 'images/Alexandorvideo.mp4';
+                } else if (character === 'elara') {
+                    videoSource.src = 'images/Elaravideo.mp4';
                 }
                 video.load();
                 videoContainer.style.display = 'block';
@@ -333,7 +336,7 @@
                         }, 500);
                     }
 
-                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa' || firstCard.dataset.character === 'alexandor') {
+                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa' || firstCard.dataset.character === 'alexandor' || firstCard.dataset.character === 'elara') {
                         playVideo(firstCard.dataset.character);
                     }
                 } else {
