@@ -261,6 +261,8 @@
                     videoSource.src = 'images/Descartesvideo.mp4';
                 } else if (character === 'medusa') {
                     videoSource.src = 'images/Medusavideo.mp4';
+                } else if (character === 'alexandor') {
+                    videoSource.src = 'images/Alexandorvideo.mp4';
                 }
                 video.load();
                 videoContainer.style.display = 'block';
@@ -289,7 +291,7 @@
                     }
 
                     // Show video for matched cards
-                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa') {
+                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa' || firstCard.dataset.character === 'alexandor') {
                         playVideo(firstCard.dataset.character);
                     }
                 } else {
