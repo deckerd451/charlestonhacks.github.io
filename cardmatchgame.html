@@ -97,7 +97,7 @@
             height: 60px;
             background-image: url('images/ship.png');
             background-size: cover;
-            display: none; /* Hidden initially */
+            display: block; /* Force visible for testing */
         }
 
         .laser {
@@ -196,6 +196,7 @@
             }
 
             function fireLaser() {
+                console.log('Laser fired!'); // Debugging line
                 const laser = document.createElement('div');
                 laser.classList.add('laser');
                 laser.style.left = `${spacecraft.offsetLeft + spacecraft.offsetWidth / 2 - 5}px`;
