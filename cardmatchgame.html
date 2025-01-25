@@ -25,11 +25,16 @@
             gap: 20px;
             margin-top: 50px;
             padding: 10px;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .card {
-            width: 2.5in; /* Set width to 2.5 inches */
-            height: 3.5in; /* Set height to 3.5 inches */
+            width: 10vw; /* Width as a percentage of the viewport width */
+            height: 14vw; /* Height as a percentage of the viewport width */
+            max-width: 2.5in;  /* Maximum width constraint */
+            max-height: 3.5in; /* Maximum height constraint */
             perspective: 1000px;
             cursor: pointer;
         }
@@ -115,8 +120,10 @@
             }
 
             .card {
-                width: 2.5in;  /* Keep consistent width on smaller screens */
-                height: 3.5in; /* Keep consistent height on smaller screens */
+                width: 22vw; /* Adjust card width for tablets */
+                height: 30vw; /* Adjust card height for tablets */
+                max-width: 2.5in;
+                max-height: 3.5in;
             }
         }
 
@@ -128,8 +135,10 @@
             }
 
             .card {
-                width: 2.5in;  /* Keep consistent width */
-                height: 3.5in; /* Keep consistent height */
+                width: 28vw; /* Adjust card width for mobile */
+                height: 38vw; /* Adjust card height for mobile */
+                max-width: 2.5in;
+                max-height: 3.5in;
             }
 
             .backstory {
