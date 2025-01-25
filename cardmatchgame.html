@@ -42,6 +42,7 @@
             height: 200px;
             perspective: 1000px;
             cursor: pointer;
+            position: relative;
         }
 
         .card-inner {
@@ -97,7 +98,6 @@
             background-image: url('images/ship.png');
             background-size: cover;
             display: none; /* Hidden initially */
-            cursor: pointer;
         }
 
         .laser {
@@ -105,7 +105,7 @@
             width: 10px;
             height: 20px;
             background-color: red;
-            animation: moveLaser 1s linear forwards;
+            z-index: 10;
         }
     </style>
 </head>
@@ -120,6 +120,7 @@
             const gameContainer = document.getElementById('game-container');
             const spacecraft = document.getElementById('spacecraft');
 
+            let flippedCards = [];
             let matchedCards = [];
 
             function createCards() {
@@ -129,6 +130,15 @@
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.character = character;
+                        card.innerHTML = `
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <img src="images/Front.png" alt="Front">
+                                </div>
+                                <div class="card-back">
+                                    <img src="images/${character}.png" alt="${character}">
+                                </div>
+                            </div>`;
                         cards.push(card);
                     }
                 });
@@ -140,11 +150,41 @@
                 cards.sort(() => Math.random() - 0.5);
                 gameContainer.innerHTML = '';
                 cards.forEach(card => gameContainer.appendChild(card));
+                attachCardEventListeners();
             }
 
-            function checkAllMatched() {
+            function attachCardEventListeners() {
+                const cards = document.querySelectorAll('.card');
+                cards.forEach(card => {
+                    card.addEventListener('click', () => flipCard(card));
+                });
+            }
+
+            function flipCard(card) {
+                if (flippedCards.length >= 2 || card.classList.contains('flipped') || matchedCards.includes(card)) {
+                    return;
+                }
+
+                card.classList.add('flipped');
+                flippedCards.push(card);
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 1000);
+                }
+            }
+
+            function checkMatch() {
+                const [firstCard, secondCard] = flippedCards;
+                if (firstCard.dataset.character === secondCard.dataset.character) {
+                    matchedCards.push(firstCard, secondCard);
+                } else {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                }
+                flippedCards = [];
+
                 if (matchedCards.length === characters.length * 2) {
-                    spacecraft.style.display = 'block'; // Show spacecraft
+                    spacecraft.style.display = 'block';
                 }
             }
 
@@ -163,7 +203,7 @@
 
                 const laserInterval = setInterval(() => {
                     const laserRect = laser.getBoundingClientRect();
-                    const cards = document.querySelectorAll('.card');
+                    const cards = Array.from(document.querySelectorAll('.card'));
 
                     for (const card of cards) {
                         const cardRect = card.getBoundingClientRect();
@@ -190,8 +230,8 @@
                 }, 30);
             }
 
-            window.addEventListener('mousemove', moveSpacecraft);
             spacecraft.addEventListener('click', fireLaser);
+            window.addEventListener('mousemove', moveSpacecraft);
 
             shuffleCards();
         })();
