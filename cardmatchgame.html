@@ -192,6 +192,7 @@
                 const spacecraftWidth = spacecraft.offsetWidth;
                 const newLeft = Math.min(Math.max(e.clientX - spacecraftWidth / 2, 0), window.innerWidth - spacecraftWidth);
                 spacecraft.style.left = `${newLeft}px`;
+                spacecraft.style.bottom = '20px'; // Ensure the spacecraft stays at the bottom
             }
 
             function fireLaser() {
@@ -203,18 +204,20 @@
 
                 const laserInterval = setInterval(() => {
                     const laserRect = laser.getBoundingClientRect();
-                    const cards = Array.from(document.querySelectorAll('.card'));
+                    const cards = Array.from(document.querySelectorAll('.card:not(.flipped)'));
 
                     for (const card of cards) {
                         const cardRect = card.getBoundingClientRect();
                         if (
                             laserRect.top <= cardRect.bottom &&
-                            laserRect.left >= cardRect.left &&
-                            laserRect.right <= cardRect.right
+                            laserRect.bottom >= cardRect.top &&
+                            laserRect.left <= cardRect.right &&
+                            laserRect.right >= cardRect.left
                         ) {
                             card.remove(); // Remove the card
                             laser.remove(); // Remove the laser
                             clearInterval(laserInterval);
+                            matchedCards = matchedCards.filter(matchedCard => !matchedCard.isSameNode(card));
                             return;
                         }
                     }
