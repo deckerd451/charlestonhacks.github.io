@@ -243,8 +243,7 @@
                 video.play();
                 video.onended = () => {
                     videoContainer.style.display = 'none';
-                    shuffleCards();
-                    startTimer();
+                    // No restart, game state continues
                 };
             }
 
