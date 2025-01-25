@@ -149,6 +149,12 @@
     <div class="game-container" id="game-container"></div>
 
     <div class="backstory" id="backstory"></div>
+    
+    <div id="video-container" style="display: none;">
+        <video id="video" width="640" height="360" controls>
+            <source id="video-source" type="video/mp4">
+        </video>
+    </div>
 
     <button id="restart-button">Restart Game</button>
 
@@ -174,6 +180,9 @@
             const timerDisplay = document.getElementById('timer');
             const movesDisplay = document.getElementById('moves');
             const themeToggle = document.getElementById('theme-toggle');
+            const videoContainer = document.getElementById('video-container');
+            const video = document.getElementById('video');
+            const videoSource = document.getElementById('video-source');
 
             let flippedCards = [];
             let matchedCards = [];
@@ -223,6 +232,22 @@
                 cards.forEach(card => gameContainer.appendChild(card));
             }
 
+            function playVideo(character) {
+                if (character === 'descartes') {
+                    videoSource.src = 'images/Descartesvideo.mp4';
+                } else if (character === 'medusa') {
+                    videoSource.src = 'images/Medusavideo.mp4';
+                }
+                video.load();
+                videoContainer.style.display = 'block';
+                video.play();
+                video.onended = () => {
+                    videoContainer.style.display = 'none';
+                    shuffleCards();
+                    startTimer();
+                };
+            }
+
             function checkMatch() {
                 const [firstCard, secondCard] = flippedCards;
                 if (firstCard.dataset.character === secondCard.dataset.character) {
@@ -238,6 +263,11 @@
                         setTimeout(() => {
                             alert(`You win! Time: ${timer}s, Moves: ${moves}`);
                         }, 500);
+                    }
+
+                    // Show video for matched cards
+                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa') {
+                        playVideo(firstCard.dataset.character);
                     }
                 } else {
                     setTimeout(() => {
