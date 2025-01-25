@@ -20,8 +20,8 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, 150px); /* 4 columns */
-            grid-template-rows: repeat(3, 200px); /* 3 rows for more cards */
+            grid-template-columns: repeat(4, 150px);
+            grid-template-rows: repeat(3, 200px);
             gap: 20px;
             justify-content: center;
             margin-top: 50px;
@@ -140,190 +140,105 @@
     </style>
 </head>
 <body>
-    <div class="game-container" id="game-container">
-        <div class="card" data-character="astrid">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Astrid.png" alt="Astrid Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="astrid">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Astrid.png" alt="Astrid Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="medusa">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back5.png" alt="Medusa Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="medusa">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back5.png" alt="Medusa Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="alexandor">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back4.png" alt="Alexandor Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="alexandor">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back4.png" alt="Alexandor Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="aegis">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Aegis.png" alt="Aegis Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="aegis">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Aegis.png" alt="Aegis Card Back">
-                </div>
-            </div>
-        </div>
-
-        <!-- New placeholder cards -->
-        <div class="card" data-character="descartes">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back3.png" alt="Descartes Card Back">
-                </div>
-            </div>
-        </div>
-
-        <div class="card" data-character="descartes">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img src="images/Front.png" alt="Card Front">
-                </div>
-                <div class="card-back">
-                    <img src="images/Back3.png" alt="Descartes Card Back">
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="game-container" id="game-container"></div>
 
     <div class="backstory" id="backstory"></div>
+
+    <button id="restart-button">Restart Game</button>
 
     <footer>
         <a href="index.html">Home</a>
     </footer>
 
     <script>
-        // Shuffle the cards
-        function shuffleCards() {
+        (function () {
+            const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes'];
+            const backstories = {
+                'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+                'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
+                'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
+                'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
+                'descartes': 'Descartes - A mysterious figure yet to reveal their story.'
+            };
+
             const gameContainer = document.getElementById('game-container');
-            const cardsArray = Array.from(gameContainer.children);
-            cardsArray.sort(() => Math.random() - 0.5);
-            // Re-append the shuffled cards to the container
-            cardsArray.forEach(card => gameContainer.appendChild(card));
-        }
+            const backstoryContainer = document.getElementById('backstory');
+            const restartButton = document.getElementById('restart-button');
 
-        // Select all the cards and initialize variables for the game logic
-        const cards = document.querySelectorAll('.card');
-        let flippedCards = [];
-        let matchedCards = [];
+            let flippedCards = [];
+            let matchedCards = [];
 
-        const backstoryContainer = document.getElementById('backstory');
-
-        const backstories = {
-            'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
-            'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
-            'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
-            'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
-            'descartes': 'Descartes - A mysterious figure yet to reveal their story.'
-        };
-
-        // Function to handle card match checking
-        function checkMatch() {
-            const [firstCard, secondCard] = flippedCards;
-
-            // If characters match
-            if (firstCard.dataset.character === secondCard.dataset.character) {
-                matchedCards.push(firstCard, secondCard);
-                backstoryContainer.textContent = backstories[firstCard.dataset.character];
-                backstoryContainer.style.display = 'block';
-                flippedCards = [];
-            } else {
-                // Flip back the cards after a delay
-                setTimeout(() => {
-                    firstCard.classList.remove('flipped');
-                    secondCard.classList.remove('flipped');
-                    flippedCards = [];
-                }, 1000);
-            }
-        }
-
-        // Add click event listeners to all cards
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                // Prevent flipping more than 2 cards or flipping the same card twice
-                if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
-                    card.classList.add('flipped');
-                    flippedCards.push(card);
-
-                    // Check for a match when 2 cards are flipped
-                    if (flippedCards.length === 2) {
-                        checkMatch();
+            // Function to create cards dynamically
+            function createCards() {
+                const cards = [];
+                characters.forEach(character => {
+                    for (let i = 0; i < 2; i++) {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+                        card.dataset.character = character;
+                        card.innerHTML = `
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <img src="images/Front.png" alt="Card Front">
+                                </div>
+                                <div class="card-back">
+                                    <img src="images/${character.charAt(0).toUpperCase() + character.slice(1)}.png" alt="${character} Card Back">
+                                </div>
+                            </div>
+                        `;
+                        cards.push(card);
                     }
-                }
-            });
-        });
+                });
+                return cards;
+            }
 
-        // Shuffle the cards when the page loads
-        document.addEventListener("DOMContentLoaded", () => {
-            shuffleCards();
-        });
+            // Shuffle cards and append them to the container
+            function shuffleCards() {
+                const cards = createCards();
+                cards.sort(() => Math.random() - 0.5);
+                gameContainer.innerHTML = '';
+                cards.forEach(card => gameContainer.appendChild(card));
+            }
+
+            // Check for a match
+            function checkMatch() {
+                const [firstCard, secondCard] = flippedCards;
+                if (firstCard.dataset.character === secondCard.dataset.character) {
+                    matchedCards.push(firstCard, secondCard);
+                    backstoryContainer.textContent = backstories[firstCard.dataset.character];
+                    backstoryContainer.style.display = 'block';
+                    flippedCards = [];
+                } else {
+                    setTimeout(() => {
+                        firstCard.classList.remove('flipped');
+                        secondCard.classList.remove('flipped');
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+
+            // Event delegation for card flipping
+            gameContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
+
+                card.classList.add('flipped');
+                flippedCards.push(card);
+
+                if (flippedCards.length === 2) checkMatch();
+            });
+
+            // Restart the game
+            restartButton.addEventListener('click', () => {
+                matchedCards = [];
+                flippedCards = [];
+                backstoryContainer.style.display = 'none';
+                shuffleCards();
+            });
+
+            // Initialize the game
+            document.addEventListener('DOMContentLoaded', shuffleCards);
+        })();
     </script>
 </body>
 </html>
