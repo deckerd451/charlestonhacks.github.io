@@ -12,29 +12,31 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            overflow: hidden;
         }
 
         h1 {
             margin: 20px;
-            color: #00FF00;
-            display: none;
+            color: #00FF00; /* Acid green title */
+            display: none; /* Hide original title */
         }
 
         .logo {
-            width: 400px;
+            width: 400px; /* Adjust to match the original title size */
             height: auto;
             margin-top: 20px;
         }
 
+        h2, h3 {
+            margin: 20px;
+        }
+
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, 150px);
-            grid-template-rows: repeat(4, 200px);
+            grid-template-columns: repeat(4, 150px); /* 4 columns */
+            grid-template-rows: repeat(4, 200px); /* 4 rows for more cards */
             gap: 20px;
             justify-content: center;
             margin-top: 50px;
-            position: relative;
         }
 
         .card {
@@ -81,48 +83,34 @@
             transform: rotateY(180deg);
         }
 
-        .card-back img, .card-front img {
+        .card-back img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        /* Spacecraft styles */
-        .spacecraft {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background-color: limegreen;
-            border-radius: 5px;
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .backstory {
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
-        }
-
-        .laser {
-            position: absolute;
-            width: 5px;
-            height: 20px;
-            background-color: red;
-            animation: moveLaser 1s linear forwards;
-        }
-
-        @keyframes moveLaser {
-            to {
-                top: -100px;
-            }
-        }
-
-        /* Game Stats */
-        .stats {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            display: none;
         }
 
         footer {
@@ -140,6 +128,75 @@
         footer a:hover {
             color: #FF6347;
         }
+
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, 1fr);
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .card {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, 1fr);
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .card {
+                height: 150px;
+            }
+
+            .backstory {
+                font-size: 14px;
+                padding: 15px;
+            }
+        }
+
+        /* Lightbox (modal) styles for video */
+        #video-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+
+        #video {
+            width: 80%;
+            height: 80%;
+        }
+
+        /* Close button styles */
+        #close-video {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        #close-video:hover {
+            background-color: #cc0000;
+        }
     </style>
 </head>
 <body>
@@ -150,8 +207,16 @@
     </div>
 
     <div class="game-container" id="game-container"></div>
+
+    <div class="backstory" id="backstory"></div>
     
-    <div class="spacecraft" id="spacecraft"></div>
+    <div id="video-container">
+        <!-- Close button for video -->
+        <button id="close-video">X</button>
+        <video id="video" controls muted>
+            <source id="video-source" type="video/mp4">
+        </video>
+    </div>
 
     <button id="restart-button">Restart Game</button>
 
@@ -163,19 +228,31 @@
     <script>
         (function () {
             const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara'];
+            const backstories = {
+                'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+                'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
+                'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
+                'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
+                'descartes': 'Descartes - A mysterious figure yet to reveal their story.',
+                'elara': 'Elara - The Silent Guardian: A watchful protector who stands in the shadows.'
+            };
+
             const gameContainer = document.getElementById('game-container');
-            const spacecraft = document.getElementById('spacecraft');
+            const backstoryContainer = document.getElementById('backstory');
             const restartButton = document.getElementById('restart-button');
             const timerDisplay = document.getElementById('timer');
             const movesDisplay = document.getElementById('moves');
             const themeToggle = document.getElementById('theme-toggle');
-            
+            const videoContainer = document.getElementById('video-container');
+            const video = document.getElementById('video');
+            const videoSource = document.getElementById('video-source');
+            const closeVideoButton = document.getElementById('close-video');
+
             let flippedCards = [];
             let matchedCards = [];
             let timer = 0;
             let moves = 0;
             let intervalId;
-            let laserElements = [];
 
             function startTimer() {
                 intervalId = setInterval(() => {
@@ -195,6 +272,7 @@
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.character = character;
+                        card.setAttribute('tabindex', '0');
                         card.innerHTML = `
                             <div class="card-inner">
                                 <div class="card-front">
@@ -218,10 +296,35 @@
                 cards.forEach(card => gameContainer.appendChild(card));
             }
 
+            function playVideo(character) {
+                if (character === 'descartes') {
+                    videoSource.src = 'images/Descartesvideo.mp4';
+                } else if (character === 'medusa') {
+                    videoSource.src = 'images/Medusavideo.mp4';
+                } else if (character === 'alexandor') {
+                    videoSource.src = 'images/Alexandorvideo.mp4';
+                } else if (character === 'elara') {
+                    videoSource.src = 'images/Elaravideo.mp4';  // Updated path
+                }
+                video.load();
+                videoContainer.style.display = 'block';
+                video.play();
+                video.onended = () => {
+                    videoContainer.style.display = 'none';
+                };
+            }
+
+            closeVideoButton.addEventListener('click', () => {
+                videoContainer.style.display = 'none';
+                video.pause();
+            });
+
             function checkMatch() {
                 const [firstCard, secondCard] = flippedCards;
                 if (firstCard.dataset.character === secondCard.dataset.character) {
                     matchedCards.push(firstCard, secondCard);
+                    backstoryContainer.textContent = backstories[firstCard.dataset.character];
+                    backstoryContainer.style.display = 'block';
                     firstCard.classList.add('matched');
                     secondCard.classList.add('matched');
                     flippedCards = [];
@@ -232,6 +335,10 @@
                             alert(`You win! Time: ${timer}s, Moves: ${moves}`);
                         }, 500);
                     }
+
+                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa' || firstCard.dataset.character === 'alexandor' || firstCard.dataset.character === 'elara') {
+                        playVideo(firstCard.dataset.character);
+                    }
                 } else {
                     setTimeout(() => {
                         firstCard.classList.remove('flipped');
@@ -241,52 +348,37 @@
                 }
             }
 
-            function moveSpacecraft(e) {
-                const spacecraftWidth = spacecraft.offsetWidth;
-                const windowWidth = window.innerWidth;
-                const newLeft = e.clientX || e.touches[0].clientX;
-                const spacecraftLeft = Math.min(Math.max(newLeft - spacecraftWidth / 2, 0), windowWidth - spacecraftWidth);
-                spacecraft.style.left = `${spacecraftLeft}px`;
+            function hideBackstory() {
+                backstoryContainer.style.display = 'none';
             }
 
-            function fireLaser() {
-                const laser = document.createElement('div');
-                laser.classList.add('laser');
-                laser.style.left = `${spacecraft.offsetLeft + spacecraft.offsetWidth / 2 - 2.5}px`;
-                gameContainer.appendChild(laser);
-                laserElements.push(laser);
+            gameContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
 
-                laser.addEventListener('animationend', () => {
-                    gameContainer.removeChild(laser);
-                    laserElements = laserElements.filter(l => l !== laser);
-                });
-            }
+                hideBackstory();
 
-            function checkLaserHit() {
-                laserElements.forEach(laser => {
-                    const laserRect = laser.getBoundingClientRect();
-                    const cards = document.querySelectorAll('.card');
-                    cards.forEach(card => {
-                        const cardRect = card.getBoundingClientRect();
-                        if (
-                            laserRect.top <= cardRect.bottom &&
-                            laserRect.bottom >= cardRect.top &&
-                            laserRect.left <= cardRect.right &&
-                            laserRect.right >= cardRect.left
-                        ) {
-                            card.style.display = 'none';
-                            gameContainer.removeChild(laser);
-                            laserElements = laserElements.filter(l => l !== laser);
-                        }
-                    });
-                });
-            }
+                card.classList.add('flipped');
+                flippedCards.push(card);
+                moves++;
+                movesDisplay.textContent = `Moves: ${moves}`;
 
-            window.addEventListener('mousemove', moveSpacecraft);
-            window.addEventListener('touchmove', moveSpacecraft);
+                if (flippedCards.length === 2) checkMatch();
+            });
 
-            spacecraft.addEventListener('click', fireLaser);
-            window.addEventListener('click', checkLaserHit);
+            gameContainer.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const card = document.activeElement;
+                    if (card && card.classList.contains('card') && !card.classList.contains('flipped')) {
+                        card.classList.add('flipped');
+                        flippedCards.push(card);
+                        moves++;
+                        movesDisplay.textContent = `Moves: ${moves}`;
+
+                        if (flippedCards.length === 2) checkMatch();
+                    }
+                }
+            });
 
             restartButton.addEventListener('click', () => {
                 matchedCards = [];
@@ -295,6 +387,7 @@
                 moves = 0;
                 timerDisplay.textContent = 'Time: 0s';
                 movesDisplay.textContent = 'Moves: 0';
+                backstoryContainer.style.display = 'none';
                 shuffleCards();
                 stopTimer();
                 startTimer();
