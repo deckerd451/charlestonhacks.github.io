@@ -20,21 +20,17 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            justify-content: center;
+            grid-template-columns: repeat(4, 150px); /* 4 columns */
+            grid-template-rows: repeat(3, 200px); /* 3 rows for more cards */
             gap: 20px;
+            justify-content: center;
             margin-top: 50px;
-            padding: 10px;
-            max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .card {
-            width: 20vw; /* 20% of the viewport width */
-            height: 28vw; /* 28% of the viewport width */
-            max-width: 200px; /* Maximum width constraint */
-            max-height: 280px; /* Maximum height constraint */
+            width: 100%;
+            max-width: 150px;
+            height: 200px;
             perspective: 1000px;
             cursor: pointer;
         }
@@ -43,7 +39,7 @@
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.5s;
         }
 
         .card.flipped .card-inner {
@@ -75,9 +71,16 @@
             transform: rotateY(180deg);
         }
 
-        .card.matched {
-            border: 3px solid #00ff00;
-            pointer-events: none;
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .backstory {
@@ -86,14 +89,6 @@
             background-color: #222;
             padding: 20px;
             border-radius: 5px;
-        }
-
-        .stats {
-            margin-top: 20px;
-        }
-
-        .stats span {
-            margin: 0 10px;
         }
 
         footer {
@@ -115,30 +110,26 @@
         @media (max-width: 768px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(6, 1fr);
                 gap: 15px;
                 padding: 10px;
             }
 
             .card {
-                width: 25vw; /* 25% of the viewport width for tablets */
-                height: 35vw; /* Adjust height accordingly */
-                max-width: 200px;
-                max-height: 280px;
+                height: 180px;
             }
         }
 
         @media (max-width: 480px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(6, 1fr);
                 gap: 10px;
                 padding: 5px;
             }
 
             .card {
-                width: 30vw; /* 30% of the viewport width for mobile */
-                height: 40vw; /* Adjust height accordingly */
-                max-width: 150px;
-                max-height: 200px;
+                height: 150px;
             }
 
             .backstory {
