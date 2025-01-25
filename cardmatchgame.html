@@ -17,7 +17,7 @@
 
         h1 {
             margin: 20px;
-            color: #00FF00; /* Acid green title */
+            color: #00FF00;
             display: none;
         }
 
@@ -169,7 +169,7 @@
             const timerDisplay = document.getElementById('timer');
             const movesDisplay = document.getElementById('moves');
             const themeToggle = document.getElementById('theme-toggle');
-
+            
             let flippedCards = [];
             let matchedCards = [];
             let timer = 0;
@@ -244,7 +244,7 @@
             function moveSpacecraft(e) {
                 const spacecraftWidth = spacecraft.offsetWidth;
                 const windowWidth = window.innerWidth;
-                const newLeft = e.clientX || e.touches[0].clientX;  // Get click or touch position
+                const newLeft = e.clientX || e.touches[0].clientX;
                 const spacecraftLeft = Math.min(Math.max(newLeft - spacecraftWidth / 2, 0), windowWidth - spacecraftWidth);
                 spacecraft.style.left = `${spacecraftLeft}px`;
             }
@@ -274,15 +274,14 @@
                             laserRect.left <= cardRect.right &&
                             laserRect.right >= cardRect.left
                         ) {
-                            card.style.display = 'none';  // Hide card when hit by laser
-                            gameContainer.removeChild(laser);  // Remove laser
+                            card.style.display = 'none';
+                            gameContainer.removeChild(laser);
                             laserElements = laserElements.filter(l => l !== laser);
                         }
                     });
                 });
             }
 
-            // Listen for move and fire events
             window.addEventListener('mousemove', moveSpacecraft);
             window.addEventListener('touchmove', moveSpacecraft);
 
