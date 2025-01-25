@@ -330,11 +330,12 @@
                     flippedCards = [];
 
                     if (matchedCards.length === characters.length * 2) {
-                        stopTimer();
-                        setTimeout(() => {
-                            alert(`You win! Time: ${timer}s, Moves: ${moves}`);
-                        }, 500);
-                    }
+    stopTimer();
+    setTimeout(() => {
+        alert("Now That You Know Us, Join the CharlestonHacks Community!");
+    }, 500);
+}
+
 
                     if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa' || firstCard.dataset.character === 'alexandor' || firstCard.dataset.character === 'elara') {
                         playVideo(firstCard.dataset.character);
