@@ -162,22 +162,21 @@
 
         /* Lightbox (modal) styles for video */
         #video-container {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px;  /* Adjust this to change the space around the video */
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-    width: 80%;  /* Adjust this to change the width */
-    height: 80%; /* Adjust this to change the height */
-    max-width: 500px; /* You can limit the maximum size */
-    max-height: 300px; /* Similarly, limit the maximum height */
-}
-
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;  /* Adjust this to change the space around the video */
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            width: 80%;  /* Adjust this to change the width */
+            height: 80%; /* Adjust this to change the height */
+            max-width: 500px; /* You can limit the maximum size */
+            max-height: 300px; /* Similarly, limit the maximum height */
+        }
 
         #video {
             width: 80%;
@@ -229,6 +228,12 @@
         <a href="#" id="theme-toggle">Toggle Theme</a>
         <a href="index.html">Home</a>
     </footer>
+
+    <!-- Background music -->
+    <audio id="background-music" autoplay loop>
+        <source src="assets/viramiller.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 
     <script>
         (function () {
@@ -310,9 +315,9 @@
                     videoSource.src = 'images/Alexandorvideo.mp4';
                 } else if (character === 'elara') {
                     videoSource.src = 'images/Elaravideo.mp4'; 
-                 } else if (character === 'astrid') {
+                } else if (character === 'astrid') {
                     videoSource.src = 'images/astridvideo.mp4'; 
-             } else if (character === 'aegis') {
+                } else if (character === 'aegis') {
                     videoSource.src = 'images/aegisvideo.mp4'; 
                 }
                 video.load();
@@ -346,15 +351,15 @@
                     }
 
                     if (
-    firstCard.dataset.character === 'descartes' ||
-    firstCard.dataset.character === 'medusa' ||
-    firstCard.dataset.character === 'alexandor' ||
-    firstCard.dataset.character === 'elara' ||
-    firstCard.dataset.character === 'astrid' ||
-    firstCard.dataset.character === 'aegis'
-) {
-    playVideo(firstCard.dataset.character);
-}
+                        firstCard.dataset.character === 'descartes' ||
+                        firstCard.dataset.character === 'medusa' ||
+                        firstCard.dataset.character === 'alexandor' ||
+                        firstCard.dataset.character === 'elara' ||
+                        firstCard.dataset.character === 'astrid' ||
+                        firstCard.dataset.character === 'aegis'
+                    ) {
+                        playVideo(firstCard.dataset.character);
+                    }
 
                 } else {
                     setTimeout(() => {
