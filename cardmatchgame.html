@@ -392,19 +392,29 @@
                 backstoryContainer.style.display = 'none';
             }
 
-            gameContainer.addEventListener('click', (e) => {
-                const card = e.target.closest('.card');
-                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
+            // Add this line to preload the card flip sound in your HTML
+<audio id="cardflip-sound" src="assets/cardflip.mp3" preload="auto"></audio>
 
-                hideBackstory();
+// Update this part of your game logic where the card flip happens:
+gameContainer.addEventListener('click', (e) => {
+    const card = e.target.closest('.card');
+    if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
 
-                card.classList.add('flipped');
-                flippedCards.push(card);
-                moves++;
-                movesDisplay.textContent = `Moves: ${moves}`;
+    hideBackstory();
 
-                if (flippedCards.length === 2) checkMatch();
-            });
+    // Play card flip sound at 50% volume
+    const cardflipSound = document.getElementById('cardflip-sound');
+    cardflipSound.volume = 0.5;  // Set the volume to 50%
+    cardflipSound.play();  // Play the sound
+
+    // Flip the card
+    card.classList.add('flipped');
+    flippedCards.push(card);
+    moves++;
+    movesDisplay.textContent = `Moves: ${moves}`;
+
+    if (flippedCards.length === 2) checkMatch();
+});
 
             gameContainer.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
