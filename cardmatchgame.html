@@ -14,27 +14,26 @@
             padding: 0;
         }
 
-        body.light-theme {
-            background-color: white;
-            color: black;
-        }
-
         h1 {
             margin: 20px;
-            color: #00FF00;
-            display: none;
+            color: #00FF00; /* Acid green title */
+            display: none; /* Hide original title */
         }
 
         .logo {
-            width: 400px;
+            width: 400px; /* Adjust to match the original title size */
             height: auto;
             margin-top: 20px;
         }
 
+        h2, h3 {
+            margin: 20px;
+        }
+
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, 150px);
-            grid-template-rows: repeat(4, 200px);
+            grid-template-columns: repeat(4, 150px); /* 4 columns */
+            grid-template-rows: repeat(4, 200px); /* 4 rows for more cards */
             gap: 20px;
             justify-content: center;
             margin-top: 50px;
@@ -46,11 +45,6 @@
             height: 200px;
             perspective: 1000px;
             cursor: pointer;
-        }
-
-        .card.light-theme .card-front {
-            background-color: #f9f9f9;
-            color: #333;
         }
 
         .card-inner {
@@ -95,12 +89,113 @@
             object-fit: cover;
         }
 
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .backstory {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            display: none;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+        }
+
         footer a {
+            display: inline-block;
+            margin: 10px 20px;
+            font-size: 18px;
             color: #89CFF0;
         }
 
         footer a:hover {
             color: #FF6347;
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, 1fr);
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .card {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, 1fr);
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .card {
+                height: 150px;
+            }
+
+            .backstory {
+                font-size: 14px;
+                padding: 15px;
+            }
+        }
+
+        /* Lightbox (modal) styles for video */
+        #video-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+
+        #video {
+            width: 80%;
+            height: 80%;
+        }
+
+        /* Close button styles */
+        #close-video {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        #close-video:hover {
+            background-color: #cc0000;
         }
     </style>
 </head>
@@ -113,7 +208,10 @@
 
     <div class="game-container" id="game-container"></div>
 
+    <div class="backstory" id="backstory"></div>
+    
     <div id="video-container">
+        <!-- Close button for video -->
         <button id="close-video">X</button>
         <video id="video" controls muted>
             <source id="video-source" type="video/mp4">
@@ -130,7 +228,18 @@
     <script>
         (function () {
             const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara'];
+            const backstories = {
+                'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+                'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a tragic past.',
+                'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
+                'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
+                'descartes': 'Descartes - A mysterious figure yet to reveal their story.',
+                'elara': 'Elara - The Silent Guardian: A watchful protector who stands in the shadows.'
+            };
+
             const gameContainer = document.getElementById('game-container');
+            const backstoryContainer = document.getElementById('backstory');
+            const restartButton = document.getElementById('restart-button');
             const timerDisplay = document.getElementById('timer');
             const movesDisplay = document.getElementById('moves');
             const themeToggle = document.getElementById('theme-toggle');
@@ -163,32 +272,50 @@
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.character = character;
+                        card.setAttribute('tabindex', '0');
                         card.innerHTML = `
                             <div class="card-inner">
                                 <div class="card-front">
-                                    <img src="images/Front.png" alt="Card Front">
+                                    <img src="images/Front.png" alt="Front of ${character} card">
                                 </div>
                                 <div class="card-back">
-                                    <img src="images/${character}.png" alt="${character}">
+                                    <img src="images/${character.charAt(0).toUpperCase() + character.slice(1)}.png" alt="${character} character">
                                 </div>
                             </div>
                         `;
                         cards.push(card);
                     }
                 });
-                return cards.sort(() => Math.random() - 0.5);
+                return cards;
             }
 
-            function renderCards() {
+            function shuffleCards() {
+                const cards = createCards();
+                cards.sort(() => Math.random() - 0.5);
                 gameContainer.innerHTML = '';
-                createCards().forEach(card => gameContainer.appendChild(card));
+                cards.forEach(card => gameContainer.appendChild(card));
             }
 
             function playVideo(character) {
-                videoSource.src = `images/${character}.mp4`;
+                if (character === 'descartes') {
+                    videoSource.src = 'images/Descartesvideo.mp4';
+                } else if (character === 'medusa') {
+                    videoSource.src = 'images/Medusavideo.mp4';
+                } else if (character === 'alexandor') {
+                    videoSource.src = 'images/Alexandorvideo.mp4';
+                } else if (character === 'elara') {
+                    videoSource.src = 'images/Elaravideo.mp4'; 
+                 } else if (character === 'astrid') {
+                    videoSource.src = 'images/astridvideo.mp4'; 
+             } else if (character === 'aegis') {
+                    videoSource.src = 'images/aegisvideo.mp4'; 
+                }
                 video.load();
                 videoContainer.style.display = 'block';
                 video.play();
+                video.onended = () => {
+                    videoContainer.style.display = 'none';
+                };
             }
 
             closeVideoButton.addEventListener('click', () => {
@@ -196,53 +323,90 @@
                 video.pause();
             });
 
-            function handleCardClick(card) {
-                if (flippedCards.includes(card) || matchedCards.includes(card) || flippedCards.length >= 2) return;
+            function checkMatch() {
+                const [firstCard, secondCard] = flippedCards;
+                if (firstCard.dataset.character === secondCard.dataset.character) {
+                    matchedCards.push(firstCard, secondCard);
+                    backstoryContainer.textContent = backstories[firstCard.dataset.character];
+                    backstoryContainer.style.display = 'block';
+                    firstCard.classList.add('matched');
+                    secondCard.classList.add('matched');
+                    flippedCards = [];
+
+                    if (matchedCards.length === characters.length * 2) {
+                        stopTimer();
+                        setTimeout(() => {
+                            alert(`You win! Time: ${timer}s, Moves: ${moves}`);
+                        }, 500);
+                    }
+
+                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa' || firstCard.dataset.character === 'alexandor' || firstCard.dataset.character === 'elara') {
+                        playVideo(firstCard.dataset.character);
+                    }
+                } else {
+                    setTimeout(() => {
+                        firstCard.classList.remove('flipped');
+                        secondCard.classList.remove('flipped');
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+
+            function hideBackstory() {
+                backstoryContainer.style.display = 'none';
+            }
+
+            gameContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
+
+                hideBackstory();
 
                 card.classList.add('flipped');
                 flippedCards.push(card);
                 moves++;
                 movesDisplay.textContent = `Moves: ${moves}`;
 
-                if (flippedCards.length === 2) {
-                    const [first, second] = flippedCards;
-                    if (first.dataset.character === second.dataset.character) {
-                        matchedCards.push(...flippedCards);
-                        flippedCards = [];
-                        if (matchedCards.length === characters.length * 2) {
-                            stopTimer();
-                            setTimeout(() => alert(`You won in ${timer}s with ${moves} moves!`), 500);
-                        }
-                        playVideo(first.dataset.character);
-                    } else {
-                        setTimeout(() => {
-                            flippedCards.forEach(card => card.classList.remove('flipped'));
-                            flippedCards = [];
-                        }, 1000);
+                if (flippedCards.length === 2) checkMatch();
+            });
+
+            gameContainer.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const card = document.activeElement;
+                    if (card && card.classList.contains('card') && !card.classList.contains('flipped')) {
+                        card.classList.add('flipped');
+                        flippedCards.push(card);
+                        moves++;
+                        movesDisplay.textContent = `Moves: ${moves}`;
+
+                        if (flippedCards.length === 2) checkMatch();
                     }
                 }
-            }
-
-            gameContainer.addEventListener('click', e => {
-                const card = e.target.closest('.card');
-                if (card) handleCardClick(card);
             });
 
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-            });
-
-            document.getElementById('restart-button').addEventListener('click', () => {
-                timer = moves = 0;
+            restartButton.addEventListener('click', () => {
                 matchedCards = [];
+                flippedCards = [];
+                timer = 0;
+                moves = 0;
                 timerDisplay.textContent = 'Time: 0s';
                 movesDisplay.textContent = 'Moves: 0';
-                renderCards();
+                backstoryContainer.style.display = 'none';
+                shuffleCards();
                 stopTimer();
                 startTimer();
             });
 
-            renderCards();
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                document.body.style.backgroundColor = document.body.classList.contains('light-theme') ? 'white' : 'black';
+                document.body.style.color = document.body.classList.contains('light-theme') ? 'black' : 'white';
+                document.querySelectorAll('.card').forEach(card => {
+                    card.classList.toggle('light-theme');
+                });
+            });
+
+            shuffleCards();
             startTimer();
         })();
     </script>
