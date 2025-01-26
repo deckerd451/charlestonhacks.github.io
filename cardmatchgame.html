@@ -129,15 +129,6 @@
             color: #FF6347;
         }
 
-        .attribution {
-            font-size: 10px;
-            color: #888;
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-        }
-
         @media (max-width: 768px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
@@ -168,6 +159,49 @@
                 padding: 15px;
             }
         }
+
+        /* Lightbox (modal) styles for video */
+        #video-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;  /* Adjust this to change the space around the video */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    width: 80%;  /* Adjust this to change the width */
+    height: 80%; /* Adjust this to change the height */
+    max-width: 500px; /* You can limit the maximum size */
+    max-height: 300px; /* Similarly, limit the maximum height */
+}
+
+
+        #video {
+            width: 80%;
+            height: 80%;
+        }
+
+        /* Close button styles */
+        #close-video {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        #close-video:hover {
+            background-color: #cc0000;
+        }
     </style>
 </head>
 <body>
@@ -182,6 +216,7 @@
     <div class="backstory" id="backstory"></div>
     
     <div id="video-container">
+        <!-- Close button for video -->
         <button id="close-video">X</button>
         <video id="video" controls muted>
             <source id="video-source" type="video/mp4">
@@ -194,10 +229,6 @@
         <a href="#" id="theme-toggle">Toggle Theme</a>
         <a href="index.html">Home</a>
     </footer>
-
-    <div class="attribution">Music by Vira Miller</div>
-
-    <audio id="background-music" src="assets/background-music.mp3" loop preload="auto"></audio>
 
     <script>
         (function () {
@@ -221,7 +252,6 @@
             const video = document.getElementById('video');
             const videoSource = document.getElementById('video-source');
             const closeVideoButton = document.getElementById('close-video');
-            const backgroundMusic = document.getElementById('background-music');
 
             let flippedCards = [];
             let matchedCards = [];
@@ -280,9 +310,9 @@
                     videoSource.src = 'images/Alexandorvideo.mp4';
                 } else if (character === 'elara') {
                     videoSource.src = 'images/Elaravideo.mp4'; 
-                } else if (character === 'astrid') {
+                 } else if (character === 'astrid') {
                     videoSource.src = 'images/astridvideo.mp4'; 
-                } else if (character === 'aegis') {
+             } else if (character === 'aegis') {
                     videoSource.src = 'images/aegisvideo.mp4'; 
                 }
                 video.load();
@@ -316,15 +346,15 @@
                     }
 
                     if (
-                        firstCard.dataset.character === 'descartes' ||
-                        firstCard.dataset.character === 'medusa' ||
-                        firstCard.dataset.character === 'alexandor' ||
-                        firstCard.dataset.character === 'elara' ||
-                        firstCard.dataset.character === 'astrid' ||
-                        firstCard.dataset.character === 'aegis'
-                    ) {
-                        playVideo(firstCard.dataset.character);
-                    }
+    firstCard.dataset.character === 'descartes' ||
+    firstCard.dataset.character === 'medusa' ||
+    firstCard.dataset.character === 'alexandor' ||
+    firstCard.dataset.character === 'elara' ||
+    firstCard.dataset.character === 'astrid' ||
+    firstCard.dataset.character === 'aegis'
+) {
+    playVideo(firstCard.dataset.character);
+}
 
                 } else {
                     setTimeout(() => {
@@ -388,9 +418,6 @@
                     card.classList.toggle('light-theme');
                 });
             });
-
-            // Play background music once the game starts
-            backgroundMusic.play();
 
             shuffleCards();
             startTimer();
