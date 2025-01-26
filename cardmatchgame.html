@@ -404,17 +404,23 @@
             });
 
             restartButton.addEventListener('click', () => {
-                matchedCards = [];
-                flippedCards = [];
-                timer = 0;
-                moves = 0;
-                timerDisplay.textContent = 'Time: 0s';
-                movesDisplay.textContent = 'Moves: 0';
-                backstoryContainer.style.display = 'none';
-                shuffleCards();
-                stopTimer();
-                startTimer();
-            });
+    matchedCards = [];
+    flippedCards = [];
+    timer = 0;
+    moves = 0;
+    timerDisplay.textContent = 'Time: 0s';
+    movesDisplay.textContent = 'Moves: 0';
+    backstoryContainer.style.display = 'none';
+    shuffleCards();
+    stopTimer();
+    startTimer();
+
+    // Reset and restart the background music
+    const backgroundMusic = document.getElementById('background-music');
+    backgroundMusic.currentTime = 0; // Reset the music to the beginning
+    backgroundMusic.play(); // Start playing the music again
+});
+
 
             themeToggle.addEventListener('click', () => {
                 document.body.classList.toggle('light-theme');
