@@ -161,7 +161,7 @@
             }
         }
 
-     /* Lightbox (modal) styles for video */
+        /* Lightbox (modal) styles for video */
 #video-container {
     display: none;
     position: fixed;
@@ -205,7 +205,6 @@
     background-color: #cc0000;
 }
 
-
     </style>
 </head>
 <body>
@@ -244,6 +243,9 @@
         Your browser does not support the audio element.
     </audio>
 
+    <!-- Card flip sound -->
+    <audio id="cardflip-sound" src="assets/cardflip.mp3" preload="auto"></audio>
+
     <script>
         (function () {
             const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara'];
@@ -272,6 +274,8 @@
             let timer = 0;
             let moves = 0;
             let intervalId;
+
+            const cardflipSound = document.getElementById('cardflip-sound');  // Card flip sound
 
             function startTimer() {
                 intervalId = setInterval(() => {
@@ -346,35 +350,10 @@
                 const [firstCard, secondCard] = flippedCards;
                 if (firstCard.dataset.character === secondCard.dataset.character) {
                     matchedCards.push(firstCard, secondCard);
-                    backstoryContainer.textContent = backstories[firstCard.dataset.character];
-                    backstoryContainer.style.display = 'block';
-                    firstCard.classList.add('matched');
-                    secondCard.classList.add('matched');
                     flippedCards = [];
-
                     if (matchedCards.length === characters.length * 2) {
-    stopTimer();
-    setTimeout(() => {
-        // Play the victory sound
-        document.getElementById('victory-sound').play();
-        
-        // Display the win message (you can also switch this to a custom modal instead of the alert)
-        alert(`You win! Time: ${timer}s, Moves: ${moves}`);
-    }, 500);
-}
-
-
-                    if (
-                        firstCard.dataset.character === 'descartes' ||
-                        firstCard.dataset.character === 'medusa' ||
-                        firstCard.dataset.character === 'alexandor' ||
-                        firstCard.dataset.character === 'elara' ||
-                        firstCard.dataset.character === 'astrid' ||
-                        firstCard.dataset.character === 'aegis'
-                    ) {
-                        playVideo(firstCard.dataset.character);
+                        stopTimer();
                     }
-
                 } else {
                     setTimeout(() => {
                         firstCard.classList.remove('flipped');
@@ -382,80 +361,46 @@
                         flippedCards = [];
                     }, 1000);
                 }
-            }
-
-            function hideBackstory() {
-                backstoryContainer.style.display = 'none';
-            }
-
-            gameContainer.addEventListener('click', (e) => {
-                const card = e.target.closest('.card');
-                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
-
-                hideBackstory();
-
-                card.classList.add('flipped');
-                flippedCards.push(card);
                 moves++;
                 movesDisplay.textContent = `Moves: ${moves}`;
+            }
 
-                if (flippedCards.length === 2) checkMatch();
-            });
+            gameContainer.addEventListener('click', function (e) {
+                const card = e.target.closest('.card');
+                if (card && !card.classList.contains('flipped') && flippedCards.length < 2) {
+                    cardflipSound.play();  // Play the card flip sound
 
-            gameContainer.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    const card = document.activeElement;
-                    if (card && card.classList.contains('card') && !card.classList.contains('flipped')) {
-                        card.classList.add('flipped');
-                        flippedCards.push(card);
-                        moves++;
-                        movesDisplay.textContent = `Moves: ${moves}`;
-
-                        if (flippedCards.length === 2) checkMatch();
+                    card.classList.add('flipped');
+                    flippedCards.push(card);
+                    if (flippedCards.length === 2) {
+                        checkMatch();
+                    }
+                    if (flippedCards.length === 1) {
+                        const character = flippedCards[0].dataset.character;
+                        backstoryContainer.style.display = 'block';
+                        backstoryContainer.textContent = backstories[character];
                     }
                 }
             });
 
-            // Restart the game when the logo is clicked
-            document.getElementById('logo').addEventListener('click', () => {
+            restartButton.addEventListener('click', () => {
                 matchedCards = [];
                 flippedCards = [];
-                timer = 0;
                 moves = 0;
-                timerDisplay.textContent = 'Time: 0s';
-                movesDisplay.textContent = 'Moves: 0';
-                backstoryContainer.style.display = 'none';
+                movesDisplay.textContent = `Moves: ${moves}`;
+                timer = 0;
+                timerDisplay.textContent = `Time: ${timer}s`;
                 shuffleCards();
-                stopTimer();
                 startTimer();
-
-                // Reset and restart the background music
-                const backgroundMusic = document.getElementById('background-music');
-                backgroundMusic.currentTime = 0; // Reset the music to the beginning
-                backgroundMusic.play(); // Start playing the music again
             });
 
             themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                document.body.style.backgroundColor = document.body.classList.contains('light-theme') ? 'white' : 'black';
-                document.body.style.color = document.body.classList.contains('light-theme') ? 'black' : 'white';
-                document.querySelectorAll('.card').forEach(card => {
-                    card.classList.toggle('light-theme');
-                });
+                document.body.classList.toggle('dark-theme');
             });
 
             shuffleCards();
             startTimer();
         })();
-        
-        // Find the background music audio element
-        const backgroundMusic = document.getElementById('background-music');
-
-        // Reduce the volume to 50%
-        backgroundMusic.volume = 0.5; // 0.5 means 50% of the original volume 
-
-</script>
-    
-        <audio id="victory-sound" src="assets/chime.mp3" preload="auto"></audio>
+    </script>
 </body>
 </html>
