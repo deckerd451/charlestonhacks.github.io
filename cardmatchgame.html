@@ -75,22 +75,6 @@
             transform: rotateY(180deg);
         }
 
-        /* Backstory */
-        .backstory {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #222;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-            z-index: 1000;
-            max-width: 90%;
-            text-align: left;
-        }
-
         /* Footer */
         footer {
             margin: 20px;
@@ -106,49 +90,6 @@
         footer a:hover {
             color: #f00;
         }
-
-        /* Theme Toggle */
-        body.light-theme {
-            background-color: white;
-            color: black;
-        }
-
-        body.light-theme .card-front {
-            background: #eee;
-        }
-
-        /* Video Modal */
-        #video-container {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        #video {
-            width: 100%;
-            max-width: 600px;
-            border-radius: 10px;
-        }
-
-        #close-video {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #f00;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -160,15 +101,6 @@
 
     <div class="game-container" id="game-container"></div>
 
-    <div class="backstory" id="backstory"></div>
-
-    <div id="video-container">
-        <button id="close-video">X</button>
-        <video id="video" controls muted>
-            <source id="video-source" type="video/mp4">
-        </video>
-    </div>
-
     <button id="restart-button">Restart Game</button>
 
     <footer>
@@ -178,8 +110,111 @@
 
     <script>
         (function () {
-            // Game logic goes here (same as the previous version)
-            // Add functions for the theme toggle, timer, card matching, etc.
+            const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara'];
+            const gameContainer = document.getElementById('game-container');
+            const timerDisplay = document.getElementById('timer');
+            const movesDisplay = document.getElementById('moves');
+            const restartButton = document.getElementById('restart-button');
+            const themeToggle = document.getElementById('theme-toggle');
+
+            let flippedCards = [];
+            let matchedCards = [];
+            let timer = 0;
+            let moves = 0;
+            let intervalId;
+
+            function startTimer() {
+                intervalId = setInterval(() => {
+                    timer++;
+                    timerDisplay.textContent = `Time: ${timer}s`;
+                }, 1000);
+            }
+
+            function stopTimer() {
+                clearInterval(intervalId);
+            }
+
+            function createCards() {
+                const cards = [];
+                characters.forEach(character => {
+                    for (let i = 0; i < 2; i++) {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+                        card.dataset.character = character;
+                        card.innerHTML = `
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <img src="images/Front.png" alt="Front of card">
+                                </div>
+                                <div class="card-back">
+                                    <img src="images/${character}.png" alt="${character} character">
+                                </div>
+                            </div>
+                        `;
+                        cards.push(card);
+                    }
+                });
+                return cards;
+            }
+
+            function shuffleCards() {
+                const cards = createCards();
+                cards.sort(() => Math.random() - 0.5);
+                gameContainer.innerHTML = '';
+                cards.forEach(card => gameContainer.appendChild(card));
+            }
+
+            function checkMatch() {
+                const [firstCard, secondCard] = flippedCards;
+                if (firstCard.dataset.character === secondCard.dataset.character) {
+                    matchedCards.push(firstCard, secondCard);
+                    flippedCards = [];
+
+                    if (matchedCards.length === characters.length * 2) {
+                        stopTimer();
+                        setTimeout(() => {
+                            alert(`You win! Time: ${timer}s, Moves: ${moves}`);
+                        }, 500);
+                    }
+                } else {
+                    setTimeout(() => {
+                        firstCard.classList.remove('flipped');
+                        secondCard.classList.remove('flipped');
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+
+            gameContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
+
+                card.classList.add('flipped');
+                flippedCards.push(card);
+                moves++;
+                movesDisplay.textContent = `Moves: ${moves}`;
+
+                if (flippedCards.length === 2) checkMatch();
+            });
+
+            restartButton.addEventListener('click', () => {
+                matchedCards = [];
+                flippedCards = [];
+                timer = 0;
+                moves = 0;
+                timerDisplay.textContent = 'Time: 0s';
+                movesDisplay.textContent = 'Moves: 0';
+                shuffleCards();
+                stopTimer();
+                startTimer();
+            });
+
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+            });
+
+            shuffleCards();
+            startTimer();
         })();
     </script>
 </body>
