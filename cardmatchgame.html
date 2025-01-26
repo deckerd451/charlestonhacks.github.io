@@ -16,12 +16,12 @@
 
         h1 {
             margin: 20px;
-            color: #00FF00; /* Acid green title */
-            display: none; /* Hide original title */
+            color: #00FF00;
+            display: none;
         }
 
         .logo {
-            width: 400px; /* Adjust to match the original title size */
+            width: 400px;
             height: auto;
             margin-top: 20px;
         }
@@ -32,8 +32,8 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: repeat(4, 150px); /* 4 columns */
-            grid-template-rows: repeat(4, 200px); /* 4 rows for more cards */
+            grid-template-columns: repeat(4, 150px);
+            grid-template-rows: repeat(4, 200px);
             gap: 20px;
             justify-content: center;
             margin-top: 50px;
@@ -179,7 +179,6 @@
             height: 80%;
         }
 
-        /* Close button styles */
         #close-video {
             position: absolute;
             top: 10px;
@@ -209,9 +208,8 @@
     <div class="game-container" id="game-container"></div>
 
     <div class="backstory" id="backstory"></div>
-    
+
     <div id="video-container">
-        <!-- Close button for video -->
         <button id="close-video">X</button>
         <video id="video" controls muted>
             <source id="video-source" type="video/mp4">
@@ -297,14 +295,10 @@
             }
 
             function playVideo(character) {
-                if (character === 'descartes') {
-                    videoSource.src = 'images/Descartesvideo.mp4';
-                } else if (character === 'medusa') {
-                    videoSource.src = 'images/Medusavideo.mp4';
-                } else if (character === 'alexandor') {
-                    videoSource.src = 'images/Alexandorvideo.mp4';
-                } else if (character === 'elara') {
-                    videoSource.src = 'images/Elaravideo.mp4';  // Updated path
+                if (character === 'aegis') {
+                    videoSource.src = 'images/aegisvideo.mp4';
+                } else if (character === 'astrid') {
+                    videoSource.src = 'images/astridvideo.mp4';
                 }
                 video.load();
                 videoContainer.style.display = 'block';
@@ -329,16 +323,15 @@
                     secondCard.classList.add('matched');
                     flippedCards = [];
 
-                    if (matchedCards.length === characters.length * 2) {
-    stopTimer();
-    setTimeout(() => {
-        alert("Now That You Know Us, Join the CharlestonHacks Community!");
-    }, 500);
-}
-
-
-                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa' || firstCard.dataset.character === 'alexandor' || firstCard.dataset.character === 'elara') {
+                    if (firstCard.dataset.character === 'aegis' || firstCard.dataset.character === 'astrid') {
                         playVideo(firstCard.dataset.character);
+                    }
+
+                    if (matchedCards.length === characters.length * 2) {
+                        stopTimer();
+                        setTimeout(() => {
+                            alert("Now That You Know Us, Join the CharlestonHacks Community!");
+                        }, 500);
                     }
                 } else {
                     setTimeout(() => {
@@ -367,20 +360,6 @@
                 if (flippedCards.length === 2) checkMatch();
             });
 
-            gameContainer.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    const card = document.activeElement;
-                    if (card && card.classList.contains('card') && !card.classList.contains('flipped')) {
-                        card.classList.add('flipped');
-                        flippedCards.push(card);
-                        moves++;
-                        movesDisplay.textContent = `Moves: ${moves}`;
-
-                        if (flippedCards.length === 2) checkMatch();
-                    }
-                }
-            });
-
             restartButton.addEventListener('click', () => {
                 matchedCards = [];
                 flippedCards = [];
@@ -398,9 +377,6 @@
                 document.body.classList.toggle('light-theme');
                 document.body.style.backgroundColor = document.body.classList.contains('light-theme') ? 'white' : 'black';
                 document.body.style.color = document.body.classList.contains('light-theme') ? 'black' : 'white';
-                document.querySelectorAll('.card').forEach(card => {
-                    card.classList.toggle('light-theme');
-                });
             });
 
             shuffleCards();
