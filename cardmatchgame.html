@@ -388,19 +388,24 @@
                 backstoryContainer.style.display = 'none';
             }
 
-            gameContainer.addEventListener('click', (e) => {
-                const card = e.target.closest('.card');
-                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
+          gameContainer.addEventListener('click', (e) => {
+    const card = e.target.closest('.card');
+    if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
 
-                hideBackstory();
+    hideBackstory();
 
-                card.classList.add('flipped');
-                flippedCards.push(card);
-                moves++;
-                movesDisplay.textContent = `Moves: ${moves}`;
+    // Play card flip sound
+    const cardFlipSound = document.getElementById('card-flip-sound');
+    cardFlipSound.play();
 
-                if (flippedCards.length === 2) checkMatch();
-            });
+    card.classList.add('flipped');
+    flippedCards.push(card);
+    moves++;
+    movesDisplay.textContent = `Moves: ${moves}`;
+
+    if (flippedCards.length === 2) checkMatch();
+});
+
 
             gameContainer.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -447,6 +452,8 @@
             shuffleCards();
             startTimer();
         })();
+        <audio id="card-flip-sound" src="assets/cardflip.mp3" preload="auto"></audio>
+
         
         // Find the background music audio element
         const backgroundMusic = document.getElementById('background-music');
