@@ -353,11 +353,16 @@
                     flippedCards = [];
 
                     if (matchedCards.length === characters.length * 2) {
-                        stopTimer();
-                        setTimeout(() => {
-                            alert(`You win! Time: ${timer}s, Moves: ${moves}`);
-                        }, 500);
-                    }
+    stopTimer();
+    setTimeout(() => {
+        // Play the victory sound
+        document.getElementById('victory-sound').play();
+        
+        // Display the win message (you can also switch this to a custom modal instead of the alert)
+        alert(`You win! Time: ${timer}s, Moves: ${moves}`);
+    }, 500);
+}
+
 
                     if (
                         firstCard.dataset.character === 'descartes' ||
@@ -449,6 +454,8 @@
         // Reduce the volume to 40%
         backgroundMusic.volume = 0.4; // 0.4 means 40% of the original volume 
 
-    </script>
+</script>
+    
+        <audio id="victory-sound" src="assets/chime.mp3" preload="auto"></audio>
 </body>
 </html>
