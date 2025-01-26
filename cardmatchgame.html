@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>CharlestonHacks Matching Game</title>
     <style>
+        /* Existing styles */
         body {
             background-color: black;
             color: white;
@@ -204,7 +205,10 @@
     </style>
 </head>
 <body>
+<div id="logo" style="cursor: pointer;">
     <img src="images/Hackerdiscoverylogo.png" alt="Hacker Discovery Logo" class="logo">
+</div>
+
     <div class="stats">
         <span id="timer">Time: 0s</span>
         <span id="moves">Moves: 0</span>
@@ -403,24 +407,24 @@
                 }
             });
 
-            restartButton.addEventListener('click', () => {
-    matchedCards = [];
-    flippedCards = [];
-    timer = 0;
-    moves = 0;
-    timerDisplay.textContent = 'Time: 0s';
-    movesDisplay.textContent = 'Moves: 0';
-    backstoryContainer.style.display = 'none';
-    shuffleCards();
-    stopTimer();
-    startTimer();
+            // Restart the game when the logo is clicked
+            document.getElementById('logo').addEventListener('click', () => {
+                matchedCards = [];
+                flippedCards = [];
+                timer = 0;
+                moves = 0;
+                timerDisplay.textContent = 'Time: 0s';
+                movesDisplay.textContent = 'Moves: 0';
+                backstoryContainer.style.display = 'none';
+                shuffleCards();
+                stopTimer();
+                startTimer();
 
-    // Reset and restart the background music
-    const backgroundMusic = document.getElementById('background-music');
-    backgroundMusic.currentTime = 0; // Reset the music to the beginning
-    backgroundMusic.play(); // Start playing the music again
-});
-
+                // Reset and restart the background music
+                const backgroundMusic = document.getElementById('background-music');
+                backgroundMusic.currentTime = 0; // Reset the music to the beginning
+                backgroundMusic.play(); // Start playing the music again
+            });
 
             themeToggle.addEventListener('click', () => {
                 document.body.classList.toggle('light-theme');
@@ -434,11 +438,12 @@
             shuffleCards();
             startTimer();
         })();
+        
         // Find the background music audio element
-const backgroundMusic = document.getElementById('background-music');
+        const backgroundMusic = document.getElementById('background-music');
 
-// Reduce the volume by 20%
-backgroundMusic.volume = 0.8; // 0.8 means 80% of the original volume (20% lower)
+        // Reduce the volume by 20%
+        backgroundMusic.volume = 0.8; // 0.8 means 80% of the original volume (20% lower)
 
     </script>
 </body>
