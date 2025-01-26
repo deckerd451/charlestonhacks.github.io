@@ -340,9 +340,17 @@
                         }, 500);
                     }
 
-                    if (firstCard.dataset.character === 'descartes' || firstCard.dataset.character === 'medusa' || firstCard.dataset.character === 'alexandor' || firstCard.dataset.character === 'elara') {
-                        playVideo(firstCard.dataset.character);
-                    }
+                    if (
+    firstCard.dataset.character === 'descartes' ||
+    firstCard.dataset.character === 'medusa' ||
+    firstCard.dataset.character === 'alexandor' ||
+    firstCard.dataset.character === 'elara' ||
+    firstCard.dataset.character === 'astrid' ||
+    firstCard.dataset.character === 'aegis'
+) {
+    playVideo(firstCard.dataset.character);
+}
+
                 } else {
                     setTimeout(() => {
                         firstCard.classList.remove('flipped');
