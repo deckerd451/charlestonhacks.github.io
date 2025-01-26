@@ -434,6 +434,12 @@
             shuffleCards();
             startTimer();
         })();
+        // Find the background music audio element
+const backgroundMusic = document.getElementById('background-music');
+
+// Reduce the volume by 20%
+backgroundMusic.volume = 0.8; // 0.8 means 80% of the original volume (20% lower)
+
     </script>
 </body>
 </html>
