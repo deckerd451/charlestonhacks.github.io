@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>CharlestonHacks Matching Game</title>
     <style>
-        /* General Styles */
         body {
             background-color: black;
             color: white;
@@ -13,41 +12,52 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            transition: background-color 0.5s, color 0.5s;
         }
 
-        h1, h2, h3 {
+        body.light-theme {
+            background-color: white;
+            color: black;
+        }
+
+        h1 {
             margin: 20px;
+            color: #00FF00;
+            display: none;
         }
 
         .logo {
-            width: 300px;
+            width: 400px;
             height: auto;
-            margin: 20px auto;
+            margin-top: 20px;
         }
 
-        /* Game Container */
         .game-container {
             display: grid;
             grid-template-columns: repeat(4, 150px);
+            grid-template-rows: repeat(4, 200px);
             gap: 20px;
             justify-content: center;
-            margin: 20px auto;
+            margin-top: 50px;
         }
 
-        /* Card Styles */
         .card {
-            width: 150px;
+            width: 100%;
+            max-width: 150px;
             height: 200px;
             perspective: 1000px;
             cursor: pointer;
         }
 
+        .card.light-theme .card-front {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
         .card-inner {
             width: 100%;
             height: 100%;
-            transition: transform 0.5s;
             transform-style: preserve-3d;
+            transition: transform 0.5s;
         }
 
         .card.flipped .card-inner {
@@ -59,36 +69,38 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            overflow: hidden;
         }
 
         .card-front {
-            background: #ddd;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
         }
 
         .card-back {
-            background: #333;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             transform: rotateY(180deg);
         }
 
-        /* Footer */
-        footer {
-            margin: 20px;
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         footer a {
-            color: #00f;
-            text-decoration: none;
-            margin: 0 15px;
-            transition: color 0.3s;
+            color: #89CFF0;
         }
 
         footer a:hover {
-            color: #f00;
+            color: #FF6347;
         }
     </style>
 </head>
@@ -100,6 +112,13 @@
     </div>
 
     <div class="game-container" id="game-container"></div>
+
+    <div id="video-container">
+        <button id="close-video">X</button>
+        <video id="video" controls muted>
+            <source id="video-source" type="video/mp4">
+        </video>
+    </div>
 
     <button id="restart-button">Restart Game</button>
 
@@ -114,8 +133,11 @@
             const gameContainer = document.getElementById('game-container');
             const timerDisplay = document.getElementById('timer');
             const movesDisplay = document.getElementById('moves');
-            const restartButton = document.getElementById('restart-button');
             const themeToggle = document.getElementById('theme-toggle');
+            const videoContainer = document.getElementById('video-container');
+            const video = document.getElementById('video');
+            const videoSource = document.getElementById('video-source');
+            const closeVideoButton = document.getElementById('close-video');
 
             let flippedCards = [];
             let matchedCards = [];
@@ -144,76 +166,83 @@
                         card.innerHTML = `
                             <div class="card-inner">
                                 <div class="card-front">
-                                    <img src="images/Front.png" alt="Front of card">
+                                    <img src="images/Front.png" alt="Card Front">
                                 </div>
                                 <div class="card-back">
-                                    <img src="images/${character}.png" alt="${character} character">
+                                    <img src="images/${character}.png" alt="${character}">
                                 </div>
                             </div>
                         `;
                         cards.push(card);
                     }
                 });
-                return cards;
+                return cards.sort(() => Math.random() - 0.5);
             }
 
-            function shuffleCards() {
-                const cards = createCards();
-                cards.sort(() => Math.random() - 0.5);
+            function renderCards() {
                 gameContainer.innerHTML = '';
-                cards.forEach(card => gameContainer.appendChild(card));
+                createCards().forEach(card => gameContainer.appendChild(card));
             }
 
-            function checkMatch() {
-                const [firstCard, secondCard] = flippedCards;
-                if (firstCard.dataset.character === secondCard.dataset.character) {
-                    matchedCards.push(firstCard, secondCard);
-                    flippedCards = [];
-
-                    if (matchedCards.length === characters.length * 2) {
-                        stopTimer();
-                        setTimeout(() => {
-                            alert(`You win! Time: ${timer}s, Moves: ${moves}`);
-                        }, 500);
-                    }
-                } else {
-                    setTimeout(() => {
-                        firstCard.classList.remove('flipped');
-                        secondCard.classList.remove('flipped');
-                        flippedCards = [];
-                    }, 1000);
-                }
+            function playVideo(character) {
+                videoSource.src = `images/${character}.mp4`;
+                video.load();
+                videoContainer.style.display = 'block';
+                video.play();
             }
 
-            gameContainer.addEventListener('click', (e) => {
-                const card = e.target.closest('.card');
-                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
+            closeVideoButton.addEventListener('click', () => {
+                videoContainer.style.display = 'none';
+                video.pause();
+            });
+
+            function handleCardClick(card) {
+                if (flippedCards.includes(card) || matchedCards.includes(card) || flippedCards.length >= 2) return;
 
                 card.classList.add('flipped');
                 flippedCards.push(card);
                 moves++;
                 movesDisplay.textContent = `Moves: ${moves}`;
 
-                if (flippedCards.length === 2) checkMatch();
-            });
+                if (flippedCards.length === 2) {
+                    const [first, second] = flippedCards;
+                    if (first.dataset.character === second.dataset.character) {
+                        matchedCards.push(...flippedCards);
+                        flippedCards = [];
+                        if (matchedCards.length === characters.length * 2) {
+                            stopTimer();
+                            setTimeout(() => alert(`You won in ${timer}s with ${moves} moves!`), 500);
+                        }
+                        playVideo(first.dataset.character);
+                    } else {
+                        setTimeout(() => {
+                            flippedCards.forEach(card => card.classList.remove('flipped'));
+                            flippedCards = [];
+                        }, 1000);
+                    }
+                }
+            }
 
-            restartButton.addEventListener('click', () => {
-                matchedCards = [];
-                flippedCards = [];
-                timer = 0;
-                moves = 0;
-                timerDisplay.textContent = 'Time: 0s';
-                movesDisplay.textContent = 'Moves: 0';
-                shuffleCards();
-                stopTimer();
-                startTimer();
+            gameContainer.addEventListener('click', e => {
+                const card = e.target.closest('.card');
+                if (card) handleCardClick(card);
             });
 
             themeToggle.addEventListener('click', () => {
                 document.body.classList.toggle('light-theme');
             });
 
-            shuffleCards();
+            document.getElementById('restart-button').addEventListener('click', () => {
+                timer = moves = 0;
+                matchedCards = [];
+                timerDisplay.textContent = 'Time: 0s';
+                movesDisplay.textContent = 'Moves: 0';
+                renderCards();
+                stopTimer();
+                startTimer();
+            });
+
+            renderCards();
             startTimer();
         })();
     </script>
