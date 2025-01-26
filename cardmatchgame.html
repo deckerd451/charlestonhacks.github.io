@@ -161,47 +161,48 @@
             }
         }
 
-        /* Lightbox (modal) styles for video */
-        #video-container {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 15px;  /* Adjust this to change the space around the video */
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-            width: 85%;  /* Adjust this to change the width */
-            height: 85%; /* Adjust this to change the height */
-            max-width: 700px; /* You can limit the maximum size */
-            max-height: 400px; /* Similarly, limit the maximum height */
-        }
+     /* Lightbox (modal) styles for video */
+#video-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px;  /* Adjust this to change the space around the video */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    width: 90%;  /* Increase to 90% for a larger video container */
+    height: 90%; /* Increase to 90% for a larger video container */
+    max-width: 1000px; /* Increase the maximum width */
+    max-height: 600px; /* Increase the maximum height */
+}
 
-        #video {
-            width: 85%;
-            height: 85%;
-        }
+#video {
+    width: 100%;  /* Make the video fill the container */
+    height: 100%; /* Make the video fill the container */
+}
 
-        /* Close button styles */
-        #close-video {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ff0000;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 20px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-        }
+/* Close button styles */
+#close-video {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
 
-        #close-video:hover {
-            background-color: #cc0000;
-        }
+#close-video:hover {
+    background-color: #cc0000;
+}
+
     </style>
 </head>
 <body>
