@@ -186,22 +186,25 @@
 
 /* Close button styles */
 #close-video {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: fixed;  /* Use fixed position instead of absolute */
+    top: 5%;  /* Make the distance from the top a percentage to adjust to screen height */
+    right: 5%;  /* Make the distance from the right a percentage to adjust to screen width */
     background-color: #ff0000;
     color: white;
     border: none;
     border-radius: 50%;
     font-size: 20px;
-    width: 30px;
-    height: 30px;
+    width: 40px;  /* Increase button size slightly for better accessibility */
+    height: 40px; /* Increase button size slightly for better accessibility */
     cursor: pointer;
+    z-index: 1001;  /* Ensure the close button is above the video */
+    padding: 0; /* Remove any padding that could affect the button size */
 }
 
 #close-video:hover {
     background-color: #cc0000;
 }
+
 
     </style>
 </head>
