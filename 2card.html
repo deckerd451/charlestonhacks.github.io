@@ -6,36 +6,32 @@
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Resetting default margin and padding */
-        body, h1, h2, h3, p, ul {
+        /* Reset and General Styles */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        /* General styles */
         body {
             background-color: black;
             color: white;
-            font-family: 'Britannic Bold', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             overflow-x: hidden;
-            position: relative;
             text-align: center;
         }
 
         .panel {
-            position: relative;
-            width: 100%;
-            height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+            height: 100vh;
         }
 
         .panel img {
             max-width: 100%;
             height: auto;
-            display: block;
             margin: 0 auto;
             transition: transform 3s, opacity 3s;
         }
@@ -60,34 +56,14 @@
         }
 
         /* Animations */
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        @keyframes flipImage {
+            0% { transform: rotate(0deg); opacity: 1; }
+            50% { transform: rotate(180deg); opacity: 1; }
+            100% { transform: rotate(360deg); opacity: 0.2; }
         }
 
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        @keyframes flipImageX {
-            0% { transform: rotateX(0deg); opacity: 1; }
-            50% { transform: rotateX(180deg); opacity: 1; }
-            100% { transform: rotateX(360deg); opacity: 0.2; }
-        }
-
-        @keyframes flipImageY {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            50% { transform: rotateY(180deg); opacity: 1; }
-            100% { transform: rotateY(360deg); opacity: 0.2; }
-        }
-
-        .flip-image-x {
-            animation: flipImageX 4s ease forwards;
-        }
-
-        .flip-image-y {
-            animation: flipImageY 4s ease forwards;
+        .flip-image {
+            animation: flipImage 4s ease forwards;
         }
 
         #missionContent {
@@ -98,42 +74,28 @@
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 400px;
-            background-color: rgba(0, 0, 0, 0);
+            background-color: transparent;
             padding: 20px;
-            text-align: center;
             display: none;
             z-index: 1;
             opacity: 0;
         }
 
-        #missionContent p, #missionContent button {
-            color: white;
-        }
-
-        .logo {
-            margin-bottom: 20px;
-        }
-
-        .event-logo {
-            margin-bottom: 20px;
-        }
-
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
-        }
-
         footer a {
-            color: white;
-            font-size: 20px;
+            color: #00FF00;
+            font-size: 30px;
             margin: 0 15px;
+            transition: color 0.3s ease;
         }
 
-        /* Adding space between the cards */
+        footer a:hover {
+            color: #39FF14;
+        }
+
         .card-container {
             display: flex;
             justify-content: center;
-            gap: 20px; /* Space between the cards */
+            gap: 20px;
         }
 
         .game-button {
@@ -143,7 +105,6 @@
             padding: 10px 20px;
             border: none;
             cursor: pointer;
-            text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s ease;
             margin-top: 20px;
@@ -160,10 +121,10 @@
             <header class="major">
                 <div class="panel">
                     <div class="card-container">
-                        <a class="image main" id="missionImage" onclick="toggleMissionContent(event)">
+                        <a id="missionImage" onclick="toggleMissionContent(event)">
                             <img src="images/Front.png" alt="CharlestonHacks" />
                         </a>
-                        <a class="image main" id="missionImage2" onclick="toggleMissionContent(event)">
+                        <a id="missionImage2" onclick="toggleMissionContent(event)">
                             <img src="images/Front.png" alt="CharlestonHacks" />
                         </a>
                     </div>
@@ -174,7 +135,7 @@
                     </video>
 
                     <div id="missionContent">
-                        <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                        <img src="images/logo.png" alt="CharlestonHacks Logo" style="max-width: 70%; height: auto;">
                         <div class="body-text"></div>
                     </div>
                 </div>
@@ -183,125 +144,77 @@
     </div>
 
     <footer>
-    <a href="index.html">
-        <i class="fas fa-home"></i> <!-- Home Icon from Font Awesome -->
-    </a>
-</footer>
-
-<style>
-    footer a i {
-        color: #00FF00; /* Acid Green Color */
-        font-size: 30px; /* Adjust icon size */
-        transition: color 0.3s ease; /* Optional: smooth color transition */
-    }
-
-    footer a:hover i {
-        color: #39FF14; /* Slightly brighter green on hover */
-    }
-</style>
-
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+        </a>
+    </footer>
 
     <script>
-        var cardImages = [
-    "images/Back3.png",
-    "images/Back4.png",
-    "images/Medusa.png",
-    "images/Elara.png",
+        const cardImages = [
+            "images/Back3.png",
+            "images/Back4.png",
+            "images/Medusa.png",
+            "images/Elara.png",
+            "images/Aegis.png",
+            "images/Astrid.png",
+            "images/Back6.png"
+        ];
 
-    "images/Aegis.png",
-    
-    "images/Astrid.png",
-    "images/Back6.png"
-];
+        let selectedImages = [];
+        let selectedCards = [];
+        let matchFound = false;
 
-var selectedImages = []; // Array to store the selected images
-var selectedCards = []; // Array to store the selected card elements
-var matchFound = false;  // Flag to track if a match has been found
-
-function getRandomImage() {
-    var randomIndex = Math.floor(Math.random() * cardImages.length);
-    return cardImages[randomIndex];
-}
-
-function toggleMissionContent(event) {
-    var image = event.target;  // Capture the clicked image element
-    var newImage = getRandomImage();  // Get a new random image for the clicked card
-    image.src = newImage;  // Change the image of the clicked card
-
-    // Store the image and the card element for comparison
-    selectedImages.push(newImage);
-    selectedCards.push(image);
-
-    // If two cards have been selected
-    if (selectedImages.length === 2) {
-        // Check if the selected images match
-        if (selectedImages[0] === selectedImages[1]) {
-            matchFound = true;  // Set flag to true when there's a match
-
-            // Special case: if both cards are "Back3.png", redirect to 'images/Spotlight-Doug-insta.jpg'
-            if (selectedImages[0] === "images/Back3.png") {
-                setTimeout(function() {
-                    window.location.href = 'images/Spotlight-Doug-insta.jpg';  // Redirect to the special image
-                }, 1000);  // Redirect with a slight delay to allow user to see the match
-
-                // Return to the previous page after 10 seconds
-                setTimeout(function() {
-                    window.history.back();  // Goes back to the previous screen after 10 seconds
-                }, 10000);  // Delay for 10 seconds before going back
-            }
-
-            // Special case: if both cards are "Medusa.png", redirect to 'images/aya.jpg'
-            else if (selectedImages[0] === "images/Medusa.png") {
-                setTimeout(function() {
-                    window.location.href = 'images/aya.jpg';  // Redirect to the special image for Back5
-                }, 1000);  // Redirect with a slight delay to allow user to see the match
-
-                // Return to the previous page after 10 seconds
-                setTimeout(function() {
-                    window.history.back();  // Goes back to the previous screen after 10 seconds
-                }, 10000);  // Delay for 10 seconds before going back
-            } 
-
-            // Default case: redirect to 'Poster.html'
-            else {
-                setTimeout(function() {
-                    window.location.href = 'Poster.html';  // Redirect to the Poster page
-                }, 1000);  // Redirect with a slight delay to allow user to see the match
-            }
+        function getRandomImage() {
+            const randomIndex = Math.floor(Math.random() * cardImages.length);
+            return cardImages[randomIndex];
         }
 
-        // Clear the selectedImages and selectedCards arrays after checking
-        selectedImages = [];
-        selectedCards = [];
-    }
+        function toggleMissionContent(event) {
+            const image = event.target;
+            const newImage = getRandomImage();
+            image.src = newImage;
 
-    var video = document.getElementById('missionVideo');
-    video.style.display = 'block';
-    video.style.opacity = 1;
-    video.play();
+            selectedImages.push(newImage);
+            selectedCards.push(image);
 
-    setTimeout(function() {
-        document.getElementById('missionContent').style.display = 'block';
-    }, 3000);
+            if (selectedImages.length === 2) {
+                if (selectedImages[0] === selectedImages[1]) {
+                    matchFound = true;
 
-    setTimeout(function() {
-        video.classList.add('fadeOut');
-        setTimeout(function() {
-            video.style.display = 'none';
-            if (!matchFound) {
-                window.location.href = 'cardmatchgame.html';  // Redirect to the card game page if no match
+                    const redirectMap = {
+                        "images/Back3.png": "images/Spotlight-Doug-insta.jpg",
+                        "images/Medusa.png": "images/aya.jpg"
+                    };
+
+                    const redirectUrl = redirectMap[selectedImages[0]] || "Poster.html";
+                    setTimeout(() => window.location.href = redirectUrl, 1000);
+                    setTimeout(() => window.history.back(), 10000);
+                }
+                selectedImages = [];
+                selectedCards = [];
             }
-        }, 8000);
-    }, 100);
 
-    // Random flip effect on each image
-    var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-    setTimeout(function() {
-        image.classList.add(randomFlip);
-    }, 100);
-}
+            const video = document.getElementById('missionVideo');
+            video.style.display = 'block';
+            video.style.opacity = 1;
+            video.play();
 
+            setTimeout(() => {
+                document.getElementById('missionContent').style.display = 'block';
+            }, 3000);
 
+            setTimeout(() => {
+                video.classList.add('fadeOut');
+                setTimeout(() => {
+                    video.style.display = 'none';
+                    if (!matchFound) {
+                        window.location.href = 'cardmatchgame.html';
+                    }
+                }, 8000);
+            }, 100);
+
+            image.classList.add('flip-image');
+        }
     </script>
 </body>
 </html>
