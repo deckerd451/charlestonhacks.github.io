@@ -223,7 +223,7 @@ footer .icons-container a {
                             </p>
                         </div>
                         <div id="countdownWrapper">
-                            <p class="info"><b>Countdown to Global Game Jam:</b></p>
+                            <p class="info"><b>Countdown to 30 second AI Film Fest:</b></p>
                             <div id="countdown"></div>
                         </div>
                     </div>
@@ -252,7 +252,7 @@ footer .icons-container a {
     <script src="ho-script.js"></script>
     <script>
         var countdownElement = document.getElementById('countdown');
-        var countDownDate = new Date("January 24, 2025 17:00:00").getTime();
+        var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
         var countdownFunction = setInterval(function () {
             var now = new Date().getTime();
             var distance = countDownDate - now;
@@ -263,7 +263,7 @@ footer .icons-container a {
             countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
             if (distance < 0) {
                 clearInterval(countdownFunction);
-                countdownElement.innerHTML = "Global Game Jam is Here!";
+                countdownElement.innerHTML = "AIFF is Here!";
             }
         }, 1000);
 
