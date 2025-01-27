@@ -65,6 +65,39 @@
         .flip-image {
             animation: flipImage 4s ease forwards;
         }
+        /* Add rotation animations */
+@keyframes rotateImage {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes flipImage {
+    0% { transform: rotateY(0deg); }
+    50% { transform: rotateY(180deg); }
+    100% { transform: rotateY(360deg); }
+}
+
+@keyframes shakeImage {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+}
+
+/* Define animation classes */
+.rotate-image {
+    animation: rotateImage 4s ease forwards;
+}
+
+.flip-image {
+    animation: flipImage 4s ease forwards;
+}
+
+.shake-image {
+    animation: shakeImage 1s ease forwards;
+}
+
 
         #missionContent {
             animation: fadeIn 7s ease forwards;
@@ -168,53 +201,61 @@
             const randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
+function toggleMissionContent(event) {
+    const image = event.target;
+    const newImage = getRandomImage();
+    image.src = newImage;
 
-        function toggleMissionContent(event) {
-            const image = event.target;
-            const newImage = getRandomImage();
-            image.src = newImage;
+    selectedImages.push(newImage);
+    selectedCards.push(image);
 
-            selectedImages.push(newImage);
-            selectedCards.push(image);
+    if (selectedImages.length === 2) {
+        if (selectedImages[0] === selectedImages[1]) {
+            matchFound = true;
 
-            if (selectedImages.length === 2) {
-                if (selectedImages[0] === selectedImages[1]) {
-                    matchFound = true;
+            const redirectMap = {
+                "images/Back3.png": "images/Spotlight-Doug-insta.jpg",
+                "images/Medusa.png": "images/aya.jpg"
+            };
 
-                    const redirectMap = {
-                        "images/Back3.png": "images/Spotlight-Doug-insta.jpg",
-                        "images/Medusa.png": "images/aya.jpg"
-                    };
-
-                    const redirectUrl = redirectMap[selectedImages[0]] || "Poster.html";
-                    setTimeout(() => window.location.href = redirectUrl, 1000);
-                    setTimeout(() => window.history.back(), 10000);
-                }
-                selectedImages = [];
-                selectedCards = [];
-            }
-
-            const video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 1;
-            video.play();
-
-            setTimeout(() => {
-                document.getElementById('missionContent').style.display = 'block';
-            }, 3000);
-
-            setTimeout(() => {
-                video.classList.add('fadeOut');
-                setTimeout(() => {
-                    video.style.display = 'none';
-                    if (!matchFound) {
-                        window.location.href = 'cardmatchgame.html';
-                    }
-                }, 8000);
-            }, 100);
-
-            image.classList.add('flip-image');
+            const redirectUrl = redirectMap[selectedImages[0]] || "Poster.html";
+            setTimeout(() => window.location.href = redirectUrl, 1000);
+            setTimeout(() => window.history.back(), 10000);
         }
+        selectedImages = [];
+        selectedCards = [];
+    }
+
+    const video = document.getElementById('missionVideo');
+    video.style.display = 'block';
+    video.style.opacity = 1;
+    video.play();
+
+    setTimeout(() => {
+        document.getElementById('missionContent').style.display = 'block';
+    }, 3000);
+
+    setTimeout(() => {
+        video.classList.add('fadeOut');
+        setTimeout(() => {
+            video.style.display = 'none';
+            if (!matchFound) {
+                window.location.href = 'cardmatchgame.html';
+            }
+        }, 8000);
+    }, 100);
+
+    // Randomly select an animation for the image
+    const animations = ['rotate-image', 'flip-image', 'shake-image'];
+    const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+    image.classList.add(randomAnimation);
+
+    // Remove the animation class after it finishes to reset
+    setTimeout(() => {
+        image.classList.remove(randomAnimation);
+    }, 4000); // Match the duration of the longest animation
+}
+
     </script>
 </body>
 </html>
