@@ -13,13 +13,15 @@
             box-sizing: border-box;
         }
 
-        body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
-            text-align: center;
-        }
+       body {
+    position: relative;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    text-align: center;
+}
+
         body::after {
         content: '';
         position: absolute;
@@ -27,8 +29,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: radial-gradient(circle, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 100%);
-        pointer-events: none;
+       background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+pointer-events: none;
         z-index: -1;
     }
 
@@ -67,11 +69,12 @@
         }
 
         /* Animations */
-        @keyframes flipImage {
-            0% { transform: rotate(0deg); opacity: 1; }
-            50% { transform: rotate(180deg); opacity: 1; }
-            100% { transform: rotate(360deg); opacity: 0.2; }
-        }
+       @keyframes flipImage {
+    0% { transform: rotateY(0deg); }
+    50% { transform: rotateY(180deg); }
+    100% { transform: rotateY(360deg); }
+}
+
 
         .flip-image {
             animation: flipImage 4s ease forwards;
