@@ -197,7 +197,7 @@ function toggleMissionContent(event) {
         image.classList.add("hacker-card");
         hackerMessage.style.display = "block";
         hackerSound.play();
-        
+
         // Mark the hacker card as revealed
         revealHackerCard = true;
 
@@ -206,22 +206,25 @@ function toggleMissionContent(event) {
             hackerMessage.style.display = "none";
         }, 3000);
 
-        // Keep the hacker card face-up for 10 seconds before proceeding
+        // Allow the next actions after 10 seconds
         setTimeout(() => {
-            revealHackerCard = false;  // Allow the next actions after 10 seconds
+            revealHackerCard = false;
         }, 10000);
     }
 
-    if (selectedImages.length === 2 && !revealHackerCard) {
+    if (selectedImages.length === 2) {
         // Match condition for hacker cards
         if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
             matchFound = true;
             clearTimeout(resetTimeout);
-            console.log('Match found! Redirecting...');
-            setTimeout(() => {
-                window.location.href = 'cardmatchgame.html';
-            }, 1000);
+
+            // Show a link to cardmatchgame.html
+            const hackerMessage = document.getElementById("hackerMessage");
+            hackerMessage.innerHTML = `<a href="cardmatchgame.html" style="color: #00FF00; text-decoration: none; font-size: 20px;">Proceed to Next Level</a>`;
+            hackerMessage.style.display = "block";
+
         } else {
+            // Reset unmatched cards
             setTimeout(() => {
                 selectedCards.forEach((card) => {
                     card.src = "images/Front.png";
@@ -242,13 +245,12 @@ function toggleMissionContent(event) {
     }, 4000);
 }
 
+resetTimeout = setTimeout(() => {
+    if (!matchFound) {
+        location.reload();
+    }
+}, 8000);
 
-
-        resetTimeout = setTimeout(() => {
-            if (!matchFound) {
-                location.reload();
-            }
-        }, 8000);
     </script>
 </body>
 </html>
