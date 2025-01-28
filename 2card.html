@@ -213,9 +213,11 @@ function toggleMissionContent(event) {
     }
 
     if (selectedImages.length === 2 && !revealHackerCard) {
+        // Match condition for hacker cards
         if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
             matchFound = true;
             clearTimeout(resetTimeout);
+            console.log('Match found! Redirecting...');
             setTimeout(() => {
                 window.location.href = 'cardmatchgame.html';
             }, 1000);
@@ -239,6 +241,7 @@ function toggleMissionContent(event) {
         image.classList.remove(randomAnimation);
     }, 4000);
 }
+
 
 
         resetTimeout = setTimeout(() => {
