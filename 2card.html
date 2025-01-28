@@ -13,26 +13,26 @@
             box-sizing: border-box;
         }
 
-       body {
-    position: relative;
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden;
-    text-align: center;
-}
+        body {
+            position: relative;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            text-align: center;
+        }
 
         body::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-       background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
-pointer-events: none;
-        z-index: -1;
-    }
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.8) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
 
         .panel {
             display: flex;
@@ -49,83 +49,62 @@ pointer-events: none;
             transition: transform 3s, opacity 3s;
         }
 
-        .panel video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 3s ease-in-out;
-        }
-
         @media (max-width: 768px) {
             .panel img {
                 max-width: 90%;
             }
         }
 
-        /* Animations */
-       @keyframes flipImage {
-    0% { transform: rotateY(0deg); }
-    50% { transform: rotateY(180deg); }
-    100% { transform: rotateY(360deg); }
-}
+        @keyframes rotateImage {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
 
+        @keyframes flipImage {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        @keyframes shakeImage {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+
+        .rotate-image {
+            animation: rotateImage 4s ease forwards;
+        }
 
         .flip-image {
             animation: flipImage 4s ease forwards;
         }
-        /* Add rotation animations */
-@keyframes rotateImage {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(180deg); }
-    100% { transform: rotate(360deg); }
-}
 
-@keyframes flipImage {
-    0% { transform: rotateY(0deg); }
-    50% { transform: rotateY(180deg); }
-    100% { transform: rotateY(360deg); }
-}
+        .shake-image {
+            animation: shakeImage 1s ease forwards;
+        }
 
-@keyframes shakeImage {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    75% { transform: translateX(-10px); }
-}
-
-/* Define animation classes */
-.rotate-image {
-    animation: rotateImage 4s ease forwards;
-}
-
-.flip-image {
-    animation: flipImage 4s ease forwards;
-}
-
-.shake-image {
-    animation: shakeImage 1s ease forwards;
-}
-
-
-        #missionContent {
-            animation: fadeIn 7s ease forwards;
+        #hackerMessage {
             position: absolute;
-            top: 50%;
+            top: 20%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: transparent;
-            padding: 20px;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #00FF00;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
             display: none;
-            z-index: 1;
-            opacity: 0;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            #hackerMessage {
+                font-size: 16px;
+                padding: 8px 15px;
+            }
         }
 
         footer a {
@@ -145,20 +124,10 @@ pointer-events: none;
             gap: 20px;
         }
 
-        .game-button {
-            background-color: #FF6347;
-            color: white;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .game-button:hover {
-            background-color: #FF4500;
+        .card-container img.hacker-card {
+            border: 3px solid #FFD700;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #FFD700;
         }
     </style>
 </head>
@@ -181,10 +150,8 @@ pointer-events: none;
                         Your browser does not support the video tag.
                     </video>
 
-                    <div id="missionContent">
-                        <img src="images/logo.png" alt="CharlestonHacks Logo" style="max-width: 70%; height: auto;">
-                        <div class="body-text"></div>
-                    </div>
+                    <div id="hackerMessage">Hacker card selected!</div>
+                    <audio id="hackerSound" src="sounds/hackerSound.mp3"></audio>
                 </div>
             </header>
         </article>
@@ -196,108 +163,82 @@ pointer-events: none;
         </a>
     </footer>
 
-<script>
-const cardImages = [
-    "images/Back3.png",
-    "images/Back4.png",
-    "images/Medusa.png",
-    "images/Elara.png",
-    "images/Aegis.png",
-    "images/Astrid.png",
-    "images/Back6.png",
-    "images/hacker.png"
-];
+    <script>
+        const cardImages = [
+            "images/Back3.png",
+            "images/Back4.png",
+            "images/Medusa.png",
+            "images/Elara.png",
+            "images/Aegis.png",
+            "images/Astrid.png",
+            "images/Back6.png",
+            "images/hacker.png"
+        ];
 
-let selectedImages = [];
-let selectedCards = [];
-let matchFound = false;
-let firstCardIsHacker = false; // Track if the first card is "hacker"
-let firstCardTime = 0; // Store the time when the first card is selected
+        let selectedImages = [];
+        let selectedCards = [];
+        let matchFound = false;
+        let resetTimeout;
 
-function getRandomImage() {
-    const randomIndex = Math.floor(Math.random() * cardImages.length);
-    return cardImages[randomIndex];
-}
-
-function toggleMissionContent(event) {
-    const image = event.target;
-    const newImage = getRandomImage();
-    image.src = newImage;
-
-    selectedImages.push(newImage);
-    selectedCards.push(image);
-
-    // If it's the first card being selected
-    if (selectedImages.length === 1) {
-        // Check if the first card is the "hacker" card
-        if (newImage === "images/hacker.png") {
-            firstCardIsHacker = true;
-            firstCardTime = Date.now();
-
-            // Add glow effect
-            image.classList.add("hacker-card");
-
-            // Show message
-            const hackerMessage = document.getElementById("hackerMessage");
-            hackerMessage.style.display = "block";
-
-            // Play sound
-            const hackerSound = document.getElementById("hackerSound");
-            hackerSound.play();
-
-            // Hide message after a few seconds
-            setTimeout(() => {
-                hackerMessage.style.display = "none";
-            }, 3000);
+        function getRandomImage() {
+            const randomIndex = Math.floor(Math.random() * cardImages.length);
+            return cardImages[randomIndex];
         }
-    }
 
-    // Check if two cards have been selected
-    if (selectedImages.length === 2) {
-        // Check if both selected cards are "hacker" cards
-        if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
-            matchFound = true;
+        function toggleMissionContent(event) {
+            const image = event.target;
+            const newImage = getRandomImage();
+            image.src = newImage;
 
-            // Redirect to the card matching game
-            setTimeout(() => {
-                window.location.href = 'cardmatchgame.html';
-            }, 1000); // Delay to simulate the match found
-        } else {
-            // If not both "hacker" cards, reset after a delay
-            setTimeout(() => {
-                const now = Date.now();
-                if (!firstCardIsHacker || now - firstCardTime > 5000) {
-                    selectedCards[0].src = "images/Front.png"; // Reset the first card
-                    selectedCards[1].src = "images/Front.png"; // Reset the second card
-                    selectedImages = [];
-                    selectedCards = [];
-                    firstCardIsHacker = false; // Reset the hacker card tracking
+            selectedImages.push(newImage);
+            selectedCards.push(image);
+
+            if (newImage === "images/hacker.png") {
+                const hackerMessage = document.getElementById("hackerMessage");
+                const hackerSound = document.getElementById("hackerSound");
+
+                image.classList.add("hacker-card");
+                hackerMessage.style.display = "block";
+                hackerSound.play();
+
+                setTimeout(() => {
+                    hackerMessage.style.display = "none";
+                }, 3000);
+            }
+
+            if (selectedImages.length === 2) {
+                if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
+                    matchFound = true;
+                    clearTimeout(resetTimeout);
+                    setTimeout(() => {
+                        window.location.href = 'cardmatchgame.html';
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        selectedCards.forEach((card) => {
+                            card.src = "images/Front.png";
+                            card.classList.remove("hacker-card");
+                        });
+                        selectedImages = [];
+                        selectedCards = [];
+                    }, 2000);
                 }
-            }, 2000); // Delay before resetting the cards
+            }
+
+            const animations = ['rotate-image', 'flip-image', 'shake-image'];
+            const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+            image.classList.add(randomAnimation);
+
+            setTimeout(() => {
+                image.classList.remove(randomAnimation);
+            }, 4000);
         }
-    }
 
-    // Randomly select an animation for the image
-    const animations = ['rotate-image', 'flip-image', 'shake-image'];
-    const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-    image.classList.add(randomAnimation);
-
-    // Remove the animation class after it finishes to reset
-    setTimeout(() => {
-        image.classList.remove(randomAnimation);
-    }, 4000); // Match the duration of the longest animation
-}
-
-// Resetting the game (reload page) after a set delay if no match was found
-setTimeout(() => {
-    if (!matchFound) {
-        location.reload(); // This will reload the current page and restart the game
-    }
-}, 8000);
-
-</script>
-
-
-
+        resetTimeout = setTimeout(() => {
+            if (!matchFound) {
+                location.reload();
+            }
+        }, 8000);
+    </script>
 </body>
 </html>
