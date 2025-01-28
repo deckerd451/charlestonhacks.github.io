@@ -250,15 +250,21 @@ function toggleMissionContent(event) {
         } else {
             // If not both "hacker" cards, reset after a delay (only if first card wasn't hacker within 5 seconds)
             setTimeout(() => {
-                const now = Date.now();
-                if (!firstCardIsHacker || now - firstCardTime > 5000) {
-                    selectedCards[0].src = "images/Front.png";  // Reset the first card
-                    selectedCards[1].src = "images/Front.png";  // Reset the second card
-                    selectedImages = [];
-                    selectedCards = [];
-                    firstCardIsHacker = false;  // Reset the hacker card tracking
-                }
-            }, 2000); // Delay before resetting the cards
+    const now = Date.now();
+    // Only reset the cards if the first card isn't a hacker or more than 5 seconds have passed
+    if (!firstCardIsHacker || now - firstCardTime > 5000) {
+        selectedCards.forEach((card, index) => {
+            // Reset only non-hacker cards to "Front.png"
+            if (selectedImages[index] !== "images/hacker.png") {
+                card.src = "images/Front.png";
+            }
+        });
+        selectedImages = [];
+        selectedCards = [];
+        firstCardIsHacker = false; // Reset hacker tracking
+    }
+}, 2000); // Delay before resetting the cards
+
         }
     }
 
