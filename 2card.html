@@ -13,7 +13,7 @@
             box-sizing: border-box;
         }
 
-       body {
+        body {
             position: relative;
             background-color: black;
             color: white;
@@ -144,6 +144,9 @@
             "images/hacker.png"
         ];
 
+        let selectedImages = []; // Track selected images
+        let selectedCards = [];  // Track selected card elements
+
         function getRandomImage() {
             const randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
@@ -163,6 +166,26 @@
             const image = event.target;
             const newImage = getRandomImage();
             image.src = newImage;
+
+            // Add the newly selected image to the selectedImages array
+            selectedImages.push(newImage);
+            selectedCards.push(image);
+
+            // Check if two cards have been selected
+            if (selectedImages.length === 2) {
+                // If both images are "hacker.png", redirect to the card matching game
+                if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
+                    setTimeout(() => {
+                        window.location.href = 'cardmatchgame.html'; // Redirect to the card matching game
+                    }, 1000); // 1-second delay before redirecting
+                } else {
+                    // Reset selected images if they are not both "hacker.png"
+                    setTimeout(() => {
+                        selectedImages = [];
+                        selectedCards = [];
+                    }, 1000); // Reset after 1 second
+                }
+            }
 
             const video = document.getElementById('missionVideo');
             video.style.display = 'block';
