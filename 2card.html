@@ -14,25 +14,25 @@
         }
 
        body {
-    position: relative;
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden;
-    text-align: center;
-}
+            position: relative;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            text-align: center;
+        }
 
         body::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-       background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
-pointer-events: none;
-        z-index: -1;
-    }
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
 
         .panel {
             display: flex;
@@ -68,77 +68,6 @@ pointer-events: none;
             }
         }
 
-        /* Animations */
-       @keyframes flipImage {
-    0% { transform: rotateY(0deg); }
-    50% { transform: rotateY(180deg); }
-    100% { transform: rotateY(360deg); }
-}
-
-
-        .flip-image {
-            animation: flipImage 4s ease forwards;
-        }
-        /* Add rotation animations */
-@keyframes rotateImage {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(180deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes flipImage {
-    0% { transform: rotateY(0deg); }
-    50% { transform: rotateY(180deg); }
-    100% { transform: rotateY(360deg); }
-}
-
-@keyframes shakeImage {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    75% { transform: translateX(-10px); }
-}
-
-/* Define animation classes */
-.rotate-image {
-    animation: rotateImage 4s ease forwards;
-}
-
-.flip-image {
-    animation: flipImage 4s ease forwards;
-}
-
-.shake-image {
-    animation: shakeImage 1s ease forwards;
-}
-
-
-        #missionContent {
-            animation: fadeIn 7s ease forwards;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: transparent;
-            padding: 20px;
-            display: none;
-            z-index: 1;
-            opacity: 0;
-        }
-
-        footer a {
-            color: #00FF00;
-            font-size: 30px;
-            margin: 0 15px;
-            transition: color 0.3s ease;
-        }
-
-        footer a:hover {
-            color: #39FF14;
-        }
-
         .card-container {
             display: flex;
             justify-content: center;
@@ -160,6 +89,25 @@ pointer-events: none;
         .game-button:hover {
             background-color: #FF4500;
         }
+
+        /* Animation for Shake Effect */
+        @keyframes shakeImage {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+
+        .shake-image {
+            animation: shakeImage 1s ease forwards;
+        }
+
+        .match-found {
+            color: #00FF00;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -185,6 +133,9 @@ pointer-events: none;
                         <img src="images/logo.png" alt="CharlestonHacks Logo" style="max-width: 70%; height: auto;">
                         <div class="body-text"></div>
                     </div>
+
+                    <div id="matchMessage" class="match-found" style="display: none;">Match Found!</div>
+
                 </div>
             </header>
         </article>
@@ -196,7 +147,7 @@ pointer-events: none;
         </a>
     </footer>
 
-         <script>
+    <script>
         const cardImages = [
             "images/Back3.png",
             "images/Back4.png",
@@ -218,6 +169,8 @@ pointer-events: none;
         }
 
         function toggleMissionContent(event) {
+            if (selectedImages.length === 2) return; // Prevent further selections
+
             const image = event.target;
             const newImage = getRandomImage();
             image.src = newImage;
@@ -225,43 +178,33 @@ pointer-events: none;
             selectedImages.push(newImage);
             selectedCards.push(image);
 
+            // Highlight the selected card with an animation
+            image.classList.add('shake-image');
+            setTimeout(() => {
+                image.classList.remove('shake-image');
+            }, 1000);
+
             // Check if two cards have been selected
             if (selectedImages.length === 2) {
-                // Check if both selected cards are "hacker" cards
-                if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
-                    matchFound = true;
-
-                    // Redirect to the card matching game
-                    setTimeout(() => {
-                        window.location.href = 'cardmatchgame.html';
-                    }, 1000);  // Delay to simulate the match found
-
-                } else {
-                    // If not both "hacker" cards, reset
-                    selectedImages = [];
-                    selectedCards = [];
-                }
-            }
-
-            const video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 1;
-            video.play();
-
-            setTimeout(() => {
-                document.getElementById('missionContent').style.display = 'block';
-            }, 3000);
-
-            setTimeout(() => {
-                video.style.opacity = 0;
                 setTimeout(() => {
-                    video.style.display = 'none';
-                    // If the match wasn't found, the game will reset or go back to the initial screen
-                    if (!matchFound) {
-                        window.location.href = 'index.html';  // Or the appropriate fallback URL
+                    // Check if both selected cards are "hacker" cards
+                    if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
+                        matchFound = true;
+                        document.getElementById("matchMessage").style.display = 'block';
+                        setTimeout(() => {
+                            window.location.href = 'cardmatchgame.html'; // Redirect to the game
+                        }, 2000);
+                    } else {
+                        // If not both "hacker" cards, reset the images after a short delay
+                        setTimeout(() => {
+                            selectedCards[0].src = "images/Front.png";
+                            selectedCards[1].src = "images/Front.png";
+                            selectedImages = [];
+                            selectedCards = [];
+                        }, 1000);
                     }
-                }, 1000);
-            }, 5000);
+                }, 1000); // Delay to allow user to see the images before checking for match
+            }
 
             // Randomly select an animation for the image
             const animations = ['rotate-image', 'flip-image', 'shake-image'];
@@ -273,7 +216,6 @@ pointer-events: none;
                 image.classList.remove(randomAnimation);
             }, 4000); // Match the duration of the longest animation
         }
-        </script>
-
+    </script>
 </body>
 </html>
