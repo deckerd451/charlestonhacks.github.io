@@ -13,26 +13,26 @@
             box-sizing: border-box;
         }
 
-        body {
-            position: relative;
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
-            text-align: center;
-        }
+       body {
+    position: relative;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    text-align: center;
+}
 
         body::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
-            pointer-events: none;
-            z-index: -1;
-        }
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+       background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+pointer-events: none;
+        z-index: -1;
+    }
 
         .panel {
             display: flex;
@@ -62,26 +62,70 @@
             transition: opacity 3s ease-in-out;
         }
 
-        .card-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        @media (max-width: 768px) {
+            .panel img {
+                max-width: 90%;
+            }
         }
 
-        .reshuffle-button {
-            margin-top: 20px;
-            background-color: #FF6347;
-            color: white;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+        /* Animations */
+       @keyframes flipImage {
+    0% { transform: rotateY(0deg); }
+    50% { transform: rotateY(180deg); }
+    100% { transform: rotateY(360deg); }
+}
 
-        .reshuffle-button:hover {
-            background-color: #FF4500;
+
+        .flip-image {
+            animation: flipImage 4s ease forwards;
+        }
+        /* Add rotation animations */
+@keyframes rotateImage {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes flipImage {
+    0% { transform: rotateY(0deg); }
+    50% { transform: rotateY(180deg); }
+    100% { transform: rotateY(360deg); }
+}
+
+@keyframes shakeImage {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+}
+
+/* Define animation classes */
+.rotate-image {
+    animation: rotateImage 4s ease forwards;
+}
+
+.flip-image {
+    animation: flipImage 4s ease forwards;
+}
+
+.shake-image {
+    animation: shakeImage 1s ease forwards;
+}
+
+
+        #missionContent {
+            animation: fadeIn 7s ease forwards;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: transparent;
+            padding: 20px;
+            display: none;
+            z-index: 1;
+            opacity: 0;
         }
 
         footer a {
@@ -93,6 +137,28 @@
 
         footer a:hover {
             color: #39FF14;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .game-button {
+            background-color: #FF6347;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .game-button:hover {
+            background-color: #FF4500;
         }
     </style>
 </head>
@@ -109,8 +175,6 @@
                             <img src="images/Front.png" alt="CharlestonHacks" />
                         </a>
                     </div>
-
-                    <button class="reshuffle-button" onclick="reshuffleImages()">Reshuffle</button>
 
                     <video id="missionVideo" muted playsinline>
                         <source src="images/m8.mp4" type="video/mp4">
@@ -132,7 +196,7 @@
         </a>
     </footer>
 
-    <script>
+         <script>
         const cardImages = [
             "images/Back3.png",
             "images/Back4.png",
@@ -144,22 +208,13 @@
             "images/hacker.png"
         ];
 
-        let selectedImages = []; // Track selected images
-        let selectedCards = [];  // Track selected card elements
+        let selectedImages = [];
+        let selectedCards = [];
+        let matchFound = false;
 
         function getRandomImage() {
             const randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
-        }
-
-        function reshuffleImages() {
-            // Get all the image elements in the card container
-            const cards = document.querySelectorAll('.card-container img');
-            
-            // Loop through each image and update the src to a new random image
-            cards.forEach(card => {
-                card.src = getRandomImage();
-            });
         }
 
         function toggleMissionContent(event) {
@@ -167,23 +222,24 @@
             const newImage = getRandomImage();
             image.src = newImage;
 
-            // Add the newly selected image to the selectedImages array
             selectedImages.push(newImage);
             selectedCards.push(image);
 
             // Check if two cards have been selected
             if (selectedImages.length === 2) {
-                // If both images are "hacker.png", redirect to the card matching game
+                // Check if both selected cards are "hacker" cards
                 if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
+                    matchFound = true;
+
+                    // Redirect to the card matching game
                     setTimeout(() => {
-                        window.location.href = 'cardmatchgame.html'; // Redirect to the card matching game
-                    }, 1000); // 1-second delay before redirecting
+                        window.location.href = 'cardmatchgame.html';
+                    }, 1000);  // Delay to simulate the match found
+
                 } else {
-                    // Reset selected images if they are not both "hacker.png"
-                    setTimeout(() => {
-                        selectedImages = [];
-                        selectedCards = [];
-                    }, 1000); // Reset after 1 second
+                    // If not both "hacker" cards, reset
+                    selectedImages = [];
+                    selectedCards = [];
                 }
             }
 
@@ -200,9 +256,24 @@
                 video.style.opacity = 0;
                 setTimeout(() => {
                     video.style.display = 'none';
+                    // If the match wasn't found, the game will reset or go back to the initial screen
+                    if (!matchFound) {
+                        window.location.href = 'index.html';  // Or the appropriate fallback URL
+                    }
                 }, 1000);
             }, 5000);
+
+            // Randomly select an animation for the image
+            const animations = ['rotate-image', 'flip-image', 'shake-image'];
+            const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+            image.classList.add(randomAnimation);
+
+            // Remove the animation class after it finishes to reset
+            setTimeout(() => {
+                image.classList.remove(randomAnimation);
+            }, 4000); // Match the duration of the longest animation
         }
-    </script>
+        </script>
+
 </body>
 </html>
