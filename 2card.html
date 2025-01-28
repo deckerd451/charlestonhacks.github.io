@@ -196,7 +196,7 @@ pointer-events: none;
         </a>
     </footer>
 
-         <script>
+<script>
 const cardImages = [
     "images/Back3.png",
     "images/Back4.png",
@@ -211,6 +211,8 @@ const cardImages = [
 let selectedImages = [];
 let selectedCards = [];
 let matchFound = false;
+let firstCardIsHacker = false; // Track if the first card is "hacker"
+let firstCardTime = 0; // Store the time when the first card is selected
 
 function getRandomImage() {
     const randomIndex = Math.floor(Math.random() * cardImages.length);
@@ -225,6 +227,15 @@ function toggleMissionContent(event) {
     selectedImages.push(newImage);
     selectedCards.push(image);
 
+    // If it's the first card being selected
+    if (selectedImages.length === 1) {
+        // Check if the first card is the "hacker" card
+        if (newImage === "images/hacker.png") {
+            firstCardIsHacker = true;
+            firstCardTime = Date.now();  // Store the time when the first card was selected
+        }
+    }
+
     // Check if two cards have been selected
     if (selectedImages.length === 2) {
         // Check if both selected cards are "hacker" cards
@@ -237,12 +248,16 @@ function toggleMissionContent(event) {
             }, 1000);  // Delay to simulate the match found
 
         } else {
-            // If not both "hacker" cards, reset after a delay
+            // If not both "hacker" cards, reset after a delay (only if first card wasn't hacker within 5 seconds)
             setTimeout(() => {
-                selectedCards[0].src = "images/Front.png";  // Reset the first card
-                selectedCards[1].src = "images/Front.png";  // Reset the second card
-                selectedImages = [];
-                selectedCards = [];
+                const now = Date.now();
+                if (!firstCardIsHacker || now - firstCardTime > 5000) {
+                    selectedCards[0].src = "images/Front.png";  // Reset the first card
+                    selectedCards[1].src = "images/Front.png";  // Reset the second card
+                    selectedImages = [];
+                    selectedCards = [];
+                    firstCardIsHacker = false;  // Reset the hacker card tracking
+                }
             }, 2000); // Delay before resetting the cards
         }
     }
@@ -265,6 +280,7 @@ setTimeout(() => {
     }
 }, 8000);
 </script>
+
 
 
 </body>
