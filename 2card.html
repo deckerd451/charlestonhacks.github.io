@@ -197,73 +197,73 @@ pointer-events: none;
     </footer>
 
      <script>
-    const cardImages = [
-        "images/Back3.png",
-        "images/Back4.png",
-        "images/Medusa.png",
-        "images/Elara.png",
-        "images/Aegis.png",
-        "images/Astrid.png",
-        "images/Back6.png",
-        "images/hacker.png"
-    ];
+  const cardImages = [
+    "images/Back3.png",
+    "images/Back4.png",
+    "images/Medusa.png",
+    "images/Elara.png",
+    "images/Aegis.png",
+    "images/Astrid.png",
+    "images/Back6.png",
+    "images/hacker.png"
+];
 
-    let selectedImages = [];
-    let selectedCards = [];
-    let matchFound = false;
-    let animationInProgress = false;
+let selectedImages = [];
+let selectedCards = [];
+let matchFound = false;
+let animationInProgress = false;
 
-    function getRandomImage() {
-        const randomIndex = Math.floor(Math.random() * cardImages.length);
-        return cardImages[randomIndex];
-    }
+function getRandomImage() {
+    const randomIndex = Math.floor(Math.random() * cardImages.length);
+    return cardImages[randomIndex];
+}
 
-    function toggleMissionContent(event) {
-        const image = event.target;
-        const newImage = getRandomImage();
-        image.src = newImage;
+function toggleMissionContent(event) {
+    const image = event.target;
+    const newImage = getRandomImage();
+    image.src = newImage;
 
-        // If a match is already found or an animation is in progress, do nothing
-        if (matchFound || animationInProgress) return;
+    // If a match is already found or an animation is in progress, do nothing
+    if (matchFound || animationInProgress) return;
 
-        // Add the selected image and card to the arrays
-        selectedImages.push(newImage);
-        selectedCards.push(image);
+    // Add the selected image and card to the arrays
+    selectedImages.push(newImage);
+    selectedCards.push(image);
 
-        // Start the animation for the card
-        const animations = ['rotate-image', 'flip-image', 'shake-image'];
-        const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-        image.classList.add(randomAnimation);
+    // Start the animation for the card
+    const animations = ['rotate-image', 'flip-image', 'shake-image'];
+    const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+    image.classList.add(randomAnimation);
 
-        // Handle after the animation ends
-        setTimeout(() => {
-            image.classList.remove(randomAnimation); // Remove animation class after it finishes
-        }, 4000); // Duration of animation (adjust to match longest animation)
+    // Handle after the animation ends
+    setTimeout(() => {
+        image.classList.remove(randomAnimation); // Remove animation class after it finishes
+    }, 4000); // Duration of animation (adjust to match longest animation)
 
-        // Check if two cards have been selected
-        if (selectedImages.length === 2) {
-            animationInProgress = true; // Block new animations while checking for match
+    // Check if two cards have been selected
+    if (selectedImages.length === 2) {
+        animationInProgress = true; // Block new animations while checking for match
 
-            // Check for a match
-            if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
-                matchFound = true;
-                // Redirect after a delay (simulating match found effect)
-                setTimeout(() => {
-                    window.location.href = 'cardmatchgame.html';
-                }, 1000); // Delay before redirecting
-            } else {
-                // Reset if no match is found
-                setTimeout(() => {
-                    selectedCards[0].src = "images/Front.png";
-                    selectedCards[1].src = "images/Front.png";
-                    selectedImages = [];
-                    selectedCards = [];
-                    animationInProgress = false;
-                }, 5000); // Reset after a short delay
-            }
+        // Check for a match
+        if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
+            matchFound = true;
+            // Redirect after a delay (simulating match found effect)
+            setTimeout(() => {
+                window.location.href = 'cardmatchgame.html';  // Redirect to the card match game page
+            }, 1000); // Delay before redirecting
+        } else {
+            // Reset if no match is found
+            setTimeout(() => {
+                selectedCards[0].src = "images/Front.png";  // Reset the cards to front image
+                selectedCards[1].src = "images/Front.png";
+                selectedImages = [];
+                selectedCards = [];
+                animationInProgress = false;
+            }, 5000); // Reset after a 5-second delay
         }
     }
-</script>
+}
+
 
 
 </body>
