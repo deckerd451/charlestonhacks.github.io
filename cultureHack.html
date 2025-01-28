@@ -10,10 +10,17 @@
     <!-- FontAwesome for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Styles for the "Tech Week" button */
+        /* General Styles */
+        body {
+            background-color: #000; /* Black background */
+            color: #00ff00; /* Acid green text */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Button styles */
         .collapsible {
-            background-color: #800020; /* Burgundy */
-            color: white;
+            background-color: #00ff00; /* Acid green */
+            color: #000; /* Black text */
             padding: 15px;
             width: 100%;
             border: none;
@@ -22,37 +29,23 @@
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s ease;
-            margin-bottom: 40px; /* Added space below the button */
+            margin-bottom: 40px;
         }
 
         .collapsible:hover {
-            background-color: #70001c; /* Darker burgundy */
+            background-color: #00cc00; /* Slightly darker green */
         }
 
-        .content {
-            padding: 20px;
-            display: none;
-        }
-
-        /* Fixed size for the AIFF image with media queries */
+        /* Image styles */
         .zoom-image {
-            width: 500px; /* Default width for desktop */
-            height: auto; /* Maintain aspect ratio */
+            width: 500px;
+            height: auto;
             display: block;
-            margin: 0 auto; /* Center image */
+            margin: 0 auto;
         }
 
-        /* Adjust size for mobile */
-        @media (max-width: 768px) {
-            .zoom-image {
-                width: 100%; /* Full width on smaller screens */
-                height: auto; /* Maintain aspect ratio */
-            }
-        }
-
-        /* Zoom effect for image on hover */
         .zoom-image:hover {
-            transform: scale(1.2); /* Zoom in the image */
+            transform: scale(1.2);
             transition: transform 0.3s ease;
         }
 
@@ -62,19 +55,17 @@
             text-align: center;
             margin: 20px 0;
             padding: 10px;
-            background-color: #f0f0f0;
+            background-color: #333; /* Dark grey */
             border-radius: 5px;
-            color: #800020; /* Burgundy */
+            color: #00ff00; /* Acid green */
             font-weight: bold;
         }
 
-        /* Footer styling */
+        /* Footer styles */
         footer#footer {
             text-align: center;
             padding: 20px;
-            background-color: #f4f4f4;
-            border: none; /* Ensure there's no border */
-            box-shadow: none; /* Remove any shadow effect */
+            background-color: #000; /* Black background */
         }
 
         footer#footer .icons {
@@ -89,17 +80,13 @@
         }
 
         footer#footer .icons li a {
-            color: #333;
+            color: #00ff00; /* Acid green icons */
             font-size: 24px;
             text-decoration: none;
         }
 
         footer#footer .icons li a:hover {
-            color: #800020; /* Burgundy */
-        }
-
-        footer#footer hr {
-            display: none; /* Hide the <hr> element if it's causing the grey line */
+            color: #00cc00; /* Slightly darker green */
         }
     </style>
 </head>
