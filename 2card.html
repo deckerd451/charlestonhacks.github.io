@@ -212,6 +212,7 @@ let selectedImages = [];
 let selectedCards = [];
 let matchFound = false;
 let animationInProgress = false;
+let resetTimer;  // To reset the cards after 5 seconds
 
 function getRandomImage() {
     const randomIndex = Math.floor(Math.random() * cardImages.length);
@@ -220,11 +221,13 @@ function getRandomImage() {
 
 function toggleMissionContent(event) {
     const image = event.target;
+
+    // Don't allow flipping more cards if a match is found or an animation is in progress
+    if (matchFound || animationInProgress) return;
+
+    // Flip the card (change image)
     const newImage = getRandomImage();
     image.src = newImage;
-
-    // If a match is already found or an animation is in progress, do nothing
-    if (matchFound || animationInProgress) return;
 
     // Add the selected image and card to the arrays
     selectedImages.push(newImage);
@@ -237,29 +240,40 @@ function toggleMissionContent(event) {
 
     // Handle after the animation ends
     setTimeout(() => {
-        image.classList.remove(randomAnimation); // Remove animation class after it finishes
+        image.classList.remove(randomAnimation);  // Remove animation class after it finishes
     }, 4000); // Duration of animation (adjust to match longest animation)
 
     // Check if two cards have been selected
     if (selectedImages.length === 2) {
         animationInProgress = true; // Block new animations while checking for match
 
-        // Check for a match
+        // Start a 5-second timer to reset cards if no match is found
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+            // Reset the cards to front image after 5 seconds
+            selectedCards[0].src = "images/Front.png";
+            selectedCards[1].src = "images/Front.png";
+            selectedImages = [];
+            selectedCards = [];
+            animationInProgress = false;
+        }, 5000); // 5 seconds timeout for reset
+
+        // Check for a match (if both selected images are the "hacker" card)
         if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
             matchFound = true;
-            // Redirect after a delay (simulating match found effect)
+            // Redirect after a slight delay to simulate match found effect
             setTimeout(() => {
                 window.location.href = 'cardmatchgame.html';  // Redirect to the card match game page
             }, 1000); // Delay before redirecting
         } else {
-            // Reset if no match is found
+            // Reset if no match is found (reset cards after timeout)
             setTimeout(() => {
                 selectedCards[0].src = "images/Front.png";  // Reset the cards to front image
                 selectedCards[1].src = "images/Front.png";
                 selectedImages = [];
                 selectedCards = [];
                 animationInProgress = false;
-            }, 5000); // Reset after a 5-second delay
+            }, 5000); // Reset after 5 seconds
         }
     }
 }
