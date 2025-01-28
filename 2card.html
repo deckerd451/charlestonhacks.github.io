@@ -196,85 +196,86 @@ pointer-events: none;
         </a>
     </footer>
 
-         <script>
-        const cardImages = [
-            "images/Back3.png",
-            "images/Back4.png",
-            "images/Medusa.png",
-            "images/Elara.png",
-            "images/Aegis.png",
-            "images/Astrid.png",
-            "images/Back6.png",
-            "images/hacker.png"
-        ];
+       <script>
+    const cardImages = [
+        "images/Back3.png",
+        "images/Back4.png",
+        "images/Medusa.png",
+        "images/Elara.png",
+        "images/Aegis.png",
+        "images/Astrid.png",
+        "images/Back6.png",
+        "images/hacker.png"
+    ];
 
-        let selectedImages = [];
-        let selectedCards = [];
-        let matchFound = false;
+    let selectedImages = [];
+    let selectedCards = [];
+    let matchFound = false;
 
-        function getRandomImage() {
-            const randomIndex = Math.floor(Math.random() * cardImages.length);
-            return cardImages[randomIndex];
-        }
+    function getRandomImage() {
+        const randomIndex = Math.floor(Math.random() * cardImages.length);
+        return cardImages[randomIndex];
+    }
 
-        function toggleMissionContent(event) {
-            const image = event.target;
-            const newImage = getRandomImage();
-            image.src = newImage;
+    function toggleMissionContent(event) {
+        const image = event.target;
+        const newImage = getRandomImage();
+        image.src = newImage;
 
-            selectedImages.push(newImage);
-            selectedCards.push(image);
+        selectedImages.push(newImage);
+        selectedCards.push(image);
 
-            // Check if two cards have been selected
-            if (selectedImages.length === 2) {
+        // Check if two cards have been selected
+        if (selectedImages.length === 2) {
+            // Delay the match check to give time for both cards to be flipped
+            setTimeout(() => {
                 // Check if both selected cards are "hacker" cards
                 if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
                     matchFound = true;
 
-                    // Redirect to the card matching game
+                    // Redirect to the card matching game after the match is found
                     setTimeout(() => {
                         window.location.href = 'cardmatchgame.html';
                     }, 1000);  // Delay to simulate the match found
-
                 } else {
                     // If not both "hacker" cards, reset
                     selectedImages = [];
                     selectedCards = [];
                 }
-            }
-
-            const video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 1;
-            video.play();
-
-            setTimeout(() => {
-                document.getElementById('missionContent').style.display = 'block';
-            }, 3000);
-
-            setTimeout(() => {
-    video.style.opacity = 0;
-    setTimeout(() => {
-        video.style.display = 'none';
-        // If the match wasn't found, reload the page to restart the game
-        if (!matchFound) {
-            location.reload();  // This will reload the current page and restart the game
+            }, 500); // Wait for a short time (500ms) after flipping the second card before checking
         }
-    }, 1000);
-}, 5000);
 
+        const video = document.getElementById('missionVideo');
+        video.style.display = 'block';
+        video.style.opacity = 1;
+        video.play();
 
-            // Randomly select an animation for the image
-            const animations = ['rotate-image', 'flip-image', 'shake-image'];
-            const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-            image.classList.add(randomAnimation);
+        setTimeout(() => {
+            document.getElementById('missionContent').style.display = 'block';
+        }, 3000);
 
-            // Remove the animation class after it finishes to reset
+        setTimeout(() => {
+            video.style.opacity = 0;
             setTimeout(() => {
-                image.classList.remove(randomAnimation);
-            }, 4000); // Match the duration of the longest animation
-        }
-        </script>
+                video.style.display = 'none';
+                // If the match wasn't found, reload the page to restart the game
+                if (!matchFound) {
+                    location.reload();  // This will reload the current page and restart the game
+                }
+            }, 1000);
+        }, 5000);
+
+        // Randomly select an animation for the image
+        const animations = ['rotate-image', 'flip-image', 'shake-image'];
+        const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+        image.classList.add(randomAnimation);
+
+        // Remove the animation class after it finishes to reset
+        setTimeout(() => {
+            image.classList.remove(randomAnimation);
+        }, 4000); // Match the duration of the longest animation
+    }
+</script>
 
 </body>
 </html>
