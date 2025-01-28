@@ -180,54 +180,66 @@
             return cardImages[randomIndex];
         }
 
-        function toggleMissionContent(event) {
-            const image = event.target;
-            const newImage = getRandomImage();
-            image.src = newImage;
+      let revealHackerCard = false; // Track if the hacker card has been revealed
 
-            selectedImages.push(newImage);
-            selectedCards.push(image);
+function toggleMissionContent(event) {
+    const image = event.target;
+    const newImage = getRandomImage();
+    image.src = newImage;
 
-            if (newImage === "images/hacker.png") {
-                const hackerMessage = document.getElementById("hackerMessage");
-                const hackerSound = document.getElementById("hackerSound");
+    selectedImages.push(newImage);
+    selectedCards.push(image);
 
-                image.classList.add("hacker-card");
-                hackerMessage.style.display = "block";
-                hackerSound.play();
+    if (newImage === "images/hacker.png" && !revealHackerCard) {
+        const hackerMessage = document.getElementById("hackerMessage");
+        const hackerSound = document.getElementById("hackerSound");
 
-                setTimeout(() => {
-                    hackerMessage.style.display = "none";
-                }, 3000);
-            }
+        image.classList.add("hacker-card");
+        hackerMessage.style.display = "block";
+        hackerSound.play();
+        
+        // Mark the hacker card as revealed
+        revealHackerCard = true;
 
-            if (selectedImages.length === 2) {
-                if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
-                    matchFound = true;
-                    clearTimeout(resetTimeout);
-                    setTimeout(() => {
-                        window.location.href = 'cardmatchgame.html';
-                    }, 1000);
-                } else {
-                    setTimeout(() => {
-                        selectedCards.forEach((card) => {
-                            card.src = "images/Front.png";
-                            card.classList.remove("hacker-card");
-                        });
-                        selectedImages = [];
-                        selectedCards = [];
-                    }, 2000);
-                }
-            }
+        // Hide the message after 3 seconds
+        setTimeout(() => {
+            hackerMessage.style.display = "none";
+        }, 3000);
 
-            const animations = ['rotate-image', 'flip-image', 'shake-image'];
-            const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-            image.classList.add(randomAnimation);
+        // Keep the hacker card face-up for 10 seconds before proceeding
+        setTimeout(() => {
+            revealHackerCard = false;  // Allow the next actions after 10 seconds
+        }, 10000);
+    }
 
+    if (selectedImages.length === 2 && !revealHackerCard) {
+        if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
+            matchFound = true;
+            clearTimeout(resetTimeout);
             setTimeout(() => {
-                image.classList.remove(randomAnimation);
-            }, 4000);
+                window.location.href = 'cardmatchgame.html';
+            }, 1000);
+        } else {
+            setTimeout(() => {
+                selectedCards.forEach((card) => {
+                    card.src = "images/Front.png";
+                    card.classList.remove("hacker-card");
+                });
+                selectedImages = [];
+                selectedCards = [];
+            }, 2000);
         }
+    }
+
+    const animations = ['rotate-image', 'flip-image', 'shake-image'];
+    const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+    image.classList.add(randomAnimation);
+
+    setTimeout(() => {
+        image.classList.remove(randomAnimation);
+    }, 4000);
+}
+
 
         resetTimeout = setTimeout(() => {
             if (!matchFound) {
