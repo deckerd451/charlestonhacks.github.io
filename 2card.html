@@ -253,15 +253,16 @@ pointer-events: none;
             }, 3000);
 
             setTimeout(() => {
-                video.style.opacity = 0;
-                setTimeout(() => {
-                    video.style.display = 'none';
-                    // If the match wasn't found, the game will reset or go back to the initial screen
-                    if (!matchFound) {
-                        window.location.href = 'index.html';  // Or the appropriate fallback URL
-                    }
-                }, 1000);
-            }, 5000);
+    video.style.opacity = 0;
+    setTimeout(() => {
+        video.style.display = 'none';
+        // If the match wasn't found, reload the page to restart the game
+        if (!matchFound) {
+            location.reload();  // This will reload the current page and restart the game
+        }
+    }, 1000);
+}, 5000);
+
 
             // Randomly select an animation for the image
             const animations = ['rotate-image', 'flip-image', 'shake-image'];
