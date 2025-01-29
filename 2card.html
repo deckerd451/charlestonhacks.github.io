@@ -180,7 +180,28 @@
             return cardImages[randomIndex];
         }
 
-      let revealHackerCard = false; // Track if the hacker card has been revealed
+     let hackerCardRevealed = false; // Track if the hacker card has been revealed
+
+function revealHackerCard(card) {
+    card.classList.add("hacker-card");
+    hackerCardRevealed = true;
+
+    const hackerMessage = document.getElementById("hackerMessage");
+    const hackerSound = document.getElementById("hackerSound");
+
+    hackerMessage.innerHTML = `
+        <p>Hacker card selected!</p>
+        <a href="cardmatchgame.html" style="color: #00FF00; text-decoration: none; font-size: 20px;">
+            Proceed to Next Level
+        </a>
+    `;
+    hackerMessage.style.display = "block";
+    hackerSound.play();
+
+    setTimeout(() => {
+        hackerMessage.style.display = "none";
+    }, 3000);
+}
 
 function toggleMissionContent(event) {
     const image = event.target;
@@ -190,26 +211,8 @@ function toggleMissionContent(event) {
     selectedImages.push(newImage);
     selectedCards.push(image);
 
-    if (newImage === "images/hacker.png" && !revealHackerCard) {
-        const hackerMessage = document.getElementById("hackerMessage");
-        const hackerSound = document.getElementById("hackerSound");
-
-        image.classList.add("hacker-card");
-        hackerMessage.style.display = "block";
-        hackerSound.play();
-
-        // Mark the hacker card as revealed
-        revealHackerCard = true;
-
-        // Hide the message after 3 seconds
-        setTimeout(() => {
-            hackerMessage.style.display = "none";
-        }, 3000);
-
-        // Allow the next actions after 10 seconds
-        setTimeout(() => {
-            revealHackerCard = false;
-        }, 10000);
+    if (newImage === "images/hacker.png" && !hackerCardRevealed) {
+        revealHackerCard(image);
     }
 
     if (selectedImages.length === 2) {
@@ -222,7 +225,6 @@ function toggleMissionContent(event) {
             const hackerMessage = document.getElementById("hackerMessage");
             hackerMessage.innerHTML = `<a href="cardmatchgame.html" style="color: #00FF00; text-decoration: none; font-size: 20px;">Proceed to Next Level</a>`;
             hackerMessage.style.display = "block";
-
         } else {
             // Reset unmatched cards
             setTimeout(() => {
@@ -250,6 +252,7 @@ resetTimeout = setTimeout(() => {
         location.reload();
     }
 }, 8000);
+
 
     </script>
 </body>
