@@ -216,27 +216,32 @@ function toggleMissionContent(event) {
     }
 
     if (selectedImages.length === 2) {
-        // Match condition for hacker cards
-        if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
-            matchFound = true;
-            clearTimeout(resetTimeout);
+    if (selectedImages[0] === selectedImages[1]) {
+        // Match found!
+        matchFound = true;
 
-            // Show a link to cardmatchgame.html
-            const hackerMessage = document.getElementById("hackerMessage");
-            hackerMessage.innerHTML = `<a href="cardmatchgame.html" style="color: #00FF00; text-decoration: none; font-size: 20px;">Proceed to Next Level</a>`;
-            hackerMessage.style.display = "block";
-        } else {
-            // Reset unmatched cards
-            setTimeout(() => {
-                selectedCards.forEach((card) => {
-                    card.src = "images/Front.png";
-                    card.classList.remove("hacker-card");
-                });
-                selectedImages = [];
-                selectedCards = [];
-            }, 2000);
-        }
+        // Replace matched cards with a specific image
+        setTimeout(() => {
+            selectedCards.forEach((card) => {
+                card.src = "images/placeholder.png"; // Replace with your placeholder image
+                card.classList.remove("hacker-card"); // Reset any styling
+            });
+            selectedImages = [];
+            selectedCards = [];
+        }, 500); // Short delay for visual effect
+    } else {
+        // No match: Reset unmatched cards
+        setTimeout(() => {
+            selectedCards.forEach((card) => {
+                card.src = "images/Front.png"; // Reset to the default card image
+                card.classList.remove("hacker-card");
+            });
+            selectedImages = [];
+            selectedCards = [];
+        }, 2000);
     }
+}
+
 
     const animations = ['rotate-image', 'flip-image', 'shake-image'];
     const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
