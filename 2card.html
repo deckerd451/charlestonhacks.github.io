@@ -133,25 +133,42 @@
 </head>
 <body>
     <!-- Background Music -->
-    <audio id="background-music" autoplay loop>
-        <source src="assets/music.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+<audio id="background-music" autoplay loop>
+    <source src="assets/music.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+</audio>
 
-    <!-- Mute/Unmute Button -->
-    <button id="mute-btn" style="
-        position: fixed; 
-        bottom: 20px; 
-        right: 20px; 
-        padding: 10px 20px; 
-        background: #00FF00; 
-        color: black; 
-        font-size: 16px; 
-        border: none; 
-        border-radius: 5px; 
-        cursor: pointer;">
-        Mute
-    </button>
+<!-- Mute/Unmute Button -->
+<button id="mute-btn" style="
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px; 
+    padding: 10px 15px; 
+    background: rgba(0, 0, 0, 0.8); 
+    color: #00FF00; 
+    font-size: 16px; 
+    border: 2px solid #00FF00; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    z-index: 1000;">
+    🔊 Mute
+</button>
+
+<script>
+    // Mute/Unmute functionality for the background music
+    const music = document.getElementById("background-music");
+    const muteBtn = document.getElementById("mute-btn");
+
+    muteBtn.addEventListener("click", () => {
+        if (music.muted) {
+            music.muted = false;
+            muteBtn.textContent = "🔊 Mute";
+        } else {
+            music.muted = true;
+            muteBtn.textContent = "🔇 Unmute";
+        }
+    });
+</script>
 
     <div id="main">
         <article class="post featured">
