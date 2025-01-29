@@ -159,13 +159,23 @@
     const music = document.getElementById("background-music");
     const muteBtn = document.getElementById("mute-btn");
 
+    // Check localStorage to see if music is muted
+    const isMuted = localStorage.getItem("musicMuted") === "true";
+    if (isMuted) {
+        music.muted = true;
+        muteBtn.textContent = "🔇 Unmute"; // Initial state if muted
+    }
+
     muteBtn.addEventListener("click", () => {
+        // Toggle mute/unmute
         if (music.muted) {
             music.muted = false;
             muteBtn.textContent = "🔊 Mute";
+            localStorage.setItem("musicMuted", "false"); // Store mute state
         } else {
             music.muted = true;
             muteBtn.textContent = "🔇 Unmute";
+            localStorage.setItem("musicMuted", "true"); // Store mute state
         }
     });
 </script>
