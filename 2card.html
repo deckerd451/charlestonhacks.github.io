@@ -159,110 +159,123 @@
     </footer>
 
     <script>
-        const cardImages = [
-            "images/Back3.png",
-            "images/Back4.png",
-            "images/Medusa.png",
-            "images/Elara.png",
-            "images/Aegis.png",
-            "images/Astrid.png",
-            "images/Back6.png",
-            "images/hacker.png"
-        ];
+    const cardImages = [
+        "images/Back3.png",
+        "images/Back4.png",
+        "images/Medusa.png",
+        "images/Elara.png",
+        "images/Aegis.png",
+        "images/Astrid.png",
+        "images/Back6.png",
+        "images/hacker.png"
+    ];
 
-        let selectedImages = [];
-        let selectedCards = [];
-        let matchFound = false;
-        let resetTimeout;
+    let selectedImages = [];
+    let selectedCards = [];
+    let hackerCardRevealed = false;
+    let resetTimer;
 
-        function getRandomImage() {
-            const randomIndex = Math.floor(Math.random() * cardImages.length);
-            return cardImages[randomIndex];
+    // Function to get a random card image
+    function getRandomImage() {
+        const randomIndex = Math.floor(Math.random() * cardImages.length);
+        return cardImages[randomIndex];
+    }
+
+    // Function to handle card click
+    function toggleMissionContent(event) {
+        const card = event.target;
+        const newImage = getRandomImage();
+        card.src = newImage;
+
+        selectedImages.push(newImage);
+        selectedCards.push(card);
+
+        // Handle hacker card reveal
+        if (newImage === "images/hacker.png" && !hackerCardRevealed) {
+            revealHackerCard(card);
         }
 
-let revealHackerCard = false; // Track if the hacker card has been revealed
-let matchFound = false;
-let resetTimeout;
+        // Check for match if two cards are selected
+        if (selectedImages.length === 2) {
+            checkForMatch();
+        }
 
-function toggleMissionContent(event) {
-    const image = event.target;
-    const newImage = getRandomImage();
-    image.src = newImage;
+        // Add random animation
+        addRandomAnimation(card);
+    }
 
-    selectedImages.push(newImage);
-    selectedCards.push(image);
+    // Function to reveal hacker card
+    function revealHackerCard(card) {
+        card.classList.add("hacker-card");
+        hackerCardRevealed = true;
 
-    if (newImage === "images/hacker.png") {
-        image.classList.add("hacker-card");
+        const hackerMessage = document.getElementById("hackerMessage");
+        const hackerSound = document.getElementById("hackerSound");
 
-        // Play sound and show message for the first hacker card
-        if (!revealHackerCard) {
-            const hackerMessage = document.getElementById("hackerMessage");
-            const hackerSound = document.getElementById("hackerSound");
+        hackerMessage.textContent = "Hacker card selected!";
+        hackerMessage.style.display = "block";
+        hackerSound.play();
 
-            hackerMessage.style.display = "block";
-            hackerSound.play();
+        setTimeout(() => {
+            hackerMessage.style.display = "none";
+        }, 3000);
+    }
 
-            // Hide the message after 3 seconds
-            setTimeout(() => {
-                hackerMessage.style.display = "none";
-            }, 3000);
-
-            revealHackerCard = true;
+    // Function to check if selected cards match
+    function checkForMatch() {
+        if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
+            handleMatch();
+        } else {
+            resetUnmatchedCards();
         }
     }
 
-    if (selectedImages.length === 2) {
-        // Match condition for hacker cards
-        if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
-            matchFound = true;
-            clearTimeout(resetTimeout);
+    // Function to handle a successful match
+    function handleMatch() {
+        const hackerMessage = document.getElementById("hackerMessage");
+        hackerMessage.innerHTML = `<a href="cardmatchgame.html" style="color: #00FF00; text-decoration: none; font-size: 20px;">Proceed to Next Level</a>`;
+        hackerMessage.style.display = "block";
 
-            // Add glow to both hacker cards
+        // Highlight matched cards
+        selectedCards.forEach((card) => card.classList.add("hacker-card"));
+
+        // Clear selection arrays
+        selectedImages = [];
+        selectedCards = [];
+
+        // Clear reset timer if active
+        clearTimeout(resetTimer);
+    }
+
+    // Function to reset unmatched cards
+    function resetUnmatchedCards() {
+        setTimeout(() => {
             selectedCards.forEach((card) => {
-                card.classList.add("hacker-card");
+                card.src = "images/Front.png";
+                card.classList.remove("hacker-card");
             });
 
-            // Show a link to cardmatchgame.html
-            const hackerMessage = document.getElementById("hackerMessage");
-            hackerMessage.innerHTML = `<a href="cardmatchgame.html" style="color: #00FF00; text-decoration: none; font-size: 20px;">Proceed to Next Level</a>`;
-            hackerMessage.style.display = "block";
-
-            // Clear selected arrays after a successful match
             selectedImages = [];
             selectedCards = [];
-        } else {
-            // Reset unmatched cards
-            setTimeout(() => {
-                selectedCards.forEach((card) => {
-                    card.src = "images/Front.png";
-                    card.classList.remove("hacker-card");
-                });
-                selectedImages = [];
-                selectedCards = [];
-            }, 2000);
+        }, 2000);
+    }
+
+    // Function to add a random animation to a card
+    function addRandomAnimation(card) {
+        const animations = ["rotate-image", "flip-image", "shake-image"];
+        const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+
+        card.classList.add(randomAnimation);
+        setTimeout(() => card.classList.remove(randomAnimation), 4000);
+    }
+
+    // Timer to reload the game if no match is found
+    resetTimer = setTimeout(() => {
+        if (selectedImages.length < 2) {
+            location.reload();
         }
-    }
+    }, 8000);
+</script>
 
-    // Random animation for the card
-    const animations = ['rotate-image', 'flip-image', 'shake-image'];
-    const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-    image.classList.add(randomAnimation);
-
-    setTimeout(() => {
-        image.classList.remove(randomAnimation);
-    }, 4000);
-}
-
-// Reload the game if no match is found after a timeout
-resetTimeout = setTimeout(() => {
-    if (!matchFound) {
-        location.reload();
-    }
-}, 8000);
-
-
-
-    </script>
 </body>
 </html>
