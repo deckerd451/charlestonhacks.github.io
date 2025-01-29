@@ -46,6 +46,28 @@
             margin-left: auto;
             margin-right: auto;
         }
+
+        /* DevPost image container styles */
+        .devpost-link {
+            text-align: center; /* Center the image */
+            margin-top: 20px;
+        }
+
+        /* Ensure the DevPost logo is responsive */
+        .devpost-link img {
+            width: 100%;
+            max-width: 500px; /* Limit the width to 500px max */
+            height: auto; /* Maintain aspect ratio */
+            margin: 0 auto;
+        }
+
+        /* For smaller screens */
+        @media (max-width: 768px) {
+            .devpost-link img {
+                max-width: 80%; /* On mobile, make the image take up less space */
+            }
+        }
+
     </style>
 </head>
 <body class="is-preload">
