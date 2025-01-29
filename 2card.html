@@ -132,6 +132,26 @@
     </style>
 </head>
 <body>
+   <!-- Background music -->
+    <audio id="background-music" autoplay loop>
+        <source src="assets/music.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Mute/Unmute Button -->
+    <button id="mute-btn" style="
+        position: fixed; 
+        bottom: 20px; 
+        right: 20px; 
+        padding: 10px 20px; 
+        background: #00FF00; 
+        color: black; 
+        font-size: 16px; 
+        border: none; 
+        border-radius: 5px; 
+        cursor: pointer;">
+        Mute
+    </button>
     <div id="main">
         <article class="post featured">
             <header class="major">
