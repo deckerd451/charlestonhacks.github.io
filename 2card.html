@@ -227,8 +227,8 @@
             const randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
-
-     let hackerCardRevealed = false; // Track if the hacker card has been revealed
+let hackerCardRevealed = false;
+let proceedTimeout;
 
 function revealHackerCard(card) {
     card.classList.add("hacker-card");
@@ -239,17 +239,29 @@ function revealHackerCard(card) {
 
     hackerMessage.innerHTML = `
         <p>Hacker card selected!</p>
-        <a href="cardmatchgame.html" style="color: #00FF00; text-decoration: none; font-size: 20px;">
+        <a href="cardmatchgame.html" id="proceedLink" style="color: #00FF00; text-decoration: none; font-size: 20px;">
             Proceed to Next Level
         </a>
     `;
     hackerMessage.style.display = "block";
     hackerSound.play();
 
+    // Set a timeout for the user to click the link (10 seconds)
+    proceedTimeout = setTimeout(() => {
+        hackerMessage.innerHTML = `<p>Time's up! Proceed to the next level</p>`;
+    }, 10000);  // 10 seconds
+
+    // When the user clicks the link, clear the timeout
+    const proceedLink = document.getElementById("proceedLink");
+    proceedLink.addEventListener("click", () => {
+        clearTimeout(proceedTimeout);  // Clear the timeout once clicked
+    });
+
     setTimeout(() => {
         hackerMessage.style.display = "none";
     }, 3000);
 }
+
 
 function toggleMissionContent(event) {
     const image = event.target;
