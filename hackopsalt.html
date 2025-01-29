@@ -23,12 +23,21 @@
             text-align: left;
         }
 
-        /* Style the video */
-iframe {
-    width: 100%;
-    height: calc(100vh - (100vh * 0.5)); /* percentage adjustment */
-}
+        /* Style the link */
+        .link-button {
+            display: inline-block;
+            background-color: #00FF00;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
 
+        .link-button:hover {
+            background-color: #39FF14;
+        }
 
         /* Style the button */
         button {
@@ -45,24 +54,31 @@ iframe {
         <article class="post featured">
             <header class="major">
                 <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" style="max-width: 400px;" /></a>
-
             </header>
-            <iframe width="560" height="315" src="https://youtu.be/M1E6dE_53i8?si=aBqgUIunHETmbv_K" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-            <br>
+            <!-- Link to the article -->
             <p><b>Make a plan, form a team, create a proto, build the future: HackOps (24)</b></p>
             <p>The Harbor Entrepreneur Center, April 19TH-21ST, 11 Ewall St, Mt Pleasant, SC 29464</p>
             
-    <div class="devpost-link">
-                         <a href="https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D">
-                             <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" class="button large" />
-                         </a>
-                     </div>
-                    <hr>
-    <!-- Image Modal -->
-    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
-        
-        <img class="image-modal-content" id="modalImage" />
+            <div class="devpost-link">
+                <a href="https://hackops.devpost.com/?preview_token=ivZNJh9OW12FDFV1%2FvJGa%2BS1v2sLIzJ42G5exQ8Xd0U%3D">
+                    <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" class="button large" />
+                </a>
+            </div>
+            <hr>
+
+            <!-- New link to the article -->
+            <a class="link-button" href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/" target="_blank">
+                Read Article: Locals Looking to AI to Solve Present & Future Problems
+            </a>
+
+            <hr>
+
+            <!-- Image Modal -->
+            <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+                <img class="image-modal-content" id="modalImage" />
+            </div>
+        </article>
     </div>
 </body>
 </html>
