@@ -216,15 +216,19 @@ function toggleMissionContent(event) {
     }
 
     if (selectedImages.length === 2) {
-        // Match condition for hacker cards
-        if (selectedImages[0] === "images/hacker.png" && selectedImages[1] === "images/hacker.png") {
+        // Handle match condition
+        if (selectedImages[0] === selectedImages[1]) {
             matchFound = true;
-            clearTimeout(resetTimeout);
 
-            // Show a link to cardmatchgame.html
-            const hackerMessage = document.getElementById("hackerMessage");
-            hackerMessage.innerHTML = `<a href="cardmatchgame.html" style="color: #00FF00; text-decoration: none; font-size: 20px;">Proceed to Next Level</a>`;
-            hackerMessage.style.display = "block";
+            // If both matched cards are not the hacker card, show placeholder
+            if (selectedImages[0] !== "images/hacker.png") {
+                selectedCards.forEach((card) => {
+                    card.src = "images/placeholder.png";
+                    card.classList.remove("hacker-card");
+                });
+            }
+            selectedImages = [];
+            selectedCards = [];
         } else {
             // Reset unmatched cards
             setTimeout(() => {
@@ -252,6 +256,7 @@ resetTimeout = setTimeout(() => {
         location.reload();
     }
 }, 8000);
+
 
 
     </script>
