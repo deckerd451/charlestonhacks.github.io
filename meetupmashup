@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeetupMashup</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
 
+        .scroll-container {
+            width: 100%;
+            height: 400px; /* Adjust height as needed */
+            overflow-x: scroll;
+            overflow-y: hidden;
+            white-space: nowrap;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .scroll-container img {
+            display: inline-block;
+            height: 100%;
+            margin-right: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .scroll-container img:last-child {
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center; margin-top: 20px;">Welcome to MeetupMashup</h1>
+    <p style="text-align: center;">Explore our highlights below:</p>
+
+    <div class="scroll-container">
+        <img src="https://via.placeholder.com/300x400" alt="Sample Image 1">
+        <img src="https://via.placeholder.com/300x400" alt="Sample Image 2">
+        <img src="https://via.placeholder.com/300x400" alt="Sample Image 3">
+        <img src="https://via.placeholder.com/300x400" alt="Sample Image 4">
+        <img src="https://via.placeholder.com/300x400" alt="Sample Image 5">
+    </div>
+
+</body>
+</html>
