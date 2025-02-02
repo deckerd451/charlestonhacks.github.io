@@ -47,8 +47,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
-            z-index: -1;
             opacity: 0;
             transition: opacity 3s ease-in-out;
         }
@@ -234,12 +232,14 @@
             var video = document.getElementById('missionVideo');
             
             // Toggle image/video visibility
-            if (video.style.display === 'none' || !video.style.display) {
-                image.style.display = 'none';
+            if (video.style.opacity === '0') {
+                image.style.display = 'none';  // Hide image
+                video.style.opacity = '1';     // Show video
                 video.style.display = 'block';
                 video.play();
             } else {
-                image.style.display = 'block';
+                image.style.display = 'block'; // Show image
+                video.style.opacity = '0';     // Hide video
                 video.style.display = 'none';
                 video.pause();
             }
