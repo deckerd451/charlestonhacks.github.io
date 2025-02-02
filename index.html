@@ -128,6 +128,21 @@
             50% { transform: translateY(-5px); }
             100% { transform: translateY(0); }
         }
+
+        /* Toggle button */
+        #previousEventsToggle {
+            cursor: pointer;
+            font-size: 20px;
+            margin: 0 15px;
+        }
+
+        #previousEventsToggle i {
+            transition: transform 0.3s;
+        }
+
+        #previousEventsToggle i:hover {
+            transform: scale(1.2);
+        }
     </style>
 </head>
 <body>
@@ -150,7 +165,7 @@
     <footer>
         <section>
             <a href="2card.html"><i class="fas fa-info-circle icon"></i></a>
-            <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility()">
+            <h1 id="previousEventsToggle" onclick="toggleVisibility()">
                 <i class="fas fa-chevron-down icon"></i> Previous Events
             </h1>
             <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
@@ -163,8 +178,39 @@
             <a href="https://instagram.com"><i class="fab fa-instagram"></i></a>
             <a href="https://linkedin.com"><i class="fab fa-linkedin"></i></a>
         </div>
+
+        <!-- Previous events section (Initially hidden) -->
+        <div class="previous-events" style="display: none;">
+            <p><a href="techweek.html" style="color: white;">Tech Week: 30 Second AI Film Fest (May 1st 2025)</a></p>
+            <p><a href="harborhack24.html" style="color: white;">HarborHack (Fall 2024)</a></p>
+            <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
+            <p><a href="hacknights24.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
+            <p><a href="hackopsalt.html" style="color: white;">HackOps (Spring 2024)</a></p>
+            <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
+            <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
+        </div>
     </footer>
 
-    <script src="ho-script.js"></script>
+    <script>
+        // Function to toggle the visibility of the previous events section
+        function toggleVisibility() {
+            var eventsDiv = document.querySelector('.previous-events');
+            var arrowIcon = document.getElementById("previousEventsToggle").querySelector("i");
+            if (eventsDiv.style.display === "none") {
+                eventsDiv.style.display = "block";
+                arrowIcon.classList.remove("fa-chevron-down");
+                arrowIcon.classList.add("fa-chevron-up");
+            } else {
+                eventsDiv.style.display = "none";
+                arrowIcon.classList.remove("fa-chevron-up");
+                arrowIcon.classList.add("fa-chevron-down");
+            }
+        }
+
+        // Placeholder function for mission content toggle
+        function toggleMissionContent() {
+            console.log('Mission content toggled!');
+        }
+    </script>
 </body>
 </html>
