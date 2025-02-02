@@ -106,29 +106,29 @@
         color: #00cc00; /* Slightly darker green */
     }
 
+    /* Video Modal (Lightbox) Styles */
+    .video-container {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 9999; /* Ensure it is on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease; /* Add smooth transition */
+    }
+
     /* Video Player Styles */
-   .video-container {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 9999; /* Ensure it is on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease; /* Add smooth transition */
-}
-
-
-   /* Video Player Styles */
-.video-container video {
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    object-fit: contain;
-}
+    .video-container video {
+        width: 80%;
+        max-width: 900px;
+        height: auto;
+        object-fit: contain;
+        margin: 0 auto; /* Center the video */
+    }
 
     .video-close {
         position: absolute;
@@ -182,7 +182,7 @@
             </div>
         
             <p>Charleston, SC — Lights, Camera-AI! CharlestonHacks presents the 30 Second AI Film Fest on May 1st, 2025, from 7:00 PM to 10:00 PM at the Simmons Center, College of Charleston, as part of Dig South and Charleston Tech Week. This event challenges participants to create 30-second films in three hours using AI tools to transform text into cinematic masterpieces.</p>
-<p>Compete in the AI Video Hackathon, network with innovators, and immerse yourself in Charleston Tech Week's creative community. Win prizes and gain recognition for your AI-powered storytelling. Register now to be part of this groundbreaking experience!</p>
+            <p>Compete in the AI Video Hackathon, network with innovators, and immerse yourself in Charleston Tech Week's creative community. Win prizes and gain recognition for your AI-powered storytelling. Register now to be part of this groundbreaking experience!</p>
 
             <!-- Tech Week Button as Link -->
             <a class="collapsible" href="https://charlestontechweek.org/" target="_blank">Tech Week</a> 
@@ -192,7 +192,7 @@
         </article>
     </div>
 
-    <!-- Video Modal -->
+    <!-- Video Modal (Lightbox) -->
     <div id="videoModal" class="video-container">
         <span class="video-close" onclick="closeVideo();">&times;</span>
         <video id="videoPlayer" controls>
@@ -203,9 +203,9 @@
 
     <!-- Footer -->
     <footer id="footer">
-         <a class="image main" href="index.html">
-                <img src="images/chback.png" alt="Charleston Hacks Logo" style="width: 40%; height: auto;" />
-            </a>
+        <a class="image main" href="index.html">
+            <img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="Charleston Hacks Logo" />
+        </a>
         <!-- Social Media Links in Footer -->
         <section>
             <ul class="icons">
