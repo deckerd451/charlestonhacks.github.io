@@ -105,18 +105,20 @@
     }
 
     /* Video Player Styles */
-    .video-container {
-        display: none; /* Hidden by default */
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
-        justify-content: center;
-        align-items: center;
-    }
+   .video-container {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 9999; /* Ensure it is on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease; /* Add smooth transition */
+}
+
 
     .video-container video {
         max-width: 90%;
@@ -239,16 +241,20 @@
 
         const countdownInterval = setInterval(updateCountdown, 1000);
 
-        // Open Video Functionality
-        function openVideo() {
-            const videoModal = document.getElementById("videoModal");
-            videoModal.style.display = "flex"; // Use flex to center the video modal
-        }
+       // Open Video Functionality
+function openVideo() {
+    const videoModal = document.getElementById("videoModal");
+    videoModal.style.display = "flex"; // Use flex to center the video modal
+    document.body.style.overflow = 'hidden'; // Disable body scroll when modal is open
+}
 
-        function closeVideo() {
-            const videoModal = document.getElementById("videoModal");
-            videoModal.style.display = "none";
-        }
+// Close Video Functionality
+function closeVideo() {
+    const videoModal = document.getElementById("videoModal");
+    videoModal.style.display = "none";
+    document.body.style.overflow = 'auto'; // Enable body scroll after modal is closed
+}
+
     </script>
 </body>
 </html>
