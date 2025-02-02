@@ -11,38 +11,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
     /* General Styles */
-   html, body {
-    background-color: #000 !important; /* Black background */
-    color: #ffffff !important; /* White text */
-    font-family: Arial, sans-serif;
-    font-size: 20px; /* Increased font size */
-    margin: 0;
-    padding: 0;
-}
+    html, body {
+        background-color: #000 !important; /* Black background */
+        color: #ffffff !important; /* White text */
+        font-family: Arial, sans-serif;
+        font-size: 20px; /* Increased font size */
+        margin: 0;
+        padding: 0;
+    }
 
-* {
-    background-color: #000 !important; /* Force black background */
-    color: #ffffff !important; /* White text */
-}
+    * {
+        background-color: #000 !important; /* Force black background */
+        color: #ffffff !important; /* White text */
+    }
+
     /* Button styles */
     .collapsible {
-    background-color: #00ff00 !important; /* Acid green */
-    color: #000 !important; /* Black text */
-    padding: 15px;
-    width: 100%;
-    border: none;
-    text-align: center;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    margin-bottom: 40px;
-}
+        background-color: #00ff00 !important; /* Acid green */
+        color: #000 !important; /* Black text */
+        padding: 15px;
+        width: 100%;
+        border: none;
+        text-align: center;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        margin-bottom: 40px;
+    }
 
-.collapsible:hover {
-    background-color: #00cc00 !important; /* Slightly darker green */
-}
-
+    .collapsible:hover {
+        background-color: #00cc00 !important; /* Slightly darker green */
+    }
 
     /* Remove bullet points from lists */
     ul {
@@ -50,114 +50,111 @@
         padding: 0; /* Removes default padding */
         margin: 0; /* Removes default margin */
     }
-   /* Image styles */
+
+    /* Image styles */
     .zoom-image {
-    width: 500px;
-    height: auto;
-    display: block;
-    margin: 0 auto 40px auto; /* Adds 40px space below the image */
-}
-
-        .zoom-image:hover {
-            transform: scale(1.2);
-            transition: transform 0.3s ease;
-        }
-
-        /* Countdown Timer Styles */
-        .countdown {
-    font-size: 24px;
-    text-align: center;
-    margin: 20px 0;
-    padding: 10px;
-    background-color: #000 !important; /* Ensuring background stays black */
-    border-radius: 5px;
-    color: #00ff00 !important; /* Ensuring acid green text */
-    font-weight: bold;
-}
-
-
-        /* Footer styles */
-        footer#footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #000 !important; /* Black background */
-        }
-
-        footer#footer .icons {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        footer#footer .icons li {
-            display: inline-block;
-            margin: 10px;
-        }
-
-        footer#footer .icons li a {
-            color: #00ff00; /* Acid green icons */
-            font-size: 24px;
-            text-decoration: none;
-        }
-
-        footer#footer .icons li a:hover {
-            color: #00cc00; /* Slightly darker green */
-        }
-
-        /* Lightbox Styles */
-        .lightbox {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8); /* Black with opacity */
-        }
-
-.lightbox-content {
-    width: auto;
-    height: auto;
-    max-width: 80%;
-    max-height: 80%;
-    margin: auto;
-    display: block;
-}
-
-
-        .lightbox-close {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            color: #00ff00;
-            font-size: 36px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .lightbox-close:hover {
-            color: #00cc00;
-        }
-        @media (max-width: 768px) {
-    .zoom-image {
-        width: 80%;
+        width: 500px;
         height: auto;
         display: block;
-        margin: 20px auto;
+        margin: 0 auto 40px auto; /* Adds 40px space below the image */
     }
 
-    div#main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        padding: 10px;
+    .zoom-image:hover {
+        transform: scale(1.2);
+        transition: transform 0.3s ease;
     }
-}
+
+    /* Countdown Timer Styles */
+    .countdown {
+        font-size: 24px;
+        text-align: center;
+        margin: 20px 0;
+        padding: 10px;
+        background-color: #000 !important; /* Ensuring background stays black */
+        border-radius: 5px;
+        color: #00ff00 !important; /* Ensuring acid green text */
+        font-weight: bold;
+    }
+
+    /* Footer styles */
+    footer#footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #000 !important; /* Black background */
+    }
+
+    footer#footer .icons {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    footer#footer .icons li {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    footer#footer .icons li a {
+        color: #00ff00; /* Acid green icons */
+        font-size: 24px;
+        text-decoration: none;
+    }
+
+    footer#footer .icons li a:hover {
+        color: #00cc00; /* Slightly darker green */
+    }
+
+    /* Video Player Styles */
+    .video-container {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .video-container video {
+        max-width: 90%;
+        max-height: 80%;
+    }
+
+    .video-close {
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        color: #00ff00;
+        font-size: 36px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .video-close:hover {
+        color: #00cc00;
+    }
+
+    @media (max-width: 768px) {
+        .zoom-image {
+            width: 80%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+
+        div#main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+    }
 
     </style>
 </head>
@@ -169,12 +166,10 @@
             <header class="major"></header>
             <a class="image main" href="index.html">
                 <img src="images/chback.png" alt="Charleston Hacks Logo" style="width: 35%; height: auto;" />
-
             </a>
             <div>
-                
                 <!-- Image with fixed size and zoom effect -->
-                <a href="#" onclick="openLightbox(); return false;">
+                <a href="#" onclick="openVideo(); return false;">
                     <img src="images/AIFF.png" alt="30 Second AI Film Fest Poster" class="zoom-image">
                 </a><br>
             </div>
@@ -183,10 +178,10 @@
             <p>The 30 Second AI Film Fest challenges participants to craft short films of 30 seconds or less in just three hours using cutting-edge AI tools. These tools enable creators to transform simple text prompts into cinematic creations, making this event a unique fusion of technology and art.</p>
         
             <p>AI Video Hackathon: Compete to create the most compelling AI-generated short film.</p>
-                <p>Networking Opportunities: Connect with innovators, industry leaders, and AI enthusiasts.</p>
-                <p>Inspiring Environment: Experience Charleston Tech Week’s dynamic community of creators and entrepreneurs.</p>
-                <p>Prizes and Recognition: Win exciting prizes and gain recognition for your creativity.</p>
-           <p>Whether you’re an AI developer, a storyteller, or someone curious about AI in filmmaking, this is your chance to innovate and shine. Register now to participate and join us in redefining the future of storytelling!</p>
+            <p>Networking Opportunities: Connect with innovators, industry leaders, and AI enthusiasts.</p>
+            <p>Inspiring Environment: Experience Charleston Tech Week’s dynamic community of creators and entrepreneurs.</p>
+            <p>Prizes and Recognition: Win exciting prizes and gain recognition for your creativity.</p>
+            <p>Whether you’re an AI developer, a storyteller, or someone curious about AI in filmmaking, this is your chance to innovate and shine. Register now to participate and join us in redefining the future of storytelling!</p>
 
             <!-- Tech Week Button as Link -->
             <a class="collapsible" href="https://charlestontechweek.org/" target="_blank">Tech Week</a> 
@@ -196,10 +191,13 @@
         </article>
     </div>
 
-    <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close" onclick="closeLightbox();">&times;</span>
-        <img class="lightbox-content" id="lightboxImage">
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-container">
+        <span class="video-close" onclick="closeVideo();">&times;</span>
+        <video id="videoPlayer" controls>
+            <source src="images/Vintage.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 
     <!-- Footer -->
@@ -241,17 +239,15 @@
 
         const countdownInterval = setInterval(updateCountdown, 1000);
 
-        // Lightbox Functionality
-        function openLightbox() {
-            const lightbox = document.getElementById("lightbox");
-            const lightboxImage = document.getElementById("lightboxImage");
-            lightbox.style.display = "block";
-            lightboxImage.src = "images/AIFF.png";
+        // Open Video Functionality
+        function openVideo() {
+            const videoModal = document.getElementById("videoModal");
+            videoModal.style.display = "flex"; // Use flex to center the video modal
         }
 
-        function closeLightbox() {
-            const lightbox = document.getElementById("lightbox");
-            lightbox.style.display = "none";
+        function closeVideo() {
+            const videoModal = document.getElementById("videoModal");
+            videoModal.style.display = "none";
         }
     </script>
 </body>
