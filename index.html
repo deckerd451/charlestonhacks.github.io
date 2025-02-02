@@ -80,7 +80,51 @@
             animation: flipImageY 4s ease forwards;
         }
 
-        /* Scroll Indicator at the Bottom */
+        /* Mission content styling */
+        #missionContent {
+            animation: fadeIn 7s ease forwards;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: rgba(0, 0, 0, 0);
+            padding: 20px;
+            text-align: center;
+            display: none;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        #missionContent p, #missionContent button {
+            color: white;
+        }
+
+        /* Countdown styling */
+        #countdownWrapper {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #countdown {
+            font-size: 42px;
+            color: #FFFF00;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .event-logo {
+            margin-bottom: 20px;
+        }
+
+        .info {
+            color: #FFFF00;
+            font-size: 20px;
+        }
+
         .scroll-indicator {
             position: absolute;
             bottom: 10px;
@@ -126,7 +170,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px; /* Space between the links and icons */
+            gap: 20px;
         }
 
         footer a {
@@ -150,23 +194,9 @@
             transform: scale(1.2);
         }
 
-        /* Toggle button */
         #previousEventsToggle {
-            cursor: pointer;
-            font-size: 20px;
-            margin: 0 15px;
-        }
-
-        #previousEventsToggle i {
-            transition: transform 0.3s;
-        }
-
-        #previousEventsToggle i:hover {
-            transform: scale(1.2);
-        }
-
-        .previous-events {
-            display: none;
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
 
         /* Scroll instruction styling */
@@ -177,7 +207,7 @@
         }
     </style>
 </head>
-<body>
+<body class="is-preload">
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -200,9 +230,7 @@
     <footer>
         <section style="display: flex; justify-content: center; align-items: center;">
             <a href="2card.html"><i class="fas fa-info-circle icon"></i></a>
-            <h1 id="previousEventsToggle" onclick="toggleVisibility()">
-                <i class="fas fa-chevron-down icon"></i> CharlestonHacks Events
-            </h1>
+            <h1 id="previousEventsToggle" onclick="toggleVisibility()">Previous Events <i class="fas fa-chevron-down icon"></i></h1>
             <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
         </section>
 
@@ -224,11 +252,9 @@
             <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
             <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
         </div>
-        
     </footer>
 
     <script>
-        // Countdown for the event
         var countdownElement = document.getElementById('countdown');
         var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
         var countdownFunction = setInterval(function () {
@@ -293,6 +319,17 @@
             setTimeout(function() {
                 image.classList.add(randomFlip);
             }, 100);
+
+            // Reveal the links after the flip is complete
+            setTimeout(function() {
+                document.getElementById('missionContent').innerHTML = `
+                    <div class="body-text">
+                        <p><a href="https://charlestontechweek.org/"><img src="images/aiffbanner.png" alt="AI Film Fest" class="event-logo" style="width: 900px; height: auto;"></a></p>
+                        <p><a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">CharlestonHacks in the news</a></p>
+                        <p><a href="subscribe.html" target="_blank">Join the Mailing List</a></p>
+                    </div>
+                `;
+            }, 4000); // Show content after the flip
         }
 
         function toggleVisibility() {
