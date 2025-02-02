@@ -47,6 +47,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: none;
+            z-index: -1;
             opacity: 0;
             transition: opacity 3s ease-in-out;
         }
@@ -57,7 +59,46 @@
             }
         }
 
-        /* Flip animations for card */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @-webkit-keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @-webkit-keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        #missionContent {
+            animation: fadeIn 7s ease forwards;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: rgba(0, 0, 0, 0);
+            padding: 20px;
+            text-align: center;
+            display: none;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        #missionContent p, #missionContent button {
+            color: white;
+        }
+
         @keyframes flipImageX {
             0% { transform: rotateX(0deg); opacity: 1; }
             50% { transform: rotateX(180deg); opacity: 1; }
@@ -72,99 +113,163 @@
 
         .flip-image-x {
             animation: flipImageX 4s ease forwards;
+            -webkit-animation: flipImageX 4s ease forwards;
         }
 
         .flip-image-y {
             animation: flipImageY 4s ease forwards;
+            -webkit-animation: flipImageY 4s ease forwards;
         }
 
-        /* Flexbox styling for footer */
-        footer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 10px 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        #missionVideo.fadeOut {
+            animation: fadeOut 8s ease forwards;
         }
 
-        footer section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px; /* Space between the links and icons */
+        #countdownWrapper {
+            margin-top: 20px;
+            text-align: center;
         }
 
-        footer a {
-            color: white;
-            text-decoration: none;
+        #countdown {
+            font-size: 42px;
+            color: #FFFF00;
         }
 
-        footer .icons-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
+        .logo {
+            margin-bottom: 20px;
         }
 
-        footer .icons-container i {
-            font-size: 24px;
-            transition: transform 0.3s;
+        .event-logo {
+            margin-bottom: 20px;
         }
 
-        footer .icons-container i:hover {
-            transform: scale(1.2);
-        }
-
-        /* Scroll Indicator at the Bottom */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 5px;
-            background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
-            border-radius: 5px;
-            animation: fadeIndicator 1.5s infinite;
-        }
-
-        @keyframes fadeIndicator {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
-        }
-
-        .icon:hover {
-            animation: bounce 1s ease infinite;
-        }
-
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
-        }
-
-        /* Toggle button */
-        #previousEventsToggle {
-            cursor: pointer;
+        .info {
+            color: #FFFF00;
             font-size: 20px;
-            margin: 0 15px;
         }
 
-        #previousEventsToggle i {
-            transition: transform 0.3s;
+        #previousEventsToggle {
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
 
-        #previousEventsToggle i:hover {
-            transform: scale(1.2);
+        .body-text {
+            margin: 30px 0;
         }
+
+        .body-text a {
+            color: white;
+        }
+
+        .body-text p {
+            margin-bottom: 10px;
+        }
+
+        /* Add this at the end of your styles.css file */
+        .icon {
+            color: #39FF14; /* Acid Green color */
+            font-size: 20px; /* Adjust size if needed */
+            margin-right: 8px; /* Space between icon and text */
+        }
+
+footer .icons-container {
+    display: flex;
+    justify-content: space-evenly; /* Distribute icons evenly across the width */
+    align-items: center;      /* Centers icons vertically */
+    gap: 30px;                /* Adds space between the icons */
+    position: fixed;          /* Use fixed to keep it always at the bottom */
+    bottom: 0;                /* Aligns the icons at the bottom */
+    width: 100%;              /* Ensures full-width */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: background color */
+    padding: 10px 0;          /* Space around the icons */
+    z-index: 10;              /* Ensures icons appear above video */
+}
+
+
+footer .icons-container a {
+    position: relative;
+    top: -50px;  /* Adjust this value to raise the icons */
+}
+<style>
+    /* Scroll Indicator at the Bottom */
+    .scroll-indicator {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 5px;
+        background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+        border-radius: 5px;
+        animation: fadeIndicator 1.5s infinite;
+    }
+
+    @keyframes fadeIndicator {
+        0% { opacity: 0.3; }
+        50% { opacity: 1; }
+        100% { opacity: 0.3; }
+    }
+
+    /* Footer Arrow Icon Pulse Animation */
+    .icon:hover {
+        animation: bounce 1s ease infinite;
+    }
+
+    @keyframes bounce {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0); }
+    }
+
+    /* Toggle button */
+  #previousEventsToggle {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Adds space between text and arrow */
+}
+
+#previousEventsToggle i {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+
+    /* Increase Icon Size */
+    .icon {
+        font-size: 24px;
+    }
+<body>
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator"></div>
+
+    <footer>
+        <section style="display: flex; justify-content: center; align-items: center;">
+            <a href="2card.html"><i class="fas fa-info-circle icon"></i></a>
+            <h1 id="previousEventsToggle" onclick="toggleVisibility()">Previous Events <i class="fas fa-chevron-down icon"></i></h1>
+            <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
+        </section>
+        <div class="previous-events" style="display: none;">
+            <p><a href="techweek.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
+            <p><a href="harborhack24.html" style="color: white;">HarborHack (Fall 2024)</a></p>
+            <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
+            <p><a href="hacknights24.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
+            <p><a href="hackopsalt.html" style="color: white;">HackOps (Spring 2024)</a></p>
+            <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
+            <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
+        </div>
+    </footer>
+</body>
+
     </style>
 </head>
-<body>
+<body class="is-preload">
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -176,45 +281,126 @@
                             Your browser does not support the video tag.
                         </video>
                     </a>
+                    <div id="missionContent">
+                        <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                        <div class="body-text">
+                            <p>
+                                <a href="https://charlestontechweek.org/">
+                                    <img src="images/aiffbanner.png" alt="AI Film Fest" class="event-logo" style="width: 900px; height: auto;">
+                                </a>
+                            </p>
+                            <p>
+                                <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+                                    CharlestonHacks in the news
+                                </a>
+                            </p>
+                            <p>
+                                <a href="subscribe.html" target="_blank">Join the Mailing List</a>
+                            </p>
+                        </div>
+                        <div id="countdownWrapper">
+                            <p class="info"><b>Countdown to 30 second AI Film Fest:</b></p>
+                            <div id="countdown"></div>
+                        </div>
+                    </div>
                 </div>
             </header>
         </article>
     </div>
-
     <footer>
-        <section>
+        <section style="display: flex; justify-content: center; align-items: center;">
             <a href="2card.html"><i class="fas fa-info-circle icon"></i></a>
-            <h1 id="previousEventsToggle" onclick="toggleVisibility()">
-                <i class="fas fa-chevron-down icon"></i> Previous Events
+            <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility()">
+                <i class="fas fa-chevron-down icon"></i>
             </h1>
             <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
+            
         </section>
-
-        <!-- Social media icons section -->
-        <div class="icons-container">
-            <a href="https://facebook.com"><i class="fab fa-facebook"></i></a>
-            <a href="https://twitter.com"><i class="fab fa-twitter"></i></a>
-            <a href="https://instagram.com"><i class="fab fa-instagram"></i></a>
-            <a href="https://linkedin.com"><i class="fab fa-linkedin"></i></a>
-        </div>
-
-        <!-- Previous events section (Initially hidden) -->
         <div class="previous-events" style="display: none;">
-            <p><a href="techweek.html" style="color: white;">Tech Week: 30 Second AI Film Fest (May 1st 2025)</a></p>
+            <p><a href="techweek.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
             <p><a href="harborhack24.html" style="color: white;">HarborHack (Fall 2024)</a></p>
-            <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
+             <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
             <p><a href="hacknights24.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
             <p><a href="hackopsalt.html" style="color: white;">HackOps (Spring 2024)</a></p>
             <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
             <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
-        </div>
+</div>
+        <div class="scroll-instruction">
+    <p>Scroll down to see events</p>
+</div>
+
     </footer>
 
+    <script src="ho-script.js"></script>
     <script>
-        // Function to toggle the visibility of the previous events section
+        var countdownElement = document.getElementById('countdown');
+        var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
+        var countdownFunction = setInterval(function () {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                countdownElement.innerHTML = "AIFF is Here!";
+            }
+        }, 1000);
+
+        var cardImages = [
+            "images/yellowscullcard.png",
+            "images/redscullcard.png",
+            "images/Descartes.png",
+            "images/Alexandor.png",
+            "images/Medusa.png",
+            "images/Elara.png",
+            "images/adventurercard.png",
+            "images/collaboratorcard.png",
+            "images/humanitariancard.png",
+            "images/nextcard.png",
+            "images/Aegis.png",
+            "images/resilientcard.png",
+            "images/Astrid.png",
+            "images/nicolecard.png"
+        ];
+
+        function getRandomImage() {
+            var randomIndex = Math.floor(Math.random() * cardImages.length);
+            return cardImages[randomIndex];
+        }
+
+        function toggleMissionContent() {
+            var image = document.getElementById('missionImage');
+            image.src = getRandomImage();
+
+            var video = document.getElementById('missionVideo');
+            video.style.display = 'block';
+            video.style.opacity = 1;
+            video.play();
+
+            setTimeout(function() {
+                document.getElementById('missionContent').style.display = 'block';
+            }, 3000);
+
+            setTimeout(function() {
+                video.classList.add('fadeOut');
+                setTimeout(function() {
+                    video.style.display = 'none';
+                }, 8000);
+            }, 100);
+
+            // Randomly apply X or Y flip
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            setTimeout(function() {
+                image.classList.add(randomFlip);
+            }, 100);
+        }
+
         function toggleVisibility() {
             var eventsDiv = document.querySelector('.previous-events');
-            var arrowIcon = document.getElementById("previousEventsToggle").querySelector("i");
+            var arrowIcon = document.getElementById("arrowIcon");
             if (eventsDiv.style.display === "none") {
                 eventsDiv.style.display = "block";
                 arrowIcon.classList.remove("fa-chevron-down");
@@ -224,34 +410,6 @@
                 arrowIcon.classList.remove("fa-chevron-up");
                 arrowIcon.classList.add("fa-chevron-down");
             }
-        }
-
-        // Function to toggle between the image and video and apply the flip animation
-        function toggleMissionContent() {
-            var image = document.getElementById('missionImage');
-            var video = document.getElementById('missionVideo');
-            
-            // Toggle image/video visibility
-            if (video.style.opacity === '0') {
-                image.style.display = 'none';  // Hide image
-                video.style.opacity = '1';     // Show video
-                video.style.display = 'block';
-                video.play();
-            } else {
-                image.style.display = 'block'; // Show image
-                video.style.opacity = '0';     // Hide video
-                video.style.display = 'none';
-                video.pause();
-            }
-
-            // Apply flip animation to the image
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            image.classList.add(randomFlip);
-
-            // Optionally, remove the flip after the animation ends
-            setTimeout(function() {
-                image.classList.remove(randomFlip);
-            }, 4000); // Adjust timing based on the duration of the animation
         }
     </script>
 </body>
