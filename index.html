@@ -80,94 +80,104 @@
             animation: flipImageY 4s ease forwards;
         }
 
-        /* Mission content styling */
-        #missionContent {
-            animation: fadeIn 7s ease forwards;
+        /* Scroll Indicator at the Bottom */
+        .scroll-indicator {
             position: absolute;
-            top: 50%;
+            bottom: 10px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: rgba(0, 0, 0, 0);
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 1;
-            opacity: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 5px;
+            background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+            border-radius: 5px;
+            animation: fadeIndicator 1.5s infinite;
         }
 
-        #missionContent p, #missionContent button {
+        @keyframes fadeIndicator {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        .icon:hover {
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Footer styling */
+        footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 10px 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; /* Space between the links and icons */
+        }
+
+        footer a {
             color: white;
-        }
-
-        #countdownWrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #countdown {
-            font-size: 42px;
-            color: #FFFF00;
-        }
-
-        .logo {
-            margin-bottom: 20px;
-        }
-
-        .event-logo {
-            margin-bottom: 20px;
-        }
-
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
-        }
-
-        #previousEventsToggle {
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-
-        .body-text {
-            margin: 30px 0;
-        }
-
-        .body-text a {
-            color: white;
-        }
-
-        .body-text p {
-            margin-bottom: 10px;
-        }
-
-        /* Add this at the end of your styles.css file */
-        .icon {
-            color: #39FF14; /* Acid Green color */
-            font-size: 20px; /* Adjust size if needed */
-            margin-right: 8px; /* Space between icon and text */
+            text-decoration: none;
         }
 
         footer .icons-container {
             display: flex;
-            justify-content: space-evenly; /* Distribute icons evenly across the width */
-            align-items: center;      /* Centers icons vertically */
-            gap: 30px;                /* Adds space between the icons */
-            position: fixed;          /* Use fixed to keep it always at the bottom */
-            bottom: 0;                /* Aligns the icons at the bottom */
-            width: 100%;              /* Ensures full-width */
-            background-color: rgba(0, 0, 0, 0.5); /* Optional: background color */
-            padding: 10px 0;          /* Space around the icons */
-            z-index: 10;              /* Ensures icons appear above video */
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
         }
 
-        footer .icons-container a {
-            position: relative;
-            top: -50px;  /* Adjust this value to raise the icons */
+        footer .icons-container i {
+            font-size: 24px;
+            transition: transform 0.3s;
+        }
+
+        footer .icons-container i:hover {
+            transform: scale(1.2);
+        }
+
+        /* Toggle button */
+        #previousEventsToggle {
+            cursor: pointer;
+            font-size: 20px;
+            margin: 0 15px;
+        }
+
+        #previousEventsToggle i {
+            transition: transform 0.3s;
+        }
+
+        #previousEventsToggle i:hover {
+            transform: scale(1.2);
+        }
+
+        .previous-events {
+            display: none;
+        }
+
+        /* Scroll instruction styling */
+        .scroll-instruction {
+            margin-top: 20px;
+            font-size: 18px;
+            color: white;
         }
     </style>
 </head>
-<body class="is-preload">
+<body>
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -191,7 +201,7 @@
         <section style="display: flex; justify-content: center; align-items: center;">
             <a href="2card.html"><i class="fas fa-info-circle icon"></i></a>
             <h1 id="previousEventsToggle" onclick="toggleVisibility()">
-                <i class="fas fa-chevron-down icon"></i> Previous Events
+                <i class="fas fa-chevron-down icon"></i> CharlestonHacks Events
             </h1>
             <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
         </section>
@@ -214,9 +224,7 @@
             <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
             <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
         </div>
-        <div class="scroll-instruction">
-            <p>Scroll down to see events</p>
-        </div>
+        
     </footer>
 
     <script>
@@ -237,6 +245,7 @@
             }
         }, 1000);
 
+        // Image and flip handling
         var cardImages = [
             "images/yellowscullcard.png",
             "images/redscullcard.png",
@@ -284,17 +293,6 @@
             setTimeout(function() {
                 image.classList.add(randomFlip);
             }, 100);
-
-            // Reveal the links after the flip is complete
-            setTimeout(function() {
-                document.getElementById('missionContent').innerHTML = `
-                    <div class="body-text">
-                        <p><a href="https://charlestontechweek.org/"><img src="images/aiffbanner.png" alt="AI Film Fest" class="event-logo" style="width: 900px; height: auto;"></a></p>
-                        <p><a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">CharlestonHacks in the news</a></p>
-                        <p><a href="subscribe.html" target="_blank">Join the Mailing List</a></p>
-                    </div>
-                `;
-            }, 4000); // Show content after the flip
         }
 
         function toggleVisibility() {
