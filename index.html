@@ -141,11 +141,19 @@
             text-decoration: none;
         }
 
+        /* Previous events button */
+        #previousEventsToggle {
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        /* Social media icons styling */
         footer .icons-container {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 30px;
+            padding: 10px 0;
         }
 
         footer .icons-container i {
@@ -186,6 +194,7 @@
     <div class="scroll-indicator"></div>
 
     <footer>
+        <!-- Previous events toggle -->
         <section style="display: flex; justify-content: center; align-items: center;">
             <a href="2card.html"><i class="fas fa-info-circle icon"></i></a>
             <h1 id="previousEventsToggle" onclick="toggleVisibility()">Previous Events <i class="fas fa-chevron-down icon"></i></h1>
