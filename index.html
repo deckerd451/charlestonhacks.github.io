@@ -190,6 +190,78 @@ footer .icons-container a {
     position: relative;
     top: -50px;  /* Adjust this value to raise the icons */
 }
+<style>
+    /* Scroll Indicator at the Bottom */
+    .scroll-indicator {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 5px;
+        background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+        border-radius: 5px;
+        animation: fadeIndicator 1.5s infinite;
+    }
+
+    @keyframes fadeIndicator {
+        0% { opacity: 0.3; }
+        50% { opacity: 1; }
+        100% { opacity: 0.3; }
+    }
+
+    /* Footer Arrow Icon Pulse Animation */
+    .icon:hover {
+        animation: bounce 1s ease infinite;
+    }
+
+    @keyframes bounce {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0); }
+    }
+
+    /* Toggle button */
+    #previousEventsToggle {
+        background-color: #39FF14;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        color: white;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    #previousEventsToggle:hover {
+        background-color: #32D700;
+    }
+
+    /* Increase Icon Size */
+    .icon {
+        font-size: 24px;
+    }
+<body>
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator"></div>
+
+    <footer>
+        <section style="display: flex; justify-content: center; align-items: center;">
+            <a href="2card.html"><i class="fas fa-info-circle icon"></i></a>
+            <h1 id="previousEventsToggle" onclick="toggleVisibility()">Previous Events <i class="fas fa-chevron-down icon"></i></h1>
+            <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
+        </section>
+        <div class="previous-events" style="display: none;">
+            <p><a href="techweek.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
+            <p><a href="harborhack24.html" style="color: white;">HarborHack (Fall 2024)</a></p>
+            <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
+            <p><a href="hacknights24.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
+            <p><a href="hackopsalt.html" style="color: white;">HackOps (Spring 2024)</a></p>
+            <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
+            <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
+        </div>
+    </footer>
+</body>
 
     </style>
 </head>
