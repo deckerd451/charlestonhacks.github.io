@@ -36,6 +36,36 @@
         .scroll-container img:last-child {
             margin-right: 0;
         }
+        .logo-container {
+    display: flex;
+    justify-content: center; /* Centers the logo */
+    align-items: center;
+    width: 100%; /* Ensures it scales across all screen sizes */
+    margin-top: 20px; /* Adjust spacing as needed */
+}
+
+.responsive-logo {
+    width: 50%; /* Adjusts to 50% of the parent container */
+    max-width: 400px; /* Prevents it from being too large on big screens */
+    height: auto; /* Maintains aspect ratio */
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .responsive-logo {
+        width: 80%; /* Takes up more space on smaller screens */
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .responsive-logo {
+        width: 90%; /* Almost full width on very small screens */
+        max-width: 250px;
+    }
+}
+
+
     </style>
 </head>
 <body>
@@ -53,9 +83,10 @@
     </div>
 <!-- Footer -->
 <footer id="footer" style="text-align: center; padding: 20px; background-color: #f4f4f9; margin-top: 20px; border-top: 2px solid #ddd;">
-    <a class="image main" href="index.html">
-        <img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="Charleston Hacks Logo" style="max-width: 200px; height: auto;">
-    </a>
+    <a class="logo-container" href="index.html">
+    <img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="Charleston Hacks Logo" class="responsive-logo">
+</a>
+
     <p style="margin-top: 10px; font-size: 16px; color: #333;">© 2025 MeetupMashup. All rights reserved.</p>
 </footer>
 
