@@ -184,147 +184,6 @@ footer .icons-container {
     padding: 10px 0;          /* Space around the icons */
     z-index: 10;              /* Ensures icons appear above video */
 }
-<!DOCTYPE HTML>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Resetting default margin and padding */
-        body, h1, h2, h3, p, ul {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* General styles */
-        body {
-            background-color: black;
-            color: white;
-            font-family: 'Britannic Bold', Arial, sans-serif;
-            overflow-x: hidden;
-            position: relative;
-            text-align: center;
-        }
-
-        .panel {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .panel img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            transition: transform 3s, opacity 3s;
-        }
-
-        .panel video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 3s ease-in-out;
-        }
-
-        @media (max-width: 768px) {
-            .panel img {
-                max-width: 90%;
-            }
-        }
-
-        #missionContent {
-            animation: fadeIn 7s ease forwards;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: rgba(0, 0, 0, 0);
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 1;
-            opacity: 0;
-        }
-
-        #missionContent p, #missionContent button {
-            color: white;
-        }
-    </style>
-</head>
-<body>
-    <div id="main">
-        <article class="post featured">
-            <header class="major">
-                <div class="panel">
-                    <a class="image main" onclick="playVideo()">
-                        <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
-                        <video id="missionVideo" muted playsinline>
-                            <source src="assets/stage.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </a>
-                    <div id="missionContent">
-                        <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
-                        <div class="body-text">
-                            <p>
-                                <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
-                                    CharlestonHacks in the news
-                                </a>
-                            </p>
-                            <p>
-                                <a href="subscribe.html" target="_blank">Join the Mailing List</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        </article>
-    </div>
-    <footer>
-        <!-- Footer contents as required -->
-    </footer>
-
-    <script>
-        // Function to play video and show content when clicked
-        function playVideo() {
-            var image = document.getElementById('missionImage');
-            var video = document.getElementById('missionVideo');
-            var content = document.getElementById('missionContent');
-
-            // Hide image and show video
-            image.style.display = 'none';
-            video.style.display = 'block';
-            video.style.opacity = 1;
-            video.play();
-
-            // Show the content after video starts playing
-            video.onplay = function() {
-                content.style.display = 'block';
-            };
-
-            // Redirect to the Tech Week page after the video ends
-            video.onended = function() {
-                window.location.href = "https://charlestonhacks.com/techweek.html";
-            };
-        }
-    </script>
-</body>
-</html>
 
 
 footer .icons-container a {
@@ -423,13 +282,12 @@ footer .icons-container a {
                         </video>
                     </a>
                     <div id="missionContent">
-                        <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                        <img src="images/logo.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                         <div class="body-text">
                             <p>
-                                <a href="assets/stage.mp4" target="_blank">
-    <img id="aiffBanner" src="images/aiffbanner.png" alt="AI Film Fest" style="cursor: pointer; width: 900px; height: auto;">
-</a>
-
+                                <a href="https://charlestontechweek.org/">
+                                    <img src="images/aiffbanner.png" alt="AI Film Fest" class="event-logo" style="width: 900px; height: auto;">
+                                </a>
                             </p>
                             <p>
                                 <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
