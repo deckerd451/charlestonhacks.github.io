@@ -249,47 +249,52 @@ function revealHackerCard(card) {
     }, 3000);
 }
 
+let matchedPairs = 0;
+const totalPairs = cardImages.length / 2; // Adjust based on actual pairs
 
 function toggleMissionContent(event) {
     const image = event.target;
     const newImage = getRandomImage();
-    image.src = newImage;
 
+    // Prevent clicking the same card twice
+    if (selectedCards.includes(image)) return;
+
+    image.src = newImage;
     selectedImages.push(newImage);
     selectedCards.push(image);
 
+    // Check if the hacker card is revealed
     if (newImage === "images/hacker.png" && !hackerCardRevealed) {
         revealHackerCard(image);
     }
 
+    // If two cards are selected, check for a match
     if (selectedImages.length === 2) {
-    if (selectedImages[0] === selectedImages[1]) {
-        // Match found!
-        matchFound = true;
+        if (selectedImages[0] === selectedImages[1]) {
+            // Match found! Keep them visible
+            matchedPairs++;
+            selectedImages = [];
+            selectedCards = [];
 
-        // Replace matched cards with a specific image
-        setTimeout(() => {
-            selectedCards.forEach((card) => {
-                card.src = "images/AIFF.png"; // Replace with your placeholder image
-                card.classList.remove("hacker-card"); // Reset any styling
-            });
-            selectedImages = [];
-            selectedCards = [];
-        }, 500); // Short delay for visual effect
-    } else {
-        // No match: Reset unmatched cards
-        setTimeout(() => {
-            selectedCards.forEach((card) => {
-                card.src = "images/Front.png"; // Reset to the default card image
-                card.classList.remove("hacker-card");
-            });
-            selectedImages = [];
-            selectedCards = [];
-        }, 2000);
+            // If all pairs are matched, trigger a win event
+            if (matchedPairs === totalPairs) {
+                setTimeout(() => {
+                    alert("All matches found! Proceed to the next level.");
+                }, 500);
+            }
+        } else {
+            // No match: Flip back after a short delay
+            setTimeout(() => {
+                selectedCards.forEach((card) => {
+                    card.src = "images/Front.png"; // Reset to the default card
+                });
+                selectedImages = [];
+                selectedCards = [];
+            }, 1500);
+        }
     }
-}
 
-
+    // Add a random animation effect
     const animations = ['rotate-image', 'flip-image', 'shake-image'];
     const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
     image.classList.add(randomAnimation);
@@ -298,12 +303,6 @@ function toggleMissionContent(event) {
         image.classList.remove(randomAnimation);
     }, 4000);
 }
-
-resetTimeout = setTimeout(() => {
-    if (!matchFound) {
-        location.reload();
-    }
-}, 8000);
 
 
     </script>
