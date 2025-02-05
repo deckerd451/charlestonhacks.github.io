@@ -176,10 +176,32 @@
 <script src="assets/js/breakpoints.min.js"></script>
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
-
-<script>
+    <script>
     // Initialize the lightbox
     lightGallery(document.getElementById('lightbox-gallery'));
+
+    // Track occurrences of "Descartes.png"
+    let descartesCount = 0;
+
+    // Function to check for images and count "Descartes.png"
+    function checkDescartes() {
+        let images = document.querySelectorAll("#lightbox-gallery img");
+        descartesCount = 0;
+
+        images.forEach(img => {
+            if (img.src.includes("images/Descartes.png")) {
+                descartesCount++;
+            }
+        });
+
+        // Redirect if "Descartes.png" appears twice
+        if (descartesCount >= 2) {
+            window.location.href = "Poster.html";
+        }
+    }
+
+    // Run check after all images are loaded
+    window.addEventListener("load", checkDescartes);
 </script>
 
 </body>
