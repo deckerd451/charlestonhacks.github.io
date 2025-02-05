@@ -190,11 +190,13 @@
     <!-- Video Modal -->
     <div id="videoModal" class="video-container">
         <span class="video-close" onclick="closeVideo();">&times;</span>
-        <video id="videoPlayer" controls autoplay muted>
-            <source src="images/stage.mp4" type="video/mp4">
+     <video id="videoPlayer" controls autoplay muted playsinline>
+<source src="images/stage.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
+   
+
 
     <!-- Audio for the Video -->
     <audio id="videoAudio" loop>
