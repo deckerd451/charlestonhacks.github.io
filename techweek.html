@@ -7,11 +7,10 @@
     <title>30 Second AIFF</title>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
     <!-- FontAwesome for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <meta property="og:title" content="30 Second AI Film Fest" />
-    <meta property="og:description" content="Join CharlestonHacks for the first-ever 30 Second AI Film Fest during Charleston Tech Week!" />
-    <meta property="og:image" content="images/AIFF.png" />
+    
     <style>
         /* General Styles */
         html, body {
@@ -45,13 +44,6 @@
 
         .collapsible:hover {
             background-color: #00cc00 !important; /* Slightly darker green */
-        }
-
-        /* Remove bullet points from lists */
-        ul {
-            list-style-type: none; /* Removes bullet points */
-            padding: 0; /* Removes default padding */
-            margin: 0; /* Removes default margin */
         }
 
         /* Image styles */
@@ -130,6 +122,8 @@
             max-width: 900px;
             height: auto;
             object-fit: contain;
+            border: 5px solid #00ff00; /* Green border to make it stand out */
+            border-radius: 10px; /* Rounded corners */
         }
 
         .video-close {
@@ -196,7 +190,7 @@
     <!-- Video Modal -->
     <div id="videoModal" class="video-container">
         <span class="video-close" onclick="closeVideo();">&times;</span>
-        <video id="videoPlayer" controls muted>
+        <video id="videoPlayer" controls autoplay muted>
             <source src="images/teamvideo.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
