@@ -267,16 +267,15 @@ function toggleMissionContent(event) {
         // Match found!
         matchFound = true;
 
+        // Replace matched cards with a specific image
         setTimeout(() => {
-    selectedCards.forEach((card) => {
-        // Replace image with autoplaying video
-        card.innerHTML = '<video autoplay muted playsinline><source src="images/stage.mp4" type="video/mp4">Your browser does not support the video tag.</video>';
-        card.classList.remove("hacker-card");
-    });
-    selectedImages = [];
-    selectedCards = [];
-}, 500);
-
+            selectedCards.forEach((card) => {
+                card.src = "images/AIFF.png"; // Replace with your placeholder image
+                card.classList.remove("hacker-card"); // Reset any styling
+            });
+            selectedImages = [];
+            selectedCards = [];
+        }, 500); // Short delay for visual effect
     } else {
         // No match: Reset unmatched cards
         setTimeout(() => {
