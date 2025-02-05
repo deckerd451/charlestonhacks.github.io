@@ -21,6 +21,14 @@
             font-size: 20px; /* Increased font size */
             margin: 0;
             padding: 0;
+         }
+
+        /* Video Player Styles */
+        .video-container video {
+            width: 100%; /* Makes the video scale to the width of the container */
+            max-width: 900px; /* Sets a maximum width for large screens */
+            height: auto; /* Ensures the aspect ratio is maintained */
+            object-fit: contain; /* Ensures the video fits within the container without cropping */
         }
 
         * {
