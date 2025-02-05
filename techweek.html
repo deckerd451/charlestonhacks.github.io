@@ -7,13 +7,11 @@
     <title>30 Second AIFF</title>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-
-    <!-- Lightbox CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <!-- FontAwesome for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Lightbox JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <meta property="og:title" content="30 Second AI Film Fest" />
+    <meta property="og:description" content="Join CharlestonHacks for the first-ever 30 Second AI Film Fest during Charleston Tech Week!" />
+    <meta property="og:image" content="images/AIFF.png" />
     <style>
         /* General Styles */
         html, body {
@@ -23,17 +21,40 @@
             font-size: 20px; /* Increased font size */
             margin: 0;
             padding: 0;
-         }
-
-        /* Video Player Styles */
-        .video-container video {
-            width: 100%; /* Makes the video scale to the width of the container */
-            max-width: 900px; /* Sets a maximum width for large screens */
-            height: auto; /* Ensures the aspect ratio is maintained */
-            object-fit: contain; /* Ensures the video fits within the container without cropping */
         }
 
-        /* Video link styling */
+        * {
+            background-color: #000 !important; /* Force black background */
+            color: #ffffff !important; /* White text */
+        }
+
+        /* Button styles */
+        .collapsible {
+            background-color: #00ff00 !important; /* Acid green */
+            color: #000 !important; /* Black text */
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: center;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-bottom: 40px;
+        }
+
+        .collapsible:hover {
+            background-color: #00cc00 !important; /* Slightly darker green */
+        }
+
+        /* Remove bullet points from lists */
+        ul {
+            list-style-type: none; /* Removes bullet points */
+            padding: 0; /* Removes default padding */
+            margin: 0; /* Removes default margin */
+        }
+
+        /* Image styles */
         .zoom-image {
             width: 500px;
             height: auto;
@@ -45,9 +66,108 @@
             transform: scale(1.2);
             transition: transform 0.3s ease;
         }
+
+        /* Countdown Timer Styles */
+        .countdown {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #000 !important; /* Ensuring background stays black */
+            border-radius: 5px;
+            color: #00ff00 !important; /* Ensuring acid green text */
+            font-weight: bold;
+        }
+
+        /* Footer styles */
+        footer#footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #000 !important; /* Black background */
+            border: none; /* Remove any borders */
+            box-shadow: none; /* Remove any box shadow */
+        }
+
+        footer#footer .icons {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        footer#footer .icons li {
+            display: inline-block;
+            margin: 10px;
+        }
+
+        footer#footer .icons li a {
+            color: #00ff00; /* Acid green icons */
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        footer#footer .icons li a:hover {
+            color: #00cc00; /* Slightly darker green */
+        }
+
+        /* Video Player Styles */
+        .video-container {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 9999; /* Ensure it is on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease; /* Add smooth transition */
+        }
+
+        /* Video Player Styles */
+        .video-container video {
+            width: 80%;
+            max-width: 900px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .video-close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #00ff00;
+            font-size: 36px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .video-close:hover {
+            color: #00cc00;
+        }
+
+        @media (max-width: 768px) {
+            .zoom-image {
+                width: 80%;
+                height: auto;
+                display: block;
+                margin: 20px auto;
+            }
+
+            div#main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body class="is-preload">
+    
     <!-- Main Content -->
     <div id="main">
         <article class="post featured">
@@ -56,8 +176,8 @@
                 <img src="images/chback.png" alt="Charleston Hacks Logo" style="width: 40%; height: auto;" />
             </a>
             <div>
-                <!-- Image with fixed size and zoom effect, wrapped in a lightbox link -->
-                <a href="images/teamvideo.mp4" data-lightbox="video" data-title="30 Second AI Film Fest Video">
+                <!-- Image with fixed size and zoom effect -->
+                <a href="#" onclick="openVideo(); return false;">
                     <img src="images/AIFF.png" alt="30 Second AI Film Fest Poster" class="zoom-image">
                 </a><br>
             </div>
@@ -71,6 +191,15 @@
             <!-- Countdown Timer -->
             <div id="countdown" class="countdown"></div>
         </article>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-container">
+        <span class="video-close" onclick="closeVideo();">&times;</span>
+        <video id="videoPlayer" controls muted>
+            <source src="images/teamvideo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 
     <!-- Audio for the Video -->
@@ -117,6 +246,31 @@
         }
 
         const countdownInterval = setInterval(updateCountdown, 1000);
+
+        // Open Video Functionality
+        function openVideo() {
+            const videoModal = document.getElementById("videoModal");
+            videoModal.style.display = "flex"; // Use flex to center the video modal
+            document.body.style.overflow = 'hidden'; // Disable body scroll when modal is open
+            document.getElementById('videoAudio').play();  // Play the audio when video starts
+        }
+
+        // Close Video Functionality
+        function closeVideo() {
+            const videoModal = document.getElementById("videoModal");
+            videoModal.style.display = "none";
+            document.body.style.overflow = 'auto'; // Enable body scroll after modal is closed
+            document.getElementById('videoAudio').pause(); // Pause the audio when the video is closed
+        }
+
+        // Syncing the video and audio
+        document.getElementById('videoPlayer').onplay = function() {
+            document.getElementById('videoAudio').play();  // Play the audio when the video starts
+        };
+
+        document.getElementById('videoPlayer').onpause = function() {
+            document.getElementById('videoAudio').pause();  // Pause the audio when the video pauses
+        };
     </script>
 </body>
 </html>
