@@ -10,162 +10,160 @@
     <!-- FontAwesome for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta property="og:title" content="30 Second AI Film Fest" />
-<meta property="og:description" content="Join CharlestonHacks for the first-ever 30 Second AI Film Fest during Charleston Tech Week!" />
-<meta property="og:image" content="images/AIFF.png" />
-<style>
-    /* General Styles */
-    html, body {
-        background-color: #000 !important; /* Black background */
-        color: #ffffff !important; /* White text */
-        font-family: Arial, sans-serif;
-        font-size: 20px; /* Increased font size */
-        margin: 0;
-        padding: 0;
-    }
+    <meta property="og:description" content="Join CharlestonHacks for the first-ever 30 Second AI Film Fest during Charleston Tech Week!" />
+    <meta property="og:image" content="images/AIFF.png" />
+    <style>
+        /* General Styles */
+        html, body {
+            background-color: #000 !important; /* Black background */
+            color: #ffffff !important; /* White text */
+            font-family: Arial, sans-serif;
+            font-size: 20px; /* Increased font size */
+            margin: 0;
+            padding: 0;
+        }
 
-    * {
-        background-color: #000 !important; /* Force black background */
-        color: #ffffff !important; /* White text */
-    }
+        * {
+            background-color: #000 !important; /* Force black background */
+            color: #ffffff !important; /* White text */
+        }
 
-    /* Button styles */
-    .collapsible {
-        background-color: #00ff00 !important; /* Acid green */
-        color: #000 !important; /* Black text */
-        padding: 15px;
-        width: 100%;
-        border: none;
-        text-align: center;
-        font-size: 18px;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-        margin-bottom: 40px;
-    }
+        /* Button styles */
+        .collapsible {
+            background-color: #00ff00 !important; /* Acid green */
+            color: #000 !important; /* Black text */
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: center;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-bottom: 40px;
+        }
 
-    .collapsible:hover {
-        background-color: #00cc00 !important; /* Slightly darker green */
-    }
+        .collapsible:hover {
+            background-color: #00cc00 !important; /* Slightly darker green */
+        }
 
-    /* Remove bullet points from lists */
-    ul {
-        list-style-type: none; /* Removes bullet points */
-        padding: 0; /* Removes default padding */
-        margin: 0; /* Removes default margin */
-    }
+        /* Remove bullet points from lists */
+        ul {
+            list-style-type: none; /* Removes bullet points */
+            padding: 0; /* Removes default padding */
+            margin: 0; /* Removes default margin */
+        }
 
-    /* Image styles */
-    .zoom-image {
-        width: 500px;
-        height: auto;
-        display: block;
-        margin: 0 auto 40px auto; /* Adds 40px space below the image */
-    }
-
-    .zoom-image:hover {
-        transform: scale(1.2);
-        transition: transform 0.3s ease;
-    }
-
-    /* Countdown Timer Styles */
-    .countdown {
-        font-size: 24px;
-        text-align: center;
-        margin: 20px 0;
-        padding: 10px;
-        background-color: #000 !important; /* Ensuring background stays black */
-        border-radius: 5px;
-        color: #00ff00 !important; /* Ensuring acid green text */
-        font-weight: bold;
-    }
-
-    /* Footer styles */
-    footer#footer {
-        text-align: center;
-        padding: 20px;
-        background-color: #000 !important; /* Black background */
-        border: none; /* Remove any borders */
-        box-shadow: none; /* Remove any box shadow */
-    }
-
-    footer#footer .icons {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    footer#footer .icons li {
-        display: inline-block;
-        margin: 10px;
-    }
-
-    footer#footer .icons li a {
-        color: #00ff00; /* Acid green icons */
-        font-size: 24px;
-        text-decoration: none;
-    }
-
-    footer#footer .icons li a:hover {
-        color: #00cc00; /* Slightly darker green */
-    }
-
-    /* Video Player Styles */
-   .video-container {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 9999; /* Ensure it is on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease; /* Add smooth transition */
-}
-
-
-   /* Video Player Styles */
-.video-container video {
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    object-fit: contain;
-}
-
-    .video-close {
-        position: absolute;
-        top: 10px;
-        right: 25px;
-        color: #00ff00;
-        font-size: 36px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: color 0.3s ease;
-    }
-
-    .video-close:hover {
-        color: #00cc00;
-    }
-
-    @media (max-width: 768px) {
+        /* Image styles */
         .zoom-image {
-            width: 80%;
+            width: 500px;
             height: auto;
             display: block;
-            margin: 20px auto;
+            margin: 0 auto 40px auto; /* Adds 40px space below the image */
         }
 
-        div#main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+        .zoom-image:hover {
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
+        }
+
+        /* Countdown Timer Styles */
+        .countdown {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
             padding: 10px;
+            background-color: #000 !important; /* Ensuring background stays black */
+            border-radius: 5px;
+            color: #00ff00 !important; /* Ensuring acid green text */
+            font-weight: bold;
         }
-    }
 
+        /* Footer styles */
+        footer#footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #000 !important; /* Black background */
+            border: none; /* Remove any borders */
+            box-shadow: none; /* Remove any box shadow */
+        }
+
+        footer#footer .icons {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        footer#footer .icons li {
+            display: inline-block;
+            margin: 10px;
+        }
+
+        footer#footer .icons li a {
+            color: #00ff00; /* Acid green icons */
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        footer#footer .icons li a:hover {
+            color: #00cc00; /* Slightly darker green */
+        }
+
+        /* Video Player Styles */
+        .video-container {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 9999; /* Ensure it is on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease; /* Add smooth transition */
+        }
+
+        /* Video Player Styles */
+        .video-container video {
+            width: 80%;
+            max-width: 900px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .video-close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #00ff00;
+            font-size: 36px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .video-close:hover {
+            color: #00cc00;
+        }
+
+        @media (max-width: 768px) {
+            .zoom-image {
+                width: 80%;
+                height: auto;
+                display: block;
+                margin: 20px auto;
+            }
+
+            div#main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body class="is-preload">
@@ -185,7 +183,7 @@
             </div>
         
             <p>Charleston, SC — Lights, Camera-AI! CharlestonHacks presents the 30 Second AI Film Fest on May 1st, 2025, from 7:00 PM to 10:00 PM at the Simmons Center, College of Charleston, as part of Dig South and Charleston Tech Week. This event challenges participants to create 30-second films in three hours using AI tools to transform text into cinematic masterpieces.</p>
-<p>Compete in the AI Video Hackathon, network with innovators, and immerse yourself in Charleston Tech Week's creative community. Win prizes and gain recognition for your AI-powered storytelling. Register now to be part of this groundbreaking experience!</p>
+            <p>Compete in the AI Video Hackathon, network with innovators, and immerse yourself in Charleston Tech Week's creative community. Win prizes and gain recognition for your AI-powered storytelling. Register now to be part of this groundbreaking experience!</p>
 
             <!-- Tech Week Button as Link -->
             <a class="collapsible" href="https://charlestontechweek.org/" target="_blank">Tech Week</a> 
@@ -198,11 +196,17 @@
     <!-- Video Modal -->
     <div id="videoModal" class="video-container">
         <span class="video-close" onclick="closeVideo();">&times;</span>
-        <video id="videoPlayer" controls>
+        <video id="videoPlayer" controls muted>
             <source src="images/teamvideo.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
+
+    <!-- Audio for the Video -->
+    <audio id="videoAudio" loop>
+        <source src="assets/music.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+    </audio>
 
     <!-- Footer -->
     <footer id="footer">
@@ -243,20 +247,30 @@
 
         const countdownInterval = setInterval(updateCountdown, 1000);
 
-       // Open Video Functionality
-function openVideo() {
-    const videoModal = document.getElementById("videoModal");
-    videoModal.style.display = "flex"; // Use flex to center the video modal
-    document.body.style.overflow = 'hidden'; // Disable body scroll when modal is open
-}
+        // Open Video Functionality
+        function openVideo() {
+            const videoModal = document.getElementById("videoModal");
+            videoModal.style.display = "flex"; // Use flex to center the video modal
+            document.body.style.overflow = 'hidden'; // Disable body scroll when modal is open
+            document.getElementById('videoAudio').play();  // Play the audio when video starts
+        }
 
-// Close Video Functionality
-function closeVideo() {
-    const videoModal = document.getElementById("videoModal");
-    videoModal.style.display = "none";
-    document.body.style.overflow = 'auto'; // Enable body scroll after modal is closed
-}
+        // Close Video Functionality
+        function closeVideo() {
+            const videoModal = document.getElementById("videoModal");
+            videoModal.style.display = "none";
+            document.body.style.overflow = 'auto'; // Enable body scroll after modal is closed
+            document.getElementById('videoAudio').pause(); // Pause the audio when the video is closed
+        }
 
+        // Syncing the video and audio
+        document.getElementById('videoPlayer').onplay = function() {
+            document.getElementById('videoAudio').play();  // Play the audio when the video starts
+        };
+
+        document.getElementById('videoPlayer').onpause = function() {
+            document.getElementById('videoAudio').pause();  // Pause the audio when the video pauses
+        };
     </script>
 </body>
 </html>
