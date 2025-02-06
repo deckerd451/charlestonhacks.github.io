@@ -315,5 +315,15 @@
             }
         }
     </script>
+    <script>
+    document.getElementById("restart-btn").addEventListener("click", function() {
+        document.body.style.transition = "opacity 0.5s ease";
+        document.body.style.opacity = "0";
+        setTimeout(() => location.reload(), 500);
+    });
+</script>
+</body>
+</html>
+
 </body>
 </html>
