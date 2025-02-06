@@ -135,6 +135,27 @@
         <source src="assets/music.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
+<!-- Restart Button -->
+<button id="restart-btn" style="
+    position: fixed; 
+    bottom: 20px; 
+    left: 20px; 
+    padding: 10px 15px; 
+    background: rgba(0, 0, 0, 0.8); 
+    color: #00FF00; 
+    font-size: 16px; 
+    border: 2px solid #00FF00; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    z-index: 1000;">
+    🔄 Restart
+</button>
+
+<script>
+    document.getElementById("restart-btn").addEventListener("click", function() {
+        location.reload();
+    });
+</script>
 
     <!-- Mute/Unmute Button -->
     <button id="mute-btn" style="
