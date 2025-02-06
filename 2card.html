@@ -43,6 +43,37 @@
             }
         }
 
+        @keyframes rotateImage {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes flipImage {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        @keyframes shakeImage {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+
+        .rotate-image {
+            animation: rotateImage 4s ease forwards;
+        }
+
+        .flip-image {
+            animation: flipImage 4s ease forwards;
+        }
+
+        .shake-image {
+            animation: shakeImage 1s ease forwards;
+        }
+
         #hackerMessage {
             position: absolute;
             top: 20%;
@@ -180,6 +211,7 @@
     </footer>
 
     <script>
+        // Define the cards, each with its own link and message
         const cardImages = [
             { img: "images/Descartes.png", link: "descartes-level.html", message: "Descartes Level" },
             { img: "images/Alexandor.png", link: "alexandor-level.html", message: "Alexandor Level" },
@@ -192,8 +224,6 @@
 
         let selectedImages = [];
         let selectedCards = [];
-        let matchFound = false;
-        let resetTimeout;
 
         function getRandomImage() {
             const randomIndex = Math.floor(Math.random() * cardImages.length);
@@ -243,65 +273,19 @@
             selectedImages.push(newImage.img);
             selectedCards.push(image);
 
-            if (newImage.img === "images/hacker.png" && !hackerCardRevealed) {
-                revealHackerCard(image);
-            }
+            // Display the link and message for the selected card
+            const linkContainer = document.getElementById("link-container");
+            const matchedCard = selectedCards[0];
+            const matchedCardObj = cardImages.find(card => card.img === newImage.img);
 
-            if (selectedImages.length === 2) {
-                if (selectedImages[0] === selectedImages[1]) {
-                    // Match found!
-                    matchFound = true;
-
-                    // Display the link and message for the matched cards
-                    const linkContainer = document.getElementById("link-container");
-                    const matchedCard = selectedCards[0];
-                    const matchedCardObj = cardImages.find(card => card.img === selectedImages[0]);
-
-                    // Update the message and link based on the matched card
-                    linkContainer.innerHTML = `
-                        <p>Matched Cards! Proceed to ${matchedCardObj.message}:</p>
-                        <a href="${matchedCardObj.link}" style="color: #00FF00; text-decoration: none; font-size: 20px;">
-                            Go to ${matchedCardObj.message}
-                        </a>
-                    `;
-                    linkContainer.style.display = "block";
-
-                    // Replace matched cards with a specific image
-                    setTimeout(() => {
-                        selectedCards.forEach((card) => {
-                            card.src = "images/AIFF.png"; // AIFF poster
-                            card.classList.remove("hacker-card"); // Reset any styling
-                        });
-                        selectedImages = [];
-                        selectedCards = [];
-                    }, 500); // Short delay for visual effect
-                } else {
-                    // No match: Reset unmatched cards
-                    setTimeout(() => {
-                        selectedCards.forEach((card) => {
-                            card.src = "images/Front.png"; // Reset to the default card image
-                            card.classList.remove("hacker-card");
-                        });
-                        selectedImages = [];
-                        selectedCards = [];
-                    }, 2000);
-                }
-            }
-
-            const animations = ['rotate-image', 'flip-image', 'shake-image'];
-            const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-            image.classList.add(randomAnimation);
-
-            setTimeout(() => {
-                image.classList.remove(randomAnimation);
-            }, 4000);
+            linkContainer.innerHTML = `
+                <p>Matched Card! Proceed to ${matchedCardObj.message}:</p>
+                <a href="${matchedCardObj.link}" style="color: #00FF00; text-decoration: none; font-size: 20px;">
+                    Go to ${matchedCardObj.message}
+                </a>
+            `;
+            linkContainer.style.display = "block";
         }
-
-        resetTimeout = setTimeout(() => {
-            if (!matchFound) {
-                location.reload();
-            }
-        }, 8000);
     </script>
 </body>
 </html>
