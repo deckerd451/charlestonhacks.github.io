@@ -34,7 +34,7 @@
             max-width: 100%;
             height: auto;
             margin: 0 auto;
-            transition: transform 3s, opacity 3s;
+            transition: transform 1s ease, opacity 1s ease;
         }
 
         @media (max-width: 768px) {
@@ -67,7 +67,7 @@
         }
 
         .flip-image {
-            animation: flipImage 4s ease forwards;
+            animation: flipImage 1s ease forwards;
         }
 
         .shake-image {
@@ -231,7 +231,6 @@
         }
 
         let hackerCardRevealed = false;
-        let proceedTimeout;
 
         function revealHackerCard(card) {
             card.classList.add("hacker-card");
@@ -249,17 +248,6 @@
             hackerMessage.style.display = "block";
             hackerSound.play();
 
-            // Set a timeout for the user to click the link (10 seconds)
-            proceedTimeout = setTimeout(() => {
-                hackerMessage.innerHTML = `<p>Time's up! Proceed to the next level</p>`;
-            }, 10000);  // 10 seconds
-
-            // When the user clicks the link, clear the timeout
-            const proceedLink = document.getElementById("proceedLink");
-            proceedLink.addEventListener("click", () => {
-                clearTimeout(proceedTimeout);  // Clear the timeout once clicked
-            });
-
             setTimeout(() => {
                 hackerMessage.style.display = "none";
             }, 3000);
@@ -275,7 +263,6 @@
 
             // Display the link and message for the selected card
             const linkContainer = document.getElementById("link-container");
-            const matchedCard = selectedCards[0];
             const matchedCardObj = cardImages.find(card => card.img === newImage.img);
 
             linkContainer.innerHTML = `
@@ -285,6 +272,9 @@
                 </a>
             `;
             linkContainer.style.display = "block";
+
+            // Apply flip animation
+            image.classList.add("flip-image");
         }
     </script>
 </body>
