@@ -43,37 +43,6 @@
             }
         }
 
-        @keyframes rotateImage {
-            0% { transform: rotate(0deg); }
-            50% { transform: rotate(180deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes flipImage {
-            0% { transform: rotateY(0deg); }
-            50% { transform: rotateY(180deg); }
-            100% { transform: rotateY(360deg); }
-        }
-
-        @keyframes shakeImage {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-        }
-
-        .rotate-image {
-            animation: rotateImage 4s ease forwards;
-        }
-
-        .flip-image {
-            animation: flipImage 4s ease forwards;
-        }
-
-        .shake-image {
-            animation: shakeImage 1s ease forwards;
-        }
-
         #hackerMessage {
             position: absolute;
             top: 20%;
@@ -86,13 +55,6 @@
             font-size: 18px;
             display: none;
             z-index: 2;
-        }
-
-        @media (max-width: 768px) {
-            #hackerMessage {
-                font-size: 16px;
-                padding: 8px 15px;
-            }
         }
 
         footer a {
@@ -138,52 +100,52 @@
 </head>
 <body>
     <!-- Background Music -->
-<audio id="background-music" autoplay loop>
-    <source src="assets/music.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-</audio>
+    <audio id="background-music" autoplay loop>
+        <source src="assets/music.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 
-<!-- Mute/Unmute Button -->
-<button id="mute-btn" style="
-    position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
-    padding: 10px 15px; 
-    background: rgba(0, 0, 0, 0.8); 
-    color: #00FF00; 
-    font-size: 16px; 
-    border: 2px solid #00FF00; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    z-index: 1000;">
-    🔊 Mute
-</button>
+    <!-- Mute/Unmute Button -->
+    <button id="mute-btn" style="
+        position: fixed; 
+        bottom: 20px; 
+        right: 20px; 
+        padding: 10px 15px; 
+        background: rgba(0, 0, 0, 0.8); 
+        color: #00FF00; 
+        font-size: 16px; 
+        border: 2px solid #00FF00; 
+        border-radius: 5px; 
+        cursor: pointer; 
+        z-index: 1000;">
+        🔊 Mute
+    </button>
 
-<script>
-    // Mute/Unmute functionality for the background music
-    const music = document.getElementById("background-music");
-    const muteBtn = document.getElementById("mute-btn");
+    <script>
+        // Mute/Unmute functionality for the background music
+        const music = document.getElementById("background-music");
+        const muteBtn = document.getElementById("mute-btn");
 
-    // Check localStorage to see if music is muted
-    const isMuted = localStorage.getItem("musicMuted") === "true";
-    if (isMuted) {
-        music.muted = true;
-        muteBtn.textContent = "🔇 Unmute"; // Initial state if muted
-    }
-
-    muteBtn.addEventListener("click", () => {
-        // Toggle mute/unmute
-        if (music.muted) {
-            music.muted = false;
-            muteBtn.textContent = "🔊 Mute";
-            localStorage.setItem("musicMuted", "false"); // Store mute state
-        } else {
+        // Check localStorage to see if music is muted
+        const isMuted = localStorage.getItem("musicMuted") === "true";
+        if (isMuted) {
             music.muted = true;
-            muteBtn.textContent = "🔇 Unmute";
-            localStorage.setItem("musicMuted", "true"); // Store mute state
+            muteBtn.textContent = "🔇 Unmute"; // Initial state if muted
         }
-    });
-</script>
+
+        muteBtn.addEventListener("click", () => {
+            // Toggle mute/unmute
+            if (music.muted) {
+                music.muted = false;
+                muteBtn.textContent = "🔊 Mute";
+                localStorage.setItem("musicMuted", "false"); // Store mute state
+            } else {
+                music.muted = true;
+                muteBtn.textContent = "🔇 Unmute";
+                localStorage.setItem("musicMuted", "true"); // Store mute state
+            }
+        });
+    </script>
 
     <div id="main">
         <article class="post featured">
@@ -219,13 +181,13 @@
 
     <script>
         const cardImages = [
-            "images/Descartes.png",
-            "images/Alexandor.png",
-            "images/Medusa.png",
-            "images/Elara.png",
-            "images/Aegis.png",
-            "images/Astrid.png",
-            "images/hacker.png"
+            { img: "images/Descartes.png", link: "descartes-level.html", message: "Descartes Level" },
+            { img: "images/Alexandor.png", link: "alexandor-level.html", message: "Alexandor Level" },
+            { img: "images/Medusa.png", link: "medusa-level.html", message: "Medusa Level" },
+            { img: "images/Elara.png", link: "elara-level.html", message: "Elara Level" },
+            { img: "images/Aegis.png", link: "aegis-level.html", message: "Aegis Level" },
+            { img: "images/Astrid.png", link: "astrid-level.html", message: "Astrid Level" },
+            { img: "images/hacker.png", link: "hacker-level.html", message: "Hacker Level" }
         ];
 
         let selectedImages = [];
@@ -273,16 +235,15 @@
             }, 3000);
         }
 
-
         function toggleMissionContent(event) {
             const image = event.target;
             const newImage = getRandomImage();
-            image.src = newImage;
+            image.src = newImage.img;
 
-            selectedImages.push(newImage);
+            selectedImages.push(newImage.img);
             selectedCards.push(image);
 
-            if (newImage === "images/hacker.png" && !hackerCardRevealed) {
+            if (newImage.img === "images/hacker.png" && !hackerCardRevealed) {
                 revealHackerCard(image);
             }
 
@@ -291,9 +252,19 @@
                     // Match found!
                     matchFound = true;
 
-                    // Display the link for the matched cards
+                    // Display the link and message for the matched cards
                     const linkContainer = document.getElementById("link-container");
-                    linkContainer.style.display = "block"; // Show the link container
+                    const matchedCard = selectedCards[0];
+                    const matchedCardObj = cardImages.find(card => card.img === selectedImages[0]);
+
+                    // Update the message and link based on the matched card
+                    linkContainer.innerHTML = `
+                        <p>Matched Cards! Proceed to ${matchedCardObj.message}:</p>
+                        <a href="${matchedCardObj.link}" style="color: #00FF00; text-decoration: none; font-size: 20px;">
+                            Go to ${matchedCardObj.message}
+                        </a>
+                    `;
+                    linkContainer.style.display = "block";
 
                     // Replace matched cards with a specific image
                     setTimeout(() => {
