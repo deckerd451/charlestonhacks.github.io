@@ -46,15 +46,15 @@
             background-color: #cc0000 !important; /* Darker red */
         }
 
-        /* Image styles */
-        .zoom-image {
-            width: 500px;
-            height: auto;
-            display: block;
-            margin: 0 auto 40px auto; /* Adds 40px space below the image */
-        }
-
-        .zoom-image:hover {
+       /* Image styles */
+.zoom-image {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 0 auto 40px auto; /* Centering and spacing */
+}
+ .zoom-image:hover {
             transform: scale(1.2);
             transition: transform 0.3s ease;
         }
@@ -141,13 +141,15 @@
             color: #cc0000; /* Darker red */
         }
 
-        @media (max-width: 768px) {
-            .zoom-image {
-                width: 80%;
-                height: auto;
-                display: block;
-                margin: 20px auto;
-            }
+       @media (max-width: 768px) {
+    .zoom-image {
+        width: 90%; /* Adjusts size for smaller screens */
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+    }
+
 
             div#main {
                 display: flex;
