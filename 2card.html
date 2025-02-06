@@ -117,6 +117,23 @@
             border-radius: 8px;
             box-shadow: 0 0 10px #FFD700;
         }
+
+        /* New style for placeholder link container */
+        .link-container {
+            display: none;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #00FF00;
+        }
+
+        .link-container a {
+            color: #00FF00;
+            text-decoration: none;
+        }
+
+        .link-container a:hover {
+            color: #39FF14;
+        }
     </style>
 </head>
 <body>
@@ -183,6 +200,12 @@
 
                     <div id="hackerMessage">Hacker card selected!</div>
                     <audio id="hackerSound" src="sounds/hackerSound.mp3"></audio>
+
+                    <!-- Link Container (hidden by default) -->
+                    <div id="link-container" class="link-container">
+                        <p>Matched Cards! Proceed to the next level:</p>
+                        <a href="next-level.html">Go to Next Level</a>
+                    </div>
                 </div>
             </header>
         </article>
@@ -214,98 +237,100 @@
             const randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
-let hackerCardRevealed = false;
-let proceedTimeout;
 
-function revealHackerCard(card) {
-    card.classList.add("hacker-card");
-    hackerCardRevealed = true;
+        let hackerCardRevealed = false;
+        let proceedTimeout;
 
-    const hackerMessage = document.getElementById("hackerMessage");
-    const hackerSound = document.getElementById("hackerSound");
+        function revealHackerCard(card) {
+            card.classList.add("hacker-card");
+            hackerCardRevealed = true;
 
-    hackerMessage.innerHTML = `
-        <p>Hacker card selected!</p>
-        <a href="cardmatchgame.html" id="proceedLink" style="color: #00FF00; text-decoration: none; font-size: 20px;">
-            Proceed to Next Level
-        </a>
-    `;
-    hackerMessage.style.display = "block";
-    hackerSound.play();
+            const hackerMessage = document.getElementById("hackerMessage");
+            const hackerSound = document.getElementById("hackerSound");
 
-    // Set a timeout for the user to click the link (10 seconds)
-    proceedTimeout = setTimeout(() => {
-        hackerMessage.innerHTML = `<p>Time's up! Proceed to the next level</p>`;
-    }, 10000);  // 10 seconds
+            hackerMessage.innerHTML = `
+                <p>Hacker card selected!</p>
+                <a href="cardmatchgame.html" id="proceedLink" style="color: #00FF00; text-decoration: none; font-size: 20px;">
+                    Proceed to Next Level
+                </a>
+            `;
+            hackerMessage.style.display = "block";
+            hackerSound.play();
 
-    // When the user clicks the link, clear the timeout
-    const proceedLink = document.getElementById("proceedLink");
-    proceedLink.addEventListener("click", () => {
-        clearTimeout(proceedTimeout);  // Clear the timeout once clicked
-    });
+            // Set a timeout for the user to click the link (10 seconds)
+            proceedTimeout = setTimeout(() => {
+                hackerMessage.innerHTML = `<p>Time's up! Proceed to the next level</p>`;
+            }, 10000);  // 10 seconds
 
-    setTimeout(() => {
-        hackerMessage.style.display = "none";
-    }, 3000);
-}
-
-
-function toggleMissionContent(event) {
-    const image = event.target;
-    const newImage = getRandomImage();
-    image.src = newImage;
-
-    selectedImages.push(newImage);
-    selectedCards.push(image);
-
-    if (newImage === "images/hacker.png" && !hackerCardRevealed) {
-        revealHackerCard(image);
-    }
-
-    if (selectedImages.length === 2) {
-    if (selectedImages[0] === selectedImages[1]) {
-        // Match found!
-        matchFound = true;
-
-        // Replace matched cards with a specific image
-        setTimeout(() => {
-            selectedCards.forEach((card) => {
-                card.src = "images/AIFF.png"; // AIFF poster
-                card.classList.remove("hacker-card"); // Reset any styling
+            // When the user clicks the link, clear the timeout
+            const proceedLink = document.getElementById("proceedLink");
+            proceedLink.addEventListener("click", () => {
+                clearTimeout(proceedTimeout);  // Clear the timeout once clicked
             });
-            selectedImages = [];
-            selectedCards = [];
-        }, 500); // Short delay for visual effect
-    } else {
-        // No match: Reset unmatched cards
-        setTimeout(() => {
-            selectedCards.forEach((card) => {
-                card.src = "images/Front.png"; // Reset to the default card image
-                card.classList.remove("hacker-card");
-            });
-            selectedImages = [];
-            selectedCards = [];
-        }, 2000);
-    }
-}
+
+            setTimeout(() => {
+                hackerMessage.style.display = "none";
+            }, 3000);
+        }
 
 
-    const animations = ['rotate-image', 'flip-image', 'shake-image'];
-    const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-    image.classList.add(randomAnimation);
+        function toggleMissionContent(event) {
+            const image = event.target;
+            const newImage = getRandomImage();
+            image.src = newImage;
 
-    setTimeout(() => {
-        image.classList.remove(randomAnimation);
-    }, 4000);
-}
+            selectedImages.push(newImage);
+            selectedCards.push(image);
 
-resetTimeout = setTimeout(() => {
-    if (!matchFound) {
-        location.reload();
-    }
-}, 8000);
+            if (newImage === "images/hacker.png" && !hackerCardRevealed) {
+                revealHackerCard(image);
+            }
 
+            if (selectedImages.length === 2) {
+                if (selectedImages[0] === selectedImages[1]) {
+                    // Match found!
+                    matchFound = true;
 
+                    // Display the link for the matched cards
+                    const linkContainer = document.getElementById("link-container");
+                    linkContainer.style.display = "block"; // Show the link container
+
+                    // Replace matched cards with a specific image
+                    setTimeout(() => {
+                        selectedCards.forEach((card) => {
+                            card.src = "images/AIFF.png"; // AIFF poster
+                            card.classList.remove("hacker-card"); // Reset any styling
+                        });
+                        selectedImages = [];
+                        selectedCards = [];
+                    }, 500); // Short delay for visual effect
+                } else {
+                    // No match: Reset unmatched cards
+                    setTimeout(() => {
+                        selectedCards.forEach((card) => {
+                            card.src = "images/Front.png"; // Reset to the default card image
+                            card.classList.remove("hacker-card");
+                        });
+                        selectedImages = [];
+                        selectedCards = [];
+                    }, 2000);
+                }
+            }
+
+            const animations = ['rotate-image', 'flip-image', 'shake-image'];
+            const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+            image.classList.add(randomAnimation);
+
+            setTimeout(() => {
+                image.classList.remove(randomAnimation);
+            }, 4000);
+        }
+
+        resetTimeout = setTimeout(() => {
+            if (!matchFound) {
+                location.reload();
+            }
+        }, 8000);
     </script>
 </body>
 </html>
