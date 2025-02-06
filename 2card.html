@@ -183,7 +183,7 @@
             <header class="major">
                 <div class="panel">
                     <div class="card-container">
-                        <a id="missionImage" onclick="toggleMissionContent(event)">
+                        <a id="missionImage1" onclick="toggleMissionContent(event)">
                             <img src="images/Front.png" alt="CharlestonHacks" />
                         </a>
                         <a id="missionImage2" onclick="toggleMissionContent(event)">
@@ -261,20 +261,37 @@
             selectedImages.push(newImage.img);
             selectedCards.push(image);
 
-            // Display the link and message for the selected card
-            const linkContainer = document.getElementById("link-container");
-            const matchedCardObj = cardImages.find(card => card.img === newImage.img);
-
-            linkContainer.innerHTML = `
-                <p>Matched Card! Proceed to ${matchedCardObj.message}:</p>
-                <a href="${matchedCardObj.link}" style="color: #00FF00; text-decoration: none; font-size: 20px;">
-                    Go to ${matchedCardObj.message}
-                </a>
-            `;
-            linkContainer.style.display = "block";
-
             // Apply flip animation
             image.classList.add("flip-image");
+
+            if (selectedImages.length === 2) {
+                // Check if the cards match
+                const [firstCard, secondCard] = selectedImages;
+                const firstCardObj = cardImages.find(card => card.img === firstCard);
+                const secondCardObj = cardImages.find(card => card.img === secondCard);
+
+                if (firstCard === secondCard) {
+                    // If match found, show the link and message
+                    const linkContainer = document.getElementById("link-container");
+                    linkContainer.innerHTML = `
+                        <p>Matched Card! Proceed to ${firstCardObj.message}:</p>
+                        <a href="${firstCardObj.link}" style="color: #00FF00; text-decoration: none; font-size: 20px;">
+                            Go to ${firstCardObj.message}
+                        </a>
+                    `;
+                    linkContainer.style.display = "block";
+                } else {
+                    // If no match, reset the images after a short delay
+                    setTimeout(() => {
+                        selectedCards.forEach(card => {
+                            card.src = "images/Front.png";
+                            card.classList.remove("flip-image");
+                        });
+                        selectedImages = [];
+                        selectedCards = [];
+                    }, 1000);
+                }
+            }
         }
     </script>
 </body>
