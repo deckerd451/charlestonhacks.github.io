@@ -59,6 +59,7 @@
             height: auto; /* Keeps aspect ratio */
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease; /* Smooth transition for scaling */
         }
 
         .lightbox.show {
@@ -105,10 +106,20 @@
         // Select elements
         const mainImage = document.getElementById("mainImage");
         const lightbox = document.getElementById("lightbox");
+        const lightboxImage = document.getElementById("lightboxImage");
 
         // Open lightbox when image is clicked
         mainImage.addEventListener("click", function() {
             lightbox.classList.add("show");
+        });
+
+        // Toggle image size when the lightbox image is clicked
+        lightboxImage.addEventListener("click", function() {
+            if (lightboxImage.style.transform === "scale(1)") {
+                lightboxImage.style.transform = "scale(0.8)";  // Shrink back
+            } else {
+                lightboxImage.style.transform = "scale(1)";  // Enlarge to full size
+            }
         });
 
         // Close lightbox when clicking outside the image or pressing ESC
