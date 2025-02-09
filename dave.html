@@ -13,21 +13,7 @@
             min-height: 100vh;
             background-color: black; /* Black background color */
             color: white; /* White text for visibility */
-        }
-
-        /* Home Icon Style */
-        .home-icon {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #39FF14; /* Acid Green color */
-            font-size: 40px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .home-icon:hover {
-            color: #00FF00; /* Slightly different shade of green on hover */
+            flex-direction: column; /* Arrange content in a column */
         }
 
         /* Main Image with Grow Effect */
@@ -79,6 +65,20 @@
             visibility: visible;
             opacity: 1;
         }
+
+        /* Home Icon Style */
+        .home-icon {
+            margin-top: 20px; /* Adds space between the image and button */
+            color: #39FF14; /* Acid Green color */
+            font-size: 40px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none; /* Remove underline from link */
+        }
+
+        .home-icon:hover {
+            color: #00FF00; /* Slightly different shade of green on hover */
+        }
     </style>
 
     <!-- Include FontAwesome for the home icon -->
@@ -86,14 +86,14 @@
 </head>
 <body>
 
-    <!-- Home Icon -->
-    <a href="#" class="home-icon">
-        <i class="fas fa-home"></i> <!-- Home icon -->
-    </a>
-
     <!-- Main Image -->
     <a class="image main">
         <img id="mainImage" src="images/spotdave.jpg" alt="Dave Ingram" />
+    </a>
+
+    <!-- Home Icon (Centered and Positioned at the Bottom) -->
+    <a href="https://charlestonhacks.com/index.html" class="home-icon">
+        <i class="fas fa-home"></i> <!-- Home icon -->
     </a>
 
     <!-- Lightbox Overlay -->
