@@ -67,13 +67,16 @@
             opacity: 1;
         }
 
-        /* Home Icon Style */
+        /* Home Icon Style (Fixed on top) */
         .home-icon {
-            margin-top: 20px; /* Adds space between the image and button */
+            position: fixed;
+            top: 20px; /* Space from the top of the screen */
+            left: 50%;
+            transform: translateX(-50%); /* Center the icon horizontally */
             color: #39FF14; /* Acid Green color */
             font-size: 40px;
-            text-align: center;
             cursor: pointer;
+            z-index: 9999; /* Ensures the icon is on top of all other elements */
             text-decoration: none; /* Remove underline from link */
         }
 
@@ -92,7 +95,7 @@
         <img id="mainImage" src="images/spotdave.jpg" alt="Dave Ingram" />
     </a>
 
-    <!-- Home Icon (Centered and Positioned at the Bottom) -->
+    <!-- Home Icon (Centered and Fixed on Top) -->
     <a href="https://charlestonhacks.com/index.html" class="home-icon">
         <i class="fas fa-home"></i> <!-- Home icon -->
     </a>
