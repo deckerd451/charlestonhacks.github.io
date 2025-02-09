@@ -14,13 +14,25 @@
             background-color: #f0f0f0; /* Light grey background color */
         }
 
-        /* Ensuring the image is responsive */
-        .image.main img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            cursor: pointer; /* Shows the image is clickable */
+        /* Main Image with Grow Effect */
+        #mainImage {
+            width: 90vw; /* Adjusts width to 90% of the viewport width */
+            max-width: 500px; /* Limits max size so it's not too big on large screens */
+            height: auto; /* Maintains aspect ratio */
+            cursor: pointer; /* Indicates it's clickable */
+            animation: growImage 1s ease-out forwards;
+        }
+
+        /* Grow Animation */
+        @keyframes growImage {
+            0% {
+                transform: scale(0.8); /* Start smaller */
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1); /* Full size */
+                opacity: 1;
+            }
         }
 
         /* Lightbox styles */
@@ -40,8 +52,9 @@
         }
 
         .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
+            width: 90vw; /* Makes the image scale based on screen width */
+            max-width: 800px; /* Limits the max size on larger screens */
+            height: auto; /* Keeps aspect ratio */
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
