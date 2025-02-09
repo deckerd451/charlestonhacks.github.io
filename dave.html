@@ -7,6 +7,11 @@
         body {
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0; /* Light grey background color */
         }
 
         /* Ensuring the image is responsive */
@@ -15,19 +20,74 @@
             height: auto;
             display: block;
             margin: 0 auto;
+            cursor: pointer; /* Shows the image is clickable */
         }
 
-        /* Optional: Centering the image on the page */
-        body {
+        /* Lightbox styles */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-color: #f0f0f0; /* Light grey background color */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .lightbox.show {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <a class="image main"><img src="images/spotdave.jpg" alt="Dave Ingram" /></a>
+
+    <!-- Main Image -->
+    <a class="image main">
+        <img id="mainImage" src="images/spotdave.jpg" alt="Dave Ingram" />
+    </a>
+
+    <!-- Lightbox Overlay -->
+    <div id="lightbox" class="lightbox">
+        <img id="lightboxImage" src="images/spotdave.jpg" alt="Dave Ingram">
+    </div>
+
+    <script>
+        // Select elements
+        const mainImage = document.getElementById("mainImage");
+        const lightbox = document.getElementById("lightbox");
+
+        // Open lightbox when image is clicked
+        mainImage.addEventListener("click", function() {
+            lightbox.classList.add("show");
+        });
+
+        // Close lightbox when clicking outside the image or pressing ESC
+        lightbox.addEventListener("click", function(event) {
+            if (event.target === lightbox) {
+                lightbox.classList.remove("show");
+            }
+        });
+
+        // Close on ESC key press
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") {
+                lightbox.classList.remove("show");
+            }
+        });
+    </script>
+
 </body>
 </html>
