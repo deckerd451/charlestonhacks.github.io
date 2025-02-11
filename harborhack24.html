@@ -8,44 +8,43 @@
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
     <style>
-/* Add space between the Photos button and the first photo */
-.content img {
-    margin-top: 20px; /* Adjust this value as needed */
-}
+        /* Add space between the Photos button and the first photo */
+        .content img {
+            margin-top: 20px; /* Adjust this value as needed */
+        }
 
-/* Smaller initial size for the poster */
-.poster-img {
-    max-width: 50%; /* Adjust this percentage as needed */
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.3s ease; /* Smooth transition */
-}
+        /* Smaller initial size for the poster */
+        .poster-img {
+            max-width: 50%; /* Adjust this percentage as needed */
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease; /* Smooth transition */
+        }
+        
         /* Center the poster image */
-.image.main {
-    display: flex;
-    justify-content: center;  /* Horizontally centers the image */
-    align-items: center;      /* Vertically centers the image */
-    text-align: center;       /* Ensures the content is centered inside */
-    margin: 0 auto;           /* Ensures the container is centered on the page */
-    width: 100%;              /* Makes sure it takes full width */
-}
+        .image.main {
+            display: flex;
+            justify-content: center;  /* Horizontally centers the image */
+            align-items: center;      /* Vertically centers the image */
+            text-align: center;       /* Ensures the content is centered inside */
+            margin: 0 auto;           /* Ensures the container is centered on the page */
+            width: 100%;              /* Makes sure it takes full width */
+        }
 
-.poster-img {
-    max-width: 50%; /* Adjust this as needed */
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.3s ease; /* Smooth transition */
-}
+        .poster-img {
+            max-width: 50%; /* Adjust this as needed */
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease; /* Smooth transition */
+        }
 
-
-/* Lightbox keeps full size */
-.lightbox-content {
-    max-width: 90%;
-    max-height: 90%;
-    margin: auto;
-    display: block;
-}
-
+        /* Lightbox keeps full size */
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            display: block;
+        }
 
         /* Lightbox Modal Styles */
         .lightbox {
@@ -82,6 +81,21 @@
         .content {
             display: none;
         }
+
+        /* Styling for YouTube Embed */
+        .video-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 600px; /* You can adjust this value to control the iframe size */
+            height: 315px; /* Adjust based on your preference */
+        }
     </style>
 </head>
 <body class="is-preload">
@@ -94,10 +108,9 @@
             </header>
 
            <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
-<a class="image main" onclick="openLightbox('images/HACKATHON POSTER2.jpg')">
-    <img src="images/HACKATHON POSTER2.jpg" alt="Hackathon Poster" class="poster-img" />
-</a>
-
+           <a class="image main" onclick="openLightbox('images/HACKATHON POSTER2.jpg')">
+               <img src="images/HACKATHON POSTER2.jpg" alt="Hackathon Poster" class="poster-img" />
+           </a>
 
             <p><h3>Transformation</h3></p>
             <hr>
@@ -116,33 +129,37 @@
 
             <!-- Photos Button (Initially Closed) -->
             <button class="collapsible">Photos</button>
-<div class="content">
-    <a href="https://harborhack-24.devpost.com/" class="image fit">
-        <div class="photo-gallery">
-            <!-- Image 1 -->
-            <img src="images/Harborwalk.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 2 -->
-            <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 3 -->
-            <img src="images/harborwalkeast.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 4 -->
-            <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 5 -->
-            <img src="images/Team photo.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 6 -->
-            <img src="images/Anya.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 7 -->
-            <img src="images/Home Bridge.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 8 -->
-            <img src="images/Judges Good.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 9 -->
-            <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
-            <!-- Image 10 -->
-            <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
-        </div>
-    </a>
-</div>
+            <div class="content">
+                <a href="https://harborhack-24.devpost.com/" class="image fit">
+                    <div class="photo-gallery">
+                        <!-- Image 1 -->
+                        <img src="images/Harborwalk.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 2 -->
+                        <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 3 -->
+                        <img src="images/harborwalkeast.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 4 -->
+                        <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 5 -->
+                        <img src="images/Team photo.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 6 -->
+                        <img src="images/Anya.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 7 -->
+                        <img src="images/Home Bridge.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 8 -->
+                        <img src="images/Judges Good.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 9 -->
+                        <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 10 -->
+                        <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    </div>
+                </a>
 
+                <!-- YouTube Video Embed -->
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/JxdOjomvKjo" title="HarborHack 2024 Video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
 
         </article>
     </div>
