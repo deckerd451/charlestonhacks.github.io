@@ -20,6 +20,23 @@
     cursor: pointer;
     transition: transform 0.3s ease; /* Smooth transition */
 }
+        /* Center the poster image */
+.image.main {
+    display: flex;
+    justify-content: center;  /* Horizontally centers the image */
+    align-items: center;      /* Vertically centers the image */
+    text-align: center;       /* Ensures the content is centered inside */
+    margin: 0 auto;           /* Ensures the container is centered on the page */
+    width: 100%;              /* Makes sure it takes full width */
+}
+
+.poster-img {
+    max-width: 50%; /* Adjust this as needed */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
 
 /* Lightbox keeps full size */
 .lightbox-content {
