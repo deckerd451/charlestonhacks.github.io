@@ -8,6 +8,22 @@
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
     <style>
+        /* Smaller initial size for the poster */
+.poster-img {
+    max-width: 50%; /* Adjust this percentage as needed */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+/* Lightbox keeps full size */
+.lightbox-content {
+    max-width: 90%;
+    max-height: 90%;
+    margin: auto;
+    display: block;
+}
+
         /* Lightbox Modal Styles */
         .lightbox {
             display: none;
@@ -54,10 +70,11 @@
                 <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" /></a>
             </header>
 
-            <!-- Lightbox Trigger for Hackathon Poster -->
-            <a class="image main" onclick="openLightbox('images/HACKATHON POSTER2.jpg')">
-                <img src="images/HACKATHON POSTER2.jpg" alt="Hackathon Poster" />
-            </a>
+           <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
+<a class="image main" onclick="openLightbox('images/HACKATHON POSTER2.jpg')">
+    <img src="images/HACKATHON POSTER2.jpg" alt="Hackathon Poster" class="poster-img" />
+</a>
+
 
             <p><h3>Transformation</h3></p>
             <hr>
