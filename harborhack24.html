@@ -6,6 +6,44 @@
     <title>HarborHack 2024</title>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+    <style>
+        /* Lightbox Modal Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            display: block;
+        }
+
+        .lightbox .close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Hide photos section initially */
+        .content {
+            display: none;
+        }
+    </style>
 </head>
 <body class="is-preload">
    
@@ -13,9 +51,14 @@
         <article class="post featured">
 
             <header class="major">
-                <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
+                <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" /></a>
             </header>
-            <a class="image main" href="https://harborhack-24.devpost.com/"><img src="images/HACKATHON POSTER2.jpg" alt="" /></a>
+
+            <!-- Lightbox Trigger for Hackathon Poster -->
+            <a class="image main" onclick="openLightbox('images/HACKATHON POSTER2.jpg')">
+                <img src="images/HACKATHON POSTER2.jpg" alt="Hackathon Poster" />
+            </a>
+
             <p><h3>Transformation</h3></p>
             <hr>
             <p><b>CharlestonHacks hosted HarborHack 2024, October 18th-20th at the College of Charleston's Harbor Walk campus. The event brought together 104 registrants, forming 10 teams and evaluated by 9 esteemed judges.
@@ -29,21 +72,23 @@
             <p><b>The theme for HarborHack 2024 was transformation.</b></p>
 
             <!-- Devpost Button -->
-<a href="https://harborhack-24.devpost.com/" class="button" target="_blank">HarborHack24 Devpost</a>
+            <a href="https://harborhack-24.devpost.com/" class="button" target="_blank">HarborHack24 Devpost</a>
 
-<!-- Photos Button (Initially Closed) -->
-<button class="collapsible">Photos</button>
-<div class="content" style="display: none;">
-    <a href="https://harborhack-24.devpost.com/" class="image fit">
-        <img src="images/Harborwalk.jpg" alt="" />
-    </a>
-</div>
+            <!-- Photos Button (Initially Closed) -->
+            <button class="collapsible">Photos</button>
+            <div class="content">
+                <a href="https://harborhack-24.devpost.com/" class="image fit">
+                    <img src="images/Harborwalk.jpg" alt="HarborHack Photos" />
+                </a>
+            </div>
 
+        </article>
+    </div>
 
-    <!-- Image Modal -->
-    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
-        <span class="close" onclick="closeImageModal()">&times;</span>
-        <img class="image-modal-content" id="modalImage" />
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="lightbox" onclick="closeLightbox()">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img class="lightbox-content" id="lightboxImg" />
     </div>
 
     <script src="assets/js/jquery.min.js"></script>
@@ -55,32 +100,37 @@
     <script src="assets/js/main.js"></script>
 
     <script>
+        // Open Lightbox
+        function openLightbox(imgSrc) {
+            var modal = document.getElementById('lightboxModal');
+            var modalImg = document.getElementById('lightboxImg');
+            modal.style.display = 'flex'; // Show modal
+            modalImg.src = imgSrc;
+        }
+
+        // Close Lightbox
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+
+        // Close when clicking outside the image
+        document.getElementById('lightboxModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeLightbox();
+            }
+        });
+
         // Collapsible Button Toggle Functionality
-        var coll = document.getElementsByClassName("collapsible");
-        for (var i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        }
-
-        function openImageModal(imageUrl) {
-            var modal = document.getElementById('imageModal');
-            var modalImg = document.getElementById('modalImage');
-
-            modal.style.display = 'block';
-            modalImg.src = imageUrl;
-        }
-
-        function closeImageModal() {
-            var modal = document.getElementById('imageModal');
-            modal.style.display = 'none';
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            var coll = document.getElementsByClassName("collapsible");
+            for (var i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    content.style.display = (content.style.display === "block") ? "none" : "block";
+                });
+            }
+        });
     </script>
 </body>
 </html>
