@@ -23,11 +23,12 @@
         }
 
         .panel {
-    display: flex;
-    flex-direction: column;
-    gap: 50px; /* Adds space between flex items */
-}
-
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
         .panel img {
             max-width: 100%;
@@ -86,21 +87,13 @@
             display: none;
             z-index: 2;
         }
-        .title-text {
-    color: #00FF00; /* Acid Green */
-    font-size: 2rem; /* You can adjust the size as needed */
-    margin-bottom: 80px; /* Adjust this value as needed */
-}
 
         footer a {
-    color: #00FF00;
-    font-size: 30px;
-    margin: 0 15px;
-    transition: color 0.3s ease;
-    position: relative;
-    top: -10px; /* Adjust this value to move it up */
-}
-
+            color: #00FF00;
+            font-size: 30px;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
 
         footer a:hover {
             color: #39FF14;
@@ -109,7 +102,7 @@
         .card-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .card-container img.hacker-card {
@@ -118,14 +111,13 @@
             box-shadow: 0 0 10px #FFD700;
         }
 
+        /* New style for placeholder link container */
         .link-container {
-    display: none;
-    margin-top: 5px;  /* Decrease this value to move it closer */
-    font-size: 18px;   /* You can adjust this for a smaller font size */
-    color: #00FF00;
-    padding: 5px;      /* Adjust padding for a closer fit */
-}
-
+            display: none;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #00FF00;
+        }
 
         .link-container a {
             color: #00FF00;
@@ -153,15 +145,12 @@
 }
 
 .flip-image {
-    animation: flipImage .5s ease forwards; /* Flip animation */
+    animation: flipImage 1s ease forwards; /* Flip animation */
 }
 
     </style>
 </head>
 <body>
-    <!-- Add the title-text div here -->
-    <div class="title-text">Match the Cards, Meet the Members</div>
-
     <!-- Background Music -->
     <audio id="background-music" autoplay loop>
         <source src="assets/music.mp3" type="audio/mp3">
@@ -170,8 +159,8 @@
 <!-- Restart Button -->
 <button id="restart-btn" style="
     position: fixed; 
-    bottom: 15px; 
-    left: 15px; 
+    bottom: 20px; 
+    left: 20px; 
     padding: 10px 15px; 
     background: rgba(0, 0, 0, 0.8); 
     color: #00FF00; 
@@ -192,8 +181,8 @@
     <!-- Mute/Unmute Button -->
     <button id="mute-btn" style="
         position: fixed; 
-        bottom: 15px; 
-        right: 15px; 
+        bottom: 20px; 
+        right: 20px; 
         padding: 10px 15px; 
         background: rgba(0, 0, 0, 0.8); 
         color: #00FF00; 
