@@ -246,6 +246,47 @@ footer .icons-container {
     border: none;
     padding: 0;
 }
+        /* Lightbox styles */
+    .lightbox {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        overflow: auto;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .lightbox-content {
+        background-color: #222;
+        padding: 20px;
+        max-width: 80%;
+        margin: auto;
+        color: white;
+        border-radius: 10px;
+        overflow-y: auto;
+    }
+
+    .lightbox a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        margin: 10px 0;
+    }
+
+    .lightbox-close {
+        color: white;
+        font-size: 30px;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        cursor: pointer;
+    }
          </style>
 </head>
 <body class="is-preload">
@@ -302,14 +343,20 @@ footer .icons-container {
         <a href="https://twitter.com/Descart84114619" target="_blank"><i class="fab fa-twitter icon"></i></a>
         <a href="https://www.facebook.com/deckerdb26354" target="_blank"><i class="fab fa-facebook icon"></i></a>
     </section>
-    <div class="previous-events" style="display: none;">
+    <!-- Lightbox for previous events -->
+<div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <h2>Previous Events</h2>
+        <div class="previous-events">
             <p><a href="techweek.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
             <p><a href="harborhack24.html" style="color: white;">HarborHack (Fall 2024)</a></p>
-             <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
+            <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
             <p><a href="hacknights24.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
             <p><a href="hackopsalt.html" style="color: white;">HackOps (Spring 2024)</a></p>
             <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
             <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
+        </div>
     </div>
 </footer>
 
@@ -392,6 +439,21 @@ footer .icons-container {
                 arrowIcon.classList.remove("fa-chevron-up");
                 arrowIcon.classList.add("fa-chevron-down");
             }
+             // Function to toggle visibility of the lightbox
+    function toggleVisibility() {
+        var lightbox = document.getElementById('lightbox');
+        lightbox.style.display = (lightbox.style.display === "flex") ? "none" : "flex";
+    }
+
+    // Function to close the lightbox
+    function closeLightbox() {
+        document.getElementById('lightbox').style.display = "none";
+    }
+
+    // Attach toggleVisibility function to the chevron icon click
+    document.getElementById('previousEventsToggle').onclick = function() {
+        toggleVisibility();
+    };
         }
     </script>
 </body>
