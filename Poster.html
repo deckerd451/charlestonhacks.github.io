@@ -176,8 +176,19 @@
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
     <script>
-    // Initialize the lightbox
-    lightGallery(document.getElementById('lightbox-gallery'));
+    // Initialize LightGallery only for images (not .html links)
+lightGallery(document.getElementById('lightbox-gallery'), {
+    selector: 'a[href$=".jpg"], a[href$=".png"], a[href$=".jpeg"]'
+});
+
+// Prevent LightGallery from intercepting .html links
+document.querySelectorAll('#lightbox-gallery a').forEach(link => {
+    link.addEventListener('click', function(event) {
+        if (this.getAttribute('href').endsWith('.html')) {
+            event.stopPropagation(); // Stop LightGallery from overriding the link
+        }
+    });
+});
 
     // Track occurrences of "Descartes.png"
     let descartesCount = 0;
