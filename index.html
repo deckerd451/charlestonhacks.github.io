@@ -246,13 +246,6 @@ footer .icons-container {
     border: none;
     padding: 0;
 }
-        #finalImage {
-    display: none; /* Hidden initially */
-    width: 100%;
-    height: auto;
-    transition: opacity 1s ease-in-out;
-}
-
          </style>
 </head>
 <body class="is-preload">
@@ -262,8 +255,6 @@ footer .icons-container {
                 <div class="panel">
                     <a class="image main" onclick="toggleMissionContent()">
                         <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
-<img id="finalImage" src="images/Final.png" alt="Final Image" style="display: none; position: absolute;" />
-
                         <video id="missionVideo" muted playsinline>
                             <source src="images/teams.mp4" type="video/mp4">
                             Your browser does not support the video tag.
@@ -358,43 +349,25 @@ footer .icons-container {
             return cardImages[randomIndex];
         }
 
-        <script>
-function toggleMissionContent() {
-    var image = document.getElementById('missionImage');
-    var finalImage = document.getElementById('finalImage');
-    var video = document.getElementById('missionVideo');
+        function toggleMissionContent() {
+            var image = document.getElementById('missionImage');
+            image.src = getRandomImage();
 
-    // Change image to a random one
-    image.src = getRandomImage();
+            var video = document.getElementById('missionVideo');
+            video.style.display = 'block';
+            video.style.opacity = 1;
+            video.play();
 
-    // Show and play the video
-    video.style.display = 'block';
-    video.style.opacity = 1;
-    video.play();
+            setTimeout(function() {
+                document.getElementById('missionContent').style.display = 'block';
+            }, 3000);
 
-    // Show mission content after 3 seconds
-    setTimeout(function() {
-        document.getElementById('missionContent').style.display = 'block';
-    }, 3000);
-
-    // Fade out the video after 8 seconds
-    setTimeout(function() {
-        video.classList.add('fadeOut');
-        setTimeout(function() {
-            video.style.display = 'none';
-        }, 8000);
-    }, 100);
-
-    // Apply flip animation to the image
-    image.classList.add('flip-image-x');
-
-    // After flip animation ends (4 seconds), replace it with the final image
-    setTimeout(function() {
-        image.style.display = 'none';  // Hide flipped image
-        finalImage.style.display = 'block'; // Show final image
-        finalImage.style.opacity = '1'; // Fade in effect
-    }, 4000);
-}
+            setTimeout(function() {
+                video.classList.add('fadeOut');
+                setTimeout(function() {
+                    video.style.display = 'none';
+                }, 8000);
+            }, 100);
 
             // Randomly apply X or Y flip
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
