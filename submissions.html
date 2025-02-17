@@ -8,30 +8,29 @@
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
     <style>
-        /* Add space between the Photos button and the first photo */
+        /* Styling for Images */
         .content img {
-            margin-top: 20px; /* Adjust this value as needed */
+            margin-top: 20px; /* Space between Photos button and first photo */
         }
 
-        /* Smaller initial size for the poster */
         .poster-img {
-            max-width: 50%; /* Adjust this percentage as needed */
+            max-width: 50%;
             height: auto;
             cursor: pointer;
             transition: transform 0.3s ease; /* Smooth transition */
         }
-        
-        /* Center the poster image */
+
+        /* Centering Poster Image */
         .image.main {
             display: flex;
-            justify-content: center;  /* Horizontally centers the image */
-            align-items: center;      /* Vertically centers the image */
-            text-align: center;       /* Ensures the content is centered inside */
-            margin: 0 auto;           /* Ensures the container is centered on the page */
-            width: 100%;              /* Makes sure it takes full width */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        /* Lightbox keeps full size */
+        /* Lightbox Styles */
         .lightbox-content {
             max-width: 90%;
             max-height: 90%;
@@ -39,7 +38,6 @@
             display: block;
         }
 
-        /* Lightbox Modal Styles */
         .lightbox {
             display: none;
             position: fixed;
@@ -54,13 +52,6 @@
             justify-content: center;
         }
 
-        .lightbox-content {
-            max-width: 90%;
-            max-height: 90%;
-            margin: auto;
-            display: block;
-        }
-
         .lightbox .close {
             position: absolute;
             top: 15px;
@@ -70,12 +61,12 @@
             cursor: pointer;
         }
 
-        /* Hide photos section initially */
+        /* Hiding Photos Section Initially */
         .content {
             display: none;
         }
 
-        /* Styling for YouTube Embed */
+        /* YouTube Embed Styling */
         .video-container {
             margin-top: 20px;
             display: flex;
@@ -86,8 +77,8 @@
 
         iframe {
             width: 100%;
-            max-width: 600px; /* You can adjust this value to control the iframe size */
-            height: 315px; /* Adjust based on your preference */
+            max-width: 600px;
+            height: 315px;
         }
     </style>
 </head>
@@ -95,89 +86,62 @@
    
     <div id="main">
         <article class="post featured">
-
+            <!-- Header with Main Image -->
             <header class="major">
-                <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" /></a>
+                <a class="image main" href="index.html">
+                    <img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" />
+                </a>
             </header>
 
-           <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
-           <a class="image main" onclick="openLightbox('images/hh24poster.png')">
-               <img src="images/hh24poster.png" alt="Hackathon Poster" class="poster-img" />
-           </a>
-<p><h3>Lights, Camera, AI! – Official Rules & Terms</h3></p>
+            <!-- Hackathon Poster with Lightbox Feature -->
+            <a class="image main" onclick="openLightbox('images/hh24poster.png')">
+                <img src="images/hh24poster.png" alt="Hackathon Poster" class="poster-img" />
+            </a>
+
+            <!-- Event Rules Section -->
+            <p><h3>Lights, Camera, AI! – Official Rules & Terms</h3></p>
             <br>
-            <p><h3>Event Overview
-The 30 Second AI Film Fest is a 3-hour AI-generated video hackathon where participants will create innovative, AI-powered 30-second short films. Hosted by CharlestonHacks as part of Dig South and Charleston Tech Week, this event encourages creativity, experimentation, and storytelling through AI-generated content.
+            <p><h3>Event Overview</h3>
+                The 30 Second AI Film Fest is a 3-hour AI-generated video hackathon where participants will create innovative, AI-powered 30-second short films. Hosted by CharlestonHacks as part of Dig South and Charleston Tech Week, this event encourages creativity, experimentation, and storytelling through AI-generated content.<br>
+                <strong>Date & Time:</strong> May 1st, 7:00–10:00 PM<br>
+                <strong>Location:</strong> Simmons Center, College of Charleston
+            </p>
 
-Date & Time: May 1st, 7:00–10:00 PM
-Location: Simmons Center, College of Charleston
+            <!-- Event Rules -->
+            <p><strong>Rules</strong></p>
+            <ol>
+                <li><strong>Team Formation:</strong> Participants may compete solo or in teams of up to 4 people. Teams can be formed at the event or pre-arranged.</li>
+                <li><strong>AI Usage & Tools:</strong> Films must be created entirely within the 3-hour event window. Teams must use at least one AI-powered tool (e.g., Runway, Sora, Pika, Kaiber, Stable Diffusion, DALL·E, ElevenLabs, ChatGPT, OpenArt, etc.).</li>
+                <li><strong>Film Requirements:</strong> Each film must be 30 seconds but may be up to 2 minutes. Content must be PG-level. Films must tell a cohesive story or convey a clear concept.</li>
+                <li><strong>Submission & Presentation:</strong> Films must be submitted before the 10:00 PM deadline via the provided submission form. All films will be presented live to the audience and judges.</li>
+                <li><strong>Judging Criteria:</strong> Films will be evaluated based on Creativity & Innovation, Storytelling & Clarity, AI Integration, and Visual & Audio Quality.</li>
+                <li><strong>Prizes & Recognition:</strong> Prizes for Best Film, Most Creative Use of AI, and Audience Favorite. Winners will receive exclusive CharlestonHacks swag, tech prizes, and industry recognition.</li>
+            </ol>
 
-Rules
-1. Team Formation
-Participants may compete solo or in teams of up to 4 people.
-Teams will be formed at the event or pre-arranged.
+            <!-- Terms & Conditions -->
+            <p><strong>Terms & Conditions</strong></p>
+            <ul>
+                <li><strong>Eligibility:</strong> Open to all attendees of Charleston Tech Week. Participants must be 18+ or have parental consent.</li>
+                <li><strong>Ownership & Rights:</strong> Teams retain full rights to their films but grant CharlestonHacks non-exclusive rights to showcase and promote them for marketing purposes.</li>
+                <li><strong>Code of Conduct:</strong> Be respectful. Collaboration and knowledge sharing are encouraged, but plagiarism is prohibited. Pre-generated work is not allowed.</li>
+            </ul>
 
-2. AI Usage & Tools
-Films must be created entirely within the 3-hour event window.
-Teams must use at least one AI-powered tool for video generation, editing, or enhancement (e.g., Runway, Sora, Pika, Kaiber, Stable Diffusion, DALL·E, ElevenLabs, ChatGPT, OpenArt etc.).
-A combination of traditional filmmaking techniques (e.g., live-action recording) and AI is permitted, but AI tools must play a significant role in the film's creation.
-
-3. Film Requirements
-Each film must be 30 seconds but may be up to 2 minutes.
-The content must adhere to a general audience rating (PG-level: No explicit content, hate speech, or offensive material).
-Films must tell a cohesive story or convey a clear concept.
-AI-generated visuals, sound, and text are encouraged, but human storytelling and direction are key!
-
-4. Submission & Presentation
-Films must be submitted before the 10:00 PM deadline via the provided submission form.
-All teams will present their films to the audience and judges for a live screening.
-
-5. Judging Criteria
-Films will be evaluated based on:
-✅ Creativity & Innovation – How original and engaging is the concept?
-✅ Storytelling & Clarity – Does it deliver a compelling narrative?
-✅ AI Integration – How effectively are AI tools used in the film’s creation?
-✅ Visual & Audio Quality – Is the film well-produced with clear visuals and sound?
-
-6. Prizes & Recognition
-Prizes will be awarded for Best Film, Most Creative Use of AI, and Audience Favorite.
-Winners will receive exclusive CharlestonHacks swag, tech prizes, and industry recognition.
-
-Terms & Conditions
-
-Eligibility
-Open to all attendees of Charleston Tech Week. No prior AI filmmaking experience required.
-Participants must be 18+ years old or have parental consent.
-
-Ownership & Rights
-Teams retain full rights to their films. However, by participating, you agree to grant CharlestonHacks and event partners non-exclusive rights to showcase and promote the submitted films for marketing or future events.
-
-Code of Conduct
-Be respectful to all participants, judges, and organizers.
-Collaboration and knowledge sharing are encouraged, but plagiarism is prohibited.
-Any attempt to pre-generate or submit work created before the event will result in disqualification.</h3></p>
-
+            <!-- Submission Instructions -->
             <p><h3>30 Second AI Film Fest Submission</h3></p>
             <hr>
-            <p><b>To streamline submissions and showcase all films in one place, we’re asking participants to upload their own videos to YouTube and tag them using our official event hashtag.
-.</b></p> 
+            <p><b>To streamline submissions and showcase all films in one place, we’re asking participants to upload their own videos to YouTube and tag them using our official event hashtag.</b></p> 
+            
+            <p><strong>How to Submit Your Film:</strong></p>
+            <ul>
+                <li>Upload your 30-second film to your own YouTube channel.</li>
+                <li>Include the event hashtag "#30saiff" in the video title or description.</li>
+                <li>Tag our official YouTube channel (@charlestonHacks-mc4ct) in your description.</li>
+                <li>Once uploaded, we’ll find your film via the hashtag and add it to our official festival playlist!</li>
+            </ul>
 
-            <p><b>How to Submit Your Film:</b></p>
-   <p><b>Upload your 30-second film to your own YouTube channel.</b></p>
- <p><b>Include the event hashtag "#30saiff" in the video title or description.</b></p>
- <p><b>Tag our official YouTube channel (@charlestonHacks-mc4ct) in your description.</b></p>
-<p><b>Once uploaded, we’ll find your film via the hashtag and add it to our official festival playlist!
-</b></p>
-
-            <!-- Tech Week Button -->
+            <!-- Event Links -->
             <a href="https://charlestontechweek.org/" class="button" target="_blank">Charleston Tech Week</a>
-
-            <!-- Youtube Button -->
-         <a href="https://www.youtube.com/@charlestonHacks-mc4ct" class="button" target="_blank">AIFF YouTube</a>
-                   
-                </a>
-
-
+            <a href="https://www.youtube.com/@charlestonHacks-mc4ct" class="button" target="_blank">AIFF YouTube</a>
         </article>
     </div>
 
@@ -187,44 +151,22 @@ Any attempt to pre-generate or submit work created before the event will result 
         <img class="lightbox-content" id="lightboxImg" />
     </div>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-
     <script>
-        // Open Lightbox
+        // Lightbox functionality
         function openLightbox(imgSrc) {
             var modal = document.getElementById('lightboxModal');
             var modalImg = document.getElementById('lightboxImg');
-            modal.style.display = 'flex'; // Show modal
+            modal.style.display = 'flex';
             modalImg.src = imgSrc;
         }
 
-        // Close Lightbox
         function closeLightbox() {
             document.getElementById('lightboxModal').style.display = 'none';
         }
 
-        // Close when clicking outside the image
         document.getElementById('lightboxModal').addEventListener('click', function(event) {
             if (event.target === this) {
                 closeLightbox();
-            }
-        });
-
-        // Collapsible Button Toggle Functionality
-        document.addEventListener("DOMContentLoaded", function () {
-            var coll = document.getElementsByClassName("collapsible");
-            for (var i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    var content = this.nextElementSibling;
-                    content.style.display = (content.style.display === "block") ? "none" : "block";
-                });
             }
         });
     </script>
