@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>HarborHack 2024</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+    <style>
+        /* Add space between the Photos button and the first photo */
+        .content img {
+            margin-top: 20px; /* Adjust this value as needed */
+        }
+
+        /* Smaller initial size for the poster */
+        .poster-img {
+            max-width: 50%; /* Adjust this percentage as needed */
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease; /* Smooth transition */
+        }
+        
+        /* Center the poster image */
+        .image.main {
+            display: flex;
+            justify-content: center;  /* Horizontally centers the image */
+            align-items: center;      /* Vertically centers the image */
+            text-align: center;       /* Ensures the content is centered inside */
+            margin: 0 auto;           /* Ensures the container is centered on the page */
+            width: 100%;              /* Makes sure it takes full width */
+        }
+
+        /* Lightbox keeps full size */
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            display: block;
+        }
+
+        /* Lightbox Modal Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            display: block;
+        }
+
+        .lightbox .close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Hide photos section initially */
+        .content {
+            display: none;
+        }
+
+        /* Styling for YouTube Embed */
+        .video-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 600px; /* You can adjust this value to control the iframe size */
+            height: 315px; /* Adjust based on your preference */
+        }
+    </style>
+</head>
+<body class="is-preload">
+   
+    <div id="main">
+        <article class="post featured">
+
+            <header class="major">
+                <a class="image main" href="index.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" /></a>
+            </header>
+
+           <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
+           <a class="image main" onclick="openLightbox('images/hh24poster.png')">
+               <img src="images/hh24poster.png" alt="Hackathon Poster" class="poster-img" />
+           </a>
+
+            <p><h3>30 Second AI Film Fest Submission</h3></p>
+            <hr>
+            <p><b>To streamline submissions and showcase all films in one place, we’re asking participants to upload their own videos to YouTube and tag them using our official event hashtag.
+.</b></p> 
+
+            <p><b>How to Submit Your Film:</b></p>
+   <p><b>Upload your 30-second film to your own YouTube channel.</b></p>
+ <p><b>Include the event hashtag "#30saiff" in the video title or description.</b></p>
+ <p><b>Tag our official YouTube channel (@charlestonHacks-mc4ct) in your description.</b></p>
+<p><b>Once uploaded, we’ll find your film via the hashtag and add it to our official festival playlist!
+</b></p>
+
+            <!-- Tech Week Button -->
+            <a href="https://charlestontechweek.org/" class="button" target="_blank">Charleston Tech Week</a>
+
+            <!-- Youtube Button (Initially Closed) -->
+            <button class="collapsible">AIFF Youtube</button>
+            <div class="content">
+                <a href="https://www.youtube.com/@charlestonHacks-mc4ct" class="image fit">
+                    <div class="photo-gallery">
+                        <!-- Image 1 -->
+                        <img src="images/Harborwalk.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 2 -->
+                        <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 3 -->
+                        <img src="images/harborwalkeast.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 4 -->
+                        <img src="images/Auditorium.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 5 -->
+                        <img src="images/Team photo.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 6 -->
+                        <img src="images/Anya.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 7 -->
+                        <img src="images/Home Bridge.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <!-- Image 8 -->
+                        <img src="images/Judges Good.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        
+                    </div>
+                </a>
+
+                 <!-- YouTube Video Embed -->
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/JxdOjomvKjo" title="HarborHack 2024 Video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                
+                <!-- Second YouTube Video Embed -->
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/4uqdOFcB_1o?feature=share" title="HarborHack 2024 Video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <!-- Third YouTube Video Embed -->
+                <div class="video-container">
+                    <iframe src="https://youtube.com/embed/cSqOKLuSub4" title="HarborHack 2024 Video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+
+        </article>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="lightbox" onclick="closeLightbox()">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img class="lightbox-content" id="lightboxImg" />
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // Open Lightbox
+        function openLightbox(imgSrc) {
+            var modal = document.getElementById('lightboxModal');
+            var modalImg = document.getElementById('lightboxImg');
+            modal.style.display = 'flex'; // Show modal
+            modalImg.src = imgSrc;
+        }
+
+        // Close Lightbox
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+
+        // Close when clicking outside the image
+        document.getElementById('lightboxModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Collapsible Button Toggle Functionality
+        document.addEventListener("DOMContentLoaded", function () {
+            var coll = document.getElementsByClassName("collapsible");
+            for (var i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    content.style.display = (content.style.display === "block") ? "none" : "block";
+                });
+            }
+        });
+    </script>
+</body>
+</html>
