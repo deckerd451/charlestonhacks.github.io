@@ -199,8 +199,10 @@
                 <strong>Location:</strong> Simmons Center, College of Charleston
             </p>
             <hr>
-
-            <!-- Event Rules -->
+            <!-- Text Button (Initially Closed) -->
+<button class="collapsible">More Information</button>
+<div class="content">
+     <!-- Event Rules -->
             <p><h3>Official Rules & Terms and Event Overview</h3></p>
            
                 <p><strong>Team Formation:</strong> Participants may compete solo or in teams of up to 4 people. Teams can be formed at the event or pre-arranged.</p>
@@ -308,6 +310,23 @@
         document.getElementById('videoPlayer').onpause = function() {
             document.getElementById('videoAudio').pause();  // Pause the audio when the video pauses
         };
+        <script>
+document.addEventListener("DOMContentLoaded", function() {
+    let coll = document.querySelector(".collapsible");
+    let content = document.querySelector(".content");
+
+    // Hide content initially
+    content.style.display = "none";
+
+    coll.addEventListener("click", function() {
+        if (content.style.display === "none") {
+            content.style.display = "block";
+        } else {
+            content.style.display = "none";
+        }
+    });
+});
+
     </script>
 </body>
 </html>
