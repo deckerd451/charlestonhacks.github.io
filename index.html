@@ -372,7 +372,20 @@ footer .icons-container {
         eventsSection.style.display = 'none';
     }
 }
+<script>
+document.getElementById("aiffBanner").addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent immediate navigation
 
+    let missionImage = document.getElementById("missionImage");
+
+    // Add flip animation
+    missionImage.classList.add("flip-image-x");
+
+    // Wait for animation to complete before navigating (adjust timing to match animation duration)
+    setTimeout(function() {
+        window.location.href = "https://charlestonhacks.com/techweek.html";
+    }, 1000); // Adjust timing based on the animation duration
+});
     </script>
 </body>
 </html>
