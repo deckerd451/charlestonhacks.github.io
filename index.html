@@ -277,9 +277,13 @@ footer .icons-container {
                             <p>
                                 <a href="subscribe.html" target="_blank">Join the Mailing List</a>
                             </p>
+                             <p>
+                                <a href="Poster.html" target="_blank">Our Events</a>
+                            </p>
+                            
                         </div>
                         <div id="countdownWrapper">
-                            <p class="info"><b>Countdown to 30 second AI Film Fest:</b></p>
+                            <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
                             <div id="countdown"></div>
                         </div>
                     </div>
@@ -287,31 +291,23 @@ footer .icons-container {
             </header>
         </article>
     </div>
-  <footer>
+<footer>
     <section class="icons-container" style="display: flex; justify-content: center; align-items: center;">
         <a href="https://charlestonhacks.mailchimpsites.com/" target="_blank">
             <i class="fas fa-info-circle icon"></i>
         </a>
         <a href="2card.html"><i class="fas fa-users icon"></i></a>
-        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility()">
-            <i class="fas fa-chevron-down icon"></i>
-        </h1>
+        <!-- Removed Chevron Icon and Previous Events Toggle -->
         <a href="https://www.linkedin.com/company/charlestonhacks"><i class="fab fa-linkedin icon"></i></a>
         <a href="https://www.instagram.com/charlestonhacks/" target="_blank"><i class="fab fa-instagram icon"></i></a>
         <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
         <a href="https://twitter.com/Descart84114619" target="_blank"><i class="fab fa-twitter icon"></i></a>
         <a href="https://www.facebook.com/deckerdb26354" target="_blank"><i class="fab fa-facebook icon"></i></a>
     </section>
-    <div class="previous-events" style="display: none;">
-            <p><a href="techweek.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
-            <p><a href="harborhack24.html" style="color: white;">HarborHack (Fall 2024)</a></p>
-             <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
-            <p><a href="hacknights24.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
-            <p><a href="hackopsalt.html" style="color: white;">HackOps (Spring 2024)</a></p>
-            <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
-            <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
-    </div>
+    
+    
 </footer>
+
 
 <script src="ho-script.js"></script>
     <script>
@@ -381,18 +377,14 @@ footer .icons-container {
         }
 
         function toggleVisibility() {
-            var eventsDiv = document.querySelector('.previous-events');
-            var arrowIcon = document.getElementById("arrowIcon");
-            if (eventsDiv.style.display === "none") {
-                eventsDiv.style.display = "block";
-                arrowIcon.classList.remove("fa-chevron-down");
-                arrowIcon.classList.add("fa-chevron-up");
-            } else {
-                eventsDiv.style.display = "none";
-                arrowIcon.classList.remove("fa-chevron-up");
-                arrowIcon.classList.add("fa-chevron-down");
-            }
-        }
+    var eventsSection = document.querySelector('.previous-events');
+    if (eventsSection.style.display === 'none') {
+        eventsSection.style.display = 'block';
+    } else {
+        eventsSection.style.display = 'none';
+    }
+}
+
     </script>
 </body>
 </html>
