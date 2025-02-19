@@ -372,6 +372,18 @@ footer .icons-container {
         eventsSection.style.display = 'none';
     }
 }
+        function toggleMissionContent() {
+    // Toggle video visibility (if needed)
+    const missionVideo = document.getElementById("missionVideo");
+    missionVideo.style.display = "block";
+    missionVideo.style.opacity = "1";
+
+    // Change icons to red when the image is clicked
+    document.querySelectorAll(".icon").forEach(icon => {
+        icon.style.color = "#ff0000"; // Change color to red
+    });
+}
+
 
     </script>
 </body>
