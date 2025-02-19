@@ -51,7 +51,7 @@
             display: none;
             z-index: -1;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 3s ease-in-out;
         }
 
         @media (max-width: 768px) {
@@ -81,7 +81,7 @@
         }
 
         #missionContent {
-            animation: fadeIn 4s ease forwards;
+            animation: fadeIn 7s ease forwards;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -114,16 +114,16 @@
 
         .flip-image-x {
             animation: flipImageX 4s ease forwards;
-            -webkit-animation: flipImageX 1s ease forwards;
+            -webkit-animation: flipImageX 4s ease forwards;
         }
 
         .flip-image-y {
             animation: flipImageY 4s ease forwards;
-            -webkit-animation: flipImageY 1s ease forwards;
+            -webkit-animation: flipImageY 4s ease forwards;
         }
 
         #missionVideo.fadeOut {
-            animation: fadeOut 4s ease forwards;
+            animation: fadeOut 8s ease forwards;
         }
 
         #countdownWrapper {
@@ -133,7 +133,7 @@
 
         #countdown {
             font-size: 42px;
-            color: #FF0000;
+            color: #FFFF00;
         }
 
         .logo {
@@ -168,7 +168,7 @@
 
     
         .icon {
-            color: #FF0000; /* Red Green color */
+            color: #39FF14; /* Acid Green color */
             font-size: 24px; /* Adjust size if needed */
              margin-right: 5px; /* Adds space between icons */
         }
@@ -265,7 +265,7 @@ footer .icons-container {
                         <div class="body-text">
                             <p>
                                 <a href="https://charlestonhacks.com/techweek.html" target="_blank">
-    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 900px; height: auto;">
+    <img id="aiffBanner" src="images/aiffbanner.png" alt="AI Film Fest" style="cursor: pointer; width: 900px; height: auto;">
 </a>
 
                             </p>
@@ -277,13 +277,9 @@ footer .icons-container {
                             <p>
                                 <a href="subscribe.html" target="_blank">Join the Mailing List</a>
                             </p>
-                             <p>
-                                <a href="Poster.html" target="_blank">Our Events</a>
-                            </p>
-                            
                         </div>
                         <div id="countdownWrapper">
-                            <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
+                            <p class="info"><b>Countdown to 30 second AI Film Fest:</b></p>
                             <div id="countdown"></div>
                         </div>
                     </div>
@@ -291,23 +287,31 @@ footer .icons-container {
             </header>
         </article>
     </div>
-<footer>
+  <footer>
     <section class="icons-container" style="display: flex; justify-content: center; align-items: center;">
         <a href="https://charlestonhacks.mailchimpsites.com/" target="_blank">
             <i class="fas fa-info-circle icon"></i>
         </a>
         <a href="2card.html"><i class="fas fa-users icon"></i></a>
-        <!-- Removed Chevron Icon and Previous Events Toggle -->
+        <h1 id="previousEventsToggle" style="cursor: pointer; font-size: 20px; margin: 0 15px;" onclick="toggleVisibility()">
+            <i class="fas fa-chevron-down icon"></i>
+        </h1>
         <a href="https://www.linkedin.com/company/charlestonhacks"><i class="fab fa-linkedin icon"></i></a>
         <a href="https://www.instagram.com/charlestonhacks/" target="_blank"><i class="fab fa-instagram icon"></i></a>
         <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
         <a href="https://twitter.com/Descart84114619" target="_blank"><i class="fab fa-twitter icon"></i></a>
         <a href="https://www.facebook.com/deckerdb26354" target="_blank"><i class="fab fa-facebook icon"></i></a>
     </section>
-    
-    
+    <div class="previous-events" style="display: none;">
+            <p><a href="techweek.html" style="color: white;">Tech Week: 30 second AI Film Fest (May 1st 2025)</a></p>
+            <p><a href="harborhack24.html" style="color: white;">HarborHack (Fall 2024)</a></p>
+             <p><a href="meetupmashup.html" style="color: white;">Meetup Mashup (Fall 2024)</a></p>
+            <p><a href="hacknights24.html" style="color: white;">Hack Nights (Summer 2024)</a></p>
+            <p><a href="hackopsalt.html" style="color: white;">HackOps (Spring 2024)</a></p>
+            <p><a href="harborhack23.html" style="color: white;">HarborHack (Fall 2023)</a></p>
+            <p><a href="summerhack.html" style="color: white;">SummerHack (Summer 2023)</a></p>
+    </div>
 </footer>
-
 
 <script src="ho-script.js"></script>
     <script>
@@ -342,7 +346,6 @@ footer .icons-container {
             "images/resilientcard.png",
             "images/Astrid.png",
             "images/nicolecard.png"
-            "images/universalcard-02.png"
         ];
 
         function getRandomImage() {
@@ -378,14 +381,18 @@ footer .icons-container {
         }
 
         function toggleVisibility() {
-    var eventsSection = document.querySelector('.previous-events');
-    if (eventsSection.style.display === 'none') {
-        eventsSection.style.display = 'block';
-    } else {
-        eventsSection.style.display = 'none';
-    }
-}
-
+            var eventsDiv = document.querySelector('.previous-events');
+            var arrowIcon = document.getElementById("arrowIcon");
+            if (eventsDiv.style.display === "none") {
+                eventsDiv.style.display = "block";
+                arrowIcon.classList.remove("fa-chevron-down");
+                arrowIcon.classList.add("fa-chevron-up");
+            } else {
+                eventsDiv.style.display = "none";
+                arrowIcon.classList.remove("fa-chevron-up");
+                arrowIcon.classList.add("fa-chevron-down");
+            }
+        }
     </script>
 </body>
 </html>
