@@ -191,27 +191,8 @@ footer .icons-container {
     footer .icons-container a {
         font-size: 20px; /* Reduces icon size for smaller screens */
     }
-    .scroll-instruction p {
-    color: #39FF14; /* Acid Green */
-    font-weight: bold; /* Optional: Makes it stand out */
-    font-size: 20px; /* Optional: Adjust size if needed */
-    text-align: center;
-    margin-top: 10px; /* Optional: Adjust spacing */
-}
-    /* Scroll Indicator at the Bottom */
-    .scroll-indicator {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 50px;
-        height: 5px;
-        background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
-        border-radius: 5px;
-        animation: fadeIndicator 1.5s infinite;
-    }
 
-    @keyframes fadeIndicator {
+@keyframes fadeIndicator {
         0% { opacity: 0.3; }
         50% { opacity: 1; }
         100% { opacity: 0.3; }
