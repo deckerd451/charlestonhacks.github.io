@@ -81,7 +81,7 @@
         }
 
         #missionContent {
-            animation: fadeIn 12s ease forwards;
+            animation: fadeIn 4s ease forwards;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -114,16 +114,16 @@
 
         .flip-image-x {
             animation: flipImageX 4s ease forwards;
-            -webkit-animation: flipImageX 2s ease forwards;
+            -webkit-animation: flipImageX 1s ease forwards;
         }
 
         .flip-image-y {
             animation: flipImageY 4s ease forwards;
-            -webkit-animation: flipImageY 2s ease forwards;
+            -webkit-animation: flipImageY 1s ease forwards;
         }
 
         #missionVideo.fadeOut {
-            animation: fadeOut 12s ease forwards;
+            animation: fadeOut 4s ease forwards;
         }
 
         #countdownWrapper {
@@ -191,8 +191,27 @@ footer .icons-container {
     footer .icons-container a {
         font-size: 20px; /* Reduces icon size for smaller screens */
     }
+    .scroll-instruction p {
+    color: #39FF14; /* Acid Green */
+    font-weight: bold; /* Optional: Makes it stand out */
+    font-size: 20px; /* Optional: Adjust size if needed */
+    text-align: center;
+    margin-top: 10px; /* Optional: Adjust spacing */
+}
+    /* Scroll Indicator at the Bottom */
+    .scroll-indicator {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 5px;
+        background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+        border-radius: 5px;
+        animation: fadeIndicator 1.5s infinite;
+    }
 
-@keyframes fadeIndicator {
+    @keyframes fadeIndicator {
         0% { opacity: 0.3; }
         50% { opacity: 1; }
         100% { opacity: 0.3; }
@@ -237,7 +256,7 @@ footer .icons-container {
                     <a class="image main" onclick="toggleMissionContent()">
                         <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
                         <video id="missionVideo" muted playsinline>
-                            <source src="assets/trailer.mp4" type="video/mp4">
+                            <source src="images/teams.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </a>
@@ -352,18 +371,7 @@ footer .icons-container {
     } else {
         eventsSection.style.display = 'none';
     }
-        function toggleMissionContent() {
-    // Toggle video visibility (if needed)
-    const missionVideo = document.getElementById("missionVideo");
-    missionVideo.style.display = "block";
-    missionVideo.style.opacity = "1";
-
-    // Change icons to red when the image is clicked
-    document.querySelectorAll(".icon").forEach(icon => {
-        icon.style.color = "#ff0000"; // Change color to red
-    });
 }
-
 
     </script>
 </body>
