@@ -95,11 +95,11 @@
         <div id="lightbox-gallery">
     <a href="techweek.html">
         <img src="images/AIFF.jpg" alt="" class="image main" />
-    </a>
+    </a><br>
 
 <a href="https://www.example2.com" data-lightbox="gallery">
     <img src="images/Dave good.jpg" alt="" />
-</a>
+</a><br>
 
 <a href="harborhack24.html" data-lightbox="gallery">
     <img src="images/hh24poster.png" alt="" />
@@ -157,29 +157,6 @@ document.querySelectorAll('#lightbox-gallery a').forEach(link => {
         }
     });
 });
-
-    // Track occurrences of "Descartes.png"
-    let descartesCount = 0;
-
-    // Function to check for images and count "Descartes.png"
-    function checkDescartes() {
-        let images = document.querySelectorAll("#lightbox-gallery img");
-        descartesCount = 0;
-
-        images.forEach(img => {
-            if (img.src.includes("images/Descartes.png")) {
-                descartesCount++;
-            }
-        });
-
-        // Redirect if "Descartes.png" appears twice
-        if (descartesCount >= 2) {
-            window.location.href = "Poster.html";
-        }
-    }
-
-    // Run check after all images are loaded
-    window.addEventListener("load", checkDescartes);
 </script>
 
 </body>
