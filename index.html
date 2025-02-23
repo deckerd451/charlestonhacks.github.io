@@ -4,8 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
+    <meta property="og:title" content="CharlestonHacks - Home" />
+    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
+    <meta property="og:image" content="images/universalcard-01.png" />
+    <meta property="og:url" content="https://charlestonhacks.com" />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>CharlestonHacks - Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json" />
     <style>
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
@@ -263,6 +269,15 @@
             color: #0000FF;
         }
 
+        .loading-indicator {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
     </style>
 </head>
 <body class="is-preload">
@@ -276,10 +291,13 @@
                 <div class="panel">
                     <a class="image main" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
-                        <video id="missionVideo" muted playsinline controls> <!-- Added controls for video playback -->
+                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()"> <!-- Added controls for video playback -->
                             <source src="assets/trailer.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        <div class="loading-indicator" id="loadingIndicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
                     </a>
                     <div id="missionContent">
                         <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
@@ -405,6 +423,26 @@
         document.querySelector('.dark-mode-toggle').addEventListener('click', function() {
             document.body.classList.toggle('light-mode');
         });
+
+        function showLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'block';
+        }
+
+        function hideLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+
+        function handleVideoError() {
+            alert("Error loading video. Please try again later.");
+        }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-XXXXX-Y');
     </script>
 </body>
 </html>
