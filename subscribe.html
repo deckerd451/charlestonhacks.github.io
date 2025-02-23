@@ -1,20 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Subscribe to Charleston Hacks Mailing List to stay updated on the latest events and news.">
     <title>Subscribe to Mailing List</title>
     <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
     <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #mc_embed_shell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
         #mc_embed_signup {
             background: #fff;
-            clear: left;
-            font: 14px Helvetica, Arial, sans-serif;
-            width: 600px;
-            margin: 50px auto;
+            width: 100%;
+            max-width: 600px;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        .indicates-required {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .mc-field-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="email"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .response {
+            display: none;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            #mc_embed_signup {
+                padding: 15px;
+            }
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('mc-embedded-subscribe-form');
+            form.addEventListener('submit', function(event) {
+                const emailInput = document.getElementById('mce-EMAIL');
+                if (!validateEmail(emailInput.value)) {
+                    event.preventDefault();
+                    alert('Please enter a valid email address.');
+                }
+            });
+
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+        });
+    </script>
 </head>
 <body>
     <div id="mc_embed_shell">
@@ -43,8 +130,8 @@
                         <input type="text" name="LNAME" class="" id="mce-LNAME">
                     </div>
                     <div id="mce-responses" class="clear">
-                        <div class="response" id="mce-error-response" style="display:none"></div>
-                        <div class="response" id="mce-success-response" style="display:none"></div>
+                        <div class="response" id="mce-error-response"></div>
+                        <div class="response" id="mce-success-response"></div>
                     </div>
                     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
                     <div style="position: absolute; left: -5000px;" aria-hidden="true">
@@ -59,4 +146,3 @@
     </div>
 </body>
 </html>
-
