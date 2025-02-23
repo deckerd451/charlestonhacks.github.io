@@ -280,7 +280,7 @@
 
         /* Full size card styles */
         .full-size-card {
-            position: fixed;
+            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -289,6 +289,8 @@
             height: auto;
             z-index: 100;
             display: none;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
         }
 
         .full-size-card.flip-image-x {
@@ -438,6 +440,10 @@
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             fullSizeCard.classList.add(randomFlip);
             fullSizeCard.style.display = 'block';
+            setTimeout(function() {
+                fullSizeCard.style.opacity = 1;
+            }, 100);
+
             setTimeout(function() {
                 window.location.href = 'https://charlestonhacks.com/techweek.html';
             }, 2000); // Adjust the delay to match the animation duration
