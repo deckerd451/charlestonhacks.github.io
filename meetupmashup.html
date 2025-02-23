@@ -3,146 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Subscribe to Charleston Hacks Mailing List to stay updated on the latest events and news.">
-    <title>Subscribe to Mailing List</title>
-    <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
+    <title>MeetupMashup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
     <style>
         body {
-            background-color: #f4f4f4;
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
         }
 
-        #mc_embed_shell {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding: 20px;
-        }
-
-        #mc_embed_signup {
-            background: #fff;
+        .scroll-container {
             width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #333;
-            text-align: center;
-        }
-
-        .indicates-required {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .mc-field-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        input[type="email"],
-        input[type="text"] {
-            width: 100%;
+            height: 400px; /* Adjust height as needed */
+            overflow-x: scroll;
+            overflow-y: hidden;
+            white-space: nowrap;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin: 20px auto;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
+        .scroll-container a {
+            display: inline-block;
+            height: 100%;
+            margin-right: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3;
+        .scroll-container a:last-child {
+            margin-right: 0;
         }
 
-        .response {
-            display: none;
-            margin-top: 20px;
+        .scroll-container img {
+            height: 100%;
+            border-radius: 5px;
         }
 
-        @media (max-width: 600px) {
-            #mc_embed_signup {
-                padding: 15px;
+        .logo-container {
+            display: flex;
+            justify-content: center; /* Centers the logo */
+            align-items: center;
+            width: 100%; /* Ensures it scales across all screen sizes */
+            margin-top: 20px; /* Adjust spacing as needed */
+        }
+
+        .responsive-logo {
+            width: 50%; /* Adjusts to 50% of the parent container */
+            max-width: 400px; /* Prevents it from being too large on big screens */
+            height: auto; /* Maintains aspect ratio */
+        }
+
+        /* Adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .responsive-logo {
+                width: 80%; /* Takes up more space on smaller screens */
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .responsive-logo {
+                width: 90%; /* Almost full width on very small screens */
+                max-width: 250px;
             }
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('mc-embedded-subscribe-form');
-            form.addEventListener('submit', function(event) {
-                const emailInput = document.getElementById('mce-EMAIL');
-                if (!validateEmail(emailInput.value)) {
-                    event.preventDefault();
-                    alert('Please enter a valid email address.');
-                }
-            });
-
-            function validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
-            }
-        });
-    </script>
 </head>
 <body>
-    <div id="mc_embed_shell">
-        <div id="mc_embed_signup">
-            <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=3b95e0177a&amp;f_id=002f09e9f0" 
-                  method="post" 
-                  id="mc-embedded-subscribe-form" 
-                  name="mc-embedded-subscribe-form" 
-                  class="validate" 
-                  target="_blank">
-                <div id="mc_embed_signup_scroll">
-                    <h2>Subscribe to Our Mailing List</h2>
-                    <div class="indicates-required">
-                        <span class="asterisk">*</span> indicates required
-                    </div>
-                    <div class="mc-field-group">
-                        <label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label>
-                        <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required>
-                    </div>
-                    <div class="mc-field-group">
-                        <label for="mce-FNAME">First Name</label>
-                        <input type="text" name="FNAME" class="" id="mce-FNAME">
-                    </div>
-                    <div class="mc-field-group">
-                        <label for="mce-LNAME">Last Name</label>
-                        <input type="text" name="LNAME" class="" id="mce-LNAME">
-                    </div>
-                    <div id="mce-responses" class="clear">
-                        <div class="response" id="mce-error-response"></div>
-                        <div class="response" id="mce-success-response"></div>
-                    </div>
-                    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
-                        <input type="text" name="b_79363b7a43970f760d61360fd_3b95e0177a" tabindex="-1" value="">
-                    </div>
-                    <div class="clear">
-                        <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
-                    </div>
-                </div>
-            </form>
-        </div>
+
+    <h1 style="text-align: center; margin-top: 20px;">Welcome to MeetupMashup #1</h1>
+    <p style="text-align: center;">Explore our highlights below:</p>
+
+    <div class="scroll-container">
+        <a href="images/mashupposter.jpg" data-lightbox="mashup" data-title="Meetup Mashup Poster"><img src="images/mashupposter.jpg" alt="Meetup Mashup Poster"></a>
+        <a href="images/davedoug.jpg" data-lightbox="mashup" data-title="Doug and Dave"><img src="images/davedoug.jpg" alt="Doug and Dave"></a>
+        <a href="images/mmcomic.png" data-lightbox="mashup" data-title="Comic 1"><img src="images/mmcomic.png" alt="Comic 1"></a>
+        <a href="images/mmcomic2.png" data-lightbox="mashup" data-title="Comic 2"><img src="images/mmcomic2.png" alt="Comic 2"></a>
+        <a href="images/mmcomic3.png" data-lightbox="mashup" data-title="Comic 3"><img src="images/mmcomic3.png" alt="Comic 3"></a>
+        <a href="images/letter.png" data-lightbox="mashup" data-title="Letter"><img src="images/letter.png" alt="Letter"></a>
     </div>
+
+    <!-- Footer -->
+    <footer id="footer" style="text-align: center; padding: 20px; background-color: #f4f4f9; margin-top: 20px; border-top: 2px solid #ddd;">
+        <a class="logo-container" href="index.html">
+            <img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="Charleston Hacks Logo" class="responsive-logo">
+        </a>
+        <p style="margin-top: 10px; font-size: 16px; color: #333;">© 2025 MeetupMashup. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 </body>
 </html>
