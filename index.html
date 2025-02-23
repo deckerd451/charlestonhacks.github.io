@@ -278,6 +278,27 @@
             z-index: 2;
         }
 
+        /* Full size card styles */
+        .full-size-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            height: auto;
+            z-index: 100;
+            display: none;
+        }
+
+        .full-size-card.flip-image-x {
+            animation: flipImageX 2s ease forwards;
+        }
+
+        .full-size-card.flip-image-y {
+            animation: flipImageY 2s ease forwards;
+        }
+
     </style>
 </head>
 <body class="is-preload">
@@ -303,7 +324,7 @@
                         <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                         <div class="body-text">
                             <p>
-                                <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
+                                <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="showFullSizeCard()">
                             </p>
                             <p>
                                 <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
@@ -342,6 +363,9 @@
             <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook icon"></i></a>
         </section>
     </footer>
+
+    <!-- Full size card -->
+    <img id="fullSizeCard" src="images/aiffcard.png" alt="AI Film Fest Full Size Card" class="full-size-card">
 
     <script src="ho-script.js"></script>
     <script>
@@ -409,10 +433,11 @@
             }, 100);
         }
 
-        function flipAndRedirect() {
-            var banner = document.getElementById('aiffBanner');
+        function showFullSizeCard() {
+            var fullSizeCard = document.getElementById('fullSizeCard');
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            banner.classList.add(randomFlip);
+            fullSizeCard.classList.add(randomFlip);
+            fullSizeCard.style.display = 'block';
             setTimeout(function() {
                 window.location.href = 'https://charlestonhacks.com/techweek.html';
             }, 2000); // Adjust the delay to match the animation duration
