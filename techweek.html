@@ -139,10 +139,59 @@
             color: #cc0000;
         }
 
-        /* Reduce the space above the image */
-        .image.main {
-            margin-top: 0;
-            padding-top: 0;
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .dark-mode-toggle .fa-sun {
+            display: none;
+        }
+
+        body.light-mode .dark-mode-toggle .fa-sun {
+            display: inline;
+        }
+
+        body.light-mode .dark-mode-toggle .fa-moon {
+            display: none;
+        }
+
+        body.light-mode {
+            background-color: white;
+            color: black;
+        }
+
+        body.light-mode .collapsible {
+            background-color: #00f;
+            color: white;
+        }
+
+        body.light-mode .collapsible:hover {
+            background-color: #009;
+        }
+
+        body.light-mode .zoom-image {
+            color: black;
+        }
+
+        body.light-mode .countdown {
+            color: #00f;
+        }
+
+        body.light-mode footer#footer .icons li a {
+            color: #00f;
+        }
+
+        body.light-mode footer#footer .icons li a:hover {
+            color: #009;
         }
 
         @media (max-width: 768px) {
@@ -166,7 +215,10 @@
     </style>
 </head>
 <body class="is-preload">
-    
+    <button class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+    </button>
     <!-- Main Content -->
     <div id="main">
         <article class="post featured">
@@ -309,20 +361,25 @@
             alert("Error loading video. Please try again later.");
         }
 
+        document.querySelector('.dark-mode-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
-            let coll = document.querySelector(".collapsible");
-            let content = document.querySelector(".content");
-
             // Hide content initially
-            content.style.display = "none";
+            const coll = document.querySelector(".collapsible");
+            const content = document.querySelector(".content");
+            if (content) {
+                content.style.display = "none";
 
-            coll.addEventListener("click", function() {
-                if (content.style.display === "none") {
-                    content.style.display = "block";
-                } else {
-                    content.style.display = "none";
-                }
-            });
+                coll.addEventListener("click", function() {
+                    if (content.style.display === "none") {
+                        content.style.display = "block";
+                    } else {
+                        content.style.display = "none";
+                    }
+                });
+            }
         });
     </script>
 
