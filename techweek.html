@@ -1,327 +1,148 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta name="description" content="30 Second AI Film Fest and Charleston Tech Week" />
-    <title>30 Second AIFF</title>
-    <!-- Preload the main image -->
-    <link rel="preload" as="image" href="images/banner.png">
-<link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-
-    <!-- FontAwesome for social media icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Subscribe to Charleston Hacks Mailing List to stay updated on the latest events and news.">
+    <title>Subscribe to Mailing List</title>
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
     <style>
-        /* General Styles */
-        html, body {
-            background-color: #000 !important; /* Black background */
-            color: #ffffff !important; /* White text */
+        body {
+            background-color: #f4f4f4;
             font-family: Arial, sans-serif;
-            font-size: 20px; /* Increased font size */
             margin: 0;
             padding: 0;
         }
 
-        * {
-            background-color: #000 !important; /* Force black background */
-            color: #ffffff !important; /* White text */
-        }
-
-        /* Button styles */
-        .collapsible {
-            background-color: #ff0000 !important; /* Red */
-            color: #000 !important; /* Black text */
-            padding: 15px;
-            width: 100%;
-            border: none;
-            text-align: center;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            margin-bottom: 40px;
-        }
-
-        .collapsible:hover {
-            background-color: #cc0000 !important; /* Darker red */
-        }
-
-       /* Image styles */
-        
-.zoom-image {
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    display: block;
-    margin: 0 auto 40px auto; /* Centering and spacing */
-}
- .zoom-image:hover {
-            transform: scale(1.2);
-            transition: transform 0.3s ease;
-        }
-
-        /* Countdown Timer Styles */
-        .countdown {
-            font-size: 24px;
-            text-align: center;
-            margin: 20px 0;
-            padding: 10px;
-            background-color: #000 !important; /* Ensuring background stays black */
-            border-radius: 5px;
-            color: #ff0000 !important; /* Red text */
-            font-weight: bold;
-        }
-
-        /* Footer styles */
-        footer#footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #000 !important; /* Black background */
-            border: none; /* Remove any borders */
-            box-shadow: none; /* Remove any box shadow */
-        }
-
-        footer#footer .icons {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        footer#footer .icons li {
-            display: inline-block;
-            margin: 10px;
-        }
-
-        footer#footer .icons li a {
-            color: #ff0000; /* Red icons */
-            font-size: 24px;
-            text-decoration: none;
-        }
-
-        footer#footer .icons li a:hover {
-            color: #cc0000; /* Darker red */
-        }
-
-        /* Video Player Styles */
-        .video-container {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 9999; /* Ensure it is on top */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+        #mc_embed_shell {
+            display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.3s ease; /* Add smooth transition */
+            height: 100vh;
+            padding: 20px;
         }
 
-        /* Video Player Styles */
-        .video-container video {
-            width: 80%;
-            max-width: 900px;
-            height: auto;
-            object-fit: contain;
-            border: 5px solid #ff0000; /* Red border */
-            border-radius: 10px; /* Rounded corners */
+        #mc_embed_signup {
+            background: #fff;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .video-close {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            color: #ff0000; /* Red */
-            font-size: 36px;
-            font-weight: bold;
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        .indicates-required {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .mc-field-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="email"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: color 0.3s ease;
+            width: 100%;
+            font-size: 16px;
         }
 
-        .video-close:hover {
-            color: #cc0000; /* Darker red */
+        input[type="submit"]:hover {
+            background-color: #0056b3;
         }
-        /* Reduce the space above the image */
-.image.main {
-    margin-top: 0; /* Remove any top margin */
-    padding-top: 0; /* Remove any top padding */
-}
 
+        .response {
+            display: none;
+            margin-top: 20px;
+        }
 
-       @media (max-width: 768px) {
-    .zoom-image {
-        width: 90%; /* Adjusts size for smaller screens */
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 20px auto;
-    }
-
-
-            div#main {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                padding: 10px;
+        @media (max-width: 600px) {
+            #mc_embed_signup {
+                padding: 15px;
             }
         }
     </style>
-</head>
-<body class="is-preload">
-    
-    <!-- Main Content -->
-    <div id="main">
-        <article class="post featured">
-            <header class="major"></header>
-            <a class="image main" href="Poster.html">
-                <img src="assets/chbackbuttonred.png" alt="Charleston Hacks Logo" style="width: 40%; height: auto;" />
-            </a>
-            <div>
-              <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
-           <a class="image main" onclick="openLightbox('images/banner.png')">
-               <img src="images/banner.png" alt="Hackathon Poster" class="poster-img" />
-           </a>
-            </div>
-        
-            <p><h3>Lights, Camera-AI! CharlestonHacks presents the 30 Second AI Film Fest.</h3></p>
-            <p>The 30 Second AI Film Fest is a 3-hour AI-generated video hackathon where participants will create innovative, AI-powered 30-second short films. Hosted by CharlestonHacks as part of Dig South and Charleston Tech Week, this event encourages creativity, experimentation, and storytelling through AI-generated content.</p>
-         
-            <p><h3>A 30-Second Blockbuster – Our Theme</h3></p>
-            <p> A blockbuster isn’t just about action—it’s about unforgettable moments. Whether it focuses on intense action, drama, mystery,a pulse-pounding chase or human connections, this theme challenges filmmakers to think big and move fast while using AI tools to bring their vision to life.</p>
-           <br>
-                <strong>Date & Time:</strong> May 1st, 7-10 PM<br>
-                <strong>Location:</strong> Simmons Center, College of Charleston
-            </p>
-            <hr>
-     <!-- Event Rules -->
-            <p><h3>Rules,Terms and Event Overview</h3></p>
-           
-                <p><strong>Team Formation:</strong> Participants may compete solo or in teams of up to 4 people. Teams can be formed at the event or pre-arranged.</p>
-                <p><strong>AI Usage & Tools:</strong> Films must be created entirely within the 3-hour event window. Teams must use at least one AI-powered tool (e.g., Runway, Sora, Pika, Kaiber, Stable Diffusion, DALL·E, ElevenLabs, ChatGPT, OpenArt, etc.).</p>
-                <p><strong>Film Requirements:</strong> Each film must be 30 seconds but may be up to 2 minutes. Content must be PG-level. Films must tell a cohesive story or convey a clear concept.</p>
-                <p><strong>Submission & Presentation:</strong> Films must be submitted before the 10:00 PM deadline via the provided submission form. All films will be presented live to the audience and judges.</p>
-                <p><strong>Judging Criteria:</strong> Films will be evaluated based on Creativity & Innovation, Storytelling & Clarity, AI Integration, and Visual & Audio Quality.</p>
-                <p><strong>Prizes & Recognition:</strong> Prizes for Best Film, Most Creative Use of AI, and Audience Favorite. Winners will receive exclusive CharlestonHacks swag, prizes, and recognition.</p>
-           
-<hr>
-            <!-- Terms & Conditions -->
-            <p><h3>Terms & Conditions</h3></p>
-         
-                <p><strong>Eligibility:</strong> Open to all attendees of Charleston Tech Week. Participants must be 18+ or have parental consent.</p>
-                <p><strong>Ownership & Rights:</strong> Teams retain full rights to their films but grant CharlestonHacks non-exclusive rights to showcase and promote them for marketing purposes.</p>
-                <p><strong>Code of Conduct:</strong> Be respectful. Collaboration and knowledge sharing are encouraged, but plagiarism is prohibited. Pre-generated work is not allowed.</p>
-         
-<hr>
-            <!-- Submission Instructions -->
-            
-            <p><h3>How to Submit Your Film:</h3></p>
-            <p><b>To streamline submissions and showcase all films in one place, we’re asking participants to upload their own videos to YouTube and tag them using our official event hashtag.</b></p> 
-            <p>Upload your 30-second film to your own YouTube channel.
-                Include the event hashtag "#30saiff" in the video title or description.
-                Tag our official YouTube channel (@charlestonHacks-mc4ct) in your description.
-                Once uploaded, we’ll find your film via the hashtag and add it to our official festival playlist!</p>
-        
-
-            <!-- Playlist Button as Link -->
-            <a class="collapsible" href="https://www.youtube.com/@charlestonHacks-mc4ct" target="_blank">Festival Playlist</a> 
-            
-            <!-- Countdown Timer -->
-            <div id="countdown" class="countdown"></div>
-        </article>
-    </div>
-
-    <!-- Video Modal -->
-    <div id="videoModal" class="video-container">
-        <span class="video-close" onclick="closeVideo();">&times;</span>
-     <video id="videoPlayer" controls autoplay muted playsinline>
-<source src="assets/AIFF PROMO.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-   
-
-
-    <!-- Audio for the Video -->
-    <audio id="videoAudio" loop>
-        <source src="assets/music.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-    </audio>
-
-    <!-- Footer -->
-    <footer id="footer">
-         <a class="image main" href="Poster.html">
-                <img src="assets/chbackbuttonred.png" alt="Charleston Hacks Logo" style="width: 40%; height: auto;" />
-            </a>
-    </footer>
-
     <script>
-        // Countdown Timer Script
-        function updateCountdown() {
-            const eventDate = new Date('May 1, 2025 19:00:00').getTime();
-            const now = new Date().getTime();
-            const distance = eventDate - now;
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('mc-embedded-subscribe-form');
+            form.addEventListener('submit', function(event) {
+                const emailInput = document.getElementById('mce-EMAIL');
+                if (!validateEmail(emailInput.value)) {
+                    event.preventDefault();
+                    alert('Please enter a valid email address.');
+                }
+            });
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('countdown').innerHTML =
-                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.getElementById('countdown').innerHTML = "Event has started!";
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
             }
-        }
-
-        const countdownInterval = setInterval(updateCountdown, 1000);
-
-        // Open Video Functionality
-        function openVideo() {
-            const videoModal = document.getElementById("videoModal");
-            videoModal.style.display = "flex"; // Use flex to center the video modal
-            document.body.style.overflow = 'hidden'; // Disable body scroll when modal is open
-            document.getElementById('videoAudio').play();  // Play the audio when video starts
-        }
-
-        // Close Video Functionality
-        function closeVideo() {
-            const videoModal = document.getElementById("videoModal");
-            videoModal.style.display = "none";
-            document.body.style.overflow = 'auto'; // Enable body scroll after modal is closed
-            document.getElementById('videoAudio').pause(); // Pause the audio when the video is closed
-        }
-
-        // Syncing the video and audio
-        document.getElementById('videoPlayer').onplay = function() {
-            document.getElementById('videoAudio').play();  // Play the audio when the video starts
-        };
-
-        document.getElementById('videoPlayer').onpause = function() {
-            document.getElementById('videoAudio').pause();  // Pause the audio when the video pauses
-        };
-        <script>
-document.addEventListener("DOMContentLoaded", function() {
-    let coll = document.querySelector(".collapsible");
-    let content = document.querySelector(".content");
-
-    // Hide content initially
-    content.style.display = "none";
-
-    coll.addEventListener("click", function() {
-        if (content.style.display === "none") {
-            content.style.display = "block";
-        } else {
-            content.style.display = "none";
-        }
-    });
-});
-
+        });
     </script>
+</head>
+<body>
+    <div id="mc_embed_shell">
+        <div id="mc_embed_signup">
+            <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=3b95e0177a&amp;f_id=002f09e9f0" 
+                  method="post" 
+                  id="mc-embedded-subscribe-form" 
+                  name="mc-embedded-subscribe-form" 
+                  class="validate" 
+                  target="_blank">
+                <div id="mc_embed_signup_scroll">
+                    <h2>Subscribe to Our Mailing List</h2>
+                    <div class="indicates-required">
+                        <span class="asterisk">*</span> indicates required
+                    </div>
+                    <div class="mc-field-group">
+                        <label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label>
+                        <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required>
+                    </div>
+                    <div class="mc-field-group">
+                        <label for="mce-FNAME">First Name</label>
+                        <input type="text" name="FNAME" class="" id="mce-FNAME">
+                    </div>
+                    <div class="mc-field-group">
+                        <label for="mce-LNAME">Last Name</label>
+                        <input type="text" name="LNAME" class="" id="mce-LNAME">
+                    </div>
+                    <div id="mce-responses" class="clear">
+                        <div class="response" id="mce-error-response"></div>
+                        <div class="response" id="mce-success-response"></div>
+                    </div>
+                    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                        <input type="text" name="b_79363b7a43970f760d61360fd_3b95e0177a" tabindex="-1" value="">
+                    </div>
+                    <div class="clear">
+                        <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
