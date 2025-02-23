@@ -2,37 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="30 Second AI Film Fest and Charleston Tech Week" />
     <title>30 Second AIFF</title>
+    
     <!-- Preload the main image -->
     <link rel="preload" as="image" href="images/banner.png">
-<link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
     <!-- FontAwesome for social media icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <style>
         /* General Styles */
         html, body {
-            background-color: #000 !important; /* Black background */
-            color: #ffffff !important; /* White text */
+            background-color: #000;
+            color: #fff;
             font-family: Arial, sans-serif;
-            font-size: 20px; /* Increased font size */
+            font-size: 20px;
             margin: 0;
             padding: 0;
         }
 
-        * {
-            background-color: #000 !important; /* Force black background */
-            color: #ffffff !important; /* White text */
-        }
-
         /* Button styles */
         .collapsible {
-            background-color: #ff0000 !important; /* Red */
-            color: #000 !important; /* Black text */
+            background-color: #ff0000;
+            color: #fff;
             padding: 15px;
             width: 100%;
             border: none;
@@ -45,21 +41,21 @@
         }
 
         .collapsible:hover {
-            background-color: #cc0000 !important; /* Darker red */
+            background-color: #cc0000;
         }
 
-       /* Image styles */
-        
-.zoom-image {
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    display: block;
-    margin: 0 auto 40px auto; /* Centering and spacing */
-}
- .zoom-image:hover {
-            transform: scale(1.2);
+        /* Image styles */
+        .zoom-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 40px;
             transition: transform 0.3s ease;
+            loading: lazy; /* Lazy loading images */
+        }
+
+        .zoom-image:hover {
+            transform: scale(1.2);
         }
 
         /* Countdown Timer Styles */
@@ -68,9 +64,9 @@
             text-align: center;
             margin: 20px 0;
             padding: 10px;
-            background-color: #000 !important; /* Ensuring background stays black */
+            background-color: #000;
             border-radius: 5px;
-            color: #ff0000 !important; /* Red text */
+            color: #ff0000;
             font-weight: bold;
         }
 
@@ -78,9 +74,9 @@
         footer#footer {
             text-align: center;
             padding: 20px;
-            background-color: #000 !important; /* Black background */
-            border: none; /* Remove any borders */
-            box-shadow: none; /* Remove any box shadow */
+            background-color: #000;
+            border: none;
+            box-shadow: none;
         }
 
         footer#footer .icons {
@@ -95,45 +91,44 @@
         }
 
         footer#footer .icons li a {
-            color: #ff0000; /* Red icons */
+            color: #ff0000;
             font-size: 24px;
             text-decoration: none;
         }
 
         footer#footer .icons li a:hover {
-            color: #cc0000; /* Darker red */
+            color: #cc0000;
         }
 
         /* Video Player Styles */
         .video-container {
-            display: none; /* Hidden by default */
+            display: none;
             position: fixed;
-            z-index: 9999; /* Ensure it is on top */
+            z-index: 9999;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+            background-color: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
-            transition: all 0.3s ease; /* Add smooth transition */
+            transition: all 0.3s ease;
         }
 
-        /* Video Player Styles */
         .video-container video {
             width: 80%;
             max-width: 900px;
             height: auto;
             object-fit: contain;
-            border: 5px solid #ff0000; /* Red border */
-            border-radius: 10px; /* Rounded corners */
+            border: 5px solid #ff0000;
+            border-radius: 10px;
         }
 
         .video-close {
             position: absolute;
             top: 10px;
             right: 25px;
-            color: #ff0000; /* Red */
+            color: #ff0000;
             font-size: 36px;
             font-weight: bold;
             cursor: pointer;
@@ -141,24 +136,23 @@
         }
 
         .video-close:hover {
-            color: #cc0000; /* Darker red */
+            color: #cc0000;
         }
+
         /* Reduce the space above the image */
-.image.main {
-    margin-top: 0; /* Remove any top margin */
-    padding-top: 0; /* Remove any top padding */
-}
+        .image.main {
+            margin-top: 0;
+            padding-top: 0;
+        }
 
-
-       @media (max-width: 768px) {
-    .zoom-image {
-        width: 90%; /* Adjusts size for smaller screens */
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 20px auto;
-    }
-
+        @media (max-width: 768px) {
+            .zoom-image {
+                width: 90%;
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 20px auto;
+            }
 
             div#main {
                 display: flex;
@@ -181,53 +175,42 @@
                 <img src="assets/chbackbuttonred.png" alt="Charleston Hacks Logo" style="width: 40%; height: auto;" />
             </a>
             <div>
-              <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
-           <a class="image main" onclick="openLightbox('images/banner.png')">
-               <img src="images/banner.png" alt="Hackathon Poster" class="poster-img" />
-           </a>
+                <!-- Lightbox Trigger for Hackathon Poster -->
+                <a class="image main" onclick="openVideo();" aria-label="Open video">
+                    <img src="images/banner.png" alt="Hackathon Poster" class="zoom-image" />
+                </a>
             </div>
         
-            <p><h3>Lights, Camera-AI! CharlestonHacks presents the 30 Second AI Film Fest.</h3></p>
+            <h3>Lights, Camera-AI! CharlestonHacks presents the 30 Second AI Film Fest.</h3>
             <p>The 30 Second AI Film Fest is a 3-hour AI-generated video hackathon where participants will create innovative, AI-powered 30-second short films. Hosted by CharlestonHacks as part of Dig South and Charleston Tech Week, this event encourages creativity, experimentation, and storytelling through AI-generated content.</p>
          
-            <p><h3>A 30-Second Blockbuster – Our Theme</h3></p>
-            <p> A blockbuster isn’t just about action—it’s about unforgettable moments. Whether it focuses on intense action, drama, mystery,a pulse-pounding chase or human connections, this theme challenges filmmakers to think big and move fast while using AI tools to bring their vision to life.</p>
-           <br>
+            <h3>A 30-Second Blockbuster – Our Theme</h3>
+            <p>A blockbuster isn’t just about action—it’s about unforgettable moments. Whether it focuses on intense action, drama, mystery, a pulse-pounding chase, or human connections, this theme challenges filmmakers to think big and move fast while using AI tools to bring their vision to life.</p>
+            <p>
                 <strong>Date & Time:</strong> May 1st, 7-10 PM<br>
                 <strong>Location:</strong> Simmons Center, College of Charleston
             </p>
             <hr>
-     <!-- Event Rules -->
-            <p><h3>Rules,Terms and Event Overview</h3></p>
-           
-                <p><strong>Team Formation:</strong> Participants may compete solo or in teams of up to 4 people. Teams can be formed at the event or pre-arranged.</p>
-                <p><strong>AI Usage & Tools:</strong> Films must be created entirely within the 3-hour event window. Teams must use at least one AI-powered tool (e.g., Runway, Sora, Pika, Kaiber, Stable Diffusion, DALL·E, ElevenLabs, ChatGPT, OpenArt, etc.).</p>
-                <p><strong>Film Requirements:</strong> Each film must be 30 seconds but may be up to 2 minutes. Content must be PG-level. Films must tell a cohesive story or convey a clear concept.</p>
-                <p><strong>Submission & Presentation:</strong> Films must be submitted before the 10:00 PM deadline via the provided submission form. All films will be presented live to the audience and judges.</p>
-                <p><strong>Judging Criteria:</strong> Films will be evaluated based on Creativity & Innovation, Storytelling & Clarity, AI Integration, and Visual & Audio Quality.</p>
-                <p><strong>Prizes & Recognition:</strong> Prizes for Best Film, Most Creative Use of AI, and Audience Favorite. Winners will receive exclusive CharlestonHacks swag, prizes, and recognition.</p>
-           
-<hr>
-            <!-- Terms & Conditions -->
-            <p><h3>Terms & Conditions</h3></p>
-         
-                <p><strong>Eligibility:</strong> Open to all attendees of Charleston Tech Week. Participants must be 18+ or have parental consent.</p>
-                <p><strong>Ownership & Rights:</strong> Teams retain full rights to their films but grant CharlestonHacks non-exclusive rights to showcase and promote them for marketing purposes.</p>
-                <p><strong>Code of Conduct:</strong> Be respectful. Collaboration and knowledge sharing are encouraged, but plagiarism is prohibited. Pre-generated work is not allowed.</p>
-         
-<hr>
-            <!-- Submission Instructions -->
-            
-            <p><h3>How to Submit Your Film:</h3></p>
+            <h3>Rules, Terms and Event Overview</h3>
+            <p><strong>Team Formation:</strong> Participants may compete solo or in teams of up to 4 people. Teams can be formed at the event or pre-arranged.</p>
+            <p><strong>AI Usage & Tools:</strong> Films must be created entirely within the 3-hour event window. Teams must use at least one AI-powered tool (e.g., Runway, Sora, Pika, Kaiber, Stable Diffusion, DALL·E, ElevenLabs, ChatGPT, OpenArt, etc.).</p>
+            <p><strong>Film Requirements:</strong> Each film must be 30 seconds but may be up to 2 minutes. Content must be PG-level. Films must tell a cohesive story or convey a clear concept.</p>
+            <p><strong>Submission & Presentation:</strong> Films must be submitted before the 10:00 PM deadline via the provided submission form. All films will be presented live to the audience and judges.</p>
+            <p><strong>Judging Criteria:</strong> Films will be evaluated based on Creativity & Innovation, Storytelling & Clarity, AI Integration, and Visual & Audio Quality.</p>
+            <p><strong>Prizes & Recognition:</strong> Prizes for Best Film, Most Creative Use of AI, and Audience Favorite. Winners will receive exclusive CharlestonHacks swag, prizes, and recognition.</p>
+            <hr>
+            <h3>Terms & Conditions</h3>
+            <p><strong>Eligibility:</strong> Open to all attendees of Charleston Tech Week. Participants must be 18+ or have parental consent.</p>
+            <p><strong>Ownership & Rights:</strong> Teams retain full rights to their films but grant CharlestonHacks non-exclusive rights to showcase and promote them for marketing purposes.</p>
+            <p><strong>Code of Conduct:</strong> Be respectful. Collaboration and knowledge sharing are encouraged, but plagiarism is prohibited. Pre-generated work is not allowed.</p>
+            <hr>
+            <h3>How to Submit Your Film:</h3>
             <p><b>To streamline submissions and showcase all films in one place, we’re asking participants to upload their own videos to YouTube and tag them using our official event hashtag.</b></p> 
             <p>Upload your 30-second film to your own YouTube channel.
                 Include the event hashtag "#30saiff" in the video title or description.
                 Tag our official YouTube channel (@charlestonHacks-mc4ct) in your description.
                 Once uploaded, we’ll find your film via the hashtag and add it to our official festival playlist!</p>
-        
-
-            <!-- Playlist Button as Link -->
-            <a class="collapsible" href="https://www.youtube.com/@charlestonHacks-mc4ct" target="_blank">Festival Playlist</a> 
+            <a class="collapsible" href="https://www.youtube.com/@charlestonHacks-mc4ct" target="_blank" rel="noopener noreferrer">Festival Playlist</a> 
             
             <!-- Countdown Timer -->
             <div id="countdown" class="countdown"></div>
@@ -235,16 +218,17 @@
     </div>
 
     <!-- Video Modal -->
-    <div id="videoModal" class="video-container">
-        <span class="video-close" onclick="closeVideo();">&times;</span>
-     <video id="videoPlayer" controls autoplay muted playsinline>
-<source src="assets/AIFF PROMO.mp4" type="video/mp4">
+    <div id="videoModal" class="video-container" aria-hidden="true" role="dialog" aria-labelledby="videoModalTitle" aria-describedby="videoModalDesc">
+        <span class="video-close" onclick="closeVideo();" aria-label="Close video">&times;</span>
+        <video id="videoPlayer" controls autoplay muted playsinline aria-labelledby="videoModalTitle">
+            <source src="assets/AIFF PROMO.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
+        <div id="loadingIndicator" class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
     </div>
    
-
-
     <!-- Audio for the Video -->
     <audio id="videoAudio" loop>
         <source src="assets/music.mp3" type="audio/mp3">
@@ -253,9 +237,14 @@
 
     <!-- Footer -->
     <footer id="footer">
-         <a class="image main" href="Poster.html">
-                <img src="assets/chbackbuttonred.png" alt="Charleston Hacks Logo" style="width: 40%; height: auto;" />
-            </a>
+        <a class="image main" href="Poster.html">
+            <img src="assets/chbackbuttonred.png" alt="Charleston Hacks Logo" style="width: 40%; height: auto;" />
+        </a>
+        <ul class="icons">
+            <li><a href="https://twitter.com/CharlestonHacks" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="https://www.facebook.com/CharlestonHacks" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook"></i></a></li>
+            <li><a href="https://www.instagram.com/CharlestonHacks" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+        </ul>
     </footer>
 
     <script>
@@ -284,44 +273,66 @@
         // Open Video Functionality
         function openVideo() {
             const videoModal = document.getElementById("videoModal");
-            videoModal.style.display = "flex"; // Use flex to center the video modal
-            document.body.style.overflow = 'hidden'; // Disable body scroll when modal is open
-            document.getElementById('videoAudio').play();  // Play the audio when video starts
+            videoModal.style.display = "flex";
+            videoModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('videoAudio').play();
         }
 
         // Close Video Functionality
         function closeVideo() {
             const videoModal = document.getElementById("videoModal");
             videoModal.style.display = "none";
-            document.body.style.overflow = 'auto'; // Enable body scroll after modal is closed
-            document.getElementById('videoAudio').pause(); // Pause the audio when the video is closed
+            videoModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'auto';
+            document.getElementById('videoAudio').pause();
         }
 
         // Syncing the video and audio
         document.getElementById('videoPlayer').onplay = function() {
-            document.getElementById('videoAudio').play();  // Play the audio when the video starts
+            document.getElementById('videoAudio').play();
         };
 
         document.getElementById('videoPlayer').onpause = function() {
-            document.getElementById('videoAudio').pause();  // Pause the audio when the video pauses
+            document.getElementById('videoAudio').pause();
         };
-        <script>
-document.addEventListener("DOMContentLoaded", function() {
-    let coll = document.querySelector(".collapsible");
-    let content = document.querySelector(".content");
 
-    // Hide content initially
-    content.style.display = "none";
-
-    coll.addEventListener("click", function() {
-        if (content.style.display === "none") {
-            content.style.display = "block";
-        } else {
-            content.style.display = "none";
+        function showLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'block';
         }
-    });
-});
 
+        function hideLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+
+        function handleVideoError() {
+            alert("Error loading video. Please try again later.");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let coll = document.querySelector(".collapsible");
+            let content = document.querySelector(".content");
+
+            // Hide content initially
+            content.style.display = "none";
+
+            coll.addEventListener("click", function() {
+                if (content.style.display === "none") {
+                    content.style.display = "block";
+                } else {
+                    content.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-XXXXX-Y');
     </script>
 </body>
 </html>
