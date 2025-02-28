@@ -45,7 +45,7 @@
             width: 100%;
             max-width: 600px; /* Adjust the max-width as needed */
             margin: 0 auto;
-            overflow: hidden;
+            perspective: 1000px; /* Add perspective for 3D effect */
         }
 
         .media-container img,
@@ -68,6 +68,15 @@
             z-index: 1;
             opacity: 0;
             transition: opacity 3s ease-in-out, transform 3s ease-in-out; /* Transition for zoom */
+        }
+
+        .media-container.flipped .media-container img {
+            transform: rotateY(180deg);
+        }
+
+        .media-container.flipped .media-container video {
+            transform: translate(-50%, -50%) scale(1) rotateY(0deg); /* Zoom to fill and flip */
+            opacity: 1;
         }
 
         @media (max-width: 768px) {
@@ -254,7 +263,7 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
+                    <a class="media-container" id="mediaContainer" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
                         <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
@@ -342,29 +351,26 @@
             if (cardClicked) return;
             cardClicked = true;
 
-            var image = document.getElementById('missionImage');
-            image.src = getRandomImage();
-
-            var video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 1;
-            video.style.transform = 'translate(-50%, -50%) scale(1)'; /* Zoom to fill */
-            video.play();
+            var mediaContainer = document.getElementById('mediaContainer');
+            mediaContainer.classList.add('flipped');
 
             setTimeout(function () {
-                document.getElementById('missionContent').style.display = 'block';
-            }, 3000);
+                var video = document.getElementById('missionVideo');
+                video.style.display = 'block';
+                video.style.opacity = 1;
+                video.style.transform = 'translate(-50%, -50%) scale(1) rotateY(0deg)'; /* Zoom to fill and flip */
+                video.play();
 
-            setTimeout(function () {
-                video.classList.add('fadeOut');
                 setTimeout(function () {
-                    video.style.display = 'none';
-                }, 8000);
-            }, 25000);
+                    document.getElementById('missionContent').style.display = 'block';
+                }, 3000);
 
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            setTimeout(function () {
-                image.classList.add(randomFlip);
+                setTimeout(function () {
+                    video.classList.add('fadeOut');
+                    setTimeout(function () {
+                        video.style.display = 'none';
+                    }, 8000);
+                }, 25000);
             }, 100);
         }
 
