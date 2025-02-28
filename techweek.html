@@ -231,25 +231,18 @@
             }
         }
     </style>
-    </head>
-
-<!-- Main -->
-<div id="main">
-    <!-- Post -->
-    <article class="post featured">
-        <header class="major">
-            <a class="image main" href="index.html">
-    <img src="assets/chbackbuttonred.png" alt="" style="width: 300px; height: auto;" />
-</a>
-
-        </header>
+</head>
 
 <body class="is-preload">
 
     <!-- Main Content -->
     <div id="main">
         <article class="post featured">
-            <header class="major"></header>
+            <header class="major">
+                <a class="image main" href="index.html">
+                    <img src="assets/chbackbuttonred.png" alt="Back Button" style="width: 300px; height: auto;" />
+                </a>
+            </header>
             <div>
                 <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
                 <a class="image main" onclick="openVideo()">
@@ -397,6 +390,10 @@
 
         document.getElementById('videoPlayer').onpause = function () {
             document.getElementById('videoAudio').pause(); // Pause the audio when the video pauses
+        };
+
+        document.getElementById('videoPlayer').onended = function () {
+            closeVideo(); // Close the modal when the video ends
         };
 
         document.addEventListener("DOMContentLoaded", function () {
