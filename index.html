@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html lang="en">
 
 <head>
@@ -47,12 +48,12 @@
             margin: 0 auto;
             overflow: hidden;
         }
-           #missionVideo {
-        pointer-events: none;
-    }
-    #missionVideo.show {
-        pointer-events: auto;
-    }
+        #missionVideo {
+            pointer-events: none;
+        }
+        #missionVideo.show {
+            pointer-events: auto;
+        }
 
         .media-container img,
         .media-container video {
@@ -241,7 +242,9 @@
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
-                            <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                            <a href="https://charlestonhacks.mailchimpsites.com/" target="_blank">
+                                <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                            </a>
                             <div class="body-text">
                                 <p>
                                     <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
@@ -279,7 +282,7 @@
     <script src="ho-script.js"></script>
     <script>
         var countdownElement = document.getElementById('countdown');
-        var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
+        var countDownDate = new Date("May 1, 2025 18:00:00").getTime(); // Countdown set to 6:00 PM
         var countdownFunction = setInterval(function () {
             var now = new Date().getTime();
             var distance = countDownDate - now;
