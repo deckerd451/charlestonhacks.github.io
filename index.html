@@ -232,44 +232,6 @@
             padding: 0;
         }
 
-        .dark-mode-toggle {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 20;
-        }
-
-        .dark-mode-toggle .fa-sun {
-            display: none;
-        }
-
-        body.light-mode .dark-mode-toggle .fa-sun {
-            display: inline;
-            color: black; /* Change icon color to black in light mode */
-        }
-
-        body.light-mode .dark-mode-toggle .fa-moon {
-            display: none;
-        }
-
-        body.light-mode {
-            background-color: white;
-            color: black;
-        }
-
-        body.light-mode .icon, body.light-mode .info {
-            color: black;
-        }
-
-        body.light-mode .dark-mode-toggle {
-            color: black; /* Change toggle button color to black in light mode */
-        }
-
         .loading-indicator {
             display: none;
             position: absolute;
@@ -283,10 +245,6 @@
 </head>
 
 <body class="is-preload">
-    <button class="dark-mode-toggle" aria-label="Toggle dark mode">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
-    </button>
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -429,10 +387,6 @@
             var eventsSection = document.querySelector('.previous-events');
             eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
         }
-
-        document.querySelector('.dark-mode-toggle').addEventListener('click', function () {
-            document.body.classList.toggle('light-mode');
-        });
 
         function showLoadingIndicator() {
             document.getElementById('loadingIndicator').style.display = 'block';
