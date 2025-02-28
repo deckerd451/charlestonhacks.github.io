@@ -108,22 +108,22 @@
         @keyframes flipImageX {
             0% { opacity: 1; }
             50% { transform: rotateX(180deg); }
-            to { transform: rotateX(360deg); opacity: 0.3; }
+            to { transform: rotateX(360deg); opacity: 0; }
         }
 
         @keyframes flipImageY {
             0% { opacity: 1; }
             50% { transform: rotateY(180deg); }
-            to { transform: rotateY(360deg); opacity: 0.3; }
+            to { transform: rotateY(360deg); opacity: 0; }
         }
 
         .flip-image-x {
-            animation: flipImageX 2s ease forwards;
+            animation: flipImageX 3s ease forwards;
             z-index: 5; /* Ensure it's above everything else */
         }
 
         .flip-image-y {
-            animation: flipImageY 2s ease forwards;
+            animation: flipImageY 3s ease forwards;
             z-index: 5; /* Ensure it's above everything else */
         }
 
@@ -330,25 +330,21 @@
 
             playSound();
 
-            setTimeout(function () {
-                document.getElementById('missionContent').style.display = 'block';
-            }, 3000);
+            document.getElementById('missionContent').style.display = 'block';
 
             setTimeout(function () {
                 video.classList.add('fadeOut');
                 setTimeout(function () {
                     video.style.display = 'none';
-                }, 8000);
-            }, 25000);
+                }, 18000);
+            }, 18000);
 
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            setTimeout(function () {
-                image.classList.add(randomFlip);
-            }, 100);
+            image.classList.add(randomFlip);
         }
 
         function playSound() {
-            var audio = new Audio('assets/flipsound.m4a'); // Use a standard click sound effect
+            var audio = new Audio('assets/click.mp3'); // Use a standard click sound effect
             audio.play();
         }
 
