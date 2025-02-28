@@ -67,6 +67,7 @@
             display: none;
             z-index: 0;
             opacity: 0;
+            transition: opacity 1s ease-in-out; /* Smooth transition for fade out */
         }
 
         @media (max-width: 768px) {
@@ -114,14 +115,17 @@
 
         .flip-image-x {
             animation: flipImageX 2s ease forwards;
+            z-index: 3;
         }
 
         .flip-image-y {
             animation: flipImageY 2s ease forwards;
+            z-index: 3;
         }
 
         #missionVideo.fadeOut {
             animation: fadeOut 18s ease forwards !important;
+            z-index: 1;
         }
 
         #countdownWrapper {
@@ -383,6 +387,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
+        videoElement.addEventListener('play', playSound);
         videoElement.addEventListener('ended', function () {
             videoElement.style.display = 'none';
         });
