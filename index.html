@@ -44,6 +44,7 @@
             position: relative;
             width: 100%;
             max-width: 600px; /* Adjust the max-width as needed */
+            height: 400px; /* Set a specific height */
             margin: 0 auto;
             overflow: hidden;
         }
@@ -51,8 +52,9 @@
         .media-container img,
         .media-container video {
             width: 100%;
-            height: auto;
+            height: 100%; /* Ensure the media fills the container */
             display: block;
+            object-fit: cover; /* Maintain aspect ratio */
         }
 
         .media-container video {
