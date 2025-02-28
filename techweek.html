@@ -162,6 +162,15 @@
             /* Rounded corners */
         }
 
+        .video-container img {
+            width: 80%;
+            max-width: 900px;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 20px;
+            /* Margin for spacing */
+        }
+
         .video-close {
             position: absolute;
             top: 10px;
@@ -308,6 +317,7 @@
     <!-- Video Modal -->
     <div id="videoModal" class="video-container">
         <span class="video-close" onclick="closeVideo();">&times;</span>
+        <img src="images/banner.png" alt="Video Thumbnail" />
         <video id="videoPlayer" controls autoplay muted playsinline>
             <source src="assets/aiffteam.mp4" type="video/mp4">
             Your browser does not support the video tag.
