@@ -320,6 +320,8 @@
             video.style.opacity = 1;
             video.play();
 
+            playSound();
+
             setTimeout(function () {
                 document.getElementById('missionContent').style.display = 'block';
             }, 3000);
@@ -335,6 +337,11 @@
             setTimeout(function () {
                 image.classList.add(randomFlip);
             }, 100);
+        }
+
+        function playSound() {
+            var audio = new Audio('assets/flipsound.m4a');
+            audio.play();
         }
 
         function flipAndRedirect() {
