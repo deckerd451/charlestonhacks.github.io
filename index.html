@@ -241,8 +241,9 @@
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
-                            <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+
                             <div class="body-text">
+                            <img id="CharlestonHacks Logo" src="images/chred.png" alt="logo" style="max-width: 70%; height: auto;"  onclick="flipAndRedirect2()">
                                 <p>
                                     <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
                                 </p>
@@ -359,6 +360,14 @@
             banner.classList.add(randomFlip);
             setTimeout(function () {
                 window.location.href = 'https://charlestonhacks.com/techweek.html';
+            }, 2000);
+        }
+        function flipAndRedirect2() {
+            var banner = document.getElementById('aiffBanner');
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            banner.classList.add(randomFlip);
+            setTimeout(function () {
+                window.location.href = 'https://charlestonhacks.mailchimpsites.com/';
             }, 2000);
         }
 
