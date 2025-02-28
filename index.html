@@ -361,8 +361,6 @@
             setTimeout(function () {
                 image.classList.add(randomFlip);
             }, 100);
-
-            playSound();
         }
 
         function flipAndRedirect() {
@@ -407,11 +405,6 @@
         videoElement.addEventListener('ended', function () {
             videoElement.style.display = 'none';
         });
-
-        function playSound() {
-            var audio = new Audio('assets/flipsound.m4a');
-            audio.play();
-        }
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
     <script>
