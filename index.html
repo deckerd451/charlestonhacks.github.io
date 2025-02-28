@@ -1,4 +1,3 @@
-<!DOCTYPE HTML>
 <html lang="en">
 
 <head>
@@ -48,6 +47,12 @@
             margin: 0 auto;
             overflow: hidden;
         }
+           #missionVideo {
+        pointer-events: none;
+    }
+    #missionVideo.show {
+        pointer-events: auto;
+    }
 
         .media-container img,
         .media-container video {
@@ -118,12 +123,12 @@
         }
 
         .flip-image-x {
-            animation: flipImageX 6s ease forwards;
+            animation: flipImageX 3s ease forwards;
             z-index: 5; /* Ensure it's above everything else */
         }
 
         .flip-image-y {
-            animation: flipImageY 6s ease forwards;
+            animation: flipImageY 3s ease forwards;
             z-index: 5; /* Ensure it's above everything else */
         }
 
@@ -243,7 +248,7 @@
                                 </p>
                             </div>
                             <div id="countdownWrapper">
-                                <p class="info"><b>Countdown to AI Film Fest:</b></p>
+                                <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
                                 <div id="countdown"></div>
                             </div>
                         </div>
