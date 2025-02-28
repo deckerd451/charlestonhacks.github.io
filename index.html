@@ -65,10 +65,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
+            display: block;
             z-index: 0;
             opacity: 0;
-            transition: opacity 1s ease-in-out; /* Smooth transition for fade out */
+            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
         }
 
         @media (max-width: 768px) {
@@ -78,6 +78,7 @@
         }
 
         @keyframes fadeIn {
+            from { opacity: 0; }
             to { opacity: 1; }
         }
 
@@ -97,7 +98,7 @@
             text-align: center;
             display: none;
             z-index: 2;
-            opacity: 0;
+            opacity: 1;
         }
 
         #missionContent p, #missionContent a {
@@ -105,23 +106,25 @@
         }
 
         @keyframes flipImageX {
+            0% { opacity: 1; }
             50% { transform: rotateX(180deg); }
             to { transform: rotateX(360deg); opacity: 0.3; }
         }
 
         @keyframes flipImageY {
+            0% { opacity: 1; }
             50% { transform: rotateY(180deg); }
             to { transform: rotateY(360deg); opacity: 0.3; }
         }
 
         .flip-image-x {
             animation: flipImageX 2s ease forwards;
-           z-index: 5; /* Ensure it's above everything else */
+            z-index: 5; /* Ensure it's above everything else */
         }
 
         .flip-image-y {
             animation: flipImageY 2s ease forwards;
-           z-index: 5; /* Ensure it's above everything else */
+            z-index: 5; /* Ensure it's above everything else */
         }
 
         #missionVideo.fadeOut {
@@ -319,7 +322,10 @@
 
             var video = document.getElementById('missionVideo');
             video.style.display = 'block';
-            video.style.opacity = 1;
+            video.style.opacity = 0;
+            setTimeout(function() {
+                video.style.opacity = 1;
+            }, 100); // Delay to allow transition to take effect
             video.play();
 
             playSound();
