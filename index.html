@@ -67,6 +67,7 @@
             display: none;
             z-index: 0;
             opacity: 0;
+            transition: opacity 1s ease-in-out; /* Smooth transition for fade out */
         }
 
         @media (max-width: 768px) {
@@ -114,14 +115,17 @@
 
         .flip-image-x {
             animation: flipImageX 2s ease forwards;
+            z-index: 3;
         }
 
         .flip-image-y {
             animation: flipImageY 2s ease forwards;
+            z-index: 3;
         }
 
         #missionVideo.fadeOut {
             animation: fadeOut 18s ease forwards !important;
+            z-index: 1;
         }
 
         #countdownWrapper {
@@ -135,7 +139,8 @@
         }
 
         .logo {
-            margin-bottom: 20px;
+            display: block;
+            margin: 0 auto 20px auto; /* Center horizontally and add bottom margin */
         }
 
         .info {
@@ -189,6 +194,24 @@
             50% { transform: translateY(-5px); }
         }
 
+        #previousEventsToggle {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #previousEventsToggle i {
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
         .loading-indicator {
             display: none;
             position: absolute;
@@ -207,7 +230,7 @@
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
+                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
@@ -361,6 +384,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
+        videoElement.addEventListener('play', playSound);
         videoElement.addEventListener('ended', function () {
             videoElement.style.display = 'none';
         });
