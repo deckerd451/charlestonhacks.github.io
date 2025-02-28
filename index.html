@@ -50,15 +50,16 @@
 
         .panel video {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1); /* Start small */
             width: 100%; /* Ensure it takes up 100% width of the container */
             height: 100%; /* Ensure it takes up 100% height of the container */
             object-fit: cover; /* Makes the video fill the area while preserving the aspect ratio */
             display: none;
             z-index: -1;
             opacity: 0;
-            transition: opacity 3s ease-in-out;
+            transition: opacity 3s ease-in-out, transform 3s ease-in-out; /* Transition for zoom */
         }
 
         @media (max-width: 768px) {
@@ -223,61 +224,19 @@
             padding: 0;
         }
 
-        .dark-mode-toggle {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 20;
-        }
-
-        .dark-mode-toggle .fa-sun {
-            display: none;
-        }
-
-        body.light-mode .dark-mode-toggle .fa-sun {
-            display: inline;
-            color: black; /* Change icon color to black in light mode */
-        }
-
-        body.light-mode .dark-mode-toggle .fa-moon {
-            display: none;
-        }
-
-        body.light-mode {
-            background-color: white;
-            color: black;
-        }
-
-        body.light-mode .icon, body.light-mode .info {
-            color: black;
-        }
-
-        body.light-mode .dark-mode-toggle {
-            color: black; /* Change toggle button color to black in light mode */
-        }
-
         .loading-indicator {
             display: none;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 2;
+            z-index: 3;
         }
 
     </style>
 </head>
 
 <body class="is-preload">
-    <button class="dark-mode-toggle" aria-label="Toggle dark mode">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
-    </button>
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -285,7 +244,7 @@
                     <a class="image main" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
                         <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
-                            <source src="images/aiffcv.mp4" type="video/mp4">
+                            <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <div class="loading-indicator" id="loadingIndicator">
@@ -376,6 +335,7 @@
             var video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 1;
+            video.style.transform = 'translate(-50%, -50%) scale(1)'; /* Zoom to fill */
             video.play();
 
             setTimeout(function () {
@@ -420,10 +380,6 @@
             var eventsSection = document.querySelector('.previous-events');
             eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
         }
-
-        document.querySelector('.dark-mode-toggle').addEventListener('click', function () {
-            document.body.classList.toggle('light-mode');
-        });
 
         function showLoadingIndicator() {
             document.getElementById('loadingIndicator').style.display = 'block';
