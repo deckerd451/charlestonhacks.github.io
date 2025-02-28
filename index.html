@@ -37,26 +37,34 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            position: relative; /* Ensure the container is relatively positioned */
+            position: relative;
         }
 
-        .panel img {
-            max-width: 100%;
+        .media-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Adjust the max-width as needed */
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .media-container img,
+        .media-container video {
+            width: 100%;
             height: auto;
             display: block;
-            margin: 10px auto 0;
-            loading: lazy;
+            object-fit: cover; /* Maintain aspect ratio */
         }
 
-        .panel video {
+        .media-container video {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%; /* Ensure it takes up 100% width of the container */
-            height: 100%; /* Ensure it takes up 100% height of the container */
-            object-fit: cover; /* Makes the video fill the area while preserving the aspect ratio */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: none;
-            z-index: -1;
+            z-index: 1;
             opacity: 0;
             transition: opacity 3s ease-in-out;
         }
@@ -86,7 +94,7 @@
             padding: 20px;
             text-align: center;
             display: none;
-            z-index: 1;
+            z-index: 2;
             opacity: 0;
         }
 
@@ -113,7 +121,7 @@
         }
 
         #missionVideo.fadeOut {
-            animation: fadeOut 18s ease forwards !important; /* Ensure this isn't overridden */
+            animation: fadeOut 18s ease forwards !important;
         }
 
         #countdownWrapper {
@@ -223,66 +231,24 @@
             padding: 0;
         }
 
-        .dark-mode-toggle {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 20;
-        }
-
-        .dark-mode-toggle .fa-sun {
-            display: none;
-        }
-
-        body.light-mode .dark-mode-toggle .fa-sun {
-            display: inline;
-            color: black; /* Change icon color to black in light mode */
-        }
-
-        body.light-mode .dark-mode-toggle .fa-moon {
-            display: none;
-        }
-
-        body.light-mode {
-            background-color: white;
-            color: black;
-        }
-
-        body.light-mode .icon, body.light-mode .info {
-            color: black;
-        }
-
-        body.light-mode .dark-mode-toggle {
-            color: black; /* Change toggle button color to black in light mode */
-        }
-
         .loading-indicator {
             display: none;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 2;
+            z-index: 3;
         }
 
     </style>
 </head>
 
 <body class="is-preload">
-    <button class="dark-mode-toggle" aria-label="Toggle dark mode">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
-    </button>
     <div id="main">
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="image main" onclick="toggleMissionContent()" aria-label="Toggle mission content">
+                    <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
                         <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
@@ -420,10 +386,6 @@
             var eventsSection = document.querySelector('.previous-events');
             eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
         }
-
-        document.querySelector('.dark-mode-toggle').addEventListener('click', function () {
-            document.body.classList.toggle('light-mode');
-        });
 
         function showLoadingIndicator() {
             document.getElementById('loadingIndicator').style.display = 'block';
