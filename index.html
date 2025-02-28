@@ -1,4 +1,3 @@
-<!DOCTYPE HTML>
 <html lang="en">
 
 <head>
@@ -22,8 +21,7 @@
 
         /* General styles */
         body {
-            background: url('images/background.png') no-repeat center center fixed;
-            background-size: cover;
+            background-color: black;
             color: white;
             font-family: 'Britannic Bold', Arial, sans-serif;
             overflow-x: hidden;
@@ -48,16 +46,13 @@
             max-width: 600px; /* Adjust the max-width as needed */
             margin: 0 auto;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add drop shadow */
         }
-
-        #missionVideo {
-            pointer-events: none;
-        }
-
-        #missionVideo.show {
-            pointer-events: auto;
-        }
+           #missionVideo {
+        pointer-events: none;
+    }
+    #missionVideo.show {
+        pointer-events: auto;
+    }
 
         .media-container img,
         .media-container video {
@@ -65,7 +60,6 @@
             height: auto;
             display: block;
             object-fit: cover; /* Maintain aspect ratio */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add drop shadow */
         }
 
         .media-container video {
@@ -129,12 +123,12 @@
         }
 
         .flip-image-x {
-            animation: flipImageX 6s ease forwards;
+            animation: flipImageX 3s ease forwards;
             z-index: 5; /* Ensure it's above everything else */
         }
 
         .flip-image-y {
-            animation: flipImageY 6s ease forwards;
+            animation: flipImageY 3s ease forwards;
             z-index: 5; /* Ensure it's above everything else */
         }
 
@@ -149,7 +143,7 @@
         }
 
         #countdown {
-            font-size: 20px; /* Reduced font size */
+            font-size: 42px;
             color: #FF0000;
         }
 
@@ -254,7 +248,7 @@
                                 </p>
                             </div>
                             <div id="countdownWrapper">
-                                <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
+                                <p class="info"><b>Countdown to AI Film Fest:</b></p>
                                 <div id="countdown"></div>
                             </div>
                         </div>
@@ -370,7 +364,7 @@
 
         function flipCard(imageSrc, url) {
             var missionImage = document.getElementById('missionImage');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' or 'flip-image-y';
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             missionImage.classList.add(randomFlip);
             setTimeout(function () {
                 missionImage.src = imageSrc;
