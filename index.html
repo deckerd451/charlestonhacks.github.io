@@ -387,14 +387,14 @@
         <section class="icons-container">
             <a href="Poster.html" target="_blank" aria-label="Events"><i class="fas fa-info-circle icon"></i></a>
             <a href="2card.html" aria-label="Users"><i class="fas fa-users icon"></i></a>
-                        <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/" target="_blank" aria-label="News"><i
+            <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/" target="_blank" aria-label="News"><i
                     class="fas fa-newspaper icon"></i></a>
-             <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-envelope icon"></i></a>
-<a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i
+            <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-envelope icon"></i></a>
+            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i
                     class="fab fa-linkedin icon"></i></a>
             <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i
                     class="fab fa-instagram icon"></i></a>
-           <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i
+            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i
                     class="fab fa-facebook icon"></i></a>
         </section>
     </footer>
@@ -434,12 +434,19 @@
             "images/nicolecard.png"
         ];
 
+        let cardClicked = false;
+
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
 
         function toggleMissionContent() {
+            if (cardClicked) {
+                return;
+            }
+            cardClicked = true;
+
             var image = document.getElementById('missionImage');
             image.src = getRandomImage();
 
