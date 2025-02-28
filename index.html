@@ -4,11 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description"
-        content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
+    <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
     <meta property="og:title" content="CharlestonHacks - Home" />
-    <meta property="og:description"
-        content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
+    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/universalcard-01.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -97,7 +95,7 @@
         }
 
         #missionContent {
-            animation: fadeIn .7s ease forwards;
+            animation: fadeIn 0.7s ease forwards;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -350,8 +348,7 @@
                 <div class="panel">
                     <a class="image main" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
-                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()"
-                            oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
+                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
                             <!-- Added controls for video playback -->
                             <source src="assets/trailer.mp4" type="video/mp4">
                             Your browser does not support the video tag.
@@ -361,12 +358,10 @@
                         </div>
                     </a>
                     <div id="missionContent">
-                        <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo"
-                            style="max-width: 70%; height: auto;">
+                        <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                         <div class="body-text">
                             <p>
-                                <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest"
-                                    style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
+                                <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
                             </p>
                         </div>
                         <div id="countdownWrapper">
@@ -385,19 +380,13 @@
     </div>
     <footer>
         <section class="icons-container">
-            <a href="Poster.html" target="_blank" aria-label="Events"><i class="fas fa-info-circle icon"></i></a>
-            <a href="2card.html" aria-label="Users"><i class="fas fa-users icon"></i></a>
-            <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/" target="_blank" aria-label="News"><i
-                    class="fas fa-newspaper icon"></i></a>
-            <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-envelope icon"></i></a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i
-                    class="fab fa-linkedin icon"></i></a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i
-                    class="fab fa-instagram icon"></i></a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i
-                    class="fab fa-facebook icon"></i></a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i
-                    class="fab fa-twitter icon"></i></a>
+            <a href="Poster.html" target="_blank" aria-label="Events" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')"><i class="fas fa-info-circle icon"></i></a>
+            <a href="2card.html" aria-label="Users" onclick="flipCard('images/redscullcard.png', '2card.html')"><i class="fas fa-users icon"></i></a>
+            <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/" target="_blank" aria-label="News" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')"><i class="fas fa-newspaper icon"></i></a>
+            <a href="subscribe.html" aria-label="Subscribe" onclick="flipCard('images/Alexandor.png', 'subscribe.html')"><i class="fas fa-envelope icon"></i></a>
+            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')"><i class="fab fa-linkedin icon"></i></a>
+            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')"><i class="fab fa-instagram icon"></i></a>
+            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook" onclick="flipCard('images/adventurercard.png', 'https://www.facebook.com/deckerdb26354')"><i class="fab fa-facebook icon"></i></a>
         </section>
     </footer>
 
@@ -481,6 +470,18 @@
             setTimeout(function () {
                 window.location.href = 'https://charlestonhacks.com/techweek.html';
             }, 2000); // Adjust the delay to match the animation duration
+        }
+
+        function flipCard(imageSrc, url) {
+            var missionImage = document.getElementById('missionImage');
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            missionImage.classList.add(randomFlip);
+            setTimeout(function () {
+                missionImage.src = imageSrc;
+                setTimeout(function () {
+                    window.location.href = url;
+                }, 2000); // Adjust the delay to match the animation duration
+            }, 1000); // Adjust the delay to match the flip animation duration
         }
 
         function toggleVisibility() {
