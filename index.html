@@ -60,14 +60,13 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.1); /* Start small */
+            transform: translate(-50%, -50%);
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: none;
             z-index: 1;
             opacity: 0;
-            transition: opacity 3s ease-in-out, transform 3s ease-in-out; /* Transition for zoom */
         }
 
         @media (max-width: 768px) {
@@ -343,7 +342,6 @@
             var video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 1;
-            video.style.transform = 'translate(-50%, -50%) scale(1)'; /* Zoom to fill */
             video.play();
 
             setTimeout(function () {
