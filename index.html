@@ -250,7 +250,6 @@
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
                         <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
@@ -337,9 +336,6 @@
             if (cardClicked) return;
             cardClicked = true;
 
-            var image = document.getElementById('missionImage');
-            image.src = getRandomImage();
-
             var video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 1;
@@ -359,7 +355,7 @@
 
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             setTimeout(function () {
-                image.classList.add(randomFlip);
+                video.classList.add(randomFlip);
             }, 100);
 
             playSound();
@@ -375,7 +371,7 @@
         }
 
         function flipCard(imageSrc, url) {
-            var missionImage = document.getElementById('missionImage');
+            var missionImage = document.getElementById('missionVideo');
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             missionImage.classList.add(randomFlip);
             setTimeout(function () {
