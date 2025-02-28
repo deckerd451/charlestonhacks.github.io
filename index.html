@@ -65,7 +65,7 @@
             height: 100%;
             object-fit: cover;
             display: none;
-            z-index: 0;
+            z-index: 1;
             opacity: 0;
             transition: opacity 1s ease-in-out; /* Smooth transition for fade out */
         }
@@ -229,7 +229,7 @@
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
+                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
