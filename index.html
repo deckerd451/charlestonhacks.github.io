@@ -40,25 +40,26 @@
         }
 
         .panel img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 10px auto 0;
-            loading: lazy;
-        }
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto 0;
+    loading: lazy;
+}
 
-        .panel video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 3s ease-in-out;
-        }
+.panel video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensure it takes up 100% width of the container */
+    height: 100%; /* Ensure it takes up 100% height of the container */
+    object-fit: cover; /* Makes the video fill the area while preserving the aspect ratio */
+    display: none;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 3s ease-in-out;
+}
+
 
         @media (max-width: 768px) {
             .panel img {
