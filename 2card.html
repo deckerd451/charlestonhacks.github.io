@@ -91,14 +91,9 @@
 
         footer a {
             color: #00FF00;
-            font-size: 24px;
+            font-size: 30px;
             margin: 0 15px;
             transition: color 0.3s ease;
-            border: 3px solid #FFD700;
-            border-radius: 8px;
-            box-shadow: 0 0 10px #FFD700;
-            padding: 10px;
-            display: inline-block;
         }
 
         footer a:hover {
@@ -292,8 +287,8 @@
 
     <footer>
         <div class="footer-container">
-            <a href="index.html" class="button">
-                <i class="fas fa-home"></i> Home
+            <a href="index.html">
+                <i class="fas fa-home"></i>
             </a>
         </div>
     </footer>
@@ -302,4 +297,93 @@
         // Define the cards, each with its own link and message
         const cardImages = [
             { img: "images/Descartes.png", link: "doug.html", message: "Descartes Level" },
-            { img: "images/Alexandor.png", link: ▋
+            { img: "images/Alexandor.png", link: "dave.html", message: "Alexandor Level" },
+            { img: "images/Medusa.png", link: "aya.html", message: "Medusa Level" },
+            { img: "images/Elara.png", link: "bradley.html", message: "Elara Level" },
+            { img: "images/Aegis.png", link: "amin.html", message: "Aegis Level" },
+            { img: "images/Astrid.png", link: "images/Astridstory.png", message: "Astrid Level" },
+            { img: "images/hacker.png", link: "cardmatchgame.html", message: "Hacker Level" }
+        ];
+
+        let selectedImages = [];
+        let selectedCards = [];
+
+        function getRandomImage() {
+            const randomIndex = Math.floor(Math.random() * cardImages.length);
+            return cardImages[randomIndex];
+        }
+
+        let hackerCardRevealed = false;
+
+        function revealHackerCard(card) {
+            card.classList.add("hacker-card");
+            hackerCardRevealed = true;
+
+            const hackerMessage = document.getElementById("hackerMessage");
+            const hackerSound = document.getElementById("hackerSound");
+
+            hackerMessage.innerHTML = `
+                <p>Hacker card selected!</p>
+                <a href="cardmatchgame.html" id="proceedLink" style="color: #00FF00; text-decoration: none; font-size: 20px;">
+                    Proceed to Next Level
+                </a>
+            `;
+            hackerMessage.style.display = "block";
+            hackerSound.play();
+
+            setTimeout(() => {
+                hackerMessage.style.display = "none";
+            }, 3000);
+        }
+
+        let isSecondCardSpinning = false;
+
+        function toggleMissionContent(event) {
+            const image = event.target;
+            const newImage = getRandomImage();
+            image.src = newImage.img;
+
+            selectedImages.push(newImage.img);
+            selectedCards.push(image);
+
+            image.classList.add("flip-image");
+
+            if (selectedImages.length === 1) {
+                const secondCard = document.querySelectorAll('.card-container img')[1];
+                if (!isSecondCardSpinning) {
+                    secondCard.classList.add("spin-image");
+                    isSecondCardSpinning = true;
+                }
+            } else if (selectedImages.length === 2) {
+                const [firstCard, secondCard] = selectedImages;
+                const firstCardObj = cardImages.find(card => card.img === firstCard);
+                const secondCardObj = cardImages.find(card => card.img === secondCard);
+
+                if (firstCard === secondCard) {
+                    const linkContainer = document.getElementById("link-container");
+                    linkContainer.innerHTML = `
+                        <p>Matched Card! Proceed to ${firstCardObj.message}:</p>
+                        <a href="${firstCardObj.link}" style="color: #00FF00; text-decoration: none; font-size: 20px;">
+                            Go to ${firstCardObj.message}
+                        </a>
+                    `;
+                    linkContainer.style.display = "block";
+                } else {
+                    setTimeout(() => {
+                        selectedCards.forEach(card => {
+                            card.src = "images/Front.png";
+                            card.classList.remove("flip-image");
+                        });
+                        selectedImages = [];
+                        selectedCards = [];
+                        if (isSecondCardSpinning) {
+                            document.querySelectorAll('.card-container img')[1].classList.remove("spin-image");
+                            isSecondCardSpinning = false;
+                        }
+                    }, 1000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
