@@ -6,6 +6,7 @@
     <meta name="description" content="Subscribe to Charleston Hacks Mailing List to stay updated on the latest events and news.">
     <title>Subscribe to Mailing List</title>
     <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             background-color: #f4f4f4;
@@ -29,6 +30,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         h2 {
@@ -79,6 +81,19 @@
             margin-top: 20px;
         }
 
+        .home-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: #007bff;
+            cursor: pointer;
+        }
+
+        .home-icon:hover {
+            color: #0056b3;
+        }
+
         @media (max-width: 600px) {
             #mc_embed_signup {
                 padding: 15px;
@@ -100,12 +115,18 @@
                 const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return re.test(email);
             }
+
+            const homeIcon = document.querySelector('.home-icon');
+            homeIcon.addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
         });
     </script>
 </head>
 <body>
     <div id="mc_embed_shell">
         <div id="mc_embed_signup">
+            <i class="fas fa-home home-icon" title="Back to Home"></i>
             <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=3b95e0177a&amp;f_id=002f09e9f0" 
                   method="post" 
                   id="mc-embedded-subscribe-form" 
