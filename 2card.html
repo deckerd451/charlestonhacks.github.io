@@ -149,6 +149,19 @@
         .flip-image {
             animation: flipImage .5s ease forwards;
         }
+
+        .header-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #00FF00;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
     </style>
 </head>
 <body>
@@ -228,6 +241,7 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
+                    <div class="header-text">Meet the CharlestonHacks Community</div>
                     <div class="card-container">
                         <a id="missionImage1" onclick="toggleMissionContent(event)">
                             <img src="images/Front.png" alt="CharlestonHacks" />
@@ -251,9 +265,11 @@
     </div>
 
     <footer>
-        <a href="index.html">
-            <i class="fas fa-home"></i>
-        </a>
+        <div class="footer-container">
+            <a href="index.html">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
     </footer>
 
     <script>
