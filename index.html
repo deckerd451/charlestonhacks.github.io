@@ -1,11 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
+    <meta name="description"
+        content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
     <meta property="og:title" content="CharlestonHacks - Home" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
+    <meta property="og:description"
+        content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/universalcard-01.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -14,7 +17,12 @@
     <link rel="manifest" href="manifest.json" />
     <style>
         /* Resetting default margin and padding */
-        body, h1, h2, h3, p, ul {
+        body,
+        h1,
+        h2,
+        h3,
+        p,
+        ul {
             margin: 0;
             padding: 0;
         }
@@ -45,7 +53,8 @@
             height: auto;
             display: block;
             margin: 10px auto 0;
-            loading: lazy; /* Lazy loading images */
+            loading: lazy;
+            /* Lazy loading images */
         }
 
         .panel video {
@@ -68,13 +77,23 @@
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
 
         @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         #missionContent {
@@ -93,20 +112,43 @@
             opacity: 0;
         }
 
-        #missionContent p, #missionContent a {
+        #missionContent p,
+        #missionContent a {
             color: white;
         }
 
         @keyframes flipImageX {
-            0% { transform: rotateX(0deg); opacity: 1; }
-            50% { transform: rotateX(180deg); opacity: 1; }
-            100% { transform: rotateX(360deg); opacity: 0.2; }
+            0% {
+                transform: rotateX(0deg);
+                opacity: 1;
+            }
+
+            50% {
+                transform: rotateX(180deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotateX(360deg);
+                opacity: 0.2;
+            }
         }
 
         @keyframes flipImageY {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            50% { transform: rotateY(180deg); opacity: 1; }
-            100% { transform: rotateY(360deg); opacity: 0.2; }
+            0% {
+                transform: rotateY(0deg);
+                opacity: 1;
+            }
+
+            50% {
+                transform: rotateY(180deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotateY(360deg);
+                opacity: 0.2;
+            }
         }
 
         .flip-image-x {
@@ -193,15 +235,23 @@
             transform: translateX(-50%);
             width: 50px;
             height: 5px;
-            background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+            background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
             border-radius: 5px;
             animation: fadeIndicator 2s infinite;
         }
 
         @keyframes fadeIndicator {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
+            0% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
         }
 
         .icon:hover {
@@ -209,9 +259,17 @@
         }
 
         @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
         }
 
         #previousEventsToggle {
@@ -280,6 +338,7 @@
 
     </style>
 </head>
+
 <body class="is-preload">
     <button class="dark-mode-toggle" aria-label="Toggle dark mode">
         <i class="fas fa-moon"></i>
@@ -291,7 +350,9 @@
                 <div class="panel">
                     <a class="image main" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
-                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()"> <!-- Added controls for video playback -->
+                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()"
+                            oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
+                            <!-- Added controls for video playback -->
                             <source src="assets/trailer.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -300,13 +361,16 @@
                         </div>
                     </a>
                     <div id="missionContent">
-                        <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                        <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo"
+                            style="max-width: 70%; height: auto;">
                         <div class="body-text">
                             <p>
-                                <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
+                                <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest"
+                                    style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
                             </p>
                             <p>
-                                <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+                                <a
+                                    href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
                                     CharlestonHacks in the news
                                 </a>
                             </p>
@@ -333,13 +397,18 @@
     </div>
     <footer>
         <section class="icons-container">
-            <a href="https://charlestonhacks.mailchimpsites.com/" target="_blank" aria-label="Mailchimp"><i class="fas fa-info-circle icon"></i></a>
+            <a href="https://charlestonhacks.mailchimpsites.com/" target="_blank" aria-label="Mailchimp"><i
+                    class="fas fa-info-circle icon"></i></a>
             <a href="2card.html" aria-label="Users"><i class="fas fa-users icon"></i></a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin icon"></i></a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram icon"></i></a>
+            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i
+                    class="fab fa-linkedin icon"></i></a>
+            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i
+                    class="fab fa-instagram icon"></i></a>
             <a href="mailto:hello@charlestonhacks.com" aria-label="Email"><i class="fas fa-envelope icon"></i></a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter icon"></i></a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook icon"></i></a>
+            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i
+                    class="fab fa-twitter icon"></i></a>
+            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i
+                    class="fab fa-facebook icon"></i></a>
         </section>
     </footer>
 
@@ -392,19 +461,19 @@
             video.style.opacity = 1;
             video.play();
 
-            setTimeout(function() {
+            setTimeout(function () {
                 document.getElementById('missionContent').style.display = 'block';
             }, 3000);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 video.classList.add('fadeOut');
-                setTimeout(function() {
+                setTimeout(function () {
                     video.style.display = 'none';
                 }, 8000);
             }, 25000);
 
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            setTimeout(function() {
+            setTimeout(function () {
                 image.classList.add(randomFlip);
             }, 100);
         }
@@ -413,7 +482,7 @@
             var banner = document.getElementById('aiffBanner');
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             banner.classList.add(randomFlip);
-            setTimeout(function() {
+            setTimeout(function () {
                 window.location.href = 'https://charlestonhacks.com/techweek.html';
             }, 2000); // Adjust the delay to match the animation duration
         }
@@ -427,7 +496,7 @@
             }
         }
 
-        document.querySelector('.dark-mode-toggle').addEventListener('click', function() {
+        document.querySelector('.dark-mode-toggle').addEventListener('click', function () {
             document.body.classList.toggle('light-mode');
         });
 
@@ -442,14 +511,20 @@
         function handleVideoError() {
             alert("Error loading video. Please try again later.");
         }
+
+        const videoElement = document.getElementById('missionVideo');
+        videoElement.addEventListener('ended', function () {
+            videoElement.style.display = 'none';
+        });
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', 'UA-XXXXX-Y');
     </script>
 </body>
+
 </html>
