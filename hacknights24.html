@@ -25,8 +25,8 @@
         </article>
     </div>
     <!-- Photos Button (Initially Closed) -->
-    <button class="collapsible">Photos</button>
-    <div class="content">
+    <a href="#" class="button" id="photosButton">Photos</a>
+    <div class="content" style="display: none;">
         <a href="https://harborhack-24.devpost.com/" class="image fit">
             <div class="photo-gallery">
                 <!-- Image 1 -->
@@ -82,16 +82,15 @@
             document.getElementById('imageModal').style.display = 'none';
         }
 
-        // Collapsible Button Toggle Functionality
+        // Photos Button Toggle Functionality
         document.addEventListener("DOMContentLoaded", function () {
-            var coll = document.getElementsByClassName("collapsible");
-            for (var i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    var content = this.nextElementSibling;
-                    content.style.display = (content.style.display === "block") ? "none" : "block";
-                });
-            }
+            var photosButton = document.getElementById('photosButton');
+            var content = document.querySelector('.content');
+
+            photosButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                content.style.display = (content.style.display === "block") ? "none" : "block";
+            });
         });
     </script>
 </body>
