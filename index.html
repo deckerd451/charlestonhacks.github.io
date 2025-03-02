@@ -319,7 +319,7 @@
                             <!-- Placeholder asset for Center Top -->
                             <img src="images/crest1.svg" alt="Placeholder Center Top">
                         </div>
-                        <div class="clickable-area center-bottom" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
+                        <div class="clickable-area center-bottom" onclick="playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
                             <!-- Placeholder asset for Center Bottom -->
                             <img src="images/keys1.svg" alt="Placeholder Center Bottom">
                         </div>
@@ -406,6 +406,11 @@
             audio.play();
         }
 
+        function playKeySound() {
+            var audio = new Audio('assets/keys.m4a'); // Use the keys sound effect
+            audio.play();
+        }
+
         function flipAndRedirect() {
             var banner = document.getElementById('aiffBanner');
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
@@ -425,6 +430,11 @@
                     window.location.href = url;
                 }, 2000);
             }, 1000);
+        }
+
+        function playKeySoundAndFlipCard(imageSrc, url) {
+            playKeySound();
+            flipCard(imageSrc, url);
         }
 
         function toggleVisibility() {
