@@ -6,59 +6,116 @@
     <title>CharlestonHacks</title>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+    <style>
+        /* Ensure Photos Button is Visible */
+        #photosButton {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff5733; /* Change color as needed */
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+
+        /* Hide photo gallery initially */
+        .content {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .gallery-img {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        /* Modal Styles */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-modal-content {
+            max-width: 80%;
+            max-height: 80%;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body class="is-preload">
-   
+
     <div id="main">
         <article class="post featured">
             <header class="major">
-                <a class="image main" href="Poster.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" /></a>
+                <a class="image main" href="Poster.html">
+                    <img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" />
+                </a>
             </header>
-            <a class="image main" href="https://hack-nights.devpost.com/" target="_blank"><img src="images/hacknights.png" alt="Hack Nights" /></a>
+            <a class="image main" href="https://hack-nights.devpost.com/" target="_blank">
+                <img src="images/hacknights.png" alt="Hack Nights" />
+            </a>
             <h3>Engage_Experiment_Evolve</h3>
             <hr>
             <p><b>AI for Humanity</b> - the theme of Hack Nights (24), the deeper motivation behind our actions setting in motion other actions to help change our world. How will your project actually change the way we experience the world? How will its mission continue after the hackathon is over?</p>
             <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, health, or something else? Work on something you really believe in and make us believe in it too.</p>
 
-            <!-- Button now directly links to Devpost -->
+            <!-- Hack Nights Button -->
             <a href="https://hack-nights.devpost.com/" class="button" target="_blank">Hack Nights Devpost</a>
-        </article>
-    </div>
-    <!-- Photos Button (Initially Closed) -->
-    <a href="#" class="button" id="photosButton">Photos</a>
-    <div class="content" style="display: none;">
-        <a href="https://harborhack-24.devpost.com/" class="image fit">
-            <div class="photo-gallery">
-                <!-- Image 1 -->
-                <img src="images/geoff.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 2 -->
-                <img src="images/judgessmiling.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 3 -->
-                <img src="images/Harborwalk.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 4 -->
-                <img src="images/harborwalkeast.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 5 -->
-                <img src="images/wizard.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 6 -->
-                <img src="images/roots.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 7 -->
-                <img src="images/Team photo.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 8 -->
-                <img src="images/Anya.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 9 -->
-                <img src="images/Home Bridge.jpg" alt="HarborHack Photos" class="gallery-img" />
-                <!-- Image 10 -->
-                <img src="images/Judges Good.jpg" alt="HarborHack Photos" class="gallery-img" />
+
+            <!-- Photos Button (Initially Hidden) -->
+            <a href="#" class="button" id="photosButton">Photos</a>
+            
+            <!-- Photo Gallery Section -->
+            <div class="content">
+                <div class="photo-gallery">
+                    <a href="https://harborhack-24.devpost.com/">
+                        <img src="images/geoff.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/judgessmiling.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/Harborwalk.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/harborwalkeast.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/wizard.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/roots.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/Team photo.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/Anya.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/Home Bridge.jpg" alt="HarborHack Photos" class="gallery-img" />
+                        <img src="images/Judges Good.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    </a>
+                </div>
             </div>
-        </a>
+        </article>
     </div>
 
     <!-- Image Modal -->
-    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+    <div id="imageModal" class="image-modal">
         <span class="close" onclick="closeImageModal()">&times;</span>
         <img class="image-modal-content" id="modalImage" />
     </div>
-    
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/jquery.scrollex.min.js"></script>
@@ -69,6 +126,19 @@
     <script src="assets/js/main.js"></script>
 
     <script>
+        // Photos Button Toggle Functionality
+        document.addEventListener("DOMContentLoaded", function () {
+            var photosButton = document.getElementById('photosButton');
+            var content = document.querySelector('.content');
+
+            if (photosButton) {
+                photosButton.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    content.style.display = (content.style.display === "block") ? "none" : "block";
+                });
+            }
+        });
+
         // Open Image Modal
         function openImageModal(imgSrc) {
             var modal = document.getElementById('imageModal');
@@ -82,16 +152,13 @@
             document.getElementById('imageModal').style.display = 'none';
         }
 
-        // Photos Button Toggle Functionality
-        document.addEventListener("DOMContentLoaded", function () {
-            var photosButton = document.getElementById('photosButton');
-            var content = document.querySelector('.content');
-
-            photosButton.addEventListener('click', function(event) {
-                event.preventDefault();
-                content.style.display = (content.style.display === "block") ? "none" : "block";
+        // Enable click to enlarge images in modal
+        document.querySelectorAll('.gallery-img').forEach(img => {
+            img.addEventListener('click', function() {
+                openImageModal(this.src);
             });
         });
     </script>
+
 </body>
 </html>
