@@ -287,7 +287,7 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playCardSoundAndToggleMissionContent()" aria-label="Toggle mission content">
+                    <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/hcard.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
@@ -311,7 +311,7 @@
                         </div>
 
                         <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')">
+                        <div class="clickable-area top-left" onclick="playDoorOpenSoundAndFlipCard('images/yellowscullcard.png', 'Poster.html')">
                             <!-- Placeholder asset for Top Left -->
                             <img src="images/info1.svg" alt="Placeholder Top Left">
                         </div>
@@ -383,11 +383,6 @@
             return cardImages[randomIndex];
         }
 
-        function playCardSoundAndToggleMissionContent() {
-            playSound();
-            toggleMissionContent();
-        }
-
         function toggleMissionContent() {
             if (cardClicked) {
                 location.reload();
@@ -419,8 +414,8 @@
             image.classList.add(randomFlip);
         }
 
-        function playSound() {
-            var audio = new Audio('assets/cardflip.m4a'); // Use a standard click sound effect
+        function playDoorOpenSound() {
+            var audio = new Audio('assets/dooropen.m4a'); // Use the door open sound effect
             audio.play();
         }
 
@@ -452,6 +447,11 @@
 
         function playKeySoundAndFlipCard(imageSrc, url) {
             playKeySound();
+            flipCard(imageSrc, url);
+        }
+
+        function playDoorOpenSoundAndFlipCard(imageSrc, url) {
+            playDoorOpenSound();
             flipCard(imageSrc, url);
         }
 
