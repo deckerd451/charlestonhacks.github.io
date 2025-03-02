@@ -90,6 +90,14 @@
             height: 315px; /* Adjust based on your preference */
         }
 
+        /* Button Container */
+        .button-container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            gap: 20px; /* Space between buttons */
+            margin-top: 20px; /* Adjust spacing */
+        }
+
         /* Button Styles */
         .button, .collapsible {
             display: flex; /* Enable flexbox for centering */
@@ -159,11 +167,15 @@ Honorable mention went to Transforming Fitness Communities with Technology, a he
 
             <p><b>The theme for HackOps 2024 was Maslow's Hierarchy of Needs.</b></p>
 
-            <!-- Devpost Button -->
-            <a href="https://hackops.devpost.com/" class="button" target="_blank">HackOps 24 Devpost</a>
+            <!-- Buttons Container -->
+            <div class="button-container">
+                <!-- Devpost Button -->
+                <a href="https://hackops.devpost.com/" class="button" target="_blank">HackOps 24 Devpost</a>
 
-            <!-- Photos Button (Initially Closed) -->
-            <button class="collapsible">Photos</button>
+                <!-- Photos Button (Initially Closed) -->
+                <button class="collapsible">Photos</button>
+            </div>
+
             <div class="content">
                 <a href="https://hackops.devpost.com/" class="image fit">
                     <div class="photo-gallery">
