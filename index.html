@@ -311,27 +311,27 @@
                         </div>
 
                         <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')">
+                        <div class="clickable-area top-left" onclick="rotateAndHideVideo(this)">
                             <!-- Placeholder asset for Top Left -->
                             <img src="images/info1.svg" alt="Placeholder Top Left">
                         </div>
-                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')">
+                        <div class="clickable-area top-right" onclick="rotateAndHideVideo(this)">
                             <!-- Placeholder asset for Top Right -->
                             <img src="images/people1.svg" alt="Placeholder Top Right">
                         </div>
-                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
+                        <div class="clickable-area bottom-left" onclick="rotateAndHideVideo(this)">
                             <!-- Placeholder asset for Bottom Left -->
                             <img src="images/news1.svg" alt="Placeholder Bottom Left">
                         </div>
-                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')">
+                        <div class="clickable-area bottom-right" onclick="rotateAndHideVideo(this)">
                             <!-- Placeholder asset for Bottom Right -->
                             <img src="images/envelope1.svg" alt="Placeholder Bottom Right">
                         </div>
-                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
+                        <div class="clickable-area center-top" onclick="rotateAndHideVideo(this)">
                             <!-- Placeholder asset for Center Top -->
                             <img src="images/crest1.svg" alt="Placeholder Center Top">
                         </div>
-                        <div class="clickable-area center-bottom" onclick="playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
+                        <div class="clickable-area center-bottom" onclick="rotateAndHideVideo(this)">
                             <!-- Placeholder asset for Center Bottom -->
                             <img src="images/keys1.svg" alt="Placeholder Center Bottom">
                         </div>
@@ -476,6 +476,12 @@
         const videoElement = document.getElementById('missionVideo');
         videoElement.addEventListener('play', playSound);
         videoElement.addEventListener('ended', showCardFrame);
+
+        function rotateAndHideVideo(element) {
+            element.style.transition = "transform 1s";
+            element.style.transform = "rotate(360deg)";
+            document.getElementById('missionVideo').style.display = 'none';
+        }
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
     <script>
