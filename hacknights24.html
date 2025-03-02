@@ -8,23 +8,22 @@
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
     <style>
-        /* Ensure Photos Button is Visible */
-        #photosButton {
+        /* Button Styles */
+        .button {
             display: inline-block;
             padding: 0.75em 1.5em;
-            background-color: #ff5733; /* Match the color if needed */
+            background-color: #ff5733; /* Adjust color if needed */
             color: white;
             text-decoration: none;
             font-size: 1em;
             border-radius: 0;
-            margin: 20px 0;
             cursor: pointer;
             border: none;
             transition: background-color 0.3s ease;
             text-align: center; /* Center the text */
         }
 
-        #photosButton:hover {
+        .button:hover {
             background-color: #e04e2b; /* Darken the color on hover */
         }
 
@@ -73,31 +72,13 @@
             color: white;
             cursor: pointer;
         }
+
         .button-container {
-    display: flex;
-    gap: 15px; /* Space between buttons */
-    justify-content: center; /* Center horizontally */
-    margin-top: 20px; /* Adjust spacing */
-}
-
-.button {
-    display: inline-block;
-    padding: 0.75em 1.5em;
-    background-color: #ff5733; /* Adjust color if needed */
-    color: white;
-    text-decoration: none;
-    font-size: 1em;
-    border-radius: 0;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.3s ease;
-    text-align: center;
-}
-
-.button:hover {
-    background-color: #e04e2b;
-}
-
+            display: flex;
+            gap: 15px; /* Space between buttons */
+            justify-content: center; /* Center horizontally */
+            margin-top: 20px; /* Adjust spacing */
+        }
     </style>
 </head>
 <body class="is-preload">
@@ -118,30 +99,28 @@
             <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, health, or something else? Work on something you really believe in and make us believe in it too.</p>
 
             <div class="button-container">
-    <a href="https://hack-nights.devpost.com/" class="button" target="_blank">Hack Nights Devpost</a>
-    <a href="#" class="button" id="photosButton">Photos</a>
-</div>
+                <a href="https://hack-nights.devpost.com/" class="button" target="_blank">Hack Nights Devpost</a>
+                <a href="#" class="button" id="photosButton">Photos</a>
+            </div>
 
             <!-- Photo Gallery Section -->
             <div class="content">
                 <div class="photo-gallery">
-                        <img src="images/hnwinners.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-01.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-02.jpg" alt="HarborHack Photos" class="gallery-img" />
-                           <img src="images/hnphotos-03.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-04.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-05.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-06.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnwinners.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-01.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-02.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-03.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-04.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-05.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-06.jpg" alt="HarborHack Photos" class="gallery-img" />
                     <img src="images/hnphotos-07.jpg" alt="HarborHack Photos" class="gallery-img" />
-                          <img src="images/hnphotos-08.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-09.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-10.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-11.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-08.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-09.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-10.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-11.jpg" alt="HarborHack Photos" class="gallery-img" />
                     <img src="images/hnphotos-12.jpg" alt="HarborHack Photos" class="gallery-img" />
-                         <img src="images/hnphotos-13.jpg" alt="HarborHack Photos" class="gallery-img" />
-                     <img src="images/hnphotos-14.jpg" alt="HarborHack Photos" class="gallery-img" />
-                       
-                    </a>
+                    <img src="images/hnphotos-13.jpg" alt="HarborHack Photos" class="gallery-img" />
+                    <img src="images/hnphotos-14.jpg" alt="HarborHack Photos" class="gallery-img" />
                 </div>
             </div>
         </article>
