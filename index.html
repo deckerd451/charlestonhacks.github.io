@@ -389,7 +389,10 @@
         }
 
         function toggleMissionContent() {
-            if (cardClicked) return;
+            if (cardClicked) {
+                location.reload();
+                return;
+            }
             cardClicked = true;
 
             var image = document.getElementById('missionImage');
