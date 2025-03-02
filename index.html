@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -47,12 +48,13 @@
             margin: 0 auto;
             overflow: hidden;
         }
-           #missionVideo {
-        pointer-events: none;
-    }
-    #missionVideo.show {
-        pointer-events: auto;
-    }
+
+        #missionVideo {
+            pointer-events: none;
+        }
+        #missionVideo.show {
+            pointer-events: auto;
+        }
 
         .media-container img,
         .media-container video {
@@ -230,6 +232,57 @@
             z-index: 3;
         }
 
+        /* New clickable areas on the card */
+        .clickable-area {
+            position: absolute;
+            z-index: 4;
+            cursor: pointer;
+        }
+
+        .top-left {
+            top: 0;
+            left: 0;
+            width: 20%;
+            height: 20%;
+        }
+
+        .top-right {
+            top: 0;
+            right: 0;
+            width: 20%;
+            height: 20%;
+        }
+
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            width: 20%;
+            height: 20%;
+        }
+
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            width: 20%;
+            height: 20%;
+        }
+
+        .center-top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20%;
+            height: 20%;
+        }
+
+        .center-bottom {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20%;
+            height: 20%;
+        }
+
     </style>
 </head>
 
@@ -259,6 +312,14 @@
                         <div class="loading-indicator" id="loadingIndicator">
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
+
+                        <!-- Clickable areas -->
+                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')"></div>
+                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')"></div>
+                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')"></div>
+                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')"></div>
+                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')"></div>
+                        <div class="clickable-area center-bottom" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')"></div>
                     </a>
                 </div>
             </header>
