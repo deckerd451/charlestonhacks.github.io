@@ -89,50 +89,6 @@
             max-width: 600px; /* You can adjust this value to control the iframe size */
             height: 315px; /* Adjust based on your preference */
         }
-
-        /* Button Container */
-        .button-container {
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            gap: 20px; /* Space between buttons */
-            margin-top: 20px; /* Adjust spacing */
-        }
-
-        /* Button Styles */
-        .button, .collapsible {
-            display: flex; /* Enable flexbox for centering */
-            align-items: center; /* Center text vertically */
-            justify-content: center; /* Center text horizontally */
-            width: 200px; /* Fixed width for both buttons */
-            padding: 0.75em 1.5em;
-            background-color: #ff5733; /* Set button background color */
-            color: white;
-            text-decoration: none;
-            font-size: 1em;
-            border-radius: 0;
-            cursor: pointer;
-            border: none;
-            transition: background-color 0.3s ease;
-            text-align: center; /* Center the text */
-        }
-
-        .button:hover, .collapsible:hover {
-            background-color: #e04e2b; /* Darken the color on hover */
-        }
-
-        /* Collapsible Button Styling */
-        .collapsible:after {
-            content: '\002B'; /* Unicode character for "plus" sign (+) */
-            font-size: 1em;
-            color: white;
-            float: right;
-            margin-left: 5px;
-        }
-
-        .active:after {
-            content: "\2212"; /* Unicode character for "minus" sign (−) */
-            color: white;
-        }
     </style>
 </head>
 <body class="is-preload">
@@ -141,7 +97,7 @@
         <article class="post featured">
 
             <header class="major">
-               <img src="assets/chbackbuttonred.png" alt="" style="width: 300px; height: auto;" />
+                <a class="image main" href="Poster.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="CharlestonHacks Logo" /></a>
             </header>
 
            <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
@@ -167,15 +123,11 @@ Honorable mention went to Transforming Fitness Communities with Technology, a he
 
             <p><b>The theme for HackOps 2024 was Maslow's Hierarchy of Needs.</b></p>
 
-            <!-- Buttons Container -->
-            <div class="button-container">
-                <!-- Devpost Button -->
-                <a href="https://hackops.devpost.com/" class="button" target="_blank">HackOps 24 Devpost</a>
+            <!-- Devpost Button -->
+            <a href="https://hackops.devpost.com/" class="button" target="_blank">HackOps 24 Devpost</a>
 
-                <!-- Photos Button (Initially Closed) -->
-                <button class="collapsible">Photos</button>
-            </div>
-
+            <!-- Photos Button (Initially Closed) -->
+            <button class="collapsible">Photos</button>
             <div class="content">
                 <a href="https://hackops.devpost.com/" class="image fit">
                     <div class="photo-gallery">
@@ -191,6 +143,9 @@ Honorable mention went to Transforming Fitness Communities with Technology, a he
                         <img src="images/hackops-04.jpg" alt="HackOps Photos" class="gallery-img" />
                         <!-- Image 6 -->
                         <img src="images/hackops-05.jpg" alt="HackOps Photos" class="gallery-img" />
+                        
+    
+                        
                     </div>
                 </a>
 
@@ -211,6 +166,8 @@ Honorable mention went to Transforming Fitness Communities with Technology, a he
                     <iframe src="https://www.youtube.com/embed/tUTw1avdTno" title="CharlestonHacks Experience" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
+
+
         </article>
     </div>
 
@@ -256,14 +213,11 @@ Honorable mention went to Transforming Fitness Communities with Technology, a he
                 coll[i].addEventListener("click", function() {
                     this.classList.toggle("active");
                     var content = this.nextElementSibling;
-                    if (content.style.display === "block") {
-                        content.style.display = "none";
-                    } else {
-                        content.style.display = "block";
-                    }
+                    content.style.display = (content.style.display === "block") ? "none" : "block";
                 });
             }
         });
     </script>
 </body>
 </html>
+
