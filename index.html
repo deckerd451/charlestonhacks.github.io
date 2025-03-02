@@ -206,35 +206,35 @@
         }
 
         .top-left {
-            top: 0;
-            left: 0;
+            top: -10%;
+            left: -10%;
             width: 20%;
             height: 20%;
         }
 
         .top-right {
-            top: 0;
-            right: 0;
+            top: -10%;
+            right: -10%;
             width: 20%;
             height: 20%;
         }
 
         .bottom-left {
-            bottom: 0;
-            left: 0;
+            bottom: -10%;
+            left: -10%;
             width: 20%;
             height: 20%;
         }
 
         .bottom-right {
-            bottom: 0;
-            right: 0;
+            bottom: -10%;
+            right: -10%;
             width: 20%;
             height: 20%;
         }
 
         .center-top {
-            top: 0;
+            top: -10%;
             left: 50%;
             transform: translateX(-50%);
             width: 20%;
@@ -242,11 +242,19 @@
         }
 
         .center-bottom {
-            bottom: 0;
+            bottom: -10%;
             left: 50%;
             transform: translateX(-50%);
             width: 20%;
             height: 20%;
+        }
+        
+        /* Placeholder asset style */
+        .clickable-area img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
         }
 
     </style>
@@ -279,13 +287,31 @@
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
 
-                        <!-- Clickable areas -->
-                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')"></div>
-                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')"></div>
-                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')"></div>
-                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')"></div>
-                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')"></div>
-                        <div class="clickable-area center-bottom" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')"></div>
+                        <!-- Clickable areas with placeholder assets -->
+                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')">
+                            <!-- Placeholder asset for Top Left -->
+                            <img src="images/placeholder-top-left.png" alt="Placeholder Top Left">
+                        </div>
+                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')">
+                            <!-- Placeholder asset for Top Right -->
+                            <img src="images/placeholder-top-right.png" alt="Placeholder Top Right">
+                        </div>
+                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
+                            <!-- Placeholder asset for Bottom Left -->
+                            <img src="images/placeholder-bottom-left.png" alt="Placeholder Bottom Left">
+                        </div>
+                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')">
+                            <!-- Placeholder asset for Bottom Right -->
+                            <img src="images/placeholder-bottom-right.png" alt="Placeholder Bottom Right">
+                        </div>
+                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
+                            <!-- Placeholder asset for Center Top -->
+                            <img src="images/placeholder-center-top.png" alt="Placeholder Center Top">
+                        </div>
+                        <div class="clickable-area center-bottom" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
+                            <!-- Placeholder asset for Center Bottom -->
+                            <img src="images/placeholder-center-bottom.png" alt="Placeholder Center Bottom">
+                        </div>
                     </a>
                 </div>
             </header>
