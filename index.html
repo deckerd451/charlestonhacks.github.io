@@ -159,6 +159,12 @@
             color: #FF0000;
         }
 
+        @media (max-width: 768px) {
+            #countdown {
+                font-size: 24px; /* Smaller font size for mobile */
+            }
+        }
+
         .logo {
             display: block;
             margin: 0 auto 20px auto; /* Center horizontally and add bottom margin */
@@ -167,6 +173,12 @@
         .info {
             color: #FFFF00;
             font-size: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .info {
+                font-size: 16px; /* Smaller font size for mobile */
+            }
         }
 
         .body-text {
@@ -275,7 +287,7 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
+                    <a class="media-container" onclick="playCardSoundAndToggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/hcard.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
@@ -371,6 +383,11 @@
             return cardImages[randomIndex];
         }
 
+        function playCardSoundAndToggleMissionContent() {
+            playSound();
+            toggleMissionContent();
+        }
+
         function toggleMissionContent() {
             if (cardClicked) return;
             cardClicked = true;
@@ -386,8 +403,6 @@
             }, 100); // Delay to allow transition to take effect
             video.play();
 
-            playSound();
-
             document.getElementById('missionContent').style.display = 'block';
 
             setTimeout(function () {
@@ -402,7 +417,7 @@
         }
 
         function playSound() {
-            var audio = new Audio('assets/cardflip.mp3'); // Use a standard click sound effect
+            var audio = new Audio('assets/cardflip.m4a'); // Use a standard click sound effect
             audio.play();
         }
 
