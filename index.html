@@ -171,40 +171,6 @@
             margin-bottom: 10px;
         }
 
-        .icon {
-            color: #FF0000;
-            font-size: 25px;
-            margin-right: 5px;
-        }
-
-        footer .icons-container {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: transparent;
-            padding: 5px 0;
-            z-index: 10;
-        }
-
-        @media (max-width: 768px) {
-            footer .icons-container a {
-                font-size: 20px;
-            }
-        }
-
-        .icon:hover {
-            animation: bounce 1s ease infinite;
-        }
-
-        @keyframes bounce {
-            50% { transform: translateY(-5px); }
-        }
-
         #previousEventsToggle {
             background: none;
             border: none;
@@ -325,17 +291,6 @@
             </header>
         </article>
     </div>
-    <footer>
-        <section class="icons-container">
-            <a href="Poster.html" target="_blank" aria-label="Events" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')"><i class="fas fa-info-circle icon"></i></a>
-            <a href="2card.html" aria-label="Users" onclick="flipCard('images/redscullcard.png', '2card.html')"><i class="fas fa-users icon"></i></a>
-            <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/" target="_blank" aria-label="News" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')"><i class="fas fa-newspaper icon"></i></a>
-            <a href="subscribe.html" aria-label="Subscribe" onclick="flipCard('images/Alexandor.png', 'subscribe.html')"><i class="fas fa-envelope icon"></i></a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')"><i class="fab fa-linkedin icon"></i></a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')"><i class="fab fa-instagram icon"></i></a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook" onclick="flipCard('images/adventurercard.png', 'https://www.facebook.com/deckerdb26354')"><i class="fab fa-facebook icon"></i></a>
-        </section>
-    </footer>
 
     <script src="ho-script.js"></script>
     <script>
