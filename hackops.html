@@ -89,6 +89,39 @@
             max-width: 600px; /* You can adjust this value to control the iframe size */
             height: 315px; /* Adjust based on your preference */
         }
+
+        /* Button Styles */
+        .button, .collapsible {
+            display: inline-block;
+            padding: 0.75em 1.5em;
+            background-color: #ff5733; /* Set button background color */
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            border-radius: 0;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+            text-align: center; /* Center the text */
+        }
+
+        .button:hover, .collapsible:hover {
+            background-color: #e04e2b; /* Darken the color on hover */
+        }
+
+        /* Collapsible Button Styling */
+        .collapsible:after {
+            content: '\002B'; /* Unicode character for "plus" sign (+) */
+            font-size: 1em;
+            color: white;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .active:after {
+            content: "\2212"; /* Unicode character for "minus" sign (−) */
+            color: white;
+        }
     </style>
 </head>
 <body class="is-preload">
@@ -143,9 +176,6 @@ Honorable mention went to Transforming Fitness Communities with Technology, a he
                         <img src="images/hackops-04.jpg" alt="HackOps Photos" class="gallery-img" />
                         <!-- Image 6 -->
                         <img src="images/hackops-05.jpg" alt="HackOps Photos" class="gallery-img" />
-                        
-    
-                        
                     </div>
                 </a>
 
@@ -166,8 +196,6 @@ Honorable mention went to Transforming Fitness Communities with Technology, a he
                     <iframe src="https://www.youtube.com/embed/tUTw1avdTno" title="CharlestonHacks Experience" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
-
-
         </article>
     </div>
 
@@ -220,4 +248,3 @@ Honorable mention went to Transforming Fitness Communities with Technology, a he
     </script>
 </body>
 </html>
-
