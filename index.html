@@ -315,7 +315,7 @@
                             <!-- Placeholder asset for Top Left -->
                             <img src="images/info1.svg" alt="Placeholder Top Left">
                         </div>
-                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')">
+                        <div class="clickable-area top-right" onclick="playAtmosphereSoundAndFlipCard('images/redscullcard.png', '2card.html')">
                             <!-- Placeholder asset for Top Right -->
                             <img src="images/people1.svg" alt="Placeholder Top Right">
                         </div>
@@ -419,6 +419,11 @@
             audio.play();
         }
 
+        function playAtmosphereSound() {
+            var audio = new Audio('assets/atmosphere.m4a'); // Use the atmosphere sound effect
+            audio.play();
+        }
+
         function playKeySound() {
             var audio = new Audio('assets/keys.m4a'); // Use the keys sound effect
             audio.play();
@@ -452,6 +457,11 @@
 
         function playDoorOpenSoundAndFlipCard(imageSrc, url) {
             playDoorOpenSound();
+            flipCard(imageSrc, url);
+        }
+
+        function playAtmosphereSoundAndFlipCard(imageSrc, url) {
+            playAtmosphereSound();
             flipCard(imageSrc, url);
         }
 
