@@ -305,6 +305,11 @@
             object-fit: cover;
         }
 
+        /* Add this CSS class for the fade-out effect */
+        .fade-out {
+            animation: fadeOut 2s ease forwards;
+        }
+
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
@@ -520,13 +525,11 @@
         window.addEventListener('beforeunload', function () {
             document.getElementById('spinner').style.display = 'none';
         });
-
-        // Remove fade-out class when the page is loaded or navigated back
-        window.addEventListener('pageshow', function () {
-            document.body.classList.remove('fade-out-body');
-            document.getElementById('spinner').style.display = 'none';
-        });
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
     <script>
-        window.dataLayer = window.dataLayer ||
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-XXXXX-Y');
+    </script
