@@ -316,13 +316,13 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" id="mediaContainer" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/hcard2.png" alt="CharlestonHacks" style="z-index: 3;" />
+                    <a class="media-container" onclick="playCardSoundAndToggleMissionContent()" aria-label="Toggle mission content">
+                        <img id="missionImage" src="images/hcard1.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
                                 <p>
-                                    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;">
+                                    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
                                 </p>
                             </div>
                             <div id="countdownWrapper">
@@ -340,22 +340,28 @@
                         </div>
 
                         <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left">
+                        <div class="clickable-area top-left" onclick="playSound('ding'); flipCard('images/yellowscullcard.png', 'Poster.html')">
+                            <!-- Placeholder asset for Top Left -->
                             <img src="images/info1.svg" alt="Placeholder Top Left">
                         </div>
-                        <div class="clickable-area top-right">
+                        <div class="clickable-area top-right" onclick="playSound('cardflip'); flipCard('images/redscullcard.png', '2card.html')">
+                            <!-- Placeholder asset for Top Right -->
                             <img src="images/people1.svg" alt="Placeholder Top Right">
                         </div>
-                        <div class="clickable-area bottom-left">
+                        <div class="clickable-area bottom-left" onclick="playSound('cardflip'); flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
+                            <!-- Placeholder asset for Bottom Left -->
                             <img src="images/news1.svg" alt="Placeholder Bottom Left">
                         </div>
-                        <div class="clickable-area bottom-right">
+                        <div class="clickable-area bottom-right" onclick="playSound('cardflip'); flipCard('images/Alexandor.png', 'subscribe.html')">
+                            <!-- Placeholder asset for Bottom Right -->
                             <img src="images/envelope1.svg" alt="Placeholder Bottom Right">
                         </div>
-                        <div class="clickable-area center-top">
+                        <div class="clickable-area center-top" onclick="playSound('cardflip'); flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
+                            <!-- Placeholder asset for Center Top -->
                             <img src="images/crest1.svg" alt="Placeholder Center Top">
                         </div>
-                        <div class="clickable-area center-bottom">
+                        <div class="clickable-area center-bottom" onclick="playSound('keys'); playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
+                            <!-- Placeholder asset for Center Bottom -->
                             <img src="images/keys1.svg" alt="Placeholder Center Bottom">
                         </div>
                     </a>
@@ -458,9 +464,7 @@
             }
             if (audio) {
                 audio.currentTime = 0; // Reset to start
-                audio.play().catch(error => {
-                    console.error('Audio playback failed:', error);
-                });
+                audio.play();
             }
         }
 
@@ -535,18 +539,7 @@
         window.addEventListener('pageshow', function () {
             document.body.classList.remove('fade-out-body');
         });
+    </script>
+</body>
 
-        // Add event listeners for clickable areas
-        document.querySelector('.top-left').addEventListener('click', function() {
-            playSound('ding');
-            flipCard('images/yellowscullcard.png', 'Poster.html');
-        });
-
-        document.querySelector('.top-right').addEventListener('click', function() {
-            playSound('cardflip');
-            flipCard('images/redscullcard.png', '2card.html');
-        });
-
-        document.querySelector('.bottom-left').addEventListener('click', function() {
-            playSound('cardflip');
-            flipCard('images/Descartes.png
+</html>
