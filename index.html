@@ -28,6 +28,7 @@
             overflow-x: hidden;
             position: relative;
             text-align: center;
+            transition: opacity 2s ease; /* Ensure the transition is applied to the body */
         }
 
         .panel {
@@ -90,6 +91,7 @@
         }
 
         @keyframes fadeOut {
+            from { opacity: 1; }
             to { opacity: 0; }
         }
 
@@ -282,7 +284,6 @@
         /* Add this CSS class for the fade-out effect */
         .fade-out {
             animation: fadeOut 2s ease forwards;
-            opacity: 0;
         }
     </style>
 </head>
