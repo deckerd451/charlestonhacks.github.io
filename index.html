@@ -316,7 +316,7 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playSound('atmosphere'); toggleMissionContent()" aria-label="Toggle mission content">
+                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/hcard.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
@@ -406,7 +406,7 @@
 
         // Simplify audio handling with a sound map
         const sounds = {
-            atmosphere: new Audio('assets/atmosphere.m4a'),
+            cardflip: new Audio('assets/cardflip.m4a'),
             keys: new Audio('assets/keys.m4a'),
             ding: new Audio('assets/ding.mp3')
         };
@@ -479,20 +479,8 @@
             // Show spinner
             document.getElementById('spinner').style.display = 'block';
 
-            // Wait for the audio to finish before redirecting
-            const sound = this.getAttribute('data-sound');
-            const audio = sounds[sound];
-            if (audio) {
-                audio.onended = function() {
-                    window.location.href = url;
-                };
-                audio.play().catch(error => {
-                    console.error('Audio playback failed:', error);
-                    window.location.href = url; // Redirect immediately if audio playback fails
-                });
-            } else {
-                window.location.href = url;
-            }
+            // Redirect immediately
+            window.location.href = url;
 
             setTimeout(function () {
                 missionImage.src = imageSrc;
@@ -505,7 +493,7 @@
                 const image = this.getAttribute('data-image');
                 const url = this.getAttribute('data-url');
                 playSound(sound);
-                flipCard.call(this, image, url);
+                flipCard(image, url);
             });
         });
 
@@ -531,7 +519,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'atmosphere'));
+        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
         videoElement.addEventListener('ended', showCardFrame);
 
         // Ensure the spinner remains visible until the link is opened
@@ -539,4 +527,11 @@
             document.getElementById('spinner').style.display = 'none';
         });
 
-        //
+        // Remove fade-out class when the page is loaded or navigated back
+        window.addEventListener('pageshow', function () {
+            document.body.classList.remove('fade-out-body');
+        });
+    </script>
+</body>
+
+</html>
