@@ -478,12 +478,12 @@
             // Show spinner
             document.getElementById('spinner').style.display = 'block';
 
+            // Redirect immediately
+            window.location.href = url;
+
             setTimeout(function () {
                 missionImage.src = imageSrc;
-                setTimeout(function () {
-                    window.location.href = url;
-                }, 2000); // Adjust the delay to match the fade-out duration
-            }, 2000);
+            }, 2000); // Adjust the delay to match the fade-out duration
         }
 
         function playKeySoundAndFlipCard(imageSrc, url) {
