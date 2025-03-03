@@ -340,7 +340,7 @@
                         </div>
 
                         <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" onclick="playSound('ding'); flipCard('images/yellowscullcard.png', 'Poster.html')">
+                        <div class="clickable-area top-left" onclick="playSound('cardflip'); flipCard('images/yellowscullcard.png', 'Poster.html')">
                             <!-- Placeholder asset for Top Left -->
                             <img src="images/info1.svg" alt="Placeholder Top Left">
                         </div>
@@ -413,7 +413,6 @@
         // Preload audio files
         const cardflipAudio = new Audio('assets/cardflip.m4a');
         const keysAudio = new Audio('assets/keys.m4a');
-         const dingAudio = new Audio('assets/ding.mp3');
 
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
