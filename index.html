@@ -311,27 +311,27 @@
                         </div>
 
                         <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" onclick="playVideoAndRedirect('videos/video1.mp4', 'Poster.html')">
+                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')">
                             <!-- Placeholder asset for Top Left -->
                             <img src="images/info1.svg" alt="Placeholder Top Left">
                         </div>
-                        <div class="clickable-area top-right" onclick="playVideoAndRedirect('videos/video2.mp4', '2card.html')">
+                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')">
                             <!-- Placeholder asset for Top Right -->
                             <img src="images/people1.svg" alt="Placeholder Top Right">
                         </div>
-                        <div class="clickable-area bottom-left" onclick="playVideoAndRedirect('videos/video3.mp4', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
+                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
                             <!-- Placeholder asset for Bottom Left -->
                             <img src="images/news1.svg" alt="Placeholder Bottom Left">
                         </div>
-                        <div class="clickable-area bottom-right" onclick="playVideoAndRedirect('videos/video4.mp4', 'subscribe.html')">
+                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')">
                             <!-- Placeholder asset for Bottom Right -->
                             <img src="images/envelope1.svg" alt="Placeholder Bottom Right">
                         </div>
-                        <div class="clickable-area center-top" onclick="playVideoAndRedirect('videos/video5.mp4', 'https://www.linkedin.com/company/charlestonhacks')">
+                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
                             <!-- Placeholder asset for Center Top -->
                             <img src="images/crest1.svg" alt="Placeholder Center Top">
                         </div>
-                        <div class="clickable-area center-bottom" onclick="playVideoAndRedirect('videos/video6.mp4', 'https://www.instagram.com/charlestonhacks/')">
+                        <div class="clickable-area center-bottom" onclick="playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
                             <!-- Placeholder asset for Center Bottom -->
                             <img src="images/keys1.svg" alt="Placeholder Center Bottom">
                         </div>
@@ -377,7 +377,6 @@
         ];
 
         let cardClicked = false;
-        let soundPlaying = false;
 
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
@@ -418,23 +417,13 @@
         }
 
         function playSound() {
-            if (soundPlaying) return;
-            soundPlaying = true;
             var audio = new Audio('assets/cardflip.m4a'); // Use a standard click sound effect
             audio.play();
-            audio.onended = function () {
-                soundPlaying = false;
-            };
         }
 
         function playKeySound() {
-            if (soundPlaying) return;
-            soundPlaying = true;
             var audio = new Audio('assets/keys.m4a'); // Use the keys sound effect
             audio.play();
-            audio.onended = function () {
-                soundPlaying = false;
-            };
         }
 
         function flipAndRedirect() {
@@ -446,19 +435,21 @@
             }, 2000);
         }
 
-        function playVideoAndRedirect(videoSrc, redirectUrl) {
-            var missionVideo = document.getElementById('missionVideo');
-            missionVideo.src = videoSrc;
-            missionVideo.playbackRate = 1.25; // Speed up the video by 25%
-            missionVideo.style.display = 'block';
-            missionVideo.style.opacity = 0;
-            setTimeout(function() {
-                missionVideo.style.opacity = 1;
-            }, 100); // Delay to allow transition to take effect
-            missionVideo.play();
-            missionVideo.onended = function () {
-                window.location.href = redirectUrl;
-            };
+        function flipCard(imageSrc, url) {
+            var missionImage = document.getElementById('missionImage');
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            missionImage.classList.add(randomFlip);
+            setTimeout(function () {
+                missionImage.src = imageSrc;
+                setTimeout(function () {
+                    window.location.href = url;
+                }, 2000);
+            }, 1000);
+        }
+
+        function playKeySoundAndFlipCard(imageSrc, url) {
+            playKeySound();
+            flipCard(imageSrc, url);
         }
 
         function toggleVisibility() {
