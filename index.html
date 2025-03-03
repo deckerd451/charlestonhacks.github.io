@@ -340,27 +340,27 @@
                         </div>
 
                         <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')">
+                        <div class="clickable-area top-left" onclick="playSound('cardflip'); flipCard('images/yellowscullcard.png', 'Poster.html')">
                             <!-- Placeholder asset for Top Left -->
                             <img src="images/info1.svg" alt="Placeholder Top Left">
                         </div>
-                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')">
+                        <div class="clickable-area top-right" onclick="playSound('cardflip'); flipCard('images/redscullcard.png', '2card.html')">
                             <!-- Placeholder asset for Top Right -->
                             <img src="images/people1.svg" alt="Placeholder Top Right">
                         </div>
-                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
+                        <div class="clickable-area bottom-left" onclick="playSound('cardflip'); flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
                             <!-- Placeholder asset for Bottom Left -->
                             <img src="images/news1.svg" alt="Placeholder Bottom Left">
                         </div>
-                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')">
+                        <div class="clickable-area bottom-right" onclick="playSound('cardflip'); flipCard('images/Alexandor.png', 'subscribe.html')">
                             <!-- Placeholder asset for Bottom Right -->
                             <img src="images/envelope1.svg" alt="Placeholder Bottom Right">
                         </div>
-                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
+                        <div class="clickable-area center-top" onclick="playSound('cardflip'); flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
                             <!-- Placeholder asset for Center Top -->
                             <img src="images/crest1.svg" alt="Placeholder Center Top">
                         </div>
-                        <div class="clickable-area center-bottom" onclick="playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
+                        <div class="clickable-area center-bottom" onclick="playSound('keys'); playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
                             <!-- Placeholder asset for Center Bottom -->
                             <img src="images/keys1.svg" alt="Placeholder Center Bottom">
                         </div>
@@ -410,13 +410,17 @@
 
         let cardClicked = false;
 
+        // Preload audio files
+        const cardflipAudio = new Audio('assets/cardflip.m4a');
+        const keysAudio = new Audio('assets/keys.m4a');
+
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
 
         function playCardSoundAndToggleMissionContent() {
-            playSound();
+            playSound('cardflip');
             toggleMissionContent();
         }
 
@@ -448,14 +452,21 @@
             image.classList.add(randomFlip);
         }
 
-        function playSound() {
-            var audio = new Audio('assets/cardflip.m4a'); // Use a standard click sound effect
-            audio.play();
+        function playSound(sound) {
+            let audio;
+            if (sound === 'cardflip') {
+                audio = cardflipAudio;
+            } else if (sound === 'keys') {
+                audio = keysAudio;
+            }
+            if (audio) {
+                audio.currentTime = 0; // Reset to start
+                audio.play();
+            }
         }
 
         function playKeySound() {
-            var audio = new Audio('assets/keys.m4a'); // Use the keys sound effect
-            audio.play();
+            playSound('keys');
         }
 
         function flipAndRedirect() {
@@ -513,7 +524,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound);
+        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
         videoElement.addEventListener('ended', showCardFrame);
 
         // Ensure the spinner remains visible until the link is opened
@@ -521,19 +532,4 @@
             document.getElementById('spinner').style.display = 'none';
         });
 
-        // Remove fade-out class when the page is loaded or navigated back
-        window.addEventListener('pageshow', function () {
-            document.body.classList.remove('fade-out-body');
-            document.getElementById('spinner').style.display = 'none';
-        });
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
-    <script>
-        window.dataLayer = window.dataLayer ||
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-XXXXX-Y');
-    </script>
-</body>
-
-</html>
+        // Remove fade-out class when the page is
