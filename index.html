@@ -222,6 +222,27 @@
             z-index: 3;
         }
 
+        /* Spinning progress wheel */
+        .spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 8px solid #fff;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            z-index: 1000; /* Ensure it's above everything else */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* New clickable areas on the card */
         .clickable-area {
             position: absolute;
@@ -347,6 +368,9 @@
         </article>
     </div>
 
+    <!-- Spinning progress wheel -->
+    <div id="spinner" class="spinner"></div>
+
     <script src="ho-script.js"></script>
     <script>
         var countdownElement = document.getElementById('countdown');
@@ -449,9 +473,14 @@
             // Apply fade-out effect to the body
             document.body.classList.add('fade-out');
 
+            // Show spinner
+            document.getElementById('spinner').style.display = 'block';
+
             setTimeout(function () {
                 missionImage.src = imageSrc;
                 setTimeout(function () {
+                    // Hide spinner
+                    document.getElementById('spinner').style.display = 'none';
                     window.location.href = url;
                 }, 2000); // Adjust the delay to match the fade-out duration
             }, 2000);
