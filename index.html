@@ -409,6 +409,7 @@
             cardflip: new Audio('assets/cardflip.m4a'),
             keys: new Audio('assets/keys.m4a'),
             ding: new Audio('assets/ding.mp3')
+              atmosphere: new Audio('assets/atmosphere.m4a')
         };
 
         function getRandomImage() {
@@ -514,7 +515,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
+        videoElement.addEventListener('play', playSound.bind(null, 'atmosphere'));
         videoElement.addEventListener('ended', showCardFrame);
 
         // Ensure the spinner remains visible until the link is opened
