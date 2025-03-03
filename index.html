@@ -28,7 +28,6 @@
             overflow-x: hidden;
             position: relative;
             text-align: center;
-            transition: opacity 2s ease; /* Ensure the transition is applied to the body */
         }
 
         .panel {
@@ -93,6 +92,10 @@
         @keyframes fadeOut {
             from { opacity: 1; }
             to { opacity: 0; }
+        }
+
+        .fade-out {
+            animation: fadeOut 2s ease forwards;
         }
 
         #missionContent {
@@ -306,6 +309,10 @@
         .fade-out {
             animation: fadeOut 2s ease forwards;
         }
+
+        .fade-out-body *:not(.spinner) {
+            animation: fadeOut 2s ease forwards;
+        }
     </style>
 </head>
 
@@ -470,8 +477,8 @@
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             missionImage.classList.add(randomFlip);
 
-            // Apply fade-out effect to the body
-            document.body.classList.add('fade-out');
+            // Apply fade-out effect to the body content except the spinner
+            document.body.classList.add('fade-out-body');
 
             // Show spinner
             document.getElementById('spinner').style.display = 'block';
@@ -525,7 +532,4 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'UA-XXXXX-Y');
-    </script>
-</body>
-
-</html>
+    </script
