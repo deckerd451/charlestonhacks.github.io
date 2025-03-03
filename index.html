@@ -316,7 +316,7 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
+                    <a class="media-container" onclick="playSound('atmosphere'); toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/hcard.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
@@ -406,7 +406,7 @@
 
         // Simplify audio handling with a sound map
         const sounds = {
-            cardflip: new Audio('assets/cardflip.m4a'),
+            atmosphere: new Audio('assets/atmosphere.m4a'),
             keys: new Audio('assets/keys.m4a'),
             ding: new Audio('assets/ding.mp3')
         };
@@ -519,7 +519,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
+        videoElement.addEventListener('play', playSound.bind(null, 'atmosphere'));
         videoElement.addEventListener('ended', showCardFrame);
 
         // Ensure the spinner remains visible until the link is opened
