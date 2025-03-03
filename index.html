@@ -479,8 +479,6 @@
             setTimeout(function () {
                 missionImage.src = imageSrc;
                 setTimeout(function () {
-                    // Hide spinner
-                    document.getElementById('spinner').style.display = 'none';
                     window.location.href = url;
                 }, 2000); // Adjust the delay to match the fade-out duration
             }, 2000);
@@ -515,6 +513,11 @@
         const videoElement = document.getElementById('missionVideo');
         videoElement.addEventListener('play', playSound);
         videoElement.addEventListener('ended', showCardFrame);
+
+        // Ensure the spinner remains visible until the link is opened
+        window.addEventListener('beforeunload', function () {
+            document.getElementById('spinner').style.display = 'none';
+        });
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
     <script>
