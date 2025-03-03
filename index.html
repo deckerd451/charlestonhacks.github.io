@@ -28,7 +28,6 @@
             overflow-x: hidden;
             position: relative;
             text-align: center;
-            transition: opacity 2s ease; /* Ensure the transition is applied to the body */
         }
 
         .panel {
@@ -93,6 +92,10 @@
         @keyframes fadeOut {
             from { opacity: 1; }
             to { opacity: 0; }
+        }
+
+        .fade-out {
+            animation: fadeOut 2s ease forwards;
         }
 
         #missionContent {
@@ -302,8 +305,7 @@
             object-fit: cover;
         }
 
-        /* Add this CSS class for the fade-out effect */
-        .fade-out {
+        .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
     </style>
@@ -470,8 +472,8 @@
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             missionImage.classList.add(randomFlip);
 
-            // Apply fade-out effect to the body
-            document.body.classList.add('fade-out');
+            // Apply fade-out effect to the body content except the spinner
+            document.body.classList.add('fade-out-body');
 
             // Show spinner
             document.getElementById('spinner').style.display = 'block';
@@ -479,8 +481,6 @@
             setTimeout(function () {
                 missionImage.src = imageSrc;
                 setTimeout(function () {
-                    // Hide spinner
-                    document.getElementById('spinner').style.display = 'none';
                     window.location.href = url;
                 }, 2000); // Adjust the delay to match the fade-out duration
             }, 2000);
@@ -515,14 +515,18 @@
         const videoElement = document.getElementById('missionVideo');
         videoElement.addEventListener('play', playSound);
         videoElement.addEventListener('ended', showCardFrame);
+
+        // Ensure the spinner remains visible until the link is opened
+        window.addEventListener('beforeunload', function () {
+            document.getElementById('spinner').style.display = 'none';
+        });
+
+        // Remove fade-out class when the page is loaded or navigated back
+        window.addEventListener('pageshow', function () {
+            document.body.classList.remove('fade-out-body');
+            document.getElementById('spinner').style.display = 'none';
+        });
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'UA-XXXXX-Y');
-    </script>
-</body>
-
-</html>
+        window.dataLayer = window.dataLayer ||
