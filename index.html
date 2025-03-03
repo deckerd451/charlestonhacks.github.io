@@ -479,8 +479,20 @@
             // Show spinner
             document.getElementById('spinner').style.display = 'block';
 
-            // Redirect immediately
-            window.location.href = url;
+            // Wait for the audio to finish before redirecting
+            const sound = this.getAttribute('data-sound');
+            const audio = sounds[sound];
+            if (audio) {
+                audio.onended = function() {
+                    window.location.href = url;
+                };
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    window.location.href = url; // Redirect immediately if audio playback fails
+                });
+            } else {
+                window.location.href = url;
+            }
 
             setTimeout(function () {
                 missionImage.src = imageSrc;
@@ -493,7 +505,7 @@
                 const image = this.getAttribute('data-image');
                 const url = this.getAttribute('data-url');
                 playSound(sound);
-                flipCard(image, url);
+                flipCard.call(this, image, url);
             });
         });
 
@@ -527,11 +539,4 @@
             document.getElementById('spinner').style.display = 'none';
         });
 
-        // Remove fade-out class when the page is loaded or navigated back
-        window.addEventListener('pageshow', function () {
-            document.body.classList.remove('fade-out-body');
-        });
-    </script>
-</body>
-
-</html>
+        //
