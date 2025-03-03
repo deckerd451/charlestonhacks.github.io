@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <link rel="stylesheet" href="assets/css/main.min.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.min.css" /></noscript>
     
-    <!-- LightGallery CSS -->
+    <!-- LightGallery CSS (Minified) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/css/lightgallery.min.css">
 
-    <!-- LightGallery JS -->
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/lightgallery.umd.min.js"></script>
+    <!-- LightGallery JS (Minified) -->
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/lightgallery.umd.min.js" defer></script>
 
     <style>
         body {
@@ -82,45 +82,44 @@
         }
     </style>
 </head>
-
+<body>
 <!-- Main -->
 <div id="main">
     <!-- Post -->
     <article class="post featured">
         <header class="major">
             <a class="image main" href="index.html">
-    <img src="assets/chbackbuttonred.png" alt="" style="width: 300px; height: auto;" />
-</a>
-
+                <img src="assets/chbackbuttonred.png" alt="" style="width: 300px; height: auto;" />
+            </a>
         </header>
         
         <!-- Lightbox Gallery -->
         <div id="lightbox-gallery">
-             <a href="https://www.meetup.com/charlestonhacks/events/306342295/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link">
-        <img src="images/dn.jpg" alt="" class="image main" />
-    </a><br>
-    <a href="techweek.html">
-        <img src="images/AIFF.jpg" alt="" class="image main" />
-    </a><br>
+            <a href="https://www.meetup.com/charlestonhacks/events/306342295/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link">
+                <img src="images/dn.jpg" alt="" class="image main" />
+            </a><br>
+            <a href="techweek.html">
+                <img src="images/AIFF.jpg" alt="" class="image main" />
+            </a><br>
             <a href="harborhack24.html" data-lightbox="gallery">
-    <img src="images/hh24poster.png" alt="" />
-</a><br>
-<a href="meetupmashup.html" data-lightbox="gallery">
-    <img src="images/mashup1.jpg" alt="" />
-</a><br>
+                <img src="images/hh24poster.png" alt="" />
+            </a><br>
+            <a href="meetupmashup.html" data-lightbox="gallery">
+                <img src="images/mashup1.jpg" alt="" />
+            </a><br>
             <a href="hacknights24.html" data-lightbox="gallery">
-    <img src="images/hnposter24.jpg" alt="" />
-</a><br>
+                <img src="images/hnposter24.jpg" alt="" />
+            </a><br>
             <a href="hackops.html" data-lightbox="gallery">
-    <img src="images/hoposter24.jpg" alt="" />
-</a><br>
-<a href="harborhack23.html" data-lightbox="gallery">
-    <img src="images/Hackers Wanted.jpeg" alt="" />
-</a><br>
-
-<a href="summerhack.html" data-lightbox="gallery">
-    <img src="images/HACK ONE PAGER4-01.png" alt="" />
-</a><br>
+                <img src="images/hoposter24.jpg" alt="" />
+            </a><br>
+            <a href="harborhack23.html" data-lightbox="gallery">
+                <img src="images/Hackers Wanted.jpeg" alt="" />
+            </a><br>
+            <a href="summerhack.html" data-lightbox="gallery">
+                <img src="images/HACK ONE PAGER4-01.png" alt="" />
+            </a><br>
+        </div>
     </article>
 </div>
 
@@ -147,23 +146,23 @@
 </footer>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
-    <script>
+<script src="assets/js/jquery.min.js" defer></script>
+<script src="assets/js/util.min.js" defer></script>
+<script src="assets/js/main.min.js" defer></script>
+<script>
     // Initialize LightGallery only for images (not .html links)
-lightGallery(document.getElementById('lightbox-gallery'), {
-    selector: 'a[href$=".jpg"], a[href$=".png"], a[href$=".jpeg"]'
-});
-
-// Prevent LightGallery from intercepting .html links
-document.querySelectorAll('#lightbox-gallery a').forEach(link => {
-    link.addEventListener('click', function(event) {
-        if (this.getAttribute('href').endsWith('.html')) {
-            event.stopPropagation(); // Stop LightGallery from overriding the link
-        }
+    lightGallery(document.getElementById('lightbox-gallery'), {
+        selector: 'a[href$=".jpg"], a[href$=".png"], a[href$=".jpeg"]'
     });
-});
+
+    // Prevent LightGallery from intercepting .html links
+    document.querySelectorAll('#lightbox-gallery a').forEach(link => {
+        link.addEventListener('click', function(event) {
+            if (this.getAttribute('href').endsWith('.html')) {
+                event.stopPropagation(); // Stop LightGallery from overriding the link
+            }
+        });
+    });
 </script>
 
 </body>
