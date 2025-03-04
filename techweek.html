@@ -230,6 +230,13 @@
                 height: auto;
             }
         }
+
+        /* Reduce the video size by 50% on larger screens */
+        @media (min-width: 769px) {
+            .video-container video {
+                transform: scale(0.5); /* Scale down to 50% */
+            }
+        }
     </style>
 </head>
 
