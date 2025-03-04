@@ -84,12 +84,6 @@
             }
         }
 
-        @media (min-width: 769px) {
-            .media-container {
-                transform: scale(0.9); /* Scale down by 10% */
-            }
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -314,6 +308,13 @@
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
+
+        /* Make hcard and all elements 20% smaller on web only */
+        @media (min-width: 769px) {
+            .media-container {
+                transform: scale(0.8);
+            }
+        }
     </style>
 </head>
 
@@ -533,4 +534,5 @@
             document.getElementById('spinner').style.display = 'none';
         });
 
-        // Remove fade-out class when the page is loaded
+        // Remove fade-out class when the page is loaded or navigated back
+       
