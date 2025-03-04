@@ -308,6 +308,17 @@
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
+
+        /* New styles for navigate image */
+        #navigateImage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
+            z-index: 10; /* Ensure it's above everything else */
+        }
     </style>
 </head>
 
@@ -366,6 +377,9 @@
 
     <!-- Spinning progress wheel -->
     <div id="spinner" class="spinner"></div>
+
+    <!-- New navigate image -->
+    <img id="navigateImage" src="images/navigate.svg" alt="Navigate">
 
     <script src="ho-script.js"></script>
     <script>
@@ -518,20 +532,4 @@
             document.getElementById('cardFrame').style.display = 'block';
         }
 
-        const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
-        videoElement.addEventListener('ended', showCardFrame);
-
-        // Ensure the spinner remains visible until the link is opened
-        window.addEventListener('beforeunload', function () {
-            document.getElementById('spinner').style.display = 'none';
-        });
-
-        // Remove fade-out class when the page is loaded or navigated back
-        window.addEventListener('pageshow', function () {
-            document.body.classList.remove('fade-out-body');
-        });
-    </script>
-</body>
-
-</html>
+        const videoElement = document
