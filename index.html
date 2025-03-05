@@ -111,6 +111,12 @@
       margin: 0;
   }
 
+/* Pulsing effect */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
 
 
 
@@ -278,10 +284,12 @@
 
         /* New clickable areas on the card */
         .clickable-area {
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-        }
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    animation: pulse 1.5s infinite ease-in-out; /* Pulsing effect */
+}
+
 
         .top-left {
             top: .5%;
