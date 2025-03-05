@@ -278,10 +278,16 @@
 
         /* New clickable areas on the card */
         .clickable-area {
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-        }
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Add this line for a stronger shadow */
+}
+
+.clickable-area:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8); /* Add a more intense shadow on hover */
+}
+
 
         .top-left {
             top: .5%;
