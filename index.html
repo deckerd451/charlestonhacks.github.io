@@ -377,20 +377,15 @@
                         </div>
 
                         <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left pulse" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
-    <img src="images/infog.svg" alt="Info">
-</div>
-
+                        <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
+                            <img src="images/infog.svg" alt="Info">
+                        </div>
                         <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
                             <img src="images/peopleg.svg" alt="People">
                         </div>
                         <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
-    <img src="images/newsg.svg" alt="News" onclick="showNewsImage()">
-</div>
-
-<!-- The image to show for 1 second -->
-<img id="newsdImage" src="images/newsd.svg" alt="News D" style="display: none;" />
-
+                            <img src="images/newsg.svg" alt="News">
+                        </div>
                         <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
                             <img src="images/envelopeg.svg" alt="Envelope">
                         </div>
@@ -462,19 +457,6 @@
             var randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
-        // Function to show the second image for 1 second
-function showNewsImage() {
-    var newsdImage = document.getElementById("newsdImage");
-    
-    // Show the image
-    newsdImage.style.display = "block";
-    
-    // Hide the image after 1 second
-    setTimeout(function() {
-        newsdImage.style.display = "none";
-    }, 1000); // 1000 ms = 1 second
-}
-
 
         function playSound(soundKey) {
             const audio = sounds[soundKey];
