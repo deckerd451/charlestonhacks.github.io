@@ -44,7 +44,7 @@
             position: relative;
             z-index: 3;
             width: 100%;
-            max-width: 600px; /* Adjust the max-width as needed */
+            max-width: 600px;
             margin: 0 auto;
             overflow: hidden;
         }
@@ -52,6 +52,7 @@
         #missionVideo {
             pointer-events: none;
         }
+
         #missionVideo.show {
             pointer-events: auto;
         }
@@ -61,7 +62,7 @@
             width: 100%;
             height: auto;
             display: block;
-            object-fit: cover; /* Maintain aspect ratio */
+            object-fit: cover;
         }
 
         .media-container video {
@@ -75,7 +76,7 @@
             display: block;
             z-index: 0;
             opacity: 0;
-            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
+            transition: opacity 1s ease-in-out;
         }
 
         @media (max-width: 768px) {
@@ -83,197 +84,41 @@
                 max-width: 90%;
             }
         }
-        @media (max-width: 768px) {
-    #countdownWrapper {
-        position: absolute;
-        top: 25%; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
-
-    #countdown {
-        font-size: 24px;
-    }
-}
-@media (max-width: 768px) {
-    .center-top {
-        top: -30%; /* Move up by adjusting this value */
-    }
-
-    .center-bottom {
-        bottom: 0%; /* Move up by adjusting this value */
-    }
-}
-     
-  .clickable-area img {
-      padding: 0;
-      margin: 0;
-  }
-
-
-
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        .fade-out {
-            animation: fadeOut 2s ease forwards;
-        }
-
-        #missionContent {
-            animation: fadeIn 0.9s ease forwards;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 2;
-            opacity: 1;
-        }
-
-        #missionContent p, #missionContent a {
-            color: white;
-        }
-
-        @keyframes flipImageX {
-            0% { opacity: 1; }
-            50% { transform: rotateX(180deg); }
-            to { transform: rotateX(360deg); opacity: 0; }
-        }
-
-        @keyframes flipImageY {
-            0% { opacity: 1; }
-            50% { transform: rotateY(180deg); }
-            to { transform: rotateY(360deg); opacity: 0; }
-        }
-
-        .flip-image-x {
-            animation: flipImageX 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
-        }
-
-        .flip-image-y {
-            animation: flipImageY 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
-        }
-
-        #missionVideo.fadeOut {
-            animation: fadeOut 18s ease forwards !important;
-            z-index: 1;
-        }
-
-        #cardFrame {
-            display: none; /* Initially hidden */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Positioned under other elements */
-        }
-
-        #countdownWrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #countdown {
-            font-size: 32px;
-            color: #FF0000;
-        }
 
         @media (max-width: 768px) {
+            #countdownWrapper {
+                position: absolute;
+                top: 25%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+            }
+
             #countdown {
-                font-size: 24px; /* Smaller font size for mobile */
+                font-size: 24px;
             }
         }
 
-        .logo {
+        /* Pulsating animation */
+        @keyframes pulsate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .clickable-area.bottom-left, .clickable-area.bottom-right {
+            animation: pulsate 2s infinite ease-in-out;
+        }
+
+        .clickable-area img {
+            width: 100%;
+            height: auto;
             display: block;
-            margin: 0 auto 5px auto; /* Center horizontally and add bottom margin */
+            object-fit: cover;
         }
 
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .info {
-                font-size: 16px; /* Smaller font size for mobile */
-            }
-        }
-
-        .body-text {
-            margin: 30px 0;
-        }
-
-        .body-text a {
-            color: white;
-        }
-
-        .body-text p {
-            margin-bottom: 10px;
-        }
-
-        #previousEventsToggle {
-            background: none;
-            border: none;
-            padding: 0;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #previousEventsToggle i {
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .loading-indicator {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3;
-        }
-
-        /* Spinning progress wheel */
-        .spinner {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 8px solid #fff;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            z-index: 1000; /* Ensure it's above everything else */
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .fade-out-body *:not(.spinner) {
+            animation: fadeOut 2s ease forwards;
         }
 
         /* New clickable areas on the card */
@@ -326,25 +171,7 @@
             width: 20%;
             height: 20%;
         }
-        
-        /* Placeholder asset style */
-        .clickable-area img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-        }
 
-        .fade-out-body *:not(.spinner) {
-            animation: fadeOut 2s ease forwards;
-        }
-
-        /* Make hcard and all elements 20% smaller on web only */
-        @media (min-width: 769px) {
-            .media-container {
-                transform: scale(0.8);
-            }
-        }
     </style>
 </head>
 
@@ -416,158 +243,12 @@
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
             countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
             if (distance < 0) {
                 clearInterval(countdownFunction);
-                countdownElement.innerHTML = "AIFF is Here!";
+                countdownElement.innerHTML = "EXPIRED";
             }
         }, 1000);
-
-        var cardImages = [
-            "images/yellowscullcard.png",
-            "images/redscullcard.png",
-            "images/Descartes.png",
-            "images/Alexandor.png",
-            "images/Medusa.png",
-            "images/Elara.png",
-            "images/adventurercard.png",
-            "images/collaboratorcard.png",
-            "images/humanitariancard.png",
-            "images/nextcard.png",
-            "images/Aegis.png",
-            "images/resilientcard.png",
-            "images/Astrid.png",
-            "images/nicolecard.png"
-        ];
-
-        let cardClicked = false;
-
-        // Simplify audio handling with a sound map
-        const sounds = {
-            cardflip: new Audio('assets/atmospherel.m4a'),
-            keys: new Audio('assets/keys.m4a'),
-            ding: new Audio('assets/ding.mp3')
-        };
-
-        // Lower the volume of all sounds by 30%
-        Object.keys(sounds).forEach(key => {
-            sounds[key].volume = 0.7;
-        });
-
-        function getRandomImage() {
-            var randomIndex = Math.floor(Math.random() * cardImages.length);
-            return cardImages[randomIndex];
-        }
-
-        function playSound(soundKey) {
-            const audio = sounds[soundKey];
-            if (audio) {
-                audio.currentTime = 0; // Reset to start
-                audio.play().catch(error => {
-                    console.error('Audio playback failed:', error);
-                });
-            }
-        }
-
-        function toggleMissionContent() {
-            if (cardClicked) return;
-            cardClicked = true;
-
-            var image = document.getElementById('missionImage');
-            image.src = getRandomImage();
-
-            var video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 0;
-            setTimeout(function() {
-                video.style.opacity = 1;
-            }, 100); // Delay to allow transition to take effect
-            video.play();
-
-            document.getElementById('missionContent').style.display = 'block';
-
-            setTimeout(function () {
-                video.classList.add('fadeOut');
-                setTimeout(function () {
-                    video.style.display = 'none';
-                }, 18000);
-            }, 18000);
-
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            image.classList.add(randomFlip);
-        }
-
-        function flipAndRedirect() {
-            var banner = document.getElementById('aiffBanner');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            banner.classList.add(randomFlip);
-            setTimeout(function () {
-                window.location.href = 'https://charlestonhacks.com/techweek.html';
-            }, 2000);
-        }
-
-        function flipCard(imageSrc, url) {
-            var missionImage = document.getElementById('missionImage');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            missionImage.classList.add(randomFlip);
-
-            // Apply fade-out effect to the body content except the spinner
-            document.body.classList.add('fade-out-body');
-
-            // Show spinner
-            document.getElementById('spinner').style.display = 'block';
-
-            // Redirect immediately
-            window.location.href = url;
-
-            setTimeout(function () {
-                missionImage.src = imageSrc;
-            }, 2000); // Adjust the delay to match the fade-out duration
-        }
-
-        document.querySelectorAll('.clickable-area').forEach(area => {
-            area.addEventListener('click', function() {
-                const sound = this.getAttribute('data-sound');
-                const image = this.getAttribute('data-image');
-                const url = this.getAttribute('data-url');
-                playSound(sound);
-                flipCard(image, url);
-            });
-        });
-
-        function toggleVisibility() {
-            var eventsSection = document.querySelector('.previous-events');
-            eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function showLoadingIndicator() {
-            document.getElementById('loadingIndicator').style.display = 'block';
-        }
-
-        function hideLoadingIndicator() {
-            document.getElementById('loadingIndicator').style.display = 'none';
-        }
-
-        function handleVideoError() {
-            alert("Error loading video. Please try again later.");
-        }
-
-        function showCardFrame() {
-            document.getElementById('cardFrame').style.display = 'block';
-        }
-
-        const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
-        videoElement.addEventListener('ended', showCardFrame);
-
-        // Ensure the spinner remains visible until the link is opened
-        window.addEventListener('beforeunload', function () {
-            document.getElementById('spinner').style.display = 'none';
-        });
-
-        // Remove fade-out class when the page is loaded or navigated back
-        window.addEventListener('pageshow', function () {
-            document.body.classList.remove('fade-out-body');
-        });
     </script>
 </body>
 
