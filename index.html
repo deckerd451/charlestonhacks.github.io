@@ -106,28 +106,10 @@
     }
 }
      
-  .clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-}
-
-/* Apply pulsing effect only to specific clickable areas */
-.top-left, .top-right, .bottom-left, .bottom-right {
-    animation: pulse 1.5s infinite ease-in-out;
-}
-
-/* Pulsing effect */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-/* Apply pulsing effect only to specific clickable areas */
-.top-left, .top-right, .bottom-left, .bottom-right {
-    animation: pulse 1.5s infinite ease-in-out;
-}
+  .clickable-area img {
+      padding: 0;
+      margin: 0;
+  }
 
 
 
@@ -296,12 +278,10 @@
 
         /* New clickable areas on the card */
         .clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    animation: pulse 1.5s infinite ease-in-out; /* Pulsing effect */
-}
-
+            position: absolute;
+            z-index: 4;
+            cursor: pointer;
+        }
 
         .top-left {
             top: .5%;
@@ -332,23 +312,20 @@
         }
 
         .center-top {
-    top: 10%; /* Adjusted value to avoid pushing it off-screen */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20%;
-    height: 20%;
-    z-index: 5; /* Ensure it's on top */
-}
+            top: .6%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20%;
+            height: 20%;
+        }
 
-.center-bottom {
-    bottom: 10%; /* Adjusted value to avoid overlap */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20%;
-    height: 20%;
-    z-index: 5; /* Ensure it's on top */
-}
-
+        .center-bottom {
+            bottom: -4.4%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20%;
+            height: 20%;
+        }
         
         /* Placeholder asset style */
         .clickable-area img {
