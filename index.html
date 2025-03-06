@@ -112,18 +112,24 @@
   }
 @keyframes pulse {
     0% {
-        transform: scale(1);
+        transform: scale(1) translate(-50%, 0);
         opacity: 1;
     }
     50% {
-        transform: scale(1.1);
+        transform: scale(1.1) translate(-50%, 0);
         opacity: 0.8;
     }
     100% {
-        transform: scale(1);
+        transform: scale(1) translate(-50%, 0);
         opacity: 1;
     }
 }
+
+.center-top, .center-bottom {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 
 .clickable-area {
     position: absolute;
@@ -341,13 +347,13 @@
 
 .center-top {
     top: 2%;
-    left: 90%;
+    left: 50%;
     transform: translateX(-50%);
 }
 
 .center-bottom {
     bottom: 2%;
-    left: 90%;
+    left: 50%;
     transform: translateX(-50%);
 }
 
