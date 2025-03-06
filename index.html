@@ -110,38 +110,6 @@
       padding: 0;
       margin: 0;
   }
-@keyframes pulse {
-    0% {
-        transform: scale(1) translate(-50%, 0);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.1) translate(-50%, 0);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1) translate(-50%, 0);
-        opacity: 1;
-    }
-}
-
-.center-top, .center-bottom {
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-
-.clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
-    width: 10vw;
-    max-width: 60px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    animation: pulse 2s infinite ease-in-out; /* This line adds the pulsing effect */
-}
 
 
 
