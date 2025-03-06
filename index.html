@@ -282,17 +282,28 @@
     position: absolute;
     z-index: 4;
     cursor: pointer;
-    border-radius: 50%; /* Make it circular */
-    aspect-ratio: 1/1; /* Maintain perfect circle */
-    width: 15vw; /* Adjust size based on viewport width */
-    max-width: 100px; /* Prevent it from getting too large */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+    border-radius: 50%; /* Keep it circular */
+    aspect-ratio: 1/1; /* Ensure perfect circle */
+    width: 18vw; /* Increase from 15vw */
+    max-width: 120px; /* Increase from 100px */
+    min-width: 60px; /* Ensure it's not too small on mobile */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* Stronger shadow for visibility */
+    transition: transform 0.2s ease-in-out; /* Smooth interaction effect */
 }
 
 .clickable-area:hover {
-    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
-
+    transform: scale(1.1); /* Slight increase for hover effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8);
 }
+
+/* Ensure tap size is large enough on mobile */
+@media (max-width: 768px) {
+    .clickable-area {
+        width: 22vw; /* Increase tap target size */
+        max-width: 140px; /* Larger on mobile */
+    }
+}
+
 
 /* Adjust position as needed */
 .top-left {
