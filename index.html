@@ -111,11 +111,6 @@
       margin: 0;
   }
 
-    .center-top, .center-bottom {
-        width: 16.5vw; /* Increase by 10% from 15vw */
-        max-width: 110px; /* Increase by 10% from 100px */
-    }
-
   @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -562,6 +557,48 @@
         window.addEventListener('pageshow', function () {
             document.body.classList.remove('fade-out-body');
         });
+        <script>
+    function showTextAndRedirect(text, url) {
+        // Create a temporary text element
+        let textElement = document.createElement("div");
+        textElement.innerText = text;
+        textElement.style.position = "fixed";
+        textElement.style.top = "50%";
+        textElement.style.left = "50%";
+        textElement.style.transform = "translate(-50%, -50%)";
+        textElement.style.color = "white";
+        textElement.style.fontSize = "24px";
+        textElement.style.fontWeight = "bold";
+        textElement.style.zIndex = "1000";
+        textElement.style.background = "rgba(0, 0, 0, 0.8)";
+        textElement.style.padding = "20px";
+        textElement.style.borderRadius = "10px";
+
+        document.body.appendChild(textElement);
+
+        // Wait 1.5 seconds, then navigate to the link
+        setTimeout(() => {
+            document.body.removeChild(textElement);
+            window.location.href = url;
+        }, 1500);
+    }
+
+    document.querySelector(".top-left").addEventListener("click", function () {
+        showTextAndRedirect("EVENTS", "your-events-link.html");
+    });
+
+    document.querySelector(".top-right").addEventListener("click", function () {
+        showTextAndRedirect("ABOUT US", "your-about-us-link.html");
+    });
+
+    document.querySelector(".bottom-left").addEventListener("click", function () {
+        showTextAndRedirect("NEWS", "your-news-link.html");
+    });
+
+    document.querySelector(".bottom-right").addEventListener("click", function () {
+        showTextAndRedirect("SUBSCRIBE", "your-subscribe-link.html");
+    });
+
     </script>
 </body>
 
