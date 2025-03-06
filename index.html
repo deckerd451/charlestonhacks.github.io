@@ -280,52 +280,50 @@
     position: absolute;
     z-index: 4;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Add this line for a stronger shadow */
     border-radius: 50%; /* Make it circular */
+    aspect-ratio: 1/1; /* Maintain perfect circle */
+    width: 15vw; /* Adjust size based on viewport width */
+    max-width: 100px; /* Prevent it from getting too large */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
 }
 
 .clickable-area:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8); /* Add a more intense shadow on hover */
-}
-
-.top-left, .top-right, .bottom-left, .bottom-right, .center-top, .center-bottom {
-    width: 20%;
-    height: 20%;
-    border-radius: 50%; /* Ensure all clickable areas are circular */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8);
 }
 
 /* Adjust position as needed */
 .top-left {
-    top: .5%;
+    top: 2%;
     left: 2%;
 }
 
 .top-right {
-    top: .5%;
-    right: 2.4%;
+    top: 2%;
+    right: 2%;
 }
 
 .bottom-left {
-    bottom: -4.6%;
+    bottom: 2%;
     left: 2%;
 }
 
 .bottom-right {
-    bottom: -4.6%;
-    right: 2.4%;
+    bottom: 2%;
+    right: 2%;
 }
 
 .center-top {
-    top: .6%;
+    top: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .center-bottom {
-    bottom: -4.4%;
+    bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
+
 
 
         .fade-out-body *:not(.spinner) {
