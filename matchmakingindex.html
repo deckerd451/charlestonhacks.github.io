@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matchmaking System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+
+    section {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #f1f1f1;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Registration Form for Mailchimp Integration -->
+  <section id="registration-section">
+    <h2>Register for Mailchimp</h2>
+    <form id="registrationForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      <button type="submit">Register</button>
+    </form>
+  </section>
+
+  <!-- Matchmaking Form -->
+  <section id="matchmaking-section">
+    <h2>Find a Match</h2>
+    <form id="matchmaking-form">
+      <input type="text" id="skills" placeholder="Skills" required />
+      <input type="text" id="location" placeholder="Location" required />
+      <button type="submit">Find Matches</button>
+    </form>
+
+    <!-- Display Matches Here -->
+    <ul id="results-list"></ul>
+  </section>
+
+  <!-- Add Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-functions.js"></script>
+
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
+      projectId: "YOUR_FIREBASE_PROJECT_ID",
+      storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
+      appId: "YOUR_FIREBASE_APP_ID",
+      measurementId: "YOUR_FIREBASE_MEASUREMENT_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const functions = firebase.functions();
+
+    // Add event listener to the registration form
+    document.getElementById('registrationForm').addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent form from submitting normally
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      // Call the Cloud Function for Mailchimp
+      const addUserToMailchimp = functions.httpsCallable('addUserToMailchimp');
+      addUserToMailchimp({ name, email })
+        .then((result) => {
+          console.log('User added to Mailchimp:', result.data);
+          // Optionally, show a success message to the user
+        })
+        .catch((error) => {
+          console.error('Error adding user to Mailchimp:', error);
+          // Optionally, show an error message to the user
+        });
+    });
+
+    // Add event listener to the matchmaking form
+    document.getElementById('matchmaking-form').addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevent page refresh
+
+      const skills = document.getElementById('skills').value;
+      const location = document.getElementById('location').value;
+
+      const response = await fetch('/api/matchmake', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ skills, location }),
+      });
+
+      const data = await response.json();
+
+      if (data.matches) {
+        displayMatches(data.matches);
+      } else {
+        alert('No matches found');
+      }
+    });
+
+    function displayMatches(matches) {
+      const resultsList = document.getElementById('results-list');
+      resultsList.innerHTML = '';
+
+      matches.forEach((match) => {
+        const li = document.createElement('li');
+        li.textContent = `Name: ${match.name}, Skills: ${match.skills}, Location: ${match.location}`;
+        resultsList.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
