@@ -1,1 +1,41 @@
+<!-- matchmaking.html -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matchmaking System</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your main CSS -->
+  </head>
+  <body>
+    <header>
+      <h1>Find Your Match!</h1>
+      <p>Welcome to the matchmaking system.</p>
+    </header>
+
+    <main>
+      <!-- Matchmaking form or results here -->
+      <section id="matchmaking-form">
+        <form id="matchmaking-form">
+          <label for="skills">Your Skills:</label>
+          <input type="text" id="skills" name="skills" placeholder="Enter your skills" required>
+
+          <label for="location">Location:</label>
+          <input type="text" id="location" name="location" placeholder="Enter your location" required>
+
+          <button type="submit">Find Your Match</button>
+        </form>
+      </section>
+      
+      <section id="match-results">
+        <h2>Potential Matches</h2>
+        <ul id="results-list"></ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 CharlestonHacks</p>
+    </footer>
+    <script src="scripts.js"></script> <!-- Link to your JS -->
+  </body>
+</html>
 
