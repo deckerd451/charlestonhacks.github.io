@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -116,6 +117,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="main">
         <article class="post featured">
@@ -130,7 +132,7 @@
                     <div class="card-container" id="cardContainer">
                         <!-- Cards will be dynamically inserted here -->
                     </div>
-                    
+
                     <!-- Link Container (hidden by default) -->
                     <div id="link-container" class="link-container">
                         <p>Matched Cards! Proceed to the next level:</p>
@@ -169,7 +171,7 @@
 
         // Get users that match the project skills
         function getMatchingUsers(projectSkills) {
-            return users.filter(user => 
+            return users.filter(user =>
                 user.skills.some(skill => projectSkills.includes(skill))
             );
         }
@@ -206,4 +208,5 @@
         }
     </script>
 </body>
+
 </html>
