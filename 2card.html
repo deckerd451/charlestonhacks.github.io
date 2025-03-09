@@ -167,12 +167,14 @@
         // Global variable to store the project skills
         let projectSkills = [];
 
+        // Get users that match the project skills
         function getMatchingUsers(projectSkills) {
             return users.filter(user => 
                 user.skills.some(skill => projectSkills.includes(skill))
             );
         }
 
+        // Display matched user cards
         function displayUserCards() {
             const cardContainer = document.getElementById("cardContainer");
             cardContainer.innerHTML = ''; // Clear previous cards
