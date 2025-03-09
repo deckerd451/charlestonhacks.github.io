@@ -138,6 +138,11 @@
                         <p>Matched Cards! Proceed to the next level:</p>
                         <a href="next-level.html" rel="noopener noreferrer">Go to Next Level</a>
                     </div>
+
+                    <!-- No Matches Message -->
+                    <div id="no-matches-message" class="link-container">
+                        <p>No matches found. Please try different skills.</p>
+                    </div>
                 </div>
             </header>
         </article>
@@ -194,8 +199,10 @@
             // Show the link container if matched cards are displayed
             if (matchedUsers.length > 0) {
                 document.getElementById("link-container").style.display = 'block';
+                document.getElementById("no-matches-message").style.display = 'none';
             } else {
                 document.getElementById("link-container").style.display = 'none';
+                document.getElementById("no-matches-message").style.display = 'block';
             }
         }
 
