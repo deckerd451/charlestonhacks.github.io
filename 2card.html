@@ -94,6 +94,14 @@
         .input-container {
             margin-bottom: 20px;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-container form {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
         }
@@ -119,6 +127,10 @@
             background-color: #FF4500;
         }
 
+        .input-container.hidden {
+            display: none;
+        }
+
         /* Style for Mailchimp form */
         #mc_embed_signup {
             background: #fff;
@@ -141,9 +153,10 @@
                 <div class="panel">
                     <!-- Combined input and subscribe form -->
                     <div class="input-container">
-                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" onsubmit="return checkUserAndDisplayMatches();">
+                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form">
                             <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required>
                             <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" required>
+                            <input type="text" id="projectStatement" placeholder="Enter project statement" required>
                             <button type="submit" name="subscribe" id="mc-embedded-subscribe">Add to Match Index</button>
                         </form>
                         <button onclick="searchMatches()">Search Matches</button>
@@ -227,6 +240,7 @@
         // Display matched user cards
         function displayUserCards() {
             const cardContainer = document.getElementById("cardContainer");
+            const inputContainer = document.querySelector(".input-container");
             cardContainer.innerHTML = ''; // Clear previous cards
 
             const matchedUsers = getMatchingUsers(projectSkills);
@@ -242,8 +256,10 @@
             // Show the link container if matched cards are displayed
             if (matchedUsers.length > 0) {
                 document.getElementById("link-container").style.display = 'block';
+                inputContainer.classList.add("hidden");
             } else {
                 document.getElementById("link-container").style.display = 'none';
+                inputContainer.classList.remove("hidden");
             }
         }
 
@@ -251,6 +267,7 @@
         function checkUserAndDisplayMatches() {
             const email = document.getElementById("mce-EMAIL").value.toLowerCase();
             const skillInput = document.getElementById("skillInput").value.toLowerCase();
+            const projectStatement = document.getElementById("projectStatement").value.toLowerCase();
             const skills = skillInput.split(',').map(skill => skill.trim());
 
             if (isEmailInDatabase(email)) {
