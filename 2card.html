@@ -146,6 +146,7 @@
                             <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" required>
                             <button type="submit" name="subscribe" id="mc-embedded-subscribe">Add to Match Index</button>
                         </form>
+                        <button onclick="searchMatches()">Search Matches</button>
                         <div class="error-message" id="error-message">This email is already in the database.</div>
                     </div>
 
@@ -220,9 +221,7 @@
 
         // Get users that match the project skills
         function getMatchingUsers(projectSkills) {
-            return users.filter(user =>
-                user.skills.some(skill => projectSkills.includes(skill))
-            );
+            return users.filter(user => user.skills.some(skill => projectSkills.includes(skill)));
         }
 
         // Display matched user cards
@@ -274,6 +273,19 @@
 
                 return true; // Allow form submission, user is not in the database
             }
+        }
+
+        // Search matches without adding to index
+        function searchMatches() {
+            const email = document.getElementById("mce-EMAIL").value.toLowerCase();
+            const skillInput = document.getElementById("skillInput").value.toLowerCase();
+            const skills = skillInput.split(',').map(skill => skill.trim());
+
+            // Set project skills for searching
+            projectSkills = skills;
+
+            // Display matched user cards
+            displayUserCards();
         }
     </script>
 </body>
