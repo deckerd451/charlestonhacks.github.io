@@ -135,7 +135,7 @@
                     <input type="text" name="b_79363b7a43970f760d61360fd_4a05747445" tabindex="-1" value="">
                 </div>
                 <div class="clear">
-                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
+                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Match Level 3">
                 </div>
             </div>
         </form>
@@ -153,10 +153,11 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                alert('Submission successful!');
                 window.location.href = 'cardmatchgame.html';
             })
             .catch(error => {
+                alert('An error occurred. Please try again.');
                 console.error('Error:', error);
             });
         }
