@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
     <style>
         /* Reset and General Styles */
         * {
@@ -116,36 +117,11 @@
         }
 
         /* Style for Mailchimp form */
-        .mailchimp-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .mailchimp-container .input-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .mailchimp-container input[type="email"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #FFD700;
-            border-radius: 5px;
-            width: 250px;
-        }
-
-        .mailchimp-container button[type="submit"] {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #FFD700;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .mailchimp-container button[type="submit"]:hover {
-            background-color: #FF4500;
+        #mc_embed_signup {
+            background: #fff;
+            clear: left;
+            font: 14px Helvetica, Arial, sans-serif;
+            width: 600px;
         }
     </style>
 </head>
@@ -175,13 +151,76 @@
         </article>
 
         <!-- Mailchimp Form -->
-        <div class="mailchimp-container">
-            <form id="mc-embedded-subscribe-form" action="https://<YOUR_MAILCHIMP_SUBDOMAIN>.usX.list-manage.com/subscribe/post?u=<YOUR_U_VALUE>&id=<YOUR_ID_VALUE>" method="post" target="_blank" novalidate>
-                <div class="input-container">
-                    <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required>
-                    <button type="submit" name="subscribe" id="mc-embedded-subscribe">Subscribe</button>
-                </div>
-            </form>
+        <div id="mc_embed_shell">
+            <div id="mc_embed_signup">
+                <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+                    <div id="mc_embed_signup_scroll">
+                        <h2>Match Index Registration</h2>
+                        <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+                        <div class="mc-field-group">
+                            <label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label>
+                            <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required value="">
+                        </div>
+                        <div class="mc-field-group">
+                            <label for="mce-FNAME">First Name </label>
+                            <input type="text" name="FNAME" class="text" id="mce-FNAME" value="">
+                        </div>
+                        <div class="mc-field-group">
+                            <label for="mce-LNAME">Last Name </label>
+                            <input type="text" name="LNAME" class="text" id="mce-LNAME" value="">
+                        </div>
+                        <div class="mc-address-group">
+                            <div class="mc-field-group">
+                                <label for="mce-LOCATION-addr1">City, State and Country </label>
+                                <input type="text" maxlength="70" name="LOCATION[addr1]" id="mce-LOCATION-addr1" class="" value="">
+                            </div>
+                            <div class="mc-field-group">
+                                <label for="mce-LOCATION-addr2">Address Line 2</label>
+                                <input type="text" maxlength="70" name="LOCATION[addr2]" id="mce-LOCATION-addr2" value="">
+                            </div>
+                            <div class="mc-address-fields-group">
+                                <div class="mc-field-group">
+                                    <label for="mce-LOCATION-city">City</label>
+                                    <input type="text" maxlength="40" name="LOCATION[city]" id="mce-LOCATION-city" class="" value="">
+                                </div>
+                                <div class="mc-field-group">
+                                    <label for="mce-LOCATION-state">State/Province/Region</label>
+                                    <input type="text" maxlength="20" name="LOCATION[state]" id="mce-LOCATION-state" class="" value="">
+                                </div>
+                                <div class="mc-field-group">
+                                    <label for="mce-LOCATION-zip">Postal / Zip Code</label>
+                                    <input type="text" maxlength="10" name="LOCATION[zip]" id="mce-LOCATION-zip" class="" value="">
+                                </div>
+                            </div>
+                            <div class="mc-field-group">
+                                <label for="mce-LOCATION-country">Country</label>
+                                <select name="LOCATION[country]" id="mce-LOCATION-country" class="">
+                                    <option value="USA" selected>USA</option>
+                                    <!-- Add other country options here -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mc-field-group">
+                            <label for="mce-SKILLS">Skills </label>
+                            <input type="text" name="SKILLS" class="text" id="mce-SKILLS" value="">
+                        </div>
+                        <div class="mc-field-group">
+                            <label for="mce-KEYWORDS">Project Keywords </label>
+                            <input type="text" name="KEYWORDS" class="text" id="mce-KEYWORDS" value="">
+                        </div>
+                        <div id="mce-responses" class="clear">
+                            <div class="response" id="mce-error-response" style="display: none;"></div>
+                            <div class="response" id="mce-success-response" style="display: none;"></div>
+                        </div>
+                        <div aria-hidden="true" style="position: absolute; left: -5000px;">
+                            <input type="text" name="b_79363b7a43970f760d61360fd_4a05747445" tabindex="-1" value="">
+                        </div>
+                        <div class="clear">
+                            <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -194,6 +233,28 @@
         </div>
     </footer>
 
+    <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+    <script type="text/javascript">
+        (function($) {
+            window.fnames = new Array();
+            window.ftypes = new Array();
+            fnames[0] = 'EMAIL';
+            ftypes[0] = 'email';
+            fnames[1] = 'FNAME';
+            ftypes[1] = 'text';
+            fnames[2] = 'LNAME';
+            ftypes[2] = 'text';
+            fnames[3] = 'LOCATION';
+            ftypes[3] = 'address';
+            fnames[5] = 'SKILLS';
+            ftypes[5] = 'text';
+            fnames[6] = 'KEYWORDS';
+            ftypes[6] = 'text';
+            fnames[4] = 'PHONE';
+            ftypes[4] = 'phone';
+        }(jQuery));
+        var $mcj = jQuery.noConflict(true);
+    </script>
     <script>
         // Example: User data with skills
         const users = [
