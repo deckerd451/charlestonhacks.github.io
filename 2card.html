@@ -12,6 +12,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             position: relative;
             background-color: black;
@@ -20,6 +21,7 @@
             overflow-x: hidden;
             text-align: center;
         }
+
         .panel {
             display: flex;
             flex-direction: column;
@@ -27,6 +29,7 @@
             align-items: center;
             height: 100vh;
         }
+
         .panel img {
             max-width: 100%;
             height: auto;
@@ -34,32 +37,38 @@
             transition: transform 1s ease, opacity 1s ease;
             loading: lazy;
         }
+
         @media (max-width: 768px) {
             .panel img {
                 max-width: 90%;
             }
         }
+
         .card-container {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-bottom: 20px;
         }
+
         .card-container img.hacker-card {
             border: 3px solid #FFD700;
             border-radius: 8px;
             box-shadow: 0 0 10px #FFD700;
         }
+
         .link-container {
             display: none;
             margin-top: 5px;
             font-size: 18px;
             color: #00FF00;
         }
+
         .link-container a {
             color: #00FF00;
             text-decoration: none;
         }
+
         .footer-container {
             display: flex;
             justify-content: center;
@@ -69,18 +78,22 @@
             padding: 10px;
             margin-top: 5px;
         }
+
         .footer-container a {
             font-size: 36px;
             color: #FF0000;
             transition: color 0.3s ease;
         }
+
         .footer-container a:hover {
             color: #FF4500;
         }
+
         /* Style for input */
         .input-container {
             margin-bottom: 20px;
         }
+
         .input-container input {
             padding: 10px;
             font-size: 16px;
@@ -88,6 +101,7 @@
             border-radius: 5px;
             width: 200px;
         }
+
         .input-container button {
             padding: 10px 20px;
             font-size: 16px;
@@ -96,31 +110,8 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .input-container button:hover {
-            background-color: #FF4500;
-        }
-        .additional-info {
-            display: none;
-            margin-top: 20px;
-        }
-        .additional-info input,
-        .additional-info textarea {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            margin-bottom: 10px;
-            border: 1px solid #FFD700;
-            border-radius: 5px;
-        }
-        .additional-info button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #FFD700;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .additional-info button:hover {
             background-color: #FF4500;
         }
     </style>
@@ -131,23 +122,20 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <!-- Input for email address -->
+                    <!-- Input for skills -->
                     <div class="input-container">
-                        <input type="email" id="emailInput" placeholder="Enter your email address" />
-                        <button onclick="checkEmail()">Check Email</button>
+                        <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" />
+                        <button onclick="updateSkills()">Update Skills</button>
                     </div>
 
-                    <!-- Additional information form -->
-                    <div class="additional-info" id="additionalInfoForm">
-                        <input type="text" id="fullName" placeholder="Full Name" />
-                        <textarea id="additionalDetails" placeholder="Additional Information"></textarea>
-                        <button onclick="submitAdditionalInfo()">Submit</button>
+                    <div class="card-container" id="cardContainer">
+                        <!-- Cards will be dynamically inserted here -->
                     </div>
 
                     <!-- Link Container (hidden by default) -->
                     <div id="link-container" class="link-container">
-                        <p>Information submitted! Proceed to update your skills:</p>
-                        <a href="2card.html" rel="noopener noreferrer">Return to 2card Page</a>
+                        <p>Matched Cards! Proceed to the next level:</p>
+                        <a href="next-level.html" rel="noopener noreferrer">Go to Next Level</a>
                     </div>
                 </div>
             </header>
@@ -164,43 +152,57 @@
     </footer>
 
     <script>
-        const apiKey = 'dffaa314bf5eec045aa987373b616ab8-us12 ';
-        const audienceId = '4a05747445';
-        const serverPrefix = 'us12'; // e.g., 'us1', 'us2', etc.
+        // Example: User data with skills
+        const users = [
+            { img: "images/Descartes.png", name: "Descartes", skills: ["javascript", "react", "node.js"], link: "doug.html" },
+            { img: "images/Alexandor.png", name: "Alexandor", skills: ["python", "machine learning"], link: "dave.html" },
+            { img: "images/Medusa.png", name: "Medusa", skills: ["javascript", "html", "css"], link: "aya.html" },
+            { img: "images/Elara.png", name: "Elara", skills: ["java", "spring", "sql"], link: "bradley.html" },
+            { img: "images/Aegis.png", name: "Aegis", skills: ["c#", ".net", "azure"], link: "amin.html" },
+            { img: "images/Astrid.png", name: "Astrid", skills: ["javascript", "vue", "css"], link: "astrid.html" }
+        ];
 
-        // Function to check email against Mailchimp database
-        async function checkEmail() {
-            const email = document.getElementById("emailInput").value;
-            const url = `https://${serverPrefix}.api.mailchimp.com/3.0/lists/${audienceId}/members/${md5(email.toLowerCase())}`;
+        // Global variable to store the project skills
+        let projectSkills = [];
 
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `apikey ${apiKey}`
-                }
+        // Get users that match the project skills
+        function getMatchingUsers(projectSkills) {
+            return users.filter(user =>
+                user.skills.some(skill => projectSkills.includes(skill))
+            );
+        }
+
+        // Display matched user cards
+        function displayUserCards() {
+            const cardContainer = document.getElementById("cardContainer");
+            cardContainer.innerHTML = ''; // Clear previous cards
+
+            const matchedUsers = getMatchingUsers(projectSkills);
+
+            matchedUsers.forEach(user => {
+                const card = document.createElement("a");
+                card.href = user.link;
+                card.innerHTML = `<img src="${user.img}" alt="${user.name}" />`;
+                card.classList.add("hacker-card");
+                cardContainer.appendChild(card);
             });
 
-            if (response.ok) {
-                document.getElementById("additionalInfoForm").style.display = "block";
+            // Show the link container if matched cards are displayed
+            if (matchedUsers.length > 0) {
+                document.getElementById("link-container").style.display = 'block';
             } else {
-                alert("Email not found in the Mailchimp database.");
+                document.getElementById("link-container").style.display = 'none';
             }
         }
 
-        // Function to submit additional information
-        function submitAdditionalInfo() {
-            const fullName = document.getElementById("fullName").value;
-            const additionalDetails = document.getElementById("additionalDetails").value;
-            // Here you would normally send the data to the server or process it as needed
-            alert(`Submitted: ${fullName}, ${additionalDetails}`);
-            document.getElementById("link-container").style.display = "block";
-        }
+        // Update project skills based on user input
+        function updateSkills() {
+            const skillInput = document.getElementById("skillInput").value.toLowerCase();
+            projectSkills = skillInput.split(',').map(skill => skill.trim());
 
-        // Function to compute MD5 hash
-        function md5(string) {
-            return CryptoJS.MD5(string).toString(CryptoJS.enc.Hex);
+            displayUserCards();
         }
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </body>
+
 </html>
