@@ -126,6 +126,11 @@
             font: 14px Helvetica, Arial, sans-serif;
             width: 600px;
         }
+
+        .error-message {
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 
@@ -136,11 +141,12 @@
                 <div class="panel">
                     <!-- Combined input and subscribe form -->
                     <div class="input-container">
-                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" onsubmit="updateSkills(); return false;">
+                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" onsubmit="return updateSkills();">
                             <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required>
                             <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" required>
                             <button type="submit" name="subscribe" id="mc-embedded-subscribe">Add to Match Index</button>
                         </form>
+                        <div class="error-message" id="error-message">This email is already in the database.</div>
                     </div>
 
                     <div class="card-container" id="cardContainer">
@@ -202,6 +208,11 @@
         // Global variable to store the project skills
         let projectSkills = [];
 
+        // Check if the email is already in the database
+        function isEmailInDatabase(email) {
+            return users.some(user => user.name === email);
+        }
+
         // Add a new user to the match index
         function addUserToIndex(email, skills) {
             // Add the new user to the users array
@@ -244,13 +255,21 @@
             const skillInput = document.getElementById("skillInput").value.toLowerCase();
             const skills = skillInput.split(',').map(skill => skill.trim());
 
-            projectSkills = skills;
+            if (isEmailInDatabase(email)) {
+                document.getElementById("error-message").style.display = 'block';
+                return false; // Prevent form submission
+            } else {
+                document.getElementById("error-message").style.display = 'none';
+                projectSkills = skills;
 
-            // Add the new user to the index
-            addUserToIndex(email, skills);
+                // Add the new user to the index
+                addUserToIndex(email, skills);
 
-            // Display matched user cards
-            displayUserCards();
+                // Display matched user cards
+                displayUserCards();
+
+                return true; // Allow form submission
+            }
         }
     </script>
 </body>
