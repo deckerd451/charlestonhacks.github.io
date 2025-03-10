@@ -83,41 +83,40 @@
                 max-width: 90%;
             }
         }
-
         @media (max-width: 768px) {
-            #countdownWrapper {
-                position: absolute;
-                top: 25%; /* Adjust as needed */
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-            }
+    #countdownWrapper {
+        position: absolute;
+        top: 25%; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
 
-            #countdown {
-                font-size: 24px;
-            }
-        }
-        @media (max-width: 768px) {
-            .center-top {
-                top: -30%; /* Move up by adjusting this value */
-            }
+    #countdown {
+        font-size: 24px;
+    }
+}
+@media (max-width: 768px) {
+    .center-top {
+        top: -30%; /* Move up by adjusting this value */
+    }
 
-            .center-bottom {
-                bottom: 0%; /* Move up by adjusting this value */
-            }
-        }
+    .center-bottom {
+        bottom: 0%; /* Move up by adjusting this value */
+    }
+}
+     
+  .clickable-area img {
+      padding: 0;
+      margin: 0;
+  }
 
-        .clickable-area img {
-            padding: 0;
-            margin: 0;
-        }
+    .center-top, .center-bottom {
+        width: 16.5vw; /* Increase by 10% from 15vw */
+        max-width: 110px; /* Increase by 10% from 100px */
+    }
 
-        .center-top, .center-bottom {
-            width: 16.5vw; /* Increase by 10% from 15vw */
-            max-width: 110px; /* Increase by 10% from 100px */
-        }
-
-        @keyframes fadeIn {
+  @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
@@ -279,53 +278,56 @@
             100% { transform: rotate(360deg); }
         }
 
-        .clickable-area {
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-            border-radius: 50%; /* Make it circular */
-            aspect-ratio: 1/1; /* Maintain perfect circle */
-            width: 15vw; /* Adjust size based on viewport width */
-            max-width: 100px; /* Prevent it from getting too large */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
-        }
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%; /* Make it circular */
+    aspect-ratio: 1/1; /* Maintain perfect circle */
+    width: 15vw; /* Adjust size based on viewport width */
+    max-width: 100px; /* Prevent it from getting too large */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+}
 
-        .clickable-area:hover {
-            box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
-        }
+.clickable-area:hover {
+    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
 
-        /* Adjust position as needed */
-        .top-left {
-            top: 2%;
-            left: 4%;
-        }
+}
 
-        .top-right {
-            top: 2%;
-            right: 4%;
-        }
+/* Adjust position as needed */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
 
-        .bottom-left {
-            bottom: 2%;
-            left: 4%;
-        }
+.top-right {
+    top: 2%;
+    right: 4%;
+}
 
-        .bottom-right {
-            bottom: 2%;
-            right: 4%;
-        }
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
 
-        .center-top {
-            top: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
 
-        .center-bottom {
-            bottom: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
+.center-top {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.center-bottom {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
 
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
@@ -337,51 +339,10 @@
                 transform: scale(0.8);
             }
         }
-
-        /* New styles for public and hacker page buttons */
-        .welcome-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999; /* Ensure it's above everything else */
-        }
-
-        .welcome-layer .welcome-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .welcome-layer button {
-            padding: 15px 30px;
-            font-size: 18px;
-            background-color: #FFD700;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .welcome-layer button:hover {
-            background-color: #FF4500;
-        }
     </style>
 </head>
 
 <body class="is-preload">
-    <div class="welcome-layer">
-        <div class="welcome-container">
-            <button onclick="window.location.href='https://charlestonhacks.mailchimpsites.com/'">Go to Public Page</button>
-            <button onclick="hideWelcomeLayer()">Go to Hacker Page</button>
-        </div>
-    </div>
-
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -396,6 +357,7 @@
                                 </p>
                             </div>
                             <div id="countdownWrapper">
+                               
                                 <div id="countdown"></div>
                             </div>
                         </div>
@@ -415,7 +377,7 @@
                         <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
                             <img src="images/peoplen.svg" alt="People">
                         </div>
-                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-tech-problems/">
+                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
                             <img src="images/newsn.svg" alt="News">
                         </div>
                         <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
@@ -538,4 +500,69 @@
         }
 
         function flipCard(imageSrc, url) {
-            var missionImage
+            var missionImage = document.getElementById('missionImage');
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            missionImage.classList.add(randomFlip);
+
+            // Apply fade-out effect to the body content except the spinner
+            document.body.classList.add('fade-out-body');
+
+            // Show spinner
+            document.getElementById('spinner').style.display = 'block';
+
+            // Redirect immediately
+            window.location.href = url;
+
+            setTimeout(function () {
+                missionImage.src = imageSrc;
+            }, 2000); // Adjust the delay to match the fade-out duration
+        }
+
+        document.querySelectorAll('.clickable-area').forEach(area => {
+            area.addEventListener('click', function() {
+                const sound = this.getAttribute('data-sound');
+                const image = this.getAttribute('data-image');
+                const url = this.getAttribute('data-url');
+                playSound(sound);
+                flipCard(image, url);
+            });
+        });
+
+        function toggleVisibility() {
+            var eventsSection = document.querySelector('.previous-events');
+            eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'block';
+        }
+
+        function hideLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+
+        function handleVideoError() {
+            alert("Error loading video. Please try again later.");
+        }
+
+        function showCardFrame() {
+            document.getElementById('cardFrame').style.display = 'block';
+        }
+
+        const videoElement = document.getElementById('missionVideo');
+        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
+        videoElement.addEventListener('ended', showCardFrame);
+
+        // Ensure the spinner remains visible until the link is opened
+        window.addEventListener('beforeunload', function () {
+            document.getElementById('spinner').style.display = 'none';
+        });
+
+        // Remove fade-out class when the page is loaded or navigated back
+        window.addEventListener('pageshow', function () {
+            document.body.classList.remove('fade-out-body');
+        });
+    </script>
+</body>
+
+</html>
