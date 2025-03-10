@@ -114,6 +114,39 @@
         .input-container button:hover {
             background-color: #FF4500;
         }
+
+        /* Style for Mailchimp form */
+        .mailchimp-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .mailchimp-container .input-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .mailchimp-container input[type="email"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #FFD700;
+            border-radius: 5px;
+            width: 250px;
+        }
+
+        .mailchimp-container button[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #FFD700;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .mailchimp-container button[type="submit"]:hover {
+            background-color: #FF4500;
+        }
     </style>
 </head>
 
@@ -140,6 +173,16 @@
                 </div>
             </header>
         </article>
+
+        <!-- Mailchimp Form -->
+        <div class="mailchimp-container">
+            <form id="mc-embedded-subscribe-form" action="https://<YOUR_MAILCHIMP_SUBDOMAIN>.usX.list-manage.com/subscribe/post?u=<YOUR_U_VALUE>&id=<YOUR_ID_VALUE>" method="post" target="_blank" novalidate>
+                <div class="input-container">
+                    <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required>
+                    <button type="submit" name="subscribe" id="mc-embedded-subscribe">Subscribe</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <footer>
@@ -202,6 +245,27 @@
 
             displayUserCards();
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('mc-embedded-subscribe-form');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const email = document.getElementById('mce-EMAIL').value;
+
+                if (validateEmail(email)) {
+                    form.submit();
+                    alert('Thank you for subscribing!');
+                } else {
+                    alert('Please enter a valid email address.');
+                }
+            });
+
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            }
+        });
     </script>
 </body>
 
