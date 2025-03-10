@@ -155,7 +155,6 @@
                     <div class="input-container">
                         <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form">
                             <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required>
-                            <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" required>
                             <input type="text" id="projectStatement" placeholder="Enter project statement" required>
                             <button type="submit" name="subscribe" id="mc-embedded-subscribe">Add to Match Index</button>
                         </form>
@@ -198,43 +197,24 @@
             ftypes[2] = 'text';
             fnames[3] = 'LOCATION';
             ftypes[3] = 'address';
+            fnames[4] = 'PHONE';
+            ftypes[4] = 'phone';
             fnames[5] = 'SKILLS';
             ftypes[5] = 'text';
             fnames[6] = 'KEYWORDS';
             ftypes[6] = 'text';
-            fnames[4] = 'PHONE';
-            ftypes[4] = 'phone';
         }(jQuery));
         var $mcj = jQuery.noConflict(true);
     </script>
     <script>
-        // Example: User data with skills
-        const users = [
-            { img: "images/Descartes.png", name: "Descartes", skills: ["javascript", "react", "node.js"], link: "doug.html" },
-            { img: "images/Alexandor.png", name: "Alexandor", skills: ["python", "machine learning"], link: "dave.html" },
-            { img: "images/Medusa.png", name: "Medusa", skills: ["javascript", "html", "css"], link: "aya.html" },
-            { img: "images/Elara.png", name: "Elara", skills: ["java", "spring", "sql"], link: "bradley.html" },
-            { img: "images/Aegis.png", name: "Aegis", skills: ["c#", ".net", "azure"], link: "amin.html" },
-            { img: "images/Astrid.png", name: "Astrid", skills: ["javascript", "vue", "css"], link: "astrid.html" }
-        ];
-
-        // Global variable to store the project skills
-        let projectSkills = [];
-
-        // Check if the email is already in the database
-        function isEmailInDatabase(email) {
-            return users.some(user => user.name === email);
-        }
-
-        // Add a new user to the match index
-        function addUserToIndex(email, skills) {
-            // Add the new user to the users array
-            users.push({ img: "images/default.png", name: email, skills: skills, link: "#" });
-        }
-
-        // Get users that match the project skills
-        function getMatchingUsers(projectSkills) {
-            return users.filter(user => user.skills.some(skill => projectSkills.includes(skill)));
+        // Check if the email is already in the Mailchimp database
+        async function isEmailInMailchimp(email) {
+            const response = await fetch(`https://us12.api.mailchimp.com/3.0/lists/4a05747445/members/${email}`, {
+                headers: {
+                    'Authorization': 'apikey YOUR_API_KEY' // Replace YOUR_API_KEY with your actual Mailchimp API key
+                }
+            });
+            return response.status === 200;
         }
 
         // Display matched user cards
@@ -264,46 +244,35 @@
         }
 
         // Check user and display matches
-        function checkUserAndDisplayMatches() {
+        async function checkUserAndDisplayMatches() {
             const email = document.getElementById("mce-EMAIL").value.toLowerCase();
-            const skillInput = document.getElementById("skillInput").value.toLowerCase();
             const projectStatement = document.getElementById("projectStatement").value.toLowerCase();
-            const skills = skillInput.split(',').map(skill => skill.trim());
 
-            if (isEmailInDatabase(email)) {
-                document.getElementById("error-message").style.display = 'none';
-                projectSkills = skills;
-
-                // Display matched user cards
-                displayUserCards();
-
+            if (await isEmailInMailchimp(email)) {
+                document.getElementById("error-message").style.display = 'block';
                 return false; // Prevent form submission, user is already in the database
             } else {
                 document.getElementById("error-message").style.display = 'none';
-                projectSkills = skills;
-
-                // Add the new user to the index
-                addUserToIndex(email, skills);
-
-                // Display matched user cards
-                displayUserCards();
-
-                return true; // Allow form submission, user is not in the database
+                // Proceed with form submission
+                return true;
             }
         }
 
         // Search matches without adding to index
         function searchMatches() {
             const email = document.getElementById("mce-EMAIL").value.toLowerCase();
-            const skillInput = document.getElementById("skillInput").value.toLowerCase();
-            const skills = skillInput.split(',').map(skill => skill.trim());
-
-            // Set project skills for searching
-            projectSkills = skills;
+            const projectStatement = document.getElementById("projectStatement").value.toLowerCase();
 
             // Display matched user cards
             displayUserCards();
         }
+
+        // Add event listener to form submission to check email in Mailchimp
+        document.getElementById("mc-embedded-subscribe-form").addEventListener("submit", async function(event) {
+            if (!await checkUserAndDisplayMatches()) {
+                event.preventDefault(); // Prevent form submission if email is already in Mailchimp
+            }
+        });
     </script>
 </body>
 </html>
