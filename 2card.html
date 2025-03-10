@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -158,12 +157,12 @@
     <script>
         // Example: User data with skills
         const users = [
-            { img: "images/Descartes.png", name: "Descartes", skills: ["JavaScript", "React", "Node.js"], link: "doug.html" },
-            { img: "images/Alexandor.png", name: "Alexandor", skills: ["Python", "Machine Learning"], link: "dave.html" },
-            { img: "images/Medusa.png", name: "Medusa", skills: ["JavaScript", "HTML", "CSS"], link: "aya.html" },
-            { img: "images/Elara.png", name: "Elara", skills: ["Java", "Spring", "SQL"], link: "bradley.html" },
-            { img: "images/Aegis.png", name: "Aegis", skills: ["C#", ".NET", "Azure"], link: "amin.html" },
-            { img: "images/Astrid.png", name: "Astrid", skills: ["JavaScript", "Vue", "CSS"], link: "astrid.html" }
+            { img: "images/Descartes.png", name: "Descartes", skills: ["javascript", "react", "node.js"], link: "doug.html" },
+            { img: "images/Alexandor.png", name: "Alexandor", skills: ["python", "machine learning"], link: "dave.html" },
+            { img: "images/Medusa.png", name: "Medusa", skills: ["javascript", "html", "css"], link: "aya.html" },
+            { img: "images/Elara.png", name: "Elara", skills: ["java", "spring", "sql"], link: "bradley.html" },
+            { img: "images/Aegis.png", name: "Aegis", skills: ["c#", ".net", "azure"], link: "amin.html" },
+            { img: "images/Astrid.png", name: "Astrid", skills: ["javascript", "vue", "css"], link: "astrid.html" }
         ];
 
         // Global variable to store the project skills
@@ -201,7 +200,7 @@
 
         // Update project skills based on user input
         function updateSkills() {
-            const skillInput = document.getElementById("skillInput").value;
+            const skillInput = document.getElementById("skillInput").value.toLowerCase();
             projectSkills = skillInput.split(',').map(skill => skill.trim());
 
             displayUserCards();
