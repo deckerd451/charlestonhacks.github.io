@@ -136,7 +136,7 @@
                 <div class="panel">
                     <!-- Combined input and subscribe form -->
                     <div class="input-container">
-                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" onsubmit="updateSkills()">
+                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" onsubmit="updateSkills(); return false;">
                             <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required>
                             <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" required>
                             <button type="submit" name="subscribe" id="mc-embedded-subscribe">Add to Match Index</button>
@@ -252,27 +252,6 @@
             // Display matched user cards
             displayUserCards();
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('mc-embedded-subscribe-form');
-
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const email = document.getElementById('mce-EMAIL').value;
-
-                if (validateEmail(email)) {
-                    form.submit();
-                    alert('Thank you for subscribing!');
-                } else {
-                    alert('Please enter a valid email address.');
-                }
-            });
-
-            function validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(String(email).toLowerCase());
-            }
-        });
     </script>
 </body>
 </html>
