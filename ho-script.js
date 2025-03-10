@@ -33,6 +33,12 @@ function showSplash() {
     missionImage.style.opacity = 1;
 }
 
+// Function to hide the welcome layer
+function hideWelcomeLayer() {
+    var welcomeLayer = document.querySelector('.welcome-layer');
+    welcomeLayer.style.display = 'none';
+}
+
 // Add event listener to detect when the video has ended
 missionVideo.addEventListener('ended', function() {
     showSplash();
