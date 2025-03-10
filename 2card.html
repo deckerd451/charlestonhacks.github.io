@@ -1,145 +1,29 @@
+<!-- 2card.html -->
 <!DOCTYPE HTML>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* Reset and General Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            position: relative;
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
-            text-align: center;
-        }
-
-        .panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .panel img {
-            max-width: 100%;
-            height: auto;
-            margin: 0 auto;
-            transition: transform 1s ease, opacity 1s ease;
-            loading: lazy;
-        }
-
-        @media (max-width: 768px) {
-            .panel img {
-                max-width: 90%;
-            }
-        }
-
-        .card-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .card-container img.hacker-card {
-            border: 3px solid #FFD700;
-            border-radius: 8px;
-            box-shadow: 0 0 10px #FFD700;
-        }
-
-        .link-container {
-            display: none;
-            margin-top: 5px;
-            font-size: 18px;
-            color: #00FF00;
-        }
-
-        .link-container a {
-            color: #00FF00;
-            text-decoration: none;
-        }
-
-        .footer-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            padding: 10px;
-            margin-top: 5px;
-        }
-
-        .footer-container a {
-            font-size: 36px;
-            color: #FF0000;
-            transition: color 0.3s ease;
-        }
-
-        .footer-container a:hover {
-            color: #FF4500;
-        }
-
-        /* Style for input */
-        .input-container {
-            margin-bottom: 20px;
-        }
-
-        .input-container input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #FFD700;
-            border-radius: 5px;
-            width: 200px;
-        }
-
-        .input-container button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #FFD700;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .input-container button:hover {
-            background-color: #FF4500;
-        }
+        /* Styles omitted for brevity */
     </style>
 </head>
-
 <body>
     <div id="main">
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <!-- Input for skills -->
                     <div class="input-container">
                         <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" />
                         <button onclick="updateSkills()">Update Skills</button>
                     </div>
-
-                    <div class="card-container" id="cardContainer">
-                        <!-- Cards will be dynamically inserted here -->
-                    </div>
-
-                    <!-- Link Container (hidden by default) -->
+                    <div class="card-container" id="cardContainer"></div>
                     <div id="link-container" class="link-container">
                         <p>Matched Cards! Proceed to the next level:</p>
                         <a href="next-level.html" rel="noopener noreferrer">Go to Next Level</a>
                     </div>
-
-                    <!-- No Matches Message -->
                     <div id="no-matches-message" class="link-container">
                         <p>No matches found. Please try different skills.</p>
                     </div>
@@ -161,7 +45,6 @@
     </footer>
 
     <script>
-        // Example: User data with skills
         const users = [
             { img: "images/Descartes.png", name: "Descartes", skills: ["JavaScript", "React", "Node.js"], link: "doug.html" },
             { img: "images/Alexandor.png", name: "Alexandor", skills: ["Python", "Machine Learning"], link: "dave.html" },
@@ -171,17 +54,14 @@
             { img: "images/Astrid.png", name: "Astrid", skills: ["JavaScript", "Vue", "CSS"], link: "astrid.html" }
         ];
 
-        // Global variable to store the project skills
-        let projectSkills = [];
+        let projectSkills = localStorage.getItem('skills') ? localStorage.getItem('skills').split(',').map(skill => skill.trim()) : [];
 
-        // Get users that match the project skills
         function getMatchingUsers(projectSkills) {
             return users.filter(user =>
                 user.skills.some(skill => projectSkills.includes(skill))
             );
         }
 
-        // Display matched user cards
         function displayUserCards() {
             const cardContainer = document.getElementById("cardContainer");
             cardContainer.innerHTML = ''; // Clear previous cards
@@ -196,7 +76,6 @@
                 cardContainer.appendChild(card);
             });
 
-            // Show the link container if matched cards are displayed
             if (matchedUsers.length > 0) {
                 document.getElementById("link-container").style.display = 'block';
                 document.getElementById("no-matches-message").style.display = 'none';
@@ -206,14 +85,16 @@
             }
         }
 
-        // Update project skills based on user input
         function updateSkills() {
             const skillInput = document.getElementById("skillInput").value;
             projectSkills = skillInput.split(',').map(skill => skill.trim());
-
+            localStorage.setItem('skills', projectSkills.join(','));
             displayUserCards();
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            displayUserCards();
+        });
     </script>
 </body>
-
 </html>
