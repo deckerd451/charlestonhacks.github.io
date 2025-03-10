@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
     <style>
         /* Reset and General Styles */
         * {
@@ -81,7 +80,7 @@
         }
 
         .footer-container a {
-            font-size: 24px; /* Reduced size */
+            font-size: 36px;
             color: #FF0000;
             transition: color 0.3s ease;
         }
@@ -93,17 +92,6 @@
         /* Style for input */
         .input-container {
             margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .input-container form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
         }
 
         .input-container input {
@@ -126,23 +114,6 @@
         .input-container button:hover {
             background-color: #FF4500;
         }
-
-        .input-container.hidden {
-            display: none;
-        }
-
-        /* Style for Mailchimp form */
-        #mc_embed_signup {
-            background: #fff;
-            clear: left;
-            font: 14px Helvetica, Arial, sans-serif;
-            width: 600px;
-        }
-
-        .error-message {
-            color: red;
-            display: none;
-        }
     </style>
 </head>
 
@@ -151,15 +122,10 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <!-- Combined input and subscribe form -->
+                    <!-- Input for skills -->
                     <div class="input-container">
-                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form">
-                            <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required>
-                            <input type="text" id="projectStatement" placeholder="Enter project statement" required>
-                            <button type="submit" name="subscribe" id="mc-embedded-subscribe">Add to Match Index</button>
-                        </form>
-                        <button onclick="searchMatches()">Search Matches</button>
-                        <div class="error-message" id="error-message">This email is already in the database.</div>
+                        <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" />
+                        <button onclick="updateSkills()">Update Skills</button>
                     </div>
 
                     <div class="card-container" id="cardContainer">
@@ -181,46 +147,34 @@
             <a href="index.html">
                 <i class="fas fa-home"></i>
             </a>
+            <a href="matchmakingindex.html">Matching Index</a>
         </div>
     </footer>
 
-    <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
-    <script type="text/javascript">
-        (function($) {
-            window.fnames = new Array();
-            window.ftypes = new Array();
-            fnames[0] = 'EMAIL';
-            ftypes[0] = 'email';
-            fnames[1] = 'FNAME';
-            ftypes[1] = 'text';
-            fnames[2] = 'LNAME';
-            ftypes[2] = 'text';
-            fnames[3] = 'LOCATION';
-            ftypes[3] = 'address';
-            fnames[4] = 'PHONE';
-            ftypes[4] = 'phone';
-            fnames[5] = 'SKILLS';
-            ftypes[5] = 'text';
-            fnames[6] = 'KEYWORDS';
-            ftypes[6] = 'text';
-        }(jQuery));
-        var $mcj = jQuery.noConflict(true);
-    </script>
     <script>
-        // Check if the email is already in the Mailchimp database
-        async function isEmailInMailchimp(email) {
-            const response = await fetch(`https://us12.api.mailchimp.com/3.0/lists/4a05747445/members/${email}`, {
-                headers: {
-                    'Authorization': 'apikey YOUR_API_KEY' // Replace YOUR_API_KEY with your actual Mailchimp API key
-                }
-            });
-            return response.status === 200;
+        // Example: User data with skills
+        const users = [
+            { img: "images/Descartes.png", name: "Descartes", skills: ["javascript", "react", "node.js"], link: "doug.html" },
+            { img: "images/Alexandor.png", name: "Alexandor", skills: ["python", "machine learning"], link: "dave.html" },
+            { img: "images/Medusa.png", name: "Medusa", skills: ["javascript", "html", "css"], link: "aya.html" },
+            { img: "images/Elara.png", name: "Elara", skills: ["java", "spring", "sql"], link: "bradley.html" },
+            { img: "images/Aegis.png", name: "Aegis", skills: ["c#", ".net", "azure"], link: "amin.html" },
+            { img: "images/Astrid.png", name: "Astrid", skills: ["javascript", "vue", "css"], link: "astrid.html" }
+        ];
+
+        // Global variable to store the project skills
+        let projectSkills = [];
+
+        // Get users that match the project skills
+        function getMatchingUsers(projectSkills) {
+            return users.filter(user =>
+                user.skills.some(skill => projectSkills.includes(skill))
+            );
         }
 
         // Display matched user cards
         function displayUserCards() {
             const cardContainer = document.getElementById("cardContainer");
-            const inputContainer = document.querySelector(".input-container");
             cardContainer.innerHTML = ''; // Clear previous cards
 
             const matchedUsers = getMatchingUsers(projectSkills);
@@ -236,43 +190,19 @@
             // Show the link container if matched cards are displayed
             if (matchedUsers.length > 0) {
                 document.getElementById("link-container").style.display = 'block';
-                inputContainer.classList.add("hidden");
             } else {
                 document.getElementById("link-container").style.display = 'none';
-                inputContainer.classList.remove("hidden");
             }
         }
 
-        // Check user and display matches
-        async function checkUserAndDisplayMatches() {
-            const email = document.getElementById("mce-EMAIL").value.toLowerCase();
-            const projectStatement = document.getElementById("projectStatement").value.toLowerCase();
+        // Update project skills based on user input
+        function updateSkills() {
+            const skillInput = document.getElementById("skillInput").value.toLowerCase();
+            projectSkills = skillInput.split(',').map(skill => skill.trim());
 
-            if (await isEmailInMailchimp(email)) {
-                document.getElementById("error-message").style.display = 'block';
-                return false; // Prevent form submission, user is already in the database
-            } else {
-                document.getElementById("error-message").style.display = 'none';
-                // Proceed with form submission
-                return true;
-            }
-        }
-
-        // Search matches without adding to index
-        function searchMatches() {
-            const email = document.getElementById("mce-EMAIL").value.toLowerCase();
-            const projectStatement = document.getElementById("projectStatement").value.toLowerCase();
-
-            // Display matched user cards
             displayUserCards();
         }
-
-        // Add event listener to form submission to check email in Mailchimp
-        document.getElementById("mc-embedded-subscribe-form").addEventListener("submit", async function(event) {
-            if (!await checkUserAndDisplayMatches()) {
-                event.preventDefault(); // Prevent form submission if email is already in Mailchimp
-            }
-        });
     </script>
 </body>
+
 </html>
