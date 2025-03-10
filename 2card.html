@@ -141,7 +141,7 @@
                 <div class="panel">
                     <!-- Combined input and subscribe form -->
                     <div class="input-container">
-                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" onsubmit="return updateSkills();">
+                        <form action="https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&amp;id=4a05747445&amp;f_id=00ca0ee9f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" onsubmit="return checkUserAndDisplayMatches();">
                             <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required>
                             <input type="text" id="skillInput" placeholder="Enter skills (comma separated)" required>
                             <button type="submit" name="subscribe" id="mc-embedded-subscribe">Add to Match Index</button>
@@ -249,15 +249,20 @@
             }
         }
 
-        // Update project skills based on user input
-        function updateSkills() {
+        // Check user and display matches
+        function checkUserAndDisplayMatches() {
             const email = document.getElementById("mce-EMAIL").value.toLowerCase();
             const skillInput = document.getElementById("skillInput").value.toLowerCase();
             const skills = skillInput.split(',').map(skill => skill.trim());
 
             if (isEmailInDatabase(email)) {
-                document.getElementById("error-message").style.display = 'block';
-                return false; // Prevent form submission
+                document.getElementById("error-message").style.display = 'none';
+                projectSkills = skills;
+
+                // Display matched user cards
+                displayUserCards();
+
+                return false; // Prevent form submission, user is already in the database
             } else {
                 document.getElementById("error-message").style.display = 'none';
                 projectSkills = skills;
@@ -268,7 +273,7 @@
                 // Display matched user cards
                 displayUserCards();
 
-                return true; // Allow form submission
+                return true; // Allow form submission, user is not in the database
             }
         }
     </script>
