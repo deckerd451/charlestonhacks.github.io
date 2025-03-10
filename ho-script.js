@@ -43,3 +43,89 @@ function hideWelcomeLayer() {
 missionVideo.addEventListener('ended', function() {
     showSplash();
 });
+
+// Add event listeners to clickable areas
+document.querySelectorAll('.clickable-area').forEach(element => {
+    element.addEventListener('click', function() {
+        const sound = element.getAttribute('data-sound');
+        const image = element.getAttribute('data-image');
+        const url = element.getAttribute('data-url');
+        
+        playSound(sound);
+        
+        if (image) {
+            missionImage.src = image;
+        }
+        
+        if (url) {
+            window.location.href = url;
+        }
+    });
+});
+
+// Function to play sound
+function playSound(soundKey) {
+    const audio = sounds[soundKey];
+    if (audio) {
+        audio.currentTime = 0; // Reset to start
+        audio.play().catch(error => {
+            console.error('Audio playback failed:', error);
+        });
+    }
+}
+
+// Additional functions from the previous script
+const sounds = {
+    cardflip: new Audio('assets/atmospherel.m4a'),
+    keys: new Audio('assets/keys.m4a'),
+    ding: new Audio('assets/ding.mp3')
+};
+
+// Lower the volume of all sounds by 30%
+Object.keys(sounds).forEach(key => {
+    sounds[key].volume = 0.7;
+});
+
+function getRandomImage() {
+    var randomIndex = Math.floor(Math.random() * cardImages.length);
+    return cardImages[randomIndex];
+}
+
+let cardClicked = false;
+
+function toggleMissionContent() {
+    if (cardClicked) return;
+    cardClicked = true;
+
+    var image = document.getElementById('missionImage');
+    image.src = getRandomImage();
+
+    var video = document.getElementById('missionVideo');
+    video.style.display = 'block';
+    video.style.opacity = 0;
+    setTimeout(function() {
+        video.style.opacity = 1;
+    }, 100); // Delay to allow transition to take effect
+    video.play();
+
+    document.getElementById('missionContent').style.display = 'block';
+
+    setTimeout(function () {
+        video.classList.add('fadeOut');
+        setTimeout(function () {
+            video.style.display = 'none';
+        }, 18000);
+    }, 18000);
+
+    var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+    image.classList.add(randomFlip);
+}
+
+function flipAndRedirect() {
+    var banner = document.getElementById('aiffBanner');
+    var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+    banner.classList.add(randomFlip);
+    setTimeout(function () {
+        window.location.href = 'https://charlestonhacks.com/techweek.html';
+    }, 2000);
+}
