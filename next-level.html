@@ -9,7 +9,8 @@
             background: #fff;
             clear: left;
             font: 14px Helvetica, Arial, sans-serif;
-            width: 600px;
+            width: 100%;
+            max-width: 600px;
             margin: auto;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -22,6 +23,7 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            padding: 10px;
         }
         .return-home {
             margin-top: 20px;
@@ -37,6 +39,16 @@
         }
         .return-home:hover {
             background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            #mc_embed_signup {
+                padding: 15px;
+            }
+            .return-home {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
         }
     </style>
     <title>Next Level</title>
