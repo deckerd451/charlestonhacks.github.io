@@ -39,41 +39,52 @@
       });
   });
 
-  // Add event listener to the matchmaking form
-  document.getElementById('matchmaking-form').addEventListener('submit', async (e) => {
-    e.preventDefault(); // Prevent page refresh
-
-    // Get form data for matchmaking
-    const skills = document.getElementById('skills').value;
-    const location = document.getElementById('location').value;
-
-    // Make a POST request to the backend for matchmaking
-    const response = await fetch('/api/matchmake', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ skills, location }),
-    });
-
-    const data = await response.json();
-
-    if (data.matches) {
-      displayMatches(data.matches);
-    } else {
-      alert('No matches found');
+  // Function to fetch users from Mailchimp based on keywords
+  async function fetchMailchimpUsers(keywords) {
+    try {
+      const response = await fetch('MAILCHIMP_API_ENDPOINT', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_MAILCHIMP_API_KEY'
+        },
+        body: JSON.stringify({ keywords })
+      });
+      const data = await response.json();
+      return data.users;
+    } catch (error) {
+      console.error('Error fetching users from Mailchimp:', error);
+      return [];
     }
-  });
+  }
 
-  // Function to display matches
-  function displayMatches(matches) {
-    const resultsList = document.getElementById('results-list');
-    resultsList.innerHTML = '';
+  // Display matched user cards
+  function displayUserCards(users) {
+    const cardContainer = document.getElementById('cardContainer');
+    cardContainer.innerHTML = ''; // Clear previous cards
 
-    matches.forEach((match) => {
-      const li = document.createElement('li');
-      li.textContent = `Name: ${match.name}, Skills: ${match.skills}, Location: ${match.location}`;
-      resultsList.appendChild(li);
+    users.forEach(user => {
+      const card = document.createElement("a");
+      card.href = user.link;
+      card.innerHTML = `<img src="${user.img}" alt="${user.name}" />`;
+      card.classList.add("hacker-card");
+      cardContainer.appendChild(card);
     });
+
+    // Show the link container if matched cards are displayed
+    if (users.length > 0) {
+      document.getElementById("link-container").style.display = 'block';
+    } else {
+      document.getElementById("link-container").style.display = 'none';
+    }
+  }
+
+  // Update project skills based on user input
+  async function updateSkills() {
+    const skillInput = document.getElementById("skillInput").value.toLowerCase();
+    const keywords = skillInput.split(',').map(skill => skill.trim());
+
+    const users = await fetchMailchimpUsers(keywords);
+    displayUserCards(users);
   }
 </script>
