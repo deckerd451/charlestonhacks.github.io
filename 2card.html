@@ -80,7 +80,7 @@
         }
 
         .footer-container a {
-            font-size: 24px; /* Reduced from 36px to 24px */
+            font-size: 24px;
             color: #FF0000;
             transition: color 0.3s ease;
         }
@@ -152,59 +152,5 @@
             </a>
         </div>
     </footer>
-
-    <script>
-        // Example: User data with skills
-        const users = [
-            { img: "images/Descartes.png", name: "Descartes", skills: ["javascript", "react", "node.js"], link: "doug.html" },
-            { img: "images/Alexandor.png", name: "Alexandor", skills: ["python", "machine learning"], link: "dave.html" },
-            { img: "images/Medusa.png", name: "Medusa", skills: ["javascript", "html", "css"], link: "aya.html" },
-            { img: "images/Elara.png", name: "Elara", skills: ["java", "spring", "sql"], link: "bradley.html" },
-            { img: "images/Aegis.png", name: "Aegis", skills: ["c#", ".net", "azure"], link: "amin.html" },
-            { img: "images/Astrid.png", name: "Astrid", skills: ["javascript", "vue", "css"], link: "astrid.html" }
-        ];
-
-        // Global variable to store the project skills
-        let projectSkills = [];
-
-        // Get users that match the project skills
-        function getMatchingUsers(projectSkills) {
-            return users.filter(user =>
-                user.skills.some(skill => projectSkills.includes(skill))
-            );
-        }
-
-        // Display matched user cards
-        function displayUserCards() {
-            const cardContainer = document.getElementById("cardContainer");
-            cardContainer.innerHTML = ''; // Clear previous cards
-
-            const matchedUsers = getMatchingUsers(projectSkills);
-
-            matchedUsers.forEach(user => {
-                const card = document.createElement("a");
-                card.href = user.link;
-                card.innerHTML = `<img src="${user.img}" alt="${user.name}" />`;
-                card.classList.add("hacker-card");
-                cardContainer.appendChild(card);
-            });
-
-            // Show the link container if matched cards are displayed
-            if (matchedUsers.length > 0) {
-                document.getElementById("link-container").style.display = 'block';
-            } else {
-                document.getElementById("link-container").style.display = 'none';
-            }
-        }
-
-        // Update project skills based on user input
-        function updateSkills() {
-            const skillInput = document.getElementById("skillInput").value.toLowerCase();
-            projectSkills = skillInput.split(',').map(skill => skill.trim());
-
-            displayUserCards();
-        }
-    </script>
 </body>
-
 </html>
