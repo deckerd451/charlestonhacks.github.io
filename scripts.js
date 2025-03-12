@@ -19,9 +19,9 @@ const functions = firebase.functions();
 async function fetchMailchimpUsers(keywords) {
   try {
     console.log('Calling fetchMailchimpUsers function...');
-    const listId = process.env.MAILCHIMP_LIST_ID;
     const apiKey = process.env.MAILCHIMP_API_KEY;
-    const dataCenter = process.env.MAILCHIMP_DATA_CENTER;
+const listId = process.env.MAILCHIMP_LIST_ID;
+const dataCenter = process.env.MAILCHIMP_DATA_CENTER;
     const params = new URLSearchParams({
       'fields': 'name,email',
       'segment_text': keywords.join(',')
