@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('github-secrets-env')();
 
 // Initialize Firebase
 const firebaseConfig = {
