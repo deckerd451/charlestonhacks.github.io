@@ -84,3 +84,34 @@ async function updateSkills() {
 
 // Add event listener to the update skills button
 document.getElementById('updateButton').addEventListener('click', updateSkills);
+async function fetchMailchimpUsers(keywords) {
+  try {
+    console.log('Calling fetchMailchimpUsers function...');
+    const listId = process.env.MAILCHIMP_LIST_ID;
+    const apiKey = process.env.MAILCHIMP_API_KEY;
+    const dataCenter = process.env.MAILCHIMP_DATA_CENTER;
+    const url = `https://us${dataCenter}.api.mailchimp.com/3.0/lists/${listId}/members`;
+    console.log('API endpoint URL:', url);
+    console.log('Keywords:', keywords);
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      params: {
+        'fields': 'name,email',
+        'segment_text': keywords.join(',')
+      }
+    });
+    console.log('API response:', response);
+    const data = await response.json();
+    console.log('API response data:', data);
+    return data.members;
+  } catch (error) {
+    console.error('Error fetching users from Mailchimp:', error);
+    document.getElementById("error-message").innerHTML = "Error fetching users from Mailchimp: " + error.message;
+    return [];
+  }
+}
