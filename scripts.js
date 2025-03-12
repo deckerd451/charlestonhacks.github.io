@@ -1,93 +1,96 @@
-require('dotenv').config();
+<!-- Add the Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-functions.js"></script>
 
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-  messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID,
-  measurementId: process.env.MEASUREMENT_ID
-};
+<script>
+  // Initialize Firebase using environment variables
+  const firebaseConfig = {
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID
+  };
 
-firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 
-const functions = firebase.functions();
+  const functions = firebase.functions();
 
-// Function to fetch users from Mailchimp based on keywords
-async function fetchMailchimpUsers(keywords) {
-  try {
-    console.log('Calling fetchMailchimpUsers function...');
-    const apiKey = process.env.MAILCHIMP_API_KEY;
-const listId = process.env.MAILCHIMP_LIST_ID;
-const dataCenter = process.env.MAILCHIMP_DATA_CENTER;
-    const params = new URLSearchParams({
-      'fields': 'name,email',
-      'segment_text': keywords.join(',')
-    });
-    const url = `https://us${dataCenter}.api.mailchimp.com/3.0/lists/${listId}/members?${params.toString()}`;
-    console.log('API endpoint URL:', url);
-    console.log('Keywords:', keywords);
-    
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      }
-    });
-    console.log('API response:', response);
-    const data = await response.json();
-    console.log('API response data:', data);
-    return data.members;
-  } catch (error) {
-    console.error('Error fetching users from Mailchimp:', error);
-    document.getElementById("error-message").innerHTML = "Error fetching users from Mailchimp: " + error.message;
-    return [];
-  }
-}
+  // Add event listener to the registration form for Mailchimp integration
+  document.getElementById('registrationForm').addEventListener('submit', (event) => {
+    event.preventDefault(); // Prevent the form from submitting normally
 
-// Display matched user cards
-function displayUserCards(users) {
-  const cardContainer = document.getElementById('cardContainer');
-  cardContainer.innerHTML = ''; // Clear previous cards
+    // Get form data
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
 
-  users.forEach(user => {
-    const card = document.createElement("div");
-    card.innerHTML = `
-      <h2>${user.name}</h2>
-      <p>Email: ${user.email_address}</p>
-    `;
-    card.classList.add("hacker-card");
-    cardContainer.appendChild(card);
+    // Call the Cloud Function for Mailchimp
+    const addUserToMailchimp = functions.httpsCallable('addUserToMailchimp');
+    addUserToMailchimp({ name, email })
+      .then((result) => {
+        console.log('User added to Mailchimp:', result.data);
+        // Optionally, show a success message to the user
+      })
+      .catch((error) => {
+        console.error('Error adding user to Mailchimp:', error);
+        // Optionally, show an error message to the user
+      });
   });
 
-  // Show the link container if matched cards are displayed
-  if (users.length > 0) {
-    document.getElementById("link-container").style.display = 'block';
-  } else {
-    document.getElementById("link-container").style.display = 'none';
+  // Function to fetch users from Mailchimp based on keywords
+  async function fetchMailchimpUsers(keywords) {
+    try {
+      const response = await fetch(process.env.MAILCHIMP_API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.MAILCHIMP_API_KEY}`
+        },
+        body: JSON.stringify({ keywords })
+      });
+      const data = await response.json();
+      return data.users;
+    } catch (error) {
+      console.error('Error fetching users from Mailchimp:', error);
+      return [];
+    }
   }
-}
 
-// Update project skills based on user input
-async function updateSkills() {
-  try {
+  // Display matched user cards
+  function displayUserCards(users) {
+    const cardContainer = document.getElementById('cardContainer');
+    cardContainer.innerHTML = ''; // Clear previous cards
+
+    users.forEach(user => {
+      const card = document.createElement("a");
+      card.href = user.link;
+      card.innerHTML = `<img src="${user.img}" alt="${user.name}" />`;
+      card.classList.add("hacker-card");
+      cardContainer.appendChild(card);
+    });
+
+    // Show the link container if matched cards are displayed
+    if (users.length > 0) {
+      document.getElementById("link-container").style.display = 'block';
+    } else {
+      document.getElementById("link-container").style.display = 'none';
+    }
+  }
+
+  // Update project skills based on user input
+  async function updateSkills() {
     const skillInput = document.getElementById("skillInput").value.toLowerCase();
     const keywords = skillInput.split(',').map(skill => skill.trim());
 
+    // Basic input validation
     if (keywords.length === 0) {
-      throw new Error("Please enter some skills to search for.");
+      console.error('Please enter some skills to search for.');
+      return;
     }
 
     const users = await fetchMailchimpUsers(keywords);
     displayUserCards(users);
-  } catch (error) {
-    console.error(error);
-    document.getElementById("error-message").innerHTML = error.message;
   }
-}
-
-// Add event listener to the update skills button
-document.getElementById('updateButton').addEventListener('click', updateSkills);
+</script>
