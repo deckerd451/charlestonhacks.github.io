@@ -11,15 +11,15 @@ module.exports = {
   resolve: {
     fallback: {
       path: require.resolve("path-browserify"),
-      crypto: require.resolve("crypto-browserify"),
-      stream: require.resolve("stream-browserify"),
-      querystring: require.resolve("querystring-es3"),
-      http: require.resolve("stream-http"),
-      os: require.resolve("os-browserify"),
-      zlib: require.resolve("browserify-zlib"),
       fs: false,
+      http: require.resolve("stream-http"),
       net: false,
-      tls: false,
+      crypto: require.resolve("crypto-browserify"),
+      querystring: require.resolve("querystring-es3"),
+      stream: require.resolve("stream-browserify"),
+      url: require.resolve("url/"),
+      zlib: require.resolve("browserify-zlib"),
+      os: require.resolve("os-browserify"),
     },
   },
   plugins: [
