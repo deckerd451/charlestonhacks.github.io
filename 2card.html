@@ -92,6 +92,8 @@
         /* Style for input */
         .input-container {
             margin-bottom: 20px;
+            <input type="text" id="skillInput" placeholder="Input Skills" onkeydown="handleKeyPress(event)" />
+
         }
 
         .input-container input {
@@ -204,6 +206,12 @@
 
             displayUserCards();
         }
+        function handleKeyPress(event) {
+    if (event.key === "Enter") {
+        updateSkills();
+    }
+}
+
     </script>
 </body>
 
