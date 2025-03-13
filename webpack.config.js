@@ -20,6 +20,7 @@ module.exports = {
       url: require.resolve("url/"),
       zlib: require.resolve("browserify-zlib"),
       os: require.resolve("os-browserify"),
+      buffer: require.resolve("buffer/"), // added this line
     },
   },
   plugins: [
