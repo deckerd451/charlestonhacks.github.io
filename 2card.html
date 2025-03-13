@@ -6,115 +6,11 @@
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* Reset and General Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            position: relative;
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
-            text-align: center;
-        }
-
-        .panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .panel img {
-            max-width: 100%;
-            height: auto;
-            margin: 0 auto;
-            transition: transform 1s ease, opacity 1s ease;
-            loading: lazy;
-        }
-
-        @media (max-width: 768px) {
-            .panel img {
-                max-width: 90%;
-            }
-        }
-
-        .card-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .card-container img.hacker-card {
-            border: 3px solid #FFD700;
-            border-radius: 8px;
-            box-shadow: 0 0 10px #FFD700;
-        }
-
-        .link-container {
-            display: none;
-            margin-top: 5px;
-            font-size: 18px;
-            color: #00FF00;
-        }
-
-        .link-container a {
-            color: #00FF00;
-            text-decoration: none;
-        }
-
-        .footer-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            padding: 10px;
-            margin-top: 5px;
-        }
-
-        .footer-container a {
-            font-size: 24px;
-            color: #FF0000;
-            transition: color 0.3s ease;
-        }
-
-        .footer-container a:hover {
-            color: #FF4500;
-        }
-
-        /* Style for input */
-        .input-container {
-            margin-bottom: 20px;
-        }
-
-        .input-container input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #FFD700;
-            border-radius: 5px;
-            width: 200px;
-        }
-
-        .input-container button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #FFD700;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .input-container button:hover {
-            background-color: #FF4500;
-        }
+        /* Your existing styles */
     </style>
+    <!-- Add the Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-functions.js"></script>
 </head>
 
 <body>
@@ -153,6 +49,9 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="scripts.js"></script>
+    <script>
+        document.getElementById('updateButton').addEventListener('click', updateSkills);
+    </script>
 </body>
 </html>
