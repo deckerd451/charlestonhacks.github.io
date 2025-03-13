@@ -30,6 +30,20 @@
             height: 100vh;
         }
 
+        .panel img {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            transition: transform 1s ease, opacity 1s ease;
+            loading: lazy;
+        }
+
+        @media (max-width: 768px) {
+            .panel img {
+                max-width: 90%;
+            }
+        }
+
         .card-container {
             display: flex;
             justify-content: center;
@@ -66,7 +80,7 @@
         }
 
         .footer-container a {
-            font-size: 24px;
+            font-size: 24px; /* Reduced from 36px to 24px */
             color: #FF0000;
             transition: color 0.3s ease;
         }
@@ -74,10 +88,33 @@
         .footer-container a:hover {
             color: #FF4500;
         }
+
+        /* Style for input */
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #FFD700;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #FFD700;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #FF4500;
+        }
     </style>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-functions.js"></script>
 </head>
 
 <body>
@@ -88,15 +125,17 @@
                     <p>INNOVATION ENGINE</p>
                     <p>Input the skills you are looking for and build your team, (comma separated):</p>
                     <br>
+                    <!-- Input for skills -->
                     <div class="input-container">
                         <input type="text" id="skillInput" placeholder="Input Skills" />
-                        <button id="updateButton">Update Skills</button>
+                        <button onclick="updateSkills()">Update Skills</button>
                     </div>
 
                     <div class="card-container" id="cardContainer">
                         <!-- Cards will be dynamically inserted here -->
                     </div>
 
+                    <!-- Link Container (hidden by default) -->
                     <div id="link-container" class="link-container">
                         <p>You have a match! Continue to add team members or proceed to Match level 2:</p>
                         <a href="next-level.html" rel="noopener noreferrer">Level 2</a>
@@ -115,6 +154,7 @@
     </footer>
 
     <script>
+        // Example: User data with skills
         const users = [
             { img: "images/Descartes.png", name: "Descartes", skills: ["javascript", "react", "node.js"], link: "doug.html" },
             { img: "images/Alexandor.png", name: "Alexandor", skills: ["python", "machine learning"], link: "dave.html" },
@@ -124,37 +164,47 @@
             { img: "images/Astrid.png", name: "Astrid", skills: ["javascript", "vue", "css"], link: "astrid.html" }
         ];
 
+        // Global variable to store the project skills
         let projectSkills = [];
 
+        // Get users that match the project skills
         function getMatchingUsers(projectSkills) {
             return users.filter(user =>
                 user.skills.some(skill => projectSkills.includes(skill))
             );
         }
 
+        // Display matched user cards
         function displayUserCards() {
             const cardContainer = document.getElementById("cardContainer");
-            cardContainer.innerHTML = '';
+            cardContainer.innerHTML = ''; // Clear previous cards
 
             const matchedUsers = getMatchingUsers(projectSkills);
 
             matchedUsers.forEach(user => {
                 const card = document.createElement("a");
                 card.href = user.link;
-                card.innerHTML = `<img src="${user.img}" alt="${user.name}" class="hacker-card" />`;
+                card.innerHTML = `<img src="${user.img}" alt="${user.name}" />`;
+                card.classList.add("hacker-card");
                 cardContainer.appendChild(card);
             });
 
-            document.getElementById("link-container").style.display = matchedUsers.length > 0 ? 'block' : 'none';
+            // Show the link container if matched cards are displayed
+            if (matchedUsers.length > 0) {
+                document.getElementById("link-container").style.display = 'block';
+            } else {
+                document.getElementById("link-container").style.display = 'none';
+            }
         }
 
+        // Update project skills based on user input
         function updateSkills() {
             const skillInput = document.getElementById("skillInput").value.toLowerCase();
             projectSkills = skillInput.split(',').map(skill => skill.trim());
+
             displayUserCards();
         }
-
-        document.getElementById('updateButton').addEventListener('click', updateSkills);
     </script>
 </body>
+
 </html>
