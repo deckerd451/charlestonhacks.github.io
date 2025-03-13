@@ -6,9 +6,76 @@
     <title>Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* Your existing styles */
+        /* Reset and General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            position: relative;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-container img.hacker-card {
+            border: 3px solid #FFD700;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #FFD700;
+        }
+
+        .link-container {
+            display: none;
+            margin-top: 5px;
+            font-size: 18px;
+            color: #00FF00;
+        }
+
+        .link-container a {
+            color: #00FF00;
+            text-decoration: none;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 10px;
+            margin-top: 5px;
+        }
+
+        .footer-container a {
+            font-size: 24px;
+            color: #FF0000;
+            transition: color 0.3s ease;
+        }
+
+        .footer-container a:hover {
+            color: #FF4500;
+        }
     </style>
-    <!-- Add the Firebase SDK -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-functions.js"></script>
 </head>
@@ -21,7 +88,6 @@
                     <p>INNOVATION ENGINE</p>
                     <p>Input the skills you are looking for and build your team, (comma separated):</p>
                     <br>
-                    <!-- Input for skills -->
                     <div class="input-container">
                         <input type="text" id="skillInput" placeholder="Input Skills" />
                         <button id="updateButton">Update Skills</button>
@@ -31,7 +97,6 @@
                         <!-- Cards will be dynamically inserted here -->
                     </div>
 
-                    <!-- Link Container (hidden by default) -->
                     <div id="link-container" class="link-container">
                         <p>You have a match! Continue to add team members or proceed to Match level 2:</p>
                         <a href="next-level.html" rel="noopener noreferrer">Level 2</a>
@@ -49,8 +114,46 @@
         </div>
     </footer>
 
-    <script src="scripts.js"></script>
     <script>
+        const users = [
+            { img: "images/Descartes.png", name: "Descartes", skills: ["javascript", "react", "node.js"], link: "doug.html" },
+            { img: "images/Alexandor.png", name: "Alexandor", skills: ["python", "machine learning"], link: "dave.html" },
+            { img: "images/Medusa.png", name: "Medusa", skills: ["javascript", "html", "css"], link: "aya.html" },
+            { img: "images/Elara.png", name: "Elara", skills: ["java", "spring", "sql"], link: "bradley.html" },
+            { img: "images/Aegis.png", name: "Aegis", skills: ["c#", ".net", "azure"], link: "amin.html" },
+            { img: "images/Astrid.png", name: "Astrid", skills: ["javascript", "vue", "css"], link: "astrid.html" }
+        ];
+
+        let projectSkills = [];
+
+        function getMatchingUsers(projectSkills) {
+            return users.filter(user =>
+                user.skills.some(skill => projectSkills.includes(skill))
+            );
+        }
+
+        function displayUserCards() {
+            const cardContainer = document.getElementById("cardContainer");
+            cardContainer.innerHTML = '';
+
+            const matchedUsers = getMatchingUsers(projectSkills);
+
+            matchedUsers.forEach(user => {
+                const card = document.createElement("a");
+                card.href = user.link;
+                card.innerHTML = `<img src="${user.img}" alt="${user.name}" class="hacker-card" />`;
+                cardContainer.appendChild(card);
+            });
+
+            document.getElementById("link-container").style.display = matchedUsers.length > 0 ? 'block' : 'none';
+        }
+
+        function updateSkills() {
+            const skillInput = document.getElementById("skillInput").value.toLowerCase();
+            projectSkills = skillInput.split(',').map(skill => skill.trim());
+            displayUserCards();
+        }
+
         document.getElementById('updateButton').addEventListener('click', updateSkills);
     </script>
 </body>
