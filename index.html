@@ -7,7 +7,7 @@
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
     <meta property="og:title" content="CharlestonHacks - Home" />
     <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
-    <meta property="og:image" content="images/hcardsimple.png" />
+    <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>CharlestonHacks - Home</title>
@@ -106,17 +106,7 @@
             align-items: center;
             flex-direction: column;
             position: relative;
-        /* Apply the animation to the entire panel (the card) */
-.panel {
-    animation: fadeInScaleUp 1s ease-out forwards;
-    opacity: 0; /* Initially invisible */
-}
-
-/* This will make the panel (card) visible after the animation */
-.panel.loaded {
-    opacity: 1; /* Make it visible after animation */
-}
-
+        }
 
         .media-container {
             position: relative;
@@ -503,10 +493,6 @@
         Object.keys(sounds).forEach(key => {
             sounds[key].volume = 0.3;
         });
-        window.addEventListener('load', function() {
-    document.querySelector('.panel').classList.add('loaded');
-});
-
 
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
@@ -522,7 +508,6 @@
                 });
             }
         }
-        
 
         function toggleMissionContent() {
             if (cardClicked) return;
