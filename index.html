@@ -14,80 +14,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="manifest" href="manifest.json" />
     <style>
-        /* Resetting default margin and padding */
-        body, h1, h2, h3, p, ul {
+        /* Reset and base styles */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-
-        /* General styles */
-        /* Add the following CSS animation for the clickable elements */
-@keyframes animateClickables {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.clickable-area {
-    animation: animateClickables 1s ease-out forwards;
-    opacity: 0; /* Make them invisible initially */
-}
-
-.clickable-area.loaded {
-    opacity: 1; /* Make them visible after animation */
-}
-        /* Define the animation */
-@keyframes fadeInScaleUp {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Apply the animation to the clickable elements */
-.clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
-    width: 15vw;
-    max-width: 100px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    animation: fadeInScaleUp 1s ease-out forwards;
-}
-
-/* Customize individual positions */
-.top-left {
-    top: 2%;
-    left: 4%;
-}
-.top-right {
-    top: 2%;
-    right: 4%;
-}
-.bottom-left {
-    bottom: 2%;
-    left: 4%;
-}
-.bottom-right {
-    bottom: 2%;
-    right: 4%;
-}
-.center-top {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.center-bottom {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 
         body {
             background-color: black;
@@ -98,6 +30,7 @@
             text-align: center;
         }
 
+        /* Layout components */
         .panel {
             width: 100%;
             min-height: 90vh;
@@ -112,24 +45,24 @@
             position: relative;
             z-index: 3;
             width: 100%;
-            max-width: 600px; /* Adjust the max-width as needed */
+            max-width: 600px;
             margin: 0 auto;
             overflow: hidden;
         }
 
-        #missionVideo {
-            pointer-events: none;
-        }
-        #missionVideo.show {
-            pointer-events: auto;
+        @media (min-width: 769px) {
+            .media-container {
+                transform: scale(0.8);
+            }
         }
 
+        /* Image and video styles */
         .media-container img,
         .media-container video {
             width: 100%;
             height: auto;
             display: block;
-            object-fit: cover; /* Maintain aspect ratio */
+            object-fit: cover;
         }
 
         .media-container video {
@@ -140,64 +73,32 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
             z-index: 0;
             opacity: 0;
-            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
+            transition: opacity 1s ease-in-out;
+            pointer-events: none;
         }
 
-        @media (max-width: 768px) {
-            .media-container {
-                max-width: 90%;
-            }
-        }
-        @media (max-width: 768px) {
-    #countdownWrapper {
-        position: absolute;
-        top: 25%; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
-
-    #countdown {
-        font-size: 24px;
-    }
-}
-@media (max-width: 768px) {
-    .center-top {
-        top: -30%; /* Move up by adjusting this value */
-    }
-
-    .center-bottom {
-        bottom: 0%; /* Move up by adjusting this value */
-    }
-}
-     
-  .clickable-area img {
-      padding: 0;
-      margin: 0;
-  }
-
-    .center-top, .center-bottom {
-        width: 16.5vw; /* Increase by 10% from 15vw */
-        max-width: 110px; /* Increase by 10% from 100px */
-    }
-
-  @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .media-container video.show {
+            pointer-events: auto;
         }
 
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+        #missionVideo.fadeOut {
+            animation: fadeOut 18s ease forwards !important;
+            z-index: 1;
         }
 
-        .fade-out {
-            animation: fadeOut 2s ease forwards;
+        #cardFrame {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
+        /* Mission content styles */
         #missionContent {
             animation: fadeIn 0.9s ease forwards;
             position: absolute;
@@ -213,8 +114,136 @@
             opacity: 1;
         }
 
-        #missionContent p, #missionContent a {
+        #missionContent p, 
+        #missionContent a {
             color: white;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 5px auto;
+            max-width: 70%;
+            height: auto;
+        }
+
+        .body-text {
+            margin: 30px 0;
+        }
+
+        .body-text p {
+            margin-bottom: 10px;
+        }
+
+        /* Countdown styles */
+        #countdownWrapper {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #countdown {
+            font-size: 32px;
+            color: #FF0000;
+        }
+
+        /* Loading indicator */
+        .loading-indicator {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+        }
+
+        /* Clickable areas */
+        .clickable-area {
+            position: absolute;
+            z-index: 4;
+            cursor: pointer;
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+            width: 15vw;
+            max-width: 100px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            animation: fadeInScaleUp 0.5s ease-out forwards;
+        }
+
+        .clickable-area img {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .clickable-area:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+
+        .top-left {
+            top: 2%;
+            left: 4%;
+            animation-delay: 0.1s;
+        }
+
+        .top-right {
+            top: 2%;
+            right: 4%;
+            animation-delay: 0.2s;
+        }
+
+        .bottom-left {
+            bottom: 2%;
+            left: 4%;
+            animation-delay: 0.3s;
+        }
+
+        .bottom-right {
+            bottom: 2%;
+            right: 4%;
+            animation-delay: 0.4s;
+        }
+
+        .center-top {
+            top: 2%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16.5vw;
+            max-width: 110px;
+            animation-delay: 0.5s;
+        }
+
+        .center-bottom {
+            bottom: 2%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16.5vw;
+            max-width: 110px;
+            animation-delay: 0.6s;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes fadeInScaleUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateX(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateX(0);
+            }
         }
 
         @keyframes flipImageX {
@@ -231,180 +260,42 @@
 
         .flip-image-x {
             animation: flipImageX 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
+            z-index: 5;
         }
 
         .flip-image-y {
             animation: flipImageY 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
+            z-index: 5;
         }
 
-        #missionVideo.fadeOut {
-            animation: fadeOut 18s ease forwards !important;
-            z-index: 1;
+        .fade-out-body * {
+            animation: fadeOut 1s ease forwards;
         }
 
-        #cardFrame {
-            display: none; /* Initially hidden */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Positioned under other elements */
-        }
-
-        #countdownWrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #countdown {
-            font-size: 32px;
-            color: #FF0000;
-        }
-
+        /* Media queries */
         @media (max-width: 768px) {
-            #countdown {
-                font-size: 24px; /* Smaller font size for mobile */
-            }
-        }
-
-        .logo {
-            display: block;
-            margin: 0 auto 5px auto; /* Center horizontally and add bottom margin */
-        }
-
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .info {
-                font-size: 16px; /* Smaller font size for mobile */
-            }
-        }
-
-        .body-text {
-            margin: 30px 0;
-        }
-
-        .body-text a {
-            color: white;
-        }
-
-        .body-text p {
-            margin-bottom: 10px;
-        }
-
-        #previousEventsToggle {
-            background: none;
-            border: none;
-            padding: 0;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #previousEventsToggle i {
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .loading-indicator {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3;
-        }
-
-        /* Spinning progress wheel */
-        .spinner {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 8px solid #fff;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            z-index: 1000; /* Ensure it's above everything else */
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-.clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%; /* Make it circular */
-    aspect-ratio: 1/1; /* Maintain perfect circle */
-    width: 15vw; /* Adjust size based on viewport width */
-    max-width: 100px; /* Prevent it from getting too large */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
-}
-
-.clickable-area:hover {
-    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
-
-}
-
-/* Adjust position as needed */
-.top-left {
-    top: 2%;
-    left: 4%;
-}
-
-.top-right {
-    top: 2%;
-    right: 4%;
-}
-
-.bottom-left {
-    bottom: 2%;
-    left: 4%;
-}
-
-.bottom-right {
-    bottom: 2%;
-    right: 4%;
-}
-
-.center-top {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.center-bottom {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-
-
-        .fade-out-body *:not(.spinner) {
-            animation: fadeOut 2s ease forwards;
-        }
-
-        /* Make hcard and all elements 20% smaller on web only */
-        @media (min-width: 769px) {
             .media-container {
-                transform: scale(0.8);
+                max-width: 90%;
+            }
+
+            #countdown {
+                font-size: 24px;
+            }
+
+            #countdownWrapper {
+                position: absolute;
+                top: 25%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+            }
+
+            .center-top {
+                top: -30%;
+            }
+
+            .center-bottom {
+                bottom: 0%;
             }
         }
     </style>
@@ -415,21 +306,20 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
+                    <div class="media-container" id="mainContainer" role="button" tabindex="0" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/hcardtest.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
-                            <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                            <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo">
                             <div class="body-text">
                                 <p>
-                                    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
+                                    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;">
                                 </p>
                             </div>
                             <div id="countdownWrapper">
-                               
                                 <div id="countdown"></div>
                             </div>
                         </div>
-                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
+                        <video id="missionVideo" muted playsinline controls>
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -438,53 +328,71 @@
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
 
-                        <!-- Clickable areas -->
-                        <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
+                        <!-- Clickable areas with placeholder assets -->
+                        <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html" role="button" aria-label="Info">
                             <img src="images/infon.svg" alt="Info">
                         </div>
-                        <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
+                        <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html" role="button" aria-label="People">
                             <img src="images/peoplen.svg" alt="People">
                         </div>
-                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/" role="button" aria-label="News">
                             <img src="images/newsn.svg" alt="News">
                         </div>
-                        <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
+                        <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html" role="button" aria-label="Subscribe">
                             <img src="images/envelopen.svg" alt="Envelope">
                         </div>
-                        <div class="clickable-area center-top" data-sound="keys" data-image="images/Medusa.png" data-url="https://www.linkedin.com/company/charlestonhacks">
+                        <div class="clickable-area center-top" data-sound="keys" data-image="images/Medusa.png" data-url="https://www.linkedin.com/company/charlestonhacks" role="button" aria-label="LinkedIn">
                             <img src="images/crestl.svg" alt="Crest">
                         </div>
-                        <div class="clickable-area center-bottom" data-sound="keys" data-image="images/Elara.png" data-url="https://www.instagram.com/charlestonhacks/">
+                        <div class="clickable-area center-bottom" data-sound="keys" data-image="images/Elara.png" data-url="https://www.instagram.com/charlestonhacks/" role="button" aria-label="Instagram">
                             <img src="images/keysl.svg" alt="Keys">
                         </div>
-                    </a>
+                    </div>
                 </div>
             </header>
         </article>
     </div>
 
-    <!-- Spinning progress wheel -->
-    <div id="spinner" class="spinner"></div>
-
-    <script src="ho-script.js"></script>
     <script>
-        var countdownElement = document.getElementById('countdown');
-        var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
-        var countdownFunction = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                countdownElement.innerHTML = "AIFF is Here!";
+        // Audio handling - lazy load audio files
+        const audioCache = {};
+        
+        function loadAudio(key, url) {
+            if (!audioCache[key]) {
+                audioCache[key] = new Audio(url);
+                audioCache[key].volume = 0.3;
+                audioCache[key].load();
             }
-        }, 1000);
+            return audioCache[key];
+        }
+        
+        function playSound(soundKey) {
+            let audio;
+            
+            switch(soundKey) {
+                case 'cardflip':
+                    audio = loadAudio('cardflip', 'assets/atmospherel.m4a');
+                    break;
+                case 'keys':
+                    audio = loadAudio('keys', 'assets/keys.m4a');
+                    break;
+                case 'ding':
+                    audio = loadAudio('ding', 'assets/ding.mp3');
+                    break;
+                default:
+                    return;
+            }
+            
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                });
+            }
+        }
 
-        var cardImages = [
+        // Card images array
+        const cardImages = [
             "images/yellowscullcard.png",
             "images/redscullcard.png",
             "images/Descartes.png",
@@ -500,6 +408,22 @@
             "images/Astrid.png",
             "images/nicolecard.png"
         ];
+
+        // DOM elements
+        const missionImage = document.getElementById('missionImage');
+        const missionVideo = document.getElementById('missionVideo');
+        const missionContent = document.getElementById('missionContent');
+        const cardFrame = document.getElementById('cardFrame');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const aiffBanner = document.getElementById('aiffBanner');
+        const mainContainer = document.getElementById('mainContainer');
+        const clickableAreas = document.querySelectorAll('.clickable-area');
+
+        // State variables
+        let cardClicked = false;
+        
+        // Utility functions
+        function getRandomImage() {
 
         let cardClicked = false;
 
