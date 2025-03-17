@@ -52,6 +52,7 @@
         #missionVideo {
             pointer-events: none;
         }
+        
         #missionVideo.show {
             pointer-events: auto;
         }
@@ -78,39 +79,40 @@
             transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
         }
 
-     }
         @media (max-width: 768px) {
-    #countdownWrapper {
-        position: absolute;
-        top: 25%; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
+            #countdownWrapper {
+                position: absolute;
+                top: 25%; /* Adjust as needed */
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+            }
 
-    #countdown {
-        font-size: 24px;
-    }
-             .media-container {
+            #countdown {
+                font-size: 24px;
+            }
+
+            .media-container {
                 max-width: 90%;
             }
-    .center-top {
-        top: -30%; /* Move up by adjusting this value */
-    }
 
-    .center-bottom {
-        bottom: 0%; /* Move up by adjusting this value */
-    }
-     
-  .clickable-area img {
-      padding: 0;
-      margin: 0;
-  }
+            .center-top {
+                top: -30%; /* Move up by adjusting this value */
+            }
 
-    .center-top, .center-bottom {
-        width: 16.5vw; /* Increase by 10% from 15vw */
-        max-width: 110px; /* Increase by 10% from 100px */
-    }
+            .center-bottom {
+                bottom: 0%; /* Move up by adjusting this value */
+            }
+
+            .clickable-area img {
+                padding: 0;
+                margin: 0;
+            }
+
+            .center-top, .center-bottom {
+                width: 16.5vw; /* Increase by 10% from 15vw */
+                max-width: 110px; /* Increase by 10% from 100px */
+            }
 
   @keyframes fadeIn {
             from { opacity: 0; }
