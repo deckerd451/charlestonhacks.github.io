@@ -415,7 +415,7 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
+                   <a class="media-container" onclick="flipAndRedirect()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/hcardtest.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
@@ -559,13 +559,21 @@
         }
 
         function flipAndRedirect() {
-            var banner = document.getElementById('aiffBanner');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            banner.classList.add(randomFlip);
-            setTimeout(function () {
-                window.location.href = 'https://charlestonhacks.com/techweek.html';
-            }, 2000);
-        }
+    // Start flip animation
+    var image = document.getElementById("missionImage");
+    image.classList.add("flip-image-x"); // You can use either flip-image-x or flip-image-y based on your preference
+
+    // Show countdown after flip
+    setTimeout(function() {
+        document.getElementById("missionContent").style.display = "block"; // Show the mission content
+        startCountdown(); // Start the countdown timer
+    }, 1500); // Delay for the flip animation to complete
+
+    // Redirect after animation and countdown
+    setTimeout(function() {
+        window.location.href = 'techweek.html'; // Redirect to techweek.html after countdown
+    }, 8000); // Wait for 8 seconds (total time of flip + countdown)
+}
 
         function flipCard(imageSrc, url) {
             var missionImage = document.getElementById('missionImage');
