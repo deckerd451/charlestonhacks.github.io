@@ -503,6 +503,10 @@
         Object.keys(sounds).forEach(key => {
             sounds[key].volume = 0.3;
         });
+        window.addEventListener('load', function() {
+    document.querySelector('.panel').classList.add('loaded');
+});
+
 
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
@@ -518,6 +522,7 @@
                 });
             }
         }
+        
 
         function toggleMissionContent() {
             if (cardClicked) return;
