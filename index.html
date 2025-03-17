@@ -632,8 +632,8 @@
         });
     </script>
     <script src="dist/bundle.js"></script>
-    <script>
-    window.addEventListener('load', () => {
+<script>
+    window.onload = () => {
         // Select all clickable areas
         const clickableElements = document.querySelectorAll('.clickable-area');
 
@@ -641,9 +641,7 @@
         clickableElements.forEach(element => {
             element.classList.add('loaded');
         });
-    });
+    };
 </script>
-
 </body>
-
 </html>
