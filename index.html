@@ -22,6 +22,18 @@
 
         /* General styles */
         /* Add the following CSS animation for the clickable elements */
+        #background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5; /* Adjust opacity if needed */
+    pointer-events: none; /* Prevent interaction with the video */
+}
+
 @keyframes animateClickables {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -86,6 +98,10 @@
     bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
+}
+body {
+    position: relative;
+    z-index: 1;
 }
 
 
@@ -394,6 +410,12 @@
         }
     </style>
 </head>
+
+    <video autoplay muted loop id="background-video">
+    <source src="your-video.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+
 
 <body class="is-preload">
     <div id="main">
