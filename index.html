@@ -52,7 +52,6 @@
         #missionVideo {
             pointer-events: none;
         }
-        
         #missionVideo.show {
             pointer-events: auto;
         }
@@ -80,39 +79,42 @@
         }
 
         @media (max-width: 768px) {
-            #countdownWrapper {
-                position: absolute;
-                top: 25%; /* Adjust as needed */
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-            }
-
-            #countdown {
-                font-size: 24px;
-            }
-
             .media-container {
                 max-width: 90%;
             }
+        }
+        @media (max-width: 768px) {
+    #countdownWrapper {
+        position: absolute;
+        top: 25%; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
 
-            .center-top {
-                top: -30%; /* Move up by adjusting this value */
-            }
+    #countdown {
+        font-size: 24px;
+    }
+}
+@media (max-width: 768px) {
+    .center-top {
+        top: -30%; /* Move up by adjusting this value */
+    }
 
-            .center-bottom {
-                bottom: 0%; /* Move up by adjusting this value */
-            }
+    .center-bottom {
+        bottom: 0%; /* Move up by adjusting this value */
+    }
+}
+     
+  .clickable-area img {
+      padding: 0;
+      margin: 0;
+  }
 
-            .clickable-area img {
-                padding: 0;
-                margin: 0;
-            }
-
-            .center-top, .center-bottom {
-                width: 16.5vw; /* Increase by 10% from 15vw */
-                max-width: 110px; /* Increase by 10% from 100px */
-            }
+    .center-top, .center-bottom {
+        width: 16.5vw; /* Increase by 10% from 15vw */
+        max-width: 110px; /* Increase by 10% from 100px */
+    }
 
   @keyframes fadeIn {
             from { opacity: 0; }
@@ -289,8 +291,8 @@
 
 .clickable-area:hover {
     box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
-}
 
+}
 
 /* Adjust position as needed */
 .top-left {
