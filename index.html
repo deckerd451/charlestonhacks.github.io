@@ -76,7 +76,13 @@
             z-index: 0;
             opacity: 0;
             transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
-      }
+        }
+
+        @media (max-width: 768px) {
+            .media-container {
+                max-width: 90%;
+            }
+        }
         @media (max-width: 768px) {
     #countdownWrapper {
         position: absolute;
@@ -97,10 +103,8 @@
 
     .center-bottom {
         bottom: 0%; /* Move up by adjusting this value */
-      }
-    .media-container {
-                max-width: 90%;
-            }
+    }
+}
      
   .clickable-area img {
       padding: 0;
@@ -251,7 +255,22 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 3;
-    
+        }
+
+        /* Spinning progress wheel */
+        .spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 8px solid #fff;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            z-index: 1000; /* Ensure it's above everything else */
         }
 
         @keyframes spin {
@@ -307,7 +326,10 @@
     left: 50%;
     transform: translateX(-50%);
 }
-.fade-out-body{
+
+
+
+        .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
 
@@ -344,6 +366,9 @@
                             Your browser does not support the video tag.
                         </video>
                         <img id="cardFrame" src="images/cardframe.png" alt="Card Frame" />
+                        <div class="loading-indicator" id="loadingIndicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
 
                         <!-- Clickable areas with placeholder assets -->
                         <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
@@ -368,6 +393,10 @@
                 </div>
             </header>
         </article>
+    </div>
+
+    <!-- Spinning progress wheel -->
+    <div id="spinner" class="spinner"></div>
 
     <script src="ho-script.js"></script>
     <script>
@@ -504,7 +533,15 @@
             eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
         }
 
-       function handleVideoError() {
+        function showLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'block';
+        }
+
+        function hideLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+
+        function handleVideoError() {
             alert("Error loading video. Please try again later.");
         }
 
