@@ -21,6 +21,74 @@
         }
 
         /* General styles */
+        /* Add the following CSS animation for the clickable elements */
+@keyframes animateClickables {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.clickable-area {
+    animation: animateClickables 1s ease-out forwards;
+    opacity: 0; /* Make them invisible initially */
+}
+
+.clickable-area.loaded {
+    opacity: 1; /* Make them visible after animation */
+}
+        /* Define the animation */
+@keyframes fadeInScaleUp {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Apply the animation to the clickable elements */
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 15vw;
+    max-width: 100px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    animation: fadeInScaleUp 1s ease-out forwards;
+}
+
+/* Customize individual positions */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
+.top-right {
+    top: 2%;
+    right: 4%;
+}
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
+.center-top {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.center-bottom {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
         body {
             background-color: black;
             color: white;
@@ -370,7 +438,7 @@
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
 
-                        <!-- Clickable areas with placeholder assets -->
+                        <!-- Clickable areas -->
                         <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
                             <img src="images/infon.svg" alt="Info">
                         </div>
@@ -564,6 +632,18 @@
         });
     </script>
     <script src="dist/bundle.js"></script>
+    <script>
+    window.addEventListener('load', () => {
+        // Select all clickable areas
+        const clickableElements = document.querySelectorAll('.clickable-area');
+
+        // Add the "loaded" class to each clickable area to trigger the animation
+        clickableElements.forEach(element => {
+            element.classList.add('loaded');
+        });
+    });
+</script>
+
 </body>
 
 </html>
