@@ -513,15 +513,47 @@ body {
         let cardClicked = false;
 
         // Simplify audio handling with a sound map
-        const sounds = {
-            cardflip: new Audio('assets/atmospherel.m4a'),
-            keys: new Audio('assets/keys.m4a'),
-            ding: new Audio('assets/ding.mp3')
-        };
+      const sounds = {
+    cardflip: new Audio('assets/atmospherel.m4a'),
+    keys: new Audio('assets/keys.m4a'),
+    ding: new Audio('assets/ding.mp3')
+};
 
-        // Lower the volume of all sounds by 30%
-        Object.keys(sounds).forEach(key => {
-            sounds[key].volume = 0.3;
+// Function to fade out the sound
+function fadeOutSound(sound, fadeDuration = 1000) {
+    let volume = sound.volume;
+    let fadeInterval = 50;
+    let fadeStep = volume / (fadeDuration / fadeInterval);
+
+    // Gradually decrease volume
+    let fadeOut = setInterval(() => {
+        if (sound.volume > 0) {
+            sound.volume -= fadeStep;
+        } else {
+            clearInterval(fadeOut);
+            sound.pause(); // Pause after fade
+            sound.currentTime = 0; // Reset the sound to the beginning
+        }
+    }, fadeInterval);
+}
+
+// Loop the sounds once and fade them out
+function playAndFade(sound) {
+    sound.loop = true; // Set the sound to loop
+    sound.play(); // Start playing the sound
+    
+    // Set a timeout to stop the loop and fade out after the sound finishes once
+    setTimeout(() => {
+        sound.loop = false; // Stop the loop after it plays once
+        fadeOutSound(sound, 3000); // Fade out over 3 seconds
+    }, sound.duration * 1000); // Wait for the sound to finish before fading out
+}
+
+// Play and fade the sounds
+playAndFade(sounds.cardflip);
+playAndFade(sounds.keys);
+playAndFade(sounds.ding);
+
         });
 
         function getRandomImage() {
