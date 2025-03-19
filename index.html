@@ -7,7 +7,7 @@
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
     <meta property="og:title" content="CharlestonHacks - Home" />
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
@@ -16,102 +16,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="manifest" href="manifest.json" />
     <style>
-        /* Resetting default margin and padding */
+        /* Reset styles */
         body, h1, h2, h3, p, ul {
             margin: 0;
             padding: 0;
         }
 
-        /* General styles */
-        /* Add the following CSS animation for the clickable elements */
-        #background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1;
-    opacity: 0.5; /* Adjust opacity if needed */
-    pointer-events: none; /* Prevent interaction with the video */
-}
+        /* Universal animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-@keyframes animateClickables {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
 
-.clickable-area {
-    animation: animateClickables 1s ease-out forwards;
-    opacity: 0; /* Make them invisible initially */
-}
+        @keyframes flip {
+            0% { opacity: 1; }
+            50% { transform: rotate3d(1, 1, 0, 180deg); }
+            100% { transform: rotate3d(1, 1, 0, 360deg); opacity: 0; }
+        }
 
-.clickable-area.loaded {
-    opacity: 1; /* Make them visible after animation */
-}
-        /* Define the animation */
-@keyframes fadeInScaleUp {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1.15);
-    }
-    .clickable-area:hover {
-    transform: scale(1.2);
-    transition: transform 0.3s ease-in-out;
-}
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
 
-}
-
-/* Apply the animation to the clickable elements */
-.clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
-    width: 10vw;
-    max-width: 60px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    animation: fadeInScaleUp 1s ease-out forwards;
-}
-
-/* Customize individual positions */
-.top-left {
-    top: 2%;
-    left: 4%;
-}
-.top-right {
-    top: 2%;
-    right: 4%;
-}
-.bottom-left {
-    bottom: 2%;
-    left: 4%;
-}
-.bottom-right {
-    bottom: 2%;
-    right: 4%;
-}
-.center-top {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.center-bottom {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-body {
-    position: relative;
-    z-index: 1;
-}
-
-
+        /* Core styles */
         body {
             background-color: black;
             color: white;
@@ -121,6 +54,20 @@ body {
             text-align: center;
         }
 
+        /* Background video */
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Panel and container layout */
         .panel {
             width: 100%;
             min-height: 90vh;
@@ -135,25 +82,19 @@ body {
             position: relative;
             z-index: 3;
             width: 100%;
-            max-width: 600px; /* Adjust the max-width as needed */
+            max-width: 600px;
             margin: 0 auto;
             overflow: hidden;
         }
 
-        #missionVideo {
-            pointer-events: none;
-        }
-        #missionVideo.show {
-            pointer-events: auto;
-        }
-
+        /* Media elements */
         .media-container img,
         .media-container video {
             width: 100%;
             height: auto;
             display: block;
-             object-fit: contain; /* Maintains aspect ratio without distortion */
-}
+            object-fit: contain;
+        }
 
         .media-container video {
             position: absolute;
@@ -163,64 +104,61 @@ body {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
             z-index: 0;
             opacity: 0;
-            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
+            transition: opacity 1s ease-in-out;
+            pointer-events: none;
         }
 
-        @media (max-width: 768px) {
-            .media-container {
-                max-width: 90%;
-            }
-        }
-        @media (max-width: 768px) {
-    #countdownWrapper {
-        position: absolute;
-        top: 25%; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
-
-    #countdown {
-        font-size: 24px;
-    }
-}
-@media (max-width: 768px) {
-    .center-top {
-        top: -30%; /* Move up by adjusting this value */
-    }
-
-    .center-bottom {
-        bottom: 0%; /* Move up by adjusting this value */
-    }
-}
-     
-  .clickable-area img {
-      padding: 0;
-      margin: 0;
-  }
-
-    .center-top, .center-bottom {
-        width: 16.5vw; /* Increase by 10% from 15vw */
-        max-width: 110px; /* Increase by 10% from 100px */
-    }
-
-  @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .media-container video.show {
+            pointer-events: auto;
         }
 
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+        /* Clickable elements */
+        .clickable-area {
+            position: absolute;
+            z-index: 4;
+            cursor: pointer;
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+            width: 10vw;
+            max-width: 60px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
-        .fade-out {
-            animation: fadeOut 2s ease forwards;
+        .clickable-area:hover {
+            transform: scale(1.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
         }
 
+        .clickable-area.loaded {
+            opacity: 1;
+        }
+
+        /* Positioning classes */
+        .top-left { top: 2%; left: 4%; }
+        .top-right { top: 2%; right: 4%; }
+        .bottom-left { bottom: 2%; left: 4%; }
+        .bottom-right { bottom: 2%; right: 4%; }
+        .center-top { 
+            top: 2%; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 16.5vw;
+            max-width: 110px;
+        }
+        .center-bottom { 
+            bottom: 2%; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 16.5vw;
+            max-width: 110px;
+        }
+
+        /* Mission content */
         #missionContent {
             animation: fadeIn 0.9s ease forwards;
             position: absolute;
@@ -233,50 +171,25 @@ body {
             text-align: center;
             display: none;
             z-index: 2;
-            opacity: 1;
         }
 
-        #missionContent p, #missionContent a {
+        #missionContent p, 
+        #missionContent a {
             color: white;
         }
 
-        @keyframes flipImageX {
-            0% { opacity: 1; }
-            50% { transform: rotateX(180deg); }
-            to { transform: rotateX(360deg); opacity: 0; }
-        }
-
-        @keyframes flipImageY {
-            0% { opacity: 1; }
-            50% { transform: rotateY(180deg); }
-            to { transform: rotateY(360deg); opacity: 0; }
-        }
-
-        .flip-image-x {
-            animation: flipImageX 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
-        }
-
-        .flip-image-y {
-            animation: flipImageY 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
-        }
-
-        #missionVideo.fadeOut {
-            animation: fadeOut 18s ease forwards !important;
-            z-index: 1;
-        }
-
+        /* Card frame */
         #cardFrame {
-            display: none; /* Initially hidden */
+            display: none;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; /* Positioned under other elements */
+            z-index: 1;
         }
 
+        /* Countdown */
         #countdownWrapper {
             margin-top: 20px;
             text-align: center;
@@ -287,26 +200,16 @@ body {
             color: #FF0000;
         }
 
-        @media (max-width: 768px) {
-            #countdown {
-                font-size: 24px; /* Smaller font size for mobile */
-            }
-        }
-
+        /* Logo */
         .logo {
             display: block;
-            margin: 0 auto 5px auto; /* Center horizontally and add bottom margin */
+            margin: 0 auto 5px auto;
         }
 
+        /* Text styles */
         .info {
             color: #FFFF00;
             font-size: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .info {
-                font-size: 16px; /* Smaller font size for mobile */
-            }
         }
 
         .body-text {
@@ -317,28 +220,7 @@ body {
             color: white;
         }
 
-        .body-text p {
-            margin-bottom: 10px;
-        }
-
-        #previousEventsToggle {
-            background: none;
-            border: none;
-            padding: 0;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #previousEventsToggle i {
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
+        /* Loading indicator */
         .loading-indicator {
             display: none;
             position: absolute;
@@ -348,68 +230,69 @@ body {
             z-index: 3;
         }
 
-        /* Spinning progress wheel */
+        /* Spinner */
         .spinner {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
             border: 8px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             border-top: 8px solid #fff;
             width: 50px;
             height: 50px;
             animation: spin 1s linear infinite;
-            z-index: 1000; /* Ensure it's above everything else */
+            z-index: 1000;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-.clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%; /* Make it circular */
-    aspect-ratio: 1/1; /* Maintain perfect circle */
-    width: 15vw; /* Adjust size based on viewport width */
-    max-width: 100px; /* Prevent it from getting too large */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
-}
-
-.clickable-area:hover {
-    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
-
-}
-
-/* Adjust position as needed */
-.top-left {
-    top: 2%;
-    left: 4%;
-}
-
-.top-right {
-    top: 2%;
-    right: 4%;
-}
-
-.bottom-left {
-    bottom: 2%;
-    left: 4%;
-}
-
-.bottom-right {
-    bottom: 2%;
-    right: 4%;
-}
+        /* Fade-out body */
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
 
-        /* Make hcard and all elements 20% smaller on web only */
+        /* Flipping animations */
+        .flip-image {
+            animation: flip 3s ease forwards;
+            z-index: 5;
+        }
+
+        /* Video fadeout */
+        #missionVideo.fadeOut {
+            animation: fadeOut 18s ease forwards !important;
+            z-index: 1;
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            .media-container {
+                max-width: 90%;
+            }
+            
+            .info {
+                font-size: 16px;
+            }
+            
+            #countdown {
+                font-size: 24px;
+            }
+            
+            #countdownWrapper {
+                position: absolute;
+                top: 25%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+            }
+            
+            .center-top {
+                top: -30%;
+            }
+            
+            .center-bottom {
+                bottom: 0%;
+            }
+        }
+
         @media (min-width: 769px) {
             .media-container {
                 transform: scale(0.8);
@@ -418,24 +301,17 @@ body {
     </style>
 </head>
 
-   <video autoplay muted id="background-video">
-    <source src="assets/Happy Hour.mp4" type="video/mp4">
-    Your browser does not support HTML5 video.
-</video>
-
-<script>
-    // Adjust the playback speed
-    document.getElementById('background-video').playbackRate = 0.8;
-</script>
-
-
-
 <body class="is-preload">
+    <video autoplay muted id="background-video">
+        <source src="assets/Happy Hour.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
     <div id="main">
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
+                    <a class="media-container" onclick="toggleMissionContent(); playSound('cardflip');" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/H.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
@@ -445,7 +321,6 @@ body {
                                 </p>
                             </div>
                             <div id="countdownWrapper">
-                               
                                 <div id="countdown"></div>
                             </div>
                         </div>
@@ -480,25 +355,12 @@ body {
     <!-- Spinning progress wheel -->
     <div id="spinner" class="spinner"></div>
 
-    <script src="ho-script.js"></script>
     <script>
-        var countdownElement = document.getElementById('countdown');
-        var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
-        var countdownFunction = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                countdownElement.innerHTML = "AIFF is Here!";
-            }
-        }, 1000);
+        // Adjust video playback speed
+        document.getElementById('background-video').playbackRate = 0.8;
 
-        var cardImages = [
+        // Card images array
+        const cardImages = [
             "images/yellowscullcard.png",
             "images/redscullcard.png",
             "images/Descartes.png",
@@ -515,106 +377,105 @@ body {
             "images/nicolecard.png"
         ];
 
+        // Initialize variables
         let cardClicked = false;
 
-        // Simplify audio handling with a sound map
+        // Sound management
         const sounds = {
             cardflip: new Audio('assets/atmospherel.m4a'),
             keys: new Audio('assets/keys.m4a'),
             ding: new Audio('assets/ding.mp3')
         };
 
-        // Lower the volume of all sounds by 30%
-        Object.keys(sounds).forEach(key => {
-            sounds[key].volume = 0.3;
-        });
+        // Set volume for all sounds
+        Object.values(sounds).forEach(audio => audio.volume = 0.3);
 
+        // Initialize countdown
+        const countdownElement = document.getElementById('countdown');
+        const countDownDate = new Date("May 1, 2025 19:00:00").getTime();
+        
+        // Update countdown every second
+        const countdownFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                countdownElement.innerHTML = "AIFF is Here!";
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        }, 1000);
+
+        // Utility functions
         function getRandomImage() {
-            var randomIndex = Math.floor(Math.random() * cardImages.length);
+            const randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
 
         function playSound(soundKey) {
             const audio = sounds[soundKey];
             if (audio) {
-                audio.currentTime = 0; // Reset to start
-                audio.play().catch(error => {
-                    console.error('Audio playback failed:', error);
-                });
+                audio.currentTime = 0;
+                audio.play().catch(error => console.error('Audio playback failed:', error));
             }
         }
 
+        // Card and content management
         function toggleMissionContent() {
             if (cardClicked) return;
             cardClicked = true;
 
-            var image = document.getElementById('missionImage');
+            const image = document.getElementById('missionImage');
+            const video = document.getElementById('missionVideo');
+            const missionContent = document.getElementById('missionContent');
+            
+            // Change image
             image.src = getRandomImage();
-
-            var video = document.getElementById('missionVideo');
+            
+            // Start video
             video.style.display = 'block';
-            video.style.opacity = 0;
-            setTimeout(function() {
-                video.style.opacity = 1;
-            }, 100); // Delay to allow transition to take effect
+            setTimeout(() => video.style.opacity = 1, 100);
             video.play();
-
-            document.getElementById('missionContent').style.display = 'block';
-
-            setTimeout(function () {
+            
+            // Show content
+            missionContent.style.display = 'block';
+            
+            // Handle video fadeout
+            setTimeout(() => {
                 video.classList.add('fadeOut');
-                setTimeout(function () {
-                    video.style.display = 'none';
-                }, 18000);
+                setTimeout(() => video.style.display = 'none', 18000);
             }, 18000);
-
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            image.classList.add(randomFlip);
+            
+            // Apply flip animation
+            image.classList.add('flip-image');
         }
 
         function flipAndRedirect() {
-            var banner = document.getElementById('aiffBanner');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            banner.classList.add(randomFlip);
-            setTimeout(function () {
-                window.location.href = 'https://charlestonhacks.com/techweek.html';
-            }, 2000);
+            const banner = document.getElementById('aiffBanner');
+            banner.classList.add('flip-image');
+            setTimeout(() => window.location.href = 'https://charlestonhacks.com/techweek.html', 2000);
         }
 
         function flipCard(imageSrc, url) {
-            var missionImage = document.getElementById('missionImage');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            missionImage.classList.add(randomFlip);
-
-            // Apply fade-out effect to the body content except the spinner
+            const missionImage = document.getElementById('missionImage');
+            missionImage.classList.add('flip-image');
+            
+            // Fade out content
             document.body.classList.add('fade-out-body');
-
-            // Show spinner
+            
+            // Show spinner and redirect
             document.getElementById('spinner').style.display = 'block';
-
-            // Redirect immediately
             window.location.href = url;
-
-            setTimeout(function () {
-                missionImage.src = imageSrc;
-            }, 2000); // Adjust the delay to match the fade-out duration
         }
 
-        document.querySelectorAll('.clickable-area').forEach(area => {
-            area.addEventListener('click', function() {
-                const sound = this.getAttribute('data-sound');
-                const image = this.getAttribute('data-image');
-                const url = this.getAttribute('data-url');
-                playSound(sound);
-                flipCard(image, url);
-            });
-        });
-
-        function toggleVisibility() {
-            var eventsSection = document.querySelector('.previous-events');
-            eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
-        }
-
+        // Video handling functions
         function showLoadingIndicator() {
             document.getElementById('loadingIndicator').style.display = 'block';
         }
@@ -631,31 +492,33 @@ body {
             document.getElementById('cardFrame').style.display = 'block';
         }
 
+        // Set up event listeners
+        document.querySelectorAll('.clickable-area').forEach(area => {
+            area.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent triggering parent click events
+                const sound = this.getAttribute('data-sound');
+                const image = this.getAttribute('data-image');
+                const url = this.getAttribute('data-url');
+                playSound(sound);
+                flipCard(image, url);
+            });
+        });
+
+        // Video element events
         const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
+        videoElement.addEventListener('play', () => playSound('cardflip'));
         videoElement.addEventListener('ended', showCardFrame);
 
-        // Ensure the spinner remains visible until the link is opened
-        window.addEventListener('beforeunload', function () {
-            document.getElementById('spinner').style.display = 'none';
-        });
-
-        // Remove fade-out class when the page is loaded or navigated back
-        window.addEventListener('pageshow', function () {
-            document.body.classList.remove('fade-out-body');
-        });
+        // Page events
+        window.addEventListener('beforeunload', () => document.getElementById('spinner').style.display = 'none');
+        window.addEventListener('pageshow', () => document.body.classList.remove('fade-out-body'));
+        
+        // Initialize clickable areas on load
+        window.onload = () => {
+            document.querySelectorAll('.clickable-area').forEach(element => {
+                element.classList.add('loaded');
+            });
+        };
     </script>
-    <script src="dist/bundle.js"></script>
-<script>
-    window.onload = () => {
-        // Select all clickable areas
-        const clickableElements = document.querySelectorAll('.clickable-area');
-
-        // Add the "loaded" class to each clickable area to trigger the animation
-        clickableElements.forEach(element => {
-            element.classList.add('loaded');
-        });
-    };
-</script>
 </body>
 </html>
