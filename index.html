@@ -68,8 +68,8 @@
     cursor: pointer;
     border-radius: 50%;
     aspect-ratio: 1/1;
-    width: 12vw;
-    max-width: 90px;
+    width: 15vw;
+    max-width: 100px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     animation: fadeInScaleUp 1s ease-out forwards;
 }
@@ -370,8 +370,8 @@ body {
     cursor: pointer;
     border-radius: 50%; /* Make it circular */
     aspect-ratio: 1/1; /* Maintain perfect circle */
-    width: 14vw; /* Adjust size based on viewport width */
-    max-width: 90px; /* Prevent it from getting too large */
+    width: 15vw; /* Adjust size based on viewport width */
+    max-width: 100px; /* Prevent it from getting too large */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
 }
 
@@ -439,23 +439,6 @@ body {
                                     <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
                                 </p>
                             </div>
-                            <!-- Audio element for the sound -->
-    <audio id="cardflip-sound" src="path/to/your/music.mp3" preload="auto"></audio>
-
-    <script>
-        // Function to play sound when the card is clicked
-        function playSound(soundId) {
-            var audio = document.getElementById(soundId + '-sound');
-            if (audio) {
-                audio.play();
-            }
-        }
-
-        // Function to toggle mission content (existing function)
-        function toggleMissionContent() {
-            var missionContent = document.getElementById('missionContent');
-            missionContent.style.display = missionContent.style.display === 'block' ? 'none' : 'block';
-        }
                             <div id="countdownWrapper">
                                
                                 <div id="countdown"></div>
