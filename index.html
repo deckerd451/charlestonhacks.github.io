@@ -137,8 +137,6 @@
             cursor: pointer;
             border-radius: 50%;
             aspect-ratio: 1/1;
-            width: 20vw;
-            max-width: 90px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
             opacity: 0;
             animation: fadeIn 1s ease-out forwards, pulse 2s infinite;
@@ -155,40 +153,50 @@
         }
 
         /* Consistent positioning using percentage-based positioning */
+        /* Top row - moved up and enlarged by 10% */
         .top-left { 
-            top: 5%; 
+            top: 3%; 
             left: 5%; 
+            width: 22vw;
+            max-width: 99px;
         }
 
         .top-right { 
-            top: 5%; 
+            top: 3%; 
             right: 5%; 
-        }
-
-        .bottom-left { 
-            bottom: 5%; 
-            left: 5%; 
-        }
-
-        .bottom-right { 
-            bottom: 5%; 
-            right: 5%; 
+            width: 22vw;
+            max-width: 99px;
         }
 
         .center-top { 
-            top: 5%; 
+            top: 3%; 
             left: 50%; 
             transform: translateX(-50%);
-            width: 16.5vw;
-            max-width: 110px;
+            width: 18.15vw;
+            max-width: 121px;
+        }
+
+        /* Bottom row - moved down and enlarged by 10% */
+        .bottom-left { 
+            bottom: 3%; 
+            left: 5%; 
+            width: 22vw;
+            max-width: 99px;
+        }
+
+        .bottom-right { 
+            bottom: 3%; 
+            right: 5%; 
+            width: 22vw;
+            max-width: 99px;
         }
 
         .center-bottom { 
-            bottom: 5%; 
+            bottom: 3%; 
             left: 50%; 
             transform: translateX(-50%);
-            width: 16.5vw;
-            max-width: 110px;
+            width: 18.15vw;
+            max-width: 121px;
         }
 
         /* Mission content */
@@ -315,16 +323,27 @@
                 width: 100%;
             }
             
-            .clickable-area {
-                width: 18vw; /* Slightly smaller on mobile */
-                max-width: 80px;
+            /* Adjust sizes for mobile but keep the same positioning */
+            .top-left, .top-right, .bottom-left, .bottom-right {
+                width: 19.8vw; /* Slightly smaller on mobile */
+                max-width: 88px;
+            }
+            
+            .center-top, .center-bottom {
+                width: 16.34vw;
+                max-width: 109px;
             }
         }
 
         @media (max-width: 480px) {
-            .clickable-area {
-                width: 16vw;
-                max-width: 70px;
+            .top-left, .top-right, .bottom-left, .bottom-right {
+                width: 17.6vw;
+                max-width: 77px;
+            }
+            
+            .center-top, .center-bottom {
+                width: 14.52vw;
+                max-width: 97px;
             }
         }
 
