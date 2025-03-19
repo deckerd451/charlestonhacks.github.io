@@ -154,20 +154,37 @@
             opacity: 1;
         }
 
-        /* Positioning classes */
-        .top-left { top: .25%; left: .5%; }
-        .top-right { top: .25%; right: .5%; }
-        .bottom-left { bottom: .25%; left: .5%; }
-        .bottom-right { bottom: .25%; right: .5%; }
+        /* Consistent positioning using percentage-based positioning */
+        .top-left { 
+            top: 5%; 
+            left: 5%; 
+        }
+
+        .top-right { 
+            top: 5%; 
+            right: 5%; 
+        }
+
+        .bottom-left { 
+            bottom: 5%; 
+            left: 5%; 
+        }
+
+        .bottom-right { 
+            bottom: 5%; 
+            right: 5%; 
+        }
+
         .center-top { 
-            top: 2%; 
+            top: 5%; 
             left: 50%; 
             transform: translateX(-50%);
             width: 16.5vw;
             max-width: 110px;
         }
+
         .center-bottom { 
-            bottom: 2%; 
+            bottom: 5%; 
             left: 50%; 
             transform: translateX(-50%);
             width: 16.5vw;
@@ -293,19 +310,21 @@
             }
             
             #countdownWrapper {
-                position: absolute;
-                top: 25%;
-                left: 50%;
-                transform: translateX(-50%);
+                position: relative;
+                margin-top: 15px;
                 width: 100%;
             }
             
-            .center-top {
-                top: -30%;
+            .clickable-area {
+                width: 18vw; /* Slightly smaller on mobile */
+                max-width: 80px;
             }
-            
-            .center-bottom {
-                bottom: 0%;
+        }
+
+        @media (max-width: 480px) {
+            .clickable-area {
+                width: 16vw;
+                max-width: 70px;
             }
         }
 
@@ -363,11 +382,11 @@
                             <img src="images/envelopen.svg" alt="Envelope">
                         </div>
                         <div class="clickable-area center-top" data-sound="keys" data-image="images/keysb.svg" data-url="cardmatchgame.html">
-    <img src="images/keysb.svg" alt="Top Icon">
-</div>
-<div class="clickable-area center-bottom" data-sound="keys" data-image="images/crestb.svg" data-url="cardmatchgame.html">
-    <img src="images/crestb.svg" alt="Bottom Icon">
-</div>
+                            <img src="images/keysb.svg" alt="Top Icon">
+                        </div>
+                        <div class="clickable-area center-bottom" data-sound="keys" data-image="images/crestb.svg" data-url="cardmatchgame.html">
+                            <img src="images/crestb.svg" alt="Bottom Icon">
+                        </div>
                     </a>
                 </div>
             </header>
@@ -494,7 +513,7 @@
             
             // Show spinner and redirect
             document.getElementById('spinner').style.display = 'block';
-            window.location.href = url;
+            setTimeout(() => window.location.href = url, 1000);
         }
 
         // Video handling functions
@@ -507,7 +526,11 @@
         }
 
         function handleVideoError() {
-            alert("Error loading video. Please try again later.");
+            console.error("Error loading video");
+            document.getElementById('loadingIndicator').style.display = 'none';
+            // Optionally show a user-friendly error message instead of an alert
+            const missionContent = document.getElementById('missionContent');
+            missionContent.style.display = 'block';
         }
 
         function showCardFrame() {
@@ -533,14 +556,17 @@
 
         // Page events
         window.addEventListener('beforeunload', () => document.getElementById('spinner').style.display = 'none');
-        window.addEventListener('pageshow', () => document.body.classList.remove('fade-out-body'));
+        window.addEventListener('pageshow', () => {
+            document.body.classList.remove('fade-out-body');
+            cardClicked = false; // Reset card state when returning to the page
+        });
         
         // Initialize clickable areas on load
-        window.onload = () => {
+        window.addEventListener('load', () => {
             document.querySelectorAll('.clickable-area').forEach(element => {
                 element.classList.add('loaded');
             });
-        };
+        });
     </script>
 </body>
 </html>
