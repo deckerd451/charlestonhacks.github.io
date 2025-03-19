@@ -75,7 +75,7 @@
     aspect-ratio: 1/1;
     width: 10vw;
     max-width: 60px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 5px 9px rgba(0, 0, 0, 0.6);
     animation: fadeInScaleUp 1s ease-out forwards;
 }
 
@@ -348,22 +348,6 @@ body {
             z-index: 3;
         }
 
-        /* Spinning progress wheel */
-        .spinner {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 8px solid #fff;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            z-index: 1000; /* Ensure it's above everything else */
-        }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -476,10 +460,6 @@ body {
             </header>
         </article>
     </div>
-
-    <!-- Spinning progress wheel -->
-    <div id="spinner" class="spinner"></div>
-
     <script src="ho-script.js"></script>
     <script>
         var countdownElement = document.getElementById('countdown');
@@ -589,9 +569,6 @@ body {
             // Apply fade-out effect to the body content except the spinner
             document.body.classList.add('fade-out-body');
 
-            // Show spinner
-            document.getElementById('spinner').style.display = 'block';
-
             // Redirect immediately
             window.location.href = url;
 
@@ -635,9 +612,6 @@ body {
         videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
         videoElement.addEventListener('ended', showCardFrame);
 
-        // Ensure the spinner remains visible until the link is opened
-        window.addEventListener('beforeunload', function () {
-            document.getElementById('spinner').style.display = 'none';
         });
 
         // Remove fade-out class when the page is loaded or navigated back
