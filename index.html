@@ -368,36 +368,6 @@ body {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Style for clickable areas */
-.clickable-area {
-    position: absolute;
-    cursor: pointer;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
-    width: 15vw;
-    max-width: 100px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    text-align: center;
-    z-index: 10; /* Ensure it's clickable */
-}
-
-/* Style for the text that will be shown */
-.clickable-text {
-    position: absolute;
-    bottom: -25px;  /* Adjust based on where you want the text to appear */
-    width: 100%;
-    color: white;
-    font-size: 16px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-}
-
-/* Show text when clicked or hovered */
-.clickable-area:hover .clickable-text {
-    opacity: 1;
-}
-
 
 .clickable-area {
     position: absolute;
@@ -489,9 +459,9 @@ body {
                         </div>
 
                         <!-- Clickable areas -->
-                        <div class="clickable-area top-left" data-sound="keys" onclick="showText('This is the top left button!')"> data-url="Poster.html">
-                            <img src="images/infon.svg" alt="Info"><div class="clickable-text">This is the top left button! 
-                            </div>
+                        <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
+                            <img src="images/infon.svg" alt="Info">
+                        </div>
                         <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
                             <img src="images/peoplen.svg" alt="People">
                         </div>
@@ -660,21 +630,6 @@ body {
         function showCardFrame() {
             document.getElementById('cardFrame').style.display = 'block';
         }
-        function showText(text) {
-    // Create a temporary div for the text display
-    const textElement = document.createElement('div');
-    textElement.classList.add('clickable-text');
-    textElement.innerText = text;
-
-    // Append the text to the clickable element
-    event.target.appendChild(textElement);
-
-    // Optional: Remove text after 3 seconds
-    setTimeout(() => {
-        textElement.remove();
-    }, 3000);  // Text will disappear after 3 seconds
-}
-
 
         const videoElement = document.getElementById('missionVideo');
         videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
