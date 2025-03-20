@@ -413,8 +413,27 @@ body {
         @media (min-width: 769px) {
             .media-container {
                 transform: scale(0.8);
-            }
+        
+    @media (max-width: 768px) {
+        #missionContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+        
+        #countdownWrapper {
+            position: static;
+            margin-top: 20px;
+            order: 2; /* This ensures it appears below the banner */
+            width: 100%;
+            transform: none;
+        }
+        
+        .body-text {
+            order: 1; /* This ensures the banner appears above the countdown */
+            width: 100%;
+        }
+    }
     </style>
 </head>
 
