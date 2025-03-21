@@ -446,27 +446,6 @@ body {
         #missionContent {
             padding-bottom: 70px; /* Add padding to make room for the countdown */
         }
-         .card {
-    position: relative;
-    width: 300px; /* Adjust as needed */
-    height: 400px; /* Adjust as needed */
-    overflow: hidden;
-  }
-
-  .animated-image {
-    position: absolute;
-    bottom: -20px; /* Adjust positioning */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%; /* Adjust size */
-    animation: floatAnimation 3s infinite ease-in-out;
-  }
-
-  @keyframes floatAnimation {
-    0% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-10px); }
-    100% { transform: translateX(-50%) translateY(0); }
-  }
     }
     </style>
 </head>
@@ -489,7 +468,7 @@ body {
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/cardframe2.svg" alt="CharlestonHacks" style="z-index: 3;" />
+                        <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <div class="body-text">
                                 <p>
@@ -501,9 +480,6 @@ body {
                                 <div id="countdown"></div>
                             </div>
                         </div>
-                        <div class="card">
-  <img src="images/hmystery.png" class="animated-image" alt="Mystery Image">
-  <div class="card-content">
                         <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
