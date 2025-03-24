@@ -670,6 +670,9 @@ body {
         videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
         videoElement.addEventListener('ended', showCardFrame);
 
+        // Ensure the spinner remains visible until the link is opened
+        window.addEventListener('beforeunload', function () {
+            document.getElementById('spinner').style.display = 'none';
         });
 
         // Remove fade-out class when the page is loaded or navigated back
