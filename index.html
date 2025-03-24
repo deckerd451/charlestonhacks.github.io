@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
-    <meta property="og:title" content="CharlestonHacks - Home" />
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <meta property="og:title" content="CharlestonHacks - Home" />
     <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
@@ -20,7 +19,6 @@
             margin: 0;
             padding: 0;
         }
-
         body {
             background-color: black;
             color: white;
@@ -29,7 +27,6 @@
             position: relative;
             text-align: center;
         }
-
         #background-video {
             position: fixed;
             top: 0;
@@ -41,7 +38,6 @@
             opacity: 0.5;
             pointer-events: none;
         }
-
         .panel {
             width: 100%;
             min-height: 90vh;
@@ -51,7 +47,6 @@
             flex-direction: column;
             position: relative;
         }
-
         .media-container {
             position: relative;
             z-index: 3;
@@ -60,7 +55,6 @@
             margin: 0 auto;
             overflow: hidden;
         }
-
         .media-container img,
         .media-container video {
             width: 100%;
@@ -68,7 +62,6 @@
             display: block;
             object-fit: contain;
         }
-
         .media-container video {
             position: absolute;
             top: 50%;
@@ -82,12 +75,10 @@
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
-
         @media (max-width: 768px) {
             .media-container {
                 max-width: 90%;
             }
-
             #countdownWrapper {
                 position: absolute;
                 top: 25%;
@@ -95,20 +86,16 @@
                 transform: translateX(-50%);
                 width: 100%;
             }
-
             #countdown {
                 font-size: 24px;
             }
-
             .center-top {
                 top: -30%;
             }
-
             .center-bottom {
                 bottom: 0%;
             }
         }
-
         .clickable-area {
             position: absolute;
             z-index: 4;
@@ -118,60 +105,49 @@
             width: 15vw;
             max-width: 100px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-            opacity: 0;
+            opacity: 1;
             animation: fadeInScaleUp 1s ease-out forwards;
         }
-
         .clickable-area:hover {
             transform: scale(1.2);
             transition: transform 0.3s ease-in-out;
             box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
         }
-
         .clickable-area.loaded {
             opacity: 1;
         }
-
         .top-left {
             top: 2%;
             left: 4%;
         }
-
         .top-right {
             top: 2%;
             right: 4%;
         }
-
         .bottom-left {
             bottom: 2%;
             left: 4%;
         }
-
         .bottom-right {
             bottom: 2%;
             right: 4%;
         }
-
         .center-top {
             top: 2%;
             left: 50%;
             transform: translateX(-50%);
         }
-
         .center-bottom {
             bottom: 2%;
             left: 50%;
             transform: translateX(-50%);
         }
-
         #missionVideo {
             pointer-events: none;
         }
-
         #missionVideo.show {
             pointer-events: auto;
         }
-
         #missionContent {
             animation: fadeIn 0.9s ease forwards;
             position: absolute;
@@ -186,15 +162,12 @@
             z-index: 2;
             opacity: 1;
         }
-
         #missionContent p, #missionContent a {
             color: white;
         }
-
         .fade-out {
             animation: fadeOut 2s ease forwards;
         }
-
         #cardFrame {
             display: none;
             position: absolute;
@@ -204,51 +177,41 @@
             height: 100%;
             z-index: 1;
         }
-
         #countdownWrapper {
             margin-top: 20px;
             text-align: center;
         }
-
         #countdown {
             font-size: 32px;
             color: #FF0000;
         }
-
         @media (max-width: 768px) {
             #countdown {
                 font-size: 24px;
             }
         }
-
         .logo {
             display: block;
             margin: 0 auto 5px auto;
         }
-
         .info {
             color: #FFFF00;
             font-size: 20px;
         }
-
         @media (max-width: 768px) {
             .info {
                 font-size: 16px;
             }
         }
-
         .body-text {
             margin: 30px 0;
         }
-
         .body-text a {
             color: white;
         }
-
         .body-text p {
             margin-bottom: 10px;
         }
-
         #previousEventsToggle {
             background: none;
             border: none;
@@ -260,13 +223,11 @@
             align-items: center;
             gap: 5px;
         }
-
         #previousEventsToggle i {
             background: none;
             border: none;
             padding: 0;
         }
-
         .loading-indicator {
             display: none;
             position: absolute;
@@ -275,7 +236,6 @@
             transform: translate(-50%, -50%);
             z-index: 3;
         }
-
         .spinner {
             display: none;
             position: fixed;
@@ -290,17 +250,14 @@
             animation: spin 1s linear infinite;
             z-index: 1000;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         @keyframes fadeOut {
             from { opacity: 1; }
             to { opacity: 0; }
         }
-
         @keyframes fadeInScaleUp {
             0% {
                 opacity: 0;
@@ -311,61 +268,50 @@
                 transform: scale(1.15);
             }
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         @keyframes animateClickables {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes flipImageX {
             0% { opacity: 1; }
             50% { transform: rotateX(180deg); }
             to { transform: rotateX(360deg); opacity: 0; }
         }
-
         @keyframes flipImageY {
             0% { opacity: 1; }
             50% { transform: rotateY(180deg); }
             to { transform: rotateY(360deg); opacity: 0; }
         }
-
         .flip-image-x {
             animation: flipImageX 3s ease forwards;
             z-index: 5;
         }
-
         .flip-image-y {
             animation: flipImageY 3s ease forwards;
             z-index: 5;
         }
-
         #missionVideo.fadeOut {
             animation: fadeOut 18s ease forwards !important;
             z-index: 1;
         }
-
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
-
         @media (min-width: 769px) {
             .media-container {
                 transform: scale(0.8);
             }
         }
-
         @media (max-width: 768px) {
             #missionContent {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
             }
-
             #countdownWrapper {
                 position: static;
                 margin-top: 20px;
@@ -373,12 +319,10 @@
                 width: 100%;
                 transform: none;
             }
-
             .body-text {
                 order: 1;
                 width: 100%;
             }
-
             #countdownWrapper {
                 position: absolute;
                 top: auto;
@@ -387,24 +331,20 @@
                 transform: translateX(-50%);
                 width: 100%;
             }
-
             #missionContent {
                 padding-bottom: 70px;
             }
         }
     </style>
 </head>
-
 <body class="is-preload">
     <video autoplay muted id="background-video">
         <source src="assets/Happy-Hour.mp4" type="video/mp4">
         Your browser does not support HTML5 video.
     </video>
-
     <script>
         document.getElementById('background-video').playbackRate = 0.8;
     </script>
-
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -414,14 +354,14 @@
                         <div id="missionContent">
                             <div class="body-text">
                                 <p>
-                                    <img id="aiffBanner" src="images/aiffspin.svg" alt="AI Film Fest" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" onclick="flipAndRedirect()" />
+                                    <img id="aiffBanner" src="images/aiffspin.svg" alt="AI Film Fest" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-r[...]
                                 </p>
                             </div>
                             <div id="countdownWrapper">
                                 <div id="countdown"></div>
                             </div>
                         </div>
-                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
+                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardF[...]
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -429,14 +369,13 @@
                         <div class="loading-indicator" id="loadingIndicator">
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
-
                         <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
                             <img src="images/infon.svg" alt="Info">
                         </div>
                         <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
                             <img src="images/peoplen.svg" alt="People">
                         </div>
-                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-problems/">
+                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-so[...]
                             <img src="images/newsn.svg" alt="News">
                         </div>
                         <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
@@ -447,9 +386,7 @@
             </header>
         </article>
     </div>
-
     <div id="spinner" class="spinner"></div>
-
     <script src="ho-script.js"></script>
     <script>
         var countdownElement = document.getElementById('countdown');
@@ -514,58 +451,4 @@
 
         function toggleMissionContent() {
             if (cardClicked) return;
-            cardClicked = true;
-
-            var image = document.getElementById('missionImage');
-            image.src = getRandomImage();
-
-            var video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 0;
-            setTimeout(function () {
-                video.style.opacity = 1;
-            }, 100);
-            video.play();
-
-            document.getElementById('missionContent').style.display = 'block';
-
-            setTimeout(function () {
-                video.classList.add('fadeOut');
-                setTimeout(function () {
-                    video.style.display = 'none';
-                }, 18000);
-            }, 18000);
-
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            image.classList.add(randomFlip);
-        }
-
-        function flipAndRedirect() {
-            var banner = document.getElementById('aiffBanner');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            banner.classList.add(randomFlip);
-            setTimeout(function () {
-                window.location.href = 'https://charlestonhacks.com/techweek.html';
-            }, 2000);
-        }
-
-        function flipCard(imageSrc, url) {
-            var missionImage = document.getElementById('missionImage');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            missionImage.classList.add(randomFlip);
-
-            document.body.classList.add('fade-out-body');
-            document.getElementById('spinner').style.display = 'block';
-            window.location.href = url;
-
-            setTimeout(function () {
-                missionImage.src = imageSrc;
-            }, 2000);
-        }
-
-        document.querySelectorAll('.clickable-area').forEach(area => {
-            area.addEventListener('click', function () {
-                const sound = this.getAttribute('data-sound');
-                const image = this.getAttribute('data-image');
-                const url = this.getAttribute('data-url');
-                playSound
+            card
