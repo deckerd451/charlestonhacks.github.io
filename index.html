@@ -11,7 +11,7 @@
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
     <meta property="og:title" content="CharlestonHacks - Home" />
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
@@ -29,92 +29,92 @@
         /* General styles */
         /* Add the following CSS animation for the clickable elements */
         #background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.5; /* Adjust opacity if needed */
-            pointer-events: none; /* Prevent interaction with the video */
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5; /* Adjust opacity if needed */
+    pointer-events: none; /* Prevent interaction with the video */
+}
 
-        @keyframes animateClickables {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+@keyframes animateClickables {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-        .clickable-area {
-            animation: animateClickables 1s ease-out forwards;
-            opacity: 0; /* Make them invisible initially */
-        }
+.clickable-area {
+    animation: animateClickables 1s ease-out forwards;
+    opacity: 0; /* Make them invisible initially */
+}
 
-        .clickable-area.loaded {
-            opacity: 1; /* Make them visible after animation */
-        }
-
+.clickable-area.loaded {
+    opacity: 1; /* Make them visible after animation */
+}
         /* Define the animation */
-        @keyframes fadeInScaleUp {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1.15);
-            }
-        }
+@keyframes fadeInScaleUp {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+    .clickable-area:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s ease-in-out;
+}
 
-        .clickable-area:hover {
-            transform: scale(1.2);
-            transition: transform 0.3s ease-in-out;
-        }
+}
 
-        /* Apply the animation to the clickable elements */
-        .clickable-area {
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-            border-radius: 50%;
-            aspect-ratio: 1/1;
-            width: 10vw;
-            max-width: 60px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-            animation: fadeInScaleUp 1s ease-out forwards;
-        }
+/* Apply the animation to the clickable elements */
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 10vw;
+    max-width: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    animation: fadeInScaleUp 1s ease-out forwards;
+}
 
-        /* Customize individual positions */
-        .top-left {
-            top: 2%;
-            left: 4%;
-        }
-        .top-right {
-            top: 2%;
-            right: 4%;
-        }
-        .bottom-left {
-            bottom: 2%;
-            left: 4%;
-        }
-        .bottom-right {
-            bottom: 2%;
-            right: 4%;
-        }
-        .center-top {
-            top: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .center-bottom {
-            bottom: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        body {
-            position: relative;
-            z-index: 1;
-        }
+/* Customize individual positions */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
+.top-right {
+    top: 2%;
+    right: 4%;
+}
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
+.center-top {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.center-bottom {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+body {
+    position: relative;
+    z-index: 1;
+}
+
 
         body {
             background-color: black;
@@ -156,8 +156,8 @@
             width: 100%;
             height: auto;
             display: block;
-            object-fit: contain; /* Maintains aspect ratio without distortion */
-        }
+             object-fit: contain; /* Maintains aspect ratio without distortion */
+}
 
         .media-container video {
             position: absolute;
@@ -179,39 +179,39 @@
             }
         }
         @media (max-width: 768px) {
-            #countdownWrapper {
-                position: absolute;
-                top: 25%; /* Adjust as needed */
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-            }
+    #countdownWrapper {
+        position: absolute;
+        top: 25%; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
 
-            #countdown {
-                font-size: 24px;
-            }
-        }
-        @media (max-width: 768px) {
-            .center-top {
-                top: -30%; /* Move up by adjusting this value */
-            }
+    #countdown {
+        font-size: 24px;
+    }
+}
+@media (max-width: 768px) {
+    .center-top {
+        top: -30%; /* Move up by adjusting this value */
+    }
 
-            .center-bottom {
-                bottom: 0%; /* Move up by adjusting this value */
-            }
-        }
+    .center-bottom {
+        bottom: 0%; /* Move up by adjusting this value */
+    }
+}
+     
+  .clickable-area img {
+      padding: 0;
+      margin: 0;
+  }
 
-        .clickable-area img {
-            padding: 0;
-            margin: 0;
-        }
+    .center-top, .center-bottom {
+        width: 16.5vw; /* Increase by 10% from 15vw */
+        max-width: 110px; /* Increase by 10% from 100px */
+    }
 
-        .center-top, .center-bottom {
-            width: 16.5vw; /* Increase by 10% from 15vw */
-            max-width: 110px; /* Increase by 10% from 100px */
-        }
-
-        @keyframes fadeIn {
+  @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
@@ -373,6 +373,42 @@
             100% { transform: rotate(360deg); }
         }
 
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%; /* Make it circular */
+    aspect-ratio: 1/1; /* Maintain perfect circle */
+    width: 15vw; /* Adjust size based on viewport width */
+    max-width: 100px; /* Prevent it from getting too large */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+}
+
+.clickable-area:hover {
+    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
+
+}
+
+/* Adjust position as needed */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
+
+.top-right {
+    top: 2%;
+    right: 4%;
+}
+
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
+
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
@@ -381,58 +417,56 @@
         @media (min-width: 769px) {
             .media-container {
                 transform: scale(0.8);
-            }
+        
+    @media (max-width: 768px) {
+        #missionContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
-        @media (max-width: 768px) {
-            #missionContent {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            #countdownWrapper {
-                position: static;
-                margin-top: 20px;
-                order: 2; /* This ensures it appears below the banner */
-                width: 100%;
-                transform: none;
-            }
-
-            .body-text {
-                order: 1; /* This ensures the banner appears above the countdown */
-                width: 100%;
-            }
+        
+        #countdownWrapper {
+            position: static;
+            margin-top: 20px;
+            order: 2; /* This ensures it appears below the banner */
+            width: 100%;
+            transform: none;
         }
-
-        @media (max-width: 768px) {
-            #countdownWrapper {
-                position: absolute;
-                top: auto; /* Remove any existing top positioning */
-                bottom: -60px; /* Position it below the banner */
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-            }
-
-            #missionContent {
-                padding-bottom: 70px; /* Add padding to make room for the countdown */
-            }
+        
+        .body-text {
+            order: 1; /* This ensures the banner appears above the countdown */
+            width: 100%;
         }
+    @media (max-width: 768px) {
+        #countdownWrapper {
+            position: absolute;
+            top: auto; /* Remove any existing top positioning */
+            bottom: -60px; /* Position it below the banner */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+        
+        #missionContent {
+            padding-bottom: 70px; /* Add padding to make room for the countdown */
+        }
+    }
     </style>
 </head>
 
+   <video autoplay muted id="background-video">
+    <source src="assets/Happy-Hour.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+
+<script>
+    // Adjust the playback speed
+    document.getElementById('background-video').playbackRate = 0.8;
+</script>
+
+
+
 <body class="is-preload">
-    <video autoplay muted id="background-video">
-        <source src="assets/Happy-Hour.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
-    </video>
-
-    <script>
-        // Adjust the playback speed
-        document.getElementById('background-video').playbackRate = 0.8;
-    </script>
-
     <div id="main">
         <article class="post featured">
             <header class="major">
@@ -446,6 +480,7 @@
                                 </p>
                             </div>
                             <div id="countdownWrapper">
+                               
                                 <div id="countdown"></div>
                             </div>
                         </div>
@@ -556,7 +591,7 @@
             video.style.opacity = 0;
             setTimeout(function() {
                 video.style.opacity = 1;
-            }, 100
+            }, 100); // Delay to allow transition to take effect
             video.play();
 
             document.getElementById('missionContent').style.display = 'block';
@@ -631,37 +666,19 @@
             document.getElementById('cardFrame').style.display = 'block';
         }
 
-        <script>
-    function showLoadingIndicator() {
-        document.getElementById('loadingIndicator').style.display = 'block';
-    }
+        const videoElement = document.getElementById('missionVideo');
+        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
+        videoElement.addEventListener('ended', showCardFrame);
 
-    function hideLoadingIndicator() {
-        document.getElementById('loadingIndicator').style.display = 'none';
-    }
+        // Ensure the spinner remains visible until the link is opened
+        window.addEventListener('beforeunload', function () {
+            document.getElementById('spinner').style.display = 'none';
+        });
 
-    function handleVideoError() {
-        alert("Error loading video. Please try again later.");
-    }
-
-    function showCardFrame() {
-        document.getElementById('cardFrame').style.display = 'block';
-    }
-
-    const videoElement = document.getElementById('missionVideo');
-    videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
-    videoElement.addEventListener('ended', showCardFrame);
-
-    // Ensure the spinner remains visible until the link is opened
-    window.addEventListener('beforeunload', function () {
-        document.getElementById('spinner').style.display = 'none';
-    });
-
-    // Remove fade-out class when the page is loaded or navigated back
-    window.addEventListener('pageshow', function () {
-        document.body.classList.remove('fade-out-body');
-    });
-</script>
+        // Remove fade-out class when the page is loaded or navigated back
+        window.addEventListener('pageshow', function () {
+            document.body.classList.remove('fade-out-body');
+        });
     </script>
 <script>
     window.onload = () => {
