@@ -666,19 +666,37 @@ body {
             document.getElementById('cardFrame').style.display = 'block';
         }
 
-        const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
-        videoElement.addEventListener('ended', showCardFrame);
+        <script>
+    function showLoadingIndicator() {
+        document.getElementById('loadingIndicator').style.display = 'block';
+    }
 
-        // Ensure the spinner remains visible until the link is opened
-        window.addEventListener('beforeunload', function () {
-            document.getElementById('spinner').style.display = 'none';
-        });
+    function hideLoadingIndicator() {
+        document.getElementById('loadingIndicator').style.display = 'none';
+    }
 
-        // Remove fade-out class when the page is loaded or navigated back
-        window.addEventListener('pageshow', function () {
-            document.body.classList.remove('fade-out-body');
-        });
+    function handleVideoError() {
+        alert("Error loading video. Please try again later.");
+    }
+
+    function showCardFrame() {
+        document.getElementById('cardFrame').style.display = 'block';
+    }
+
+    const videoElement = document.getElementById('missionVideo');
+    videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
+    videoElement.addEventListener('ended', showCardFrame);
+
+    // Ensure the spinner remains visible until the link is opened
+    window.addEventListener('beforeunload', function () {
+        document.getElementById('spinner').style.display = 'none';
+    });
+
+    // Remove fade-out class when the page is loaded or navigated back
+    window.addEventListener('pageshow', function () {
+        document.body.classList.remove('fade-out-body');
+    });
+</script>
     </script>
 <script>
     window.onload = () => {
