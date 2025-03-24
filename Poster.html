@@ -160,6 +160,17 @@
         });
     });
 </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof lightGallery !== 'undefined') {
+            lightGallery(document.getElementById('lightbox-gallery'), {
+                selector: 'a[href$=".jpg"], a[href$=".png"], a[href$=".jpeg"]'
+            });
+        } else {
+            console.error("lightGallery is not defined");
+        }
+    });
+</script>
 
 </body>
 </html>
