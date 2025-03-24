@@ -271,6 +271,8 @@
             top: 0;
         }
     </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -282,278 +284,215 @@
 
                       <!-- Matchmaking Form -->
     <section id="matchmaking-section">
-        <h2>Register your skills</h2>
-        <form id="matchmaking-form">
-            <input type="text" id="Firstname" placeholder="Firstname" required />
-            <input type="text" id="Lastname" placeholder="Lastname" required />
-             <input type="text" id="skills" placeholder="Skills" required />
-            <button type="submit">Register</button>
+        <h1>Register Your Skills</h1>
+
+        <form id="skills-form">
+            <input type="text" id="first-name" placeholder="First Name" required 
+                   style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px; border: 2px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
+        
+            <input type="text" id="last-name" placeholder="Last Name" required 
+                   style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px; border: 2px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
+        
+            <input type="email" id="email" placeholder="Email" required 
+                   style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px; border: 2px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
+        
+            <input type="text" id="skills-input" placeholder="Tech Skills" required 
+                   style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px; border: 2px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
+        
+                   <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Upload Your Photo:</label>
+<input type="file" id="photo-input" accept="image/*" required
+       style="width:100%; max-width:250px; margin-bottom:10px; border:2px solid #ccc; padding:10px; border-radius:5px;">
+<br>
+            <button type="submit" style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; border-radius: 5px; cursor: pointer;">
+                Register
+            </button>
         </form>
+    <br>
+    
+
+<div id="user-list" style="margin-top: 20px;">
+    
+    <ul id="skills-entries"></ul>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
+
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    
+        // Handle registration form submission
+        document.getElementById('skills-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+    
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const email = document.getElementById('email').value;
+            const skillsText = document.getElementById('skills-input').value;
+            const photoInput = document.getElementById('photo-input').files[0];
+    
+            if (!photoInput) {
+                alert('Please select an image.');
+                return;
+            }
+    
+            const fileExt = photoInput.name.split('.').pop();
+            const fileName = `${Date.now()}.${fileExt}`;
+    
+            // Correct bucket name
+            const { error: uploadError } = await supabaseClient.storage
+                .from('hacksbucket')
+                .upload(fileName, photoInput);
+    
+            if (uploadError) {
+                alert('Upload error: ' + uploadError.message);
+                return;
+            }
+    
+            // Correct URL referencing the proper bucket (hacksbucket)
+            const imageUrl = `${supabaseUrl}/storage/v1/object/public/hacksbucket/${fileName}`;
+    
+            const { error } = await supabaseClient.from('skills').insert({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                skills: skillsText,
+                image_url: imageUrl
+            });
+    
+            if (error) {
+                alert('Error inserting data: ' + error.message);
+            } else {
+                alert('Registration successful!');
+                
+                document.getElementById('skills-form').reset();
+            }
+        });
+    
+        // Skill search input handler
+        document.getElementById('skillInput').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                findMatchingUsers();
+            }
+        });
+    
+        // Click button handler (fixing onclick issue)
+        document.getElementById('find-team-btn').addEventListener('click', findMatchingUsers);
+    
+        async function findMatchingUsers() {
+    const skillsInput = document.getElementById('skillInput').value.trim();
+    const noResults = document.getElementById('noResults');
+    const cardContainer = document.getElementById('cardContainer');
+    const matchNotification = document.getElementById('matchNotification');
+
+    cardContainer.innerHTML = '';
+    noResults.style.display = 'none';
+    matchNotification.style.display = 'none';
+
+    if (!skillsInput) {
+        alert('Please enter at least one skill.');
+        return;
+    }
+
+    const requiredSkills = skillsInput.toLowerCase().split(',').map(skill => skill.trim());
+
+    const { data, error } = await supabaseClient.from('skills').select('*');
+
+    if (error) {
+        noResults.style.display = 'block';
+        noResults.innerText = 'Error fetching data.';
+        return;
+    }
+
+    const matchedUsers = data.filter(user => {
+        const userSkills = user.skills.toLowerCase().split(',').map(s => s.trim());
+        return requiredSkills.some(skill => userSkills.includes(skill));
+    });
+
+    if (matchedUsers.length === 0) {
+        noResults.style.display = 'block';
+    } else {
+        matchNotification.style.display = 'block';
+
+        // Each matched user is clearly displayed vertically one below the other
+        cardContainer.innerHTML = matchedUsers.map(user => `
+            <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:20px; display:block; width:100%;">
+                ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
+                <div class="member-name" style="margin-bottom:5px;">${user.first_name} ${user.last_name}</div>
+               <div class="member-email" style="margin: 5px 0;">
+  <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none; display: inline-block; word-break: break-word;">
+    ${user.email}
+  </a>
+</div>
+                <div class="skill-tags">
+                    <strong>Skills:</strong> 
+                    ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
+                </div>
+            </div>
+        `).join('');
+    }
+}
+    
+        async function loadAllSkills() {
+    const { data, error } = await supabaseClient.from('skills').select('*');
+
+    const skillsList = document.getElementById('skills-entries');
+    skillsList.innerHTML = data.map(entry => `
+        <li style="color:#ffffff; list-style:none; margin-bottom:10px;">
+            ${entry.image_url ? `<img src="${entry.image_url}" width="50" height="50" style="border-radius:5px;object-fit:cover; vertical-align: middle; margin-right: 5px;">` : ''}
+            <strong>${entry.first_name} ${entry.last_name}</strong> - 
+            <a href="mailto:${entry.email}" style="color:#ffffff; text-decoration:none;">${entry.email}</a> - 
+            <strong>Skills:</strong> ${entry.skills}
+        </li>
+    `).join('');
+
+    const cardContainer = document.getElementById('cardContainer');
+cardContainer.innerHTML = data.map(user => `
+    <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:15px;">
+        ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
+        <div class="member-name">${user.first_name} ${user.last_name}</div>
+        <div class="member-email" style="display:block; margin-top:5px;">
+            <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none;">${user.email}</a>
+        </div>
+        <div class="skill-tags" style="text-align:center; margin-top:5px;">
+            <strong>Skills:</strong> 
+            ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
+        </div>
+    </div>
+`).join('');
+}
+    
+        
+    });
+    </script>
+
         <!-- Display Matches Here -->
         <ul id="results-list"></ul>
     </section>
+<br>
+<h1>Innovation Engine</h1>
+<p class="instructions">Input the skills you are looking for to build your ideal team. Add multiple skills separated by commas.</p>
 
-                    <h1>INNOVATION ENGINE</h1>
-                    <p class="instructions">Input the skills you are looking for to build your ideal team. Add multiple skills separated by commas.</p>
-                    
-                    <!-- Input for skills with accessible label -->
-                    <div class="input-container">
-                        <label for="skillInput">Required Skills:</label>
-                        <input 
-                            type="text" 
-                            id="skillInput" 
-                            placeholder="E.g., javascript, design, marketing" 
-                            aria-describedby="skillHelp" 
-                            onkeydown="handleKeyPress(event)" 
-                        />
-                        <div id="skillHelp" class="sr-only">Separate multiple skills with commas</div>
-                        <button onclick="updateSkills()" aria-label="Find matching team members">Find Team Members</button>
-                    </div>
+<div class="input-container">
+    <label for="skillInput">Required Skills:</label>
+    <input type="text" id="skillInput" placeholder="E.g., javascript, design, marketing" aria-describedby="skillHelp">
+    <button id="find-team-btn">Find Team Members</button>
+</div>
 
-                    <!-- Display for selected skills -->
-                    <div class="selected-skills" id="selectedSkillsContainer">
-                        <!-- Selected skills will be shown here -->
-                    </div>
+<!-- Selected skills display (optional feature) -->
+<div class="selected-skills" id="selectedSkillsContainer">
+    <!-- dynamically shown selected skills -->
+</div>
 
-                    <!-- No results message -->
-                    <div id="noResults" class="no-results">
-                        No team members found with the selected skills. Try different skills or broader terms.
-                    </div>
+<div id="noResults" class="no-results" style="display:none;">
+    No team members found with the selected skills. Try different skills or broader terms.
+</div>
 
-                    <!-- Card container for team members -->
-                    <div class="card-container" id="cardContainer" role="list" aria-label="Matching team members">
-                        <!-- Cards will be dynamically inserted here -->
-                    </div>
+<div class="card-container" id="cardContainer" role="list" aria-label="Matching team members">
+    <!-- Cards dynamically inserted here -->
+</div>
 
-                    <!-- Match notification -->
-                    <div id="matchNotification" class="match-notification">
-                        <p>You have found team members with matching skills! Continue adding skills or proceed to the next step.</p>
-                        <a href="next-level.html" aria-label="Proceed to team assembly">Assemble Your Team</a>
-                    </div>
-                </div>
-            </header>
-        </article>
-    </div>
-
-    <footer>
-        <div class="footer-links">
-            <a href="https://charlestonhacks.mailchimpsites.com/" aria-label="About Innovation Engine">About</a>
-<a href="mailto:hello@charlestonhacks.com" aria-label="Contact Us">Contact</a>
-
-           <a href="https://deckerd451.github.io/innovation-engine/" aria-label="About Innovation Engine">IE reg</a>
-
-             <a href="cardmatchgame.html" aria-label="About Innovation Engine">Game</a>
-
-        </div>
-    </footer>
-
-    <script>
-        // Team member data with skills
-        const teamMembers = [
-            { 
-                id: 1,
-                img: "images/Descartes.png", 
-                name: "Descartes", 
-                skills: ["graphic design", "2d", "assets", "community building", "innovation"], 
-                link: "doug.html" 
-            },
-            { 
-                id: 2,
-                img: "images/Alexandor.png", 
-                name: "Alexandor", 
-                skills: ["python", "machine learning", "entrepreneurship", "leadership"], 
-                link: "dave.html" 
-            },
-            { 
-                id: 3,
-                img: "images/Medusa.png", 
-                name: "Medusa", 
-                skills: ["marketing", "leadership", "community building"], 
-                link: "aya.html" 
-            },
-            { 
-                id: 4,
-                img: "images/Elara.png", 
-                name: "Elara", 
-                skills: ["project management", "grant writing", "scrum"], 
-                link: "bradley.html" 
-            },
-            { 
-                id: 5,
-                img: "images/Aegis.png", 
-                name: "Aegis", 
-                skills: ["javascript", ".net", "css"], 
-                link: "amin.html" 
-            },
-            { 
-                id: 6,
-                img: "images/Astrid.png", 
-                name: "Astrid", 
-                skills: ["javascript", "vue", "css"], 
-                link: "astrid.html" 
-            }
-        ];
-
-        // Global variable to store the project skills
-        let projectSkills = [];
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check for URL parameters that might contain skills
-            const urlParams = new URLSearchParams(window.location.search);
-            const skillParam = urlParams.get('skills');
-            
-            if (skillParam) {
-                const skillInput = document.getElementById("skillInput");
-                skillInput.value = decodeURIComponent(skillParam);
-                updateSkills();
-            }
-        });
-
-        // Get users that match the project skills with ranking
-        function getMatchingUsers(projectSkills) {
-            if (!projectSkills.length) return [];
-            
-            return teamMembers
-                .map(member => {
-                    // Count the number of matching skills
-                    const matchingSkills = member.skills.filter(skill => 
-                        projectSkills.some(projectSkill => 
-                            skill.toLowerCase().includes(projectSkill.toLowerCase()) || 
-                            projectSkill.toLowerCase().includes(skill.toLowerCase())
-                        )
-                    );
-                    
-                    return {
-                        ...member,
-                        matchCount: matchingSkills.length,
-                        matchingSkillList: matchingSkills
-                    };
-                })
-                .filter(member => member.matchCount > 0)
-                .sort((a, b) => b.matchCount - a.matchCount); // Sort by number of matches
-        }
-
-        // Sanitize input to prevent XSS
-        function sanitizeInput(input) {
-            const div = document.createElement('div');
-            div.textContent = input;
-            return div.innerHTML;
-        }
-
-        // Display matched user cards
-        function displayUserCards() {
-            const cardContainer = document.getElementById("cardContainer");
-            const noResults = document.getElementById("noResults");
-            const matchNotification = document.getElementById("matchNotification");
-            
-            cardContainer.innerHTML = ''; // Clear previous cards
-
-            const matchedUsers = getMatchingUsers(projectSkills);
-
-            if (matchedUsers.length === 0) {
-                noResults.style.display = 'block';
-                matchNotification.style.display = 'none';
-                return;
-            }
-            
-            noResults.style.display = 'none';
-            matchNotification.style.display = 'block';
-
-            matchedUsers.forEach(user => {
-                const card = document.createElement("div");
-                card.className = "team-member-card";
-                card.setAttribute("role", "listitem");
-                card.setAttribute("aria-label", `${user.name} with skills in ${user.skills.join(', ')}`);
-                
-                // Create the card content with proper sanitization
-                card.innerHTML = `
-                    <a href="${sanitizeInput(user.link)}" aria-label="View ${sanitizeInput(user.name)}'s profile">
-                        <img 
-                            src="${sanitizeInput(user.img)}" 
-                            alt="${sanitizeInput(user.name)}" 
-                            width="150" 
-                            height="150"
-                            loading="lazy"
-                        />
-                        <div class="member-name">${sanitizeInput(user.name)}</div>
-                    </a>
-                `;
-                
-                // Add skill tags
-                const skillTagsContainer = document.createElement("div");
-                skillTagsContainer.className = "skill-tags";
-                
-                // Only show matching skills, limited to 3 for space
-                user.matchingSkillList.slice(0, 3).forEach(skill => {
-                    const skillTag = document.createElement("span");
-                    skillTag.className = "skill-tag";
-                    skillTag.textContent = skill;
-                    skillTagsContainer.appendChild(skillTag);
-                });
-                
-                card.appendChild(skillTagsContainer);
-                cardContainer.appendChild(card);
-            });
-        }
-
-        // Update selected skills display
-        function updateSelectedSkillsDisplay() {
-            const container = document.getElementById("selectedSkillsContainer");
-            container.innerHTML = '';
-            
-            projectSkills.forEach(skill => {
-                const skillElement = document.createElement("div");
-                skillElement.className = "selected-skill";
-                skillElement.innerHTML = `
-                    <span>${sanitizeInput(skill)}</span>
-                    <span class="remove-skill" onclick="removeSkill('${sanitizeInput(skill)}')" aria-label="Remove ${sanitizeInput(skill)} skill">&times;</span>
-                `;
-                container.appendChild(skillElement);
-            });
-        }
-
-        // Remove a specific skill
-        function removeSkill(skillToRemove) {
-            projectSkills = projectSkills.filter(skill => skill !== skillToRemove);
-            updateSelectedSkillsDisplay();
-            displayUserCards();
-            
-            // Update the input field to reflect the current skills
-            document.getElementById("skillInput").value = projectSkills.join(', ');
-        }
-
-        // Update project skills based on user input
-        function updateSkills() {
-            const skillInput = document.getElementById("skillInput").value;
-            
-            // Skip if input is empty
-            if (!skillInput.trim()) return;
-            
-            // Parse and clean the input
-            projectSkills = skillInput
-                .split(',')
-                .map(skill => skill.trim())
-                .filter(skill => skill.length > 0);
-            
-            updateSelectedSkillsDisplay();
-            displayUserCards();
-            
-            // Clear the input field for new entries
-            document.getElementById("skillInput").value = '';
-            
-            // Update URL with current skills for sharing/bookmarking
-            const newUrl = new URL(window.location);
-            newUrl.searchParams.set('skills', projectSkills.join(','));
-            history.pushState({}, '', newUrl);
-        }
-
-        // Listen for Enter key press
-        function handleKeyPress(event) {
-            if (event.key === "Enter") {
-                updateSkills();
-            }
-        }
-    </script>
-</body>
-</html>
+<div id="matchNotification" class="match-notification" style="display:none;">
+    <p>You have found team members with matching skills! 
+</div>
