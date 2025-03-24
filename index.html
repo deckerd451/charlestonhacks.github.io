@@ -568,22 +568,4 @@
                 const sound = this.getAttribute('data-sound');
                 const image = this.getAttribute('data-image');
                 const url = this.getAttribute('data-url');
-                playSound(sound);
-                flipCard(image, url);
-            });
-        });
-
-        function toggleVisibility() {
-            var eventsSection = document.querySelector('.previous-events');
-            eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function showLoadingIndicator() {
-            document.getElementById('loadingIndicator').style.display = 'block';
-        }
-
-        function hideLoadingIndicator() {
-            document.getElementById('loadingIndicator').style.display = 'none';
-        }
-
-        function handleVideoError() {
+                playSound
