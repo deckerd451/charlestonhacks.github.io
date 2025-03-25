@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/manifest.json"> <!-- Link to manifest file -->
-    <!-- Add other meta tags and links as needed -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
+    <meta property="og:title" content="CharlestonHacks - Home" />
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>CharlestonHacks - Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json" />
     <style>
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
@@ -57,10 +59,11 @@
         opacity: 1;
         transform: scale(1.15);
     }
-}
     .clickable-area:hover {
     transform: scale(1.2);
     transition: transform 0.3s ease-in-out;
+}
+
 }
 
 /* Apply the animation to the clickable elements */
@@ -487,16 +490,16 @@ body {
                         </div>
 
                         <!-- Clickable areas -->
-                        <div class="clickable-area top-left" data-sound="keys" data-url="Poster.html">
+                        <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
                             <img src="images/infon.svg" alt="Info">
                         </div>
-                        <div class="clickable-area top-right" data-sound="keys" data-url="2card.html">
+                        <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
                             <img src="images/peoplen.svg" alt="People">
                         </div>
-                        <div class="clickable-area bottom-left" data-sound="keys" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
                             <img src="images/newsn.svg" alt="News">
                         </div>
-                        <div class="clickable-area bottom-right" data-sound="keys" data-url="subscribe.html">
+                        <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
                             <img src="images/envelopen.svg" alt="Envelope">
                         </div>
                     </a>
@@ -673,6 +676,7 @@ body {
             document.body.classList.remove('fade-out-body');
         });
     </script>
+    <script src="dist/bundle.js"></script>
 <script>
     window.onload = () => {
         // Select all clickable areas
@@ -684,62 +688,5 @@ body {
         });
     };
 </script>
-    <script>
-    function showLoadingIndicator() {
-        document.getElementById('loadingIndicator').style.display = 'block';
-    }
-
-    function hideLoadingIndicator() {
-        document.getElementById('loadingIndicator').style.display = 'none';
-    }
-
-    function handleVideoError() {
-        alert("Error loading video. Please try again later.");
-    }
-
-    function showCardFrame() {
-        document.getElementById('cardFrame').style.display = 'block';
-    }
-
-    // Other existing functions...
-
-    const videoElement = document.getElementById('missionVideo');
-    videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
-    videoElement.addEventListener('ended', showCardFrame);
-
-    // Ensure the spinner remains visible until the link is opened
-    window.addEventListener('beforeunload', function () {
-        document.getElementById('spinner').style.display = 'none';
-    });
-
-    // Remove fade-out class when the page is loaded or navigated back
-    window.addEventListener('pageshow', function () {
-        document.body.classList.remove('fade-out-body');
-    });
-        
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Select all clickable areas
-        const clickableAreas = document.querySelectorAll(".clickable-area");
-
-        clickableAreas.forEach(area => {
-            area.addEventListener("click", function (event) {
-                event.preventDefault(); // Prevent default navigation
-
-                const targetUrl = area.getAttribute("data-url"); // Ensure each clickable has a data-url attribute
-
-                if (targetUrl) {
-                    const userConfirmed = confirm("Do you want to navigate to this page?");
-                    
-                    if (userConfirmed) {
-                        window.location.href = targetUrl; // Navigate if user confirms
-                    }
-                }
-            });
-        });
-    });
-</script>
-
 </body>
 </html>
