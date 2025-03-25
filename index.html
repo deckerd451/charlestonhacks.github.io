@@ -719,6 +719,17 @@ body {
         
 </script>
     <script>
+    // Add an event listener for the 'beforeunload' event
+    window.addEventListener('beforeunload', function (e) {
+        // Standard message for most browsers
+        const confirmationMessage = 'Are you sure you want to leave?';
+
+        // For some browsers, this message may be displayed by default
+        e.returnValue = confirmationMessage; // This triggers the confirmation prompt
+        return confirmationMessage; // In some browsers, you must also return the message
+    });
+</script>
+    <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Select all clickable areas
         const clickableAreas = document.querySelectorAll(".clickable-area");
