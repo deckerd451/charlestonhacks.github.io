@@ -32,6 +32,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+            gap: 15px;
         }
 
         #lightbox-gallery a {
@@ -49,6 +50,7 @@
             width: 100%;
             height: auto;
             display: block;
+            border-radius: 8px; /* Added border radius for a smoother look */
         }
 
         .main {
@@ -80,6 +82,20 @@
         footer ul.icons li a:hover {
             color: #0073e6;
         }
+        
+        .event-section {
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            #lightbox-gallery {
+                justify-content: center;
+            }
+
+            #lightbox-gallery a {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -93,32 +109,40 @@
             </a>
         </header>
         
-        <!-- Lightbox Gallery -->
-        <div id="lightbox-gallery">
-             <a href="techweek.html">
+        <!-- Future Events -->
+        <div class="event-section" id="future-events">
+            <h2>Future Events</h2>
+            <a href="techweek.html">
                 <img src="images/squarebanner.png" alt="" class="image main" />
             </a><br>
+        </div>
+        
+        <!-- Past Events -->
+        <div class="event-section" id="past-events">
+            <h2>Past Events</h2>
             <a href="https://www.meetup.com/charlestonhacks/events/306342295/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link">
                 <img src="images/dn.jpg" alt="" class="image main" />
             </a><br>
-           <a href="harborhack24.html" data-lightbox="gallery">
-                <img src="images/hh24poster.png" alt="" />
-            </a><br>
-            <a href="meetupmashup.html" data-lightbox="gallery">
-                <img src="images/mashup1.jpg" alt="" />
-            </a><br>
-            <a href="hacknights24.html" data-lightbox="gallery">
-                <img src="images/hnposter24.jpg" alt="" />
-            </a><br>
-            <a href="hackops.html" data-lightbox="gallery">
-                <img src="images/hoposter24.jpg" alt="" />
-            </a><br>
-            <a href="harborhack23.html" data-lightbox="gallery">
-                <img src="images/Hackers Wanted.jpeg" alt="" />
-            </a><br>
-            <a href="summerhack.html" data-lightbox="gallery">
-                <img src="images/HACK ONE PAGER4-01.png" alt="" />
-            </a><br>
+            <div id="lightbox-gallery">
+                <a href="harborhack24.html" data-lightbox="gallery">
+                    <img src="images/hh24poster.png" alt="" />
+                </a><br>
+                <a href="meetupmashup.html" data-lightbox="gallery">
+                    <img src="images/mashup1.jpg" alt="" />
+                </a><br>
+                <a href="hacknights24.html" data-lightbox="gallery">
+                    <img src="images/hnposter24.jpg" alt="" />
+                </a><br>
+                <a href="hackops.html" data-lightbox="gallery">
+                    <img src="images/hoposter24.jpg" alt="" />
+                </a><br>
+                <a href="harborhack23.html" data-lightbox="gallery">
+                    <img src="images/Hackers Wanted.jpeg" alt="" />
+                </a><br>
+                <a href="summerhack.html" data-lightbox="gallery">
+                    <img src="images/HACK ONE PAGER4-01.png" alt="" />
+                </a><br>
+            </div>
         </div>
     </article>
 </div>
@@ -145,23 +169,10 @@
         </ul>
     </section>
 </footer>
+
 <!-- Scripts -->
 <script>
-    // Initialize LightGallery only for images (not .html links)
-    lightGallery(document.getElementById('lightbox-gallery'), {
-        selector: 'a[href$=".jpg"], a[href$=".png"], a[href$=".jpeg"]'
-    });
-
-    // Prevent LightGallery from intercepting .html links
-    document.querySelectorAll('#lightbox-gallery a').forEach(link => {
-        link.addEventListener('click', function(event) {
-            if (this.getAttribute('href').endsWith('.html')) {
-                event.stopPropagation(); // Stop LightGallery from overriding the link
-            }
-        });
-    });
-</script>
-    <script>
+    // Initialize LightGallery for images within #lightbox-gallery
     document.addEventListener("DOMContentLoaded", function() {
         if (typeof lightGallery !== 'undefined') {
             lightGallery(document.getElementById('lightbox-gallery'), {
