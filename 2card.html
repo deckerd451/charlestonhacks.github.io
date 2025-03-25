@@ -328,12 +328,110 @@
 </div>
 
 <script>
+    // Helper: Generate combinations of users of size k
+function getCombinations(arr, k) {
+  const results = [];
+  function combine(start, combo) {
+    if (combo.length === k) {
+      results.push([...combo]);
+      return;
+    }
+    for (let i = start; i < arr.length; i++) {
+      combine(i + 1, [...combo, arr[i]]);
+    }
+  }
+  combine(0, []);
+  return results;
+}
+
+
+
     document.addEventListener('DOMContentLoaded', () => {
         const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-    
+
+        function getCombinations(arr, k) {
+  const results = [];
+  function combine(start, combo) {
+    if (combo.length === k) {
+      results.push([...combo]);
+      return;
+    }
+    for (let i = start; i < arr.length; i++) {
+      combine(i + 1, [...combo, arr[i]]);
+    }
+  }
+  combine(0, []);
+  return results;
+}
+
+async function buildBestTeam() {
+  const skillInput = document.getElementById('teamSkills').value
+    .toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+
+  const teamSize = parseInt(document.getElementById('teamSize').value, 10);
+  const container = document.getElementById('bestTeamContainer');
+  container.innerHTML = '';
+
+  if (!skillInput.length || !teamSize || teamSize < 1) {
+    alert('Please enter valid skills and team size.');
+    return;
+  }
+
+  const { data: users, error } = await supabaseClient.from('skills').select('*');
+
+  if (error || !users) {
+    console.error('Error fetching users:', error);
+    container.innerHTML = '<p style="color:white;">Error loading users.</p>';
+    return;
+  }
+
+  const combinations = getCombinations(users, teamSize);
+  let bestCombo = [];
+  let maxMatchCount = 0;
+
+  combinations.forEach(combo => {
+    const allSkills = new Set();
+    combo.forEach(user => {
+      user.skills.toLowerCase().split(',').forEach(skill => allSkills.add(skill.trim()));
+    });
+    const matchCount = skillInput.filter(skill => allSkills.has(skill)).length;
+    if (matchCount > maxMatchCount) {
+      maxMatchCount = matchCount;
+      bestCombo = combo;
+    }
+  });
+
+  if (!bestCombo.length) {
+    container.innerHTML = '<p style="color:white;">No matching team found.</p>';
+    return;
+  }
+
+  container.innerHTML = `<p style="color:white;"> </p>`;
+
+  bestCombo.forEach(user => {
+    container.innerHTML += `
+      <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:15px;">
+        ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
+        <div class="member-name">${user.first_name} ${user.last_name}</div>
+        <div class="member-email" style="display:block; margin-top:5px;">
+          <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none;">${user.email}</a>
+        </div>
+        <div class="skill-tags" style="margin-top:5px;">
+          <strong>Skills:</strong> 
+          ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
+        </div>
+      </div>
+    `;
+  });
+}
+
+// ✅ Make it available globally for your button
+window.buildBestTeam = buildBestTeam;
+
+       
         // Handle registration form submission
         document.getElementById('skills-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -429,22 +527,34 @@
 
         // Each matched user is clearly displayed vertically one below the other
         cardContainer.innerHTML = matchedUsers.map(user => `
-            <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:20px; display:block; width:100%;">
-                ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
-                <div class="member-name" style="margin-bottom:5px;">${user.first_name} ${user.last_name}</div>
-               <div class="member-email" style="margin: 5px 0;">
-  <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none; display: inline-block; word-break: break-word;">
-    ${user.email}
-  </a>
-</div>
-                <div class="skill-tags">
-                    <strong>Skills:</strong> 
-                    ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
-                </div>
-            </div>
-        `).join('');
+    <div class="team-member-card" style="
+        color:#ffffff; 
+        text-align:center; 
+        margin-bottom:20px; 
+        display:flex; 
+        flex-direction:column; 
+        align-items:center; 
+        width: 200px;">
+        
+        ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
+        
+        <div class="member-name" style="margin-bottom:5px;">${user.first_name} ${user.last_name}</div>
+        
+        <div class="member-email" style="margin: 5px 0;">
+            <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none; display: inline-block; word-break: break-word;">
+                ${user.email}
+            </a>
+        </div>
+        
+        <div class="skill-tags">
+            <strong>Skills:</strong> 
+            ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
+        </div>
+    </div>
+`).join('');
     }
 }
+
     
         async function loadAllSkills() {
     const { data, error } = await supabaseClient.from('skills').select('*');
@@ -491,7 +601,6 @@ cardContainer.innerHTML = data.map(user => `
     <input type="text" id="skillInput" placeholder="E.g., javascript, design, marketing" aria-describedby="skillHelp">
     <button id="find-team-btn">Find Team Members</button>
 </div>
-
 <!-- Selected skills display (optional feature) -->
 <div class="selected-skills" id="selectedSkillsContainer">
     <!-- dynamically shown selected skills -->
@@ -501,10 +610,27 @@ cardContainer.innerHTML = data.map(user => `
     No team members found with the selected skills. Try different skills or broader terms.
 </div>
 
-<div class="card-container" id="cardContainer" role="list" aria-label="Matching team members">
-    <!-- Cards dynamically inserted here -->
+<div id="cardContainer" 
+     style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;"
+     class="card-container" 
+     role="list" 
+     aria-label="Matching team members">
 </div>
 
 <div id="matchNotification" class="match-notification" style="display:none;">
     <p>You have found team members with matching skills! 
 </div>
+
+<div class="input-container">
+    <p class="instructions">Lets us build your team. Tell us skills and number of people in your team</p>
+    <label for="skillInput">Required Skills:</label>
+    <input type="text" id="teamSkills" placeholder="e.g. aws, python, devops" />
+  
+    <label for="teamSize">Team Size:</label>
+    <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="10" />
+  
+    <button onclick="buildBestTeam()" style="margin-top:10px;">Build Team</button>
+  </div>
+  
+  <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+
