@@ -716,6 +716,30 @@ body {
     window.addEventListener('pageshow', function () {
         document.body.classList.remove('fade-out-body');
     });
+        
 </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all clickable areas
+        const clickableAreas = document.querySelectorAll(".clickable-area");
+
+        clickableAreas.forEach(area => {
+            area.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default navigation
+
+                const targetUrl = area.getAttribute("data-url"); // Ensure each clickable has a data-url attribute
+
+                if (targetUrl) {
+                    const userConfirmed = confirm("Do you want to navigate to this page?");
+                    
+                    if (userConfirmed) {
+                        window.location.href = targetUrl; // Navigate if user confirms
+                    }
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
