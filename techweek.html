@@ -9,8 +9,6 @@
     <!-- Preload the main image -->
     <link rel="preload" as="image" href="images/banner.png">
     <link rel="stylesheet" href="assets/css/main.css" />
-     <!-- Where the background image is referenced -->
-    <link rel="stylesheet" href="styles.css">
     <noscript>
         <link rel="stylesheet" href="assets/css/noscript.css" />
     </noscript>
@@ -20,14 +18,14 @@
         integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- Link to the stylesheet for background image -->
+    <link rel="stylesheet" href="styles.css">
+
     <style>
         /* General Styles */
         html,
         body {
-            background-color: #000 !important;
-            /* Black background */
             color: #ffffff !important;
-            /* White text */
             font-family: Arial, sans-serif;
             font-size: 20px;
             /* Increased font size */
@@ -36,8 +34,6 @@
         }
 
         * {
-            background-color: #000 !important;
-            /* Force black background */
             color: #ffffff !important;
             /* White text */
         }
@@ -90,8 +86,6 @@
             text-align: center;
             margin: 20px 0;
             padding: 10px;
-            background-color: #000 !important;
-            /* Ensuring background stays black */
             border-radius: 5px;
             color: #ff0000 !important;
             /* Red text */
@@ -102,8 +96,6 @@
         footer#footer {
             text-align: center;
             padding: 20px;
-            background-color: #000 !important;
-            /* Black background */
             border: none;
             /* Remove any borders */
             box-shadow: none;
@@ -290,140 +282,18 @@
                 be PG-level. Films must tell a cohesive story or convey a clear concept.</p>
             <p><strong>Submission & Presentation:</strong> Films must be submitted before the 8:30 PM deadline via the
                 provided submission form. All films will be presented live to the audience and judges.</p>
-            <p><strong>Judging Criteria:</strong> Films will be evaluated based on Creativity & Innovation, Storytelling
-                & Clarity, AI Integration, and Visual & Audio Quality.</p>
-            <p><strong>Prizes & Recognition:</strong> Prizes for Best Film, Most Creative Use of AI, and Audience
-                Favorite. Winners will receive exclusive CharlestonHacks swag, prizes, and recognition.</p>
-            <hr>
-            <!-- Terms & Conditions -->
-            <p>
-                <h3>Terms & Conditions</h3>
-            </p>
-            <p><strong>Eligibility:</strong> Open to all attendees of Charleston Tech Week. Participants must be 18+ or
-                have parental consent.</p>
-            <p><strong>Ownership & Rights:</strong> Teams retain full rights to their films but grant CharlestonHacks
-                non-exclusive rights to showcase and promote them for marketing purposes.</p>
-            <p><strong>Code of Conduct:</strong> Be respectful. Collaboration and knowledge sharing are encouraged, but
-                plagiarism is prohibited. Pre-generated work is not allowed.</p>
-            <hr>
-            <!-- Submission Instructions -->
-            <p>
-                <h3>How to Submit Your Film:</h3>
-            </p>
-            <p><b>To streamline submissions we’re asking participants to upload
-                    their videos to YouTube on their own accounts and submit a link to the video using our sign up sheet below.</b></p>
-            <p>Upload your 30-second film to your own YouTube channel. Include the event hashtag "#30saiff" in the video
-                title or description.</p>
+            <p>Get ready for an unforgettable night of creativity, tech, and innovation!</p>
 
-            <!-- Button Container -->
-            <div class="button-container">
-                <!-- Event Page Button -->
-                <a class="collapsible" href="https://lu.ma/CHSHacks" target="_blank" style="font-weight: bold;">Register Here
-</a>
-                 <a class="collapsible" href="https://openart.ai/home" target="_blank" style="font-weight: bold;">OpenArt Website
-</a>
-                <!-- Playlist Button as Link -->
-                <a class="collapsible" href="https://docs.google.com/forms/d/e/1FAIpQLScvfuV7tBif2AOj6mjpptfe6nmXb0FHlSX-roW1dnLb00iJ7A/viewform" target="_blank" style="font-weight: bold;">Submission Sheet
-</a>
+            <!-- More details -->
+            <footer>
+                <ul class="icons">
+                    <li><a href="https://www.charlestonhacks.com" class="icon fa-globe"><span class="label">Website</span></a></li>
+                    <li><a href="https://www.charlestonhacks.com/contact" class="icon fa-envelope"><span class="label">Contact</span></a></li>
+                </ul>
+            </footer>
 
-            </div>
-
-            <!-- Countdown Timer -->
-            <div id="countdown" class="countdown"></div>
         </article>
     </div>
-
-    <!-- Video Modal -->
-    <div id="videoModal" class="video-container">
-        <span class="video-close" onclick="closeVideo();">&times;</span>
-        <video id="videoPlayer" controls muted playsinline>
-            <source src="images/aiffteam.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <!-- Audio for the Video -->
-    <audio id="videoAudio" loop>
-        <source src="assets/music.mp3" type="audio/mp3">
-        Your browser does not support the audio tag.
-    </audio>
-
-    <!-- Footer -->
-
-    <script>
-        // Countdown Timer Script
-        function updateCountdown() {
-            const eventDate = new Date('May 1, 2025 19:00:00').getTime();
-            const now = new Date().getTime();
-            const distance = eventDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('countdown').innerHTML =
-                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.getElementById('countdown').innerHTML = "Event has started!";
-            }
-        }
-
-        const countdownInterval = setInterval(updateCountdown, 1000);
-
-        // Open Video Functionality
-        function openVideo() {
-            const videoModal = document.getElementById("videoModal");
-            videoModal.style.display = "flex"; // Use flex to center the video modal
-            document.body.style.overflow = 'hidden'; // Disable body scroll when modal is open
-            const videoPlayer = document.getElementById('videoPlayer');
-            videoPlayer.currentTime = 0; // Reset the video to the beginning
-            videoPlayer.play(); // Play the video
-            document.getElementById('videoAudio').play(); // Play the audio when video starts
-        }
-
-        // Close Video Functionality
-        function closeVideo() {
-            const videoModal = document.getElementById("videoModal");
-            videoModal.style.display = "none";
-            document.body.style.overflow = 'auto'; // Enable body scroll after modal is closed
-            document.getElementById('videoPlayer').pause(); // Pause the video when the modal is closed
-            document.getElementById('videoAudio').pause(); // Pause the audio when the video is closed
-        }
-
-        // Syncing the video and audio
-        document.getElementById('videoPlayer').onplay = function () {
-            document.getElementById('videoAudio').play(); // Play the audio when the video starts
-        };
-
-        document.getElementById('videoPlayer').onpause = function () {
-            document.getElementById('videoAudio').pause(); // Pause the audio when the video pauses
-        };
-
-        document.getElementById('videoPlayer').onended = function () {
-            closeVideo(); // Close the modal when the video ends
-        };
-
-        document.addEventListener("DOMContentLoaded", function () {
-            let coll = document.querySelectorAll(".collapsible");
-            let content = document.querySelector(".content");
-
-            // Hide content initially
-            if (content) content.style.display = "none";
-
-            coll.forEach(function (button) {
-                button.addEventListener("click", function () {
-                    if (content.style.display === "none") {
-                        content.style.display = "block";
-                    } else {
-                        content.style.display = "none";
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>
