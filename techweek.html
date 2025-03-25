@@ -22,21 +22,23 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        /* General Styles */
-        html,
-        body {
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            font-size: 20px;
-            /* Increased font size */
-            margin: 0;
-            padding: 0;
-        }
+     /* General body background */
+body {
+    background-image: url('images/banner.png'); /* Path to your background image */
+    background-size: cover; /* Ensures the image covers the entire page */
+    background-position: center center; /* Centers the background image */
+    background-attachment: fixed; /* Keeps the background image fixed while scrolling */
+    color: #ffffff; /* Text color */
+    font-family: Arial, sans-serif; /* Font style */
+}
 
-        * {
-            color: #ffffff !important;
-            /* White text */
-        }
+/* Optional: Styling for any specific content over the background */
+#main {
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent black background */
+    padding: 20px;
+    border-radius: 10px;
+}
+
 
         /* Button styles */
         .button-container {
