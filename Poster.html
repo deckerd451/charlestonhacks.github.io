@@ -1,214 +1,110 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    
-    <noscript><link rel="stylesheet" href="assets/css/noscript.min.css" /></noscript>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CharlestonHacks Events</title>
 
     <!-- LightGallery CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/css/lightgallery.min.css">
-    
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- LightGallery JS -->
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/lightgallery.umd.min.js" defer></script>
 
     <style>
-        /* General Styles */
         body {
             font-family: Arial, sans-serif;
-            max-height: 100vh;
-            overflow-y: scroll;
+            text-align: center;
             margin: 0;
             padding: 0;
+            background-color: #121212;
+            color: white;
         }
-
-        .image {
-            display: block;
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        h2 {
+            margin-top: 20px;
         }
-
-        /* Event Sections */
-        .event-section {
-            text-align: center;
-            margin: 20px auto;
-            padding: 15px;
-            max-width: 900px;
-        }
-
-        .event-section h2 {
-            font-size: 24px;
-            border-bottom: 2px solid #0073e6;
-            padding-bottom: 5px;
-            margin-bottom: 20px;
-        }
-
-        .event-gallery {
+        .event-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
+            padding: 20px;
         }
-
-        .event-gallery a {
-            width: 100%;
-            max-width: 300px;
-            transition: transform 0.3s ease;
+        .event-card {
+            width: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease-in-out;
+            background: #1e1e1e;
         }
-
-        .event-gallery a:hover {
+        .event-card:hover {
             transform: scale(1.05);
         }
-
-        .event-gallery img {
+        .event-card img {
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 6px;
         }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            background-color: #f8f8f8;
+        .event-title {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            color: white;
         }
-
-        footer ul.icons {
-            list-style: none;
-            padding: 0;
-        }
-
-        footer ul.icons li {
-            display: inline-block;
-            margin-right: 15px;
-        }
-
-        footer ul.icons li a {
-            font-size: 24px;
-            color: #333;
-            transition: color 0.3s ease;
-        }
-
-        footer ul.icons li a:hover {
-            color: #0073e6;
-        }
-
-        /* Responsive Styles */
-        @media screen and (max-width: 768px) {
-            .event-section {
-                width: 90%;
-            }
-
-            .event-gallery {
+        @media (max-width: 768px) {
+            .event-container {
                 flex-direction: column;
                 align-items: center;
-            }
-
-            .event-gallery a {
-                max-width: 90%;
-            }
-
-            h2 {
-                font-size: 20px;
-            }
-
-            footer {
-                padding: 20px;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            h2 {
-                font-size: 18px;
-            }
-
-            .event-section {
-                padding: 10px;
-            }
-
-            .image {
-                border-radius: 5px;
             }
         }
     </style>
 </head>
 <body>
 
-<!-- Main Section -->
-<div id="main">
-    <article class="post featured">
-        <header class="major">
-            <a class="image main" href="index.html">
-                <img src="assets/chbackbuttonred.png" alt="Back Button" style="width: 300px; height: auto;" />
-            </a>
-        </header>
+    <h2>Upcoming Events</h2>
+    <div id="upcoming-events" class="event-container">
+        <a href="techweek.html" class="event-card">
+            <img src="images/techweek.png" alt="TechWeek">
+            <div class="event-title">TechWeek 2024</div>
+        </a>
+    </div>
 
-        <!-- Upcoming Events Section -->
-        <div class="event-section">
-            <h2>Upcoming Event</h2>
-            <div class="event-gallery" id="upcoming-events">
-                <a href="techweek.html"><img src="images/squarebanner.png" alt="Tech Week"></a>
-            </div>
-        </div>
+    <h2>Past Events</h2>
+    <div id="past-events" class="event-container">
+        <a href="harborhack2024.html" class="event-card">
+            <img src="images/harborhack2024.png" alt="HarborHack 2024">
+            <div class="event-title">HarborHack 2024</div>
+        </a>
 
-        <!-- Past Events Section -->
-        <div class="event-section">
-            <h2>Past Events</h2>
-            <div class="event-gallery" id="past-events">
-                <a href="https://www.meetup.com/charlestonhacks/events/306342295/"><img src="images/dn.jpg" alt="Meetup Event"></a>
-                <a href="harborhack24.html"><img src="images/hh24poster.png" alt="Harbor Hack 2024"></a>
-                <a href="meetupmashup.html"><img src="images/mashup1.jpg" alt="Meetup Mashup"></a>
-                <a href="hacknights24.html"><img src="images/hnposter24.jpg" alt="Hack Nights 2024"></a>
-                <a href="hackops.html"><img src="images/hoposter24.jpg" alt="HackOps 2024"></a>
-                <a href="harborhack23.html"><img src="images/Hackers Wanted.jpeg" alt="Harbor Hack 2023"></a>
-                <a href="summerhack.html"><img src="images/HACK ONE PAGER4-01.png" alt="Summer Hack"></a>
-            </div>
-        </div>
-    </article>
-</div>
+        <a href="hacknight.html" class="event-card">
+            <img src="images/hacknight.png" alt="Hack Night">
+            <div class="event-title">Hack Night</div>
+        </a>
 
-<!-- Footer -->
-<footer id="footer">
-    <section class="alt">
-        <h3>HarborHack Address</h3>
-        <p><a href="https://maps.google.com/maps?q=Harbor+Walk+360+Concord+St.,Charleston,+SC+29401" target="_blank" class="icon fa-map-marker-alt">
-            <span class="label">Harbor Walk East and West, 360 Concord St., Charleston, SC 29401</span></a>
-        </p>
-    </section>
+        <a href="halloween.html" class="event-card">
+            <img src="images/halloween.png" alt="Halloween Party">
+            <div class="event-title">Halloween Party</div>
+        </a>
+    </div>
 
-    <section>
-        <h3>Public Site</h3>
-        <a href="https://charlestonhacks.mailchimpsites.com/" class="icon fa-link"><span class="label">Visit Site</span></a>
-    </section>
+    <!-- LightGallery JS -->
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/lightgallery.umd.min.js"></script>
 
-    <section>
-        <ul class="icons">
-            <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-            <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-        </ul>
-    </section>
-</footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let upcomingGallery = document.getElementById('upcoming-events');
+            let pastGallery = document.getElementById('past-events');
 
-<!-- LightGallery Initialization -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (typeof lightGallery !== 'undefined') {
-            lightGallery(document.getElementById('upcoming-events'));
-            lightGallery(document.getElementById('past-events'));
-        } else {
-            console.error("lightGallery is not defined");
-        }
-    });
-</script>
+            if (typeof lightGallery !== 'undefined') {
+                if (upcomingGallery) {
+                    lightGallery(upcomingGallery, { selector: 'a' });
+                }
+                if (pastGallery) {
+                    lightGallery(pastGallery, { selector: 'a' });
+                }
+            } else {
+                console.error("LightGallery is not defined.");
+            }
+        });
+    </script>
 
 </body>
 </html>
