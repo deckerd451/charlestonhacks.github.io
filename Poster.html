@@ -1,22 +1,28 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.min.css" /></noscript>
     
+    <noscript><link rel="stylesheet" href="assets/css/noscript.min.css" /></noscript>
+
     <!-- LightGallery CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/css/lightgallery.min.css">
+    
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
 
     <!-- LightGallery JS -->
     <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/lightgallery.umd.min.js" defer></script>
 
     <style>
+        /* General Styles */
         body {
+            font-family: Arial, sans-serif;
             max-height: 100vh;
             overflow-y: scroll;
-            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         .image {
@@ -26,58 +32,48 @@
             margin-bottom: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .image:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        #event-sections {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-
+        /* Event Sections */
         .event-section {
-            width: 80%;
-            max-width: 800px;
             text-align: center;
-            margin-bottom: 30px;
+            margin: 20px auto;
             padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.6s ease-in-out forwards;
+            max-width: 900px;
         }
 
-        #upcoming-events {
-            background: #fff4d1;
-            border-left: 5px solid #ff9800;
+        .event-section h2 {
+            font-size: 24px;
+            border-bottom: 2px solid #0073e6;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
         }
 
-        #past-events {
-            background: #f1f1f1;
-            border-left: 5px solid #666;
+        .event-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
         }
 
-        #upcoming-events a, #past-events a {
+        .event-gallery a {
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.3s ease;
+        }
+
+        .event-gallery a:hover {
+            transform: scale(1.05);
+        }
+
+        .event-gallery img {
+            width: 100%;
+            height: auto;
             display: block;
-            margin: 10px 0;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeInUp 0.6s ease-in-out forwards;
+            border-radius: 6px;
         }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 22px;
-        }
-
+        /* Footer */
         footer {
             text-align: center;
             padding: 40px 0;
@@ -104,107 +100,115 @@
             color: #0073e6;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .event-section {
+                width: 90%;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .event-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .event-gallery a {
+                max-width: 90%;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            footer {
+                padding: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            h2 {
+                font-size: 18px;
+            }
+
+            .event-section {
+                padding: 10px;
+            }
+
+            .image {
+                border-radius: 5px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="main">
-        <article class="post featured">
-            <header class="major">
-                <a class="image main" href="index.html">
-                    <img src="assets/chbackbuttonred.png" alt="" style="width: 300px; height: auto;" />
-                </a>
-            </header>
 
-            <div id="event-sections">
-                <div class="event-section" id="upcoming-events">
-                    <h2>🚀 Upcoming Events</h2>
-                </div>
+<!-- Main Section -->
+<div id="main">
+    <article class="post featured">
+        <header class="major">
+            <a class="image main" href="index.html">
+                <img src="assets/chbackbuttonred.png" alt="Back Button" style="width: 300px; height: auto;" />
+            </a>
+        </header>
 
-                <div class="event-section" id="past-events">
-                    <h2>📜 Past Events</h2>
-                </div>
+        <!-- Upcoming Events Section -->
+        <div class="event-section">
+            <h2>Upcoming Events</h2>
+            <div class="event-gallery" id="upcoming-events">
+                <a href="techweek.html"><img src="images/squarebanner.png" alt="Tech Week"></a>
+                <a href="https://www.meetup.com/charlestonhacks/events/306342295/"><img src="images/dn.jpg" alt="Meetup Event"></a>
+                <a href="harborhack24.html"><img src="images/hh24poster.png" alt="Harbor Hack 2024"></a>
+                <a href="meetupmashup.html"><img src="images/mashup1.jpg" alt="Meetup Mashup"></a>
+                <a href="hacknights24.html"><img src="images/hnposter24.jpg" alt="Hack Nights 2024"></a>
             </div>
+        </div>
 
-            <!-- Hidden Event List (Sorted by JS) -->
-            <div id="all-events" style="display: none;">
-                <a href="techweek.html" data-date="2025-06-15">
-                    <img src="images/squarebanner.png" alt="Tech Week" class="image main" />
-                </a>
-                <a href="https://www.meetup.com/charlestonhacks/events/306342295/" data-date="2025-05-10">
-                    <img src="images/dn.jpg" alt="Meetup Event" class="image main" />
-                </a>
-                <a href="harborhack24.html" data-date="2024-10-20">
-                    <img src="images/hh24poster.png" alt="HarborHack 2024" />
-                </a>
-                <a href="meetupmashup.html" data-date="2024-10-01">
-                    <img src="images/mashup1.jpg" alt="Meetup Mashup" />
-                </a>
-                <a href="hacknights24.html" data-date="2024-09-15">
-                    <img src="images/hnposter24.jpg" alt="Hack Nights 2024" />
-                </a>
-                <a href="hackops.html" data-date="2024-08-05">
-                    <img src="images/hoposter24.jpg" alt="HackOps" />
-                </a>
-                <a href="harborhack23.html" data-date="2023-10-20">
-                    <img src="images/Hackers Wanted.jpeg" alt="HarborHack 2023" />
-                </a>
-                <a href="summerhack.html" data-date="2023-07-10">
-                    <img src="images/HACK ONE PAGER4-01.png" alt="Summer Hack" />
-                </a>
+        <!-- Past Events Section -->
+        <div class="event-section">
+            <h2>Past Events</h2>
+            <div class="event-gallery" id="past-events">
+                <a href="hackops.html"><img src="images/hoposter24.jpg" alt="HackOps 2024"></a>
+                <a href="harborhack23.html"><img src="images/Hackers Wanted.jpeg" alt="Harbor Hack 2023"></a>
+                <a href="summerhack.html"><img src="images/HACK ONE PAGER4-01.png" alt="Summer Hack"></a>
             </div>
-        </article>
-    </div>
+        </div>
+    </article>
+</div>
 
-    <footer id="footer">
-        <section>
-            <h3>Public Site</h3>
-            <a href="https://charlestonhacks.mailchimpsites.com/" class="icon fa-link">Visit Site</a>
-        </section>
-        <section>
-            <ul class="icons">
-                <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"></a></li>
-                <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"></a></li>
-                <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"></a></li>
-            </ul>
-        </section>
-    </footer>
+<!-- Footer -->
+<footer id="footer">
+    <section class="alt">
+        <h3>HarborHack Address</h3>
+        <p><a href="https://maps.google.com/maps?q=Harbor+Walk+360+Concord+St.,Charleston,+SC+29401" target="_blank" class="icon fa-map-marker-alt">
+            <span class="label">Harbor Walk East and West, 360 Concord St., Charleston, SC 29401</span></a>
+        </p>
+    </section>
 
-    <!-- JavaScript for Sorting Events -->
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+    <section>
+        <h3>Public Site</h3>
+        <a href="https://charlestonhacks.mailchimpsites.com/" class="icon fa-link"><span class="label">Visit Site</span></a>
+    </section>
 
-        const upcomingEvents = document.getElementById("upcoming-events");
-        const pastEvents = document.getElementById("past-events");
-        const allEvents = Array.from(document.getElementById("all-events").querySelectorAll("a"));
+    <section>
+        <ul class="icons">
+            <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+        </ul>
+    </section>
+</footer>
 
-        const eventsWithDates = allEvents.map(event => ({
-            element: event,
-            date: new Date(event.getAttribute("data-date"))
-        }));
-
-        const upcoming = eventsWithDates.filter(event => event.date >= today)
-            .sort((a, b) => a.date - b.date);
-
-        const past = eventsWithDates.filter(event => event.date < today)
-            .sort((a, b) => b.date - a.date);
-
-        setTimeout(() => {
-            upcoming.forEach(event => upcomingEvents.appendChild(event.element));
-            past.forEach(event => pastEvents.appendChild(event.element));
-        }, 300);
+<!-- LightGallery Initialization -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof lightGallery !== 'undefined') {
+            lightGallery(document.getElementById('upcoming-events'));
+            lightGallery(document.getElementById('past-events'));
+        } else {
+            console.error("lightGallery is not defined");
+        }
     });
-    </script>
+</script>
+
 </body>
 </html>
