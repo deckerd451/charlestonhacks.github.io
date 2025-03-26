@@ -26,6 +26,12 @@
             margin-bottom: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
         #event-sections {
@@ -40,16 +46,36 @@
             max-width: 800px;
             text-align: center;
             margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-in-out forwards;
+        }
+
+        #upcoming-events {
+            background: #fff4d1;
+            border-left: 5px solid #ff9800;
+        }
+
+        #past-events {
+            background: #f1f1f1;
+            border-left: 5px solid #666;
         }
 
         #upcoming-events a, #past-events a {
             display: block;
             margin: 10px 0;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.6s ease-in-out forwards;
         }
 
         h2 {
             text-align: center;
             margin-bottom: 10px;
+            font-size: 22px;
         }
 
         footer {
@@ -77,6 +103,17 @@
         footer ul.icons li a:hover {
             color: #0073e6;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -89,14 +126,12 @@
             </header>
 
             <div id="event-sections">
-                <div class="event-section">
-                    <h2>Upcoming Events</h2>
-                    <div id="upcoming-events"></div>
+                <div class="event-section" id="upcoming-events">
+                    <h2>🚀 Upcoming Events</h2>
                 </div>
 
-                <div class="event-section">
-                    <h2>Past Events</h2>
-                    <div id="past-events"></div>
+                <div class="event-section" id="past-events">
+                    <h2>📜 Past Events</h2>
                 </div>
             </div>
 
@@ -131,11 +166,6 @@
     </div>
 
     <footer id="footer">
-        <section class="alt">
-            <h3>HarborHack Address</h3>
-            <p><a href="https://maps.google.com/maps?q=Harbor+Walk+360+Concord+St.,Charleston,+SC+29401" target="_blank" class="icon fa-map-marker-alt">
-                Harbor Walk East and West, 360 Concord St.,<br />Charleston, SC 29401</a></p>
-        </section>
         <section>
             <h3>Public Site</h3>
             <a href="https://charlestonhacks.mailchimpsites.com/" class="icon fa-link">Visit Site</a>
@@ -143,7 +173,6 @@
         <section>
             <ul class="icons">
                 <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"></a></li>
-                <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"></a></li>
                 <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"></a></li>
                 <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"></a></li>
             </ul>
@@ -154,7 +183,7 @@
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Normalize time
+        today.setHours(0, 0, 0, 0);
 
         const upcomingEvents = document.getElementById("upcoming-events");
         const pastEvents = document.getElementById("past-events");
@@ -165,17 +194,16 @@
             date: new Date(event.getAttribute("data-date"))
         }));
 
-        // Sort upcoming events (ascending)
         const upcoming = eventsWithDates.filter(event => event.date >= today)
             .sort((a, b) => a.date - b.date);
 
-        // Sort past events (descending)
         const past = eventsWithDates.filter(event => event.date < today)
             .sort((a, b) => b.date - a.date);
 
-        // Append sorted events to sections
-        upcoming.forEach(event => upcomingEvents.appendChild(event.element));
-        past.forEach(event => pastEvents.appendChild(event.element));
+        setTimeout(() => {
+            upcoming.forEach(event => upcomingEvents.appendChild(event.element));
+            past.forEach(event => pastEvents.appendChild(event.element));
+        }, 300);
     });
     </script>
 </body>
