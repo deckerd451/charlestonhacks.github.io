@@ -43,13 +43,12 @@
         }
 
         .event-section h2 {
-    font-size: 24px;
-    border-bottom: 2px solid #0073e6;
-    padding-bottom: 5px;
-    margin-bottom: 20px;
-    color: white; /* Change text color to white */
-}
-
+            font-size: 24px;
+            border-bottom: 2px solid #0073e6;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            color: white; /* Change text color to white */
+        }
 
         .event-gallery {
             display: flex;
@@ -156,7 +155,9 @@
         <div class="event-section">
             <h2>Upcoming Event</h2>
             <div class="event-gallery" id="upcoming-events">
-                <a href="techweek.html"><img src="images/squarebanner.png" alt="Tech Week"></a>
+                <a href="techweek.html" data-src="images/squarebanner.png">
+                    <img src="images/squarebanner.png" alt="Tech Week">
+                </a>
             </div>
         </div>
 
@@ -164,13 +165,27 @@
         <div class="event-section">
             <h2>Past Events</h2>
             <div class="event-gallery" id="past-events">
-                <a href="https://www.meetup.com/charlestonhacks/events/306342295/"><img src="images/dn.jpg" alt="Meetup Event"></a>
-                <a href="harborhack24.html"><img src="images/hh24poster.png" alt="Harbor Hack 2024"></a>
-                <a href="meetupmashup.html"><img src="images/mashup1.jpg" alt="Meetup Mashup"></a>
-                <a href="hacknights24.html"><img src="images/hnposter24.jpg" alt="Hack Nights 2024"></a>
-                <a href="hackops.html"><img src="images/hoposter24.jpg" alt="HackOps 2024"></a>
-                <a href="harborhack23.html"><img src="images/Hackers Wanted.jpeg" alt="Harbor Hack 2023"></a>
-                <a href="summerhack.html"><img src="images/HACK ONE PAGER4-01.png" alt="Summer Hack"></a>
+                <a href="https://www.meetup.com/charlestonhacks/events/306342295/" data-src="images/dn.jpg">
+                    <img src="images/dn.jpg" alt="Meetup Event">
+                </a>
+                <a href="harborhack24.html" data-src="images/hh24poster.png">
+                    <img src="images/hh24poster.png" alt="Harbor Hack 2024">
+                </a>
+                <a href="meetupmashup.html" data-src="images/mashup1.jpg">
+                    <img src="images/mashup1.jpg" alt="Meetup Mashup">
+                </a>
+                <a href="hacknights24.html" data-src="images/hnposter24.jpg">
+                    <img src="images/hnposter24.jpg" alt="Hack Nights 2024">
+                </a>
+                <a href="hackops.html" data-src="images/hoposter24.jpg">
+                    <img src="images/hoposter24.jpg" alt="HackOps 2024">
+                </a>
+                <a href="harborhack23.html" data-src="images/Hackers Wanted.jpeg">
+                    <img src="images/Hackers Wanted.jpeg" alt="Harbor Hack 2023">
+                </a>
+                <a href="summerhack.html" data-src="images/HACK ONE PAGER4-01.png">
+                    <img src="images/HACK ONE PAGER4-01.png" alt="Summer Hack">
+                </a>
             </div>
         </div>
     </article>
