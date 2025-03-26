@@ -7,9 +7,15 @@
     <meta name="description" content="30 Second AI Film Fest and Charleston Tech Week" />
     <title>30 Second AIFF</title>
 
+    <!-- SEO and Social Media Tags -->
+    <meta property="og:title" content="30 Second AI Film Fest and Charleston Tech Week" />
+    <meta property="og:description" content="Join us for the 30 Second AI Film Fest during Charleston Tech Week. Create innovative, AI-powered short films in just 3 hours!" />
+    <meta property="og:image" content="images/banner.png" />
+    <meta property="og:url" content="https://charlestonhacks.github.io/techweek.html" />
+
     <!-- Preload the main image -->
     <link rel="preload" as="image" href="images/banner.png">
-     <!-- Where the background image is referenced -->
+    <!-- Where the background image is referenced -->
     <link rel="stylesheet" href="styles.css">
     
     <!-- Main Stylesheets -->
@@ -239,14 +245,10 @@
             <!-- Button Container -->
             <div class="button-container">
                 <!-- Event Page Button -->
-                <a class="collapsible" href="https://lu.ma/CHSHacks" target="_blank" style="font-weight: bold;">Register Here
-</a>
-                 <a class="collapsible" href="https://openart.ai/home" target="_blank" style="font-weight: bold;">OpenArt Website
-</a>
+                <a class="collapsible" href="https://lu.ma/CHSHacks" target="_blank" style="font-weight: bold;">Register Here</a>
+                <a class="collapsible" href="https://openart.ai/home" target="_blank" style="font-weight: bold;">OpenArt Website</a>
                 <!-- Playlist Button as Link -->
-                <a class="collapsible" href="https://docs.google.com/forms/d/e/1FAIpQLScvfuV7tBif2AOj6mjpptfe6nmXb0FHlSX-roW1dnLb00iJ7A/viewform" target="_blank" style="font-weight: bold;">Submission Sheet
-</a>
-
+                <a class="collapsible" href="https://docs.google.com/forms/d/e/1FAIpQLScvfuV7tBif2AOj6mjpptfe6nmXb0FHlSX-roW1dnLb00iJ7A/viewform" target="_blank" style="font-weight: bold;">Submission Sheet</a>
             </div>
 
             <!-- Countdown Timer -->
@@ -254,11 +256,25 @@
         </article>
     </div>
 
+    <script>
+        // Set the date we're counting down to
+        var countDownDate = new Date("May 1, 2025 18:00:00").getTime();
 
-            
-
-        </article>
-    </div>
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    </script>
 
 </body>
 </html>
