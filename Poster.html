@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.min.css" /></noscript>
     
-    <!-- LightGallery CSS (Minified) -->
+    <!-- LightGallery CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/css/lightgallery.min.css">
-   <!--Where the background image is referenced-->
     <link rel="stylesheet" href="styles.css">
-<!-- LightGallery JS (Minified) -->
+
+    <!-- LightGallery JS -->
     <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/lightgallery.umd.min.js" defer></script>
 
     <style>
         body {
             max-height: 100vh;
             overflow-y: scroll;
-            font-family: Arial, sans-serif; /* Added font family for better styling */
+            font-family: Arial, sans-serif;
         }
 
         .image {
@@ -28,31 +28,28 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        #lightbox-gallery {
+        #event-sections {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
         }
 
-        #lightbox-gallery a {
-            width: 100%;
-            max-width: 300px;
-            margin: 10px;
-            transition: transform 0.3s ease;
+        .event-section {
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        #lightbox-gallery a:hover {
-            transform: scale(1.05);
-        }
-
-        #lightbox-gallery img {
-            width: 100%;
-            height: auto;
+        #upcoming-events a, #past-events a {
             display: block;
+            margin: 10px 0;
         }
 
-        .main {
-            margin-bottom: 20px;
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
         }
 
         footer {
@@ -83,95 +80,103 @@
     </style>
 </head>
 <body>
-<!-- Main -->
-<div id="main">
-    <!-- Post -->
-    <article class="post featured">
-        <header class="major">
-            <a class="image main" href="index.html">
-                <img src="assets/chbackbuttonred.png" alt="" style="width: 300px; height: auto;" />
-            </a>
-        </header>
-        
-        <!-- Lightbox Gallery -->
-        <div id="lightbox-gallery">
-             <a href="techweek.html">
-                <img src="images/squarebanner.png" alt="" class="image main" />
-            </a><br>
-            <a href="https://www.meetup.com/charlestonhacks/events/306342295/?utm_medium=referral&utm_campaign=share-btn_savedevents_share_modal&utm_source=link">
-                <img src="images/dn.jpg" alt="" class="image main" />
-            </a><br>
-           <a href="harborhack24.html" data-lightbox="gallery">
-                <img src="images/hh24poster.png" alt="" />
-            </a><br>
-            <a href="meetupmashup.html" data-lightbox="gallery">
-                <img src="images/mashup1.jpg" alt="" />
-            </a><br>
-            <a href="hacknights24.html" data-lightbox="gallery">
-                <img src="images/hnposter24.jpg" alt="" />
-            </a><br>
-            <a href="hackops.html" data-lightbox="gallery">
-                <img src="images/hoposter24.jpg" alt="" />
-            </a><br>
-            <a href="harborhack23.html" data-lightbox="gallery">
-                <img src="images/Hackers Wanted.jpeg" alt="" />
-            </a><br>
-            <a href="summerhack.html" data-lightbox="gallery">
-                <img src="images/HACK ONE PAGER4-01.png" alt="" />
-            </a><br>
-        </div>
-    </article>
-</div>
+    <div id="main">
+        <article class="post featured">
+            <header class="major">
+                <a class="image main" href="index.html">
+                    <img src="assets/chbackbuttonred.png" alt="" style="width: 300px; height: auto;" />
+                </a>
+            </header>
 
-<!-- Footer -->
-<footer id="footer">
-    <section class="alt">
-        <h3>HarborHack Address</h3>
-        <p><a href="https://maps.google.com/maps?q=Harbor+Walk+360+Concord+St.,Charleston,+SC+29401" target="_blank" class="icon fa-map-marker-alt"><span class="label">Harbor Walk East and West, 360 Concord St.,<br />Charleston, SC 29401</span></a></p>
-    </section>
-     
-    <section>
-        <h3>Public Site</h3>
-        <a href="https://charlestonhacks.mailchimpsites.com/" class="icon fa-link"><span class="label">Visit Site</span></a>
-    </section>
-    
-    <!-- Social Media Links in Footer -->
-    <section>
-        <ul class="icons">
-            <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter" title="Twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f" title="Facebook"><span class="label">Facebook</span></a></li>
-            <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram" title="Instagram"><span class="label">Instagram</span></a></li>
-            <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin" title="LinkedIn"><span class="label">LinkedIn</span></a></li>
-        </ul>
-    </section>
-</footer>
-<!-- Scripts -->
-<script>
-    // Initialize LightGallery only for images (not .html links)
-    lightGallery(document.getElementById('lightbox-gallery'), {
-        selector: 'a[href$=".jpg"], a[href$=".png"], a[href$=".jpeg"]'
-    });
+            <div id="event-sections">
+                <div class="event-section">
+                    <h2>Upcoming Events</h2>
+                    <div id="upcoming-events"></div>
+                </div>
 
-    // Prevent LightGallery from intercepting .html links
-    document.querySelectorAll('#lightbox-gallery a').forEach(link => {
-        link.addEventListener('click', function(event) {
-            if (this.getAttribute('href').endsWith('.html')) {
-                event.stopPropagation(); // Stop LightGallery from overriding the link
-            }
-        });
-    });
-</script>
+                <div class="event-section">
+                    <h2>Past Events</h2>
+                    <div id="past-events"></div>
+                </div>
+            </div>
+
+            <!-- Hidden Event List (Sorted by JS) -->
+            <div id="all-events" style="display: none;">
+                <a href="techweek.html" data-date="2025-06-15">
+                    <img src="images/squarebanner.png" alt="Tech Week" class="image main" />
+                </a>
+                <a href="https://www.meetup.com/charlestonhacks/events/306342295/" data-date="2025-05-10">
+                    <img src="images/dn.jpg" alt="Meetup Event" class="image main" />
+                </a>
+                <a href="harborhack24.html" data-date="2024-10-20">
+                    <img src="images/hh24poster.png" alt="HarborHack 2024" />
+                </a>
+                <a href="meetupmashup.html" data-date="2024-10-01">
+                    <img src="images/mashup1.jpg" alt="Meetup Mashup" />
+                </a>
+                <a href="hacknights24.html" data-date="2024-09-15">
+                    <img src="images/hnposter24.jpg" alt="Hack Nights 2024" />
+                </a>
+                <a href="hackops.html" data-date="2024-08-05">
+                    <img src="images/hoposter24.jpg" alt="HackOps" />
+                </a>
+                <a href="harborhack23.html" data-date="2023-10-20">
+                    <img src="images/Hackers Wanted.jpeg" alt="HarborHack 2023" />
+                </a>
+                <a href="summerhack.html" data-date="2023-07-10">
+                    <img src="images/HACK ONE PAGER4-01.png" alt="Summer Hack" />
+                </a>
+            </div>
+        </article>
+    </div>
+
+    <footer id="footer">
+        <section class="alt">
+            <h3>HarborHack Address</h3>
+            <p><a href="https://maps.google.com/maps?q=Harbor+Walk+360+Concord+St.,Charleston,+SC+29401" target="_blank" class="icon fa-map-marker-alt">
+                Harbor Walk East and West, 360 Concord St.,<br />Charleston, SC 29401</a></p>
+        </section>
+        <section>
+            <h3>Public Site</h3>
+            <a href="https://charlestonhacks.mailchimpsites.com/" class="icon fa-link">Visit Site</a>
+        </section>
+        <section>
+            <ul class="icons">
+                <li><a href="https://twitter.com/Descart84114619" class="icon brands fa-twitter"></a></li>
+                <li><a href="https://www.facebook.com/deckerdb26354" class="icon brands fa-facebook-f"></a></li>
+                <li><a href="https://www.instagram.com/charlestonhacks/" class="icon brands fa-instagram"></a></li>
+                <li><a href="https://www.linkedin.com/company/charlestonhacks/" class="icon brands fa-linkedin"></a></li>
+            </ul>
+        </section>
+    </footer>
+
+    <!-- JavaScript for Sorting Events -->
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (typeof lightGallery !== 'undefined') {
-            lightGallery(document.getElementById('lightbox-gallery'), {
-                selector: 'a[href$=".jpg"], a[href$=".png"], a[href$=".jpeg"]'
-            });
-        } else {
-            console.error("lightGallery is not defined");
-        }
-    });
-</script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalize time
 
+        const upcomingEvents = document.getElementById("upcoming-events");
+        const pastEvents = document.getElementById("past-events");
+        const allEvents = Array.from(document.getElementById("all-events").querySelectorAll("a"));
+
+        const eventsWithDates = allEvents.map(event => ({
+            element: event,
+            date: new Date(event.getAttribute("data-date"))
+        }));
+
+        // Sort upcoming events (ascending)
+        const upcoming = eventsWithDates.filter(event => event.date >= today)
+            .sort((a, b) => a.date - b.date);
+
+        // Sort past events (descending)
+        const past = eventsWithDates.filter(event => event.date < today)
+            .sort((a, b) => b.date - a.date);
+
+        // Append sorted events to sections
+        upcoming.forEach(event => upcomingEvents.appendChild(event.element));
+        past.forEach(event => pastEvents.appendChild(event.element));
+    });
+    </script>
 </body>
 </html>
