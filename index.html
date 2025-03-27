@@ -139,16 +139,6 @@
             z-index: 1;
         }
 
-        #cardFrame {
-            display: none; /* Initially hidden */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Positioned under other elements */
-        }
-
         #countdownWrapper {
             margin-top: 20px;
             text-align: center;
@@ -216,35 +206,35 @@
         }
 
         .top-left {
-            top: .5%;
-            left: 2%;
+            top: 0;
+            left: 0;
             width: 20%;
             height: 20%;
         }
 
         .top-right {
-            top: .5%;
-            right: 2%;
+            top: 0;
+            right: 0;
             width: 20%;
             height: 20%;
         }
 
         .bottom-left {
-            bottom: -4.6%;
-            left: 2%;
+            bottom: 0;
+            left: 0;
             width: 20%;
             height: 20%;
         }
 
         .bottom-right {
-            bottom: -4.6%;
-            right: 2%;
+            bottom: 0;
+            right: 0;
             width: 20%;
             height: 20%;
         }
 
         .center-top {
-            top: .6%;
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
             width: 20%;
@@ -252,19 +242,11 @@
         }
 
         .center-bottom {
-            bottom: -4.4%;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
             width: 20%;
             height: 20%;
-        }
-        
-        /* Placeholder asset style */
-        .clickable-area img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
         }
 
     </style>
@@ -276,7 +258,7 @@
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/hcard.png" alt="CharlestonHacks" style="z-index: 3;" />
+                        <img id="missionImage" src="images/reactiveh.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
@@ -289,40 +271,21 @@
                                 <div id="countdown"></div>
                             </div>
                         </div>
-                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
+                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <img id="cardFrame" src="images/cardframe.png" alt="Card Frame" />
                         <div class="loading-indicator" id="loadingIndicator">
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
 
-                        <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')">
-                            <!-- Placeholder asset for Top Left -->
-                            <img src="images/info1.svg" alt="Placeholder Top Left">
-                        </div>
-                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')">
-                            <!-- Placeholder asset for Top Right -->
-                            <img src="images/people1.svg" alt="Placeholder Top Right">
-                        </div>
-                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
-                            <!-- Placeholder asset for Bottom Left -->
-                            <img src="images/news1.svg" alt="Placeholder Bottom Left">
-                        </div>
-                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')">
-                            <!-- Placeholder asset for Bottom Right -->
-                            <img src="images/envelope1.svg" alt="Placeholder Bottom Right">
-                        </div>
-                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
-                            <!-- Placeholder asset for Center Top -->
-                            <img src="images/crest1.svg" alt="Placeholder Center Top">
-                        </div>
-                        <div class="clickable-area center-bottom" onclick="playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
-                            <!-- Placeholder asset for Center Bottom -->
-                            <img src="images/keys1.svg" alt="Placeholder Center Bottom">
-                        </div>
+                        <!-- Clickable areas -->
+                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')"></div>
+                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')"></div>
+                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')"></div>
+                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')"></div>
+                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')"></div>
+                        <div class="clickable-area center-bottom" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')"></div>
                     </a>
                 </div>
             </header>
@@ -406,11 +369,6 @@
             audio.play();
         }
 
-        function playKeySound() {
-            var audio = new Audio('assets/keys.m4a'); // Use the keys sound effect
-            audio.play();
-        }
-
         function flipAndRedirect() {
             var banner = document.getElementById('aiffBanner');
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
@@ -432,11 +390,6 @@
             }, 1000);
         }
 
-        function playKeySoundAndFlipCard(imageSrc, url) {
-            playKeySound();
-            flipCard(imageSrc, url);
-        }
-
         function toggleVisibility() {
             var eventsSection = document.querySelector('.previous-events');
             eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
@@ -454,13 +407,11 @@
             alert("Error loading video. Please try again later.");
         }
 
-        function showCardFrame() {
-            document.getElementById('cardFrame').style.display = 'block';
-        }
-
         const videoElement = document.getElementById('missionVideo');
         videoElement.addEventListener('play', playSound);
-        videoElement.addEventListener('ended', showCardFrame);
+        videoElement.addEventListener('ended', function () {
+            videoElement.style.display = 'none';
+        });
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
     <script>
