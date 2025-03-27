@@ -2,10 +2,13 @@
 <html lang="en">
 
 <head>
+  
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
     <meta property="og:title" content="CharlestonHacks - Home" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
@@ -21,6 +24,95 @@
         }
 
         /* General styles */
+        /* Add the following CSS animation for the clickable elements */
+        #background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5; /* Adjust opacity if needed */
+    pointer-events: none; /* Prevent interaction with the video */
+}
+
+@keyframes animateClickables {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.clickable-area {
+    animation: animateClickables 1s ease-out forwards;
+    opacity: 0; /* Make them invisible initially */
+}
+
+.clickable-area.loaded {
+    opacity: 1; /* Make them visible after animation */
+}
+        /* Define the animation */
+@keyframes fadeInScaleUp {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+    .clickable-area:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+}
+
+/* Apply the animation to the clickable elements */
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 10vw;
+    max-width: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    animation: fadeInScaleUp 1s ease-out forwards;
+}
+
+/* Customize individual positions */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
+.top-right {
+    top: 2%;
+    right: 4%;
+}
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
+.center-top {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.center-bottom {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+body {
+    position: relative;
+    z-index: 1;
+}
+
+
         body {
             background-color: black;
             color: white;
@@ -61,8 +153,8 @@
             width: 100%;
             height: auto;
             display: block;
-            object-fit: cover; /* Maintain aspect ratio */
-        }
+             object-fit: contain; /* Maintains aspect ratio without distortion */
+}
 
         .media-container video {
             position: absolute;
@@ -83,8 +175,40 @@
                 max-width: 90%;
             }
         }
+        @media (max-width: 768px) {
+    #countdownWrapper {
+        position: absolute;
+        top: 25%; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
 
-        @keyframes fadeIn {
+    #countdown {
+        font-size: 24px;
+    }
+}
+@media (max-width: 768px) {
+    .center-top {
+        top: -30%; /* Move up by adjusting this value */
+    }
+
+    .center-bottom {
+        bottom: 0%; /* Move up by adjusting this value */
+    }
+}
+     
+  .clickable-area img {
+      padding: 0;
+      margin: 0;
+  }
+
+    .center-top, .center-bottom {
+        width: 16.5vw; /* Increase by 10% from 15vw */
+        max-width: 110px; /* Increase by 10% from 100px */
+    }
+
+  @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
@@ -172,7 +296,7 @@
 
         .logo {
             display: block;
-            margin: 0 auto 20px auto; /* Center horizontally and add bottom margin */
+            margin: 0 auto 5px auto; /* Center horizontally and add bottom margin */
         }
 
         .info {
@@ -246,87 +370,114 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* New clickable areas on the card */
-        .clickable-area {
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-        }
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%; /* Make it circular */
+    aspect-ratio: 1/1; /* Maintain perfect circle */
+    width: 15vw; /* Adjust size based on viewport width */
+    max-width: 100px; /* Prevent it from getting too large */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+}
 
-        .top-left {
-            top: .5%;
-            left: 2%;
-            width: 20%;
-            height: 20%;
-        }
+.clickable-area:hover {
+    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
 
-        .top-right {
-            top: .5%;
-            right: 2%;
-            width: 20%;
-            height: 20%;
-        }
+}
 
-        .bottom-left {
-            bottom: -4.6%;
-            left: 2%;
-            width: 20%;
-            height: 20%;
-        }
+/* Adjust position as needed */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
 
-        .bottom-right {
-            bottom: -4.6%;
-            right: 2%;
-            width: 20%;
-            height: 20%;
-        }
+.top-right {
+    top: 2%;
+    right: 4%;
+}
 
-        .center-top {
-            top: .6%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20%;
-            height: 20%;
-        }
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
 
-        .center-bottom {
-            bottom: -4.4%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20%;
-            height: 20%;
-        }
-        
-        /* Placeholder asset style */
-        .clickable-area img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-        }
-
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
+
+        /* Make hcard and all elements 20% smaller on web only */
+        @media (min-width: 769px) {
+            .media-container {
+                transform: scale(0.8);
+        
+    @media (max-width: 768px) {
+        #missionContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #countdownWrapper {
+            position: static;
+            margin-top: 20px;
+            order: 2; /* This ensures it appears below the banner */
+            width: 100%;
+            transform: none;
+        }
+        
+        .body-text {
+            order: 1; /* This ensures the banner appears above the countdown */
+            width: 100%;
+        }
+    @media (max-width: 768px) {
+        #countdownWrapper {
+            position: absolute;
+            top: auto; /* Remove any existing top positioning */
+            bottom: -60px; /* Position it below the banner */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+        
+        #missionContent {
+            padding-bottom: 70px; /* Add padding to make room for the countdown */
+        }
+    }
     </style>
 </head>
+
+   <video autoplay muted id="background-video">
+    <source src="assets/Happy-Hour.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+
+<script>
+    // Adjust the playback speed
+    document.getElementById('background-video').playbackRate = 0.8;
+</script>
+
+
 
 <body class="is-preload">
     <div id="main">
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playCardSoundAndToggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/hcard.png" alt="CharlestonHacks" style="z-index: 3;" />
+                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
+                        <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
-                            <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
                                 <p>
-                                    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
+                                    <img id="aiffBanner" src="images/aiffspin.svg" alt="AI Film Fest" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" onclick="flipAndRedirect()">
                                 </p>
                             </div>
                             <div id="countdownWrapper">
-                                <p class="info"><b>Countdown to AI Film Fest:</b></p>
+                               
                                 <div id="countdown"></div>
                             </div>
                         </div>
@@ -334,35 +485,23 @@
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <img id="cardFrame" src="images/cardframe.png" alt="Card Frame" />
+                        <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
                         <div class="loading-indicator" id="loadingIndicator">
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
 
-                        <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')">
-                            <!-- Placeholder asset for Top Left -->
-                            <img src="images/info1.svg" alt="Placeholder Top Left">
+                        <!-- Clickable areas -->
+                        <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
+                            <img src="images/infon.svg" alt="Info">
                         </div>
-                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')">
-                            <!-- Placeholder asset for Top Right -->
-                            <img src="images/people1.svg" alt="Placeholder Top Right">
+                        <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
+                            <img src="images/peoplen.svg" alt="People">
                         </div>
-                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
-                            <!-- Placeholder asset for Bottom Left -->
-                            <img src="images/news1.svg" alt="Placeholder Bottom Left">
+                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+                            <img src="images/newsn.svg" alt="News">
                         </div>
-                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')">
-                            <!-- Placeholder asset for Bottom Right -->
-                            <img src="images/envelope1.svg" alt="Placeholder Bottom Right">
-                        </div>
-                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
-                            <!-- Placeholder asset for Center Top -->
-                            <img src="images/crest1.svg" alt="Placeholder Center Top">
-                        </div>
-                        <div class="clickable-area center-bottom" onclick="playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
-                            <!-- Placeholder asset for Center Bottom -->
-                            <img src="images/keys1.svg" alt="Placeholder Center Bottom">
+                        <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
+                            <img src="images/envelopen.svg" alt="Envelope">
                         </div>
                     </a>
                 </div>
@@ -410,14 +549,31 @@
 
         let cardClicked = false;
 
+        // Simplify audio handling with a sound map
+        const sounds = {
+            cardflip: new Audio('assets/atmospherel.m4a'),
+            keys: new Audio('assets/keys.m4a'),
+            ding: new Audio('assets/ding.mp3')
+        };
+
+        // Lower the volume of all sounds by 30%
+        Object.keys(sounds).forEach(key => {
+            sounds[key].volume = 0.3;
+        });
+
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
 
-        function playCardSoundAndToggleMissionContent() {
-            playSound();
-            toggleMissionContent();
+        function playSound(soundKey) {
+            const audio = sounds[soundKey];
+            if (audio) {
+                audio.currentTime = 0; // Reset to start
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                });
+            }
         }
 
         function toggleMissionContent() {
@@ -448,16 +604,6 @@
             image.classList.add(randomFlip);
         }
 
-        function playSound() {
-            var audio = new Audio('assets/cardflip.m4a'); // Use a standard click sound effect
-            audio.play();
-        }
-
-        function playKeySound() {
-            var audio = new Audio('assets/keys.m4a'); // Use the keys sound effect
-            audio.play();
-        }
-
         function flipAndRedirect() {
             var banner = document.getElementById('aiffBanner');
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
@@ -478,18 +624,23 @@
             // Show spinner
             document.getElementById('spinner').style.display = 'block';
 
+            // Redirect immediately
+            window.location.href = url;
+
             setTimeout(function () {
                 missionImage.src = imageSrc;
-                setTimeout(function () {
-                    window.location.href = url;
-                }, 2000); // Adjust the delay to match the fade-out duration
-            }, 2000);
+            }, 2000); // Adjust the delay to match the fade-out duration
         }
 
-        function playKeySoundAndFlipCard(imageSrc, url) {
-            playKeySound();
-            flipCard(imageSrc, url);
-        }
+        document.querySelectorAll('.clickable-area').forEach(area => {
+            area.addEventListener('click', function() {
+                const sound = this.getAttribute('data-sound');
+                const image = this.getAttribute('data-image');
+                const url = this.getAttribute('data-url');
+                playSound(sound);
+                flipCard(image, url);
+            });
+        });
 
         function toggleVisibility() {
             var eventsSection = document.querySelector('.previous-events');
@@ -513,7 +664,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound);
+        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
         videoElement.addEventListener('ended', showCardFrame);
 
         // Ensure the spinner remains visible until the link is opened
@@ -524,9 +675,19 @@
         // Remove fade-out class when the page is loaded or navigated back
         window.addEventListener('pageshow', function () {
             document.body.classList.remove('fade-out-body');
-            document.getElementById('spinner').style.display = 'none';
         });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
-    <script>
-        window.dataLayer = window.dataLayer ||
+    <script src="dist/bundle.js"></script>
+<script>
+    window.onload = () => {
+        // Select all clickable areas
+        const clickableElements = document.querySelectorAll('.clickable-area');
+
+        // Add the "loaded" class to each clickable area to trigger the animation
+        clickableElements.forEach(element => {
+            element.classList.add('loaded');
+        });
+    };
+</script>
+</body>
+</html>
