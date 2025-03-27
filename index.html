@@ -2,10 +2,15 @@
 <html lang="en">
 
 <head>
-    // Place this script in the <head> or early in the <body> of your HTML
-if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost') {
-    window.location.href = window.location.href.replace('http:', 'https:');
-}
+   <script>
+        (function() {
+            if (window.location.protocol === 'http:' && 
+                window.location.hostname !== 'localhost' && 
+                window.location.hostname !== '127.0.0.1') {
+                window.location.href = 'https://' + window.location.hostname + window.location.pathname + window.location.search;
+            }
+        })();
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
