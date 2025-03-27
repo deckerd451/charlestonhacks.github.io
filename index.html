@@ -60,14 +60,13 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.1); /* Start small */
+            transform: translate(-50%, -50%);
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: none;
-            z-index: 1;
+            z-index: 0;
             opacity: 0;
-            transition: opacity 3s ease-in-out, transform 3s ease-in-out; /* Transition for zoom */
         }
 
         @media (max-width: 768px) {
@@ -182,30 +181,6 @@
             }
         }
 
-        .scroll-instruction p {
-            color: #39FF14;
-            font-weight: bold;
-            font-size: 20px;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 5px;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
-            border-radius: 5px;
-            animation: fadeIndicator 2s infinite;
-        }
-
-        @keyframes fadeIndicator {
-            50% { opacity: 1; }
-        }
-
         .icon:hover {
             animation: bounce 1s ease infinite;
         }
@@ -251,6 +226,18 @@
                 <div class="panel">
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                         <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
+                        <div id="missionContent">
+                            <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
+                            <div class="body-text">
+                                <p>
+                                    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
+                                </p>
+                            </div>
+                            <div id="countdownWrapper">
+                                <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
+                                <div id="countdown"></div>
+                            </div>
+                        </div>
                         <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="closeVideo()">
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
@@ -259,18 +246,6 @@
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
                     </a>
-                    <div id="missionContent">
-                        <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
-                        <div class="body-text">
-                            <p>
-                                <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
-                            </p>
-                        </div>
-                        <div id="countdownWrapper">
-                            <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
-                            <div id="countdown"></div>
-                        </div>
-                    </div>
                 </div>
             </header>
         </article>
@@ -343,8 +318,9 @@
             var video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 1;
-            video.style.transform = 'translate(-50%, -50%) scale(1)'; /* Zoom to fill */
             video.play();
+
+            playSound();
 
             setTimeout(function () {
                 document.getElementById('missionContent').style.display = 'block';
@@ -361,6 +337,11 @@
             setTimeout(function () {
                 image.classList.add(randomFlip);
             }, 100);
+        }
+
+        function playSound() {
+            var audio = new Audio('assets/flipsound.m4a');
+            audio.play();
         }
 
         function flipAndRedirect() {
