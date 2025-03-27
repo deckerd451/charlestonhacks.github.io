@@ -293,45 +293,65 @@
         <h1>INNOVATION ENGINE</h1>
         <h1>Register Your Skills</h1>
 
-        <form id="skills-form">
-            <input type="text" id="first-name" placeholder="First Name" required 
-                   style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px; 
-                          border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px; 
-                          background-color: #2c2c2c; color: #ffffff;">
-            
-            <input type="text" id="last-name" placeholder="Last Name" required 
-                   style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px; 
-                          border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
-                          background-color: #2c2c2c; color: #ffffff;">
-            
-            <input type="email" id="email" placeholder="Email" required 
-                   style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px; 
-                          border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
-                          background-color: #2c2c2c; color: #ffffff;">
-            
-            <input 
-  type="text" 
-  id="skills-input" 
-  placeholder="e.g. web, aws, python, fullstack" 
-  required 
-  autocomplete="off"
-  style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px; 
-         border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
-         background-color: #2c2c2c; color: #ffffff;">
-<div id="autocomplete-skills-input" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; border:1px solid #ccc;"></div>
-            
-            <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Upload Your Photo:</label>
-            <input type="file" id="photo-input" accept="image/*" required
-                   style="width:100%; max-width:250px; margin-bottom:10px; 
-                          border:2px solid #FFD700; padding:10px; border-radius:5px;
-                          background-color: #2c2c2c; color: #ffffff;">
-            
-            <br>
-            <button type="submit" style="width: 160px; height: 40px; font-size: 16px; 
-                    background-color: #FFD700; color: black; border: none; border-radius: 5px; cursor: pointer;">
-                Register
-            </button>
-        </form>
+        <form id="skills-form" action="https://formspree.io/f/xwplqdor" method="POST">
+          <input type="text" id="first-name" placeholder="First Name" required
+                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
+                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
+                        background-color: #2c2c2c; color: #ffffff;">
+          
+          <input type="text" id="last-name" placeholder="Last Name" required
+                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
+                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
+                        background-color: #2c2c2c; color: #ffffff;">
+          
+          <input type="email" name="_replyto" id="email" placeholder="Email" required
+                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
+                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
+                        background-color: #2c2c2c; color: #ffffff;">
+          
+          <input type="text" id="skills-input" placeholder="e.g. web, aws, python, fullstack" required
+                 autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
+                                          padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
+                                          margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff;">
+          <div id="autocomplete-skills-input" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; border:1px solid #ccc;"></div>
+          
+          <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Upload Your Photo:</label>
+          <input type="file" id="photo-input" accept="image/*" required
+                 style="width:100%; max-width:250px; margin-bottom:10px;
+                        border:2px solid #FFD700; padding:10px; border-radius:5px;
+                        background-color: #2c2c2c; color: #ffffff;">
+          
+          <br>
+          <button type="submit" style="width: 160px; height: 40px; font-size: 16px;
+                                      background-color: #FFD700; color: black; border: none; border-radius: 5px; cursor: pointer;">
+              Register
+          </button>
+      </form>
+
+<p id="success-message" style="display:none; color: green;">Message Sent Successfully!</p>
+
+<script>
+    document.getElementById("skills-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        let form = this;
+
+        fetch(form.action, {
+            method: form.method,
+            body: new FormData(form),
+            headers: { "Accept": "application/json" }
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById("success-message").style.display = "block";
+                form.reset();
+            } else {
+                alert("Something went wrong. Please try again.");
+            }
+        })
+        .catch(error => alert("Error: " + error));
+    });
+</script>
+
     <br>
     
 
@@ -539,50 +559,70 @@ fetchSkillsForRegistration().then(setupAutocompleteForSkillsInput);
 }
 
 async function buildBestTeam() {
+  // Get and process skill input
   const skillInput = document.getElementById('teamSkills').value
     .toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
-
+  
+  // Get desired team size
   const teamSize = parseInt(document.getElementById('teamSize').value, 10);
+  
+  // Get container for team results
   const container = document.getElementById('bestTeamContainer');
   container.innerHTML = '';
 
+  // Validate input
   if (!skillInput.length || !teamSize || teamSize < 1) {
     alert('Please enter valid skills and team size.');
     return;
   }
 
+  // Fetch users with skills from Supabase
   const { data: users, error } = await supabaseClient.from('skills').select('*');
-
+  
+  // Handle potential fetch errors
   if (error || !users) {
     console.error('Error fetching users:', error);
     container.innerHTML = '<p style="color:white;">Error loading users.</p>';
     return;
   }
 
-  const combinations = getCombinations(users, teamSize);
-  let bestCombo = [];
-  let maxMatchCount = 0;
+  // Find matching users
+  let matchingUsers = users
+    .map(user => {
+      // Convert user skills to lowercase and trim
+      const userSkills = user.skills.toLowerCase().split(',').map(s => s.trim());
+      
+      // Find matching skills
+      const matchingSkills = skillInput.filter(skill => 
+        userSkills.includes(skill)
+      );
+      
+      // Return user if they have at least one matching skill
+      return matchingSkills.length > 0
+        ? { 
+            ...user, 
+            matchCount: matchingSkills.length,
+            matchingSkills: matchingSkills
+          } 
+        : null;
+    })
+    .filter(user => user !== null)  // Remove users with no matches
+    .sort((a, b) => b.matchCount - a.matchCount);  // Sort by match count
 
-  combinations.forEach(combo => {
-    const allSkills = new Set();
-    combo.forEach(user => {
-      user.skills.toLowerCase().split(',').forEach(skill => allSkills.add(skill.trim()));
-    });
-    const matchCount = skillInput.filter(skill => allSkills.has(skill)).length;
-    if (matchCount > maxMatchCount) {
-      maxMatchCount = matchCount;
-      bestCombo = combo;
-    }
-  });
+  // Limit to team size
+  matchingUsers = matchingUsers.slice(0, teamSize);
 
-  if (!bestCombo.length) {
-    container.innerHTML = '<p style="color:white;">No matching team found.</p>';
+  // Handle no matches
+  if (matchingUsers.length === 0) {
+    container.innerHTML = '<p style="color:white;">No matching team members found.</p>';
     return;
   }
 
-  container.innerHTML = `<p style="color:white;"> </p>`;
-
-  bestCombo.forEach(user => {
+  // Display team members
+ 
+ 
+ 
+  matchingUsers.forEach(user => {
     container.innerHTML += `
       <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:15px;">
         ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
@@ -594,12 +634,17 @@ async function buildBestTeam() {
           <strong>Skills:</strong> 
           ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
         </div>
+        <div class="matching-skills" style="margin-top:5px;">
+          <strong>Matching Skills:</strong> 
+          ${user.matchingSkills.join(', ')}
+        </div>
       </div>
+      
     `;
   });
 }
 
-// ✅ Make it available globally for your button
+// Make function globally available
 window.buildBestTeam = buildBestTeam;
 
        
