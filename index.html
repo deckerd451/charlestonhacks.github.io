@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +6,7 @@
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
     <meta property="og:title" content="CharlestonHacks - Home" />
     <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
-    <meta property="og:image" content="images/reactiveh.png" />
+    <meta property="og:image" content="images/universalcard-01.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>CharlestonHacks - Home</title>
@@ -48,13 +47,12 @@
             margin: 0 auto;
             overflow: hidden;
         }
-
-        #missionVideo {
-            pointer-events: none;
-        }
-        #missionVideo.show {
-            pointer-events: auto;
-        }
+           #missionVideo {
+        pointer-events: none;
+    }
+    #missionVideo.show {
+        pointer-events: auto;
+    }
 
         .media-container img,
         .media-container video {
@@ -171,6 +169,40 @@
             margin-bottom: 10px;
         }
 
+        .icon {
+            color: #FF0000;
+            font-size: 25px;
+            margin-right: 5px;
+        }
+
+        footer .icons-container {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: transparent;
+            padding: 5px 0;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            footer .icons-container a {
+                font-size: 20px;
+            }
+        }
+
+        .icon:hover {
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            50% { transform: translateY(-5px); }
+        }
+
         #previousEventsToggle {
             background: none;
             border: none;
@@ -198,57 +230,6 @@
             z-index: 3;
         }
 
-        /* New clickable areas on the card */
-        .clickable-area {
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-        }
-
-        .top-left {
-            top: 0;
-            left: 0;
-            width: 20%;
-            height: 20%;
-        }
-
-        .top-right {
-            top: 0;
-            right: 0;
-            width: 20%;
-            height: 20%;
-        }
-
-        .bottom-left {
-            bottom: 0;
-            left: 0;
-            width: 20%;
-            height: 20%;
-        }
-
-        .bottom-right {
-            bottom: 0;
-            right: 0;
-            width: 20%;
-            height: 20%;
-        }
-
-        .center-top {
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20%;
-            height: 20%;
-        }
-
-        .center-bottom {
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20%;
-            height: 20%;
-        }
-
     </style>
 </head>
 
@@ -258,7 +239,7 @@
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/reactiveh.png" alt="CharlestonHacks" style="z-index: 3;" />
+                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
@@ -278,19 +259,22 @@
                         <div class="loading-indicator" id="loadingIndicator">
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
-
-                        <!-- Clickable areas -->
-                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')"></div>
-                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')"></div>
-                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')"></div>
-                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')"></div>
-                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')"></div>
-                        <div class="clickable-area center-bottom" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')"></div>
                     </a>
                 </div>
             </header>
         </article>
     </div>
+    <footer>
+        <section class="icons-container">
+            <a href="Poster.html" target="_blank" aria-label="Events" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')"><i class="fas fa-info-circle icon"></i></a>
+            <a href="2card.html" aria-label="Users" onclick="flipCard('images/redscullcard.png', '2card.html')"><i class="fas fa-users icon"></i></a>
+            <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/" target="_blank" aria-label="News" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')"><i class="fas fa-newspaper icon"></i></a>
+            <a href="subscribe.html" aria-label="Subscribe" onclick="flipCard('images/Alexandor.png', 'subscribe.html')"><i class="fas fa-envelope icon"></i></a>
+            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')"><i class="fab fa-linkedin icon"></i></a>
+            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram" onclick="flipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')"><i class="fab fa-instagram icon"></i></a>
+            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook" onclick="flipCard('images/adventurercard.png', 'https://www.facebook.com/deckerdb26354')"><i class="fab fa-facebook icon"></i></a>
+        </section>
+    </footer>
 
     <script src="ho-script.js"></script>
     <script>
