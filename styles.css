@@ -3,3 +3,67 @@ body {
     background-size: cover;
     background-position: center;
 }
+/* Default positions for larger screens */
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 10vw;
+    max-width: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    animation: fadeInScaleUp 1s ease-out forwards;
+}
+
+/* Desktop Layout - Clickable elements around the card */
+.top-left { top: 5%; left: 5%; }
+.top-right { top: 5%; right: 5%; }
+.bottom-left { bottom: 5%; left: 5%; }
+.bottom-right { bottom: 5%; right: 5%; }
+.center-top { top: 2%; left: 50%; transform: translateX(-50%); }
+.center-bottom { bottom: 2%; left: 50%; transform: translateX(-50%); }
+
+/* Tablet Layout - Adjust positions */
+@media (max-width: 1024px) {
+    .clickable-area {
+        width: 12vw; /* Slightly bigger for touchscreens */
+        max-width: 70px;
+    }
+    .top-left, .top-right {
+        top: 2%;
+    }
+    .bottom-left, .bottom-right {
+        bottom: 2%;
+    }
+    .center-top {
+        top: -10%;
+    }
+    .center-bottom {
+        bottom: -10%;
+    }
+}
+
+/* Mobile Layout - Move clickables above or below the card */
+@media (max-width: 768px) {
+    .clickable-area {
+        position: relative;
+        width: 15vw; /* Increase size for touch */
+        max-width: 80px;
+        display: block;
+        margin: 10px auto;
+    }
+    
+    .clickable-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .top-left, .top-right, .bottom-left, .bottom-right {
+        position: static;
+        margin-bottom: 10px;
+    }
+}
