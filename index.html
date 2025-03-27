@@ -267,7 +267,7 @@
                             </p>
                         </div>
                         <div id="countdownWrapper">
-                            <p class="info"><b>Countdown to AI Film Fest:</b></p>
+                            <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
                             <div id="countdown"></div>
                         </div>
                     </div>
@@ -361,8 +361,6 @@
             setTimeout(function () {
                 image.classList.add(randomFlip);
             }, 100);
-
-            playSound();
         }
 
         function flipAndRedirect() {
@@ -407,18 +405,7 @@
         videoElement.addEventListener('ended', function () {
             videoElement.style.display = 'none';
         });
-
-       <script>
-    function playSound() {
-        var audio = new Audio('assets/flipsound.m4a');
-        audio.play();
-    }
-
-    const videoElement = document.getElementById('missionVideo');
-    videoElement.addEventListener('play', function () {
-        playSound();
-    });
-</script>
+    </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
