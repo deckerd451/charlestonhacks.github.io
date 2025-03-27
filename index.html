@@ -1,4 +1,3 @@
-<!DOCTYPE HTML>
 <html lang="en">
 
 <head>
@@ -42,11 +41,18 @@
 
         .media-container {
             position: relative;
+            z-index: 3;
             width: 100%;
             max-width: 600px; /* Adjust the max-width as needed */
             margin: 0 auto;
             overflow: hidden;
         }
+           #missionVideo {
+        pointer-events: none;
+    }
+    #missionVideo.show {
+        pointer-events: auto;
+    }
 
         .media-container img,
         .media-container video {
@@ -64,9 +70,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
+            display: block;
             z-index: 0;
             opacity: 0;
+            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
         }
 
         @media (max-width: 768px) {
@@ -76,6 +83,7 @@
         }
 
         @keyframes fadeIn {
+            from { opacity: 0; }
             to { opacity: 1; }
         }
 
@@ -95,7 +103,7 @@
             text-align: center;
             display: none;
             z-index: 2;
-            opacity: 0;
+            opacity: 1;
         }
 
         #missionContent p, #missionContent a {
@@ -103,25 +111,30 @@
         }
 
         @keyframes flipImageX {
+            0% { opacity: 1; }
             50% { transform: rotateX(180deg); }
-            to { transform: rotateX(360deg); opacity: 0.3; }
+            to { transform: rotateX(360deg); opacity: 0; }
         }
 
         @keyframes flipImageY {
+            0% { opacity: 1; }
             50% { transform: rotateY(180deg); }
-            to { transform: rotateY(360deg); opacity: 0.3; }
+            to { transform: rotateY(360deg); opacity: 0; }
         }
 
         .flip-image-x {
-            animation: flipImageX 2s ease forwards;
+            animation: flipImageX 3s ease forwards;
+            z-index: 5; /* Ensure it's above everything else */
         }
 
         .flip-image-y {
-            animation: flipImageY 2s ease forwards;
+            animation: flipImageY 3s ease forwards;
+            z-index: 5; /* Ensure it's above everything else */
         }
 
         #missionVideo.fadeOut {
             animation: fadeOut 18s ease forwards !important;
+            z-index: 1;
         }
 
         #countdownWrapper {
@@ -130,12 +143,13 @@
         }
 
         #countdown {
-            font-size: 42px;
+            font-size: 30px;
             color: #FF0000;
         }
 
         .logo {
-            margin-bottom: 20px;
+            display: block;
+            margin: 0 auto 20px auto; /* Center horizontally and add bottom margin */
         }
 
         .info {
@@ -225,7 +239,7 @@
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
+                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
@@ -234,7 +248,7 @@
                                 </p>
                             </div>
                             <div id="countdownWrapper">
-                                <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
+                                <p class="info"><b>Countdown to AI Film Fest:</b></p>
                                 <div id="countdown"></div>
                             </div>
                         </div>
@@ -249,10 +263,6 @@
                 </div>
             </header>
         </article>
-        <section class="previous-events" style="display: none;">
-            <h2>Previous Events</h2>
-            <p>Details about previous events will be displayed here.</p>
-        </section>
     </div>
     <footer>
         <section class="icons-container">
@@ -317,30 +327,29 @@
 
             var video = document.getElementById('missionVideo');
             video.style.display = 'block';
-            video.style.opacity = 1;
+            video.style.opacity = 0;
+            setTimeout(function() {
+                video.style.opacity = 1;
+            }, 100); // Delay to allow transition to take effect
             video.play();
 
             playSound();
 
-            setTimeout(function () {
-                document.getElementById('missionContent').style.display = 'block';
-            }, 3000);
+            document.getElementById('missionContent').style.display = 'block';
 
             setTimeout(function () {
                 video.classList.add('fadeOut');
                 setTimeout(function () {
                     video.style.display = 'none';
-                }, 8000);
-            }, 25000);
+                }, 18000);
+            }, 18000);
 
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            setTimeout(function () {
-                image.classList.add(randomFlip);
-            }, 100);
+            image.classList.add(randomFlip);
         }
 
         function playSound() {
-            var audio = new Audio('assets/flipsound.m4a');
+            var audio = new Audio('assets/cardflip.mp3'); // Use a standard click sound effect
             audio.play();
         }
 
@@ -383,6 +392,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
+        videoElement.addEventListener('play', playSound);
         videoElement.addEventListener('ended', function () {
             videoElement.style.display = 'none';
         });
