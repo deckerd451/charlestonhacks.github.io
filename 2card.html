@@ -278,10 +278,11 @@
         }
     </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+
 </head>
 
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
     <a href="#main" class="skip-link">Skip to content</a>
     <div id="main">
         <article class="post featured">
@@ -333,6 +334,11 @@
 <p id="success-message" style="display:none; color: green;">Message Sent Successfully!</p>
 
 <script>
+    const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'; // truncated for readability
+
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
     document.getElementById("skills-form").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent default form submission
         let form = this;
@@ -383,10 +389,7 @@ function getCombinations(arr, k) {
 
 
   document.addEventListener('DOMContentLoaded', async () => {
-  const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'; // truncated for readability
-
-  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+  
   let dynamicSkills = [];
 
   async function fetchUniqueSkills() {
@@ -411,7 +414,7 @@ function getCombinations(arr, k) {
     const input = document.getElementById(inputId);
     const box = document.getElementById(boxId);
 
-    input.addEventListener('input', () => {
+input.addEventListener('input', () => {
   const userInput = input.value.toLowerCase().trim();
   const lastWord = userInput.split(',').pop().trim().toLowerCase();  // ✅ extract last typed skill
 
@@ -474,7 +477,7 @@ function getCombinations(arr, k) {
 
 
 
-        function getCombinations(arr, k) {
+    function getCombinations(arr, k) {
   const results = [];
   function combine(start, combo) {
     if (combo.length === k) {
@@ -490,89 +493,93 @@ function getCombinations(arr, k) {
 }
 
 async function buildBestTeam() {
-  // Get and process skill input
-  const skillInput = document.getElementById('teamSkills').value
-    .toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
-  
-  // Get desired team size
+  const skillInputRaw = document.getElementById('team-skills-input').value;
   const teamSize = parseInt(document.getElementById('teamSize').value, 10);
-  
-  // Get container for team results
   const container = document.getElementById('bestTeamContainer');
+
   container.innerHTML = '';
 
-  // Validate input
-  if (!skillInput.length || !teamSize || teamSize < 1) {
-    alert('Please enter valid skills and team size.');
+  const skillInput = skillInputRaw
+    .toLowerCase()
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if (skillInput.length === 0 || isNaN(teamSize) || teamSize < 1) {
+    alert('Please enter valid skills and a valid team size.');
     return;
   }
 
-  // Fetch users with skills from Supabase
   const { data: users, error } = await supabaseClient.from('skills').select('*');
-  
-  // Handle potential fetch errors
+
   if (error || !users) {
     console.error('Error fetching users:', error);
     container.innerHTML = '<p style="color:white;">Error loading users.</p>';
     return;
   }
 
-  // Find matching users
-  let matchingUsers = users
+  // DEBUG: Log all users pulled
+  console.log('Fetched users:', users);
+
+  // Normalize user skills and match
+  const matchedUsers = users
     .map(user => {
-      // Convert user skills to lowercase and trim
-      const userSkills = user.skills.toLowerCase().split(',').map(s => s.trim());
-      
-      // Find matching skills
-      const matchingSkills = skillInput.filter(skill => 
-        userSkills.includes(skill)
+      if (!user.skills) return null;
+
+      const userSkills = user.skills
+        .toLowerCase()
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const matchingSkills = skillInput.filter(skill =>
+        userSkills.some(userSkill =>
+          userSkill.includes(skill) || skill.includes(userSkill)  // fuzzy-ish
+        )
       );
-      
-      // Return user if they have at least one matching skill
-      return matchingSkills.length > 0
-        ? { 
-            ...user, 
-            matchCount: matchingSkills.length,
-            matchingSkills: matchingSkills
-          } 
-        : null;
+
+      if (matchingSkills.length === 0) return null;
+
+      return {
+        ...user,
+        matchingSkills,
+        matchCount: matchingSkills.length
+      };
     })
-    .filter(user => user !== null)  // Remove users with no matches
-    .sort((a, b) => b.matchCount - a.matchCount);  // Sort by match count
+    .filter(Boolean)
+    .sort((a, b) => b.matchCount - a.matchCount)
+    .slice(0, teamSize);
 
-  // Limit to team size
-  matchingUsers = matchingUsers.slice(0, teamSize);
-
-  // Handle no matches
-  if (matchingUsers.length === 0) {
+  if (matchedUsers.length === 0) {
     container.innerHTML = '<p style="color:white;">No matching team members found.</p>';
     return;
   }
 
-  // Display team members
- 
- 
- 
-  matchingUsers.forEach(user => {
+  // Render team cards
+  matchedUsers.forEach(user => {
+    const allSkills = user.skills
+      .split(',')
+      .map(skill => `<span class="skill-tag">${skill.trim()}</span>`)
+      .join(' ');
+
     container.innerHTML += `
       <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:15px;">
         ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
         <div class="member-name">${user.first_name} ${user.last_name}</div>
-        <div class="member-email" style="display:block; margin-top:5px;">
+        <div class="member-email" style="margin-top:5px;">
           <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none;">${user.email}</a>
         </div>
         <div class="skill-tags" style="margin-top:5px;">
-          <strong>Skills:</strong> 
-          ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
+          <strong>Skills:</strong> ${allSkills}
         </div>
         <div class="matching-skills" style="margin-top:5px;">
-          <strong>Matching Skills:</strong> 
-          ${user.matchingSkills.join(', ')}
+          <strong>Matching:</strong> ${user.matchingSkills.join(', ')}
         </div>
       </div>
-      
     `;
   });
+
+  console.log('✅ Matching users displayed:', matchedUsers);
 }
 
 // Make function globally available
@@ -637,8 +644,8 @@ window.buildBestTeam = buildBestTeam;
         // Click button handler (fixing onclick issue)
         document.getElementById('find-team-btn').addEventListener('click', findMatchingUsers);
     
-        async function findMatchingUsers() {
-    const skillsInput = document.getElementById('skillInput').value.trim();
+    async function findMatchingUsers() {
+    const skillsInput = document.getElementById('teamSkillsInput').value.trim();
     const noResults = document.getElementById('noResults');
     const cardContainer = document.getElementById('cardContainer');
     const matchNotification = document.getElementById('matchNotification');
@@ -743,8 +750,8 @@ cardContainer.innerHTML = data.map(user => `
 `).join('');
 }
     
-    
     </script>
+  
 
         <!-- Display Matches Here -->
         <ul id="results-list"></ul>
@@ -776,7 +783,7 @@ cardContainer.innerHTML = data.map(user => `
 
 
 
-      <button id="find-team-btn" 
+      <button id="find-team-btn" onclick="findMatchingUsers()"
               style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; 
                      border-radius: 5px; cursor: pointer; margin-top: 10px; display: block;">
          Get People
