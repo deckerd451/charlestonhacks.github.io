@@ -278,7 +278,7 @@
         }
     </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 </head>
 
 <body>
@@ -381,169 +381,91 @@ function getCombinations(arr, k) {
 
 
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
 
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+  document.addEventListener('DOMContentLoaded', async () => {
+  const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'; // truncated for readability
 
-        let dynamicSkillsForInput = [];
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+  let dynamicSkills = [];
 
-        async function fetchUniqueSkills() {
-    const { data, error } = await supabaseClient.from('skills').select('skills');
+  async function fetchUniqueSkills() {
+    try {
+      const { data, error } = await supabaseClient.from('skills').select('skills');
+      if (error) throw error;
 
-    if (error) {
+      dynamicSkills = [...new Set(
+        data.flatMap(item =>
+          item.skills.split(',').map(skill => skill.trim().toLowerCase())
+        )
+      )];
+
+      console.log("Skills fetched:", dynamicSkills);
+    } catch (error) {
       console.error('Error fetching skills:', error);
-      return;
+      dynamicSkills = []; // fail-safe fallback
     }
-
-    const skillSet = new Set();
-    data.forEach(entry => {
-      if (entry.skills) {
-        entry.skills.split(',').forEach(skill => {
-          skillSet.add(skill.trim().toLowerCase());
-        });
-      }
-    });
-
-    dynamicSkills = Array.from(skillSet);
   }
 
-  function setupAutocomplete() {
-    const input = document.getElementById('teamSkills');
-    const list = document.getElementById('autocomplete-list');
+  function setupAutocomplete(inputId, boxId) {
+    const input = document.getElementById(inputId);
+    const box = document.getElementById(boxId);
 
     input.addEventListener('input', () => {
-      const currentInput = input.value;
-      const lastWord = currentInput.split(',').pop().trim().toLowerCase();
+      const userInput = input.value.toLowerCase().trim();
+      box.innerHTML = '';
 
-      list.innerHTML = '';
-      if (!lastWord) return;
+      if (!userInput || dynamicSkills.length === 0) {
+        box.style.display = 'none';
+        return;
+      }
 
-      const matches = dynamicSkills.filter(skill =>
-        skill.startsWith(lastWord)
-      );
+      const matches = dynamicSkills.filter(skill => skill.includes(userInput)).slice(0, 10);
+      if (matches.length === 0) {
+        box.style.display = 'none';
+        return;
+      }
 
-      matches.forEach(match => {
+      matches.forEach(skill => {
         const item = document.createElement('div');
-        item.style.padding = '5px 10px';
+        item.textContent = skill;
+        item.style.padding = '5px';
         item.style.cursor = 'pointer';
-        item.textContent = match;
-
-        item.addEventListener('click', () => {
-          const parts = currentInput.split(',');
-          parts.pop(); // remove partial
-          parts.push(match);
-          input.value = parts.join(', ') + ', ';
-          list.innerHTML = '';
-        });
-
-        list.appendChild(item);
+        item.onclick = () => {
+          const current = input.value.split(',').map(s => s.trim());
+          if (!current.includes(skill)) {
+            current.pop(); // replace last partial input
+            current.push(skill);
+            input.value = current.join(', ') + ', ';
+          }
+          box.innerHTML = '';
+          box.style.display = 'none';
+        };
+        box.appendChild(item);
       });
 
       const rect = input.getBoundingClientRect();
-      list.style.top = `${rect.bottom + window.scrollY}px`;
-      list.style.left = `${rect.left + window.scrollX}px`;
-      list.style.width = `${rect.width}px`;
+      box.style.left = `${rect.left + window.scrollX}px`;
+      box.style.top = `${rect.bottom + window.scrollY}px`;
+      box.style.width = `${rect.width}px`;
+      box.style.display = 'block';
     });
 
     document.addEventListener('click', (e) => {
-      if (!list.contains(e.target) && e.target !== input) {
-        list.innerHTML = '';
+      if (!box.contains(e.target) && e.target !== input) {
+        box.style.display = 'none';
       }
     });
   }
 
-  // 🟡 Trigger autocomplete setup
-  fetchUniqueSkills().then(setupAutocomplete);
+  // Run setup
+  await fetchUniqueSkills();
+  setupAutocomplete('skills-input', 'autocomplete-skills-input');
+  setupAutocomplete('teamSkillsInput', 'autocomplete-team-skills');
+  setupAutocomplete('team-skills-input', 'autocomplete-teams-skills');
+});
 
-async function fetchSkillsForRegistration() {
-  const { data, error } = await supabaseClient.from('skills').select('skills');
 
-  if (error) {
-    console.error('Error fetching skills:', error);
-    return;
-  }
-
-  const skillSet = new Set();
-  data.forEach(entry => {
-    if (entry.skills) {
-      entry.skills.split(',').forEach(skill => {
-        skillSet.add(skill.trim().toLowerCase());
-      });
-    }
-  });
-
-  dynamicSkillsForInput = Array.from(skillSet);
-}
-
-async function fetchSkillsForRegistration() {
-  const { data, error } = await supabaseClient.from('skills').select('skills');
-
-  if (error) {
-    console.error('Error fetching skills:', error);
-    return;
-  }
-
-  const skillSet = new Set();
-  data.forEach(entry => {
-    if (entry.skills) {
-      entry.skills.split(',').forEach(skill => {
-        skillSet.add(skill.trim().toLowerCase());
-      });
-    }
-  });
-
-  dynamicSkillsForInput = Array.from(skillSet);
-}
-
-function setupAutocompleteForSkillsInput() {
-  const input = document.getElementById('skills-input');
-  const list = document.getElementById('autocomplete-skills-input');
-
-  input.addEventListener('input', () => {
-    const currentInput = input.value;
-    const lastWord = currentInput.split(',').pop().trim().toLowerCase();
-
-    list.innerHTML = '';
-    if (!lastWord) return;
-
-    const matches = dynamicSkillsForInput.filter(skill =>
-      skill.startsWith(lastWord)
-    );
-
-    matches.forEach(match => {
-      const item = document.createElement('div');
-      item.style.padding = '5px 10px';
-      item.style.cursor = 'pointer';
-      item.textContent = match;
-
-      item.addEventListener('click', () => {
-        const parts = currentInput.split(',');
-        parts.pop(); // remove partial
-        parts.push(match);
-        input.value = parts.join(', ') + ', ';
-        list.innerHTML = '';
-      });
-
-      list.appendChild(item);
-    });
-
-    const rect = input.getBoundingClientRect();
-    list.style.top = `${rect.bottom + window.scrollY}px`;
-    list.style.left = `${rect.left + window.scrollX}px`;
-    list.style.width = `${rect.width}px`;
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!list.contains(e.target) && e.target !== input) {
-      list.innerHTML = '';
-    }
-  });
-}
-
-// 🔁 Trigger autocomplete on page load
-fetchSkillsForRegistration().then(setupAutocompleteForSkillsInput);
 
         function getCombinations(arr, k) {
   const results = [];
@@ -699,7 +621,7 @@ window.buildBestTeam = buildBestTeam;
         });
     
         // Skill search input handler
-        document.getElementById('skillInput').addEventListener('keydown', (event) => {
+        document.getElementById('skills-input').addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 findMatchingUsers();
             }
@@ -814,8 +736,7 @@ cardContainer.innerHTML = data.map(user => `
 `).join('');
 }
     
-        
-    });
+    
     </script>
 
         <!-- Display Matches Here -->
@@ -827,17 +748,32 @@ cardContainer.innerHTML = data.map(user => `
     Separate multiple skills with commas to narrow the search</p>
 
     <div class="input-container" style="display: flex; flex-direction: column; align-items: center;">
-      <label for="skillInput" style="font-size: 16px; margin-bottom: 5px;">Required Skills</label>
-      <input type="text" id="skillInput" placeholder="e.g. aws, fullstack, java, python" 
-             aria-describedby="skillHelp"
-             style="width: 250px; height: 40px; font-size: 16px; padding: 5px; border: 2px solid #FFD700; border-radius: 5px;">
       
+     
+
+
+    
+
+<!-- Label and Input -->
+<label for="skills-input" style="font-size: 16px; margin-bottom: 5px; display: block; color: #FFD700;">Required Skills</label>
+<input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" required
+       autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
+                                  padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
+                                  margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff; display: block;">
+
+<!-- Suggestion Box -->
+<div id="autocomplete-team-skills" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; 
+     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
+
+
+
+
+
       <button id="find-team-btn" 
-              style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+              style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; 
+                     border-radius: 5px; cursor: pointer; margin-top: 10px; display: block;">
          Get People
       </button>
-</div>
-
 <!-- Selected skills display (optional feature) -->
 <div class="selected-skills" id="selectedSkillsContainer">
     <!-- dynamically shown selected skills -->
@@ -864,11 +800,14 @@ cardContainer.innerHTML = data.map(user => `
   </p>
   
   <label for="teamSkills" style="font-size: 16px; margin-bottom: 5px;">Required Skills</label>
-  <input type="text" id="teamSkills" placeholder="e.g. aws, fullstack, java, python"
+  <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python"
      style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
             border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
             background-color: #2c2c2c; color: #ffffff;" 
      autocomplete="off" />
+<!-- Suggestion Box -->
+<div id="autocomplete-teams-skills" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; 
+     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
 
   <label for="teamSize" style="font-size: 16px; margin-bottom: 5px;">Team Size</label>
   <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6"
