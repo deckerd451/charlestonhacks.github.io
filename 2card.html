@@ -412,44 +412,51 @@ function getCombinations(arr, k) {
     const box = document.getElementById(boxId);
 
     input.addEventListener('input', () => {
-      const userInput = input.value.toLowerCase().trim();
+  const userInput = input.value.toLowerCase().trim();
+  const lastWord = userInput.split(',').pop().trim().toLowerCase();  // ✅ extract last typed skill
+
+  box.innerHTML = '';
+
+  if (!lastWord || dynamicSkills.length === 0) {
+    box.style.display = 'none';
+    return;
+  }
+
+  const matches = dynamicSkills
+    .filter(skill => skill.includes(lastWord))  // ✅ filter using only the lastWord
+    .slice(0, 10);
+
+  if (matches.length === 0) {
+    box.style.display = 'none';
+    return;
+  }
+
+  matches.forEach(skill => {
+    const item = document.createElement('div');
+    item.textContent = skill;
+    item.style.padding = '5px';
+    item.style.cursor = 'pointer';
+
+    item.onclick = () => {
+      const parts = input.value.split(',');
+      parts.pop(); // remove partial word
+      parts.push(skill);
+      input.value = parts.map(p => p.trim()).join(', ') + ', ';
       box.innerHTML = '';
+      box.style.display = 'none';
+    };
 
-      if (!userInput || dynamicSkills.length === 0) {
-        box.style.display = 'none';
-        return;
-      }
+    box.appendChild(item);
+  });
 
-      const matches = dynamicSkills.filter(skill => skill.includes(userInput)).slice(0, 10);
-      if (matches.length === 0) {
-        box.style.display = 'none';
-        return;
-      }
+  const rect = input.getBoundingClientRect();
+  box.style.left = `${rect.left + window.scrollX}px`;
+  box.style.top = `${rect.bottom + window.scrollY}px`;
+  box.style.width = `${rect.width}px`;
+  box.style.display = 'block';
+});
 
-      matches.forEach(skill => {
-        const item = document.createElement('div');
-        item.textContent = skill;
-        item.style.padding = '5px';
-        item.style.cursor = 'pointer';
-        item.onclick = () => {
-          const current = input.value.split(',').map(s => s.trim());
-          if (!current.includes(skill)) {
-            current.pop(); // replace last partial input
-            current.push(skill);
-            input.value = current.join(', ') + ', ';
-          }
-          box.innerHTML = '';
-          box.style.display = 'none';
-        };
-        box.appendChild(item);
-      });
-
-      const rect = input.getBoundingClientRect();
-      box.style.left = `${rect.left + window.scrollX}px`;
-      box.style.top = `${rect.bottom + window.scrollY}px`;
-      box.style.width = `${rect.width}px`;
-      box.style.display = 'block';
-    });
+      
 
     document.addEventListener('click', (e) => {
       if (!box.contains(e.target) && e.target !== input) {
