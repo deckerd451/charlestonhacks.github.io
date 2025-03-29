@@ -311,7 +311,7 @@
                         border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
                         background-color: #2c2c2c; color: #ffffff;">
             
-          <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Professional Skills</label>
+          <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Professional Skills <br> (Add comma after each skill)</label>
           <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required
                  autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
                                           padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
@@ -441,13 +441,13 @@ input.addEventListener('input', () => {
     item.style.cursor = 'pointer';
 
     item.onclick = () => {
-      const parts = input.value.split(',');
-      parts.pop(); // remove partial word
-      parts.push(skill);
-      input.value = parts.map(p => p.trim()).join(', ') + ', ';
-      box.innerHTML = '';
-      box.style.display = 'none';
-    };
+  const parts = input.value.split(',');
+  parts.pop(); // remove partial word
+  parts.push(skill);
+  input.value = parts.map(p => p.trim()).join(', ');
+  box.innerHTML = '';
+  box.style.display = 'none';
+};
 
     box.appendChild(item);
   });
@@ -593,7 +593,16 @@ window.buildBestTeam = buildBestTeam;
             const firstName = document.getElementById('first-name').value;
             const lastName = document.getElementById('last-name').value;
             const email = document.getElementById('email').value;
-            const skillsText = document.getElementById('skills-input').value;
+            const skillsInputField = document.getElementById('skills-input');
+            skillsInputField.value = skillsInputField.value.replace(/,\s*$/, '');
+                        
+            const rawSkills = skillsInputField.value;
+            const skillsText = rawSkills
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+    .join(',')
+    .replace(/,+$/, '');
             const photoInput = document.getElementById('photo-input').files[0];
     
             if (!photoInput) {
@@ -616,7 +625,7 @@ window.buildBestTeam = buildBestTeam;
     
             // Correct URL referencing the proper bucket (hacksbucket)
             const imageUrl = `${supabaseUrl}/storage/v1/object/public/hacksbucket/${fileName}`;
-    
+            console.log("Skills to be saved:", `"${skillsText}"`);
             const { error } = await supabaseClient.from('skills').insert({
                 first_name: firstName,
                 last_name: lastName,
