@@ -294,7 +294,6 @@
         <h1>INNOVATION ENGINE</h1>
          <br>
         <h1>Create Your Profile</h1>
-<p class="instructions">Enter your information to become part of the network—others can find you based on your skills</p>
 
         <form id="skills-form" action="https://formspree.io/f/xwplqdor" method="POST">
           <input type="text" id="first-name" placeholder="First Name" required
@@ -320,10 +319,32 @@
           <div id="autocomplete-skills-input" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; border:1px solid #ccc;"></div>
           
           <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Upload Your Photo</label>
-          <input type="file" id="photo-input" accept="image/*" required
-                 style="width:100%; max-width:250px; margin-bottom:10px;
-                        border:2px solid #FFD700; padding:10px; border-radius:5px;
-                        background-color: #2c2c2c; color: #ffffff;">
+<input type="file" id="photo-input" accept="image/*" required
+       style="width:100%; max-width:250px; margin-bottom:10px;
+              border:2px solid #FFD700; padding:10px; border-radius:5px;
+              background-color: #2c2c2c; color: #ffffff;">
+
+<!-- Image Preview Element -->
+<img id="preview" src="#" alt="Image Preview" style="display: none; max-width: 120px; margin-top: 10px; border-radius: 5px; border: 2px solid #FFD700;" />
+
+<script>
+  const input = document.getElementById('photo-input');
+  const preview = document.getElementById('preview');
+
+  input.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        preview.setAttribute('src', e.target.result);
+        preview.style.display = 'block';
+      };
+
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
           
           <br>
           <button type="submit" style="width: 160px; height: 40px; font-size: 16px;
