@@ -1,5 +1,6 @@
 body {
     background-image: url('images/x.webp');
+    background-attachment: fixed;
     background-size: cover;
     background-position: center;
 }
