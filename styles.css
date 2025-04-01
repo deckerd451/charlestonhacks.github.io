@@ -5,6 +5,6 @@ body {
 }
 @media (max-width: 768px) {
   body {
-    background-image: url('images/xmobile.webp'); /* Use a mobile-friendly version */
+    background-image: url('images/xweb.webp'); /* Use a mobile-friendly version */
   }
 }
