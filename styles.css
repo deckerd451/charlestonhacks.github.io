@@ -1,5 +1,5 @@
 body {
-    background-image: url('images/x.webp');
+    background-image: url('images/xweb.webp');
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
@@ -7,7 +7,7 @@ body {
 
 @media (max-width: 768px) {
   body {
-    background-image: url('images/xweb.webp'); /* Use a mobile-friendly version */
+    background-image: url('images/xmobile.webp'); /* Use a mobile-friendly version */
     background-attachment: scroll; /* Fix for mobile devices to improve performance */
     background-size: cover;
     background-position: center;
