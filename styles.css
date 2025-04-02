@@ -1,3 +1,4 @@
+/* Existing styles */
 body {
     margin: 0;
     height: 100vh;
@@ -25,6 +26,17 @@ body::before {
     }
 }
 
-#matchmaking-section {
-    margin-top: 85px; /* Adjust the value as needed */
+/* New styles for 2card.html */
+.two-card-background::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('images/2card-background.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
 }
