@@ -40,3 +40,9 @@ body::before {
     background-repeat: no-repeat;
     z-index: -1;
 }
+
+@media (max-width: 768px) {
+    .two-card-background::before {
+        background-image: url('images/xmobile.webp'); /* Use a mobile-friendly version for two-card */
+    }
+}
