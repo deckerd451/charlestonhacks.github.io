@@ -24,3 +24,8 @@ body::before {
         background-image: url('images/xmobile.webp'); /* Use a mobile-friendly version */
     }
 }
+
+#matchmaking-section {
+    margin-top: 85px; /* Adjust the value as needed */
+}
+
