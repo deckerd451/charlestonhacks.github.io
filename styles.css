@@ -25,7 +25,7 @@ body.two-card-page::before {
 
 @media (max-width: 768px) {
     body::before {
-        background-image: url('images/mobweb.webp'); /* Mobile default background image */
+        background-image: url('images/mobback.webp'); /* Mobile default background image */
     }
 
     body.two-card-page::before {
