@@ -12,20 +12,27 @@ body::before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: url('images/webback.webp');
+    background-image: url('images/xweb.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
 }
 
+body.two-card-page::before {
+    background-image: url('images/webback.webp');
+}
+
 @media (max-width: 768px) {
     body::before {
-        background-image: url('images/xmobile.webp'); /* Use a mobile-friendly version */
+        background-image: url('images/mobweb.webp'); /* Use a mobile-friendly version */
+    }
+
+    body.two-card-page::before {
+        background-image: url('images/xmobile.webp'); /* Use the same mobile-friendly version */
     }
 }
 
 #matchmaking-section {
     margin-top: 85px; /* Adjust the value as needed */
 }
-
