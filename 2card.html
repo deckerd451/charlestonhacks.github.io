@@ -361,38 +361,60 @@
           
           <br>
           <button type="submit" style="width: 160px; height: 40px; font-size: 16px;
-                                      background-color: #FFD700; color: black; border: none; border-radius: 5px; cursor: pointer;">
-              Register
-          </button>
+                             background-color: #FFD700; color: black; border: none;
+                             border-radius: 5px; cursor: pointer;">
+  Register & subscribe to mailing List
+</button>
       </form>
 
 <p id="success-message" style="display:none; color: green;">Added Successfully!</p>
 
 <script>
-    const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'; // truncated for readability
-
+  const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'; // keep this secure in production!
   const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    document.getElementById("skills-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent default form submission
-        let form = this;
+  document.getElementById("skills-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    let form = this;
 
-        fetch(form.action, {
-            method: form.method,
-            body: new FormData(form),
-            headers: { "Accept": "application/json" }
-        })
-        .then(response => {
-            if (response.ok) {
-                document.getElementById("success-message").style.display = "block";
-                form.reset();
-            } else {
-                alert("Something went wrong. Please try again.");
-            }
-        })
-        .catch(error => alert("Error: " + error));
-    });
+    // Capture form field values
+    const fname = document.getElementById("first-name").value;
+    const lname = document.getElementById("last-name").value;
+    const email = document.getElementById("email").value;
+
+    // ✅ 1. Submit to Formspree
+    fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),
+      headers: { "Accept": "application/json" }
+    })
+    .then(response => {
+      if (response.ok) {
+        document.getElementById("success-message").style.display = "block";
+        form.reset();
+      } else {
+        alert("Something went wrong with Formspree. Please try again.");
+      }
+    })
+    .catch(error => alert("Error: " + error));
+
+    // ✅ 2. Submit to Mailchimp in a new tab
+    const mailchimpForm = document.createElement("form");
+    mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+    mailchimpForm.method = "POST";
+    mailchimpForm.target = "_blank";
+
+    mailchimpForm.innerHTML = `
+      <input type="hidden" name="FNAME" value="${fname}">
+      <input type="hidden" name="LNAME" value="${lname}">
+      <input type="hidden" name="EMAIL" value="${email}">
+    `;
+
+    document.body.appendChild(mailchimpForm);
+    mailchimpForm.submit();
+    document.body.removeChild(mailchimpForm); // cleanup
+  });
 </script>
 
     <br>
