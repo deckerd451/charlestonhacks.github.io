@@ -16,6 +16,8 @@
     <title>CharlestonHacks - Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="manifest" href="manifest.json" />
+    <!-- Where the background image is referenced -->
+    <link rel="stylesheet" href="styles.css">
     <style>
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
@@ -451,17 +453,7 @@ body {
     </style>
 </head>
 
-   <video autoplay muted id="background-video">
-    <source src="assets/Happy-Hour.mp4" type="video/mp4">
-    Your browser does not support HTML5 video.
-</video>
-
-<script>
-    // Adjust the playback speed
-    document.getElementById('background-video').playbackRate = 0.8;
-</script>
-
-
+   
 
 <body class="is-preload">
     <div id="main">
@@ -473,7 +465,7 @@ body {
                         <div id="missionContent">
                             <div class="body-text">
                                 <p>
-                                    <img id="aiffBanner" src="images/aiffspin.svg" alt="AI Film Fest" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" onclick="flipAndRedirect()">
+                                    <img id="aiffBanner" src="images/iegold.svg" alt="Innovation Egnine" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" onclick="flipAndRedirect()">
                                 </p>
                             </div>
                             <div id="countdownWrapper">
@@ -481,10 +473,16 @@ body {
                                 <div id="countdown"></div>
                             </div>
                         </div>
+
                         <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
+                        <div class="loading-indicator" id="loadingIndicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+
                         <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
                         <div class="loading-indicator" id="loadingIndicator">
                             <i class="fas fa-spinner fa-spin"></i>
@@ -515,7 +513,7 @@ body {
     <script src="ho-script.js"></script>
     <script>
         var countdownElement = document.getElementById('countdown');
-        var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
+        var countDownDate = new Date("June 1, 2025 19:00:00").getTime();
         var countdownFunction = setInterval(function () {
             var now = new Date().getTime();
             var distance = countDownDate - now;
@@ -526,7 +524,7 @@ body {
             countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
             if (distance < 0) {
                 clearInterval(countdownFunction);
-                countdownElement.innerHTML = "AIFF is Here!";
+                countdownElement.innerHTML = "Innovation Engine is here!";
             }
         }, 1000);
 
@@ -593,12 +591,7 @@ body {
 
             document.getElementById('missionContent').style.display = 'block';
 
-            setTimeout(function () {
-                video.classList.add('fadeOut');
-                setTimeout(function () {
-                    video.style.display = 'none';
-                }, 18000);
-            }, 18000);
+            
 
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             image.classList.add(randomFlip);
@@ -609,7 +602,7 @@ body {
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             banner.classList.add(randomFlip);
             setTimeout(function () {
-                window.location.href = 'https://charlestonhacks.com/techweek.html';
+                window.location.href = 'https://charlestonhacks.com/2card.html';
             }, 2000);
         }
 
@@ -663,10 +656,7 @@ body {
             document.getElementById('cardFrame').style.display = 'block';
         }
 
-        const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
-        videoElement.addEventListener('ended', showCardFrame);
-
+        
         // Ensure the spinner remains visible until the link is opened
         window.addEventListener('beforeunload', function () {
             document.getElementById('spinner').style.display = 'none';

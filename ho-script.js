@@ -7,7 +7,7 @@ function toggleMissionContent() {
     if (missionContent.style.display === "none") {
         missionContent.style.display = "block";
         missionVideo.style.display = "block";
-        missionVideo.play(); // Autoplay the video
+        
         missionImage.style.opacity = 0; // Fade out the image
     } else {
         missionContent.style.display = "none";
