@@ -351,67 +351,6 @@ body {
             z-index: 3;
         }
 
-        /* Spinning progress wheel */
-        .spinner {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 8px solid #fff;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            z-index: 1000; /* Ensure it's above everything else */
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-.clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%; /* Make it circular */
-    aspect-ratio: 1/1; /* Maintain perfect circle */
-    width: 15vw; /* Adjust size based on viewport width */
-    max-width: 100px; /* Prevent it from getting too large */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
-}
-
-.clickable-area:hover {
-    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
-
-}
-
-/* Adjust position as needed */
-.top-left {
-    top: 2%;
-    left: 4%;
-}
-
-.top-right {
-    top: 2%;
-    right: 4%;
-}
-
-.bottom-left {
-    bottom: 2%;
-    left: 4%;
-}
-
-.bottom-right {
-    bottom: 2%;
-    right: 4%;
-}
-        .fade-out-body *:not(.spinner) {
-            animation: fadeOut 2s ease forwards;
-        }
-
         /* Make hcard and all elements 20% smaller on web only */
         @media (min-width: 769px) {
             .media-container {
