@@ -25,11 +25,11 @@ body.two-card-page::before {
 
 @media (max-width: 768px) {
     body::before {
-        background-image: url('images/mobback.webp'); /* Mobile default background image */
+        background-image: url('images/moback.webp'); /* Mobile default background image */
     }
 
     body.two-card-page::before {
-        background-image: url('images/weback.webp'); /* Mobile background image for innovation engine page */
+        background-image: url('images/moback.webp'); /* Mobile background image for innovation engine page */
     }
 }
 
