@@ -20,7 +20,7 @@ body::before {
 }
 
 body.two-card-page::before {
-    background-image: url('images/IEB.webp'); /* Background image for 2-card page */
+    background-image: url('images/ieback.webp'); /* Background image for 2-card page */
 }
 
 @media (max-width: 768px) {
