@@ -100,16 +100,6 @@
     bottom: 2%;
     right: 5%;
 }
-.center-top {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.center-bottom {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
 body {
     position: relative;
     z-index: 1;
@@ -190,28 +180,8 @@ body {
     #countdown {
         font-size: 24px;
     }
-}
-@media (max-width: 768px) {
-    .center-top {
-        top: -30%; /* Move up by adjusting this value */
-    }
 
-    .center-bottom {
-        bottom: 0%; /* Move up by adjusting this value */
-    }
-}
-     
-  .clickable-area img {
-      padding: 0;
-      margin: 0;
-  }
-
-    .center-top, .center-bottom {
-        width: 16.5vw; /* Increase by 10% from 15vw */
-        max-width: 110px; /* Increase by 10% from 100px */
-    }
-
-  @keyframes fadeIn {
+@keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
