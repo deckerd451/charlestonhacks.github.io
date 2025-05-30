@@ -118,7 +118,7 @@
             <p><b>The theme for HarborHack 2024 was transformation.</b></p>
 
             <!-- Devpost Button -->
-            <a href="https://harborhack-24.devpost.com/" class="button" target="_blank">HarborHack24 Devpost</a>
+            <a href="https://innovation-engine.devpost.com" class="button" target="_blank">HarborHack24 Devpost</a>
 
             <!-- Photos Button (Initially Closed) -->
             <button class="collapsible">Photos</button>
