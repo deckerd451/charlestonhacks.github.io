@@ -104,18 +104,19 @@
            <a class="image main" onclick="openLightbox('images/hh24poster.png')">
                <img src="images/hh24poster.png" alt="Hackathon Poster" class="poster-img" />
            </a>
-
-            <p><h3>Transformation</h3></p>
             <hr>
-            <p><b>CharlestonHacks hosted HarborHack 2024, October 18th-20th at the College of Charleston's Harbor Walk campus. The event brought together 104 registrants, forming 10 teams and evaluated by 9 esteemed judges.
+            <p><b>About the Challenge:
+Hot on the heels of Charleston Tech Week, CharlestonHacks presents the Innovation Engine Hackathon.
 
-            Our first-place team, Alethia, developed a unique dating app aimed at young to middle-aged adults, fostering genuine romantic and platonic connections. Unlike traditional dating apps, Alethia emphasizes authentic relationships over superficial matching.
+Innovation Engine brings together community stakeholders and builders in a program designed to tackle real, unmet challenges across Charleston.
 
-            Power Podcast took second place. This innovative platform extracts valuable insights, shared wisdom, and recommendations from long-form audio content, promoting personal growth and transformation through shared knowledge.
+Stakeholders will submit problem statements they'd like to see solved and will provide ongoing feedback and support throughout the month to help guide projects toward meaningful outcomes.
 
-            Finally, honorable mention went to HomeBridge, a service bridging connections for travelers domestically and internationally.</b></p> 
+Builders will choose a challenge, join a team, and take on a role where they can make a real impact, whether in design, development, strategy, or research. Together, teams will work to create solutions that matter.
 
-            <p><b>The theme for HarborHack 2024 was transformation.</b></p>
+Mentorship will be available throughout the event to support product development, design, and engineering efforts.
+
+</b></p>
 
             <!-- Devpost Button -->
             <a href="https://innovation-engine.devpost.com" class="button" target="_blank">HarborHack24 Devpost</a>
