@@ -8,38 +8,29 @@
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
     <style>
-        /* Add space between the Photos button and the first photo */
         .content img {
-            margin-top: 20px; /* Adjust this value as needed */
+            margin-top: 20px;
         }
-
-        /* Smaller initial size for the poster */
         .poster-img {
-            max-width: 50%; /* Adjust this percentage as needed */
+            max-width: 50%;
             height: auto;
             cursor: pointer;
-            transition: transform 0.3s ease; /* Smooth transition */
+            transition: transform 0.3s ease;
         }
-        
-        /* Center the poster image */
         .image.main {
             display: flex;
-            justify-content: center;  /* Horizontally centers the image */
-            align-items: center;      /* Vertically centers the image */
-            text-align: center;       /* Ensures the content is centered inside */
-            margin: 0 auto;           /* Ensures the container is centered on the page */
-            width: 100%;              /* Makes sure it takes full width */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: 0 auto;
+            width: 100%;
         }
-
-        /* Lightbox keeps full size */
         .lightbox-content {
             max-width: 90%;
             max-height: 90%;
             margin: auto;
             display: block;
         }
-
-        /* Lightbox Modal Styles */
         .lightbox {
             display: none;
             position: fixed;
@@ -53,14 +44,6 @@
             align-items: center;
             justify-content: center;
         }
-
-        .lightbox-content {
-            max-width: 90%;
-            max-height: 90%;
-            margin: auto;
-            display: block;
-        }
-
         .lightbox .close {
             position: absolute;
             top: 15px;
@@ -69,13 +52,9 @@
             color: white;
             cursor: pointer;
         }
-
-        /* Hide photos section initially */
         .content {
             display: none;
         }
-
-        /* Styling for YouTube Embed */
         .video-container {
             margin-top: 20px;
             display: flex;
@@ -83,11 +62,10 @@
             align-items: center;
             width: 100%;
         }
-
         iframe {
             width: 100%;
-            max-width: 600px; /* You can adjust this value to control the iframe size */
-            height: 315px; /* Adjust based on your preference */
+            max-width: 600px;
+            height: 315px;
         }
     </style>
 </head>
@@ -131,46 +109,29 @@
             <div class="content">
                 <a href="https://harborhack-24.devpost.com/" class="image fit">
                     <div class="photo-gallery">
-                        <!-- Image 1 -->
                         <img src="images/geoff.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        <!-- Image 2 -->
                         <img src="images/judgessmiling.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        <!-- Image 3 -->
                         <img src="images/Harborwalk.jpg" alt="HarborHack Photos" class="gallery-img" />
-                          <!-- Image 4 -->
                         <img src="images/harborwalkeast.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        <!-- Image 5 -->
                         <img src="images/wizard.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        <!-- Image 6 -->
                         <img src="images/roots.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        <!-- Image 7 -->
                         <img src="images/Team photo.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        <!-- Image 8 -->
                         <img src="images/Anya.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        <!-- Image 9 -->
                         <img src="images/Home Bridge.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        <!-- Image 10 -->
                         <img src="images/Judges Good.jpg" alt="HarborHack Photos" class="gallery-img" />
-                        
                     </div>
                 </a>
 
-                 <!-- YouTube Video Embed -->
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/JxdOjomvKjo" title="HarborHack 2024 Video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
-                
-                <!-- Second YouTube Video Embed -->
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/4uqdOFcB_1o?feature=share" title="HarborHack 2024 Video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
-
-                <!-- Third YouTube Video Embed -->
                 <div class="video-container">
                     <iframe src="https://youtube.com/embed/cSqOKLuSub4" title="HarborHack 2024 Video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
-
 
         </article>
     </div>
@@ -194,7 +155,7 @@
         function openLightbox(imgSrc) {
             var modal = document.getElementById('lightboxModal');
             var modalImg = document.getElementById('lightboxImg');
-            modal.style.display = 'flex'; // Show modal
+            modal.style.display = 'flex';
             modalImg.src = imgSrc;
         }
 
@@ -210,21 +171,27 @@
             }
         });
 
-       <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var coll = document.getElementsByClassName("collapsible");
-        for (var i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        }
-    });
-</script>
+        // Collapsible Photos button -- works for all devices
+        document.addEventListener("DOMContentLoaded", function () {
+            var coll = document.getElementsByClassName("collapsible");
+            for (var i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function (event) {
+                    event.preventDefault();
+                    this.classList.toggle("active");
+                    // Find the .content div after the closest parent .post or .featured
+                    var article = this.closest("article");
+                    var content = article ? article.querySelector(".content") : null;
+                    if (content) {
+                        if (content.style.display === "block") {
+                            content.style.display = "none";
+                        } else {
+                            content.style.display = "block";
+                            content.scrollIntoView({ behavior: "smooth" });
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
