@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>hack night 24</title>
+    <title>HackOps 2024</title>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
@@ -56,17 +56,28 @@
                 <header class="major">
                     <a class="image main" href="Poster.html"><img src="images/CHARLESTONHACKS Grey off center-01-01.png" alt="" /></a>
                 </header>
-                <a class="image main" href="https://hack-nights.devpost.com/"><img src="images/hnadvert.jpg" alt="" /></a>
-                <p><h2>Hack Nights (24) has come to an end, but the journey doesn't stop here.</p></h2> 
+                <a class="image main" href="https://hackops.devpost.com/"><img src="images/hoposter24.jpg" alt="" /></a>
+                <p><h2>HackOps (24) has come to an end, but the journey doesn't stop here.</p></h2> 
                 <br>
-                <p><b>AI for Humanity</b> - the theme of Hack Nights (24), the deeper motivation behind our actions setting in motion other actions 
-to help change our world. How will your project actually change the way we experience the world? How will its mission continue after the hackathon is over?</p>
-            <p><b>Your idea</b> - What matters to you? Is it sustainability, education, equality, health, or something else? Work on something you really believe 
-in and make us believe in it too.</p>
+                <p><b>The Harbor Entrepreneur Center hosted HackOps 2024 from April 19–21, 2024. The event brought together 62 registrants, who formed four teams, 
+with their projects evaluated by nine esteemed judges. The theme for HackOps 2024 was Maslow's Hierarchy of Needs.
+
+Our first-place team, HarthHaven, created an application designed to help seniors easily find the most suitable living community based on their personal needs, 
+preferences, and available services.
+"I developed this idea with my own mother in mind—wanting to make it easier for her to navigate senior living options. Through this process, I learned how to 
+flesh out my ideas into an executable concept that a small-scale team could develop. It has been both fun and challenging." – Kei Cheng
+
+Harvest Initiative took second place with a platform featuring an organization dashboard for managers working directly with host homeowners, volunteers, 
+and master gardeners. This structure facilitates food production on the host’s land, with the harvested produce distributed as follows:
+
+A percentage allocated to the host
+A percentage available for volunteers to purchase at a discount
+The majority distributed through local food banks
+Honorable mention went to Transforming Fitness Communities with Technology, a health and wellness app built using Squarespace.</b>
 
 <hr>
                      <div class="devpost-link">
-                         <a href="https://hack-nights.devpost.com/">
+                         <a href="https://hackops.devpost.com/">
                              <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" class="button large" />
                          </a>
                      </div>
