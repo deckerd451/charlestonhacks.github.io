@@ -708,6 +708,95 @@ window.buildBestTeam = buildBestTeam;
             }
         });
     
+        async function searchUserByName() {
+    const nameInput = document.getElementById('nameInput').value.trim().toLowerCase();
+    const noResults = document.getElementById('noResults');
+    const cardContainer = document.getElementById('cardContainer');
+    const matchNotification = document.getElementById('matchNotification');
+
+    // Reset display
+    cardContainer.innerHTML = '';
+    noResults.style.display = 'none';
+    matchNotification.style.display = 'none';
+
+    if (!nameInput) {
+        alert('Please enter a name.');
+        return;
+    }
+
+    const { data, error } = await supabaseClient.from('skills').select('*');
+
+    if (error) {
+        noResults.style.display = 'block';
+        noResults.innerText = 'Error fetching user data.';
+        return;
+    }
+
+    // Filter based on first_name or last_name (case-insensitive)
+    const matchedUsers = data.filter(user => {
+        const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
+        return fullName.includes(nameInput) ||
+               (user.first_name && user.first_name.toLowerCase().includes(nameInput)) ||
+               (user.last_name && user.last_name.toLowerCase().includes(nameInput));
+    });
+
+    if (matchedUsers.length === 0) {
+        noResults.style.display = 'block';
+        noResults.innerText = 'No matching users found.';
+        return;
+    }
+
+    matchNotification.style.display = 'block';
+    //matchNotification.innerText = `${matchedUsers.length} user(s) found`;
+
+    // Render result cards in styled format
+    cardContainer.innerHTML = matchedUsers.map(user => `
+        <div class="team-member-card" style="
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            
+            
+        ">
+            ${user.image_url ? `
+                <img src="${user.image_url}" alt="${user.first_name}" style="
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 8px;
+                    object-fit: cover;
+                    margin-bottom: 8px;
+                "/>` : ''}
+
+            <div class="member-name" style="margin-bottom: 5px; font-weight: bold;">
+                ${user.first_name} ${user.last_name}
+            </div>
+
+            <div class="member-email" style="margin: 5px 0;">
+                <a href="mailto:${user.email}" style="color:#FFD700; text-decoration: none; word-break: break-word;">
+                    ${user.email}
+                </a>
+            </div>
+
+            <div class="skill-tags" style="font-size: 14px;">
+                <strong>Skills:</strong> 
+                ${user.skills?.split(',').map(skill => `<span class="skill-tag" style="
+                    display: inline-block;
+                    background: #FFD700;
+                    color: black;
+                    padding: 2px 6px;
+                    margin: 2px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                ">${skill.trim()}</span>`).join('') || 'N/A'}
+            </div>
+        </div>
+    `).join('');
+}
+
         // Click button handler (fixing onclick issue)
         document.getElementById('find-team-btn').addEventListener('click', findMatchingUsers);
     
@@ -850,35 +939,63 @@ cardContainer.innerHTML = data.map(user => `
 
 
 
+
       <button id="find-team-btn" onclick="findMatchingUsers()"
               style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; 
                      border-radius: 5px; cursor: pointer; margin-top: 10px; display: block;">
          Get People
       </button>
-<!-- Selected skills display (optional feature) -->
-<div class="selected-skills" id="selectedSkillsContainer">
-    <!-- dynamically shown selected skills -->
+     
+      <br>
+      <label for="skills-input" style="font-size: 16px; margin-bottom: 5px; display: block; color: #FFD700;">Search simply by First or Last name</label>
+
+<input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" required
+       autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
+                                 padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
+                                 margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff; display: block;">
+
+<!-- Suggestion Box -->
+<div id="autocomplete-name" style="position:absolute; z-index:1000; background:hsl(0, 0%, 100%); color:#000000; 
+     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
+
+<!-- Button -->
+<button id="search-name-btn" onclick="searchUserByName()"
+        style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; 
+               border-radius: 5px; cursor: pointer; margin-top: 10px; display: block;">
+  Find by Name
+</button>
+
+ <!-- 🔽 RESULTS SECTION (single instance of each) -->
+<div id="matchNotification" style="margin-bottom: 6px; color: gold; display: none;"></div>
+<div id="noResults" style="margin-bottom: 6px; color: red; display: none;"></div>
+
+<div id="cardContainer" style="
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 10px;
+" role="list" aria-label="Matching team members">
 </div>
 
-<div id="noResults" class="no-results" style="display:none;">
-    No team members found with the selected skills. Try different skills or broader terms.
-</div>
+<!-- ✅ Optional: Selected Skills Summary -->
+<div class="selected-skills" id="selectedSkillsContainer" style="margin-bottom: 10px;"></div>
 
-<div id="cardContainer" 
-     style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;"
-     class="card-container" 
-     role="list" 
-     aria-label="Matching team members">
-</div>
+<!-- ✅ Next Section Header -->
+<h1 style="margin-top: 10px;">Team Builder</h1>
 
-<div id="matchNotification" class="match-notification" style="display:none;">
-    <p>You have found team members with matching skills! 
-</div>
-<h1>Team Builder</h1>
-<div class="input-container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+<!-- Team Builder Instructions -->
+<div class="input-container" style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 5px;
+">
   <p class="instructions" style="max-width: 400px; margin-bottom: 10px;">
-      Let’s build your team. Enter the main skill required for each team member and the total number of people needed
+    Let’s build your team. Enter the main skill required for each team member and the total number of people needed.
   </p>
+</div>
   
   <label for="teamSkills" style="font-size: 16px; margin-bottom: 5px;">Required Skills</label>
   <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python"
