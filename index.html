@@ -491,12 +491,11 @@ body {
         const sounds = {
             cardflip: new Audio('assets/atmospherel.m4a'),
             keys: new Audio('assets/keys.m4a'),
-            ding: new Audio('assets/ding.mp3')
         };
 
         // Lower the volume of all sounds by 30%
         Object.keys(sounds).forEach(key => {
-            sounds[key].volume = 0.3;
+            sounds[key].volume = 0.2;
         });
 
         function getRandomImage() {
