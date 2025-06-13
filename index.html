@@ -447,37 +447,14 @@ body {
 <script>
 let atmosphereAudio = null;
 
-// Play persistent atmosphere/background sound (loops)
+// Play persistent atmosphere/background sound (plays only once)
 function playAtmosphere() {
     if (!atmosphereAudio) {
         atmosphereAudio = new Audio('assets/atmospherel.m4a');
-        atmosphereAudio.loop = true;
+        atmosphereAudio.loop = false; // <-- Now it will NOT loop
         atmosphereAudio.volume = 0.2;
     }
     atmosphereAudio.play();
-}
-
-// Stop/pause the background sound
-function stopAtmosphere() {
-    if (atmosphereAudio) {
-        atmosphereAudio.pause();
-        atmosphereAudio.currentTime = 0;
-    }
-}
-
-// Play one-shot sound effects (chime, keys)
-function playSound(soundKey) {
-    if (soundKey === "cardflip") {
-        playAtmosphere();
-    } else if (soundKey === "chime") {
-        const chimeAudio = new Audio('assets/chime.mp3');
-        chimeAudio.volume = 0.2;
-        chimeAudio.play();
-    } else if (soundKey === "keys") {
-        const keysAudio = new Audio('assets/keys.m4a');
-        keysAudio.volume = 0.2;
-        keysAudio.play();
-    }
 }
 
 // (Optional) Preload atmosphere sound on first user interaction
@@ -485,9 +462,8 @@ let audioPreloaded = false;
 window.addEventListener('pointerdown', () => {
     if (!audioPreloaded) {
         atmosphereAudio = new Audio('assets/atmospherel.m4a');
-        atmosphereAudio.loop = true;
+        atmosphereAudio.loop = false; // <-- Now it will NOT loop
         atmosphereAudio.volume = 0.2;
-        // Optionally preload chime/keys here by creating Audio objects (not usually needed for short sounds)
         audioPreloaded = true;
     }
 }, { once: true });
