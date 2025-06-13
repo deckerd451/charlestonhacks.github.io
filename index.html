@@ -559,16 +559,21 @@ body {
             }, 2000); // Adjust the delay to match the fade-out duration
         }
 
-        document.querySelectorAll('.clickable-area').forEach(area => {
-            area.addEventListener('click', function() {
-                const sound = this.getAttribute('data-sound');
-                const image = this.getAttribute('data-image');
-                const url = this.getAttribute('data-url');
-                playSound(sound);
-                flipCard(image, url);
-            });
-        });
-
+      document.querySelectorAll('.clickable-area').forEach(area => {
+    area.addEventListener('click', function() {
+        const sound = this.getAttribute('data-sound');
+        const image = this.getAttribute('data-image');
+        const url = this.getAttribute('data-url');
+        playSound(sound);
+        flipCard(image, url);
+    });
+    area.addEventListener('keydown', function(e) {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            this.click();
+        }
+    });
+});
         function toggleVisibility() {
             var eventsSection = document.querySelector('.previous-events');
             eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
