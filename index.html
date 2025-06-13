@@ -608,16 +608,11 @@ body {
     </script>
     <script src="dist/bundle.js"></script>
 <script>
-    window.onload = () => {
-        // Select all clickable areas
-        const clickableElements = document.querySelectorAll('.clickable-area');
-
-        // Add the "loaded" class to each clickable area to trigger the animation
-        clickableElements.forEach(element => {
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.clickable-area').forEach(element => {
             element.classList.add('loaded');
         });
-    };
-  
+    });
 </script>
   <footer>
     <section class="icons-container" style="display: flex; justify-content: center; align-items: center;">
