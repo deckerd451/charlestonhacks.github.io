@@ -447,6 +447,20 @@ body {
 
     <script src="ho-script.js"></script>
     <script>
+      function playSound(soundKey) {
+    const soundSrc = {
+        cardflip: 'assets/atmospherel.m4a',
+        keys: 'assets/keys.m4a',
+        chime: 'assets/chime.mp3'
+    }[soundKey];
+    if (soundSrc) {
+        const audio = new Audio(soundSrc);
+        audio.volume = 0.2;
+        audio.play().catch(error => {
+            console.error('Audio playback failed:', error);
+        });
+    }
+}
         var countdownElement = document.getElementById('countdown');
         var countDownDate = new Date("June 1, 2025 19:00:00").getTime();
         var countdownFunction = setInterval(function () {
@@ -482,32 +496,16 @@ body {
 
         let cardClicked = false;
 
-        // Simplify audio handling with a sound map
-        const sounds = {
-            cardflip: new Audio('assets/atmospherel.m4a'),
-            keys: new Audio('assets/keys.m4a'),
-          chime: new Audio('assets/chime.mp3'),
-        };
+        
 
-        // Lower the volume of all sounds by 30%
-        Object.keys(sounds).forEach(key => {
-            sounds[key].volume = 0.2;
-        });
+        
 
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
 
-        function playSound(soundKey) {
-            const audio = sounds[soundKey];
-            if (audio) {
-                audio.currentTime = 0; // Reset to start
-                audio.play().catch(error => {
-                    console.error('Audio playback failed:', error);
-                });
-            }
-        }
+        
 
         function toggleMissionContent() {
             if (cardClicked) return;
