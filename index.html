@@ -448,6 +448,20 @@ body {
 
     <script src="ho-script.js"></script>
     <script>
+      let audioPreloaded = false;
+window.addEventListener('pointerdown', () => {
+  if (!audioPreloaded) {
+    ['cardflip', 'keys', 'chime'].forEach(key => {
+      const src = {
+        cardflip: 'assets/atmospherel.m4a',
+        keys: 'assets/keys.m4a',
+        chime: 'assets/chime.mp3'
+      }[key];
+      if (src) new Audio(src);
+    });
+    audioPreloaded = true;
+  }
+}, { once: true });
       function playSound(soundKey) {
     const soundSrc = {
         cardflip: 'assets/atmospherel.m4a',
