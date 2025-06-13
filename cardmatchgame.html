@@ -246,7 +246,7 @@
 
     <script>
         (function () {
-            const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara'];
+            const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara', 'wolf', 'hermes'];
             const backstories = {
                 'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
                 'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a powerful gaze.',
@@ -254,6 +254,8 @@
                 'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
                 'descartes': 'Descartes - A Mysterious Gentleman: waiting to reveal his plan.',
                 'elara': 'Elara - The Silent Guardian: A watchful protector who stands in the shadows.'
+                'wolf': 'Wolf - A loyal, powerful ally, fiercly protective of those he cares about.'
+            'hermes': 'Hermes - An honorable and generous god who this of others before himself.'
             };
 
             const gameContainer = document.getElementById('game-container');
@@ -328,6 +330,10 @@
                     videoSource.src = 'images/astridvideo.mp4'; 
                 } else if (character === 'aegis') {
                     videoSource.src = 'images/aegisvideo.mp4'; 
+                     } else if (character === 'wolf') {
+                    videoSource.src = 'images/wolfvideo.mp4';
+                     } else if (character === 'hermes') {
+                    videoSource.src = 'images/hermesvideo.mp4'; 
                 }
                 video.load();
                 videoContainer.style.display = 'block';
@@ -370,6 +376,8 @@
                         firstCard.dataset.character === 'alexandor' ||
                         firstCard.dataset.character === 'elara' ||
                         firstCard.dataset.character === 'astrid' ||
+                        firstCard.dataset.character === 'wolf' ||
+                        firstCard.dataset.character === 'hermes' ||
                         firstCard.dataset.character === 'aegis'
                     ) {
                         playVideo(firstCard.dataset.character);
