@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   
     <meta charset="utf-8" />
@@ -353,8 +352,10 @@ body {
 
         /* Make hcard and all elements 20% smaller on web only */
         @media (min-width: 769px) {
-            .media-container {
-                transform: scale(0.8);
+    .media-container {
+        transform: scale(0.8);
+    }
+}
         
     @media (max-width: 768px) {
         #missionContent {
@@ -391,9 +392,6 @@ body {
     }
     </style>
 </head>
-
-   
-
 <body class="is-preload">
   <main>
 <div id="main">
@@ -443,41 +441,59 @@ body {
         </article>
     </div>
     </main>
-
-    <!-- Spinning progress wheel -->
+<!-- Spinning progress wheel -->
     <div id="spinner" class="spinner"></div>
 
     <script src="ho-script.js"></script>
-    <script>
-      let audioPreloaded = false;
-window.addEventListener('pointerdown', () => {
-  if (!audioPreloaded) {
-    ['cardflip', 'keys', 'chime'].forEach(key => {
-      const src = {
-        cardflip: 'assets/atmospherel.m4a',
-        keys: 'assets/keys.m4a',
-        chime: 'assets/chime.mp3'
-      }[key];
-      if (src) new Audio(src);
-    });
-    audioPreloaded = true;
-  }
-}, { once: true });
-      function playSound(soundKey) {
-    const soundSrc = {
-        cardflip: 'assets/atmospherel.m4a',
-        keys: 'assets/keys.m4a',
-        chime: 'assets/chime.mp3'
-    }[soundKey];
-    if (soundSrc) {
-        const audio = new Audio(soundSrc);
-        audio.volume = 0.2;
-        audio.play().catch(error => {
-            console.error('Audio playback failed:', error);
-        });
+<script>
+let atmosphereAudio = null;
+
+// Play persistent atmosphere/background sound (loops)
+function playAtmosphere() {
+    if (!atmosphereAudio) {
+        atmosphereAudio = new Audio('assets/atmospherel.m4a');
+        atmosphereAudio.loop = true;
+        atmosphereAudio.volume = 0.2;
+    }
+    atmosphereAudio.play();
+}
+
+// Stop/pause the background sound
+function stopAtmosphere() {
+    if (atmosphereAudio) {
+        atmosphereAudio.pause();
+        atmosphereAudio.currentTime = 0;
     }
 }
-        var countdownElement = document.getElementById('countdown');
+
+// Play one-shot sound effects (chime, keys)
+function playSound(soundKey) {
+    if (soundKey === "cardflip") {
+        playAtmosphere();
+    } else if (soundKey === "chime") {
+        const chimeAudio = new Audio('assets/chime.mp3');
+        chimeAudio.volume = 0.2;
+        chimeAudio.play();
+    } else if (soundKey === "keys") {
+        const keysAudio = new Audio('assets/keys.m4a');
+        keysAudio.volume = 0.2;
+        keysAudio.play();
+    }
+}
+
+// (Optional) Preload atmosphere sound on first user interaction
+let audioPreloaded = false;
+window.addEventListener('pointerdown', () => {
+    if (!audioPreloaded) {
+        atmosphereAudio = new Audio('assets/atmospherel.m4a');
+        atmosphereAudio.loop = true;
+        atmosphereAudio.volume = 0.2;
+        // Optionally preload chime/keys here by creating Audio objects (not usually needed for short sounds)
+        audioPreloaded = true;
+    }
+}, { once: true });
+
+var countdownElement = document.getElementById('countdown');
         var countDownDate = new Date("June 1, 2025 19:00:00").getTime();
         var countdownFunction = setInterval(function () {
             var now = new Date().getTime();
