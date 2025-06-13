@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   
     <meta charset="utf-8" />
@@ -36,15 +37,6 @@
     z-index: -1;
     opacity: 0.5; /* Adjust opacity if needed */
     pointer-events: none; /* Prevent interaction with the video */
-}
-      /* Add this to your styles.css or in a <style> block */
-.clickable-area:focus,
-footer .icon:focus,
-a:focus {
-  outline: 3px solid #FFFF00; /* Bright yellow outline */
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px #333;
-  z-index: 10; /* Ensure it's above other content */
 }
 
 @keyframes animateClickables {
@@ -200,7 +192,7 @@ body {
 }
 @media (max-width: 768px) {
     .center-top {
-        top: 2%;
+        top: -30%; /* Move up by adjusting this value */
     }
 
     .center-bottom {
@@ -361,122 +353,131 @@ body {
 
         /* Make hcard and all elements 20% smaller on web only */
         @media (min-width: 769px) {
-    .media-container {
-        transform: scale(0.8);
-    }
-}
+            .media-container {
+                transform: scale(0.8);
         
-   @media (max-width: 768px) {
-    #missionContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    @media (max-width: 768px) {
+        #missionContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #countdownWrapper {
+            position: static;
+            margin-top: 20px;
+            order: 2; /* This ensures it appears below the banner */
+            width: 100%;
+            transform: none;
+        }
+        
+        .body-text {
+            order: 1; /* This ensures the banner appears above the countdown */
+            width: 100%;
+        }
+    @media (max-width: 768px) {
+        #countdownWrapper {
+            position: absolute;
+            top: auto; /* Remove any existing top positioning */
+            bottom: -60px; /* Position it below the banner */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+        
+        #missionContent {
+            padding-bottom: 70px; /* Add padding to make room for the countdown */
+        }
     }
-    #countdownWrapper {
-        position: static;
-        margin-top: 20px;
-        order: 2; /* This ensures it appears below the banner */
-        width: 100%;
-        transform: none;
-    }
-    .body-text {
-        order: 1; /* This ensures the banner appears above the countdown */
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    #countdownWrapper {
-        position: absolute;
-        top: auto; /* Remove any existing top positioning */
-        bottom: -60px; /* Position it below the banner */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
-    #missionContent {
-        padding-bottom: 70px; /* Add padding to make room for the countdown */
-    }
-}
     </style>
 </head>
+
+   
+
 <body class="is-preload">
   <main>
 <div id="main">
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-  <!-- Changed 'a' to 'div' here: -->
-  <div class="media-container" aria-label="Toggle mission content" onclick="playSound('cardflip'); toggleMissionContent()">
-    <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
-    <div id="missionContent">
-      <div class="body-text">
-        <p>
-          <img id="aiffBanner" src="images/iegold.svg" alt="Innovation Engine"
-               style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;"
-               onclick="flipAndRedirect()">
-        </p>
-      </div>
-      <div id="countdownWrapper">
-        <div id="countdown"></div>
-      </div>
-    </div>
+                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
+                        <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
+                        <div id="missionContent">
+                            <div class="body-text">
+                                <p>
+                                    <img id="aiffBanner" src="images/iegold.svg" alt="Innovation Engine" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" onclick="flipAndRedirect()">
+                                </p>
+                            </div>
+                            <div id="countdownWrapper">
+                               
+                                <div id="countdown"></div>
+                            </div>
+                        </div>
 
-    <video id="missionVideo" muted playsinline controls
-           onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()"
-           onerror="handleVideoError()" onended="showCardFrame()">
-      <source src="images/universe.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
-    <div class="loading-indicator" id="loadingIndicator">
-      <i class="fas fa-spinner fa-spin"></i>
-    </div>
-  </div>
-  <!-- These are siblings of .media-container, not inside it! -->
-  <button type="button" class="clickable-area top-left" data-sound="chime" data-image="images/yellowscullcard.png" data-url="Poster.html">
+                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
+                            <source src="images/universe.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
+                        <div class="loading-indicator" id="loadingIndicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+
+                       <!-- Clickable areas (now using <button> for accessibility) -->
+<button type="button" class="clickable-area top-left" data-sound="chime" data-image="images/yellowscullcard.png" data-url="Poster.html">
     <img src="images/infon.svg" alt="Info">
-  </button>
-  <button type="button" class="clickable-area top-right" data-sound="chime" data-image="images/redscullcard.png" data-url="2card.html">
+</button>
+<button type="button" class="clickable-area top-right" data-sound="chime" data-image="images/redscullcard.png" data-url="2card.html">
     <img src="images/peoplen.svg" alt="People">
-  </button>
-  <button type="button" class="clickable-area bottom-left" data-sound="chime" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+</button>
+<button type="button" class="clickable-area bottom-left" data-sound="chime" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
     <img src="images/newsn.svg" alt="News">
-  </button>
-  <button type="button" class="clickable-area bottom-right" data-sound="chime" data-image="images/Alexandor.png" data-url="subscribe.html">
+</button>
+<button type="button" class="clickable-area bottom-right" data-sound="chime" data-image="images/Alexandor.png" data-url="subscribe.html">
     <img src="images/envelopen.svg" alt="Envelope">
-  </button>
-</div>
+</button>
+                        </div>
+                    </a>
+                </div>
+            </header>
+        </article>
+    </div>
     </main>
-<!-- Spinning progress wheel -->
+
+    <!-- Spinning progress wheel -->
     <div id="spinner" class="spinner"></div>
 
     <script src="ho-script.js"></script>
-<script>
-let atmosphereAudio = null;
-
-// Play persistent atmosphere/background sound (plays only once)
-function playAtmosphere() {
-    if (!atmosphereAudio) {
-        atmosphereAudio = new Audio('assets/atmospherel.m4a');
-        atmosphereAudio.loop = false; // <-- Now it will NOT loop
-        atmosphereAudio.volume = 0.2;
-    }
-    atmosphereAudio.play();
-}
-
-// (Optional) Preload atmosphere sound on first user interaction
-let audioPreloaded = false;
+    <script>
+      let audioPreloaded = false;
 window.addEventListener('pointerdown', () => {
-    if (!audioPreloaded) {
-        atmosphereAudio = new Audio('assets/atmospherel.m4a');
-        atmosphereAudio.loop = false; // <-- Now it will NOT loop
-        atmosphereAudio.volume = 0.2;
-        audioPreloaded = true;
-    }
+  if (!audioPreloaded) {
+    ['cardflip', 'keys', 'chime'].forEach(key => {
+      const src = {
+        cardflip: 'assets/atmospherel.m4a',
+        keys: 'assets/keys.m4a',
+        chime: 'assets/chime.mp3'
+      }[key];
+      if (src) new Audio(src);
+    });
+    audioPreloaded = true;
+  }
 }, { once: true });
-
-var countdownElement = document.getElementById('countdown');
+      function playSound(soundKey) {
+    const soundSrc = {
+        cardflip: 'assets/atmospherel.m4a',
+        keys: 'assets/keys.m4a',
+        chime: 'assets/chime.mp3'
+    }[soundKey];
+    if (soundSrc) {
+        const audio = new Audio(soundSrc);
+        audio.volume = 0.2;
+        audio.play().catch(error => {
+            console.error('Audio playback failed:', error);
+        });
+    }
+}
+        var countdownElement = document.getElementById('countdown');
         var countDownDate = new Date("June 1, 2025 19:00:00").getTime();
         var countdownFunction = setInterval(function () {
             var now = new Date().getTime();
@@ -630,13 +631,13 @@ var countdownElement = document.getElementById('countdown');
 </script>
   <footer>
     <section class="icons-container" style="display: flex; justify-content: center; align-items: center;">
-<a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game"><i class="fas fa-info-circle icon"></i></a>
-<a href="https://www.youtube.com/shorts/RXvlYF1jVuE" aria-label="YouTube Shorts"><i class="fas fa-users icon"></i></a>
-<a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin icon"></i></a>
-<a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram icon"></i></a>
-<a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope icon"></i></a>
-<a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter icon"></i></a>
-<a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook icon"></i></a>
+        <a href="cardmatchgame.html" target="_blank"><i class="fas fa-info-circle icon"></i></a>
+        <a href="https://www.youtube.com/shorts/RXvlYF1jVuE"><i class="fas fa-users icon"></i></a>
+        <a href="https://www.linkedin.com/company/charlestonhacks"><i class="fab fa-linkedin icon"></i></a>
+        <a href="https://www.instagram.com/charlestonhacks/" target="_blank"><i class="fab fa-instagram icon"></i></a>
+        <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
+        <a href="https://twitter.com/Descart84114619" target="_blank"><i class="fab fa-twitter icon"></i></a>
+        <a href="https://www.facebook.com/deckerdb26354" target="_blank"><i class="fab fa-facebook icon"></i></a>
     </section>
     
     
