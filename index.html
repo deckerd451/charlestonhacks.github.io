@@ -37,6 +37,15 @@
     opacity: 0.5; /* Adjust opacity if needed */
     pointer-events: none; /* Prevent interaction with the video */
 }
+      /* Add this to your styles.css or in a <style> block */
+.clickable-area:focus,
+footer .icon:focus,
+a:focus {
+  outline: 3px solid #FFFF00; /* Bright yellow outline */
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px #333;
+  z-index: 10; /* Ensure it's above other content */
+}
 
 @keyframes animateClickables {
     from { opacity: 0; transform: translateY(20px); }
@@ -397,48 +406,47 @@ body {
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
-                        <div id="missionContent">
-                            <div class="body-text">
-                                <p>
-                                    <img id="aiffBanner" src="images/iegold.svg" alt="Innovation Engine" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" onclick="flipAndRedirect()">
-                                </p>
-                            </div>
-                            <div id="countdownWrapper">
-                               
-                                <div id="countdown"></div>
-                            </div>
-                        </div>
-
-                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
-                            <source src="images/universe.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
-                        <div class="loading-indicator" id="loadingIndicator">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </div>
-
-                       <!-- Clickable areas (now using <button> for accessibility) -->
-<button type="button" class="clickable-area top-left" data-sound="chime" data-image="images/yellowscullcard.png" data-url="Poster.html">
-    <img src="images/infon.svg" alt="Info">
-</button>
-<button type="button" class="clickable-area top-right" data-sound="chime" data-image="images/redscullcard.png" data-url="2card.html">
-    <img src="images/peoplen.svg" alt="People">
-</button>
-<button type="button" class="clickable-area bottom-left" data-sound="chime" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
-    <img src="images/newsn.svg" alt="News">
-</button>
-<button type="button" class="clickable-area bottom-right" data-sound="chime" data-image="images/Alexandor.png" data-url="subscribe.html">
-    <img src="images/envelopen.svg" alt="Envelope">
-</button>
-                        </div>
-                    </a>
-                </div>
-            </header>
-        </article>
+  <!-- Changed 'a' to 'div' here: -->
+  <div class="media-container" aria-label="Toggle mission content" onclick="playSound('cardflip'); toggleMissionContent()">
+    <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
+    <div id="missionContent">
+      <div class="body-text">
+        <p>
+          <img id="aiffBanner" src="images/iegold.svg" alt="Innovation Engine"
+               style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;"
+               onclick="flipAndRedirect()">
+        </p>
+      </div>
+      <div id="countdownWrapper">
+        <div id="countdown"></div>
+      </div>
     </div>
+
+    <video id="missionVideo" muted playsinline controls
+           onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()"
+           onerror="handleVideoError()" onended="showCardFrame()">
+      <source src="images/universe.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
+    <div class="loading-indicator" id="loadingIndicator">
+      <i class="fas fa-spinner fa-spin"></i>
+    </div>
+  </div>
+  <!-- These are siblings of .media-container, not inside it! -->
+  <button type="button" class="clickable-area top-left" data-sound="chime" data-image="images/yellowscullcard.png" data-url="Poster.html">
+    <img src="images/infon.svg" alt="Info">
+  </button>
+  <button type="button" class="clickable-area top-right" data-sound="chime" data-image="images/redscullcard.png" data-url="2card.html">
+    <img src="images/peoplen.svg" alt="People">
+  </button>
+  <button type="button" class="clickable-area bottom-left" data-sound="chime" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+    <img src="images/newsn.svg" alt="News">
+  </button>
+  <button type="button" class="clickable-area bottom-right" data-sound="chime" data-image="images/Alexandor.png" data-url="subscribe.html">
+    <img src="images/envelopen.svg" alt="Envelope">
+  </button>
+</div>
     </main>
 <!-- Spinning progress wheel -->
     <div id="spinner" class="spinner"></div>
@@ -622,13 +630,13 @@ var countdownElement = document.getElementById('countdown');
 </script>
   <footer>
     <section class="icons-container" style="display: flex; justify-content: center; align-items: center;">
-        <a href="cardmatchgame.html" target="_blank"><i class="fas fa-info-circle icon"></i></a>
-        <a href="https://www.youtube.com/shorts/RXvlYF1jVuE"><i class="fas fa-users icon"></i></a>
-        <a href="https://www.linkedin.com/company/charlestonhacks"><i class="fab fa-linkedin icon"></i></a>
-        <a href="https://www.instagram.com/charlestonhacks/" target="_blank"><i class="fab fa-instagram icon"></i></a>
-        <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
-        <a href="https://twitter.com/Descart84114619" target="_blank"><i class="fab fa-twitter icon"></i></a>
-        <a href="https://www.facebook.com/deckerdb26354" target="_blank"><i class="fab fa-facebook icon"></i></a>
+<a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game"><i class="fas fa-info-circle icon"></i></a>
+<a href="https://www.youtube.com/shorts/RXvlYF1jVuE" aria-label="YouTube Shorts"><i class="fas fa-users icon"></i></a>
+<a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin icon"></i></a>
+<a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram icon"></i></a>
+<a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope icon"></i></a>
+<a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter icon"></i></a>
+<a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook icon"></i></a>
     </section>
     
     
