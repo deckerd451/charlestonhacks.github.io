@@ -268,6 +268,8 @@
             const video = document.getElementById('video');
             const videoSource = document.getElementById('video-source');
             const closeVideoButton = document.getElementById('close-video');
+            const backgroundMusic = document.getElementById('background-music');
+            if (backgroundMusic) backgroundMusic.volume = 0.5;
 
             let flippedCards = [];
             let matchedCards = [];
@@ -456,11 +458,6 @@
             startTimer();
         })();
         
-        // Find the background music audio element
-        const backgroundMusic = document.getElementById('background-music');
-
-        // Reduce the volume to 50%
-        backgroundMusic.volume = 0.5; // 0.5 means 50% of the original volume 
 
 </script>
     
