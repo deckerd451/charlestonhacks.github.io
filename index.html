@@ -351,12 +351,12 @@ body {
             z-index: 3;
         }
 
-        /* Make hcard and all elements 20% smaller on web only */
-        @media (min-width: 769px) {
-            .media-container {
-                transform: scale(0.8);
-              }
-        
+@media (min-width: 769px) {
+    .media-container {
+        transform: scale(0.8);
+    }
+} /* Close min-width media query */
+      
     @media (max-width: 768px) {
         #missionContent {
             display: flex;
