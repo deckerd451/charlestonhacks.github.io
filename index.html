@@ -427,11 +427,7 @@
                             <video id="missionVideo" 
                                    muted 
                                    playsinline 
-                                   controls 
-                                   onloadstart="VideoController.showLoadingIndicator()" 
-                                   oncanplay="VideoController.hideLoadingIndicator()" 
-                                   onerror="VideoController.handleError()" 
-                                   onended="VideoController.showCardFrame()">
+                                   controls>
                                 <source src="images/universe.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
@@ -669,6 +665,7 @@
             init() {
                 this.setupEventListeners();
                 this.setupClickableAreas();
+                this.setupVideoHandlers();
                 CountdownController.init();
             },
             
@@ -693,6 +690,16 @@
                         element.classList.add('loaded');
                     });
                 });
+            },
+            
+            setupVideoHandlers() {
+                const video = document.getElementById('missionVideo');
+                if (video) {
+                    video.addEventListener('loadstart', VideoController.showLoadingIndicator);
+                    video.addEventListener('canplay', VideoController.hideLoadingIndicator);
+                    video.addEventListener('error', VideoController.handleError);
+                    video.addEventListener('ended', VideoController.showCardFrame);
+                }
             },
             
             setupClickableAreas() {
