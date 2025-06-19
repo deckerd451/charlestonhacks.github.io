@@ -48,7 +48,7 @@
         body {
             background-color: var(--background-color);
             color: var(--text-color);
-            font-family: Arial Black, Arial, Helvetica, sans-serif;
+            font-family: 'Britannic Bold', Arial, sans-serif;
             overflow-x: hidden;
             position: relative;
             text-align: center;
@@ -326,6 +326,11 @@
             z-index: 1;
         }
 
+        #spinner {
+            display: none;
+            /* Add spinner styles here */
+        }
+
         /* ==========================================================================
            RESPONSIVE DESIGN
            ========================================================================== */
@@ -401,14 +406,14 @@
             <article class="post featured">
                 <header class="major">
                     <div class="panel">
-                        <div class="media-container" aria-label="Toggle mission content" onclick="toggleMissionContent()">
+                        <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                             <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
                             
                             <div id="missionContent">
                                 <div class="body-text">
                                     <p>
                                         <img id="aiffBanner" 
-                                             src="images/iegold.png" 
+                                             src="images/iegold.svg" 
                                              alt="Innovation Engine" 
                                              style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
                                              onclick="flipAndRedirect()">
@@ -461,11 +466,14 @@
                                     data-url="subscribe.html">
                                 <img src="images/envelopen.svg" alt="Envelope">
                             </button>
+                        </a>
                     </div>
                 </header>
             </article>
         </div>
     </main>
+
+    <div id="spinner" class="spinner"></div>
 
     <footer>
         <section class="icons-container">
@@ -639,6 +647,7 @@
                 
                 missionImage.classList.add(randomFlip);
                 document.body.classList.add('fade-out-body');
+                document.getElementById('spinner').style.display = 'block';
                 
                 // Redirect immediately
                 window.location.href = url;
@@ -667,6 +676,10 @@
                 }, { once: true });
                 
                 // Handle page navigation
+                window.addEventListener('beforeunload', () => {
+                    document.getElementById('spinner').style.display = 'none';
+                });
+                
                 window.addEventListener('pageshow', () => {
                     document.body.classList.remove('fade-out-body');
                 });
