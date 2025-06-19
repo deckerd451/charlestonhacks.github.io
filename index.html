@@ -18,379 +18,276 @@
     <link rel="manifest" href="manifest.json" />
     <!-- Where the background image is referenced -->
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Resetting default margin and padding */
-        body, h1, h2, h3, p, ul {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* General styles */
-        /* Add the following CSS animation for the clickable elements */
-        #background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1;
-    opacity: 0.5; /* Adjust opacity if needed */
-    pointer-events: none; /* Prevent interaction with the video */
+    /* Reset */
+body, h1, h2, h3, p, ul {
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes animateClickables {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+body {
+  background-color: black;
+  color: white;
+  font-family: 'Britannic Bold', Arial, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  text-align: center;
+  z-index: 1;
 }
 
+/* Background video */
+#background-video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Clickable areas */
 .clickable-area {
-    animation: animateClickables 1s ease-out forwards;
-    opacity: 0; /* Make them invisible initially */
+  border: none;
+  background: none;
+  padding: 0;
+  position: absolute;
+  z-index: 4;
+  cursor: pointer;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  width: 14vw;
+  max-width: 90px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  animation: fadeInScaleUp 1s ease-out forwards;
+  transition: transform 0.3s ease-in-out;
+  opacity: 0; /* Start hidden */
 }
 
 .clickable-area.loaded {
-    opacity: 1; /* Make them visible after animation */
-}
-        /* Define the animation */
-@keyframes fadeInScaleUp {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1.15);
-    }
-   
-}
-       .clickable-area:hover {
-    transform: scale(1.2);
-    transition: transform 0.3s ease-in-out;
-
+  opacity: 1; /* Show after animation */
 }
 
-/* Apply the animation to the clickable elements */
-.clickable-area {
-   border: none;
-    background: none;
-    padding: 0;
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
-    width: 14vw;         /* Increase from 10vw */
-    max-width: 90px;     /* Increase from 60px */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    animation: fadeInScaleUp 1s ease-out forwards;
-    transition: transform 0.3s ease-in-out;
+.clickable-area:hover {
+  transform: scale(1.2);
 }
 
-/* Customize individual positions */
-.top-left {
-    top: 2%;
-    left: 5%;
-}
-.top-right {
-    top: 2%;
-    right: 5%;
-}
-.bottom-left {
-    bottom: 2%;
-    left: 5%;
-}
-.bottom-right {
-    bottom: 2%;
-    right: 5%;
-}
+.top-left { top: 2%; left: 5%; }
+.top-right { top: 2%; right: 5%; }
+.bottom-left { bottom: 2%; left: 5%; }
+.bottom-right { bottom: 2%; right: 5%; }
 .center-top {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16.5vw;
+  max-width: 110px;
 }
 .center-bottom {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-body {
-    background-color: black;
-    color: white;
-    font-family: 'Britannic Bold', Arial, sans-serif;
-    overflow-x: hidden;
-    position: relative;
-    text-align: center;
-    z-index: 1;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16.5vw;
+  max-width: 110px;
 }
 
-        .panel {
-            width: 100%;
-            min-height: 90vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .media-container {
-            position: relative;
-            z-index: 3;
-            width: 100%;
-            max-width: 600px; /* Adjust the max-width as needed */
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        #missionVideo {
-            pointer-events: none;
-        }
-        #missionVideo.show {
-            pointer-events: auto;
-        }
-
-        .media-container img,
-        .media-container video {
-            width: 100%;
-            height: auto;
-            display: block;
-             object-fit: contain; /* Maintains aspect ratio without distortion */
+@keyframes fadeInScaleUp {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.15); }
 }
 
-        .media-container video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
-        }
-
-        @media (max-width: 768px) {
-            .media-container {
-                max-width: 90%;
-            }
-        }
-        @media (max-width: 768px) {
-    #countdownWrapper {
-        position: absolute;
-        top: 25%; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
-
-    #countdown {
-        font-size: 24px;
-    }
+/* Panel */
+.panel {
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
 }
+
+/* Media container */
+.media-container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  overflow: hidden;
+  transform: scale(0.8);
+}
+
+.media-container img,
+.media-container video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.media-container video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+#missionVideo.show {
+  pointer-events: auto;
+}
+
+#missionVideo {
+  pointer-events: none;
+}
+
+/* Mission content */
+#missionContent {
+  animation: fadeIn 0.9s ease forwards;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+  display: none;
+  z-index: 2;
+  opacity: 1;
+}
+
+#missionContent p, #missionContent a {
+  color: white;
+}
+
+/* Countdown */
+#countdownWrapper {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+  order: 2;
+}
+
+#countdown {
+  font-size: 32px;
+  color: #FF0000;
+}
+
+/* Loading indicator */
+.loading-indicator {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+/* Logo & Info */
+.logo {
+  display: block;
+  margin: 0 auto 5px;
+}
+
+.info {
+  color: #FFFF00;
+  font-size: 20px;
+}
+
+.body-text {
+  margin: 30px 0;
+}
+
+.body-text a {
+  color: white;
+}
+
+.body-text p {
+  margin-bottom: 10px;
+}
+
+/* Button toggle */
+#previousEventsToggle {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#previousEventsToggle i {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Media queries */
 @media (max-width: 768px) {
-    .center-top {
-        top: -30%; /* Move up by adjusting this value */
-    }
-
-    .center-bottom {
-        bottom: 0%; /* Move up by adjusting this value */
-    }
-}
-     
-  .clickable-area img {
-      padding: 0;
-      margin: 0;
+  .media-container {
+    max-width: 90%;
+    transform: none;
   }
 
-    .center-top, .center-bottom {
-        width: 16.5vw; /* Increase by 10% from 15vw */
-        max-width: 110px; /* Increase by 10% from 100px */
-    }
+  #countdown {
+    font-size: 24px;
+  }
 
-  @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+  .info {
+    font-size: 16px;
+  }
 
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
+  #missionContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 70px;
+  }
 
-        .fade-out {
-            animation: fadeOut 2s ease forwards;
-        }
+  .body-text {
+    order: 1;
+    width: 100%;
+  }
 
-        #missionContent {
-            animation: fadeIn 0.9s ease forwards;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 2;
-            opacity: 1;
-        }
+  .center-top {
+    top: -30%;
+  }
 
-        #missionContent p, #missionContent a {
-            color: white;
-        }
-
-        @keyframes flipImageX {
-            0% { opacity: 1; }
-            50% { transform: rotateX(180deg); }
-            to { transform: rotateX(360deg); opacity: 0; }
-        }
-
-        @keyframes flipImageY {
-            0% { opacity: 1; }
-            50% { transform: rotateY(180deg); }
-            to { transform: rotateY(360deg); opacity: 0; }
-        }
-
-        .flip-image-x {
-            animation: flipImageX 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
-        }
-
-        .flip-image-y {
-            animation: flipImageY 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
-        }
-
-        #missionVideo.fadeOut {
-            animation: fadeOut 18s ease forwards !important;
-            z-index: 1;
-        }
-
-        #cardFrame {
-            display: none; /* Initially hidden */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Positioned under other elements */
-        }
-
-        #countdownWrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #countdown {
-            font-size: 32px;
-            color: #FF0000;
-        }
-
-        @media (max-width: 768px) {
-            #countdown {
-                font-size: 24px; /* Smaller font size for mobile */
-            }
-        }
-
-        .logo {
-            display: block;
-            margin: 0 auto 5px auto; /* Center horizontally and add bottom margin */
-        }
-
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .info {
-                font-size: 16px; /* Smaller font size for mobile */
-            }
-        }
-
-        .body-text {
-            margin: 30px 0;
-        }
-
-        .body-text a {
-            color: white;
-        }
-
-        .body-text p {
-            margin-bottom: 10px;
-        }
-
-        #previousEventsToggle {
-            background: none;
-            border: none;
-            padding: 0;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #previousEventsToggle i {
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .loading-indicator {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3;
-        }
+  .center-bottom {
+    bottom: 0;
+  }
+}
 
 @media (min-width: 769px) {
-    .media-container {
-        transform: scale(0.8);
-    }
+  .media-container {
+    transform: scale(0.8);
+  }
 }
 
-@media (max-width: 768px) {
-    #missionContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #countdownWrapper {
-        position: static;
-        margin-top: 20px;
-        order: 2;
-        width: 100%;
-        transform: none;
-    }
-
-    .body-text {
-        order: 1;
-        width: 100%;
-    }
-
-    #countdownWrapper {
-        position: absolute;
-        bottom: -60px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
-
-    #missionContent {
-        padding-bottom: 70px;
-    }
-}
-
-    </style>
 </head>
 
    
