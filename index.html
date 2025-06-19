@@ -351,45 +351,45 @@ body {
             z-index: 3;
         }
 
-        /* Make hcard and all elements 20% smaller on web only */
-       @media (min-width: 769px) {
-  .media-container {
-    transform: scale(0.8);
-  }
-}
-  @media (max-width: 768px) {
-        #missionContent {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        #countdownWrapper {
-            position: static;
-            margin-top: 20px;
-            order: 2; /* This ensures it appears below the banner */
-            width: 100%;
-            transform: none;
-        }
-        
-        .body-text {
-            order: 1; /* This ensures the banner appears above the countdown */
-            width: 100%;
-        }
-    @media (max-width: 768px) {
-        #countdownWrapper {
-            position: absolute;
-            top: auto; /* Remove any existing top positioning */
-            bottom: -60px; /* Position it below the banner */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-        }
-        
-        #missionContent {
-            padding-bottom: 70px; /* Add padding to make room for the countdown */
-        }
+@media (min-width: 769px) {
+    .media-container {
+        transform: scale(0.8);
     }
+}
+
+@media (max-width: 768px) {
+    #missionContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #countdownWrapper {
+        position: static;
+        margin-top: 20px;
+        order: 2;
+        width: 100%;
+        transform: none;
+    }
+
+    .body-text {
+        order: 1;
+        width: 100%;
+    }
+
+    #countdownWrapper {
+        position: absolute;
+        bottom: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
+
+    #missionContent {
+        padding-bottom: 70px;
+    }
+}
+
     </style>
 </head>
 
