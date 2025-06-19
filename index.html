@@ -342,7 +342,6 @@ body {
             padding: 0;
         }
 
-     /* Make hcard and all elements 20% smaller on web only */
         @media (min-width: 769px) {
             .media-container {
                 transform: scale(0.8);
@@ -359,13 +358,13 @@ body {
         #countdownWrapper {
             position: static;
             margin-top: 20px;
-            order: 2; /* This ensures it appears below the banner */
+            order: 2;
             width: 100%;
             transform: none;
         }
         
         .body-text {
-            order: 1; /* This ensures the banner appears above the countdown */
+            order: 1; 
             width: 100%;
         }
     @media (max-width: 768px) {
@@ -412,9 +411,7 @@ body {
                             Your browser does not support the video tag.
                         </video>
                         <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
-                        <div class="loading-indicator" id="loadingIndicator">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </div>
+                        
 
                        <!-- Clickable areas (now using <button> for accessibility) -->
 <button type="button" class="clickable-area top-left" data-sound="chime" data-image="images/yellowscullcard.png" data-url="Poster.html">
