@@ -351,48 +351,46 @@ body {
             z-index: 3;
         }
 
-@media (min-width: 769px) {
-    .media-container {
-        transform: scale(0.8);
+        /* Make hcard and all elements 20% smaller on web only */
+        @media (min-width: 769px) {
+            .media-container {
+                transform: scale(0.8);
+            }
+        }
+        
+    @media (max-width: 768px) {
+        #missionContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #countdownWrapper {
+            position: static;
+            margin-top: 20px;
+            order: 2; /* This ensures it appears below the banner */
+            width: 100%;
+            transform: none;
+        }
+        
+        .body-text {
+            order: 1; /* This ensures the banner appears above the countdown */
+            width: 100%;
+        }
+    @media (max-width: 768px) {
+        #countdownWrapper {
+            position: absolute;
+            top: auto; /* Remove any existing top positioning */
+            bottom: -60px; /* Position it below the banner */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+        
+        #missionContent {
+            padding-bottom: 70px; /* Add padding to make room for the countdown */
+        }
     }
-}
-
-@media (max-width: 768px) {
-    #missionContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #countdownWrapper {
-        position: static;
-        margin-top: 20px;
-        order: 2; /* This ensures it appears below the banner */
-        width: 100%;
-        transform: none;
-    }
-
-    .body-text {
-        order: 1; /* This ensures the banner appears above the countdown */
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    #countdownWrapper {
-        position: absolute;
-        top: auto; /* Remove any existing top positioning */
-        bottom: -60px; /* Position it below the banner */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
-
-    #missionContent {
-        padding-bottom: 70px; /* Add padding to make room for the countdown */
-    }
-}
-
     </style>
 </head>
 
@@ -426,20 +424,20 @@ body {
                         <div class="loading-indicator" id="loadingIndicator">
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
-<!-- Clickable areas -->
-<button type="button" class="clickable-area top-left" aria-label="Info" data-sound="chime" data-image="images/yellowscullcard.png" data-url="Poster.html">
-  <img src="images/infon.svg" alt="Info">
-</button>
-<button type="button" class="clickable-area top-right" aria-label="People" data-sound="chime" data-image="images/redscullcard.png" data-url="2card.html">
-  <img src="images/peoplen.svg" alt="People">
-</button>
-<button type="button" class="clickable-area bottom-left" aria-label="News" data-sound="chime" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
-  <img src="images/newsn.svg" alt="News">
-</button>
-<button type="button" class="clickable-area bottom-right" aria-label="Register" data-sound="chime" data-image="images/registercard.png" data-url="https://charlestonhacks.com/register/">
-  <img src="images/aifilmfestn.svg" alt="AI Film Fest">
-</button>
 
+                       <!-- Clickable areas (now using <button> for accessibility) -->
+<button type="button" class="clickable-area top-left" data-sound="chime" data-image="images/yellowscullcard.png" data-url="Poster.html">
+    <img src="images/infon.svg" alt="Info">
+</button>
+<button type="button" class="clickable-area top-right" data-sound="chime" data-image="images/redscullcard.png" data-url="2card.html">
+    <img src="images/peoplen.svg" alt="People">
+</button>
+<button type="button" class="clickable-area bottom-left" data-sound="chime" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+    <img src="images/newsn.svg" alt="News">
+</button>
+<button type="button" class="clickable-area bottom-right" data-sound="chime" data-image="images/Alexandor.png" data-url="subscribe.html">
+    <img src="images/envelopen.svg" alt="Envelope">
+</button>
                         </div>
                     </a>
                 </div>
@@ -646,33 +644,5 @@ window.addEventListener('pointerdown', () => {
     
     
 </footer>
-  <script>
-  // Play sound function (assuming playSound is defined globally)
-  function playSound(name) {
-    const audio = new Audio(`${name}.mp3`);
-    audio.play();
-  }
-
-  // Set up clickable-area buttons
-  document.querySelectorAll('.clickable-area').forEach(button => {
-    button.addEventListener('click', () => {
-      const soundName = button.dataset.sound || 'chime';
-      const imageSrc = button.dataset.image;
-      const url = button.dataset.url;
-
-      playSound(soundName);
-
-      if (url) {
-        window.open(url, '_blank');
-      }
-    });
-
-    // Optional: reveal buttons with delay for animation
-    setTimeout(() => {
-      button.classList.add('loaded');
-    }, 500);
-  });
-</script>
-
 </body>
 </html>
