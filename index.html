@@ -547,5 +547,33 @@ window.addEventListener('pointerdown', () => {
     
     
 </footer>
+  <script>
+  // Play sound function (assuming playSound is defined globally)
+  function playSound(name) {
+    const audio = new Audio(`${name}.mp3`);
+    audio.play();
+  }
+
+  // Set up clickable-area buttons
+  document.querySelectorAll('.clickable-area').forEach(button => {
+    button.addEventListener('click', () => {
+      const soundName = button.dataset.sound || 'chime';
+      const imageSrc = button.dataset.image;
+      const url = button.dataset.url;
+
+      playSound(soundName);
+
+      if (url) {
+        window.open(url, '_blank');
+      }
+    });
+
+    // Optional: reveal buttons with delay for animation
+    setTimeout(() => {
+      button.classList.add('loaded');
+    }, 500);
+  });
+</script>
+
 </body>
 </html>
