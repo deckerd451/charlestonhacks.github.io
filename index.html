@@ -357,7 +357,7 @@
         padding-bottom: 70px;
     }
 
-    /* Place this OUTSIDE of #missionContent! */
+   
     #aiffBanner {
         display: block;
         margin-left: auto;
@@ -425,10 +425,6 @@
                             </video>
                             
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
-                            
-                            <div class="loading-indicator" id="loadingIndicator">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
 
                             <!-- Navigation buttons -->
                             <button type="button" class="clickable-area top-left" 
@@ -464,8 +460,6 @@
             </article>
         </div>
     </main>
-
-    <div id="spinner" class="spinner"></div>
 
     <footer>
         <div id="countdownWrapper">
@@ -642,7 +636,7 @@
                 
                 missionImage.classList.add(randomFlip);
                 document.body.classList.add('fade-out-body');
-                document.getElementById('spinner').style.display = 'block';
+                
                 
                 // Redirect immediately
                 window.location.href = url;
@@ -672,7 +666,7 @@
                 
                 // Handle page navigation
                 window.addEventListener('beforeunload', () => {
-                    document.getElementById('spinner').style.display = 'none';
+                   
                 });
                 
                 window.addEventListener('pageshow', () => {
