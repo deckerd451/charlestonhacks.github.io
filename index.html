@@ -329,34 +329,42 @@
         /* ==========================================================================
            RESPONSIVE DESIGN
            ========================================================================== */
-        @media (max-width: 768px) {
-            .media-container {
-                max-width: 90%;
-            }
+ @media (max-width: 768px) {
+    .media-container {
+        max-width: 90%;
+    }
 
-            #countdown {
-                font-size: 24px;
-            }
+    #countdown {
+        font-size: 24px;
+    }
 
-            .info {
-                font-size: 16px;
-            }
+    .info {
+        font-size: 16px;
+    }
 
-            .center-top {
-                top: -30%;
-            }
+    .center-top {
+        top: -30%;
+    }
 
-            .center-bottom {
-                bottom: 0%;
-            }
+    .center-bottom {
+        bottom: 0%;
+    }
 
-            #missionContent {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding-bottom: 70px;
-            }
-        }
+    #missionContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 70px;
+    }
+
+    /* Place this OUTSIDE of #missionContent! */
+    #aiffBanner {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30px;
+    }
+}
 
         @media (min-width: 769px) {
             .media-container {
