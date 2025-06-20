@@ -17,7 +17,7 @@
 
         h1 {
             margin: 20px;
-            color: #00FF00; /* Acid green title */
+            color: gold; /* Gold title */
             display: none; /* Hide original title */
         }
 
@@ -46,6 +46,7 @@
             height: 210px;
             perspective: 1000px;
             cursor: pointer;
+            aspect-ratio: 5/7; /* Maintain card aspect ratio */
         }
 
         .card-inner {
@@ -130,34 +131,71 @@
             color: #FF6347;
         }
 
+        /* Mobile styles - improved aspect ratio handling */
         @media (max-width: 800px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(8, 1fr);
+                grid-template-rows: repeat(8, auto);
                 gap: 15px;
                 padding: 10px;
+                max-width: 90vw;
+                margin: 20px auto;
             }
 
             .card {
-                height: 240px;
+                width: 100%;
+                max-width: none;
+                height: auto;
+                aspect-ratio: 5/7; /* Maintain proper card proportions */
+                min-height: 180px; /* Ensure minimum readable size */
+                max-height: 250px; /* Prevent cards from getting too large */
+            }
+
+            .logo {
+                width: 300px;
+                margin-top: 10px;
             }
         }
 
         @media (max-width: 650px) {
             .game-container {
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(8, 1fr);
+                grid-template-rows: repeat(8, auto);
                 gap: 10px;
-                padding: 5px;
+                padding: 10px;
+                max-width: 95vw;
             }
 
             .card {
-                height: 260px;
+                aspect-ratio: 5/7;
+                min-height: 160px;
+                max-height: 220px;
             }
 
             .backstory {
                 font-size: 14px;
                 padding: 15px;
+            }
+
+            .logo {
+                width: 250px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 480px) {
+            .game-container {
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .card {
+                min-height: 140px;
+                max-height: 200px;
+            }
+
+            .logo {
+                width: 200px;
             }
         }
 
@@ -247,14 +285,14 @@
         (function () {
             const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara', 'wolf', 'hermes'];
             const backstories = {
-                'astrid': 'Astrid - A Valkyrie’s Tale: A powerful warrior with a destiny to save her people.',
+                'astrid': 'Astrid - A Valkyrie\'s Tale: A powerful warrior with a destiny to save her people.',
                 'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a powerful gaze.',
                 'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
                 'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
                 'descartes': 'Descartes - A Mysterious Gentleman: waiting to reveal his plan.',
                 'elara': 'Elara - The Guardian: A watchful protector who stands in the shadows.',
-                'wolf': 'Wolf - A loyal, powerful ally, fiercly protective of those he cares about.',
-            'hermes': 'Hermes - An honorable and generous god who thinks of others before himself.'
+                'wolf': 'Wolf - A loyal, powerful ally, fiercely protective of those he cares about.',
+                'hermes': 'Hermes - An honorable and generous god who thinks of others before himself.'
             };
 
             const gameContainer = document.getElementById('game-container');
