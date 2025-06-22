@@ -1,30 +1,36 @@
 body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     overflow-x: hidden;
     background-color: #000; /* Fallback color */
-    background-image: url('images/defaultbackground.webp'); /* Default background image */
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    background-image: url('images/defaultbackground.webp'); /* Default desktop background */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed; /* Keep background fixed on desktop and mobile */
+    pointer-events: none; /* Ensure background is not clickable */
 }
 
 /* Special background for 2-card page */
-body.two-card-page {
+body.two-card-page::before {
     background-image: url('images/ieback.webp');
-    background-attachment: fixed;
 }
 
 /* Mobile: swap background image, keep it fixed */
 @media (max-width: 768px) {
-    body {
+    body::before {
         background-image: url('images/moback.webp');
-        background-attachment: fixed;
     }
-    body.two-card-page {
+    body.two-card-page::before {
         background-image: url('images/moback.webp');
-        background-attachment: fixed;
     }
 }
 
