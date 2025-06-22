@@ -181,13 +181,7 @@
         // VIDEO CONTROLLER
         // ==========================================================================
         const VideoController = {
-            showLoadingIndicator() {
-                document.getElementById('loadingIndicator').style.display = 'block';
-            },
-            
-            hideLoadingIndicator() {
-                document.getElementById('loadingIndicator').style.display = 'none';
-            },
+           
             
             handleError() {
                 alert("Error loading video. Please try again later.");
@@ -306,15 +300,15 @@
                 });
             },
             
-            setupVideoHandlers() {
-                const video = document.getElementById('missionVideo');
-                if (video) {
-                    video.addEventListener('loadstart', VideoController.showLoadingIndicator);
-                    video.addEventListener('canplay', VideoController.hideLoadingIndicator);
-                    video.addEventListener('error', VideoController.handleError);
-                    video.addEventListener('ended', VideoController.showCardFrame);
-                }
-            },
+        setupVideoHandlers() {
+    const video = document.getElementById('missionVideo');
+    if (video) {
+        // video.addEventListener('loadstart', VideoController.showLoadingIndicator); // REMOVE THIS
+        // video.addEventListener('canplay', VideoController.hideLoadingIndicator);   // REMOVE THIS
+        video.addEventListener('error', VideoController.handleError);
+        video.addEventListener('ended', VideoController.showCardFrame);
+    }
+},
             
             setupClickableAreas() {
                 document.querySelectorAll('.clickable-area').forEach(area => {
