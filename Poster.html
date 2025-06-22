@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.min.css" /></noscript>
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="styles.css">
 <!-- LightGallery JS (Minified) -->
     <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/lightgallery.umd.min.js" defer></script>
+    
 
     <style>
 html, body {
@@ -30,6 +32,36 @@ body {
     margin-bottom: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+        footer {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 32px 0 24px 0;
+  text-align: center;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.footer-icons {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-icons li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.footer-icons a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.2s;
+}
+
+.footer-icons a:hover {
+  color: #ffd700;
 }
 
 #lightbox-gallery {
@@ -57,6 +89,11 @@ body {
 
 .main {
     margin-bottom: 20px;
+}
+        @media (max-width: 768px) {
+  #lightbox-gallery {
+    justify-content: center;
+  }
 }
     </style>
 </head>
@@ -136,6 +173,17 @@ body {
         }
     });
 </script>
-
+<footer>
+  <div class="footer-content">
+    <ul class="footer-icons">
+      <li><a href="https://www.instagram.com/charlestonhacks/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a></li>
+      <li><a href="mailto:hello@charlestonhacks.com" title="Email"><i class="fas fa-envelope"></i></a></li>
+      <li><a href="https://www.linkedin.com/company/charlestonhacks" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a></li>
+      <li><a href="https://twitter.com/Descart84114619" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+      <!-- Add more as you wish -->
+    </ul>
+    <p style="margin-top:10px;">&copy; 2025 CharlestonHacks</p>
+  </div>
+</footer>
 </body>
 </html>
