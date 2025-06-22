@@ -2,37 +2,28 @@ body {
     margin: 0;
     height: 100vh;
     overflow-x: hidden;
-    background: none; /* Remove default background to prevent overlap */
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    background-color: #000; /* Or your preferred fallback color */
     background-image: url('images/defaultbackground.webp'); /* Default background image */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: -1;
 }
 
-body.two-card-page::before {
-    background-image: url('images/ieback.webp'); /* Background image for 2-card page */
+/* Special background for 2-card page */
+body.two-card-page {
+    background-image: url('images/ieback.webp');
 }
 
+/* Mobile: swap background image */
 @media (max-width: 768px) {
-    body::before {
-        background-image: url('images/moback.webp'); /* Mobile default background image */
+    body {
+        background-image: url('images/moback.webp');
     }
-
-    body.two-card-page::before {
-        background-image: url('images/moback.webp'); /* Mobile background image for innovation engine page */
+    body.two-card-page {
+        background-image: url('images/moback.webp');
     }
 }
 
 #matchmaking-section {
-    margin-top: 85px; /* Adjust the value as needed */
+    margin-top: 85px; /* Adjust as needed */
 }
