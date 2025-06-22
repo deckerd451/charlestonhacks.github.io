@@ -78,7 +78,7 @@
     <h1 style="text-align: center; margin-top: 20px;">Welcome to MeetupMashup #1</h1>
     <p style="text-align: center;">Explore our highlights below:</p>
     <div class="scroll-container">
-        <a href="placeholder1.html"><img src="images/mashupposter.jpg" alt="Meetup Mashup Poster"></a>
+        <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/"><img src="images/mashupposter.jpg" alt="Meetup Mashup Poster"></a>
         <a href="placeholder2.html"><img src="images/davedoug.jpg" alt="Doug and Dave"></a>
         <a href="placeholder3.html"><img src="images/mmcomic.png" alt="Comic 1"></a>
         <a href="placeholder4.html"><img src="images/mmcomic2.png" alt="Comic 2"></a>
