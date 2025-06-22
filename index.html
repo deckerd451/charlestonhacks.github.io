@@ -54,6 +54,9 @@
             text-align: center;
             z-index: 1;
         }
+        #aiffBanner {
+    display: none;
+}
 
         /* ==========================================================================
            BACKGROUND VIDEO
@@ -726,29 +729,30 @@
         // ==========================================================================
         // GLOBAL FUNCTIONS (for inline event handlers)
         // ==========================================================================
-        function toggleMissionContent() {
-            if (CardController.clicked) return;
-            CardController.clicked = true;
-            
-            AudioController.playSound('cardflip');
-            
-            const image = document.getElementById('missionImage');
-            image.src = CardController.getRandomImage();
-            
-            const video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 0;
-            
-            setTimeout(() => {
-                video.style.opacity = 1;
-            }, 100);
-            
-            video.play();
-            document.getElementById('missionContent').style.display = 'block';
-            
-            const randomFlip = CardController.getRandomFlip();
-            image.classList.add(randomFlip);
-        }
+function toggleMissionContent() {
+    if (CardController.clicked) return;
+    CardController.clicked = true;
+
+    AudioController.playSound('cardflip');
+
+    const image = document.getElementById('missionImage');
+    image.src = CardController.getRandomImage();
+
+    const video = document.getElementById('missionVideo');
+    video.style.display = 'block';
+    video.style.opacity = 0;
+
+    setTimeout(() => {
+        video.style.opacity = 1;
+    }, 100);
+
+    video.play();
+    document.getElementById('missionContent').style.display = 'block';
+    document.getElementById('aiffBanner').style.display = 'block'; // <-- ADD THIS LINE
+
+    const randomFlip = CardController.getRandomFlip();
+    image.classList.add(randomFlip);
+}
         
         function flipAndRedirect() {
             const banner = document.getElementById('aiffBanner');
