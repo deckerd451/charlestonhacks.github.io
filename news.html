@@ -68,7 +68,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             cursor: pointer;
         }
-        .scroll-container img.enlarged {
+        .scroll-container img:hover,
+        .scroll-container a:focus img {
             transform: scale(1.5);
             z-index: 10;
             box-shadow: 0 8px 24px rgba(0,0,0,0.32);
@@ -100,7 +101,7 @@
         /* Footer background override for dark site bg */
         #footer {
             background-color: transparent !important;
-            border-top: 2px solid #ddd;
+            /* border-top: 2px solid #ddd;  -- REMOVED horizontal line */
         }
         #footer p {
             color: #eee;
@@ -122,38 +123,6 @@
         </a>
         <p style="margin-top: 10px; font-size: 16px;">© 2025 CharlestonHacks. All rights reserved.</p>
     </footer>
-    <script>
-        // Custom enlarge-on-first-click-before-link logic
-        document.querySelectorAll('.scroll-container a').forEach(function(link) {
-            let enlarged = false;
-            link.addEventListener('click', function(e) {
-                const img = this.querySelector('img');
-                if (!enlarged) {
-                    e.preventDefault();
-                    document.querySelectorAll('.scroll-container img.enlarged').forEach(el => {
-                        el.classList.remove('enlarged');
-                    });
-                    img.classList.add('enlarged');
-                    enlarged = true;
-
-                    // Remove enlarge if clicked elsewhere
-                    const handler = function(event) {
-                        if (!img.contains(event.target)) {
-                            img.classList.remove('enlarged');
-                            enlarged = false;
-                            document.removeEventListener('click', handler, true);
-                        }
-                    };
-                    setTimeout(() => {
-                        document.addEventListener('click', handler, true);
-                    }, 0);
-                } else {
-                    img.classList.remove('enlarged');
-                    enlarged = false;
-                    // Allow default (go to link) action
-                }
-            });
-        });
-    </script>
+    <!-- No script needed, hover and one-click is default browser behavior -->
 </body>
 </html>
