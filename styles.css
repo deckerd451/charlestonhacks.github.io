@@ -69,7 +69,7 @@ body.two-card-page::before {
         --footer-spacing: 7px;
     }
     body::before {
-        background-image: url('images/moback.webp');
+        background-image: url('images/backgroundmobile.jpg');
     }
     body.two-card-page::before {
         background-image: url('images/moback.webp');
