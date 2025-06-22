@@ -34,6 +34,12 @@
             --clickable-max-size: 90px;
             --center-clickable-size: 16.5vw;
             --center-clickable-max-size: 110px;
+            
+            /* Responsive variables */
+            --media-scale: 0.8;
+            --countdown-size: 32px;
+            --info-size: 20px;
+            --footer-spacing: 20px;
         }
 
         * {
@@ -46,7 +52,7 @@
            BASE STYLES
            ========================================================================== */
         body {
-            background-color: var(--background-color);
+            background-color: var(--background-color) !important;
             color: var(--text-color);
             font-family: 'Britannic Bold', Arial, sans-serif;
             overflow-x: hidden;
@@ -54,9 +60,10 @@
             text-align: center;
             z-index: 1;
         }
-        #aiffBanner {
-    display: none;
-}
+
+        html, footer, .icons-container {
+            background: var(--background-color) !important;
+        }
 
         /* ==========================================================================
            BACKGROUND VIDEO
@@ -140,6 +147,7 @@
             max-width: 600px;
             margin: 0 auto;
             overflow: hidden;
+            transform: scale(var(--media-scale));
         }
 
         .media-container img,
@@ -261,20 +269,47 @@
 
         .info {
             color: var(--secondary-color);
-            font-size: 20px;
+            font-size: var(--info-size);
+        }
+
+        #aiffBanner {
+            display: none;
         }
 
         /* ==========================================================================
-           COUNTDOWN
+           FOOTER & COUNTDOWN
            ========================================================================== */
+        footer {
+            padding: var(--footer-spacing);
+            background: var(--background-color) !important;
+        }
+
         #countdownWrapper {
-            margin-top: 15px;
+            margin-bottom: var(--footer-spacing);
             text-align: center;
         }
 
         #countdown {
-            font-size: 32px;
+            font-size: var(--countdown-size);
             color: var(--primary-color);
+        }
+
+        .icons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            background: var(--background-color) !important;
+        }
+
+        .icons-container a {
+            color: var(--text-color);
+            font-size: 24px;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .icons-container a:hover {
+            color: var(--secondary-color);
         }
 
         /* ==========================================================================
@@ -294,7 +329,6 @@
             z-index: 5;
         }
 
-
         #cardFrame {
             display: none;
             position: absolute;
@@ -306,75 +340,28 @@
         }
 
         /* ==========================================================================
-           RESPONSIVE DESIGN
+           RESPONSIVE DESIGN - SIMPLIFIED
            ========================================================================== */
-@media (max-width: 768px) {
-    .media-container {
-        max-width: 90%;
-    }
+        @media (max-width: 768px) {
+            :root {
+                --media-scale: 1;
+                --countdown-size: 24px;
+                --info-size: 16px;
+                --footer-spacing: 35px;
+            }
 
-    #countdown {
-        font-size: 24px;
-    }
+            #missionContent {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-bottom: 70px;
+            }
 
-    .info {
-        font-size: 16px;
-    }
-
-    #missionContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 70px;
-    }
-
-    #aiffBanner {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 40px;
-    }
-
-   
-    #countdownWrapper {
-        margin-bottom: 35px; /* or more, as needed */
-    }
-    .icons-container {
-        margin-bottom: 35px; /* or more, as needed */
-    }
-    footer {
-        padding-top: 8px;
-        padding-bottom: 8px; /* for extra space at bottom */
-    }
-}
-        /* ==========================================================================
-           FOOTER
-           ========================================================================== */
-        .icons-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            padding: 20px;
+            #aiffBanner {
+                display: block;
+                margin: 40px auto 0;
+            }
         }
-
-        .icons-container a {
-            color: var(--text-color);
-            font-size: 24px;
-            transition: color var(--transition-speed) ease;
-        }
-
-        .icons-container a:hover {
-            color: var(--secondary-color);
-        }
-        html, body, footer, .icons-container {
-  background: var(--background-color, black) !important;
-}
-        @media (min-width: 769px) {
-    .media-container {
-        transform: scale(0.8);
-    }
-}
     </style>
 </head>
 
@@ -446,8 +433,8 @@
 
     <footer>
         <div id="countdownWrapper">
-        <div id="countdown"></div>
-                                </div>
+            <div id="countdown"></div>
+        </div>
         <section class="icons-container">
             <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
                 <i class="fas fa-info-circle"></i>
