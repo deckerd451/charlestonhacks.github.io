@@ -46,8 +46,8 @@
             border-radius: 10px;
             margin: 20px auto;
             padding: 10px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: transparent; /* removed white background */
+            box-shadow: none; /* removed box shadow */
         }
         .scroll-container a {
             display: inline-block;
@@ -67,6 +67,7 @@
             transition: transform 0.35s cubic-bezier(.4,2,.6,1), box-shadow 0.35s;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             cursor: pointer;
+            background: transparent;
         }
         .scroll-container img:hover,
         .scroll-container a:focus img {
@@ -101,7 +102,6 @@
         /* Footer background override for dark site bg */
         #footer {
             background-color: transparent !important;
-            /* border-top: 2px solid #ddd;  -- REMOVED horizontal line */
         }
         #footer p {
             color: #eee;
