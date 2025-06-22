@@ -2,25 +2,29 @@ body {
     margin: 0;
     height: 100vh;
     overflow-x: hidden;
-    background-color: #000; /* Or your preferred fallback color */
+    background-color: #000; /* Fallback color */
     background-image: url('images/defaultbackground.webp'); /* Default background image */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed; /* Keep background fixed on desktop and mobile */
 }
 
 /* Special background for 2-card page */
 body.two-card-page {
     background-image: url('images/ieback.webp');
+    background-attachment: fixed;
 }
 
-/* Mobile: swap background image */
+/* Mobile: swap background image, keep it fixed */
 @media (max-width: 768px) {
     body {
         background-image: url('images/moback.webp');
+        background-attachment: fixed;
     }
     body.two-card-page {
         background-image: url('images/moback.webp');
+        background-attachment: fixed;
     }
 }
 
