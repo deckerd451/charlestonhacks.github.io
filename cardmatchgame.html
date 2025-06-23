@@ -313,7 +313,7 @@
 
 <script>
 (function () {
-    const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara', 'wolf', 'hermes', 'merlin', '?'];
+    const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara', 'wolf', 'hermes', 'merlin', 'mystery'];
     const backstories = {
         'astrid': 'Astrid - A Valkyrie: A powerful warrior with a destiny to save her people.',
         'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood god with a powerful gaze.',
@@ -324,7 +324,7 @@
         'wolf': 'Wolf - A loyal, powerful ally: Fierce protector of those he cares about.',
         'merlin': 'Merlin - The Master: Keeper of the hidden truths behind all things.',
         'hermes': 'Hermes - The Humanitarian: An honorable and generous god who thinks of others before himself.',
-        '?': '? - A Mystery: Waiting to reveal his plan.'
+        'mystery': '? - A Mystery: Waiting to be discovered.'
     };
 
     const gameContainer = document.getElementById('game-container');
@@ -412,7 +412,7 @@
         } else if (character === 'hermes') {
             videoSource.src = 'images/hermesvideo.mp4';
               } else if (character === '?') {
-            videoSource.src = 'images/?.mp4'; 
+            videoSource.src = 'images/Mystery.mp4'; 
         }
         video.load();
         videoContainer.style.display = 'block';
@@ -464,7 +464,7 @@
                 firstCard.dataset.character === 'wolf' ||
                 firstCard.dataset.character === 'merlin' ||
                 firstCard.dataset.character === 'hermes' ||
-                 firstCard.dataset.character === '?' ||
+                 firstCard.dataset.character === 'mystery' ||
                 firstCard.dataset.character === 'aegis'
             ) {
                 playVideo(firstCard.dataset.character);
