@@ -13,18 +13,10 @@
             margin: 0;
             padding: 0;
         }
-        h1 {
-            margin: 20px;
-            color: gold;
-            display: none;
-        }
         .logo {
             width: 400px;
             height: auto;
             margin-top: 20px;
-        }
-        h2, h3 {
-            margin: 20px;
         }
         .game-container {
             display: grid;
@@ -95,11 +87,44 @@
             overflow-y: auto;
             display: none;
         }
-        #profiles-btn {
+        /* MODAL */
+        .modal-overlay {
             display: none;
-            margin: 30px auto 0 auto;
-            padding: 16px 38px;
-            font-size: 1.3rem;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #181818;
+            color: #fff;
+            border-radius: 16px;
+            padding: 36px 28px 28px 28px;
+            box-shadow: 0 8px 40px #39FF1440;
+            min-width: 280px;
+            max-width: 90vw;
+            text-align: center;
+            position: relative;
+        }
+        .modal-content h2 {
+            color: #39FF14;
+            margin-top: 0;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .modal-content p {
+            font-size: 1.1rem;
+            margin: 0 0 18px 0;
+        }
+        .modal-btn, #profiles-btn {
+            padding: 14px 32px;
+            font-size: 1.1rem;
             font-weight: 700;
             background: linear-gradient(90deg,#39FF14 0%, #89CFF0 100%);
             color: #212121;
@@ -108,12 +133,26 @@
             box-shadow: 0 4px 16px #39FF1440;
             cursor: pointer;
             transition: background 0.2s, color 0.2s, transform 0.15s;
+            margin: 0 14px;
+            margin-top: 18px;
         }
-        #profiles-btn:hover {
+        .modal-btn:hover, #profiles-btn:hover {
             background: linear-gradient(90deg,#89CFF0 0%, #39FF14 100%);
             color: #000;
             transform: scale(1.06);
         }
+        .modal-close {
+            position: absolute;
+            top: 10px; right: 18px;
+            font-size: 2rem;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.18s;
+        }
+        .modal-close:hover { color: #39FF14; }
+
         footer {
             margin-top: 50px;
             text-align: center;
@@ -242,7 +281,16 @@
 
 <div class="backstory" id="backstory"></div>
 
-<button id="profiles-btn" onclick="window.location.href='profiles.html'">View Team Profiles</button>
+<!-- Victory Modal -->
+<div class="modal-overlay" id="victory-modal">
+    <div class="modal-content">
+        <button class="modal-close" id="modal-close-btn" aria-label="Close Modal">&times;</button>
+        <h2>Congratulations!</h2>
+        <p id="victory-message"></p>
+        <button class="modal-btn" id="play-again-btn">Play Again</button>
+        <button class="modal-btn" id="profiles-btn">View Team Profiles</button>
+    </div>
+</div>
 
 <div id="video-container">
     <button id="close-video">X</button>
@@ -287,7 +335,11 @@
     const videoSource = document.getElementById('video-source');
     const closeVideoButton = document.getElementById('close-video');
     const backgroundMusic = document.getElementById('background-music');
+    const victoryModal = document.getElementById('victory-modal');
+    const victoryMessage = document.getElementById('victory-message');
+    const playAgainBtn = document.getElementById('play-again-btn');
     const profilesBtn = document.getElementById('profiles-btn');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
     if (backgroundMusic) backgroundMusic.volume = 0.5;
 
     let flippedCards = [];
@@ -369,6 +421,16 @@
         video.pause();
     });
 
+    function showVictoryModal() {
+        victoryMessage.textContent = `You win! Time: ${timer}s, Moves: ${moves}`;
+        victoryModal.classList.add('active');
+        profilesBtn.focus();
+    }
+
+    function hideVictoryModal() {
+        victoryModal.classList.remove('active');
+    }
+
     function checkMatch() {
         const [firstCard, secondCard] = flippedCards;
         if (firstCard.dataset.character === secondCard.dataset.character) {
@@ -383,10 +445,7 @@
                 stopTimer();
                 setTimeout(() => {
                     document.getElementById('victory-sound').play();
-                    // Show the profiles button BEFORE the alert
-                    profilesBtn.style.display = 'block';
-                    profilesBtn.focus();
-                    alert(`You win! Time: ${timer}s, Moves: ${moves}`);
+                    showVictoryModal();
                 }, 500);
             }
 
@@ -444,8 +503,9 @@
         }
     });
 
-    // Restart the game when the logo is clicked
-    document.getElementById('logo').addEventListener('click', () => {
+    // Play Again functionality
+    playAgainBtn.addEventListener('click', () => {
+        hideVictoryModal();
         matchedCards = [];
         flippedCards = [];
         timer = 0;
@@ -457,10 +517,37 @@
         stopTimer();
         startTimer();
 
-        // Hide the profiles button on restart
-        profilesBtn.style.display = 'none';
+        backgroundMusic.currentTime = 0;
+        backgroundMusic.play();
+    });
 
-        // Reset and restart the background music
+    // Modal close button (also closes on ESC)
+    modalCloseBtn.addEventListener('click', hideVictoryModal);
+    window.addEventListener('keydown', function(e) {
+        if (victoryModal.classList.contains('active') && (e.key === "Escape" || e.key === "Esc")) {
+            hideVictoryModal();
+        }
+    });
+
+    // Profiles button
+    profilesBtn.addEventListener('click', function() {
+        window.location.href = 'profiles.html';
+    });
+
+    // Restart the game when the logo is clicked
+    document.getElementById('logo').addEventListener('click', () => {
+        hideVictoryModal();
+        matchedCards = [];
+        flippedCards = [];
+        timer = 0;
+        moves = 0;
+        timerDisplay.textContent = 'Time: 0s';
+        movesDisplay.textContent = 'Moves: 0';
+        backstoryContainer.style.display = 'none';
+        shuffleCards();
+        stopTimer();
+        startTimer();
+
         backgroundMusic.currentTime = 0;
         backgroundMusic.play();
     });
