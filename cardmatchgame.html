@@ -5,28 +5,249 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>CharlestonHacks Matching Game</title>
     <style>
-        /* [ ... existing styles ... ] */
+        /* Existing styles */
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
 
-        /* Add this for the profiles button */
-        #profiles-btn {
-            display: none;
-            margin: 30px auto 0 auto;
-            padding: 16px 38px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            background: linear-gradient(90deg,#39FF14 0%, #89CFF0 100%);
-            color: #212121;
-            border: none;
-            border-radius: 30px;
-            box-shadow: 0 4px 16px #39FF1440;
+        h1 {
+            margin: 20px;
+            color: gold; /* Gold title */
+            display: none; /* Hide original title */
+        }
+
+        .logo {
+            width: 400px; /* Adjust to match the original title size */
+            height: auto;
+            margin-top: 20px;
+        }
+
+        h2, h3 {
+            margin: 20px;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 150px); /* 4 columns */
+            grid-template-rows: repeat(4, 200px); /* 4 rows for more cards */
+            gap: 20px;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 150px;
+            height: 210px;
+            perspective: 1000px;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s, transform 0.15s;
+            aspect-ratio: 5/7; /* Maintain card aspect ratio */
         }
-        #profiles-btn:hover {
-            background: linear-gradient(90deg,#89CFF0 0%, #39FF14 100%);
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .card-front {
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
             color: #000;
-            transform: scale(1.06);
         }
+
+        .card-back {
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .backstory {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            display: none;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        footer a {
+            display: inline-block;
+            margin: 10px 20px;
+            font-size: 18px;
+            color: #89CFF0;
+        }
+
+        footer a:hover {
+            color: #FF6347;
+        }
+
+        /* Mobile styles - improved aspect ratio handling */
+        @media (max-width: 800px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, auto);
+                gap: 15px;
+                padding: 10px;
+                max-width: 90vw;
+                margin: 20px auto;
+            }
+
+            .card {
+                width: 100%;
+                max-width: none;
+                height: auto;
+                aspect-ratio: 5/7; /* Maintain proper card proportions */
+                min-height: 180px; /* Ensure minimum readable size */
+                max-height: 250px; /* Prevent cards from getting too large */
+            }
+
+            .logo {
+                width: 300px;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, auto);
+                gap: 10px;
+                padding: 10px;
+                max-width: 95vw;
+            }
+
+            .card {
+                aspect-ratio: 5/7;
+                min-height: 160px;
+                max-height: 220px;
+            }
+
+            .backstory {
+                font-size: 14px;
+                padding: 15px;
+            }
+
+            .logo {
+                width: 250px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 480px) {
+            .game-container {
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .card {
+                min-height: 140px;
+                max-height: 200px;
+            }
+
+            .logo {
+                width: 200px;
+            }
+        }
+
+     /* Lightbox (modal) styles for video */
+#video-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px;  /* Adjust this to change the space around the video */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    width: 90%;  /* Increase to 90% for a larger video container */
+    height: 90%; /* Increase to 90% for a larger video container */
+    max-width: 1000px; /* Increase the maximum width */
+    max-height: 600px; /* Increase the maximum height */
+}
+
+#video {
+    width: 100%;  /* Make the video fill the container */
+    height: 100%; /* Make the video fill the container */
+}
+
+/* Close button styles */
+#close-video {
+    position: fixed;  /* Use fixed position instead of absolute */
+    top: 5%;  /* Make the distance from the top a percentage to adjust to screen height */
+    right: 5%;  /* Make the distance from the right a percentage to adjust to screen width */
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    width: 40px;  /* Increase button size slightly for better accessibility */
+    height: 40px; /* Increase button size slightly for better accessibility */
+    cursor: pointer;
+    z-index: 1001;  /* Ensure the close button is above the video */
+    padding: 0; /* Remove any padding that could affect the button size */
+}
+
+#close-video:hover {
+    background-color: #cc0000;
+}
+body.light-theme .backstory {
+  background-color: #f9f9f9;
+  color: #222;
+  border: 1px solid #ccc;
+}
+
     </style>
 </head>
 <body>
@@ -40,12 +261,11 @@
     </div>
 
     <div class="game-container" id="game-container"></div>
+
     <div class="backstory" id="backstory"></div>
     
-    <!-- Profiles Button: initially hidden -->
-    <button id="profiles-btn" onclick="window.location.href='profiles.html'">View Team Profiles</button>
-
     <div id="video-container">
+        <!-- Close button for video -->
         <button id="close-video">X</button>
         <video id="video" controls muted>
             <source id="video-source" type="video/mp4">
@@ -58,6 +278,7 @@
         <p>Background music "background music.mp3" by ZHRØ -- <a href="https://freesound.org/s/544416/" target="_blank">Link</a> -- License: Attribution 4.0</p>
     </footer>
 
+    <!-- Background music -->
     <audio id="background-music" autoplay loop>
         <source src="assets/music.mp3" type="audio/mp3">
         Your browser does not support the audio element.
@@ -66,12 +287,109 @@
 
     <script>
         (function () {
-            // [ ... existing code ... ]
             const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara', 'wolf', 'hermes'];
-            // [ ... rest of your variable declarations ... ]
-            const profilesBtn = document.getElementById('profiles-btn');
+            const backstories = {
+                'astrid': 'Astrid - A Valkyrie\'s Tale: A powerful warrior with a destiny to save her people.',
+                'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a powerful gaze.',
+                'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
+                'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
+                'descartes': 'Descartes - A Mysterious Gentleman: waiting to reveal his plan.',
+                'elara': 'Elara - The Guardian: A watchful protector who stands in the shadows.',
+                'wolf': 'Wolf - A loyal, powerful ally, fiercely protective of those he cares about.',
+                'hermes': 'Hermes - An honorable and generous god who thinks of others before himself.'
+            };
 
-            // [ ... existing functions ... ]
+            const gameContainer = document.getElementById('game-container');
+            const backstoryContainer = document.getElementById('backstory');
+            const restartButton = document.getElementById('restart-button');
+            const timerDisplay = document.getElementById('timer');
+            const movesDisplay = document.getElementById('moves');
+            const themeToggle = document.getElementById('theme-toggle');
+            const videoContainer = document.getElementById('video-container');
+            const video = document.getElementById('video');
+            const videoSource = document.getElementById('video-source');
+            const closeVideoButton = document.getElementById('close-video');
+            const backgroundMusic = document.getElementById('background-music');
+            if (backgroundMusic) backgroundMusic.volume = 0.5;
+
+            let flippedCards = [];
+            let matchedCards = [];
+            let timer = 0;
+            let moves = 0;
+            let intervalId;
+
+            function startTimer() {
+                intervalId = setInterval(() => {
+                    timer++;
+                    timerDisplay.textContent = `Time: ${timer}s`;
+                }, 1000);
+            }
+
+            function stopTimer() {
+                clearInterval(intervalId);
+            }
+
+            function createCards() {
+                const cards = [];
+                characters.forEach(character => {
+                    for (let i = 0; i < 2; i++) {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+                        card.dataset.character = character;
+                        card.setAttribute('tabindex', '0');
+                        card.innerHTML = `
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <img src="images/universalcard-01.png" alt="Front of ${character} card">
+                                </div>
+                                <div class="card-back">
+                                    <img src="images/${character.charAt(0).toUpperCase() + character.slice(1)}.png" alt="${character} character">
+                                </div>
+                            </div>
+                        `;
+                        cards.push(card);
+                    }
+                });
+                return cards;
+            }
+
+            function shuffleCards() {
+                const cards = createCards();
+                cards.sort(() => Math.random() - 0.5);
+                gameContainer.innerHTML = '';
+                cards.forEach(card => gameContainer.appendChild(card));
+            }
+
+            function playVideo(character) {
+                if (character === 'descartes') {
+                    videoSource.src = 'images/Descartesvideo.mp4';
+                } else if (character === 'medusa') {
+                    videoSource.src = 'images/Medusavideo.mp4';
+                } else if (character === 'alexandor') {
+                    videoSource.src = 'images/Alexandorvideo.mp4';
+                } else if (character === 'elara') {
+                    videoSource.src = 'images/Elaravideo.mp4'; 
+                } else if (character === 'astrid') {
+                    videoSource.src = 'images/astridvideo.mp4'; 
+                } else if (character === 'aegis') {
+                    videoSource.src = 'images/aegisvideo.mp4'; 
+                     } else if (character === 'wolf') {
+                    videoSource.src = 'images/wolfvideo.mp4';
+                     } else if (character === 'hermes') {
+                    videoSource.src = 'images/hermesvideo.mp4'; 
+                }
+                video.load();
+                videoContainer.style.display = 'block';
+                video.play();
+                video.onended = () => {
+                    videoContainer.style.display = 'none';
+                };
+            }
+
+            closeVideoButton.addEventListener('click', () => {
+                videoContainer.style.display = 'none';
+                video.pause();
+            });
 
             function checkMatch() {
                 const [firstCard, secondCard] = flippedCards;
@@ -84,17 +402,17 @@
                     flippedCards = [];
 
                     if (matchedCards.length === characters.length * 2) {
-                        stopTimer();
-                        setTimeout(() => {
-                            document.getElementById('victory-sound').play();
-                            alert(`You win! Time: ${timer}s, Moves: ${moves}`);
-                            // Show the profiles button
-                            profilesBtn.style.display = 'block';
-                            profilesBtn.focus();
-                        }, 500);
-                    }
+    stopTimer();
+    setTimeout(() => {
+        // Play the victory sound
+        document.getElementById('victory-sound').play();
+        
+        // Display the win message (you can also switch this to a custom modal instead of the alert)
+        alert(`You win! Time: ${timer}s, Moves: ${moves}`);
+    }, 500);
+}
 
-                    // [ ... existing video logic ... ]
+
                     if (
                         firstCard.dataset.character === 'descartes' ||
                         firstCard.dataset.character === 'medusa' ||
@@ -117,16 +435,73 @@
                 }
             }
 
-            // When the logo is clicked to restart, hide the profiles button
-            document.getElementById('logo').addEventListener('click', () => {
-                // [ ... existing code ... ]
-                profilesBtn.style.display = 'none';
+            function hideBackstory() {
+                backstoryContainer.style.display = 'none';
+            }
+
+            gameContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
+
+                hideBackstory();
+
+                card.classList.add('flipped');
+                flippedCards.push(card);
+                moves++;
+                movesDisplay.textContent = `Moves: ${moves}`;
+
+                if (flippedCards.length === 2) checkMatch();
             });
 
-            // [ ... rest of your script ... ]
+            gameContainer.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const card = document.activeElement;
+                    if (card && card.classList.contains('card') && !card.classList.contains('flipped')) {
+                        card.classList.add('flipped');
+                        flippedCards.push(card);
+                        moves++;
+                        movesDisplay.textContent = `Moves: ${moves}`;
+
+                        if (flippedCards.length === 2) checkMatch();
+                    }
+                }
+            });
+
+            // Restart the game when the logo is clicked
+            document.getElementById('logo').addEventListener('click', () => {
+                matchedCards = [];
+                flippedCards = [];
+                timer = 0;
+                moves = 0;
+                timerDisplay.textContent = 'Time: 0s';
+                movesDisplay.textContent = 'Moves: 0';
+                backstoryContainer.style.display = 'none';
+                shuffleCards();
+                stopTimer();
+                startTimer();
+
+                // Reset and restart the background music
+                const backgroundMusic = document.getElementById('background-music');
+                backgroundMusic.currentTime = 0; // Reset the music to the beginning
+                backgroundMusic.play(); // Start playing the music again
+            });
+
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                document.body.style.backgroundColor = document.body.classList.contains('light-theme') ? 'white' : 'black';
+                document.body.style.color = document.body.classList.contains('light-theme') ? 'black' : 'white';
+                document.querySelectorAll('.card').forEach(card => {
+                    card.classList.toggle('light-theme');
+                });
+            });
+
             shuffleCards();
             startTimer();
         })();
-    </script>
+        
+
+</script>
+    
+        
 </body>
 </html>
