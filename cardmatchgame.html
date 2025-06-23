@@ -115,6 +115,27 @@
             display: none;
         }
 
+        /* Profiles Button Styling */
+        #profiles-btn {
+            display: none;
+            margin: 30px auto 0 auto;
+            padding: 16px 38px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg,#39FF14 0%, #89CFF0 100%);
+            color: #212121;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 16px #39FF1440;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.15s;
+        }
+        #profiles-btn:hover {
+            background: linear-gradient(90deg,#89CFF0 0%, #39FF14 100%);
+            color: #000;
+            transform: scale(1.06);
+        }
+
         footer {
             margin-top: 50px;
             text-align: center;
@@ -264,6 +285,9 @@ body.light-theme .backstory {
 
     <div class="backstory" id="backstory"></div>
     
+    <!-- Profiles Button: initially hidden -->
+    <button id="profiles-btn" onclick="window.location.href='profiles.html'">View Team Profiles</button>
+
     <div id="video-container">
         <!-- Close button for video -->
         <button id="close-video">X</button>
@@ -310,6 +334,7 @@ body.light-theme .backstory {
             const videoSource = document.getElementById('video-source');
             const closeVideoButton = document.getElementById('close-video');
             const backgroundMusic = document.getElementById('background-music');
+            const profilesBtn = document.getElementById('profiles-btn');
             if (backgroundMusic) backgroundMusic.volume = 0.5;
 
             let flippedCards = [];
@@ -402,16 +427,15 @@ body.light-theme .backstory {
                     flippedCards = [];
 
                     if (matchedCards.length === characters.length * 2) {
-    stopTimer();
-    setTimeout(() => {
-        // Play the victory sound
-        document.getElementById('victory-sound').play();
-        
-        // Display the win message (you can also switch this to a custom modal instead of the alert)
-        alert(`You win! Time: ${timer}s, Moves: ${moves}`);
-    }, 500);
-}
-
+                        stopTimer();
+                        setTimeout(() => {
+                            document.getElementById('victory-sound').play();
+                            alert(`You win! Time: ${timer}s, Moves: ${moves}`);
+                            // Show the profiles button
+                            profilesBtn.style.display = 'block';
+                            profilesBtn.focus();
+                        }, 500);
+                    }
 
                     if (
                         firstCard.dataset.character === 'descartes' ||
@@ -480,6 +504,9 @@ body.light-theme .backstory {
                 stopTimer();
                 startTimer();
 
+                // Hide the profiles button on restart
+                profilesBtn.style.display = 'none';
+
                 // Reset and restart the background music
                 const backgroundMusic = document.getElementById('background-music');
                 backgroundMusic.currentTime = 0; // Reset the music to the beginning
@@ -498,10 +525,6 @@ body.light-theme .backstory {
             shuffleCards();
             startTimer();
         })();
-        
-
-</script>
-    
-        
+    </script>
 </body>
 </html>
