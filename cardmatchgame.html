@@ -315,15 +315,16 @@
 (function () {
     const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara', 'wolf', 'hermes', 'merlin'];
     const backstories = {
-        'astrid': 'Astrid - A Valkyrie\'s Tale: A powerful warrior with a destiny to save her people.',
-        'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood creature with a powerful gaze.',
+        'astrid': 'Astrid - A Valkyrie: A powerful warrior with a destiny to save her people.',
+        'medusa': 'Medusa - An Otherworldly Force: A feared and misunderstood god with a powerful gaze.',
         'alexandor': 'Alexandor - The Strategist: A master tactician who leads armies to victory.',
         'aegis': 'Aegis - The Protector: A shield bearer sworn to guard the realms.',
-        'descartes': 'Descartes - A Mysterious Gentleman: waiting to reveal his plan.',
+        'descartes': 'Descartes - A Gentleman: Architect with a grand plan.',
         'elara': 'Elara - The Guardian: A watchful protector who stands in the shadows.',
-        'wolf': 'Wolf - A loyal, powerful ally, fiercely protective of those he cares about.',
-        'merlin': 'Merlin - A master of the hidden truths behind all things.',
-        'hermes': 'Hermes - An honorable and generous god who thinks of others before himself.'
+        'wolf': 'Wolf - A loyal, powerful ally: Fierce protector of those he cares about.',
+        'merlin': 'Merlin - The Master: Keeper of the hidden truths behind all things.',
+        'hermes': 'Hermes - The Humanitarian: An honorable and generous god who thinks of others before himself.',
+        '?': '? - A Mystery: Waiting to reveal his plan.'
     };
 
     const gameContainer = document.getElementById('game-container');
@@ -409,7 +410,9 @@
             } else if (character === 'merlin') {
             videoSource.src = 'images/merlin.mp4';
         } else if (character === 'hermes') {
-            videoSource.src = 'images/hermesvideo.mp4'; 
+            videoSource.src = 'images/hermesvideo.mp4';
+              } else if (character === '?') {
+            videoSource.src = 'images/?.mp4'; 
         }
         video.load();
         videoContainer.style.display = 'block';
@@ -461,6 +464,7 @@
                 firstCard.dataset.character === 'wolf' ||
                 firstCard.dataset.character === 'merlin' ||
                 firstCard.dataset.character === 'hermes' ||
+                 firstCard.dataset.character === '?' ||
                 firstCard.dataset.character === 'aegis'
             ) {
                 playVideo(firstCard.dataset.character);
