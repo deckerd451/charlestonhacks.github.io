@@ -8,27 +8,33 @@
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
     <style>
+        /* Force black background and white text on the whole page */
+        html, body {
+            background: #000 !important;
+            color: #fff !important;
+        }
+
         /* Add space between the Photos button and the first photo */
         .content img {
-            margin-top: 20px; /* Adjust this value as needed */
+            margin-top: 20px;
         }
 
         /* Smaller initial size for the poster */
         .poster-img {
-            max-width: 50%; /* Adjust this percentage as needed */
+            max-width: 50%;
             height: auto;
             cursor: pointer;
-            transition: transform 0.3s ease; /* Smooth transition */
+            transition: transform 0.3s ease;
         }
         
         /* Center the poster image */
         .image.main {
             display: flex;
-            justify-content: center;  /* Horizontally centers the image */
-            align-items: center;      /* Vertically centers the image */
-            text-align: center;       /* Ensures the content is centered inside */
-            margin: 0 auto;           /* Ensures the container is centered on the page */
-            width: 100%;              /* Makes sure it takes full width */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: 0 auto;
+            width: 100%;
         }
 
         /* Lightbox keeps full size */
@@ -86,8 +92,20 @@
 
         iframe {
             width: 100%;
-            max-width: 600px; /* You can adjust this value to control the iframe size */
-            height: 315px; /* Adjust based on your preference */
+            max-width: 600px;
+            height: 315px;
+        }
+
+        /* Ensure all text in .content is white */
+        .content,
+        .content * {
+            color: #fff !important;
+        }
+
+        /* Ensures all buttons and gallery images stand out on black background */
+        .collapsible, .gallery-img {
+            background: #111 !important;
+            color: #fff !important;
         }
     </style>
 </head>
@@ -100,10 +118,10 @@
                 <a class="image main" href="Poster.html"><img src="assets/chbackbuttonred.png" alt="CharlestonHacks Logo" /></a>
             </header>
 
-           <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
-           <a class="image main" onclick="openLightbox('images/ieposter.png')">
-               <img src="images/ieposter.png" alt="Hackathon Poster" class="poster-img" />
-           </a>
+            <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
+            <a class="image main" onclick="openLightbox('images/ieposter.png')">
+                <img src="images/ieposter.png" alt="Hackathon Poster" class="poster-img" />
+            </a>
             <hr>
             <p><b>About the Challenge:
 Hot on the heels of Charleston Tech Week, CharlestonHacks presents the Innovation Engine Hackathon.
@@ -120,10 +138,10 @@ Mentorship will be available throughout the event to support product development
 
             <!-- Devpost Button -->
             <div class="devpost-link">
-                         <a href="https://innovation-engine.devpost.com/">
-                             <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" class="button large" />
-                         </a>
-                     </div>
+                <a href="https://innovation-engine.devpost.com/">
+                    <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" class="button large" />
+                </a>
+            </div>
 
             <!-- Photos Button (Initially Closed) -->
             <button class="collapsible">Photos</button>
@@ -132,15 +150,13 @@ Mentorship will be available throughout the event to support product development
                     <div class="photo-gallery">
                         <!-- Image 1 -->
                         <img src="images/consevancy.jpeg" alt="Innovation Engine Photos" class="gallery-img" />
-                         <!-- Image 2 -->
+                        <!-- Image 2 -->
                         <img src="images/doug.jpg" alt="Innovation Engine Photos" class="gallery-img" />
                         <!-- Image 3 -->
                         <img src="images/placeholder.png" alt="Innovation Engine Photos" class="gallery-img" />
-                        </div>
+                    </div>
                 </a>
-                
             </div>
-
 
         </article>
     </div>
@@ -194,4 +210,3 @@ Mentorship will be available throughout the event to support product development
     </script>
 </body>
 </html>
-
