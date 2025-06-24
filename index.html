@@ -16,10 +16,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Effects for clickable buttons */
-        /* 1. Ripple (top-left) */
-        .button-ripple {
+        .panel {
             position: relative;
+        }
+        .clickable-area {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 5;
+            opacity: 0.85;
+            border-radius: 50%;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .clickable-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        .top-left { top: 10px; left: 10px; }
+        .top-right { top: 10px; right: 10px; }
+        .bottom-left { bottom: 10px; left: 10px; }
+        .bottom-right { bottom: 10px; right: 10px; }
+
+        .button-ripple {
             overflow: hidden;
         }
         .button-ripple .ripple-effect {
@@ -33,7 +59,6 @@
         @keyframes ripple-anim {
             to { transform: scale(4); opacity: 0; }
         }
-        /* 2. Pop (top-right) */
         @keyframes pop {
             0% { transform: scale(1);}
             50% { transform: scale(1.2);}
@@ -42,7 +67,6 @@
         .pop-animate {
             animation: pop 0.3s cubic-bezier(.4,2,.6,1);
         }
-        /* 3. Glow (bottom-left) */
         @keyframes glow {
             0% { box-shadow: 0 0 0px #ffd700;}
             50% { box-shadow: 0 0 20px 8px #ffd700;}
@@ -51,7 +75,6 @@
         .glow-animate {
             animation: glow 0.5s;
         }
-        /* 4. Shake (bottom-right) */
         @keyframes shake {
             0% { transform: translateX(0);}
             25% { transform: translateX(-5px);}
@@ -70,7 +93,7 @@
             <article class="post featured">
                 <header class="major">
                     <div class="panel">
-                        <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
+                        <div class="media-container" aria-label="Toggle mission content" onclick="toggleMissionContent()">
                             <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
                             <div id="missionContent">
                                 <div class="body-text">
@@ -117,7 +140,7 @@
                                 data-url="cardmatchgame.html">
                                 <img src="images/peoplebutton.webp" alt="People">
                             </button>
-                        </a>
+                        </div>
                     </div>
                 </header>
             </article>
@@ -161,9 +184,7 @@
             // Top-Left: Ripple
             document.querySelector('.top-left.button-ripple').addEventListener('click', function(e) {
                 const btn = this;
-                // Remove any old ripple
                 btn.querySelectorAll('.ripple-effect').forEach(el => el.remove());
-                // Create ripple
                 const circle = document.createElement('span');
                 circle.className = 'ripple-effect';
                 const rect = btn.getBoundingClientRect();
@@ -175,28 +196,48 @@
                 setTimeout(() => circle.remove(), 600);
             });
 
-            // Top-Right: Pop
             document.querySelector('.top-right').addEventListener('click', function() {
                 this.classList.add('pop-animate');
                 setTimeout(() => this.classList.remove('pop-animate'), 310);
             });
-
-            // Bottom-Left: Glow
             document.querySelector('.bottom-left').addEventListener('click', function() {
                 this.classList.add('glow-animate');
                 setTimeout(() => this.classList.remove('glow-animate'), 510);
             });
-
-            // Bottom-Right: Shake
             document.querySelector('.bottom-right').addEventListener('click', function() {
                 this.classList.add('shake-animate');
                 setTimeout(() => this.classList.remove('shake-animate'), 410);
             });
         }
 
-        // ==========================================================================
-        // CONFIGURATION, CONTROLLERS, and APP INIT (unchanged)
-        // ==========================================================================
+        // Navigation logic for buttons
+        function addButtonNavigation() {
+            document.querySelectorAll('.clickable-area').forEach(area => {
+                area.addEventListener('click', function(e) {
+                    // Only trigger navigation if it was a direct click (not programmatic)
+                    if(e.isTrusted) {
+                        const sound = this.getAttribute('data-sound');
+                        const url = this.getAttribute('data-url');
+                        if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
+                            AudioController.playSound(sound);
+                            setTimeout(() => {
+                                window.location.href = url;
+                            }, 140); // allow sound to finish
+                        } else {
+                            window.location.href = url;
+                        }
+                    }
+                });
+                area.addEventListener('keydown', function(e) {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        }
+
+        // App logic (controllers, config, etc.) -- unchanged
         const CONFIG = {
             countdown: {
                 targetDate: "June 27, 2025 12:00:00",
@@ -328,10 +369,10 @@
         const App = {
             init() {
                 this.setupEventListeners();
-                this.setupClickableAreas();
                 this.setupVideoHandlers();
                 CountdownController.init();
                 addButtonEffects();
+                addButtonNavigation();
             },
             setupEventListeners() {
                 window.addEventListener('pointerdown', () => {
@@ -354,16 +395,6 @@
                     video.addEventListener('error', VideoController.handleError);
                     video.addEventListener('ended', VideoController.showCardFrame);
                 }
-            },
-            setupClickableAreas() {
-                document.querySelectorAll('.clickable-area').forEach(area => {
-                    area.addEventListener('keydown', function(e) {
-                        if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            this.click();
-                        }
-                    });
-                });
             }
         };
 
