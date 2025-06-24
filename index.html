@@ -16,268 +16,7 @@
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: white;
-            overflow-x: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Main content takes available space */
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            min-height: 0; /* Important for flex shrinking */
-        }
-
-        .panel {
-            position: relative;
-            max-width: min(80vw, 80vh);
-            max-height: min(80vw, 60vh);
-            aspect-ratio: 1;
-            margin: 0 auto;
-        }
-
-        .media-container {
-            display: block;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            cursor: pointer;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        #missionImage {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 3;
-            transition: transform 0.6s ease-in-out;
-            border-radius: 15px;
-        }
-
-        #missionVideo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 2;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 15px;
-        }
-
-        #cardFrame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 4;
-            pointer-events: none;
-            display: none;
-        }
-
-        #missionContent {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            display: none;
-            width: 90%;
-            text-align: center;
-        }
-
-        #aiffBanner {
-            cursor: pointer;
-            width: 85%;
-            height: auto;
-            transition: transform 0.6s ease-in-out;
-            border-radius: 10px;
-        }
-
-        /* Navigation buttons */
-        .clickable-area {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 5;
-            opacity: 0;
-            transition: all 0.3s ease;
-            border-radius: 50%;
-            padding: 8px;
-        }
-
-        .clickable-area.loaded {
-            opacity: 0.8;
-        }
-
-        .clickable-area:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .clickable-area img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .top-left { top: 10px; left: 10px; }
-        .top-right { top: 10px; right: 10px; }
-        .bottom-left { bottom: 10px; left: 10px; }
-        .bottom-right { bottom: 10px; right: 10px; }
-
-        /* Footer - fixed at bottom */
-        footer {
-            background-color: #0f0f0f;
-            padding: 15px 20px;
-            border-top: 1px solid #333;
-            flex-shrink: 0;
-        }
-
-        #countdownWrapper {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        #countdown {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-        }
-
-        .icons-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .icons-container a {
-            color: #fff;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            padding: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .icons-container a:hover {
-            color: #ffd700;
-            background: rgba(255, 215, 0, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Animations */
-        .flip-image-x {
-            transform: rotateX(360deg);
-        }
-
-        .flip-image-y {
-            transform: rotateY(360deg);
-        }
-
-        .fade-out-body {
-            opacity: 0.7;
-            transition: opacity 0.5s ease;
-        }
-
-        /* Responsive adjustments */
-        @media (max-height: 700px) {
-            .panel {
-                max-height: 50vh;
-            }
-            
-            footer {
-                padding: 10px 20px;
-            }
-            
-            #countdown {
-                font-size: 1em;
-            }
-            
-            .icons-container {
-                gap: 15px;
-            }
-            
-            .icons-container a {
-                font-size: 18px;
-                width: 36px;
-                height: 36px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .panel {
-                max-width: 90vw;
-                max-height: 50vh;
-            }
-            
-            main {
-                padding: 10px;
-            }
-            
-            .clickable-area {
-                width: 50px;
-                height: 50px;
-            }
-            
-            .icons-container {
-                gap: 12px;
-            }
-            
-            .icons-container a {
-                font-size: 16px;
-                width: 32px;
-                height: 32px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .icons-container {
-                gap: 8px;
-            }
-            
-            .icons-container a {
-                font-size: 14px;
-                width: 28px;
-                height: 28px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="is-preload">
@@ -287,7 +26,7 @@
                 <header class="major">
                     <div class="panel">
                         <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                            <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" />
+                            <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
                             
                             <div id="missionContent">
                                 <div class="body-text">
@@ -295,6 +34,7 @@
                                         <img id="aiffBanner" 
                                              src="images/engine.webp" 
                                              alt="Innovation Engine" 
+                                             style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
                                              onclick="flipAndRedirect()">
                                     </p>
                                 </div>
@@ -377,6 +117,7 @@
         </section>
     </footer>
 
+    <script src="ho-script.js"></script>
     <script>
         // ==========================================================================
         // CONFIGURATION
@@ -414,22 +155,17 @@
         // ==========================================================================
         const AudioController = {
             preloaded: false,
-            
             preloadAudio() {
                 if (this.preloaded) return;
-                
                 Object.keys(CONFIG.audio).forEach(key => {
                     const src = CONFIG.audio[key];
                     if (src) new Audio(src);
                 });
-                
                 this.preloaded = true;
             },
-            
             playSound(soundKey) {
                 const soundSrc = CONFIG.audio[soundKey];
                 if (!soundSrc) return;
-                
                 const audio = new Audio(soundSrc);
                 audio.volume = 0.2;
                 audio.play().catch(error => {
@@ -445,7 +181,6 @@
             handleError() {
                 alert("Error loading video. Please try again later.");
             },
-            
             showCardFrame() {
                 document.getElementById('cardFrame').style.display = 'block';
             }
@@ -457,34 +192,27 @@
         const CountdownController = {
             element: null,
             interval: null,
-            
             init() {
                 this.element = document.getElementById('countdown');
                 this.start();
             },
-            
             start() {
                 const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
-                
                 this.interval = setInterval(() => {
                     const now = new Date().getTime();
                     const distance = countDownDate - now;
-                    
                     if (distance < 0) {
                         this.stop();
                         this.element.innerHTML = CONFIG.countdown.completedMessage;
                         return;
                     }
-                    
                     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
                     this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 }, 1000);
             },
-            
             stop() {
                 if (this.interval) {
                     clearInterval(this.interval);
@@ -498,25 +226,20 @@
         // ==========================================================================
         const CardController = {
             clicked: false,
-            
             getRandomImage() {
                 const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
                 return CONFIG.cardImages[randomIndex];
             },
-            
             getRandomFlip() {
                 return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             },
-            
             flipCard(imageSrc, url) {
                 const missionImage = document.getElementById('missionImage');
                 const randomFlip = this.getRandomFlip();
-                
                 missionImage.classList.add(randomFlip);
                 document.body.classList.add('fade-out-body');
-                
+                // Redirect immediately
                 window.location.href = url;
-                
                 setTimeout(() => {
                     missionImage.src = imageSrc;
                 }, 2000);
@@ -533,23 +256,23 @@
                 this.setupVideoHandlers();
                 CountdownController.init();
             },
-            
             setupEventListeners() {
+                // Preload audio on first user interaction
                 window.addEventListener('pointerdown', () => {
                     AudioController.preloadAudio();
                 }, { once: true });
-                
+                // Handle page navigation
+                window.addEventListener('beforeunload', () => {});
                 window.addEventListener('pageshow', () => {
                     document.body.classList.remove('fade-out-body');
                 });
-                
+                // Show clickable areas when DOM is loaded
                 document.addEventListener('DOMContentLoaded', () => {
                     document.querySelectorAll('.clickable-area').forEach(element => {
                         element.classList.add('loaded');
                     });
                 });
             },
-            
             setupVideoHandlers() {
                 const video = document.getElementById('missionVideo');
                 if (video) {
@@ -557,18 +280,15 @@
                     video.addEventListener('ended', VideoController.showCardFrame);
                 }
             },
-            
             setupClickableAreas() {
                 document.querySelectorAll('.clickable-area').forEach(area => {
                     area.addEventListener('click', function() {
                         const sound = this.getAttribute('data-sound');
                         const image = this.getAttribute('data-image');
                         const url = this.getAttribute('data-url');
-                        
                         AudioController.playSound(sound);
                         CardController.flipCard(image, url);
                     });
-                    
                     area.addEventListener('keydown', function(e) {
                         if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
@@ -580,44 +300,34 @@
         };
 
         // ==========================================================================
-        // GLOBAL FUNCTIONS
+        // GLOBAL FUNCTIONS (for inline event handlers)
         // ==========================================================================
         function toggleMissionContent() {
             if (CardController.clicked) return;
             CardController.clicked = true;
-
             AudioController.playSound('cardflip');
-
             const image = document.getElementById('missionImage');
             image.src = CardController.getRandomImage();
-
             const video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 0;
-
             setTimeout(() => {
                 video.style.opacity = 1;
             }, 100);
-
             video.play();
             document.getElementById('missionContent').style.display = 'block';
             document.getElementById('aiffBanner').style.display = 'block';
-
             const randomFlip = CardController.getRandomFlip();
             image.classList.add(randomFlip);
         }
-        
         function flipAndRedirect() {
             const banner = document.getElementById('aiffBanner');
             const randomFlip = CardController.getRandomFlip();
-            
             banner.classList.add(randomFlip);
-            
             setTimeout(() => {
                 window.location.href = 'https://innovation-engine.devpost.com/';
             }, 2000);
         }
-
         // ==========================================================================
         // INITIALIZE APPLICATION
         // ==========================================================================
