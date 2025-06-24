@@ -8,7 +8,7 @@
     <!-- External Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.6.0/css/lightgallery.min.css">
-     <!-- Your custom global styles -->
+    <!-- Your custom global styles -->
     <link rel="stylesheet" href="styles.css">
     
     <style>
@@ -25,24 +25,13 @@
             color: #fff;
         }
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .back-button {
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
-
-        .back-button:hover {
-            transform: scale(1.05);
-        }
-
-        .back-button img {
-            max-width: 300px;
+        /* Responsive header image */
+        .events-header-img {
+            display: block;
+            max-width: 680px;
+            width: 90vw;
             height: auto;
+            margin: 0 auto 20px auto;
         }
 
         /* Gallery */
@@ -82,8 +71,9 @@
         footer {
             background-color: #1a1a1a;
             text-align: center;
-            padding: 32px 20px 24px;
+            padding: 32px 20px 64px;
             margin-top: 40px;
+            position: relative;
         }
 
         .footer-icons {
@@ -104,30 +94,60 @@
             color: #ffd700;
         }
 
+        /* Back button at bottom */
+        .footer-back-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 32px;
+        }
+        .footer-back-button img {
+            max-width: 240px;
+            width: 60vw;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        .footer-back-button img:hover {
+            transform: scale(1.05);
+        }
+
         /* Responsive */
+        @media (max-width: 900px) {
+            .gallery {
+                grid-template-columns: 1fr 1fr;
+            }
+            .gallery-item {
+                max-width: 95vw;
+            }
+        }
         @media (max-width: 768px) {
             .gallery {
                 grid-template-columns: 1fr;
             }
-            
             .footer-icons {
                 gap: 15px;
+            }
+            .events-header-img {
+                max-width: 96vw;
+                margin-bottom: 16px;
+            }
+        }
+        @media (max-width: 500px) {
+            .footer-back-button img {
+                max-width: 92vw;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header with Back Button -->
-    <header class="header">
-        <a href="index.html" class="back-button">
-            <img src="assets/chbackbuttonred.png" alt="Back to Home">
-        </a>
-    </header>
+    <!-- Responsive Header Image Centered -->
+    <div style="width: 100%; text-align: center; margin-top: 22px;">
+        <img src="images/header events.webp" alt="CharlestonHacks Events" class="events-header-img">
+    </div>
 
     <!-- Main Gallery -->
     <main class="gallery-container">
         <div id="gallery" class="gallery">
-           
             <a href="https://www.meetup.com/charlestonhacks/events/308305047" class="gallery-item">
                 <img src="images/full2.png" alt="Charleston Hacks Event">
             </a>
@@ -180,7 +200,12 @@
                 <i class="fab fa-twitter"></i>
             </a></li>
         </ul>
-        <p>&copy; 2025 CharlestonHacks</p>
+        <div class="footer-back-button">
+            <a href="index.html">
+                <img src="assets/chbackbuttonred.png" alt="Back to Home">
+            </a>
+        </div>
+        <p style="margin-top:16px;">&copy; 2025 CharlestonHacks</p>
     </footer>
 
     <!-- LightGallery JavaScript -->
