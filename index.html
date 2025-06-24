@@ -21,8 +21,8 @@
         }
         .clickable-area {
             position: absolute;
-            width: 96px;      /* Larger button */
-            height: 96px;     /* Larger button */
+            width: 96px;
+            height: 96px;
             background: none;
             border: none;
             cursor: pointer;
@@ -37,7 +37,7 @@
             transition: box-shadow 0.1s;
         }
         .clickable-area img {
-            width: 88px;   /* Make the icon inside the button larger but still fit */
+            width: 88px;
             height: 88px;
             object-fit: contain;
             pointer-events: none;
@@ -49,7 +49,7 @@
         .bottom-left { bottom: 36px; left: 36px; }
         .bottom-right { bottom: 36px; right: 36px; }
 
-        /* All buttons: Glow effect only */
+        /* Glow effect only */
         @keyframes glow {
             0% { box-shadow: 0 0 0px #ffd700;}
             50% { box-shadow: 0 0 32px 14px #ffd700;}
@@ -57,6 +57,38 @@
         }
         .glow-animate {
             animation: glow 0.45s;
+        }
+
+        /* Responsive styles for buttons */
+        @media (max-width: 900px) {
+            .clickable-area {
+                width: 72px;
+                height: 72px;
+                padding: 8px;
+            }
+            .clickable-area img {
+                width: 64px;
+                height: 64px;
+            }
+            .top-left, .bottom-left { left: 18px; }
+            .top-right, .bottom-right { right: 18px; }
+            .top-left, .top-right { top: 18px; }
+            .bottom-left, .bottom-right { bottom: 18px; }
+        }
+        @media (max-width: 600px) {
+            .clickable-area {
+                width: 56px;
+                height: 56px;
+                padding: 6px;
+            }
+            .clickable-area img {
+                width: 44px;
+                height: 44px;
+            }
+            .top-left, .bottom-left { left: 8px; }
+            .top-right, .bottom-right { right: 8px; }
+            .top-left, .top-right { top: 8px; }
+            .bottom-left, .bottom-right { bottom: 8px; }
         }
     </style>
 </head>
@@ -88,7 +120,7 @@
                             </video>
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-                            <!-- Glow effect only, larger images, moved inward -->
+                            <!-- Glow effect only, larger images, moved inward, but responsive -->
                             <button type="button" class="clickable-area top-left"
                                 data-sound="chime" 
                                 data-image="images/yellowscullcard.png" 
@@ -188,7 +220,6 @@
             });
         }
 
-        // Rest of your logic (controllers, config, etc.) -- unchanged
         const CONFIG = {
             countdown: {
                 targetDate: "June 27, 2025 12:00:00",
