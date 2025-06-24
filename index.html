@@ -9,16 +9,61 @@
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
-    
     <title>CharlestonHacks - Home</title>
-    
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Effects for clickable buttons */
+        /* 1. Ripple (top-left) */
+        .button-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .button-ripple .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple-anim {
+            to { transform: scale(4); opacity: 0; }
+        }
+        /* 2. Pop (top-right) */
+        @keyframes pop {
+            0% { transform: scale(1);}
+            50% { transform: scale(1.2);}
+            100% { transform: scale(1);}
+        }
+        .pop-animate {
+            animation: pop 0.3s cubic-bezier(.4,2,.6,1);
+        }
+        /* 3. Glow (bottom-left) */
+        @keyframes glow {
+            0% { box-shadow: 0 0 0px #ffd700;}
+            50% { box-shadow: 0 0 20px 8px #ffd700;}
+            100% { box-shadow: 0 0 0px #ffd700;}
+        }
+        .glow-animate {
+            animation: glow 0.5s;
+        }
+        /* 4. Shake (bottom-right) */
+        @keyframes shake {
+            0% { transform: translateX(0);}
+            25% { transform: translateX(-5px);}
+            50% { transform: translateX(5px);}
+            75% { transform: translateX(-5px);}
+            100% { transform: translateX(0);}
+        }
+        .shake-animate {
+            animation: shake 0.4s;
+        }
+    </style>
 </head>
-
 <body class="is-preload">
     <main>
         <div id="main">
@@ -27,7 +72,6 @@
                     <div class="panel">
                         <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                             <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
-                            
                             <div id="missionContent">
                                 <div class="body-text">
                                     <p>
@@ -39,7 +83,6 @@
                                     </p>
                                 </div>
                             </div>
-
                             <video id="missionVideo" 
                                 muted 
                                 playsinline 
@@ -47,35 +90,31 @@
                                 <source src="images/universe.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-                            
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-                            <!-- Navigation buttons -->
-                            <button type="button" class="clickable-area top-left" 
-                                    data-sound="chime" 
-                                    data-image="images/yellowscullcard.png" 
-                                    data-url="Poster.html">
+                            <!-- Navigation buttons with unique effects -->
+                            <button type="button" class="clickable-area top-left button-ripple"
+                                data-sound="chime" 
+                                data-image="images/yellowscullcard.png" 
+                                data-url="Poster.html">
                                 <img src="images/informationbutton.webp" alt="Info">
                             </button>
-                            
-                            <button type="button" class="clickable-area top-right" 
-                                    data-sound="chime" 
-                                    data-image="images/redscullcard.png" 
-                                    data-url="2card.html">
+                            <button type="button" class="clickable-area top-right"
+                                data-sound="chime" 
+                                data-image="images/redscullcard.png" 
+                                data-url="2card.html">
                                 <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
                             </button>
-                            
-                            <button type="button" class="clickable-area bottom-left" 
-                                    data-sound="chime" 
-                                    data-image="images/Descartes.png" 
-                                    data-url="news.html">
+                            <button type="button" class="clickable-area bottom-left"
+                                data-sound="chime" 
+                                data-image="images/Descartes.png" 
+                                data-url="news.html">
                                 <img src="images/newsbutton.webp" alt="News">
                             </button>
-                            
-                            <button type="button" class="clickable-area bottom-right" 
-                                    data-sound="chime" 
-                                    data-image="images/Alexandor.png" 
-                                    data-url="cardmatchgame.html">
+                            <button type="button" class="clickable-area bottom-right"
+                                data-sound="chime" 
+                                data-image="images/Alexandor.png" 
+                                data-url="cardmatchgame.html">
                                 <img src="images/peoplebutton.webp" alt="People">
                             </button>
                         </a>
@@ -84,44 +123,79 @@
             </article>
         </div>
     </main>
-
     <footer>
         <div id="countdownWrapper">
             <div id="countdown"></div>
         </div>
-     <section class="icons-container">
-        <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
-            <i class="fas fa-info-circle"></i>
-        </a>
-        <a href="2card.html" aria-label="Innovation Engine">
-            <i class="fas fa-users"></i>
-        </a>
-        <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
-            <i class="fab fa-linkedin"></i>
-        </a>
-        <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
-            <i class="fas fa-envelope"></i>
-        </a>
-        <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
-            <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
-            <i class="fab fa-facebook"></i>
-        </a>
-        <!-- Subscribe Icon -->
-        <a href="subscribe.html" aria-label="Subscribe">
-            <i class="fas fa-bell"></i>
-        </a>
-    </section>
+        <section class="icons-container">
+            <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
+                <i class="fas fa-info-circle"></i>
+            </a>
+            <a href="2card.html" aria-label="Innovation Engine">
+                <i class="fas fa-users"></i>
+            </a>
+            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="subscribe.html" aria-label="Subscribe">
+                <i class="fas fa-bell"></i>
+            </a>
+        </section>
     </footer>
-
     <script src="ho-script.js"></script>
     <script>
+        // Effects for 4 clickable buttons:
+        function addButtonEffects() {
+            // Top-Left: Ripple
+            document.querySelector('.top-left.button-ripple').addEventListener('click', function(e) {
+                const btn = this;
+                // Remove any old ripple
+                btn.querySelectorAll('.ripple-effect').forEach(el => el.remove());
+                // Create ripple
+                const circle = document.createElement('span');
+                circle.className = 'ripple-effect';
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                circle.style.width = circle.style.height = size + 'px';
+                circle.style.left = (e.clientX - rect.left - size/2) + 'px';
+                circle.style.top = (e.clientY - rect.top - size/2) + 'px';
+                btn.appendChild(circle);
+                setTimeout(() => circle.remove(), 600);
+            });
+
+            // Top-Right: Pop
+            document.querySelector('.top-right').addEventListener('click', function() {
+                this.classList.add('pop-animate');
+                setTimeout(() => this.classList.remove('pop-animate'), 310);
+            });
+
+            // Bottom-Left: Glow
+            document.querySelector('.bottom-left').addEventListener('click', function() {
+                this.classList.add('glow-animate');
+                setTimeout(() => this.classList.remove('glow-animate'), 510);
+            });
+
+            // Bottom-Right: Shake
+            document.querySelector('.bottom-right').addEventListener('click', function() {
+                this.classList.add('shake-animate');
+                setTimeout(() => this.classList.remove('shake-animate'), 410);
+            });
+        }
+
         // ==========================================================================
-        // CONFIGURATION
+        // CONFIGURATION, CONTROLLERS, and APP INIT (unchanged)
         // ==========================================================================
         const CONFIG = {
             countdown: {
@@ -151,27 +225,19 @@
             ]
         };
 
-        // ==========================================================================
-        // AUDIO CONTROLLER
-        // ==========================================================================
         const AudioController = {
             preloaded: false,
-            
             preloadAudio() {
                 if (this.preloaded) return;
-                
                 Object.keys(CONFIG.audio).forEach(key => {
                     const src = CONFIG.audio[key];
                     if (src) new Audio(src);
                 });
-                
                 this.preloaded = true;
             },
-            
             playSound(soundKey) {
                 const soundSrc = CONFIG.audio[soundKey];
                 if (!soundSrc) return;
-                
                 const audio = new Audio(soundSrc);
                 audio.volume = 0.2;
                 audio.play().catch(error => {
@@ -180,9 +246,6 @@
             }
         };
 
-        // ==========================================================================
-        // VIDEO CONTROLLER
-        // ==========================================================================
         const VideoController = {
             handleError() {
                 alert("Error loading video. Please try again later.");
@@ -192,40 +255,30 @@
             }
         };
 
-        // ==========================================================================
-        // COUNTDOWN CONTROLLER
-        // ==========================================================================
         const CountdownController = {
             element: null,
             interval: null,
-            
             init() {
                 this.element = document.getElementById('countdown');
                 this.start();
             },
-            
             start() {
                 const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
-                
                 this.interval = setInterval(() => {
                     const now = new Date().getTime();
                     const distance = countDownDate - now;
-                    
                     if (distance < 0) {
                         this.stop();
                         this.element.innerHTML = CONFIG.countdown.completedMessage;
                         return;
                     }
-                    
                     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
                     this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 }, 1000);
             },
-            
             stop() {
                 if (this.interval) {
                     clearInterval(this.interval);
@@ -234,97 +287,67 @@
             }
         };
 
-        // ==========================================================================
-        // CARD CONTROLLER
-        // ==========================================================================
         const CardController = {
             clicked: false,
-            
             getRandomImage() {
                 const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
                 return CONFIG.cardImages[randomIndex];
             },
-            
             getRandomFlip() {
                 return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             },
-            
             flipCard(imageSrc, url) {
                 const missionImage = document.getElementById('missionImage');
                 const randomFlip = this.getRandomFlip();
-                
                 missionImage.classList.add(randomFlip);
                 document.body.classList.add('fade-out-body');
-                
-                // Redirect immediately
                 window.location.href = url;
-                
                 setTimeout(() => {
                     missionImage.src = imageSrc;
                 }, 2000);
             }
         };
 
-        // ==========================================================================
-        // Reset Card State on Page Show
-        // ==========================================================================
         function resetCardState() {
-            // Reset image to default
             document.getElementById('missionImage').src = "images/hsoftest.png";
-            // Hide video and pause it
             const video = document.getElementById('missionVideo');
             video.pause();
             video.style.display = 'none';
             video.style.opacity = 0;
-            // Hide mission content and aiff banner
             document.getElementById('missionContent').style.display = 'none';
             document.getElementById('aiffBanner').style.display = 'none';
-            // Hide card frame
             document.getElementById('cardFrame').style.display = 'none';
-            // Remove flip and fade classes
             document.body.classList.remove('fade-out-body');
             const img = document.getElementById('missionImage');
             img.classList.remove('flip-image-x', 'flip-image-y');
-            // Reset card controller's clicked flag
             if (typeof CardController !== "undefined") {
                 CardController.clicked = false;
             }
         }
 
-        // ==========================================================================
-        // MAIN APPLICATION
-        // ==========================================================================
         const App = {
             init() {
                 this.setupEventListeners();
                 this.setupClickableAreas();
                 this.setupVideoHandlers();
                 CountdownController.init();
+                addButtonEffects();
             },
-            
             setupEventListeners() {
-                // Preload audio on first user interaction
                 window.addEventListener('pointerdown', () => {
                     AudioController.preloadAudio();
                 }, { once: true });
-                
-                // Handle page navigation
                 window.addEventListener('beforeunload', () => {});
-
-                // Reset card state on pageshow (back/forward navigation)
                 window.addEventListener('pageshow', () => {
                     document.body.classList.remove('fade-out-body');
                     resetCardState();
                 });
-
-                // Show clickable areas when DOM is loaded
                 document.addEventListener('DOMContentLoaded', () => {
                     document.querySelectorAll('.clickable-area').forEach(element => {
                         element.classList.add('loaded');
                     });
                 });
             },
-            
             setupVideoHandlers() {
                 const video = document.getElementById('missionVideo');
                 if (video) {
@@ -332,18 +355,8 @@
                     video.addEventListener('ended', VideoController.showCardFrame);
                 }
             },
-            
             setupClickableAreas() {
                 document.querySelectorAll('.clickable-area').forEach(area => {
-                    area.addEventListener('click', function() {
-                        const sound = this.getAttribute('data-sound');
-                        const image = this.getAttribute('data-image');
-                        const url = this.getAttribute('data-url');
-                        
-                        AudioController.playSound(sound);
-                        CardController.flipCard(image, url);
-                    });
-                    
                     area.addEventListener('keydown', function(e) {
                         if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
@@ -354,48 +367,32 @@
             }
         };
 
-        // ==========================================================================
-        // GLOBAL FUNCTIONS (for inline event handlers)
-        // ==========================================================================
         function toggleMissionContent() {
             if (CardController.clicked) return;
             CardController.clicked = true;
-
             AudioController.playSound('cardflip');
-
             const image = document.getElementById('missionImage');
             image.src = CardController.getRandomImage();
-
             const video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 0;
-
             setTimeout(() => {
                 video.style.opacity = 1;
             }, 100);
-
             video.play();
             document.getElementById('missionContent').style.display = 'block';
             document.getElementById('aiffBanner').style.display = 'block';
-
             const randomFlip = CardController.getRandomFlip();
             image.classList.add(randomFlip);
         }
-        
         function flipAndRedirect() {
             const banner = document.getElementById('aiffBanner');
             const randomFlip = CardController.getRandomFlip();
-            
             banner.classList.add(randomFlip);
-            
             setTimeout(() => {
                 window.location.href = 'https://innovation-engine.devpost.com/';
             }, 2000);
         }
-
-        // ==========================================================================
-        // INITIALIZE APPLICATION
-        // ==========================================================================
         App.init();
     </script>
 </body>
