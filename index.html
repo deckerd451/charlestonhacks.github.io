@@ -21,69 +21,42 @@
         }
         .clickable-area {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 96px;      /* Larger button */
+            height: 96px;     /* Larger button */
             background: none;
             border: none;
             cursor: pointer;
             z-index: 5;
-            opacity: 0.85;
+            opacity: 0.92;
             border-radius: 50%;
-            padding: 8px;
+            padding: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            transition: box-shadow 0.1s;
         }
         .clickable-area img {
-            width: 100%;
-            height: 100%;
+            width: 88px;   /* Make the icon inside the button larger but still fit */
+            height: 88px;
             object-fit: contain;
             pointer-events: none;
+            display: block;
         }
-        .top-left { top: 10px; left: 10px; }
-        .top-right { top: 10px; right: 10px; }
-        .bottom-left { bottom: 10px; left: 10px; }
-        .bottom-right { bottom: 10px; right: 10px; }
+        /* Move the buttons further inward */
+        .top-left { top: 36px; left: 36px; }
+        .top-right { top: 36px; right: 36px; }
+        .bottom-left { bottom: 36px; left: 36px; }
+        .bottom-right { bottom: 36px; right: 36px; }
 
-        .button-ripple {
-            overflow: hidden;
-        }
-        .button-ripple .ripple-effect {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            transform: scale(0);
-            animation: ripple-anim 0.6s linear;
-            pointer-events: none;
-        }
-        @keyframes ripple-anim {
-            to { transform: scale(4); opacity: 0; }
-        }
-        @keyframes pop {
-            0% { transform: scale(1);}
-            50% { transform: scale(1.2);}
-            100% { transform: scale(1);}
-        }
-        .pop-animate {
-            animation: pop 0.3s cubic-bezier(.4,2,.6,1);
-        }
+        /* All buttons: Glow effect only */
         @keyframes glow {
             0% { box-shadow: 0 0 0px #ffd700;}
-            50% { box-shadow: 0 0 20px 8px #ffd700;}
+            50% { box-shadow: 0 0 32px 14px #ffd700;}
             100% { box-shadow: 0 0 0px #ffd700;}
         }
         .glow-animate {
-            animation: glow 0.5s;
-        }
-        @keyframes shake {
-            0% { transform: translateX(0);}
-            25% { transform: translateX(-5px);}
-            50% { transform: translateX(5px);}
-            75% { transform: translateX(-5px);}
-            100% { transform: translateX(0);}
-        }
-        .shake-animate {
-            animation: shake 0.4s;
+            animation: glow 0.45s;
         }
     </style>
 </head>
@@ -115,8 +88,8 @@
                             </video>
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-                            <!-- Navigation buttons with unique effects -->
-                            <button type="button" class="clickable-area top-left button-ripple"
+                            <!-- Glow effect only, larger images, moved inward -->
+                            <button type="button" class="clickable-area top-left"
                                 data-sound="chime" 
                                 data-image="images/yellowscullcard.png" 
                                 data-url="Poster.html">
@@ -179,65 +152,43 @@
     </footer>
     <script src="ho-script.js"></script>
     <script>
-        // Effects for 4 clickable buttons:
-        function addButtonEffects() {
-            // Top-Left: Ripple
-            document.querySelector('.top-left.button-ripple').addEventListener('click', function(e) {
-                const btn = this;
-                btn.querySelectorAll('.ripple-effect').forEach(el => el.remove());
-                const circle = document.createElement('span');
-                circle.className = 'ripple-effect';
-                const rect = btn.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                circle.style.width = circle.style.height = size + 'px';
-                circle.style.left = (e.clientX - rect.left - size/2) + 'px';
-                circle.style.top = (e.clientY - rect.top - size/2) + 'px';
-                btn.appendChild(circle);
-                setTimeout(() => circle.remove(), 600);
-            });
-
-            document.querySelector('.top-right').addEventListener('click', function() {
-                this.classList.add('pop-animate');
-                setTimeout(() => this.classList.remove('pop-animate'), 310);
-            });
-            document.querySelector('.bottom-left').addEventListener('click', function() {
-                this.classList.add('glow-animate');
-                setTimeout(() => this.classList.remove('glow-animate'), 510);
-            });
-            document.querySelector('.bottom-right').addEventListener('click', function() {
-                this.classList.add('shake-animate');
-                setTimeout(() => this.classList.remove('shake-animate'), 410);
-            });
-        }
-
-        // Navigation logic for buttons
-        function addButtonNavigation() {
+        // All buttons: glow effect & delayed navigation for visual feedback
+        function addButtonGlowAndNavigation() {
             document.querySelectorAll('.clickable-area').forEach(area => {
                 area.addEventListener('click', function(e) {
-                    // Only trigger navigation if it was a direct click (not programmatic)
-                    if(e.isTrusted) {
-                        const sound = this.getAttribute('data-sound');
-                        const url = this.getAttribute('data-url');
-                        if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
-                            AudioController.playSound(sound);
-                            setTimeout(() => {
-                                window.location.href = url;
-                            }, 140); // allow sound to finish
-                        } else {
-                            window.location.href = url;
-                        }
+                    const sound = this.getAttribute('data-sound');
+                    const url = this.getAttribute('data-url');
+                    // Add glow animation
+                    this.classList.add('glow-animate');
+
+                    // Play sound (if present)
+                    if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
+                        AudioController.playSound(sound);
                     }
+
+                    // Delay navigation so glow appears (matched to animation: 450ms)
+                    setTimeout(() => {
+                        window.location.href = url;
+                    }, 460);
                 });
+
                 area.addEventListener('keydown', function(e) {
                     if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         this.click();
                     }
                 });
+
+                // Remove glow-animate class after animation ends to allow re-clicking
+                area.addEventListener('animationend', function(e) {
+                    if (e.animationName === "glow") {
+                        this.classList.remove('glow-animate');
+                    }
+                });
             });
         }
 
-        // App logic (controllers, config, etc.) -- unchanged
+        // Rest of your logic (controllers, config, etc.) -- unchanged
         const CONFIG = {
             countdown: {
                 targetDate: "June 27, 2025 12:00:00",
@@ -371,8 +322,7 @@
                 this.setupEventListeners();
                 this.setupVideoHandlers();
                 CountdownController.init();
-                addButtonEffects();
-                addButtonNavigation();
+                addButtonGlowAndNavigation();
             },
             setupEventListeners() {
                 window.addEventListener('pointerdown', () => {
