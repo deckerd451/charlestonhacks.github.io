@@ -1,99 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
-    <meta property="og:title" content="CharlestonHacks - Home" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
-    <meta property="og:image" content="images/reactiveh.png" />
-    <meta property="og:url" content="https://charlestonhacks.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>CharlestonHacks - Home</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .panel {
-            position: relative;
-        }
-        .clickable-area {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 5;
-            opacity: 0.85;
-            border-radius: 50%;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .clickable-area img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-        }
-        .top-left { top: 10px; left: 10px; }
-        .top-right { top: 10px; right: 10px; }
-        .bottom-left { bottom: 10px; left: 10px; }
-        .bottom-right { bottom: 10px; right: 10px; }
-
-        .button-ripple {
-            overflow: hidden;
-        }
-        .button-ripple .ripple-effect {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            transform: scale(0);
-            animation: ripple-anim 0.6s linear;
-            pointer-events: none;
-        }
-        @keyframes ripple-anim {
-            to { transform: scale(4); opacity: 0; }
-        }
-        @keyframes pop {
-            0% { transform: scale(1);}
-            50% { transform: scale(1.2);}
-            100% { transform: scale(1);}
-        }
-        .pop-animate {
-            animation: pop 0.3s cubic-bezier(.4,2,.6,1);
-        }
-        @keyframes glow {
-            0% { box-shadow: 0 0 0px #ffd700;}
-            50% { box-shadow: 0 0 20px 8px #ffd700;}
-            100% { box-shadow: 0 0 0px #ffd700;}
-        }
-        .glow-animate {
-            animation: glow 0.5s;
-        }
-        @keyframes shake {
-            0% { transform: translateX(0);}
-            25% { transform: translateX(-5px);}
-            50% { transform: translateX(5px);}
-            75% { transform: translateX(-5px);}
-            100% { transform: translateX(0);}
-        }
-        .shake-animate {
-            animation: shake 0.4s;
-        }
-    </style>
-</head>
+<!-- ... head as before ... -->
 <body class="is-preload">
     <main>
         <div id="main">
             <article class="post featured">
                 <header class="major">
                     <div class="panel">
-                        <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
+                        <div class="media-container" aria-label="Toggle mission content">
                             <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
                             <div id="missionContent">
                                 <div class="body-text">
@@ -140,87 +52,23 @@
                                 data-url="cardmatchgame.html">
                                 <img src="images/peoplebutton.webp" alt="People">
                             </button>
-                        </a>
+                        </div>
                     </div>
                 </header>
             </article>
         </div>
     </main>
-    <footer>
-        <div id="countdownWrapper">
-            <div id="countdown"></div>
-        </div>
-        <section class="icons-container">
-            <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
-                <i class="fas fa-info-circle"></i>
-            </a>
-            <a href="2card.html" aria-label="Innovation Engine">
-                <i class="fas fa-users"></i>
-            </a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
-                <i class="fas fa-envelope"></i>
-            </a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="subscribe.html" aria-label="Subscribe">
-                <i class="fas fa-bell"></i>
-            </a>
-        </section>
-    </footer>
-    <script src="ho-script.js"></script>
+    <!-- ... rest of HTML unchanged ... -->
     <script>
-        // Effects for 4 clickable buttons:
-        function addButtonEffects() {
-            // Top-Left: Ripple
-            document.querySelector('.top-left.button-ripple').addEventListener('click', function(e) {
-                const btn = this;
-                btn.querySelectorAll('.ripple-effect').forEach(el => el.remove());
-                const circle = document.createElement('span');
-                circle.className = 'ripple-effect';
-                const rect = btn.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                circle.style.width = circle.style.height = size + 'px';
-                circle.style.left = (e.clientX - rect.left - size/2) + 'px';
-                circle.style.top = (e.clientY - rect.top - size/2) + 'px';
-                btn.appendChild(circle);
-                setTimeout(() => circle.remove(), 600);
-            });
+        // ... keep your AudioController, addButtonEffects, etc. ...
 
-            document.querySelector('.top-right').addEventListener('click', function() {
-                this.classList.add('pop-animate');
-                setTimeout(() => this.classList.remove('pop-animate'), 310);
-            });
-            document.querySelector('.bottom-left').addEventListener('click', function() {
-                this.classList.add('glow-animate');
-                setTimeout(() => this.classList.remove('glow-animate'), 510);
-            });
-            document.querySelector('.bottom-right').addEventListener('click', function() {
-                this.classList.add('shake-animate');
-                setTimeout(() => this.classList.remove('shake-animate'), 410);
-            });
-        }
-
-        // --- Button navigation logic ---
         function addButtonNavigation() {
             document.querySelectorAll('.clickable-area').forEach(area => {
                 area.addEventListener('click', function(e) {
-                    // Prevent default form/button behavior
-                    e.preventDefault();
-                    const sound = this.getAttribute('data-sound');
-                    const image = this.getAttribute('data-image');
-                    const url = this.getAttribute('data-url');
                     // Play sound, then navigate after short delay
-                    if (sound && AudioController && AudioController.playSound) {
+                    const sound = this.getAttribute('data-sound');
+                    const url = this.getAttribute('data-url');
+                    if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
                         AudioController.playSound(sound);
                         setTimeout(() => {
                             window.location.href = url;
@@ -232,47 +80,9 @@
             });
         }
 
-        // The rest of your script...
-        const CONFIG = { /* ... as before ... */ };
-        const AudioController = { /* ... as before ... */ };
-        const VideoController = { /* ... as before ... */ };
-        const CountdownController = { /* ... as before ... */ };
-        const CardController = { /* ... as before ... */ };
-        function resetCardState() { /* ... as before ... */ }
-        const App = {
-            init() {
-                this.setupEventListeners();
-                this.setupVideoHandlers();
-                CountdownController.init();
-                addButtonEffects();
-                addButtonNavigation();
-            },
-            setupEventListeners() {
-                window.addEventListener('pointerdown', () => {
-                    AudioController.preloadAudio();
-                }, { once: true });
-                window.addEventListener('beforeunload', () => {});
-                window.addEventListener('pageshow', () => {
-                    document.body.classList.remove('fade-out-body');
-                    resetCardState();
-                });
-                document.addEventListener('DOMContentLoaded', () => {
-                    document.querySelectorAll('.clickable-area').forEach(element => {
-                        element.classList.add('loaded');
-                    });
-                });
-            },
-            setupVideoHandlers() {
-                const video = document.getElementById('missionVideo');
-                if (video) {
-                    video.addEventListener('error', VideoController.handleError);
-                    video.addEventListener('ended', VideoController.showCardFrame);
-                }
-            }
-        };
-        function toggleMissionContent() { /* ... as before ... */ }
-        function flipAndRedirect() { /* ... as before ... */ }
-        App.init();
+        // In your App.init() or after DOMContentLoaded:
+        addButtonEffects();
+        addButtonNavigation();
     </script>
 </body>
 </html>
