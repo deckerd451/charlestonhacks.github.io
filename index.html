@@ -43,10 +43,11 @@
             pointer-events: none;
             display: block;
         }
-        .top-left { top: 38px; left: 36px; }
-        .top-right { top: 38px; right: 36px; }
-        .bottom-left { bottom: 38px; left: 36px; }
-        .bottom-right { bottom: 38px; right: 36px; }
+        /* Desktop default positions (moved top buttons up and bottom buttons down) */
+        .top-left { top: 20px; left: 36px; }
+        .top-right { top: 20px; right: 36px; }
+        .bottom-left { bottom: 20px; left: 36px; }
+        .bottom-right { bottom: 20px; right: 36px; }
 
         @keyframes glow {
             0% { box-shadow: 0 0 0px #ffd700;}
@@ -68,10 +69,10 @@
                 width: 72px;
                 height: 72px;
             }
-            .top-left, .bottom-left { left: 16px; }
-            .top-right, .bottom-right { right: 16px; }
-            .top-left, .top-right { top: 16px; }
-            .bottom-left, .bottom-right { bottom: 16px; }
+            .top-left, .top-right { top: 14px; }
+            .bottom-left, .bottom-right { bottom: 14px; }
+            .top-left, .bottom-left { left: 12px; }
+            .top-right, .bottom-right { right: 12px; }
         }
         @media (max-width: 600px) {
             .clickable-area {
@@ -83,11 +84,11 @@
                 width: 60px;
                 height: 60px;
             }
-            /* Move inwards further on mobile only */
-            .top-left, .bottom-left { left: 24px; }
-            .top-right, .bottom-right { right: 24px; }
-            .top-left, .top-right { top: 24px; }
-            .bottom-left, .bottom-right { bottom: 24px; }
+            /* Move further out (closer to edge) on mobile */
+            .top-left, .bottom-left { left: 4px; }
+            .top-right, .bottom-right { right: 4px; }
+            .top-left, .top-right { top: 6px; }
+            .bottom-left, .bottom-right { bottom: 6px; }
         }
     </style>
 </head>
@@ -119,7 +120,7 @@
                             </video>
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-                            <!-- Glow effect only, larger images, responsive, move further inward on mobile -->
+                            <!-- Glow effect only, larger images, responsive, moved further outward on mobile, up/down on desktop -->
                             <button type="button" class="clickable-area top-left"
                                 data-sound="chime" 
                                 data-image="images/yellowscullcard.png" 
