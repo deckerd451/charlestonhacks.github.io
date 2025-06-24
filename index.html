@@ -43,13 +43,11 @@
             pointer-events: none;
             display: block;
         }
-        /* Move the buttons further inward */
         .top-left { top: 36px; left: 36px; }
         .top-right { top: 36px; right: 36px; }
         .bottom-left { bottom: 36px; left: 36px; }
         .bottom-right { bottom: 36px; right: 36px; }
 
-        /* Glow effect only */
         @keyframes glow {
             0% { box-shadow: 0 0 0px #ffd700;}
             50% { box-shadow: 0 0 32px 14px #ffd700;}
@@ -62,33 +60,34 @@
         /* Responsive styles for buttons */
         @media (max-width: 900px) {
             .clickable-area {
-                width: 72px;
-                height: 72px;
+                width: 80px;
+                height: 80px;
                 padding: 8px;
             }
             .clickable-area img {
-                width: 64px;
-                height: 64px;
+                width: 72px;
+                height: 72px;
             }
-            .top-left, .bottom-left { left: 18px; }
-            .top-right, .bottom-right { right: 18px; }
-            .top-left, .top-right { top: 18px; }
-            .bottom-left, .bottom-right { bottom: 18px; }
+            .top-left, .bottom-left { left: 16px; }
+            .top-right, .bottom-right { right: 16px; }
+            .top-left, .top-right { top: 16px; }
+            .bottom-left, .bottom-right { bottom: 16px; }
         }
         @media (max-width: 600px) {
             .clickable-area {
-                width: 56px;
-                height: 56px;
-                padding: 6px;
+                width: 68px;
+                height: 68px;
+                padding: 5px;
             }
             .clickable-area img {
-                width: 44px;
-                height: 44px;
+                width: 60px;
+                height: 60px;
             }
-            .top-left, .bottom-left { left: 8px; }
-            .top-right, .bottom-right { right: 8px; }
-            .top-left, .top-right { top: 8px; }
-            .bottom-left, .bottom-right { bottom: 8px; }
+            /* Move inwards further on mobile only */
+            .top-left, .bottom-left { left: 24px; }
+            .top-right, .bottom-right { right: 24px; }
+            .top-left, .top-right { top: 24px; }
+            .bottom-left, .bottom-right { bottom: 24px; }
         }
     </style>
 </head>
@@ -120,7 +119,7 @@
                             </video>
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-                            <!-- Glow effect only, larger images, moved inward, but responsive -->
+                            <!-- Glow effect only, larger images, responsive, move further inward on mobile -->
                             <button type="button" class="clickable-area top-left"
                                 data-sound="chime" 
                                 data-image="images/yellowscullcard.png" 
