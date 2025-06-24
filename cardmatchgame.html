@@ -4,9 +4,321 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>CharlestonHacks Matching Game</title>
-     <!-- Your custom global styles -->
-    <link rel="stylesheet" href="styles.css">
- 
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .logo {
+            width: 400px;
+            height: auto;
+            margin-top: 20px;
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 150px);
+            grid-template-rows: repeat(4, 200px);
+            gap: 20px;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        .card {
+            width: 100%;
+            max-width: 150px;
+            height: 210px;
+            perspective: 1000px;
+            cursor: pointer;
+            aspect-ratio: 5/7;
+        }
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+        .card-front {
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
+        }
+        .card-back {
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transform: rotateY(180deg);
+        }
+        .card-back img, .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .backstory {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            display: none;
+        }
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #181818;
+            color: #fff;
+            border-radius: 16px;
+            padding: 36px 28px 28px 28px;
+            box-shadow: 0 8px 40px #39FF1440;
+            min-width: 280px;
+            max-width: 90vw;
+            text-align: center;
+            position: relative;
+        }
+        .modal-content h2 {
+            color: #39FF14;
+            margin-top: 0;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .modal-content p {
+            font-size: 1.1rem;
+            margin: 0 0 18px 0;
+        }
+        .modal-btn, #profiles-btn {
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(90deg,#39FF14 0%, #89CFF0 100%);
+            color: #212121;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 16px #39FF1440;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.15s;
+            margin: 0 14px;
+            margin-top: 18px;
+        }
+        .modal-btn:hover, #profiles-btn:hover {
+            background: linear-gradient(90deg,#89CFF0 0%, #39FF14 100%);
+            color: #000;
+            transform: scale(1.06);
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px; right: 18px;
+            font-size: 2rem;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.18s;
+        }
+        .modal-close:hover { color: #39FF14; }
+
+        /* --- NEW FOOTER STYLES --- */
+        footer {
+            background: #1a1a1a;
+            margin-top: auto;
+            text-align: center;
+            padding: 32px 20px 64px;
+            position: relative;
+        }
+        .footer-icons {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+            padding: 0;
+        }
+        .footer-icons a {
+            color: #89CFF0;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        .footer-icons a:hover {
+            color: #FF6347;
+        }
+        .footer-back-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 32px;
+        }
+        .footer-back-button img {
+            max-width: 240px;
+            width: 60vw;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        .footer-back-button img:hover {
+            transform: scale(1.05);
+        }
+        #theme-toggle {
+            display: inline-block;
+            margin: 20px auto 10px auto;
+            font-size: 18px;
+            color: #89CFF0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+        #theme-toggle:hover {
+            color: #FF6347;
+        }
+        @media (max-width: 900px) {
+            .footer-icons {
+                gap: 15px;
+            }
+        }
+        @media (max-width: 500px) {
+            .footer-back-button img {
+                max-width: 92vw;
+            }
+        }
+        @media (max-width: 800px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, auto);
+                gap: 15px;
+                padding: 10px;
+                max-width: 90vw;
+                margin: 20px auto;
+            }
+            .card {
+                width: 100%;
+                max-width: none;
+                height: auto;
+                aspect-ratio: 5/7;
+                min-height: 180px;
+                max-height: 250px;
+            }
+            .logo {
+                width: 300px;
+                margin-top: 10px;
+            }
+        }
+        @media (max-width: 650px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, auto);
+                gap: 10px;
+                padding: 10px;
+                max-width: 95vw;
+            }
+            .card {
+                aspect-ratio: 5/7;
+                min-height: 160px;
+                max-height: 220px;
+            }
+            .backstory {
+                font-size: 14px;
+                padding: 15px;
+            }
+            .logo {
+                width: 250px;
+            }
+        }
+        @media (max-width: 480px) {
+            .game-container {
+                gap: 8px;
+                padding: 8px;
+            }
+            .card {
+                min-height: 140px;
+                max-height: 200px;
+            }
+            .logo {
+                width: 200px;
+            }
+        }
+        #video-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            width: 90%;
+            height: 90%;
+            max-width: 1000px;
+            max-height: 600px;
+        }
+        #video {
+            width: 100%;
+            height: 100%;
+        }
+        #close-video {
+            position: fixed;
+            top: 5%;
+            right: 5%;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 0;
+        }
+        #close-video:hover {
+            background-color: #cc0000;
+        }
+        body.light-theme .backstory {
+            background-color: #f9f9f9;
+            color: #222;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
 <div id="logo" style="cursor: pointer;">
