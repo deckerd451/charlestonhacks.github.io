@@ -12,6 +12,9 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .logo {
             width: 400px;
@@ -153,18 +156,68 @@
         }
         .modal-close:hover { color: #39FF14; }
 
+        /* --- NEW FOOTER STYLES --- */
         footer {
-            margin-top: 50px;
+            background: #1a1a1a;
+            margin-top: auto;
             text-align: center;
+            padding: 32px 20px 64px;
+            position: relative;
         }
-        footer a {
+        .footer-icons {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+            padding: 0;
+        }
+        .footer-icons a {
+            color: #89CFF0;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        .footer-icons a:hover {
+            color: #FF6347;
+        }
+        .footer-back-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 32px;
+        }
+        .footer-back-button img {
+            max-width: 240px;
+            width: 60vw;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        .footer-back-button img:hover {
+            transform: scale(1.05);
+        }
+        #theme-toggle {
             display: inline-block;
-            margin: 10px 20px;
+            margin: 20px auto 10px auto;
             font-size: 18px;
             color: #89CFF0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s;
         }
-        footer a:hover {
+        #theme-toggle:hover {
             color: #FF6347;
+        }
+        @media (max-width: 900px) {
+            .footer-icons {
+                gap: 15px;
+            }
+        }
+        @media (max-width: 500px) {
+            .footer-back-button img {
+                max-width: 92vw;
+            }
         }
         @media (max-width: 800px) {
             .game-container {
@@ -299,30 +352,30 @@
     </video>
 </div>
 
- <footer>
-        <ul class="footer-icons">
-            <li><a href="https://www.instagram.com/charlestonhacks/" target="_blank" rel="noopener" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a></li>
-            <li><a href="mailto:hello@charlestonhacks.com" title="Email">
-                <i class="fas fa-envelope"></i>
-            </a></li>
-            <li><a href="https://www.linkedin.com/company/charlestonhacks" target="_blank" rel="noopener" title="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a></li>
-            <li><a href="https://twitter.com/Descart84114619" target="_blank" rel="noopener" title="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a></li>
-        </ul>
-        <div class="footer-back-button">
-            <a href="index.html">
-                <img src="assets/chbackbuttonred.png" alt="Back to Home">
-            </a>
-        </div>
-<a href="#" id="theme-toggle">Toggle Theme</a>
-<p>Background music "background music.mp3" by ZHRØ -- <a href="https://freesound.org/s/544416/" target="_blank">Link</a> -- License: Attribution 4.0</p>
-        <p style="margin-top: 16px; font-size: 16px;">© 2025 CharlestonHacks. All rights reserved.</p>
-    </footer>
+<footer>
+    <ul class="footer-icons">
+        <li><a href="https://www.instagram.com/charlestonhacks/" target="_blank" rel="noopener" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a></li>
+        <li><a href="mailto:hello@charlestonhacks.com" title="Email">
+            <i class="fas fa-envelope"></i>
+        </a></li>
+        <li><a href="https://www.linkedin.com/company/charlestonhacks" target="_blank" rel="noopener" title="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+        </a></li>
+        <li><a href="https://twitter.com/Descart84114619" target="_blank" rel="noopener" title="Twitter">
+            <i class="fab fa-twitter"></i>
+        </a></li>
+    </ul>
+    <div class="footer-back-button">
+        <a href="index.html">
+            <img src="assets/chbackbuttonred.png" alt="Back to Home">
+        </a>
+    </div>
+    <button id="theme-toggle" type="button">Toggle Theme</button>
+    <p>Background music "background music.mp3" by ZHRØ -- <a href="https://freesound.org/s/544416/" target="_blank">Link</a> -- License: Attribution 4.0</p>
+    <p style="margin-top: 16px; font-size: 16px;">© 2025 CharlestonHacks. All rights reserved.</p>
+</footer>
 <audio id="background-music" autoplay loop>
     <source src="assets/music.mp3" type="audio/mp3">
     Your browser does not support the audio element.
