@@ -17,6 +17,7 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    
 </head>
 
 <body class="is-preload">
@@ -89,32 +90,33 @@
         <div id="countdownWrapper">
             <div id="countdown"></div>
         </div>
-        <section class="icons-container">
-            <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
-                <i class="fas fa-info-circle"></i>
-            </a>
-            <a href="2card.html" aria-label="Innovation Engine">
-                <i class="fas fa-users"></i>
-            </a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
-                <i class="fas fa-envelope"></i>
-            </a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="subscribe.html" aria-label="Subscribe">
-                <i class="fas fa-bell"></i>
-            </a>
-        </section>
+     <section class="icons-container">
+    <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
+        <i class="fas fa-info-circle"></i>
+    </a>
+    <a href="2card.html" aria-label="Innovation Engine">
+        <i class="fas fa-users"></i>
+    </a>
+    <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+    </a>
+    <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
+        <i class="fas fa-envelope"></i>
+    </a>
+    <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+    </a>
+    <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
+        <i class="fab fa-facebook"></i>
+    </a>
+    <!-- Subscribe Icon -->
+    <a href="subscribe.html" aria-label="Subscribe">
+        <i class="fas fa-bell"></i>
+    </a>
+</section>
     </footer>
 
     <script src="ho-script.js"></script>
@@ -155,17 +157,22 @@
         // ==========================================================================
         const AudioController = {
             preloaded: false,
+            
             preloadAudio() {
                 if (this.preloaded) return;
+                
                 Object.keys(CONFIG.audio).forEach(key => {
                     const src = CONFIG.audio[key];
                     if (src) new Audio(src);
                 });
+                
                 this.preloaded = true;
             },
+            
             playSound(soundKey) {
                 const soundSrc = CONFIG.audio[soundKey];
                 if (!soundSrc) return;
+                
                 const audio = new Audio(soundSrc);
                 audio.volume = 0.2;
                 audio.play().catch(error => {
@@ -178,9 +185,12 @@
         // VIDEO CONTROLLER
         // ==========================================================================
         const VideoController = {
+           
+            
             handleError() {
                 alert("Error loading video. Please try again later.");
             },
+            
             showCardFrame() {
                 document.getElementById('cardFrame').style.display = 'block';
             }
@@ -192,27 +202,34 @@
         const CountdownController = {
             element: null,
             interval: null,
+            
             init() {
                 this.element = document.getElementById('countdown');
                 this.start();
             },
+            
             start() {
                 const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
+                
                 this.interval = setInterval(() => {
                     const now = new Date().getTime();
                     const distance = countDownDate - now;
+                    
                     if (distance < 0) {
                         this.stop();
                         this.element.innerHTML = CONFIG.countdown.completedMessage;
                         return;
                     }
+                    
                     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
                     this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 }, 1000);
             },
+            
             stop() {
                 if (this.interval) {
                     clearInterval(this.interval);
@@ -226,20 +243,27 @@
         // ==========================================================================
         const CardController = {
             clicked: false,
+            
             getRandomImage() {
                 const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
                 return CONFIG.cardImages[randomIndex];
             },
+            
             getRandomFlip() {
                 return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             },
+            
             flipCard(imageSrc, url) {
                 const missionImage = document.getElementById('missionImage');
                 const randomFlip = this.getRandomFlip();
+                
                 missionImage.classList.add(randomFlip);
                 document.body.classList.add('fade-out-body');
+                
+                
                 // Redirect immediately
                 window.location.href = url;
+                
                 setTimeout(() => {
                     missionImage.src = imageSrc;
                 }, 2000);
@@ -256,16 +280,22 @@
                 this.setupVideoHandlers();
                 CountdownController.init();
             },
+            
             setupEventListeners() {
                 // Preload audio on first user interaction
                 window.addEventListener('pointerdown', () => {
                     AudioController.preloadAudio();
                 }, { once: true });
+                
                 // Handle page navigation
-                window.addEventListener('beforeunload', () => {});
+                window.addEventListener('beforeunload', () => {
+                   
+                });
+                
                 window.addEventListener('pageshow', () => {
                     document.body.classList.remove('fade-out-body');
                 });
+                
                 // Show clickable areas when DOM is loaded
                 document.addEventListener('DOMContentLoaded', () => {
                     document.querySelectorAll('.clickable-area').forEach(element => {
@@ -273,22 +303,28 @@
                     });
                 });
             },
-            setupVideoHandlers() {
-                const video = document.getElementById('missionVideo');
-                if (video) {
-                    video.addEventListener('error', VideoController.handleError);
-                    video.addEventListener('ended', VideoController.showCardFrame);
-                }
-            },
+            
+        setupVideoHandlers() {
+    const video = document.getElementById('missionVideo');
+    if (video) {
+        // video.addEventListener('loadstart', VideoController.showLoadingIndicator); // REMOVE THIS
+        // video.addEventListener('canplay', VideoController.hideLoadingIndicator);   // REMOVE THIS
+        video.addEventListener('error', VideoController.handleError);
+        video.addEventListener('ended', VideoController.showCardFrame);
+    }
+},
+            
             setupClickableAreas() {
                 document.querySelectorAll('.clickable-area').forEach(area => {
                     area.addEventListener('click', function() {
                         const sound = this.getAttribute('data-sound');
                         const image = this.getAttribute('data-image');
                         const url = this.getAttribute('data-url');
+                        
                         AudioController.playSound(sound);
                         CardController.flipCard(image, url);
                     });
+                    
                     area.addEventListener('keydown', function(e) {
                         if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
@@ -302,32 +338,42 @@
         // ==========================================================================
         // GLOBAL FUNCTIONS (for inline event handlers)
         // ==========================================================================
-        function toggleMissionContent() {
-            if (CardController.clicked) return;
-            CardController.clicked = true;
-            AudioController.playSound('cardflip');
-            const image = document.getElementById('missionImage');
-            image.src = CardController.getRandomImage();
-            const video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 0;
-            setTimeout(() => {
-                video.style.opacity = 1;
-            }, 100);
-            video.play();
-            document.getElementById('missionContent').style.display = 'block';
-            document.getElementById('aiffBanner').style.display = 'block';
-            const randomFlip = CardController.getRandomFlip();
-            image.classList.add(randomFlip);
-        }
+function toggleMissionContent() {
+    if (CardController.clicked) return;
+    CardController.clicked = true;
+
+    AudioController.playSound('cardflip');
+
+    const image = document.getElementById('missionImage');
+    image.src = CardController.getRandomImage();
+
+    const video = document.getElementById('missionVideo');
+    video.style.display = 'block';
+    video.style.opacity = 0;
+
+    setTimeout(() => {
+        video.style.opacity = 1;
+    }, 100);
+
+    video.play();
+    document.getElementById('missionContent').style.display = 'block';
+    document.getElementById('aiffBanner').style.display = 'block'; // <-- ADD THIS LINE
+
+    const randomFlip = CardController.getRandomFlip();
+    image.classList.add(randomFlip);
+}
+        
         function flipAndRedirect() {
             const banner = document.getElementById('aiffBanner');
             const randomFlip = CardController.getRandomFlip();
+            
             banner.classList.add(randomFlip);
+            
             setTimeout(() => {
                 window.location.href = 'https://innovation-engine.devpost.com/';
             }, 2000);
         }
+
         // ==========================================================================
         // INITIALIZE APPLICATION
         // ==========================================================================
