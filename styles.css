@@ -313,7 +313,7 @@ footer {
    UTILITY CLASSES
    ========================================================================== */
 .fade-out {
-    animation: fadeOut 2s ease forwards;
+    animation: fadeOut 3s ease forwards;
 }
 
 .flip-image-x {
