@@ -278,7 +278,7 @@ html, footer, .icons-container {
    ========================================================================== */
 footer {
     padding: var(--footer-spacing);
-    background: var(--background-color) !important;
+   background: transparent !important;
 }
 
 #countdownWrapper {
