@@ -6,17 +6,26 @@
     <title>CharlestonHacks Matching Game</title>
     <style>
         body {
-    background: url('images/background.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
+            min-height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            z-index: -1;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: url('images/background.jpg') no-repeat center center;
+            background-size: cover;
+            background-attachment: scroll;
+        }
         .logo {
             width: 400px;
             height: auto;
