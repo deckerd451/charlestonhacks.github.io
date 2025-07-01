@@ -29,6 +29,42 @@
             }
         }
 
+        /* Responsive Devpost Button */
+        .devpost-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 24px 0;
+        }
+        .devpost-link a {
+            display: inline-block;
+            text-align: center;
+            background: #003e54;
+            border-radius: 8px;
+            padding: 0;
+            transition: background 0.2s;
+        }
+        .devpost-link a:hover {
+            background: #005c7f;
+        }
+        .devpost-link img {
+            max-width: 320px;
+            width: 90vw;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            .devpost-link img {
+                max-width: 98vw;
+                width: 100%;
+            }
+        }
+
         /* Center the poster image */
         .image.main {
             display: flex;
@@ -197,8 +233,8 @@ Mentorship will be available throughout the event to support product development
 </b></p>
             <!-- Devpost Button -->
             <div class="devpost-link">
-                <a href="https://innovation-engine.devpost.com/">
-                    <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" class="button large" />
+                <a href="https://innovation-engine.devpost.com/" target="_blank" rel="noopener">
+                    <img src="images/Devpost Logo-check it out-01.png" alt="DevPost Logo" />
                 </a>
             </div>
 
