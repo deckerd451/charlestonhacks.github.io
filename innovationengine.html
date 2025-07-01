@@ -138,6 +138,37 @@
                 height: 180px;
             }
         }
+
+        /* Google Drive Link Styling */
+        .drive-link-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 18px;
+            margin-bottom: 6px;
+        }
+        .drive-link-btn {
+            background: #4285f4;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 17px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+            transition: background 0.18s;
+            display: inline-block;
+        }
+        .drive-link-btn:hover {
+            background: #3367d6;
+            color: #fff;
+            text-decoration: none;
+        }
+        .drive-link-btn img {
+            vertical-align: middle;
+            margin-right: 8px;
+            height: 22px;
+        }
     </style>
 </head>
 <body class="is-preload">
@@ -174,6 +205,13 @@ Mentorship will be available throughout the event to support product development
             <!-- Photos Button (Initially Closed) -->
             <button class="collapsible">Photos</button>
             <div class="content">
+                <!-- Google Drive Link -->
+                <div class="drive-link-container">
+                    <a class="drive-link-btn" href="https://drive.google.com/drive/folders/1RWVZEvpQ9LYGyku6KfDzpU7h8PXJqQdm?usp=sharing" target="_blank" rel="noopener">
+                        <img src="https://www.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png" alt="Google Drive" />
+                        View Full Photo Album
+                    </a>
+                </div>
                 <div class="photo-gallery">
                     <!-- Image 1 -->
                     <img src="images/consevancy.jpeg" alt="Innovation Engine Photo 1" class="gallery-img" onclick="openLightbox('images/consevancy.jpeg')" />
