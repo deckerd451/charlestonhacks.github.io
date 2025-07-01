@@ -322,6 +322,16 @@ footer {
 .icons-container a:hover {
     color: var(--secondary-color);
 }
+/* Add this at the end of your main.css or inside your <style> tag */
+.standout {
+    display: block;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #22577A;       /* or another color fitting your brand */
+    margin-bottom: 10px;
+    text-shadow: 0 2px 8px #eaf6fb;
+    letter-spacing: 0.01em;
+}
 
 /* ==========================================================================
    UTILITY CLASSES
