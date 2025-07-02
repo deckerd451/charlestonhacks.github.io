@@ -42,10 +42,17 @@
             background: #003e54;
             border-radius: 8px;
             padding: 0;
-            transition: background 0.2s;
+            transition: background 0.2s, box-shadow 0.2s, border 0.2s;
+            border: 2px solid transparent; /* ensures smooth border transition */
         }
         .devpost-link a:hover {
-            background: #005c7f;
+            background: #009fe3; /* higher-contrast blue */
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 4px #fff, 0 4px 16px rgba(0,0,0,0.20);
+        }
+        .devpost-link a:hover img {
+            filter: brightness(0.85) contrast(1.15);
+            transition: filter 0.2s;
         }
         .devpost-link img {
             max-width: 320px;
@@ -55,7 +62,7 @@
             margin: 0 auto;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-            transition: transform 0.2s;
+            transition: transform 0.2s, filter 0.2s;
             cursor: pointer;
         }
         @media (max-width: 600px) {
