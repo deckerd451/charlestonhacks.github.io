@@ -403,31 +403,32 @@
     const themeSound = new Audio('assets/theme-toggle.mp3'); // Optional: add this sound file
 
     // Utility to apply a theme
-    function applyTheme(theme) {
-        document.body.classList.toggle('light-theme', theme === 'light');
-        document.body.classList.toggle('dark-theme', theme === 'dark');
-        // Swap background image
-        document.body.style.setProperty('--bg-url',
-            theme === 'light' ? "url('images/background-light.jpg')" : "url('images/background.jpg')");
-        // Change logo if you have a light version
-        const logoImg = document.querySelector('.logo');
-        if (logoImg) {
-            logoImg.src =
-    theme === 'light'
-        ? 'images/about us light.webp'
-        : theme === 'dark'
-            ? 'images/about us dark.webp'
-            : 'images/about us.webp';
-        // Optionally, swap card front image for light/dark
-        document.querySelectorAll('.card-front img').forEach(img => {
-            img.src = theme === 'light'
-                ? 'images/universalcard-light-01.png'
-                : 'images/universalcard-01.png';
-        });
-        // Body background and color
-        document.body.style.backgroundColor = theme === 'light' ? 'white' : 'black';
-        document.body.style.color = theme === 'light' ? 'black' : 'white';
+   function applyTheme(theme) {
+    document.body.classList.toggle('light-theme', theme === 'light');
+    document.body.classList.toggle('dark-theme', theme === 'dark');
+    // Swap background image
+    document.body.style.setProperty('--bg-url',
+        theme === 'light' ? "url('images/background-light.jpg')" : "url('images/background.jpg')");
+    // Change logo based on theme
+    const logoImg = document.querySelector('.logo');
+    if (logoImg) {
+        logoImg.src =
+            theme === 'light'
+                ? 'images/about us light.webp'
+                : theme === 'dark'
+                    ? 'images/about us dark.webp'
+                    : 'images/about us.webp';
     }
+    // Optionally, swap card front image for light/dark
+    document.querySelectorAll('.card-front img').forEach(img => {
+        img.src = theme === 'light'
+            ? 'images/universalcard-light-01.png'
+            : 'images/universalcard-01.png';
+    });
+    // Body background and color
+    document.body.style.backgroundColor = theme === 'light' ? 'white' : 'black';
+    document.body.style.color = theme === 'light' ? 'black' : 'white';
+}
 
     // On page load: set theme from storage or system
     let currentTheme = localStorage.getItem(THEME_KEY) ||
