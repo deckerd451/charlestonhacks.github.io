@@ -473,17 +473,19 @@
         cards.forEach(card => gameContainer.appendChild(card));
     }
 
-   function playVideo(character) {
+function playVideo(character) {
     if (character === 'descartes') {
         videoSource.src = 'images/Descartesvideo.mp4';
     } else if (character === 'medusa') {
-        // Randomly pick between the two Medusa videos
+        // Randomly pick between the Medusa videos
         const medusaVideos = ['images/medusa best.mp4', 'images/medusa 1.mp4', 'images/young medusa.mp4'];
         videoSource.src = medusaVideos[Math.floor(Math.random() * medusaVideos.length)];
     } else if (character === 'alexandor') {
         videoSource.src = 'images/Alexandorvideo.mp4';
     } else if (character === 'elara') {
-        videoSource.src = 'images/Elaravideo.mp4'; 
+        // Randomly pick between the Elara videos
+        const elaraVideos = ['images/Elaravideo.mp4', 'images/elara rage.mp4'];
+        videoSource.src = elaraVideos[Math.floor(Math.random() * elaraVideos.length)];
     } else if (character === 'astrid') {
         videoSource.src = 'images/astridvideo.mp4'; 
     } else if (character === 'aegis') {
