@@ -412,8 +412,12 @@
         // Change logo if you have a light version
         const logoImg = document.querySelector('.logo');
         if (logoImg) {
-            logoImg.src = theme === 'light' ? 'images/about us light.webp' : 'images/about us.webp';
-        }
+            logoImg.src =
+    theme === 'light'
+        ? 'images/about us light.webp'
+        : theme === 'dark'
+            ? 'images/about us dark.webp'
+            : 'images/about us.webp';
         // Optionally, swap card front image for light/dark
         document.querySelectorAll('.card-front img').forEach(img => {
             img.src = theme === 'light'
