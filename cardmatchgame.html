@@ -610,19 +610,28 @@
         backstoryContainer.style.display = 'none';
     }
 
-    gameContainer.addEventListener('click', (e) => {
-        const card = e.target.closest('.card');
-        if (!card || card.classList.contains('flipped') || flippedCards.length >= 2) return;
+   gameContainer.addEventListener('click', (e) => {
+    const card = e.target.closest('.card');
+    if (!card) return;
 
-        hideBackstory();
+    // If card is already matched, allow replaying the video
+    if (card.classList.contains('matched')) {
+        playVideo(card.dataset.character);
+        return;
+    }
 
-        card.classList.add('flipped');
-        flippedCards.push(card);
-        moves++;
-        movesDisplay.textContent = `Moves: ${moves}`;
+    // If card is already flipped or two cards are flipped, ignore click
+    if (card.classList.contains('flipped') || flippedCards.length >= 2) return;
 
-        if (flippedCards.length === 2) checkMatch();
-    });
+    hideBackstory();
+
+    card.classList.add('flipped');
+    flippedCards.push(card);
+    moves++;
+    movesDisplay.textContent = `Moves: ${moves}`;
+
+    if (flippedCards.length === 2) checkMatch();
+});
 
     gameContainer.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
