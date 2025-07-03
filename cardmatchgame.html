@@ -475,7 +475,9 @@
 
 function playVideo(character) {
     if (character === 'descartes') {
-        videoSource.src = 'images/Descartesvideo.mp4';
+        // Randomly pick between the Descartes videos
+        const descartesVideos = ['images/Descartesvideo.mp4', 'images/descarteswolf.mp4'];
+        videoSource.src = descartesVideos[Math.floor(Math.random() * descartesVideos.length)];
     } else if (character === 'medusa') {
         // Randomly pick between the Medusa videos
         const medusaVideos = ['images/medusa best.mp4', 'images/medusa 1.mp4', 'images/young medusa.mp4'];
@@ -506,7 +508,6 @@ function playVideo(character) {
         videoContainer.style.display = 'none';
     };
 }
-
     closeVideoButton.addEventListener('click', () => {
         videoContainer.style.display = 'none';
         video.pause();
