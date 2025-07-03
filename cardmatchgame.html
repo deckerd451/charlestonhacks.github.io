@@ -15,6 +15,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            transition: background 0.5s, color 0.5s;
         }
         body::before {
             content: "";
@@ -22,14 +23,16 @@
             z-index: -1;
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
-            background: url('images/background.jpg') no-repeat center center;
+            background: var(--bg-url, url('images/background.jpg')) no-repeat center center;
             background-size: cover;
             background-attachment: scroll;
+            transition: background 0.5s;
         }
         .logo {
             width: 400px;
             height: auto;
             margin-top: 20px;
+            transition: filter 0.5s;
         }
         .game-container {
             display: grid;
@@ -394,6 +397,63 @@
 
 <script>
 (function () {
+    // --- THEME: Persistent, Animated, Themed Assets, Sound ---
+    const THEME_KEY = "chhacks_theme";
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeSound = new Audio('assets/theme-toggle.mp3'); // Optional: add this sound file
+
+    // Utility to apply a theme
+    function applyTheme(theme) {
+        document.body.classList.toggle('light-theme', theme === 'light');
+        document.body.classList.toggle('dark-theme', theme === 'dark');
+        // Swap background image
+        document.body.style.setProperty('--bg-url',
+            theme === 'light' ? "url('images/background-light.jpg')" : "url('images/background.jpg')");
+        // Change logo if you have a light version
+        const logoImg = document.querySelector('.logo');
+        if (logoImg) {
+            logoImg.src = theme === 'light' ? 'images/about us light.webp' : 'images/about us.webp';
+        }
+        // Optionally, swap card front image for light/dark
+        document.querySelectorAll('.card-front img').forEach(img => {
+            img.src = theme === 'light'
+                ? 'images/universalcard-light-01.png'
+                : 'images/universalcard-01.png';
+        });
+        // Body background and color
+        document.body.style.backgroundColor = theme === 'light' ? 'white' : 'black';
+        document.body.style.color = theme === 'light' ? 'black' : 'white';
+    }
+
+    // On page load: set theme from storage or system
+    let currentTheme = localStorage.getItem(THEME_KEY) ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    window.__gameTheme = currentTheme; // For debugging/testing
+    // Apply on load
+    document.addEventListener('DOMContentLoaded', function() {
+        applyTheme(currentTheme);
+    });
+
+    // Animated transition on theme change
+    function animateThemeTransition() {
+        document.body.style.transition = 'background 0.5s, color 0.5s';
+        setTimeout(() => {
+            document.body.style.transition = '';
+        }, 600);
+    }
+
+    // Enhanced Toggle
+    themeToggle.addEventListener('click', () => {
+        animateThemeTransition();
+        if (themeSound) { themeSound.currentTime = 0; themeSound.play(); }
+
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        localStorage.setItem(THEME_KEY, currentTheme);
+        applyTheme(currentTheme);
+        window.__gameTheme = currentTheme; // For debugging/testing
+    });
+
+    // --- GAME LOGIC ---
     const characters = ['astrid', 'medusa', 'alexandor', 'aegis', 'descartes', 'elara', 'wolf', 'hermes', 'merlin', 'mystery'];
     const backstories = {
         'astrid': 'Astrid - A Valkyrie: A powerful warrior with a destiny to save her people.',
@@ -412,7 +472,6 @@
     const backstoryContainer = document.getElementById('backstory');
     const timerDisplay = document.getElementById('timer');
     const movesDisplay = document.getElementById('moves');
-    const themeToggle = document.getElementById('theme-toggle');
     const videoContainer = document.getElementById('video-container');
     const video = document.getElementById('video');
     const videoSource = document.getElementById('video-source');
@@ -453,7 +512,7 @@
                 card.innerHTML = `
                     <div class="card-inner">
                         <div class="card-front">
-                            <img src="images/universalcard-01.png" alt="Front of ${character} card">
+                            <img src="${currentTheme === 'light' ? 'images/universalcard-light-01.png' : 'images/universalcard-01.png'}" alt="Front of ${character} card">
                         </div>
                         <div class="card-back">
                             <img src="images/${character.charAt(0).toUpperCase() + character.slice(1)}.png" alt="${character} character">
@@ -473,41 +532,38 @@
         cards.forEach(card => gameContainer.appendChild(card));
     }
 
-function playVideo(character) {
-    if (character === 'descartes') {
-        // Randomly pick between the Descartes videos
-        const descartesVideos = ['images/Descartesvideo.mp4', 'images/descarteswolf.mp4'];
-        videoSource.src = descartesVideos[Math.floor(Math.random() * descartesVideos.length)];
-    } else if (character === 'medusa') {
-        // Randomly pick between the Medusa videos
-        const medusaVideos = ['images/medusa best.mp4', 'images/medusa 1.mp4', 'images/young medusa.mp4'];
-        videoSource.src = medusaVideos[Math.floor(Math.random() * medusaVideos.length)];
-    } else if (character === 'alexandor') {
-        videoSource.src = 'images/Alexandorvideo.mp4';
-    } else if (character === 'elara') {
-        // Randomly pick between the Elara videos
-        const elaraVideos = ['images/Elaravideo.mp4', 'images/elara rage.mp4'];
-        videoSource.src = elaraVideos[Math.floor(Math.random() * elaraVideos.length)];
-    } else if (character === 'astrid') {
-        videoSource.src = 'images/astridvideo.mp4'; 
-    } else if (character === 'aegis') {
-        videoSource.src = 'images/aegisvideo.mp4'; 
-    } else if (character === 'wolf') {
-        videoSource.src = 'images/wolfvideo.mp4';
-    } else if (character === 'merlin') {
-        videoSource.src = 'images/merlin.mp4';
-    } else if (character === 'hermes') {
-        videoSource.src = 'images/hermesvideo.mp4';
-    } else if (character === 'mystery') {
-        videoSource.src = 'images/Mystery.mp4'; 
+    function playVideo(character) {
+        if (character === 'descartes') {
+            const descartesVideos = ['images/Descartesvideo.mp4', 'images/descarteswolf.mp4'];
+            videoSource.src = descartesVideos[Math.floor(Math.random() * descartesVideos.length)];
+        } else if (character === 'medusa') {
+            const medusaVideos = ['images/medusa best.mp4', 'images/medusa 1.mp4', 'images/young medusa.mp4'];
+            videoSource.src = medusaVideos[Math.floor(Math.random() * medusaVideos.length)];
+        } else if (character === 'alexandor') {
+            videoSource.src = 'images/Alexandorvideo.mp4';
+        } else if (character === 'elara') {
+            const elaraVideos = ['images/Elaravideo.mp4', 'images/elara rage.mp4'];
+            videoSource.src = elaraVideos[Math.floor(Math.random() * elaraVideos.length)];
+        } else if (character === 'astrid') {
+            videoSource.src = 'images/astridvideo.mp4';
+        } else if (character === 'aegis') {
+            videoSource.src = 'images/aegisvideo.mp4';
+        } else if (character === 'wolf') {
+            videoSource.src = 'images/wolfvideo.mp4';
+        } else if (character === 'merlin') {
+            videoSource.src = 'images/merlin.mp4';
+        } else if (character === 'hermes') {
+            videoSource.src = 'images/hermesvideo.mp4';
+        } else if (character === 'mystery') {
+            videoSource.src = 'images/Mystery.mp4';
+        }
+        video.load();
+        videoContainer.style.display = 'block';
+        video.play();
+        video.onended = () => {
+            videoContainer.style.display = 'none';
+        };
     }
-    video.load();
-    videoContainer.style.display = 'block';
-    video.play();
-    video.onended = () => {
-        videoContainer.style.display = 'none';
-    };
-}
     closeVideoButton.addEventListener('click', () => {
         videoContainer.style.display = 'none';
         video.pause();
@@ -540,22 +596,7 @@ function playVideo(character) {
                     showVictoryModal();
                 }, 500);
             }
-
-            if (
-                firstCard.dataset.character === 'descartes' ||
-                firstCard.dataset.character === 'medusa' ||
-                firstCard.dataset.character === 'alexandor' ||
-                firstCard.dataset.character === 'elara' ||
-                firstCard.dataset.character === 'astrid' ||
-                firstCard.dataset.character === 'wolf' ||
-                firstCard.dataset.character === 'merlin' ||
-                firstCard.dataset.character === 'hermes' ||
-                 firstCard.dataset.character === 'mystery' ||
-                firstCard.dataset.character === 'aegis'
-            ) {
-                playVideo(firstCard.dataset.character);
-            }
-
+            playVideo(firstCard.dataset.character);
         } else {
             setTimeout(() => {
                 firstCard.classList.remove('flipped');
@@ -610,7 +651,6 @@ function playVideo(character) {
         shuffleCards();
         stopTimer();
         startTimer();
-
         backgroundMusic.currentTime = 0;
         backgroundMusic.play();
     });
@@ -641,20 +681,11 @@ function playVideo(character) {
         shuffleCards();
         stopTimer();
         startTimer();
-
         backgroundMusic.currentTime = 0;
         backgroundMusic.play();
     });
 
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('light-theme');
-        document.body.style.backgroundColor = document.body.classList.contains('light-theme') ? 'white' : 'black';
-        document.body.style.color = document.body.classList.contains('light-theme') ? 'black' : 'white';
-        document.querySelectorAll('.card').forEach(card => {
-            card.classList.toggle('light-theme');
-        });
-    });
-
+    // Initial shuffle and timer start
     shuffleCards();
     startTimer();
 })();
