@@ -18,6 +18,8 @@
     --countdown-size: 32px;
     --info-size: 20px;
     --footer-spacing: 20px;
+    /* For dynamic theme background image */
+    --bg-url: url('images/background.webp');
 }
 
 * {
@@ -55,7 +57,7 @@ body::after {
     pointer-events: none;
 }
 
-/* Background image layer */
+/* Background image layer (now supports theme change via --bg-url) */
 body::before {
     content: "";
     position: fixed;
@@ -63,12 +65,13 @@ body::before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: url('images/background.webp');
+    background: var(--bg-url, url('images/background.webp')) no-repeat center center;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
     pointer-events: none;
+    transition: background 0.5s;
 }
 
 body.two-card-page::before {
@@ -83,7 +86,8 @@ body.two-card-page::before {
         --footer-spacing: 7px;
     }
     body::before {
-        background-image: url('images/backgroundmobile.jpg');
+        background: var(--bg-url, url('images/backgroundmobile.jpg')) no-repeat center center;
+        background-size: cover;
     }
     body.two-card-page::before {
         background-image: url('images/background for mobile ie.jpg');
