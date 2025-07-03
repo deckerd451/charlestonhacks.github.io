@@ -473,35 +473,37 @@
         cards.forEach(card => gameContainer.appendChild(card));
     }
 
-    function playVideo(character) {
-        if (character === 'descartes') {
-            videoSource.src = 'images/Descartesvideo.mp4';
-        } else if (character === 'medusa') {
-            videoSource.src = 'images/medusa best.mp4';
-        } else if (character === 'alexandor') {
-            videoSource.src = 'images/Alexandorvideo.mp4';
-        } else if (character === 'elara') {
-            videoSource.src = 'images/Elaravideo.mp4'; 
-        } else if (character === 'astrid') {
-            videoSource.src = 'images/astridvideo.mp4'; 
-        } else if (character === 'aegis') {
-            videoSource.src = 'images/aegisvideo.mp4'; 
-        } else if (character === 'wolf') {
-            videoSource.src = 'images/wolfvideo.mp4';
-        } else if (character === 'merlin') {
-            videoSource.src = 'images/merlin.mp4';
-        } else if (character === 'hermes') {
-            videoSource.src = 'images/hermesvideo.mp4';
-        } else if (character === 'mystery') {
-            videoSource.src = 'images/Mystery.mp4'; 
-        }
-        video.load();
-        videoContainer.style.display = 'block';
-        video.play();
-        video.onended = () => {
-            videoContainer.style.display = 'none';
-        };
+   function playVideo(character) {
+    if (character === 'descartes') {
+        videoSource.src = 'images/Descartesvideo.mp4';
+    } else if (character === 'medusa') {
+        // Randomly pick between the two Medusa videos
+        const medusaVideos = ['images/medusa best.mp4', 'images/medusa 1.mp4'];
+        videoSource.src = medusaVideos[Math.floor(Math.random() * medusaVideos.length)];
+    } else if (character === 'alexandor') {
+        videoSource.src = 'images/Alexandorvideo.mp4';
+    } else if (character === 'elara') {
+        videoSource.src = 'images/Elaravideo.mp4'; 
+    } else if (character === 'astrid') {
+        videoSource.src = 'images/astridvideo.mp4'; 
+    } else if (character === 'aegis') {
+        videoSource.src = 'images/aegisvideo.mp4'; 
+    } else if (character === 'wolf') {
+        videoSource.src = 'images/wolfvideo.mp4';
+    } else if (character === 'merlin') {
+        videoSource.src = 'images/merlin.mp4';
+    } else if (character === 'hermes') {
+        videoSource.src = 'images/hermesvideo.mp4';
+    } else if (character === 'mystery') {
+        videoSource.src = 'images/Mystery.mp4'; 
     }
+    video.load();
+    videoContainer.style.display = 'block';
+    video.play();
+    video.onended = () => {
+        videoContainer.style.display = 'none';
+    };
+}
 
     closeVideoButton.addEventListener('click', () => {
         videoContainer.style.display = 'none';
