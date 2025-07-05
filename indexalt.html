@@ -186,6 +186,21 @@
             </div>
 
             <!-- Individual Search -->
+<<<<<<< HEAD
+            <h2 style="color:#FFD700;">Individual Search</h2>
+            <div class="input-container">
+                <label>Required Skills</label>
+                <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
+                <div id="autocomplete-team-skills" style="position:absolute; z-index:1000; background:#fff; color:#000; border:1px solid #ccc; display:none;"></div>
+                <button id="find-team-btn" type="button">Get People</button> <br> <br>
+                <label>Search by First/Last Name</label>
+                <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
+                <button id="search-name-btn" type="button">Find by Name</button>
+            </div>
+            <div id="matchNotification" style="margin-bottom: 6px; color: gold; display: none;"></div>
+            <div id="noResults" style="margin-bottom: 6px; color: red; display: none;"></div>
+            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+=======
            <h2 style="color:#FFD700; text-align: left; margin-bottom: 20px; display: inline-block;">
   <i class="fas fa-search" style="margin-right: 8px;"></i> Individual Search
 </h2>
@@ -208,6 +223,7 @@
 <div id="noResults" class="notification red" style="display: none;"></div>
 <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
 
+>>>>>>> 1b24491f327661a56191b0904c872fbe37d5a5db
 
             <!-- Team Builder -->
             <h2 style="color:#FFD700; text-align: left; margin-bottom: 20px; display: inline-block;">
@@ -215,9 +231,15 @@
 </h2>
 
             <div class="input-container">
+<<<<<<< HEAD
+                <p class="instructions" style="max-width: 600px; margin-bottom: 10px;">
+                    Let’s build your team. Enter required skills and number of people needed.
+                </p>
+=======
            <p class="instructions" style="max-width: 400px; margin: 0 auto 10px auto; text-align: center;">Let’s build your team. Enter required skills and number of people needed.
 </p>
 
+>>>>>>> 1b24491f327661a56191b0904c872fbe37d5a5db
                 <label>Required Skills</label>
                 <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off"/>
                 <div id="autocomplete-teams-skills" style="position:absolute; z-index:1000; background:#fff; color:#000; border:1px solid #ccc; display:none;"></div>
@@ -358,7 +380,7 @@
         const imageUrl = `${supabaseUrl}/storage/v1/object/public/hacksbucket/${fileName}`;
         const { error } = await supabaseClient.from('skills').insert({
             first_name: firstName, last_name: lastName, email: email, skills: skillsWithProfs,
-            image_url: imageUrl, bio: bio, availability: avail, endorsements: "{}", created_at: new Date().toISOString()
+            image_url: imageUrl, Bio: bio, Availability: avail, endorsements: "", created_at: new Date().toISOString()
         });
         if (error) { alert('Error inserting data: ' + error.message); } 
         else { alert('Registration successful!'); document.getElementById('skills-form').reset();
@@ -436,6 +458,19 @@
     // ----------- USER CARD RENDERING, ENDORSEMENTS, BADGES, STATUS -------------
     async function renderUserCards(users, container) {
         if (!users.length) { container.innerHTML = '<span style="color:#FF6B6B;">No matching users found.</span>'; return; }
+       // ✅ Utility: Clean availability values
+   const cleanAvailability = (value) => {
+    // Handle true null or undefined
+    if (value === null || value === undefined) return 'Unavailable';
+    // Force string type
+    if (typeof value !== 'string') return 'Unavailable';
+    // Trim spaces
+    const trimmed = value.trim();
+    // Handle empty strings and literal "null"
+    if (trimmed === '' || trimmed.toLowerCase() === 'null') return 'Unavailable';
+    // Capitalize first letter
+    return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+};
         // For demo: LocalStorage for userId, and endorsements
         let myEmail = localStorage.getItem("demo_user_email") || prompt("Enter your email for endorsements:");
         localStorage.setItem("demo_user_email", myEmail);
@@ -454,7 +489,9 @@
                     ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" />` : ''}
                     <div class="member-name">${user.first_name} ${user.last_name}</div>
                     ${user.bio ? `<div style="color:#FFD700;font-size:.96em;margin:3px 0;">${user.bio}</div>` : ''}
-                    <div class="user-status">Status: ${user.availability || 'Available'}</div>
+                    <div class="user-status">
+  Status: ${cleanAvailability(user.Availability)}
+</div>
                     <div class="profile-section">${skillBadges}</div>
                     <div class="profile-section">
                         ${Object.keys(endorsements).length ? Object.entries(endorsements).map(([skill, count]) =>
@@ -497,18 +534,18 @@
                 aggregate[skill] = (aggregate[skill]||0) + count;
             }
         }
-        // Top 5
-        let top = Object.entries(aggregate).sort((a,b)=>b[1]-a[1]).slice(0,5);
-        const rows = top.length ? top.map(([skill,count],i)=>`
-            <div class="leaderboard-row">
-                <span class="leaderboard-rank">#${i+1}</span>
-                <span class="leaderboard-name">${skill}</span>
-                <span class="leaderboard-skill">${count} <i class="fa fa-thumbs-up"></i></span>
-            </div>
-        `).join('') : '<div>No endorsements yet.</div>';
-        document.getElementById('leaderboard-section').style.display = top.length?'block':'none';
-        document.getElementById('leaderboard-rows').innerHTML = rows;
-    }
+    //     // Top 5
+    //     let top = Object.entries(aggregate).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    //     const rows = top.length ? top.map(([skill,count],i)=>`
+    //         <div class="leaderboard-row">
+    //             <span class="leaderboard-rank">#${i+1}</span>
+    //             <span class="leaderboard-name">${skill}</span>
+    //             <span class="leaderboard-skill">${count} <i class="fa fa-thumbs-up"></i></span>
+    //         </div>
+    //     `).join('') : '<div>No endorsements yet.</div>';
+    //     document.getElementById('leaderboard-section').style.display = top.length?'block':'none';
+    //     document.getElementById('leaderboard-rows').innerHTML = rows;
+    // }
     </script>
     <!-- ========== END TEAM BUILDER ========== -->
     <script>
