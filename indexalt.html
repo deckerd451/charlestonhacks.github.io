@@ -43,24 +43,7 @@
             overflow-x: hidden;
             transition: var(--transition);
         }
-        /* --- Loading --- */
-        .loading-screen {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; transition: opacity 0.5s;
-        }
-        .loading-screen.hidden { opacity: 0; pointer-events: none; }
-        .loading-spinner {
-            width: 60px; height: 60px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top: 4px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin { 0% {transform:rotate(0);} 100%{transform:rotate(360deg);} }
-        .loading-text { color: white; font-size: 18px; font-weight: 600; }
+       
         /* --- Main Layout --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
         /* --- Header --- */
@@ -165,11 +148,6 @@
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loadingScreen" class="loading-screen">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Loading CharlestonHacks...</div>
-    </div>
     <!-- Achievements -->
     <div id="achievements" class="achievements" aria-live="polite"></div>
     <div class="container">
@@ -581,7 +559,7 @@
     const CONFIG = {
         countdown: {
             targetDate: "June 28, 2025 00:00:00",
-            completedMessage: "Event is Live!",
+            completedMessage: "Next Event Soon!",
         },
         achievements: [
             { id: 'first_flip', name: 'Card Flipper', description: 'Flipped your first card!' },
