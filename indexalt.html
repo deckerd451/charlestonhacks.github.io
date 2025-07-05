@@ -153,9 +153,55 @@
     <div id="achievements" class="achievements" aria-live="polite"></div>
     <div class="container">
         <!-- Header -->
-        <header class="header">
-            <h1 id="innovationTitle" style="cursor: pointer;">Innovation Engine</h1>
-            <p>Find a Teammate Based on Skills and Impact</p>
+       <h1 id="innovationTitle" style="cursor: pointer;">Innovation Engine</h1>
+        <p>Find a Teammate Based on Skills and Impact</p>
+
+<div id="matchForm" style="display: none; margin-top: 20px;">
+  <form id="innovationForm">
+    <label>What do you want to work on?</label><br>
+    <input type="text" id="projectInput" style="width: 100%; margin-bottom: 10px;"><br>
+
+    <label>What skills do you bring?</label><br>
+    <input type="text" id="skillsInput" style="width: 100%; margin-bottom: 10px;"><br>
+
+    <label>What impact do you care about?</label><br>
+    <input type="text" id="impactInput" style="width: 100%; margin-bottom: 10px;"><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="thanksMessage" style="display:none; color: green; margin-top: 10px;">
+    Thanks! We'll use this to match you with great people and ideas.
+  </p>
+</div>
+
+<script>
+  // Toggle form visibility when title is clicked
+  document.getElementById('innovationTitle').addEventListener('click', function() {
+    const form = document.getElementById('matchForm');
+    form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+  });
+
+  // Handle form submission
+  document.getElementById('innovationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const project = document.getElementById('projectInput').value;
+    const skills = document.getElementById('skillsInput').value;
+    const impact = document.getElementById('impactInput').value;
+
+    console.log("Matchmaking Submission:");
+    console.log("Project:", project);
+    console.log("Skills:", skills);
+    console.log("Impact:", impact);
+
+    // Show thank you message
+    document.getElementById('thanksMessage').style.display = 'block';
+
+    // Clear inputs
+    this.reset();
+  });
+</script>
         </header>
         <!-- Progress Bar -->
         <div class="progress-container">
