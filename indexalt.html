@@ -9,881 +9,717 @@
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>CharlestonHacks - Innovation Engine</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+    <title>CharlestonHacks - Home</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Enhanced CSS Variables with Better Color Palette */
+        /* --- Base, Reset, Theme --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #FFD700;
-            --secondary: #FF6B35;
-            --accent: #4ECDC4;
-            --success: #00FF87;
-            --warning: #FFA500;
-            --error: #FF6B6B;
-            --text: #333;
-            --text-light: #666;
-            --bg: #f8f9fa;
+            --primary-color: #ffd700;
+            --secondary-color: #ff6b35;
+            --accent-color: #4ecdc4;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
             --card-bg: #fff;
-            --border: #e1e5e9;
-            --shadow-light: 0 2px 10px rgba(0,0,0,0.1);
-            --shadow-medium: 0 4px 20px rgba(0,0,0,0.15);
-            --shadow-heavy: 0 8px 30px rgba(0,0,0,0.2);
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
             --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            --radius: 12px;
-            --radius-large: 20px;
-            --spacing: 1rem;
-            --spacing-large: 2rem;
         }
-
         @media (prefers-color-scheme: dark) {
             :root {
-                --text: #e0e0e0;
-                --text-light: #a0a0a0;
-                --bg: #1a1a1a;
+                --text-color: #e0e0e0;
+                --bg-color: #1a1a1a;
                 --card-bg: #2a2a2a;
-                --border: #404040;
-                --shadow-light: 0 2px 10px rgba(0,0,0,0.3);
-                --shadow-medium: 0 4px 20px rgba(0,0,0,0.4);
-                --shadow-heavy: 0 8px 30px rgba(0,0,0,0.5);
+                --shadow: 0 4px 20px rgba(0,0,0,0.3);
             }
         }
-
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
+            background: var(--bg-color);
+            color: var(--text-color);
             min-height: 100vh;
+            overflow-x: hidden;
             transition: var(--transition);
         }
-
-        /* Enhanced Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-large);
-        }
-
-        /* Modern Header with Better Typography */
+       
+        /* --- Main Layout --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
+        /* --- Header --- */
         .header {
-            text-align: center;
-            opacity: 0;
-            transform: translateY(-20px);
+            text-align: center; margin-bottom: 32px;
+            opacity: 0; transform: translateY(-20px);
             animation: fadeInUp 0.8s ease forwards;
         }
-
         .header h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: var(--transition);
+            font-size: 3rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 10px;
         }
-
-        .header h1:hover {
-            transform: scale(1.05);
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: var(--spacing);
-        }
-
-        /* Enhanced Card System */
-        .card {
+        .header p { font-size: 1.2rem; opacity: 0.8; }
+        /* --- Panel & Media --- */
+        .panel {
+            position: relative;
             background: var(--card-bg);
-            border-radius: var(--radius-large);
-            box-shadow: var(--shadow-medium);
-            padding: var(--spacing-large);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s ease forwards;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 36px 18px 36px 18px;
+            max-width: 600px;
+            margin: 0 auto 24px auto;
+            min-height: 440px;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-heavy);
+        /* ============ TEAM BUILDER STYLES (copied & adapted) ============ */
+        .input-container { margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .input-container label { color: #FFD700; }
+        .input-container input, .input-container select {
+            padding: 12px; font-size: 16px; border: 2px solid #FFD700; background-color: #2c2c2c;
+            color: #fff; border-radius: 5px; width: 100%; margin-bottom: 10px;
         }
-
-        .card h2 {
-            color: var(--primary);
-            margin-bottom: var(--spacing);
-            font-size: 1.5rem;
-            font-weight: 600;
+        .input-container button {
+            padding: 12px 24px; font-size: 16px; background: #FFD700; color: #121212; border-radius: 5px;
+            border: none; cursor: pointer; transition: background 0.3s;
         }
-
-        /* Enhanced Form System */
-        .form-section {
-            margin-bottom: var(--spacing-large);
+        .input-container button:hover { background: #FFC000; }
+        .card-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 20px 0; }
+        .team-member-card {
+            background: #222; border-radius: 8px; padding: 12px 8px 10px; box-shadow: 0 0 10px #FFD70040;
+            width: 200px; display: flex; flex-direction: column; align-items: center; position: relative;
         }
-
-        .form-group {
-            margin-bottom: var(--spacing);
+        .team-member-card img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #FFD700; margin-bottom: 8px; }
+        .member-name { font-weight: bold; color: #FFD700; }
+        .badge { background: #333; border-left: 4px solid #FFD700; color: #FFD700; border-radius: 3px; padding: 2px 8px; font-size: 0.9em; margin: 6px 0; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 3px; justify-content: center; }
+        .skill-tag { background: rgba(255,215,0,0.2); color: #FFD700; padding: 2px 6px; border-radius: 12px; font-size: 0.7rem; }
+        .profile-bar { width: 100%; background: #333; height: 6px; border-radius: 3px; margin: 8px 0 4px 0; overflow: hidden; }
+        .profile-bar-inner { height: 100%; background: #FFD700; }
+        .endorse-btn { background: #FFD700; color: #121212; font-weight: bold; border: none; border-radius: 3px; padding: 2px 10px; cursor: pointer; font-size: 0.85em; margin: 2px 0 0 0; }
+        .endorse-btn:disabled { background: #ccc; color: #666; }
+        .endorsements { font-size: .85em; color: #FFD700; margin-left: 7px; vertical-align: middle; }
+        .user-status { font-size: .85em; color: #00FF87; margin: 4px 0; }
+        .leaderboard { margin: 20px auto; background: #222; border-radius: 8px; padding: 15px; width: 90%; max-width: 600px; box-shadow: 0 0 10px #FFD70040;}
+        .leaderboard h2 { color: #FFD700; font-size: 1.3em; margin-bottom: 12px;}
+        .leaderboard-row { display: flex; justify-content: space-between; align-items: center; margin: 6px 0; }
+        .leaderboard-rank { font-weight: bold; color: #FFD700; width: 24px; }
+        .leaderboard-name { flex: 1; text-align: left; }
+        .leaderboard-skill { color: #FFD700; }
+        .profile-complete { color: #00FF87; font-size: .93em; margin-top: 6px; }
+        .profile-incomplete { color: #FF6B6B; font-size: .93em; margin-top: 6px; }
+        .profile-section { margin: 15px 0; }
+        .proficiency-select { width: 100px; margin-bottom: 10px; }
+        @media (max-width:800px) {
+            .card-container, .leaderboard { flex-direction: column; align-items: center; }
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            background: var(--card-bg);
-            color: var(--text);
-            transition: var(--transition);
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-        }
-
-        /* Enhanced Button System */
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .btn-secondary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Enhanced Progress System */
+        /* --- Progress Bar --- */
         .progress-container {
-            margin: var(--spacing) 0;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
+            margin: 16px 0 24px 0; opacity: 0; animation: fadeInUp 0.8s ease 0.2s forwards;
         }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: rgba(255, 215, 0, 0.2);
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            width: 0%;
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 5px;
-            position: relative;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .progress-text {
-            text-align: center;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        /* Enhanced Team Member Cards */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing);
-            margin: var(--spacing) 0;
-        }
-
-        .team-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: var(--spacing);
-            box-shadow: var(--shadow-light);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .team-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .team-card img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary);
-            margin-bottom: var(--spacing);
-        }
-
-        .team-card h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .team-card .status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: var(--spacing);
-            display: inline-block;
-        }
-
-        .status.available {
-            background: rgba(0, 255, 135, 0.1);
-            color: var(--success);
-        }
-
-        .status.busy {
-            background: rgba(255, 165, 0, 0.1);
-            color: var(--warning);
-        }
-
-        .status.not-looking {
-            background: rgba(255, 107, 107, 0.1);
-            color: var(--error);
-        }
-
-        /* Enhanced Skill Tags */
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-bottom: var(--spacing);
-        }
-
-        .skill-tag {
-            background: rgba(255, 215, 0, 0.1);
-            color: var(--primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-
-        /* Enhanced Achievements */
-        .achievements {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            max-width: 300px;
-        }
-
+        .progress-bar { width:100%; height:8px; background: rgba(255,215,0,0.2); border-radius:4px; overflow:hidden;}
+        .progress-fill { height:100%; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); width:0%; transition: width 0.5s; border-radius:4px; }
+        .progress-text { text-align:center; margin-top:8px; font-size:14px; opacity:0.7;}
+        /* --- Achievements --- */
+        .achievements { position: fixed; top:20px; right:20px; z-index:1000; }
         .achievement {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin-bottom: 0.5rem;
-            transform: translateX(320px);
-            transition: var(--transition);
-            box-shadow: var(--shadow-medium);
-            font-size: 0.9rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white; padding: 12px 20px; border-radius: 25px; margin-bottom: 10px;
+            transform: translateX(300px); transition: var(--transition); box-shadow: var(--shadow);
+            font-size: 14px; font-weight: 600;
         }
-
-        .achievement.show {
-            transform: translateX(0);
+        .achievement.show { transform: translateX(0);}
+        /* --- Countdown --- */
+        .countdown-container { text-align: center; margin:32px 0 8px 0; opacity:0; animation: fadeInUp 0.8s ease 0.6s forwards; }
+        .countdown { font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 10px;}
+        .countdown-label { font-size: 1rem; opacity: 0.7;}
+        /* --- Footer Social --- */
+        .icons-container, .social-container {
+            display: flex; justify-content: center; gap: 20px; margin-top: auto; padding-top: 40px; opacity: 0; animation: fadeInUp 0.8s ease 0.8s forwards;
         }
-
-        .achievement strong {
-            display: block;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
+        .icons-container a, .social-link {
+            width: 50px; height: 50px; background: linear-gradient(135deg,var(--primary-color),var(--secondary-color));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none; font-size: 20px; transition: var(--transition);
         }
-
-        /* Enhanced Leaderboard */
-        .leaderboard {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: var(--spacing);
-            box-shadow: var(--shadow-light);
-            border: 1px solid var(--border);
-            margin: var(--spacing) 0;
-        }
-
-        .leaderboard h2 {
-            color: var(--primary);
-            margin-bottom: var(--spacing);
-            font-size: 1.3rem;
-        }
-
-        .leaderboard-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .leaderboard-row:last-child {
-            border-bottom: none;
-        }
-
-        .leaderboard-rank {
-            font-weight: bold;
-            color: var(--primary);
-            width: 30px;
-        }
-
-        .leaderboard-name {
-            flex: 1;
-            text-align: left;
-        }
-
-        .leaderboard-skill {
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        /* Enhanced Countdown */
-        .countdown-container {
-            text-align: center;
-            margin: var(--spacing-large) 0;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.6s forwards;
-        }
-
-        .countdown {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-family: 'Courier New', monospace;
-        }
-
-        .countdown-label {
-            font-size: 1rem;
-            color: var(--text-light);
-        }
-
-        /* Enhanced Social Icons */
-        .social-container {
-            display: flex;
-            justify-content: center;
-            gap: var(--spacing);
-            margin-top: auto;
-            padding-top: var(--spacing-large);
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.8s forwards;
-        }
-
-        .social-link {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-
-        .social-link:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: var(--shadow-medium);
-        }
-
-        /* Enhanced Autocomplete */
-        .autocomplete-container {
-            position: relative;
-        }
-
-        .autocomplete-list {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-medium);
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
-
-        .autocomplete-item {
-            padding: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .autocomplete-item:last-child {
-            border-bottom: none;
-        }
-
-        .autocomplete-item:hover {
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        /* Enhanced Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0.5rem;
-            }
-
-            .card {
-                padding: var(--spacing);
-            }
-
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .achievements {
-                left: 10px;
-                right: 10px;
-                max-width: none;
-            }
-
-            .achievement {
-                transform: translateY(-100px);
-            }
-
-            .achievement.show {
-                transform: translateY(0);
-            }
-        }
-
-        /* Enhanced Animations */
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        /* Loading States */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            border-right-color: transparent;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Accessibility Improvements */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        /* Focus indicators */
-        button:focus,
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-
-        /* Toast Notifications */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-medium);
-            transform: translateX(100%);
-            transition: var(--transition);
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.error {
-            background: var(--error);
-        }
-
-        .toast.warning {
-            background: var(--warning);
-        }
+        .icons-container a:hover, .social-link:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.2);}
+        /* --- Animations --- */
+        @keyframes fadeInUp { to { opacity:1; transform: translateY(0); } }
+        /* --- Accessibility --- */
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;}
     </style>
 </head>
 <body>
-    <!-- Toast Container -->
-    <div id="toastContainer" aria-live="polite"></div>
-
     <!-- Achievements -->
     <div id="achievements" class="achievements" aria-live="polite"></div>
-
     <div class="container">
-        <!-- Enhanced Header -->
+        <!-- Header -->
         <header class="header">
-            <h1 id="innovationTitle">Innovation Engine</h1>
-            <p>Connect, Build, and Innovate Together</p>
+            <h1>Innovation Engine</h1>
+            <p>Find a Teammate Based on Skills and Impact</p>
         </header>
-
-        <!-- Enhanced Progress Bar -->
+        <!-- Progress Bar -->
         <div class="progress-container">
             <div class="progress-bar">
                 <div id="progressFill" class="progress-fill"></div>
             </div>
             <div id="progressText" class="progress-text">Exploration Progress: 0/4 areas discovered</div>
         </div>
-
-        <!-- Innovation Form (Hidden by default) -->
-        <div id="matchForm" class="card" style="display: none;">
-            <h2>Innovation Matchmaking</h2>
-            <form id="innovationForm">
-                <div class="form-group">
-                    <label for="projectInput">What do you want to work on?</label>
-                    <input type="text" id="projectInput" placeholder="Describe your project idea...">
-                </div>
-                <div class="form-group">
-                    <label for="skillsInput">What skills do you bring?</label>
-                    <input type="text" id="skillsInput" placeholder="e.g., JavaScript, UI/UX, Data Science">
-                </div>
-                <div class="form-group">
-                    <label for="impactInput">What impact do you care about?</label>
-                    <input type="text" id="impactInput" placeholder="e.g., Climate change, Education, Healthcare">
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-rocket"></i>
-                    Submit for Matching
-                </button>
-            </form>
-            <div id="thanksMessage" style="display:none; color: var(--success); margin-top: 1rem;">
-                <i class="fas fa-check-circle"></i>
-                Thanks! We'll use this to match you with great people and ideas.
-            </div>
-        </div>
-
         <!-- Main Panel -->
-        <main class="card">
-            <!-- Profile Creation Section -->
-            <section id="profileSection" class="form-section">
-                <h2><i class="fas fa-user-plus"></i> Create Your Profile</h2>
-                <form id="skillsForm">
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" placeholder="Your first name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" placeholder="Your last name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="your.email@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="skillsInputMain">Professional Skills</label>
-                        <div class="autocomplete-container">
-                            <input type="text" id="skillsInputMain" placeholder="e.g., React, Python, Machine Learning" required>
-                            <div id="skillsAutocomplete" class="autocomplete-list"></div>
-                        </div>
-                        <small>Separate multiple skills with commas</small>
-                    </div>
-                    <div id="skillsProficiencyContainer"></div>
-                    <div class="form-group">
-                        <label for="photoInput">Upload Your Photo</label>
-                        <input type="file" id="photoInput" accept="image/*" required>
-                        <img id="imagePreview" style="display: none; max-width: 120px; margin-top: 10px; border-radius: var(--radius);">
-                    </div>
-                    <div class="form-group">
-                        <label for="bioInput">Short Bio (Optional)</label>
-                        <textarea id="bioInput" placeholder="Tell us about yourself..." maxlength="120" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="availabilityInput">Current Availability</label>
-                        <select id="availabilityInput">
+        <main class="panel">
+            <!-- ========== TEAM BUILDER FUNCTIONALITY ========== -->
+            <section id="matchmaking-section">
+                <h2 style="color:#FFD700;">Create Your Profile</h2>
+                <form id="skills-form">
+                    <div class="input-container">
+                        <input type="text" id="first-name" placeholder="First Name" required>
+                        <input type="text" id="last-name" placeholder="Last Name" required>
+                        <input type="email" name="_replyto" id="email" placeholder="Email" required>
+                        <label>Professional Skills (comma separated)</label>
+                        <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off">
+                        <div id="skills-proficiency-container"></div>
+                        <div id="autocomplete-skills-input" style="position:absolute; z-index:1000; background:#fff; color:#000; border:1px solid #ccc; display:none;"></div>
+                        <label>Upload Your Photo</label>
+                        <input type="file" id="photo-input" accept="image/*" required>
+                        <img id="preview" src="#" alt="Image Preview" style="display: none; max-width: 120px; margin-top: 10px; border-radius: 5px; border: 2px solid #FFD700;" />
+                        <label>Short Bio <span style="color:#888">(Optional)</span></label>
+                        <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120">
+                        <label>Current Availability</label>
+                        <select id="availability-input">
                             <option value="Available">Available</option>
                             <option value="Busy">Busy</option>
                             <option value="Not Looking">Not Looking</option>
                         </select>
+                        <button type="submit">Register & Subscribe</button>
                     </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div id="profileProgress" class="progress-fill"></div>
-                        </div>
-                        <div id="profileProgressText" class="progress-text">Profile completion: 0%</div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-user-check"></i>
-                        Create Profile
-                    </button>
+                    <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner" style="width:0%"></div></div>
+                    <div id="profile-progress-msg" class="profile-incomplete"></div>
                 </form>
+                <p id="success-message" style="display:none; color: green;">Added Successfully!</p>
             </section>
 
-            <!-- Search Section -->
-            <section class="form-section">
-                <h2><i class="fas fa-search"></i> Find Team Members</h2>
-                <div class="form-group">
-                    <label for="searchSkills">Search by Skills</label>
-                    <div class="autocomplete-container">
-                        <input type="text" id="searchSkills" placeholder="e.g., React, Python, UI/UX">
-                        <div id="searchAutocomplete" class="autocomplete-list"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="searchName">Search by Name</label>
-                    <input type="text" id="searchName" placeholder="Search for team members by name">
-                </div>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <button id="searchBySkills" class="btn btn-secondary">
-                        <i class="fas fa-tools"></i>
-                        Search by Skills
-                    </button>
-                    <button id="searchByName" class="btn btn-outline">
-                        <i class="fas fa-user-search"></i>
-                        Search by Name
-                    </button>
-                </div>
-            </section>
-
-            <!-- Team Builder Section -->
-            <section class="form-section">
-                <h2><i class="fas fa-users"></i> Team Builder</h2>
-                <p>Build your ideal team by specifying required skills and team size.</p>
-                <div class="form-group">
-                    <label for="teamSkills">Required Skills</label>
-                    <div class="autocomplete-container">
-                        <input type="text" id="teamSkills" placeholder="e.g., Frontend, Backend, Design">
-                        <div id="teamAutocomplete" class="autocomplete-list"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="teamSize">Team Size</label>
-                    <input type="number" id="teamSize" placeholder="3" min="1" max="10">
-                </div>
-                <button id="buildTeam" class="btn btn-primary">
-                    <i class="fas fa-magic"></i>
-                    Build Dream Team
-                </button>
-            </section>
-
-            <!-- Results Section -->
-            <section id="resultsSection" style="display: none;">
-                <h2><i class="fas fa-users"></i> Results</h2>
-                <div id="resultsContainer" class="team-grid"></div>
-            </section>
-        </main>
-
-        <!-- Leaderboard -->
-        <div id="leaderboardSection" class="card" style="display: none;">
-            <div class="leaderboard">
-                <h2><i class="fas fa-trophy"></i> Top Endorsed Skills</h2>
-                <div id="leaderboardRows"></div>
+            <!-- Leaderboard Section -->
+            <div class="leaderboard" id="leaderboard-section" style="display:none;">
+                <h2>Top Endorsed Skills</h2>
+                <div id="leaderboard-rows"></div>
             </div>
-        </div>
 
+            <!-- Individual Search -->
+            <h2 style="color:#FFD700;">Individual Search</h2>
+            <div class="input-container">
+                <label>Required Skills</label>
+                <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
+                <div id="autocomplete-team-skills" style="position:absolute; z-index:1000; background:#fff; color:#000; border:1px solid #ccc; display:none;"></div>
+                <button id="find-team-btn" type="button">Get People</button>
+                <label>Search by First/Last Name</label>
+                <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
+                <button id="search-name-btn" type="button">Find by Name</button>
+            </div>
+            <div id="matchNotification" style="margin-bottom: 6px; color: gold; display: none;"></div>
+            <div id="noResults" style="margin-bottom: 6px; color: red; display: none;"></div>
+            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+
+            <!-- Team Builder -->
+            <h2 style="margin-top: 10px; color:#FFD700;">Team Builder</h2>
+            <div class="input-container">
+                <p class="instructions" style="max-width: 400px; margin-bottom: 10px;">
+                    Let’s build your team. Enter required skills and number of people needed.
+                </p>
+                <label>Required Skills</label>
+                <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off"/>
+                <div id="autocomplete-teams-skills" style="position:absolute; z-index:1000; background:#fff; color:#000; border:1px solid #ccc; display:none;"></div>
+                <label>Team Size</label>
+                <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6"/>
+                <button onclick="buildBestTeam()">Build Team</button>
+            </div>
+            <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+        </main>
         <!-- Countdown -->
         <section class="countdown-container">
             <div id="countdown" class="countdown">Loading...</div>
             <div class="countdown-label">Until Next Event</div>
         </section>
-
-        <!-- Social Footer -->
-        <footer class="social-container">
-            <a href="#" class="social-link" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Email">
-                <i class="fas fa-envelope"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Subscribe">
-                <i class="fas fa-bell"></i>
-            </a>
+        <!-- Footer Social -->
+        <footer>
+            <section class="icons-container">
+                <a href="cardmatchgame.html" target="_blank" aria-label="About the CharlestonHacks Team">
+                    <i class="fas fa-info-circle"></i>
+                </a>
+                <a href="2card.html" aria-label="Innovation Engine">
+                    <i class="fas fa-users"></i>
+                </a>
+                <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="subscribe.html" aria-label="Subscribe">
+                    <i class="fas fa-bell"></i>
+                </a>
+            </section>
         </footer>
     </div>
-
-    <!-- Enhanced JavaScript -->
+    <!-- ========== TEAM BUILDER SCRIPTS (from original) ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Enhanced Application State Management
-        const AppState = {
-            discoveredCards: new Set(['main']),
-            achievements: [],
-            currentUser: null,
-            skills: [],
-            users: [],
-            loading: false
-        };
+    // ----------- TEAM BUILDER JS LOGIC (as in your original) -----------
+    const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Enhanced Configuration
-        const CONFIG = {
-            countdown: {
-                targetDate: "June 28, 2025 00:00:00",
-                completedMessage: "Next Event Soon!"
-            },
-            achievements: [
-                { id: 'profile_created', name: 'Profile Creator', description: 'Created your first profile!' },
-                { id: 'first_search', name: 'Explorer', description: 'Performed your first search!' },
-                { id: 'team_builder', name: 'Team Builder', description: 'Built your first team!' },
-                { id: 'social_butterfly', name: 'Social Butterfly', description: 'Clicked a social link!' }
-            ],
-            skillSuggestions: [
-                'JavaScript', 'Python', 'React', 'Node.js', 'Machine Learning', 'UI/UX Design',
-                'Data Science', 'DevOps', 'Mobile Development', 'Cloud Computing', 'Blockchain',
-                'Cybersecurity', 'Product Management', 'Digital Marketing', 'Graphic Design'
-            ]
-        };
+    // ---------------------- PROFILE BAR/COMPLETION ----------------------
+    function updateProfileProgress() {
+        const fields = [
+            document.getElementById("first-name").value.trim(),
+            document.getElementById("last-name").value.trim(),
+            document.getElementById("email").value.trim(),
+            document.getElementById("skills-input").value.trim(),
+            document.getElementById("photo-input").value,
+            document.getElementById("availability-input").value,
+        ];
+        let filled = fields.filter(Boolean).length;
+        let percent = Math.floor((filled / fields.length) * 100);
+        document.querySelector("#profile-bar .profile-bar-inner").style.width = percent + "%";
+        let msg = percent == 100 ? "Profile Complete!" : "Profile incomplete, fill all fields";
+        document.getElementById("profile-progress-msg").textContent = msg;
+        document.getElementById("profile-progress-msg").className = percent == 100 ? "profile-complete" : "profile-incomplete";
+    }
+    document.querySelectorAll("#skills-form input, #skills-form select").forEach(el => el.addEventListener("input", updateProfileProgress));
 
-        // Enhanced Utilities
-        const Utils = {
-            showToast(message, type = 'success') {
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                toast.textContent = message;
-                document.getElementById('toastContainer').appendChild(toast);
-                
-                setTimeout(() => toast.classList.add('show'), 100);
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
-            },
+    // ---------------------- SKILL PROFICIENCY LOGIC ----------------------
+    const skillProficiencies = {};
+    document.getElementById("skills-input").addEventListener('input', function() {
+        const skills = this.value.split(',').map(s => s.trim()).filter(Boolean);
+        const container = document.getElementById('skills-proficiency-container');
+        container.innerHTML = '';
+        skills.forEach(skill => {
+            if (!skill) return;
+            if (!(skill in skillProficiencies)) skillProficiencies[skill] = "Intermediate";
+            container.innerHTML += `
+                <div style="margin-bottom: 7px;">
+                <span style="color:#FFD700;">${skill}</span>
+                <select class="proficiency-select" data-skill="${skill}">
+                <option value="Beginner" ${skillProficiencies[skill]=="Beginner"?"selected":""}>Beginner</option>
+                <option value="Intermediate" ${skillProficiencies[skill]=="Intermediate"?"selected":""}>Intermediate</option>
+                <option value="Expert" ${skillProficiencies[skill]=="Expert"?"selected":""}>Expert</option>
+                </select>
+                </div>
+            `;
+        });
+        // Update model on change
+        document.querySelectorAll('.proficiency-select').forEach(sel => {
+            sel.addEventListener('change', function() { skillProficiencies[this.dataset.skill] = this.value; });
+        });
+    });
 
-            validateEmail(email) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            },
+    // ------------------ IMAGE PREVIEW -------------------
+    document.getElementById('photo-input').addEventListener('change', function(){
+        const file = this.files[0];
+        const preview = document.getElementById('preview');
+        if(file){
+            const reader = new FileReader();
+            reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+            reader.readAsDataURL(file);
+        }
+    });
 
-            sanitizeInput(input) {
-                return input.trim().replace(/[<>]/g, '');
-            },
-
-            generateId() {
-                return Date.now().toString(36) + Math.random().toString(36).substr(2);
-            },
-
-            debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
+    // ----------------- AUTOCOMPLETE (skills) -------------
+    let dynamicSkills = [];
+    async function fetchUniqueSkills() {
+        try {
+            const { data, error } = await supabaseClient.from('skills').select('skills');
+            if (error) throw error;
+            dynamicSkills = [...new Set(data.flatMap(item => item.skills.split(',').map(skill => skill.trim().toLowerCase())))];
+        } catch (error) { dynamicSkills = []; }
+    }
+    function setupAutocomplete(inputId, boxId) {
+        const input = document.getElementById(inputId);
+        const box = document.getElementById(boxId);
+        input.addEventListener('input', () => {
+            const userInput = input.value.toLowerCase().trim().split(',').pop().trim();
+            box.innerHTML = ''; if (!userInput || !dynamicSkills.length) { box.style.display = 'none'; return; }
+            const matches = dynamicSkills.filter(skill => skill.includes(userInput)).slice(0, 10);
+            if (!matches.length) { box.style.display = 'none'; return; }
+            matches.forEach(skill => {
+                const item = document.createElement('div');
+                item.textContent = skill; item.style.padding = '5px'; item.style.cursor = 'pointer';
+                item.onclick = () => {
+                    const parts = input.value.split(','); parts.pop(); parts.push(skill);
+                    input.value = parts.map(p => p.trim()).join(', ');
+                    box.innerHTML = ''; box.style.display = 'none';
+                    input.dispatchEvent(new Event("input"));
                 };
-            }
-        };
+                box.appendChild(item);
+            });
+            const rect = input.getBoundingClientRect();
+            box.style.left = `${rect.left + window.scrollX}px`;
+            box.style.top = `${rect.bottom + window.scrollY}px`;
+            box.style.width = `${rect.width}px`;
+            box.style.display = 'block';
+        });
+        document.addEventListener('click', (e) => { if (!box.contains(e.target) && e.target !== input) box.style.display = 'none'; });
+    }
+    document.addEventListener('DOMContentLoaded', async () => {
+        await fetchUniqueSkills();
+        setupAutocomplete('skills-input','autocomplete-skills-input');
+        setupAutocomplete('teamSkillsInput','autocomplete-team-skills');
+        setupAutocomplete('team-skills-input','autocomplete-teams-skills');
+        loadLeaderboard();
+    });
 
-        // Enhanced Progress Controller
-        const
+    // ------------------ PROFILE SUBMIT ---------------------
+    document.getElementById('skills-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const rawSkills = document.getElementById('skills-input').value.trim().replace(/,\s*$/, '');
+        const skillsArr = rawSkills.split(',').map(s => s.trim()).filter(Boolean);
+        const profs = skillsArr.map(skill => skillProficiencies[skill] || "Intermediate");
+        const skillsWithProfs = skillsArr.map((skill,i) => `${skill}(${profs[i]})`).join(',');
+        const bio = document.getElementById('bio-input').value.trim();
+        const avail = document.getElementById('availability-input').value;
+        const photoInput = document.getElementById('photo-input').files[0];
+        if (!photoInput) { alert('Please select an image.'); return; }
+        const fileExt = photoInput.name.split('.').pop();
+        const fileName = `${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabaseClient.storage.from('hacksbucket').upload(fileName, photoInput);
+        if (uploadError) { alert('Upload error: ' + uploadError.message); return; }
+        const imageUrl = `${supabaseUrl}/storage/v1/object/public/hacksbucket/${fileName}`;
+        const { error } = await supabaseClient.from('skills').insert({
+            first_name: firstName, last_name: lastName, email: email, skills: skillsWithProfs,
+            image_url: imageUrl, bio: bio, availability: avail, endorsements: "{}", created_at: new Date().toISOString()
+        });
+        if (error) { alert('Error inserting data: ' + error.message); } 
+        else { alert('Registration successful!'); document.getElementById('skills-form').reset();
+            document.getElementById("profile-bar").querySelector(".profile-bar-inner").style.width = "0%";
+            document.getElementById("profile-progress-msg").textContent = "";
+            fetchUniqueSkills();
+            loadLeaderboard();
+        }
+    });
+
+    // ----------- INDIVIDUAL SEARCH -------------
+    document.getElementById('find-team-btn').addEventListener('click', findMatchingUsers);
+    async function findMatchingUsers() {
+        const skillsInput = document.getElementById('teamSkillsInput').value.trim();
+        const cardContainer = document.getElementById('cardContainer');
+        cardContainer.innerHTML = '';
+        if (!skillsInput) { alert('Please enter at least one skill.'); return; }
+        const requiredSkills = skillsInput.toLowerCase().split(',').map(skill => skill.trim());
+        const { data, error } = await supabaseClient.from('skills').select('*');
+        if (error) { cardContainer.innerHTML = '<span style="color:red;">Error fetching data.</span>'; return; }
+        function isFuzzyMatch(userSkill, requiredSkill) {
+            userSkill = userSkill.toLowerCase(); requiredSkill = requiredSkill.toLowerCase();
+            return userSkill.includes(requiredSkill) || requiredSkill.includes(userSkill) || userSkill === requiredSkill;
+        }
+        const matchedUsers = data.filter(user => {
+            const userSkillsRaw = user.skills.split(',').map(s => s.trim());
+            return requiredSkills.every(skill =>
+                userSkillsRaw.some(us => isFuzzyMatch(us.replace(/\(.*?\)/,''), skill))
+            );
+        });
+        renderUserCards(matchedUsers, cardContainer);
+    }
+
+    // ----------- SEARCH BY NAME -------------
+    document.getElementById('search-name-btn').addEventListener('click', searchUserByName);
+    async function searchUserByName() {
+        const nameInput = document.getElementById('nameInput').value.trim().toLowerCase();
+        const cardContainer = document.getElementById('cardContainer');
+        cardContainer.innerHTML = '';
+        if (!nameInput) { alert('Please enter a name.'); return; }
+        const { data, error } = await supabaseClient.from('skills').select('*');
+        if (error) { cardContainer.innerHTML = '<span style="color:red;">Error fetching data.</span>'; return; }
+        const matchedUsers = data.filter(user => {
+            const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
+            return fullName.includes(nameInput) || user.first_name.toLowerCase().includes(nameInput) || user.last_name.toLowerCase().includes(nameInput);
+        });
+        renderUserCards(matchedUsers, cardContainer);
+    }
+
+    // ----------- TEAM BUILDER -------------
+    window.buildBestTeam = async function() {
+        const skillInputRaw = document.getElementById('team-skills-input').value;
+        const teamSize = parseInt(document.getElementById('teamSize').value, 10);
+        const container = document.getElementById('bestTeamContainer');
+        container.innerHTML = '';
+        const skillInput = skillInputRaw.toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+        if (!skillInput.length || isNaN(teamSize) || teamSize < 1) { alert('Enter skills & team size.'); return; }
+        const { data: users, error } = await supabaseClient.from('skills').select('*');
+        if (error || !users) { container.innerHTML = '<span style="color:white;">Error loading users.</span>'; return; }
+        // Score by how many required skills are matched
+        const scored = users
+            .map(user => {
+                const userSkillsRaw = user.skills.split(',').map(s => s.trim());
+                const matchingSkills = skillInput.filter(skill =>
+                    userSkillsRaw.some(us => us.replace(/\(.*?\)/,'').toLowerCase().includes(skill))
+                );
+                return matchingSkills.length ? {...user, matchingSkills, matchCount: matchingSkills.length} : null;
+            })
+            .filter(Boolean)
+            .sort((a,b) => b.matchCount-a.matchCount)
+            .slice(0, teamSize);
+        renderUserCards(scored, container);
+    };
+
+    // ----------- USER CARD RENDERING, ENDORSEMENTS, BADGES, STATUS -------------
+    async function renderUserCards(users, container) {
+        if (!users.length) { container.innerHTML = '<span style="color:#FF6B6B;">No matching users found.</span>'; return; }
+        // For demo: LocalStorage for userId, and endorsements
+        let myEmail = localStorage.getItem("demo_user_email") || prompt("Enter your email for endorsements:");
+        localStorage.setItem("demo_user_email", myEmail);
+        for (let user of users) {
+            // Skill badges
+            let skillBadges = user.skills.split(',').map(skill => {
+                const match = skill.match(/(.*?)\((.*?)\)/);
+                let label = match ? match[1] : skill, prof = match ? match[2] : "Intermediate";
+                return `<span class="skill-tag">${label} <span style="font-size:0.8em;opacity:.7;">[${prof}]</span></span>`;
+            }).join(' ');
+            // Endorsements
+            let endorsements = {};
+            try { endorsements = user.endorsements ? JSON.parse(user.endorsements) : {}; } catch {}
+            container.innerHTML += `
+                <div class="team-member-card">
+                    ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" />` : ''}
+                    <div class="member-name">${user.first_name} ${user.last_name}</div>
+                    ${user.bio ? `<div style="color:#FFD700;font-size:.96em;margin:3px 0;">${user.bio}</div>` : ''}
+                    <div class="user-status">Status: ${user.availability || 'Available'}</div>
+                    <div class="profile-section">${skillBadges}</div>
+                    <div class="profile-section">
+                        ${Object.keys(endorsements).length ? Object.entries(endorsements).map(([skill, count]) =>
+                            `<span style="color:#FFD700;">${skill}: <span class="endorsements">${count} <i class="fa fa-thumbs-up"></i></span></span>`
+                        ).join(' | ') : '<span style="color:#888;">No endorsements yet</span>'}
+                    </div>
+                    <button class="endorse-btn" ${user.email===myEmail?'disabled':''}
+                        onclick="endorseSkill('${user.email}')">+ Endorse</button>
+                </div>
+            `;
+        }
+    }
+    // ----------- ENDORSE FUNCTION -------------
+    window.endorseSkill = async function(email) {
+        let myEmail = localStorage.getItem("demo_user_email");
+        if (!myEmail) return alert("Enter your email above and reload.");
+        // For demo, fetch user, increment first skill endorsement
+        const { data, error } = await supabaseClient.from('skills').select('*').eq('email',email);
+        if (error || !data || !data.length) return alert("User not found");
+        let user = data[0];
+        let endorsements = {};
+        try { endorsements = user.endorsements ? JSON.parse(user.endorsements) : {}; } catch {}
+        let skill = user.skills.split(',')[0].replace(/\(.*?\)/,'');
+        endorsements[skill] = (endorsements[skill]||0)+1;
+        await supabaseClient.from('skills').update({endorsements: JSON.stringify(endorsements)}).eq('email',email);
+        alert("Endorsed! Refresh to see update.");
+        loadLeaderboard();
+    };
+
+    // ----------- LEADERBOARD -------------
+    async function loadLeaderboard() {
+        const { data, error } = await supabaseClient.from('skills').select('*');
+        if (error || !data) { document.getElementById('leaderboard-section').style.display='none'; return; }
+        // Aggregate all endorsements across skills/users
+        let aggregate = {};
+        for (let user of data) {
+            let end = {};
+            try { end = user.endorsements ? JSON.parse(user.endorsements) : {}; } catch {}
+            for (let [skill, count] of Object.entries(end)) {
+                aggregate[skill] = (aggregate[skill]||0) + count;
+            }
+        }
+        // Top 5
+        let top = Object.entries(aggregate).sort((a,b)=>b[1]-a[1]).slice(0,5);
+        const rows = top.length ? top.map(([skill,count],i)=>`
+            <div class="leaderboard-row">
+                <span class="leaderboard-rank">#${i+1}</span>
+                <span class="leaderboard-name">${skill}</span>
+                <span class="leaderboard-skill">${count} <i class="fa fa-thumbs-up"></i></span>
+            </div>
+        `).join('') : '<div>No endorsements yet.</div>';
+        document.getElementById('leaderboard-section').style.display = top.length?'block':'none';
+        document.getElementById('leaderboard-rows').innerHTML = rows;
+    }
+    </script>
+    <!-- ========== END TEAM BUILDER ========== -->
+    <script>
+    // ... Existing CharlestonHacks scripts for progress, achievements, countdown, etc. ...
+    // --- Achievements/Progress/Audio config ---
+    const AppState = {
+        discoveredCards: new Set(),
+        achievements: [],
+    };
+    const CONFIG = {
+        countdown: {
+            targetDate: "June 28, 2025 00:00:00",
+            completedMessage: "Next Event Soon!",
+        },
+        achievements: [
+            { id: 'first_flip', name: 'Card Flipper', description: 'Flipped your first card!' },
+            { id: 'explorer', name: 'Explorer', description: 'Discovered 2 sections!' },
+            { id: 'completionist', name: 'Completionist', description: 'Found all sections!' },
+            { id: 'social_butterfly', name: 'Social Butterfly', description: 'Clicked a social link!' }
+        ],
+        cards: [
+            { id: 'main', name: 'CharlestonHacks', image: 'images/hsoftest.png' },
+            { id: 'info', name: 'Information', image: 'images/yellowscullcard.png' },
+            { id: 'innovation', name: 'Innovation Engine', image: 'images/redscullcard.png' },
+            { id: 'news', name: 'News & Updates', image: 'images/Descartes.png' },
+            { id: 'people', name: 'Community', image: 'images/Alexandor.png' }
+        ],
+        audio: {
+            cardflip: 'assets/atmospherel.m4a',
+            keys: 'assets/keys.m4a',
+            chime: 'assets/chime.mp3'
+        }
+    };
+    // --- Audio Controller (v1: synthetic fallback, v2: mp3 support) ---
+    const AudioController = {
+        preloaded: false,
+        context: null,
+        sounds: new Map(),
+        preloadAudio() {
+            if (this.preloaded) return;
+            Object.keys(CONFIG.audio).forEach(key => {
+                const src = CONFIG.audio[key];
+                if (src) new Audio(src);
+            });
+            this.preloaded = true;
+        },
+        async init() {
+            if (window.AudioContext || window.webkitAudioContext) {
+                try {
+                    this.context = new (window.AudioContext || window.webkitAudioContext)();
+                    this.createSounds();
+                } catch (error) { }
+            }
+        },
+        createSounds() {
+            // Synthetic fallback for button/achievement/flip (short "chimes")
+            if (!this.context) return;
+            this.sounds.set('flip', this.createTone(800, 0.1));
+            this.sounds.set('click', this.createTone(1000, 0.05));
+            this.sounds.set('achievement', this.createTone(1200, 0.2));
+            this.sounds.set('chime', this.createTone(700, 0.12));
+        },
+        createTone(frequency, duration) {
+            if (!this.context) return null;
+            const sampleRate = this.context.sampleRate;
+            const buffer = this.context.createBuffer(1, sampleRate * duration, sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < buffer.length; i++) {
+                data[i] = Math.sin(2 * Math.PI * frequency * i / sampleRate) * 0.14;
+            }
+            return buffer;
+        },
+        playSound(soundKey) {
+            // Play mp3 if available, else synthetic
+            const soundSrc = CONFIG.audio[soundKey];
+            if (soundSrc) {
+                const audio = new Audio(soundSrc);
+                audio.volume = 0.20;
+                audio.play().catch(()=>{});
+                return;
+            }
+            if (this.context && this.sounds.has(soundKey)) {
+                const source = this.context.createBufferSource();
+                source.buffer = this.sounds.get(soundKey);
+                source.connect(this.context.destination);
+                source.start();
+            }
+        }
+    };
+    // --- Progress & Achievements ---
+    const ProgressController = {
+        update() {
+            const progress = (AppState.discoveredCards.size / 4) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `Exploration Progress: ${AppState.discoveredCards.size}/4 areas discovered`;
+            if (AppState.discoveredCards.size === 2 && !AppState.achievements.includes('explorer')) {
+                AchievementController.unlock('explorer');
+            }
+            if (AppState.discoveredCards.size === 4 && !AppState.achievements.includes('completionist')) {
+                AchievementController.unlock('completionist');
+            }
+        }
+    };
+    const AchievementController = {
+        unlock(achievementId) {
+            if (AppState.achievements.includes(achievementId)) return;
+            AppState.achievements.push(achievementId);
+            const achievement = CONFIG.achievements.find(a => a.id === achievementId);
+            if (!achievement) return;
+            this.showAchievement(achievement);
+            AudioController.playSound('chime');
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        },
+        showAchievement(achievement) {
+            const container = document.getElementById('achievements');
+            const element = document.createElement('div');
+            element.className = 'achievement';
+            element.innerHTML = `<strong>${achievement.name}</strong><br><small>${achievement.description}</small>`;
+            container.appendChild(element);
+            setTimeout(() => element.classList.add('show'), 100);
+            setTimeout(() => { element.style.transform = 'translateX(300px)'; setTimeout(()=>element.remove(), 300); }, 3000);
+        }
+    };
+    // --- Countdown Timer ---
+    const CountdownController = {
+        interval: null,
+        init() {
+            this.start();
+        },
+        start() {
+            const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
+            const countdownElement = document.getElementById('countdown');
+            this.interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+                if (distance < 0) {
+                    countdownElement.textContent = CONFIG.countdown.completedMessage;
+                    clearInterval(this.interval);
+                    return;
+                }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+    };
+    // --- Social Links Achievement ---
+    function addSocialLinkAchievement() {
+        document.querySelectorAll('.icons-container a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!AppState.achievements.includes('social_butterfly')) AchievementController.unlock('social_butterfly');
+                AudioController.playSound('chime');
+            });
+        });
+    }
+    // --- Loading Screen ---
+    function hideLoading() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        loadingScreen.classList.add('hidden');
+        setTimeout(() => loadingScreen.remove(), 500);
+    }
+    // --- App Init ---
+    (async function AppInit() {
+        await AudioController.init();
+        addSocialLinkAchievement();
+        CountdownController.init();
+        AppState.discoveredCards.add('main');
+        ProgressController.update();
+        setTimeout(hideLoading, 1200);
+    })();
+    </script>
+</body>
+</html>
