@@ -154,7 +154,7 @@
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1>Innovation Engine</h1>
+            <h1 id="innovationTitle" style="cursor: pointer;">Innovation Engine</h1>
             <p>Find a Teammate Based on Skills and Impact</p>
         </header>
         <!-- Progress Bar -->
@@ -164,6 +164,10 @@
             </div>
             <div id="progressText" class="progress-text">Exploration Progress: 0/4 areas discovered</div>
         </div>
+        <div id="innovationTextBox" style="display: none; margin-top: 10px;">
+    <input type="text" placeholder="Enter your idea..." style="padding: 10px; width: 100%; max-width: 400px; border: 2px solid var(--primary-color); border-radius: 5px;">
+</div>
+
         <!-- Main Panel -->
         <main class="panel">
             <!-- ========== TEAM BUILDER FUNCTIONALITY ========== -->
@@ -549,6 +553,13 @@
         document.getElementById('leaderboard-rows').innerHTML = rows;
     }
     </script>
+    <script>
+    document.getElementById('innovationTitle').addEventListener('click', function() {
+        const box = document.getElementById('innovationTextBox');
+        box.style.display = (box.style.display === 'none' || box.style.display === '') ? 'block' : 'none';
+    });
+</script>
+
     <!-- ========== END TEAM BUILDER ========== -->
     <script>
     // ... Existing CharlestonHacks scripts for progress, achievements, countdown, etc. ...
@@ -721,5 +732,6 @@
         setTimeout(hideLoading, 1200);
     })();
     </script>
+    
 </body>
 </html>
