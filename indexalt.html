@@ -112,6 +112,13 @@
         @media (max-width:800px) {
             .card-container, .leaderboard { flex-direction: column; align-items: center; }
         }
+        /* --- Progress Bar --- */
+        .progress-container {
+            margin: 16px 0 24px 0; opacity: 0; animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+        .progress-bar { width:100%; height:8px; background: rgba(255,215,0,0.2); border-radius:4px; overflow:hidden;}
+        .progress-fill { height:100%; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); width:0%; transition: width 0.5s; border-radius:4px; }
+        .progress-text { text-align:center; margin-top:8px; font-size:14px; opacity:0.7;}
         /* --- Achievements --- */
         .achievements { position: fixed; top:20px; right:20px; z-index:1000; }
         .achievement {
@@ -120,6 +127,23 @@
             transform: translateX(300px); transition: var(--transition); box-shadow: var(--shadow);
             font-size: 14px; font-weight: 600;
         }
+        .achievement.show { transform: translateX(0);}
+        /* --- Countdown --- */
+        .countdown-container { text-align: center; margin:32px 0 8px 0; opacity:0; animation: fadeInUp 0.8s ease 0.6s forwards; }
+        .countdown { font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 10px;}
+        .countdown-label { font-size: 1rem; opacity: 0.7;}
+        /* --- Footer Social --- */
+        .icons-container, .social-container {
+            display: flex; justify-content: center; gap: 20px; margin-top: auto; padding-top: 40px; opacity: 0; animation: fadeInUp 0.8s ease 0.8s forwards;
+        }
+        .icons-container a, .social-link {
+            width: 50px; height: 50px; background: linear-gradient(135deg,var(--primary-color),var(--secondary-color));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none; font-size: 20px; transition: var(--transition);
+        }
+        .icons-container a:hover, .social-link:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.2);}
+        /* --- Animations --- */
+        @keyframes fadeInUp { to { opacity:1; transform: translateY(0); } }
         /* --- Accessibility --- */
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;}
     </style>
@@ -131,8 +155,15 @@
         <!-- Header -->
         <header class="header">
             <h1>Innovation Engine</h1>
-            <p>Connect, Build, and Innovate Together</p>
+            <p>Find a Teammate Based on Skills and Impact</p>
         </header>
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="progressText" class="progress-text">Exploration Progress: 0/4 areas discovered</div>
+        </div>
         <!-- Main Panel -->
         <main class="panel">
             <!-- ========== TEAM BUILDER FUNCTIONALITY ========== -->
@@ -202,7 +233,40 @@
             </div>
             <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
         </main>
-       
+        <!-- Countdown -->
+        <section class="countdown-container">
+            <div id="countdown" class="countdown">Loading...</div>
+            <div class="countdown-label">Until Next Event</div>
+        </section>
+        <!-- Footer Social -->
+        <footer>
+            <section class="icons-container">
+                <a href="cardmatchgame.html" target="_blank" aria-label="About the CharlestonHacks Team">
+                    <i class="fas fa-info-circle"></i>
+                </a>
+                <a href="2card.html" aria-label="Innovation Engine">
+                    <i class="fas fa-users"></i>
+                </a>
+                <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="subscribe.html" aria-label="Subscribe">
+                    <i class="fas fa-bell"></i>
+                </a>
+            </section>
+        </footer>
     </div>
     <!-- ========== TEAM BUILDER SCRIPTS (from original) ========== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -605,6 +669,31 @@
             container.appendChild(element);
             setTimeout(() => element.classList.add('show'), 100);
             setTimeout(() => { element.style.transform = 'translateX(300px)'; setTimeout(()=>element.remove(), 300); }, 3000);
+        }
+    };
+    // --- Countdown Timer ---
+    const CountdownController = {
+        interval: null,
+        init() {
+            this.start();
+        },
+        start() {
+            const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
+            const countdownElement = document.getElementById('countdown');
+            this.interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+                if (distance < 0) {
+                    countdownElement.textContent = CONFIG.countdown.completedMessage;
+                    clearInterval(this.interval);
+                    return;
+                }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
         }
     };
     // --- Social Links Achievement ---
