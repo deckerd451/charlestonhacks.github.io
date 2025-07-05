@@ -190,18 +190,24 @@
   <i class="fas fa-search" style="margin-right: 8px;"></i> Individual Search
 </h2>
 
-            <div class="input-container">
-                <label>Required Skills</label>
-                <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
-                <div id="autocomplete-team-skills" style="position:absolute; z-index:1000; background:#fff; color:#000; border:1px solid #ccc; display:none;"></div>
-                <button id="find-team-btn" type="button">Get People</button>
-                <label>Search by First/Last Name</label>
-                <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
-                <button id="search-name-btn" type="button">Find by Name</button>
-            </div>
-            <div id="matchNotification" style="margin-bottom: 6px; color: gold; display: none;"></div>
-            <div id="noResults" style="margin-bottom: 6px; color: red; display: none;"></div>
-            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+           <div class="input-container">
+  <label for="teamSkillsInput">Required Skills</label>
+  <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" />
+  <div id="autocomplete-team-skills" class="autocomplete-dropdown"></div>
+
+  <button id="find-team-btn" type="button" class="btn-block spaced-bottom">Get People</button>
+
+  <label for="nameInput" class="spaced-label">Search by First/Last Name</label>
+  <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off" class="input-block spaced-bottom" />
+  
+  <!-- Added new class "spaced-top" for spacing above -->
+  <button id="search-name-btn" type="button" class="btn-block spaced-top">Find by Name</button>
+</div>
+
+<div id="matchNotification" class="notification gold" style="display: none;"></div>
+<div id="noResults" class="notification red" style="display: none;"></div>
+<div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+
 
             <!-- Team Builder -->
             <h2 style="color:#FFD700; text-align: left; margin-bottom: 20px; display: inline-block;">
