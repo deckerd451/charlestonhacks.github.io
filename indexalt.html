@@ -13,129 +13,96 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json" />
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://hvmotpzhliufzomewzfl.supabase.co">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* --- Base, Reset, Theme --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-    --primary-color: #ffd700;
-    --secondary-color: #ff6b35;
-    --accent-color: #4ecdc4;
-    --text-color: #e0e0e0;
-    --bg-color: #1a1a1a;
-    --card-bg: #2a2a2a;
-    --shadow: 0 4px 20px rgba(0,0,0,0.3);
-    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-}
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            overflow-x: hidden;
-            transition: var(--transition);
-        }
-       
-        /* --- Main Layout --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
-        /* --- Header --- */
-        .header {
-            text-align: center; margin-bottom: 32px;
-            opacity: 0; transform: translateY(-20px);
-            animation: fadeInUp 0.8s ease forwards;
-        }
-        .header h1 {
-            font-size: 3rem; font-weight: 800;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; margin-bottom: 10px;
-        }
-        .header p { font-size: 1.2rem; opacity: 0.8; }
-        /* --- Panel & Media --- */
-        .panel {
-    position: relative;
-    background: transparent;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0;
-    max-width: 600px;
-    margin: 0 auto 24px auto;
-    min-height: auto;
-}
-
-        /* ============ TEAM BUILDER STYLES (copied & adapted) ============ */
-        .input-container { margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
-        .input-container label { color: #FFD700; }
-        .input-container input, .input-container select {
-            padding: 12px; font-size: 16px; border: 2px solid #FFD700; background-color: #2c2c2c;
-            color: #fff; border-radius: 5px; width: 100%; margin-bottom: 10px;
-        }
-        .input-container button {
-            padding: 12px 24px; font-size: 16px; background: #FFD700; color: #121212; border-radius: 5px;
-            border: none; cursor: pointer; transition: background 0.3s;
-        }
-        .input-container button:hover { background: #FFC000; }
-        .card-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 20px 0; }
-        .team-member-card {
-            background: #222; border-radius: 8px; padding: 12px 8px 10px; box-shadow: 0 0 10px #FFD70040;
-            width: 200px; display: flex; flex-direction: column; align-items: center; position: relative;
-        }
-        .team-member-card img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #FFD700; margin-bottom: 8px; }
-        .member-name { font-weight: bold; color: #FFD700; }
-        .badge { background: #333; border-left: 4px solid #FFD700; color: #FFD700; border-radius: 3px; padding: 2px 8px; font-size: 0.9em; margin: 6px 0; }
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 3px; justify-content: center; }
-        .skill-tag { background: rgba(255,215,0,0.2); color: #FFD700; padding: 2px 6px; border-radius: 12px; font-size: 0.7rem; }
-        .profile-bar { width: 100%; background: #333; height: 6px; border-radius: 3px; margin: 8px 0 4px 0; overflow: hidden; }
-        .profile-bar-inner { height: 100%; background: #FFD700; }
-        .endorse-btn { background: #FFD700; color: #121212; font-weight: bold; border: none; border-radius: 3px; padding: 2px 10px; cursor: pointer; font-size: 0.85em; margin: 2px 0 0 0; }
-        .endorse-btn:disabled { background: #ccc; color: #666; }
-        .endorsements { font-size: .85em; color: #FFD700; margin-left: 7px; vertical-align: middle; }
-        .user-status { font-size: .85em; color: #00FF87; margin: 4px 0; }
-        .leaderboard { margin: 20px auto; background: #222; border-radius: 8px; padding: 15px; width: 90%; max-width: 600px; box-shadow: 0 0 10px #FFD70040;}
-        .leaderboard h2 { color: #FFD700; font-size: 1.3em; margin-bottom: 12px;}
-        .leaderboard-row { display: flex; justify-content: space-between; align-items: center; margin: 6px 0; }
-        .leaderboard-rank { font-weight: bold; color: #FFD700; width: 24px; }
-        .leaderboard-name { flex: 1; text-align: left; }
-        .leaderboard-skill { color: #FFD700; }
-        .profile-complete { color: #00FF87; font-size: .93em; margin-top: 6px; }
-        .profile-incomplete { color: #FF6B6B; font-size: .93em; margin-top: 6px; }
-        .profile-section { margin: 15px 0; }
-        .proficiency-select { width: 100px; margin-bottom: 10px; }
-        @media (max-width:800px) {
-            .card-container, .leaderboard { flex-direction: column; align-items: center; }
-        }
-        /* --- Achievements --- */
-        .achievements { position: fixed; top:20px; right:20px; z-index:1000; }
-        .achievement {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white; padding: 12px 20px; border-radius: 25px; margin-bottom: 10px;
-            transform: translateX(300px); transition: var(--transition); box-shadow: var(--shadow);
-            font-size: 14px; font-weight: 600;
-        }
-        .achievement.show { transform: translateX(0);}
-        /* --- Countdown --- */
-        .countdown-container { text-align: center; margin:32px 0 8px 0; opacity:0; animation: fadeInUp 0.8s ease 0.6s forwards; }
-        .countdown { font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 10px;}
-        .countdown-label { font-size: 1rem; opacity: 0.7;}
-        /* --- Footer Social --- */
-        .icons-container, .social-container {
-            display: flex; justify-content: center; gap: 20px; margin-top: auto; padding-top: 40px; opacity: 0; animation: fadeInUp 0.8s ease 0.8s forwards;
-        }
-        .icons-container a, .social-link {
-            width: 50px; height: 50px; background: linear-gradient(135deg,var(--primary-color),var(--secondary-color));
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; text-decoration: none; font-size: 20px; transition: var(--transition);
-        }
-        .icons-container a:hover, .social-link:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.2);}
-        /* --- Animations --- */
-        @keyframes fadeInUp { to { opacity:1; transform: translateY(0); } }
-        /* --- Accessibility --- */
-        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;}
-    </style>
 </head>
 <body>
+    <div id="achievements" class="achievements" aria-live="polite"></div>
+    <div class="container">
+        <header class="header">
+            <h1>Innovation Engine</h1>
+            <p>Connect, Build, and Innovate Together</p>
+        </header>
+        <main class="panel">
+            <section id="matchmaking-section">
+                <h2 class="section-title">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> Create Your Profile
+                </h2>
+                <form id="skills-form">
+                    <div class="input-container">
+                        <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name">
+                        <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name">
+                        <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email">
+                        <label for="skills-input">Professional Skills (comma separated)</label>
+                        <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
+                        <div id="skills-proficiency-container"></div>
+                        <div id="autocomplete-skills-input" class="autocomplete-box"></div>
+                        <label for="photo-input">Upload Your Photo</label>
+                        <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
+                        <img id="preview" src="#" alt="Image Preview" class="image-preview" />
+                        <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
+                        <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
+                        <label for="availability-input">Current Availability</label>
+                        <select id="availability-input" aria-label="Current Availability">
+                            <option value="Available">Available</option>
+                            <option value="Busy">Busy</option>
+                            <option value="Not Looking">Not Looking</option>
+                        </select>
+                        <button type="submit">Register & Subscribe</button>
+                    </div>
+                    <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
+                    <div id="profile-progress-msg" class="profile-incomplete"></div>
+                </form>
+                <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
+            </section>
+
+            <div class="leaderboard" id="leaderboard-section" style="display:none;">
+                <h2>Top Endorsed Skills</h2>
+                <div id="leaderboard-rows"></div>
+            </div>
+
+            <h2 class="section-title">
+                <i class="fas fa-search" aria-hidden="true"></i> Individual Search
+            </h2>
+            <div class="input-container">
+                <label for="teamSkillsInput">Required Skills</label>
+                <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
+                <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+                <button id="find-team-btn" type="button">Get People</button> <br> <br>
+                <label for="nameInput">Search by First/Last Name</label>
+                <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
+                <button id="search-name-btn" type="button">Find by Name</button>
+            </div>
+            <div id="matchNotification" class="notification match-notification" style="display: none;"></div>
+            <div id="noResults" class="notification no-results-notification" style="display: none;"></div>
+            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+
+            <h2 class="section-title">
+                <i class="fas fa-users" aria-hidden="true"></i> Team Builder
+            </h2>
+            <div class="input-container">
+                <p class="instructions">
+                    Let’s build your team. Enter required skills and number of people needed.
+                </p>
+                <label for="team-skills-input">Required Skills</label>
+                <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
+                <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
+                <label for="teamSize">Team Size</label>
+                <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
+                <button onclick="buildBestTeam()">Build Team</button>
+            </div>
+            <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="main.js" defer></script>
+</body>
+</html>
     <!-- Achievements -->
     <div id="achievements" class="achievements" aria-live="polite"></div>
     <div class="container">
