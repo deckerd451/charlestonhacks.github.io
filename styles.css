@@ -77,9 +77,7 @@ body::before {
 body.two-card-page::before {
     background-image: url('images/backgroundie.jpg');
 }
-body.indexalt::before {
-    background-image: url('images/backgroundie.jpg');
-}
+
 
 @media (max-width: 768px) {
     :root {
