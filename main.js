@@ -356,20 +356,8 @@ async function renderUserCards(users, container) {
 
     container.innerHTML = cardsHtml;
 
-    // Attach event listeners for endorse buttons using event delegation
-    container.querySelectorAll('.endorse-btn').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const emailToEndorse = event.currentTarget.dataset.email;
-            // Fetch the user's data again to ensure we have the most up-to-date skills
-            const { data, error } = await supabaseClient.from('skills').select('*').eq('email', emailToEndorse).single();
-            if (error || !data) {
-                console.error("Error fetching user for endorsement modal:", error);
-                showNotification("Could not load user's skills for endorsement.", "error");
-                return;
-            }
-            showEndorseSkillModal(data.email, data.first_name, data.last_name, data.skills);
-        });
-    });
+    // REMOVED: Individual event listener attachment here.
+    // Event delegation will handle this from the parent container.
 }
 
 /**
@@ -617,14 +605,7 @@ async function handleEndorsementSelection(emailToEndorse, skillToEndorse) {
             if (updatedUserData.data) {
                 const newCardHtml = generateUserCardHTML(updatedUserData.data);
                 cardElementInCardContainer.outerHTML = newCardHtml;
-                // Reattach event listener for the new button in this card
-                document.querySelector(`#cardContainer button[data-email="${emailToEndorse}"]`).addEventListener('click', async (event) => {
-                    const email = event.currentTarget.dataset.email;
-                    const { data: userToDisplay, error: fetchError } = await supabaseClient.from('skills').select('*').eq('email', email).single();
-                    if (!fetchError && userToDisplay) {
-                        showEndorseSkillModal(userToDisplay.email, userToDisplay.first_name, userToDisplay.last_name, userToDisplay.skills);
-                    }
-                });
+                // REMOVED: Re-attachment here. Event delegation will handle it.
             }
         }
         if (cardElementInBestTeamContainer) {
@@ -632,14 +613,7 @@ async function handleEndorsementSelection(emailToEndorse, skillToEndorse) {
             if (updatedUserData.data) {
                 const newCardHtml = generateUserCardHTML(updatedUserData.data);
                 cardElementInBestTeamContainer.outerHTML = newCardHtml;
-                // Reattach event listener for the new button in this card
-                document.querySelector(`#bestTeamContainer button[data-email="${emailToEndorse}"]`).addEventListener('click', async (event) => {
-                    const email = event.currentTarget.dataset.email;
-                    const { data: userToDisplay, error: fetchError } = await supabaseClient.from('skills').select('*').eq('email', email).single();
-                    if (!fetchError && userToDisplay) {
-                        showEndorseSkillModal(userToDisplay.email, userToDisplay.first_name, userToDisplay.last_name, userToDisplay.skills);
-                    }
-                });
+                // REMOVED: Re-attachment here. Event delegation will handle it.
             }
         }
 
@@ -707,107 +681,101 @@ function generateUserCardHTML(user) { // No longer async, as it's a pure renderi
 }
 
 /**
- * Loads and displays the top endorsed skills leaderboard.
+ * Loads and displays the top endorsed skills leaderboard
  */
 async function loadLeaderboard() {
     try {
-        const { data, error } = await supabaseClient.from('skills').select('endorsements'); // Only fetch endorsements
-        if (error || !data) throw error;
+        const { data, error } = await supabaseClient.from('skills').select('endorsements');
+        if (error) throw error;
 
-        let aggregate = {};
-        for (let user of data) {
-            let end = {};
-            try {
-                end = user.endorsements ? JSON.parse(user.endorsements) : {};
-            } catch (e) {
-                console.warn(`Error parsing endorsements for user in leaderboard:`, e);
-                end = {};
+        const skillCounts = {};
+        data.forEach(user => {
+            if (user.endorsements) {
+                try {
+                    const endorsements = JSON.parse(user.endorsements);
+                    for (const skill in endorsements) {
+                        skillCounts[skill] = (skillCounts[skill] || 0) + endorsements[skill];
+                    }
+                } catch (e) {
+                    console.warn("Error parsing endorsements for leaderboard:", e);
+                }
             }
-            for (let [skill, count] of Object.entries(end)) {
-                aggregate[skill] = (aggregate[skill] || 0) + count;
-            }
+        });
+
+        const sortedSkills = Object.entries(skillCounts).sort(([, countA], [, countB]) => countB - countA);
+
+        DOMElements.leaderboardRows.innerHTML = '';
+        if (sortedSkills.length === 0) {
+            DOMElements.leaderboardRows.innerHTML = '<p>No skills endorsed yet. Be the first!</p>';
+            return;
         }
 
-        const topSkills = Object.entries(aggregate).sort((a, b) => b[1] - a[1]).slice(0, 5);
-
-        if (topSkills.length) {
-            const rowsHtml = topSkills.map(([skill, count], i) => `
-                <div class="leaderboard-row">
-                    <span class="leaderboard-rank">#${i + 1}</span>
-                    <span class="leaderboard-name">${skill}</span>
-                    <span class="leaderboard-skill">${count} <i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-                </div>
-            `).join('');
-            DOMElements.leaderboardRows.innerHTML = rowsHtml;
-            DOMElements.leaderboardSection.style.display = 'block';
-        } else {
-            DOMElements.leaderboardSection.style.display = 'none';
-            DOMElements.leaderboardRows.innerHTML = '<div>No endorsements yet.</div>';
-        }
+        sortedSkills.forEach(([skill, count], index) => {
+            const row = document.createElement('div');
+            row.className = 'leaderboard-row';
+            row.innerHTML = `
+                <span class="leaderboard-rank">${index + 1}.</span>
+                <span class="leaderboard-skill">${skill}</span>
+                <span class="leaderboard-count">${count} <i class="fa fa-thumbs-up"></i></span>
+            `;
+            DOMElements.leaderboardRows.appendChild(row);
+        });
     } catch (error) {
-        console.error("Error loading leaderboard:", error);
-        DOMElements.leaderboardRows.innerHTML = '<div style="color:red;">Error loading leaderboard.</div>';
+        console.error("Error loading leaderboard:", error.message);
+        DOMElements.leaderboardRows.innerHTML = '<p style="color:red;">Failed to load leaderboard.</p>';
     }
 }
 
 
-// --- Notification Functions (Assuming these exist in your original main.js) ---
-function showNotification(message, type) {
-    const notificationElement = (type === 'success') ? DOMElements.successMessage : DOMElements.matchNotification;
-    notificationElement.textContent = message;
-    notificationElement.className = `notification ${type}`; // Add a class for styling
-    notificationElement.style.display = 'block';
-    setTimeout(() => {
-        hideNotifications();
+// --- Notification System ---
+let notificationTimeout;
+function showNotification(message, type = 'info') {
+    const notification = document.getElementById('achievements'); // Using the achievements div for notifications
+    notification.textContent = message;
+    notification.className = `achievements ${type}`; // Add type class for styling (e.g., success, error, warning, info)
+    notification.style.display = 'block';
+
+    clearTimeout(notificationTimeout);
+    notificationTimeout = setTimeout(() => {
+        notification.style.display = 'none';
+        notification.textContent = '';
+        notification.className = 'achievements';
     }, 5000); // Hide after 5 seconds
 }
 
 function hideNotifications() {
-    DOMElements.matchNotification.style.display = 'none';
-    DOMElements.successMessage.style.display = 'none';
+    const notification = document.getElementById('achievements');
+    notification.style.display = 'none';
+    notification.textContent = '';
+    notification.className = 'achievements';
+    clearTimeout(notificationTimeout);
 }
 
 
-// --- Initializations / Event Listeners (Keep existing, add new modal listeners) ---
+// --- Event Listeners Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Existing event listeners
-    if (DOMElements.skillsForm) {
-        DOMElements.skillsForm.addEventListener('submit', handleProfileSubmit);
-        // Initial call to set progress on load
-        updateProfileProgress();
-    }
-    if (DOMElements.firstNameInput) DOMElements.firstNameInput.addEventListener('input', updateProfileProgress);
-    if (DOMElements.lastNameInput) DOMElements.lastNameInput.addEventListener('input', updateProfileProgress);
-    if (DOMElements.emailInput) DOMElements.emailInput.addEventListener('input', updateProfileProgress);
-    if (DOMElements.skillsInput) DOMElements.skillsInput.addEventListener('input', handleSkillsInput); // Update proficiency selects
-    if (DOMElements.skillsInput) DOMElements.skillsInput.addEventListener('input', updateProfileProgress);
-    if (DOMElements.photoInput) DOMElements.photoInput.addEventListener('change', handlePhotoInputChange);
-    if (DOMElements.photoInput) DOMElements.photoInput.addEventListener('change', updateProfileProgress);
-    if (DOMElements.availabilityInput) DOMElements.availabilityInput.addEventListener('change', updateProfileProgress);
+    // Profile section listeners
+    DOMElements.skillsInput.addEventListener('input', handleSkillsInput);
+    DOMElements.photoInput.addEventListener('change', handlePhotoInputChange);
+    DOMElements.skillsForm.addEventListener('submit', handleProfileSubmit);
 
-    // Setup autocompletes
-    if (DOMElements.autocompleteSkillsInput && DOMElements.skillsInput) {
-        setupAutocomplete(DOMElements.skillsInput, DOMElements.autocompleteSkillsInput);
-    }
-    if (DOMElements.autocompleteTeamSkills && DOMElements.teamSkillsInput) {
-        setupAutocomplete(DOMElements.teamSkillsInput, DOMElements.autocompleteTeamSkills);
-    }
-    if (DOMElements.autocompleteTeamsSkills && DOMElements.teamBuilderSkillsInput) {
-        setupAutocomplete(DOMElements.teamBuilderSkillsInput, DOMElements.autocompleteTeamsSkills);
-    }
+    // Autocomplete setups
+    setupAutocomplete(DOMElements.skillsInput, DOMElements.autocompleteSkillsInput);
+    setupAutocomplete(DOMElements.teamSkillsInput, DOMElements.autocompleteTeamSkills);
+    setupAutocomplete(DOMElements.teamBuilderSkillsInput, DOMElements.autocompleteTeamsSkills);
 
-    // Search and Team Builder buttons
-    if (DOMElements.findTeamBtn) DOMElements.findTeamBtn.addEventListener('click', findMatchingUsers);
-    if (DOMElements.searchNameBtn) DOMElements.searchNameBtn.addEventListener('click', searchUserByName);
-    // window.buildBestTeam is already global from your original code.
 
-    // NEW: Modal event listeners
+    // Search & Team Builder listeners
+    DOMElements.findTeamBtn.addEventListener('click', findMatchingUsers);
+    DOMElements.searchNameBtn.addEventListener('click', searchUserByName);
+    // Note: buildBestTeam is already global via window.buildBestTeam = function() {}
+
+    // Modal listeners
     if (DOMElements.endorseModalClose) {
         DOMElements.endorseModalClose.addEventListener('click', () => {
             DOMElements.endorseModal.style.display = 'none';
         });
     }
-
     // Close modal if user clicks outside of it
     window.addEventListener('click', (event) => {
         if (event.target === DOMElements.endorseModal) {
@@ -815,8 +783,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- NEW: Event Delegation for Endorse Buttons ---
+    // Attach ONE listener to the main card container
+    DOMElements.cardContainer.addEventListener('click', async (event) => {
+        const endorseButton = event.target.closest('.endorse-btn');
+        if (endorseButton && !endorseButton.disabled) {
+            const emailToEndorse = endorseButton.dataset.email;
+            const { data, error } = await supabaseClient.from('skills').select('*').eq('email', emailToEndorse).single();
+            if (error || !data) {
+                console.error("Error fetching user for endorsement modal:", error);
+                showNotification("Could not load user's skills for endorsement.", "error");
+                return;
+            }
+            showEndorseSkillModal(data.email, data.first_name, data.last_name, data.skills);
+        }
+    });
 
-    // Initial data fetches on page load
+    // Attach ONE listener to the best team card container
+    DOMElements.bestTeamContainer.addEventListener('click', async (event) => {
+        const endorseButton = event.target.closest('.endorse-btn');
+        if (endorseButton && !endorseButton.disabled) {
+            const emailToEndorse = endorseButton.dataset.email;
+            const { data, error } = await supabaseClient.from('skills').select('*').eq('email', emailToEndorse).single();
+            if (error || !data) {
+                console.error("Error fetching user for endorsement modal:", error);
+                showNotification("Could not load user's skills for endorsement.", "error");
+                return;
+            }
+            showEndorseSkillModal(data.email, data.first_name, data.last_name, data.skills);
+        }
+    });
+
+
+    // Initial data loads
     fetchUniqueSkills();
     loadLeaderboard();
+    updateProfileProgress(); // Initialize progress bar on load
 });
