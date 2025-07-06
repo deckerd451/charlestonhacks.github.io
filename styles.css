@@ -372,11 +372,16 @@ footer {
 }
 
 /* Common Section Title Styling for new UI sections */
+/* Common Section Title Styling for new UI sections */
 .section-title {
     color: #ffd700; /* Use specific primary color for these titles */
-    text-align: left;
+    text-align: left; /* Keep this */
     margin-bottom: 20px;
-    display: inline-block;
+    /* CHANGE THIS: Remove or change display to block */
+    display: block; /* Change from inline-block to block */
+    /* Or, if you want it to behave like a flex item for specific layout within its parent,
+       you might need to adjust the parent's flex properties.
+       But for simple left-justification of the whole H2, 'block' is usually best. */
 }
 
 .section-title .fas {
