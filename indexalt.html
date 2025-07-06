@@ -1,797 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-    <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
-    <meta property="og:image" content="images/reactiveh.png" />
-    <meta property="og:url" content="https://charlestonhacks.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>CharlestonHacks - Innovation Engine</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        /* Enhanced CSS Variables with Better Color Palette */
-        :root {
-            --primary: #FFD700;
-            --secondary: #FF6B35;
-            --accent: #4ECDC4;
-            --success: #00FF87;
-            --warning: #FFA500;
-            --error: #FF6B6B;
-            --text: #333;
-            --text-light: #666;
-            --bg: #f8f9fa;
-            --card-bg: #fff;
-            --border: #e1e5e9;
-            --shadow-light: 0 2px 10px rgba(0,0,0,0.1);
-            --shadow-medium: 0 4px 20px rgba(0,0,0,0.15);
-            --shadow-heavy: 0 8px 30px rgba(0,0,0,0.2);
-            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            --radius: 12px;
-            --radius-large: 20px;
-            --spacing: 1rem;
-            --spacing-large: 2rem;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --text: #e0e0e0;
-                --text-light: #a0a0a0;
-                --bg: #1a1a1a;
-                --card-bg: #2a2a2a;
-                --border: #404040;
-                --shadow-light: 0 2px 10px rgba(0,0,0,0.3);
-                --shadow-medium: 0 4px 20px rgba(0,0,0,0.4);
-                --shadow-heavy: 0 8px 30px rgba(0,0,0,0.5);
-            }
-        }
-
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            transition: var(--transition);
-        }
-
-        /* Enhanced Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-large);
-        }
-
-        /* Modern Header with Better Typography */
-        .header {
-            text-align: center;
-            opacity: 0;
-            transform: translateY(-20px);
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
-        .header h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .header h1:hover {
-            transform: scale(1.05);
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: var(--spacing);
-        }
-
-        /* Enhanced Card System */
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius-large);
-            box-shadow: var(--shadow-medium);
-            padding: var(--spacing-large);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-heavy);
-        }
-
-        .card h2 {
-            color: var(--primary);
-            margin-bottom: var(--spacing);
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        /* Enhanced Form System */
-        .form-section {
-            margin-bottom: var(--spacing-large);
-        }
-
-        .form-group {
-            margin-bottom: var(--spacing);
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            background: var(--card-bg);
-            color: var(--text);
-            transition: var(--transition);
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-        }
-
-        /* Enhanced Button System */
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .btn-secondary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Enhanced Progress System */
-        .progress-container {
-            margin: var(--spacing) 0;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: rgba(255, 215, 0, 0.2);
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            width: 0%;
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 5px;
-            position: relative;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .progress-text {
-            text-align: center;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        /* Enhanced Team Member Cards */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing);
-            margin: var(--spacing) 0;
-        }
-
-        .team-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: var(--spacing);
-            box-shadow: var(--shadow-light);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .team-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .team-card img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary);
-            margin-bottom: var(--spacing);
-        }
-
-        .team-card h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .team-card .status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: var(--spacing);
-            display: inline-block;
-        }
-
-        .status.available {
-            background: rgba(0, 255, 135, 0.1);
-            color: var(--success);
-        }
-
-        .status.busy {
-            background: rgba(255, 165, 0, 0.1);
-            color: var(--warning);
-        }
-
-        .status.not-looking {
-            background: rgba(255, 107, 107, 0.1);
-            color: var(--error);
-        }
-
-        /* Enhanced Skill Tags */
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-bottom: var(--spacing);
-        }
-
-        .skill-tag {
-            background: rgba(255, 215, 0, 0.1);
-            color: var(--primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-
-        /* Enhanced Achievements */
-        .achievements {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            max-width: 300px;
-        }
-
-        .achievement {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin-bottom: 0.5rem;
-            transform: translateX(320px);
-            transition: var(--transition);
-            box-shadow: var(--shadow-medium);
-            font-size: 0.9rem;
-        }
-
-        .achievement.show {
-            transform: translateX(0);
-        }
-
-        .achievement strong {
-            display: block;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        /* Enhanced Leaderboard */
-        .leaderboard {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: var(--spacing);
-            box-shadow: var(--shadow-light);
-            border: 1px solid var(--border);
-            margin: var(--spacing) 0;
-        }
-
-        .leaderboard h2 {
-            color: var(--primary);
-            margin-bottom: var(--spacing);
-            font-size: 1.3rem;
-        }
-
-        .leaderboard-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .leaderboard-row:last-child {
-            border-bottom: none;
-        }
-
-        .leaderboard-rank {
-            font-weight: bold;
-            color: var(--primary);
-            width: 30px;
-        }
-
-        .leaderboard-name {
-            flex: 1;
-            text-align: left;
-        }
-
-        .leaderboard-skill {
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        /* Enhanced Countdown */
-        .countdown-container {
-            text-align: center;
-            margin: var(--spacing-large) 0;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.6s forwards;
-        }
-
-        .countdown {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-family: 'Courier New', monospace;
-        }
-
-        .countdown-label {
-            font-size: 1rem;
-            color: var(--text-light);
-        }
-
-        /* Enhanced Social Icons */
-        .social-container {
-            display: flex;
-            justify-content: center;
-            gap: var(--spacing);
-            margin-top: auto;
-            padding-top: var(--spacing-large);
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.8s forwards;
-        }
-
-        .social-link {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-
-        .social-link:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: var(--shadow-medium);
-        }
-
-        /* Enhanced Autocomplete */
-        .autocomplete-container {
-            position: relative;
-        }
-
-        .autocomplete-list {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-medium);
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
-
-        .autocomplete-item {
-            padding: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .autocomplete-item:last-child {
-            border-bottom: none;
-        }
-
-        .autocomplete-item:hover {
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        /* Enhanced Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0.5rem;
-            }
-
-            .card {
-                padding: var(--spacing);
-            }
-
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .achievements {
-                left: 10px;
-                right: 10px;
-                max-width: none;
-            }
-
-            .achievement {
-                transform: translateY(-100px);
-            }
-
-            .achievement.show {
-                transform: translateY(0);
-            }
-        }
-
-        /* Enhanced Animations */
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        /* Loading States */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            border-right-color: transparent;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Accessibility Improvements */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        /* Focus indicators */
-        button:focus,
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-
-        /* Toast Notifications */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-medium);
-            transform: translateX(100%);
-            transition: var(--transition);
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.error {
-            background: var(--error);
-        }
-
-        .toast.warning {
-            background: var(--warning);
-        }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
+    <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
+    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
+    <meta property="og:image" content="images/reactiveh.png" />
+    <meta property="og:url" content="https://charlestonhacks.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>CharlestonHacks - Home</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json" />
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://hvmotpzhliufzomewzfl.supabase.co">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-        <div id="toastContainer" aria-live="polite"></div>
+    <div id="achievements" class="achievements" aria-live="polite"></div>
+    <div class="container">
+        <header class="header">
+            <h1>Innovation Engine</h1>
+            <p>Connect, Build, and Innovate Together</p>
+        </header>
+        <main class="panel">
+            <section id="matchmaking-section">
+                <h2 class="section-title">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> Create Your Profile
+                </h2>
+                <form id="skills-form">
+                    <div class="input-container">
+                        <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name">
+                        <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name">
+                        <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email">
+                        <label for="skills-input">Professional Skills (comma separated)</label>
+                        <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
+                        <div id="skills-proficiency-container"></div>
+                        <div id="autocomplete-skills-input" class="autocomplete-box"></div>
+                        <label for="photo-input">Upload Your Photo</label>
+                        <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
+                        <img id="preview" src="#" alt="Image Preview" class="image-preview" />
+                        <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
+                        <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
+                        <label for="availability-input">Current Availability</label>
+                        <select id="availability-input" aria-label="Current Availability">
+                            <option value="Available">Available</option>
+                            <option value="Busy">Busy</option>
+                            <option value="Not Looking">Not Looking</option>
+                        </select>
+                        <button type="submit">Register & Subscribe</button>
+                    </div>
+                    <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
+                    <div id="profile-progress-msg" class="profile-incomplete"></div>
+                </form>
+                <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
+            </section>
 
-        <div id="achievements" class="achievements" aria-live="polite"></div>
+            <div class="leaderboard" id="leaderboard-section" style="display:none;">
+                <h2>Top Endorsed Skills</h2>
+                <div id="leaderboard-rows"></div>
+            </div>
 
-    <div class="container">
-                <header class="header">
-            <h1 id="innovationTitle">Innovation Engine</h1>
-            <p>Connect, Build, and Innovate Together</p>
-        </header>
+            <h2 class="section-title">
+                <i class="fas fa-search" aria-hidden="true"></i> Individual Search
+            </h2>
+            <div class="input-container">
+                <label for="teamSkillsInput">Required Skills</label>
+                <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
+                <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+                <button id="find-team-btn" type="button">Get People</button> <br> <br>
+                <label for="nameInput">Search by First/Last Name</label>
+                <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
+                <button id="search-name-btn" type="button">Find by Name</button>
+            </div>
+            <div id="matchNotification" class="notification match-notification" style="display: none;"></div>
+            <div id="noResults" class="notification no-results-notification" style="display: none;"></div>
+            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
 
-                <div class="progress-container">
-            <div class="progress-bar">
-                <div id="progressFill" class="progress-fill"></div>
-            </div>
-            <div id="progressText" class="progress-text">Exploration Progress: 0/4 areas discovered</div>
-        </div>
+            <h2 class="section-title">
+                <i class="fas fa-users" aria-hidden="true"></i> Team Builder
+            </h2>
+            <div class="input-container">
+                <p class="instructions">
+                    Let’s build your team. Enter required skills and number of people needed.
+                </p>
+                <label for="team-skills-input">Required Skills</label>
+                <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
+                <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
+                <label for="teamSize">Team Size</label>
+                <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
+                <button onclick="buildBestTeam()">Build Team</button>
+            </div>
+            <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+        </main>
+    </div>
 
-                <div id="matchForm" class="card" style="display: none;">
-            <h2>Innovation Matchmaking</h2>
-            <form id="innovationForm">
-                <div class="form-group">
-                    <label for="projectInput">What do you want to work on?</label>
-                    <input type="text" id="projectInput" placeholder="Describe your project idea...">
-                </div>
-                <div class="form-group">
-                    <label for="skillsInput">What skills do you bring?</label>
-                    <input type="text" id="skillsInput" placeholder="e.g., JavaScript, UI/UX, Data Science">
-                </div>
-                <div class="form-group">
-                    <label for="impactInput">What impact do you care about?</label>
-                    <input type="text" id="impactInput" placeholder="e.g., Climate change, Education, Healthcare">
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-rocket"></i>
-                    Submit for Matching
-                </button>
-            </form>
-            <div id="thanksMessage" style="display:none; color: var(--success); margin-top: 1rem;">
-                <i class="fas fa-check-circle"></i>
-                Thanks! We'll use this to match you with great people and ideas.
-            </div>
-        </div>
-
-                <main class="card">
-                        <section id="profileSection" class="form-section">
-                <h2><i class="fas fa-user-plus"></i> Create Your Profile</h2>
-                <form id="skillsForm">
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" placeholder="Your first name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" placeholder="Your last name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="your.email@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="skillsInputMain">Professional Skills</label>
-                        <div class="autocomplete-container">
-                            <input type="text" id="skillsInputMain" placeholder="e.g., React, Python, Machine Learning" required>
-                            <div id="skillsAutocomplete" class="autocomplete-list"></div>
-                        </div>
-                        <small>Separate multiple skills with commas</small>
-                    </div>
-                    <div id="skillsProficiencyContainer"></div>
-                    <div class="form-group">
-                        <label for="photoInput">Upload Your Photo</label>
-                        <input type="file" id="photoInput" accept="image/*" required>
-                        <img id="imagePreview" style="display: none; max-width: 120px; margin-top: 10px; border-radius: var(--radius);">
-                    </div>
-                    <div class="form-group">
-                        <label for="bioInput">Short Bio (Optional)</label>
-                        <textarea id="bioInput" placeholder="Tell us about yourself..." maxlength="120" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="availabilityInput">Current Availability</label>
-                        <select id="availabilityInput">
-                            <option value="Available">Available</option>
-                            <option value="Busy">Busy</option>
-                            <option value="Not Looking">Not Looking</option>
-                        </select>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div id="profileProgress" class="progress-fill"></div>
-                        </div>
-                        <div id="profileProgressText" class="progress-text">Profile completion: 0%</div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-user-check"></i>
-                        Create Profile
-                    </button>
-                </form>
-            </section>
-
-                        <section class="form-section">
-                <h2><i class="fas fa-search"></i> Find Team Members</h2>
-                <div class="form-group">
-                    <label for="searchSkills">Search by Skills</label>
-                    <div class="autocomplete-container">
-                        <input type="text" id="searchSkills" placeholder="e.g., React, Python, UI/UX">
-                        <div id="searchAutocomplete" class="autocomplete-list"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="searchName">Search by Name</label>
-                    <input type="text" id="searchName" placeholder="Search for team members by name">
-                </div>
-                            </section>
-
-                        <section class="form-section">
-                <h2><i class="fas fa-users"></i> Team Builder</h2>
-                <p>Build your ideal team by specifying required skills and team size.</p>
-                <div class="form-group">
-                    <label for="teamSkills">Required Skills</label>
-                    <div class="autocomplete-container">
-                        <input type="text" id="teamSkills" placeholder="e.g., Frontend, Backend, Design">
-                        <div id="teamAutocomplete" class="autocomplete-list"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="teamSize">Team Size</label>
-                    <input type="number" id="teamSize" placeholder="3" min="1" max="10">
-                </div>
-                <button id="buildTeam" class="btn btn-primary">
-                    <i class="fas fa-magic"></i>
-                    Build Dream Team
-                </button>
-            </section>
-
-                        <section id="resultsSection" style="display: none;">
-                <h2><i class="fas fa-users"></i> Results</h2>
-                <div id="resultsContainer" class="team-grid"></div>
-            </section>
-        </main>
-
-                <div id="leaderboardSection" class="card" style="display: none;">
-            <div class="leaderboard">
-                <h2><i class="fas fa-trophy"></i> Top Endorsed Skills</h2>
-                <div id="leaderboardRows"></div>
-            </div>
-        </div>
-
-                <section class="countdown-container">
-            <div id="countdown" class="countdown">Loading...</div>
-            <div class="countdown-label">Until Next Event</div>
-        </section>
-
-                <footer class="social-container">
-            <a href="#" class="social-link" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Email">
-                <i class="fas fa-envelope"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Subscribe">
-                <i class="fas fa-bell"></i>
-            </a>
-        </footer>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="main.js" defer></script>
 </body>
 </html>
+    
