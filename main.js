@@ -190,8 +190,7 @@ function setupAutocomplete(inputElement, autocompleteBoxElement) {
 
         }, 300); // Debounce time in ms
     });
-document.addEventListener('DOMContentLoaded', function() {
-    // Hide autocomplete box when clicking outside
+
     document.addEventListener('click', (e) => {
         if (!autocompleteBoxElement.contains(e.target) && e.target !== inputElement) {
             autocompleteBoxElement.style.display = 'none';
@@ -201,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Keyboard navigation for accessibility
     inputElement.addEventListener('keydown', (e) => {
         const activeItem = autocompleteBoxElement.querySelector('.autocomplete-active');
-
         if (e.key === 'ArrowDown') {
             e.preventDefault();
             if (activeItem) {
@@ -233,6 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (activeItem) {
                 activeItem.click(); // Simulate click
             } else if (inputElement.value.trim()) {
+                // If no item is selected but there's text, close autocomplete
                 autocompleteBoxElement.style.display = 'none';
                 inputElement.dispatchEvent(new Event("input")); // Trigger proficiency update
             }
@@ -240,13 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
             autocompleteBoxElement.style.display = 'none';
         }
     });
-
-    // Add click listener to Innovation Engine heading to refresh page
-    document.getElementById('innovation-engine-title').addEventListener('click', function() {
-        location.reload();
-    });
-});
-
+}
 
 /**
  * Submits the user's profile data to Supabase.
