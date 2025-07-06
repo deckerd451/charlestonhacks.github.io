@@ -1,25 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-    <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
-    <meta property="og:image" content="images/reactiveh.png" />
-    <meta property="og:url" content="https://charlestonhacks.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>CharlestonHacks - Home</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.json" />
-
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://hvmotpzhliufzomewzfl.supabase.co">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
 <body>
     <div id="achievements" class="achievements" aria-live="polite"></div>
     <div class="container">
@@ -28,79 +6,53 @@
             <p>Connect, Build, and Innovate Together</p>
         </header>
         <main class="panel">
-            <section id="matchmaking-section">
-                <h2 class="section-title">
-                    <i class="fas fa-user-plus" aria-hidden="true"></i> Create Your Profile
-                </h2>
-                <form id="skills-form">
-                    <div class="input-container">
-                        <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name">
-                        <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name">
-                        <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email">
-                        <label for="skills-input">Professional Skills (comma separated)</label>
-                        <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
-                        <div id="skills-proficiency-container"></div>
-                        <div id="autocomplete-skills-input" class="autocomplete-box"></div>
-                        <label for="photo-input">Upload Your Photo</label>
-                        <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
-                        <img id="preview" src="#" alt="Image Preview" class="image-preview" />
-                        <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
-                        <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
-                        <label for="availability-input">Current Availability</label>
-                        <select id="availability-input" aria-label="Current Availability">
-                            <option value="Available">Available</option>
-                            <option value="Busy">Busy</option>
-                            <option value="Not Looking">Not Looking</option>
-                        </select>
-                        <button type="submit">Register & Subscribe</button>
+            <div class="tabs">
+                <button class="tab-button active" data-tab="profile">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> My Profile
+                </button>
+                <button class="tab-button" data-tab="individual-search">
+                    <i class="fas fa-search" aria-hidden="true"></i> Individual Search
+                </button>
+                <button class="tab-button" data-tab="team-builder">
+                    <i class="fas fa-users" aria-hidden="true"></i> Team Builder
+                </button>
+                <button class="tab-button" data-tab="leaderboard">
+                    <i class="fas fa-trophy" aria-hidden="true"></i> Top Skills
+                </button>
+            </div>
+
+            <div id="profile-tab-content" class="tab-content active">
+                <section id="matchmaking-section">
+                    <h2 class="section-title">Create/Edit Your Profile</h2>
+                    <form id="skills-form">
+                        </form>
+                    <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
+                </section>
+            </div>
+
+            <div id="individual-search-tab-content" class="tab-content">
+                <h2 class="section-title">Individual Search</h2>
+                <div class="input-container">
                     </div>
-                    <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
-                    <div id="profile-progress-msg" class="profile-incomplete"></div>
-                </form>
-                <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
-            </section>
-
-            <div class="leaderboard" id="leaderboard-section" style="display:none;">
-                <h2>Top Endorsed Skills</h2>
-                <div id="leaderboard-rows"></div>
+                <div id="matchNotification" class="notification match-notification" style="display: none;"></div>
+                <div id="noResults" class="notification no-results-notification" style="display: none;"></div>
+                <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
             </div>
 
-            <h2 class="section-title">
-                <i class="fas fa-search" aria-hidden="true"></i> Individual Search
-            </h2>
-            <div class="input-container">
-                <label for="teamSkillsInput">Required Skills</label>
-                <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
-                <div id="autocomplete-team-skills" class="autocomplete-box"></div>
-                <button id="find-team-btn" type="button">Get People</button> <br> <br>
-                <label for="nameInput">Search by First/Last Name</label>
-                <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
-                <button id="search-name-btn" type="button">Find by Name</button>
+            <div id="team-builder-tab-content" class="tab-content">
+                <h2 class="section-title">Team Builder</h2>
+                <div class="input-container">
+                    </div>
+                <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
             </div>
-            <div id="matchNotification" class="notification match-notification" style="display: none;"></div>
-            <div id="noResults" class="notification no-results-notification" style="display: none;"></div>
-            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
 
-            <h2 class="section-title">
-                <i class="fas fa-users" aria-hidden="true"></i> Team Builder
-            </h2>
-            <div class="input-container">
-                <p class="instructions">
-                    Let’s build your team. Enter required skills and number of people needed.
-                </p>
-                <label for="team-skills-input">Required Skills</label>
-                <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
-                <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
-                <label for="teamSize">Team Size</label>
-                <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
-                <button onclick="buildBestTeam()">Build Team</button>
+            <div id="leaderboard-tab-content" class="tab-content">
+                 <div class="leaderboard" id="leaderboard-section">
+                    <h2 class="section-title">Top Endorsed Skills</h2>
+                    <div id="leaderboard-rows"></div>
+                </div>
             </div>
-            <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+
         </main>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="main.js" defer></script>
-</body>
-</html>
-    
+    </body>
