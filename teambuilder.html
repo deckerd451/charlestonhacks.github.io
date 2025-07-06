@@ -193,6 +193,60 @@
     <script src="main.js" defer></script>
 
     <script>
+      document.getElementById("skills-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        let form = this;
+
+        // Capture form field values
+        const fname = document.getElementById("first-name").value;
+        const lname = document.getElementById("last-name").value;
+        const email = document.getElementById("email").value;
+
+        // 1. Submit to Formspree (or your primary backend endpoint)
+        // Ensure your form's action attribute is set correctly for Formspree if you intend to use it.
+        // For example: <form id="skills-form" action="https://formspree.io/f/YOUR_FORMSPREE_HASH" method="POST">
+        // If no action is specified, this fetch will go to the current page's URL.
+        fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+          headers: { "Accept": "application/json" }
+        })
+        .then(response => {
+          if (response.ok) {
+            document.getElementById("success-message").style.display = "block";
+            // Optionally reset the form after successful submission to Formspree,
+            // but be careful if you also need data for Supabase/Mailchimp.
+            // For this setup, the Supabase logic will handle the form reset.
+            // form.reset();
+          } else {
+            // alert("Something went wrong with Formspree. Please try again.");
+            console.error("Formspree submission failed.");
+          }
+        })
+        .catch(error => {
+          // alert("Error with Formspree submission: " + error);
+          console.error("Error with Formspree submission:", error);
+        });
+
+        // 2. Submit to Mailchimp in a new tab
+        const mailchimpForm = document.createElement("form");
+        mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+        mailchimpForm.method = "POST";
+        mailchimpForm.target = "_blank"; // Opens in a new tab/window
+
+        mailchimpForm.innerHTML = `
+          <input type="hidden" name="FNAME" value="${fname}">
+          <input type="hidden" name="LNAME" value="${lname}">
+          <input type="hidden" name="EMAIL" value="${email}">
+        `;
+
+        document.body.appendChild(mailchimpForm); // Temporarily add to the DOM
+        mailchimpForm.submit(); // Programmatically submit the form
+        document.body.removeChild(mailchimpForm); // Clean up: remove from the DOM
+      });
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Function to show a specific tab and hide others
             function showTab(tabId) {
