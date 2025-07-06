@@ -291,5 +291,102 @@
             showTab('profile'); // This makes the "Create Profile" tab active by default
         });
     </script>
+    <div id="endorseSkillModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Endorse User for...</h3>
+        <div id="endorse-skill-list" class="skill-endorse-list">
+            </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 100; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background-color: #2a2a3a;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 25px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+        max-width: 500px; /* Max width for larger screens */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        position: relative;
+    }
+
+    .modal-content h3 {
+        color: var(--primary-color);
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: #ffd700;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .skill-endorse-list {
+        max-height: 200px; /* Scrollable if many skills */
+        overflow-y: auto;
+        padding-right: 5px; /* For scrollbar */
+    }
+
+    .skill-endorse-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #444;
+    }
+
+    .skill-endorse-item:last-child {
+        border-bottom: none;
+    }
+
+    .skill-endorse-item span {
+        color: #eee;
+        font-size: 1.1em;
+    }
+
+    .endorse-specific-skill-btn {
+        background-color: #ffd700;
+        color: #222;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+    }
+
+    .endorse-specific-skill-btn:hover {
+        background-color: #e0b800;
+    }
+</style>
 </body>
 </html>
