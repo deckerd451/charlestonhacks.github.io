@@ -11,7 +11,7 @@ const appState = {
     achievements: [], // Assuming this will be populated from CONFIG in the full app
     dynamicSkills: [],
     skillProficiencies: {}, // Track proficiency for skills during profile creation
-    currentUserEmail: localStorage.getItem("demo_user_email") || '' // Store user email for endorsements
+    currentUserEmail: localStorage.getItem("charlestonHacks_userEmail") || '' // Changed key for consistency
 };
 
 // --- DOM Element References ---
@@ -43,7 +43,13 @@ const DOMElements = {
     leaderboardRows: document.getElementById('leaderboard-rows'),
     matchNotification: document.getElementById('matchNotification'),
     noResults: document.getElementById('noResults'),
-    successMessage: document.getElementById('success-message')
+    successMessage: document.getElementById('success-message'),
+
+    // --- New: Tab Elements ---
+    tabButtons: document.querySelectorAll('.tab-button'),
+    tabContents: document.querySelectorAll('.tab-content'),
+    profileTabContent: document.getElementById('profile-tab-content'), // Reference to the profile tab's content div
+    profileTabButton: document.querySelector('.tab-button[data-tab="profile"]') // Reference to the profile tab button
 };
 
 // --- Utility Functions ---
@@ -254,7 +260,10 @@ async function handleProfileSubmit(e) {
     const availability = DOMElements.availabilityInput.value;
     const photoFile = DOMElements.photoInput.files[0];
 
-    if (!photoFile) {
+    // Check if an existing user is editing their profile or a new user is registering
+    const isUpdatingProfile = !!appState.currentUserEmail;
+
+    if (!photoFile && !isUpdatingProfile) { // Photo is required for new profiles only
         showNotification("Please select a profile image.", 'error');
         return;
     }
@@ -270,54 +279,171 @@ async function handleProfileSubmit(e) {
     }
 
     try {
-        // Upload image to Supabase Storage
-        const fileExt = photoFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${firstName.toLowerCase()}-${lastName.toLowerCase()}.${fileExt}`;
-        const { error: uploadError } = await supabaseClient.storage.from('hacksbucket').upload(fileName, photoFile);
+        let imageUrl = DOMElements.previewImage.src === '#' ? '' : DOMElements.previewImage.src; // Keep existing image if not new upload
 
-        if (uploadError) {
-            console.error("Image upload error:", uploadError);
-            throw new Error('Failed to upload image. Please try again.');
+        // Only upload image if a new one is selected
+        if (photoFile) {
+            const fileExt = photoFile.name.split('.').pop();
+            const fileName = `${Date.now()}-${firstName.toLowerCase()}-${lastName.toLowerCase()}.${fileExt}`;
+            const { error: uploadError } = await supabaseClient.storage.from('hacksbucket').upload(fileName, photoFile, {
+                upsert: true // Allow replacing existing file with same name
+            });
+
+            if (uploadError) {
+                console.error("Image upload error:", uploadError);
+                throw new Error('Failed to upload image. Please try again.');
+            }
+            imageUrl = `${SUPABASE_URL}/storage/v1/object/public/hacksbucket/${fileName}`;
         }
 
-        const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/hacksbucket/${fileName}`;
+        let dbOperation;
+        if (isUpdatingProfile) {
+            // Update existing profile
+            dbOperation = supabaseClient.from('skills')
+                .update({
+                    first_name: firstName,
+                    last_name: lastName,
+                    skills: skillsWithProfs,
+                    image_url: imageUrl,
+                    Bio: bio,
+                    Availability: availability,
+                    updated_at: new Date().toISOString()
+                })
+                .eq('email', appState.currentUserEmail); // Update based on the stored email
+        } else {
+            // Insert new profile
+            dbOperation = supabaseClient.from('skills')
+                .insert({
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email, // Email only set on initial insert
+                    skills: skillsWithProfs,
+                    image_url: imageUrl,
+                    Bio: bio,
+                    Availability: availability,
+                    endorsements: "{}", // Initialize as empty JSON string
+                    created_at: new Date().toISOString()
+                });
+        }
 
-        // Insert user data into Supabase database
-        const { error: insertError } = await supabaseClient.from('skills').insert({
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            skills: skillsWithProfs,
-            image_url: imageUrl,
-            Bio: bio,
-            Availability: availability,
-            endorsements: "{}", // Initialize as empty JSON string
-            created_at: new Date().toISOString()
-        });
+        const { error: dbError } = await dbOperation;
 
-        if (insertError) {
-            console.error("Data insertion error:", insertError);
-            // Check for unique constraint violation (e.g., email already exists)
-            if (insertError.code === '23505') { // PostgreSQL unique violation error code
-                throw new Error('This email is already registered. Please use a different email or update your existing profile.');
+        if (dbError) {
+            console.error("Database operation error:", dbError);
+            if (dbError.code === '23505' && !isUpdatingProfile) { // Unique constraint violation for new users
+                throw new Error('This email is already registered. Please use a different email or update your existing profile via the "Edit Profile" section if you already registered.');
             } else {
-                throw new Error('Failed to register profile. Please try again later.');
+                throw new Error('Failed to save profile. Please try again later.');
             }
         }
 
-        showNotification('Registration successful!', 'success');
+        // Store or update current user email in localStorage upon successful save
+        if (!isUpdatingProfile) { // Only set this if it's a new registration
+            appState.currentUserEmail = email;
+            localStorage.setItem("charlestonHacks_userEmail", appState.currentUserEmail);
+        }
+
+        showNotification('Profile saved successfully!', 'success');
         DOMElements.skillsForm.reset(); // Clear form
         DOMElements.previewImage.style.display = 'none';
         DOMElements.previewImage.src = '#';
         appState.skillProficiencies = {}; // Clear proficiencies
         DOMElements.skillsProficiencyContainer.innerHTML = ''; // Clear proficiency selects
         updateProfileProgress(); // Reset progress bar
+
+        // After successful save, refresh data and potentially switch tabs
         await fetchUniqueSkills(); // Refresh skills for autocomplete
         loadLeaderboard(); // Update leaderboard
+
+        // Auto-switch to search tab for new users, or keep current for updates
+        if (!isUpdatingProfile) {
+            showTab('individual-search'); // Auto-navigate new users to search
+        }
+
+        // Update the profile tab button text
+        updateProfileTabState();
+
     } catch (error) {
         showNotification(`Error: ${error.message}`, 'error');
     }
 }
+
+/**
+ * Populates the profile form if the user is already registered.
+ */
+async function loadUserProfileForEdit() {
+    if (appState.currentUserEmail) {
+        try {
+            const { data, error } = await supabaseClient.from('skills')
+                .select('*')
+                .eq('email', appState.currentUserEmail)
+                .single();
+
+            if (error) {
+                console.error("Error loading user profile:", error);
+                return;
+            }
+
+            if (data) {
+                DOMElements.firstNameInput.value = data.first_name || '';
+                DOMElements.lastNameInput.value = data.last_name || '';
+                DOMElements.emailInput.value = data.email || '';
+                // Email input should be disabled for editing
+                DOMElements.emailInput.setAttribute('readonly', 'readonly');
+                DOMElements.emailInput.style.backgroundColor = '#333'; // Indicate it's not editable
+
+                DOMElements.bioInput.value = data.Bio || '';
+                DOMElements.availabilityInput.value = data.Availability || 'Available';
+
+                // Handle skills and proficiencies
+                if (data.skills) {
+                    const skillsWithProfs = data.skills.split(',').map(s => s.trim()).filter(Boolean);
+                    let skillsOnly = [];
+                    appState.skillProficiencies = {};
+                    skillsWithProfs.forEach(item => {
+                        const match = item.match(/(.*?)\((.*?)\)/);
+                        if (match) {
+                            const skill = match[1];
+                            const prof = match[2];
+                            skillsOnly.push(skill);
+                            appState.skillProficiencies[skill] = prof;
+                        } else {
+                            skillsOnly.push(item);
+                            appState.skillProficiencies[item] = "Intermediate"; // Default for old data
+                        }
+                    });
+                    DOMElements.skillsInput.value = skillsOnly.join(', ');
+                    handleSkillsInput.call(DOMElements.skillsInput); // Re-render proficiency selects
+                }
+
+                if (data.image_url) {
+                    DOMElements.previewImage.src = data.image_url;
+                    DOMElements.previewImage.style.display = 'block';
+                    // Photo input is not 'required' if an image exists
+                    DOMElements.photoInput.removeAttribute('required');
+                } else {
+                    DOMElements.photoInput.setAttribute('required', 'required');
+                }
+                updateProfileProgress();
+            }
+        } catch (error) {
+            console.error("Failed to load user profile for editing:", error);
+            showNotification("Failed to load your profile for editing.", "error");
+        }
+    } else {
+        // If no current user, ensure form is clear and email is not readonly
+        DOMElements.skillsForm.reset();
+        DOMElements.emailInput.removeAttribute('readonly');
+        DOMElements.emailInput.style.backgroundColor = '';
+        DOMElements.previewImage.style.display = 'none';
+        DOMElements.previewImage.src = '#';
+        DOMElements.photoInput.setAttribute('required', 'required');
+        appState.skillProficiencies = {};
+        DOMElements.skillsProficiencyContainer.innerHTML = '';
+        updateProfileProgress();
+    }
+}
+
 
 /**
  * Validates if the given string is a valid email format.
@@ -333,6 +459,7 @@ function isValidEmail(email) {
  * Renders user cards in the specified container.
  * @param {Array<Object>} users - Array of user objects.
  * @param {HTMLElement} container - The DOM element to render cards into.
+ * @param {boolean} addListeners - Whether to add event listeners to newly rendered cards.
  */
 async function renderUserCards(users, container) {
     container.innerHTML = ''; // Clear existing cards
@@ -344,61 +471,15 @@ async function renderUserCards(users, container) {
         return;
     }
 
-    const cardsHtml = users.map(user => {
-        // Utility: Clean availability values
-        const cleanAvailability = (value) => {
-            if (value === null || value === undefined) return 'Unavailable';
-            if (typeof value !== 'string') return 'Unavailable';
-            const trimmed = value.trim();
-            if (trimmed === '' || trimmed.toLowerCase() === 'null') return 'Unavailable';
-            return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
-        };
-
-        // Skill badges
-        const skillBadges = user.skills.split(',').map(skill => {
-            const match = skill.match(/(.*?)\((.*?)\)/);
-            const label = match ? match[1] : skill;
-            const prof = match ? match[2] : "Intermediate";
-            return `<span class="skill-tag">${label} <span style="font-size:0.8em;opacity:.7;">[${prof}]</span></span>`;
-        }).join(' ');
-
-        // Endorsements
-        let endorsements = {};
-        try {
-            endorsements = user.endorsements ? JSON.parse(user.endorsements) : {};
-        } catch (e) {
-            console.warn(`Error parsing endorsements for user ${user.email}:`, e);
-            endorsements = {}; // Fallback to empty object
-        }
-
-        const endorsementDisplay = Object.keys(endorsements).length ?
-            Object.entries(endorsements).map(([skill, count]) =>
-                `<span style="color:var(--primary-color);">${skill}: <span class="endorsements">${count} <i class="fa fa-thumbs-up" aria-hidden="true"></i></span></span>`
-            ).join(' | ') :
-            '<span style="color:#888;">No endorsements yet</span>';
-
-        const isCurrentUser = user.email === appState.currentUserEmail;
-
-        return `
-            <div class="team-member-card" role="listitem">
-                ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name} ${user.last_name}" loading="lazy" />` : ''}
-                <div class="member-name">${user.first_name} ${user.last_name}</div>
-                ${user.Bio ? `<div style="color:var(--primary-color);font-size:.96em;margin:3px 0;">${user.Bio}</div>` : ''}
-                <div class="user-status">Status: ${cleanAvailability(user.Availability)}</div>
-                <div class="profile-section skill-tags">${skillBadges}</div>
-                <div class="profile-section">
-                    ${endorsementDisplay}
-                </div>
-                <button class="endorse-btn" data-email="${user.email}" ${isCurrentUser ? 'disabled' : ''} aria-label="Endorse ${user.first_name} ${user.last_name}">
-                    + Endorse
-                </button>
-            </div>
-        `;
-    }).join('');
+    const cardsHtmlPromises = users.map(user => generateUserCardHTML(user));
+    const cardsHtml = (await Promise.all(cardsHtmlPromises)).join('');
 
     container.innerHTML = cardsHtml;
 
     // Attach event listeners for endorse buttons using event delegation
+    // This part assumes that endorsement buttons are always within the rendered cards
+    // and that the event listener is applied once to the container or in a way that handles dynamic content.
+    // For simplicity, directly re-attaching to newly created buttons.
     container.querySelectorAll('.endorse-btn').forEach(button => {
         button.addEventListener('click', (event) => {
             const emailToEndorse = event.currentTarget.dataset.email;
@@ -429,7 +510,7 @@ async function findMatchingUsers() {
             requiredSkill = requiredSkill.toLowerCase();
             // Remove proficiency from userSkill for matching
             const cleanedUserSkill = userSkill.replace(/\(.*?\)/, '');
-            return cleanedUserSkill.includes(requiredSkill) || requiredSkill.includes(cleanedUserSkill) || cleanedUserSkill === requiredSkill;
+            return cleanedUserSkill.includes(requiredSkill) || requiredSkill.includes(cleanedUserSkill);
         };
 
         const matchedUsers = data.filter(user => {
@@ -506,12 +587,30 @@ window.buildBestTeam = async function() {
                 return matchingSkills.length ? { ...user, matchingSkills, matchCount: matchingSkills.length } : null;
             })
             .filter(Boolean)
-            .sort((a, b) => b.matchCount - a.matchCount || b.endorsements.length - a.endorsements.length) // Sort by endorsements if matchCount is same
+            .sort((a, b) => {
+                // Primary sort: by number of matching skills (descending)
+                if (b.matchCount !== a.matchCount) {
+                    return b.matchCount - a.matchCount;
+                }
+                // Secondary sort: by total endorsements (descending)
+                let aEndorsements = 0;
+                try {
+                    aEndorsements = Object.values(JSON.parse(a.endorsements || '{}')).reduce((sum, count) => sum + count, 0);
+                } catch (e) { /* silent fail */ }
+                let bEndorsements = 0;
+                try {
+                    bEndorsements = Object.values(JSON.parse(b.endorsements || '{}')).reduce((sum, count) => sum + count, 0);
+                } catch (e) { /* silent fail */ }
+
+                return bEndorsements - aEndorsements;
+            })
             .slice(0, teamSize);
 
         renderUserCards(scoredUsers, DOMElements.bestTeamContainer);
         if (scoredUsers.length > 0) {
             showNotification(`Built a team of ${scoredUsers.length} member(s).`, 'success');
+        } else {
+            showNotification('No team members found with the specified skills.', 'warning');
         }
     } catch (error) {
         console.error("Error building team:", error);
@@ -526,10 +625,10 @@ window.buildBestTeam = async function() {
  */
 window.endorseSkill = async function(email) {
     if (!appState.currentUserEmail) {
-        const userEmailPrompt = prompt("Enter your email to endorse:");
+        const userEmailPrompt = prompt("To endorse, please enter your email (this will be saved for future endorsements):");
         if (userEmailPrompt) {
             appState.currentUserEmail = userEmailPrompt.trim();
-            localStorage.setItem("demo_user_email", appState.currentUserEmail);
+            localStorage.setItem("charlestonHacks_userEmail", appState.currentUserEmail);
             showNotification("Your email has been saved for future endorsements.", "info");
         } else {
             showNotification("Endorsement canceled. Please provide your email to endorse.", "warning");
@@ -555,35 +654,45 @@ window.endorseSkill = async function(email) {
             endorsements = {};
         }
 
-        // Increment endorsement for the first skill listed by the user
-        const primarySkill = user.skills.split(',')[0].replace(/\(.*?\)/, '').trim();
-        if (primarySkill) {
-            endorsements[primarySkill] = (endorsements[primarySkill] || 0) + 1;
+        // Increment endorsement for the first skill listed by the user that is also a recognized skill
+        const userSkillsParsed = user.skills.split(',').map(s => s.replace(/\(.*?\)/, '').trim().toLowerCase()).filter(Boolean);
+        const skillToSearch = userSkillsParsed.find(skill => appState.dynamicSkills.includes(skill)); // Prioritize a skill that exists in our dynamicSkills list
+
+        if (skillToSearch) {
+            endorsements[skillToSearch] = (endorsements[skillToSearch] || 0) + 1;
         } else {
-            showNotification("No primary skill found for endorsement.", "warning");
+            showNotification("No recognizable skill found for endorsement.", "warning");
             return;
         }
 
         const { error: updateError } = await supabaseClient.from('skills').update({ endorsements: JSON.stringify(endorsements) }).eq('email', email);
         if (updateError) throw updateError;
 
-        showNotification("Skill endorsed successfully! Refresh to see the update.", "success");
+        showNotification("Skill endorsed successfully!", "success");
         loadLeaderboard(); // Update leaderboard after endorsement
-        // Re-render the specific card to show updated endorsement count without full page refresh
-        const cardElement = document.querySelector(`.team-member-card button[data-email="${email}"]`).closest('.team-member-card');
-        if (cardElement) {
-            // A more efficient way would be to update just the endorsement section
-            // For now, re-render the whole user card by fetching updated data for just this user
-            const updatedUserData = await supabaseClient.from('skills').select('*').eq('email', email).single();
-            if (updatedUserData.data) {
-                // Remove old card and insert new one. This is a bit heavy, but simple for demo.
-                // For production, you'd want to selectively update the DOM.
-                cardElement.outerHTML = await generateUserCardHTML(updatedUserData.data);
-                // Reattach event listeners for the new button
-                document.querySelector(`.team-member-card button[data-email="${email}"]`).addEventListener('click', (event) => {
-                    const emailToEndorse = event.currentTarget.dataset.email;
-                    endorseSkill(emailToEndorse);
-                });
+
+        // Re-render only the affected card for a better UX (this will re-fetch and update that specific card)
+        const currentContainer = DOMElements.cardContainer.contains(document.querySelector(`.team-member-card button[data-email="${email}"]`)) ? DOMElements.cardContainer : DOMElements.bestTeamContainer;
+        const currentCards = Array.from(currentContainer.children);
+        const updatedUser = await supabaseClient.from('skills').select('*').eq('email', email).single();
+
+        if (updatedUser.data) {
+            const oldCardHtml = await generateUserCardHTML(user);
+            const newCardHtml = await generateUserCardHTML(updatedUser.data);
+
+            // Find and replace the old card HTML with the new one
+            // This is a simple DOM manipulation; more complex apps might use virtual DOM for efficiency.
+            const oldCardElement = currentContainer.querySelector(`.team-member-card button[data-email="${email}"]`).closest('.team-member-card');
+            if (oldCardElement) {
+                oldCardElement.outerHTML = newCardHtml;
+                // After replacement, the new element needs its event listener re-attached
+                const newButton = currentContainer.querySelector(`.team-member-card button[data-email="${email}"]`);
+                if (newButton) {
+                    newButton.addEventListener('click', (event) => {
+                        const emailToEndorse = event.currentTarget.dataset.email;
+                        endorseSkill(emailToEndorse);
+                    });
+                }
             }
         }
 
@@ -701,17 +810,19 @@ function showNotification(message, type = 'info') {
     let notificationElement;
     if (type === 'success') {
         notificationElement = DOMElements.successMessage;
+        notificationElement.classList.remove('error-notification', 'warning-notification', 'info-notification');
+        notificationElement.classList.add('success-notification');
     } else if (type === 'error' || type === 'warning') {
-        notificationElement = DOMElements.noResults;
+        notificationElement = DOMElements.noResults; // Using noResults for error/warning messages for simplicity
+        notificationElement.classList.remove('success-notification', 'info-notification');
+        notificationElement.classList.add(type === 'error' ? 'error-notification' : 'warning-notification');
     } else { // info
-        notificationElement = DOMElements.matchNotification;
+        notificationElement = DOMElements.matchNotification; // Using matchNotification for info messages
+        notificationElement.classList.remove('success-notification', 'error-notification', 'warning-notification');
+        notificationElement.classList.add('info-notification');
     }
 
-    // Reset all notification displays
-    hideNotifications();
-
     notificationElement.textContent = message;
-    notificationElement.className = `notification ${type}-notification`;
     notificationElement.style.display = 'block';
 
     setTimeout(() => {
@@ -720,7 +831,7 @@ function showNotification(message, type = 'info') {
 }
 
 /**
- * Hides all notification elements.
+ * Hides all active notification messages.
  */
 function hideNotifications() {
     DOMElements.successMessage.style.display = 'none';
@@ -728,98 +839,91 @@ function hideNotifications() {
     DOMElements.matchNotification.style.display = 'none';
 }
 
+// --- Tab Switching Logic ---
+/**
+ * Shows the content of a specific tab and deactivates others.
+ * @param {string} tabId - The data-tab attribute value of the tab to show.
+ */
+function showTab(tabId) {
+    DOMElements.tabButtons.forEach(button => button.classList.remove('active'));
+    DOMElements.tabContents.forEach(content => content.classList.remove('active'));
+
+    const targetButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    const targetContent = document.getElementById(`${tabId}-tab-content`);
+
+    if (targetButton && targetContent) {
+        targetButton.classList.add('active');
+        targetContent.classList.add('active');
+    }
+
+    // Special logic for profile tab: load user data if active
+    if (tabId === 'profile') {
+        loadUserProfileForEdit();
+    }
+}
+
+/**
+ * Updates the text and icon of the 'My Profile' tab button based on whether a profile exists.
+ */
+function updateProfileTabState() {
+    if (appState.currentUserEmail) {
+        if (DOMElements.profileTabButton) {
+            DOMElements.profileTabButton.innerHTML = '<i class="fas fa-user-edit" aria-hidden="true"></i> Edit Your Profile';
+        }
+    } else {
+        if (DOMElements.profileTabButton) {
+            DOMElements.profileTabButton.innerHTML = '<i class="fas fa-user-plus" aria-hidden="true"></i> Create Your Profile';
+        }
+    }
+}
 
 // --- Event Listeners and Initial Load ---
 document.addEventListener('DOMContentLoaded', async () => {
-    // Prompt for user email if not set for endorsement demo
-    if (!appState.currentUserEmail) {
-        const userEmailPrompt = prompt("Welcome! Please enter your email to enable endorsement features (e.g., yourname@example.com):");
-        if (userEmailPrompt) {
-            appState.currentUserEmail = userEmailPrompt.trim();
-            localStorage.setItem("demo_user_email", appState.currentUserEmail);
-        }
-    }
+    // Initial fetches
+    await fetchUniqueSkills();
+    loadLeaderboard(); // Load leaderboard on start
 
-    // Initialize event listeners for profile form inputs
-    Object.values(DOMElements).forEach(el => {
-        if (el && el.tagName && (el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.closest('#skills-form')) {
-            el.addEventListener("input", updateProfileProgress);
-        }
-    });
-
-    DOMElements.skillsInput.addEventListener('input', handleSkillsInput);
-    DOMElements.photoInput.addEventListener('change', handlePhotoInputChange);
-    DOMElements.skillsForm.addEventListener('submit', handleProfileSubmit);
-
-    // Setup autocomplete for all relevant inputs
-    await fetchUniqueSkills(); // Fetch skills once at the start
+    // Setup autocomplete for all relevant input fields
     setupAutocomplete(DOMElements.skillsInput, DOMElements.autocompleteSkillsInput);
     setupAutocomplete(DOMElements.teamSkillsInput, DOMElements.autocompleteTeamSkills);
     setupAutocomplete(DOMElements.teamBuilderSkillsInput, DOMElements.autocompleteTeamsSkills);
 
-    // Event listeners for search and team builder buttons
+    // Profile form event listeners
+    DOMElements.skillsInput.addEventListener('input', handleSkillsInput);
+    DOMElements.photoInput.addEventListener('change', handlePhotoInputChange);
+    DOMElements.skillsForm.addEventListener('submit', handleProfileSubmit);
+
+    // Live update profile progress on input change for these fields
+    [
+        DOMElements.firstNameInput,
+        DOMElements.lastNameInput,
+        DOMElements.emailInput,
+        DOMElements.skillsInput,
+        DOMElements.photoInput,
+        DOMElements.availabilityInput,
+        DOMElements.bioInput
+    ].forEach(input => {
+        input.addEventListener('input', updateProfileProgress);
+        input.addEventListener('change', updateProfileProgress); // For select and file inputs
+    });
+
+    // Search and Team Builder button event listeners
     DOMElements.findTeamBtn.addEventListener('click', findMatchingUsers);
     DOMElements.searchNameBtn.addEventListener('click', searchUserByName);
 
-    // Initial load of leaderboard
-    loadLeaderboard();
-});
+    // Add event listeners for tab buttons
+    DOMElements.tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.dataset.tab;
+            showTab(tabId);
+        });
+    });
 
-// The rest of your existing CharlestonHacks scripts for progress, achievements, countdown, etc.
-// Assuming they are located in the main.js or separate files as well.
-// For example:
-/*
-const CONFIG = {
-    countdown: {
-        targetDate: "June 28, 2025 00:00:00",
-        completedMessage: "Next Event Soon!",
-    },
-    achievements: [
-        { id: 'first_flip', name: 'Card Flipper', description: 'Flipped your first card!' },
-        { id: 'explorer', name: 'Explorer', description: 'Discovered 2 sections!' },
-        { id: 'completionist', name: 'Completionist', description: 'Found all sections!' },
-        { id: 'social_butterfly', name: 'Social Butterfly', description: 'Clicked a social link!' }
-    ],
-    // ... other card configurations
-};
-
-// Example achievement display function (adapt from your original code)
-function showAchievement(id) {
-    const achievement = CONFIG.achievements.find(a => a.id === id);
-    if (achievement && !appState.discoveredCards.has(id)) {
-        appState.discoveredCards.add(id);
-        const achievementDiv = document.createElement('div');
-        achievementDiv.className = 'achievement';
-        achievementDiv.textContent = `Achievement Unlocked: ${achievement.name} - ${achievement.description}`;
-        DOMElements.achievementsContainer.appendChild(achievementDiv); // Assuming you add DOMElements.achievementsContainer
-        setTimeout(() => achievementDiv.classList.add('show'), 10);
-        setTimeout(() => achievementDiv.classList.remove('show'), 5000);
-        setTimeout(() => achievementDiv.remove(), 5500);
-    }
-}
-
-// Example countdown logic (adapt from your original code)
-function updateCountdown() {
-    const targetDate = new Date(CONFIG.countdown.targetDate).getTime();
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    const countdownElement = document.getElementById('countdown'); // Assuming you have this element
-    const countdownLabelElement = document.getElementById('countdown-label'); // Assuming you have this element
-
-    if (distance < 0) {
-        clearInterval(countdownInterval);
-        if (countdownElement) countdownElement.textContent = CONFIG.countdown.completedMessage;
-        if (countdownLabelElement) countdownLabelElement.style.display = 'none';
+    // Determine initial tab to show
+    updateProfileTabState(); // Set the initial text for the profile button
+    if (appState.currentUserEmail) {
+        showTab('individual-search'); // Default to search if profile exists
     } else {
-        if (countdownElement) countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        showTab('profile'); // Default to profile creation if not
     }
-}
-const countdownInterval = setInterval(updateCountdown, 1000);
-updateCountdown(); // Initial call to display immediately
-*/
+});
