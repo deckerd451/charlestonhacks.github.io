@@ -2,7 +2,7 @@
 
 // Supabase Configuration (keep as is)
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1Znpvbewzfl.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Global State (for achievements and potential future features)
@@ -47,14 +47,11 @@ const DOMElements = {
     // NEW: Modal elements for endorsement
     endorseModal: document.getElementById('endorseSkillModal'),
     endorseModalClose: document.querySelector('#endorseSkillModal .close-button'),
-    endorseModalSkillList: document.getElementById('endorse-skill-list'),
-    // Ensure you have these notification elements in your HTML
-    notificationMessage: document.getElementById('notification-message'),
-    notificationContainer: document.getElementById('notification-container')
+    endorseModalSkillList: document.getElementById('endorse-skill-list')
 };
 
 
-// --- Utility Functions ---
+// --- Utility Functions (Keep as is, or modified as per previous discussion) ---
 
 /**
  * Updates the profile completion progress bar and message.
@@ -666,20 +663,13 @@ function generateUserCardHTML(user) { // No longer async, as it's a pure renderi
 
     const isCurrentUser = user.email === appState.currentUserEmail;
 
-    // Determine if email should be shown
-    const availabilityStatus = cleanAvailability(user.Availability);
-    const emailDisplay = availabilityStatus.toLowerCase() === 'available' && user.email
-        ? `<div class="user-email" style="font-size:0.9em; margin-top: 5px;"><a href="mailto:${user.email}">${user.email}</a></div>`
-        : '';
-
-
     return `
         <div class="team-member-card" role="listitem">
             ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name} ${user.last_name}" loading="lazy" />` : ''}
             <div class="member-name">${user.first_name} ${user.last_name}</div>
             ${user.Bio ? `<div style="color:var(--primary-color);font-size:.96em;margin:3px 0;">${user.Bio}</div>` : ''}
-            <div class="user-status">Status: ${availabilityStatus}</div>
-            ${emailDisplay} <div class="profile-section skill-tags">${skillBadges}</div>
+            <div class="user-status">Status: ${cleanAvailability(user.Availability)}</div>
+            <div class="profile-section skill-tags">${skillBadges}</div>
             <div class="profile-section">
                 ${endorsementDisplay}
             </div>
@@ -737,36 +727,96 @@ async function loadLeaderboard() {
 }
 
 
----
-
-### Notification System Completion
-
-```javascript
 // --- Notification System ---
 let notificationTimeout;
 function showNotification(message, type = 'info') {
-    const notification = DOMElements.notificationMessage;
-    const notificationContainer = DOMElements.notificationContainer;
-
-    if (!notification || !notificationContainer) {
-        console.warn("Notification elements not found. Make sure elements with IDs 'notification-message' and 'notification-container' exist in your HTML.", message);
-        return;
-    }
-
+    const notification = document.getElementById('achievements'); // Using the achievements div for notifications
     notification.textContent = message;
-    notificationContainer.className = `notification ${type}`; // Apply classes like 'notification success', 'notification error'
-    notificationContainer.style.display = 'block';
+    notification.className = `achievements ${type}`; // Add type class for styling (e.g., success, error, warning, info)
+    notification.style.display = 'block';
 
     clearTimeout(notificationTimeout);
     notificationTimeout = setTimeout(() => {
-        notificationContainer.style.display = 'none';
+        notification.style.display = 'none';
+        notification.textContent = '';
+        notification.className = 'achievements';
     }, 5000); // Hide after 5 seconds
 }
 
 function hideNotifications() {
-    const notificationContainer = DOMElements.notificationContainer;
-    if (notificationContainer) {
-        notificationContainer.style.display = 'none';
-        clearTimeout(notificationTimeout);
-    }
+    const notification = document.getElementById('achievements');
+    notification.style.display = 'none';
+    notification.textContent = '';
+    notification.className = 'achievements';
+    clearTimeout(notificationTimeout);
 }
+
+
+// --- Event Listeners Initialization ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Profile section listeners
+    DOMElements.skillsInput.addEventListener('input', handleSkillsInput);
+    DOMElements.photoInput.addEventListener('change', handlePhotoInputChange);
+    DOMElements.skillsForm.addEventListener('submit', handleProfileSubmit);
+
+    // Autocomplete setups
+    setupAutocomplete(DOMElements.skillsInput, DOMElements.autocompleteSkillsInput);
+    setupAutocomplete(DOMElements.teamSkillsInput, DOMElements.autocompleteTeamSkills);
+    setupAutocomplete(DOMElements.teamBuilderSkillsInput, DOMElements.autocompleteTeamsSkills);
+
+
+    // Search & Team Builder listeners
+    DOMElements.findTeamBtn.addEventListener('click', findMatchingUsers);
+    DOMElements.searchNameBtn.addEventListener('click', searchUserByName);
+    // Note: buildBestTeam is already global via window.buildBestTeam = function() {}
+
+    // Modal listeners
+    if (DOMElements.endorseModalClose) {
+        DOMElements.endorseModalClose.addEventListener('click', () => {
+            DOMElements.endorseModal.style.display = 'none';
+        });
+    }
+    // Close modal if user clicks outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target === DOMElements.endorseModal) {
+            DOMElements.endorseModal.style.display = 'none';
+        }
+    });
+
+    // --- NEW: Event Delegation for Endorse Buttons ---
+    // Attach ONE listener to the main card container
+    DOMElements.cardContainer.addEventListener('click', async (event) => {
+        const endorseButton = event.target.closest('.endorse-btn');
+        if (endorseButton && !endorseButton.disabled) {
+            const emailToEndorse = endorseButton.dataset.email;
+            const { data, error } = await supabaseClient.from('skills').select('*').eq('email', emailToEndorse).single();
+            if (error || !data) {
+                console.error("Error fetching user for endorsement modal:", error);
+                showNotification("Could not load user's skills for endorsement.", "error");
+                return;
+            }
+            showEndorseSkillModal(data.email, data.first_name, data.last_name, data.skills);
+        }
+    });
+
+    // Attach ONE listener to the best team card container
+    DOMElements.bestTeamContainer.addEventListener('click', async (event) => {
+        const endorseButton = event.target.closest('.endorse-btn');
+        if (endorseButton && !endorseButton.disabled) {
+            const emailToEndorse = endorseButton.dataset.email;
+            const { data, error } = await supabaseClient.from('skills').select('*').eq('email', emailToEndorse).single();
+            if (error || !data) {
+                console.error("Error fetching user for endorsement modal:", error);
+                showNotification("Could not load user's skills for endorsement.", "error");
+                return;
+            }
+            showEndorseSkillModal(data.email, data.first_name, data.last_name, data.skills);
+        }
+    });
+
+
+    // Initial data loads
+    fetchUniqueSkills();
+    loadLeaderboard();
+    updateProfileProgress(); // Initialize progress bar on load
+});
