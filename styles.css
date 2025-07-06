@@ -387,52 +387,6 @@ footer {
 .section-title .fas {
     margin-right: 8px;
 }
-/* Styles for tabs */
-.tabs {
-    display: flex; /* Makes buttons lay out in a row */
-    justify-content: center; /* Centers the tabs horizontally */
-    margin-bottom: 25px;
-    border-bottom: 1px solid #444; /* Subtle separator */
-}
-
-.tab-button {
-    background-color: #333; /* Dark background */
-    color: #ffd700; /* Primary color for active/hover */
-    border: none;
-    padding: 12px 20px;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: bold;
-    border-radius: 8px 8px 0 0; /* Rounded top corners */
-    margin: 0 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.tab-button:hover:not(.active) {
-    background-color: #555;
-    color: #fff;
-}
-
-.tab-button.active {
-    background-color: #ffd700; /* Active tab color */
-    color: #1a1a2e; /* Dark text on active tab */
-    border-bottom: 3px solid #1a1a2e; /* Highlight active tab */
-    cursor: default;
-}
-
-/* Styles for tab content */
-.tab-content {
-    display: none; /* Hide all content by default */
-    padding: 20px;
-    border: 1px solid #444;
-    border-top: none; /* No top border as it connects to the tab button */
-    border-radius: 0 0 8px 8px; /* Rounded bottom corners */
-    background-color: #2a2a3e; /* Content background */
-}
-
-.tab-content.active {
-    display: block; /* Show active content */
-}
 
 .input-container {
     margin-bottom: 20px;
