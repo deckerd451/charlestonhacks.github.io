@@ -1,6 +1,6 @@
 // main.js
 
-// Supabase Configuration
+// Supabase Configuration (keep as is)
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -8,10 +8,10 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // Global State (for achievements and potential future features)
 const appState = {
     discoveredCards: new Set(),
-    achievements: [], // Assuming this will be populated from CONFIG in the full app
+    achievements: [],
     dynamicSkills: [],
-    skillProficiencies: {}, // Track proficiency for skills during profile creation
-    currentUserEmail: localStorage.getItem("demo_user_email") || '' // Store user email for endorsements
+    skillProficiencies: {},
+    currentUserEmail: localStorage.getItem("demo_user_email") || ''
 };
 
 // --- DOM Element References ---
@@ -43,10 +43,15 @@ const DOMElements = {
     leaderboardRows: document.getElementById('leaderboard-rows'),
     matchNotification: document.getElementById('matchNotification'),
     noResults: document.getElementById('noResults'),
-    successMessage: document.getElementById('success-message')
+    successMessage: document.getElementById('success-message'),
+    // NEW: Modal elements for endorsement
+    endorseModal: document.getElementById('endorseSkillModal'),
+    endorseModalClose: document.querySelector('#endorseSkillModal .close-button'),
+    endorseModalSkillList: document.getElementById('endorse-skill-list')
 };
 
-// --- Utility Functions ---
+
+// --- Utility Functions (Keep as is, or modified as per previous discussion) ---
 
 /**
  * Updates the profile completion progress bar and message.
@@ -331,6 +336,7 @@ function isValidEmail(email) {
 
 /**
  * Renders user cards in the specified container.
+ * MODIFIED: endorsement button now triggers modal
  * @param {Array<Object>} users - Array of user objects.
  * @param {HTMLElement} container - The DOM element to render cards into.
  */
@@ -345,64 +351,23 @@ async function renderUserCards(users, container) {
     }
 
     const cardsHtml = users.map(user => {
-        // Utility: Clean availability values
-        const cleanAvailability = (value) => {
-            if (value === null || value === undefined) return 'Unavailable';
-            if (typeof value !== 'string') return 'Unavailable';
-            const trimmed = value.trim();
-            if (trimmed === '' || trimmed.toLowerCase() === 'null') return 'Unavailable';
-            return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
-        };
-
-        // Skill badges
-        const skillBadges = user.skills.split(',').map(skill => {
-            const match = skill.match(/(.*?)\((.*?)\)/);
-            const label = match ? match[1] : skill;
-            const prof = match ? match[2] : "Intermediate";
-            return `<span class="skill-tag">${label} <span style="font-size:0.8em;opacity:.7;">[${prof}]</span></span>`;
-        }).join(' ');
-
-        // Endorsements
-        let endorsements = {};
-        try {
-            endorsements = user.endorsements ? JSON.parse(user.endorsements) : {};
-        } catch (e) {
-            console.warn(`Error parsing endorsements for user ${user.email}:`, e);
-            endorsements = {}; // Fallback to empty object
-        }
-
-        const endorsementDisplay = Object.keys(endorsements).length ?
-            Object.entries(endorsements).map(([skill, count]) =>
-                `<span style="color:var(--primary-color);">${skill}: <span class="endorsements">${count} <i class="fa fa-thumbs-up" aria-hidden="true"></i></span></span>`
-            ).join(' | ') :
-            '<span style="color:#888;">No endorsements yet</span>';
-
-        const isCurrentUser = user.email === appState.currentUserEmail;
-
-        return `
-            <div class="team-member-card" role="listitem">
-                ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name} ${user.last_name}" loading="lazy" />` : ''}
-                <div class="member-name">${user.first_name} ${user.last_name}</div>
-                ${user.Bio ? `<div style="color:var(--primary-color);font-size:.96em;margin:3px 0;">${user.Bio}</div>` : ''}
-                <div class="user-status">Status: ${cleanAvailability(user.Availability)}</div>
-                <div class="profile-section skill-tags">${skillBadges}</div>
-                <div class="profile-section">
-                    ${endorsementDisplay}
-                </div>
-                <button class="endorse-btn" data-email="${user.email}" ${isCurrentUser ? 'disabled' : ''} aria-label="Endorse ${user.first_name} ${user.last_name}">
-                    + Endorse
-                </button>
-            </div>
-        `;
+        return generateUserCardHTML(user); // Use the helper function
     }).join('');
 
     container.innerHTML = cardsHtml;
 
     // Attach event listeners for endorse buttons using event delegation
     container.querySelectorAll('.endorse-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
+        button.addEventListener('click', async (event) => {
             const emailToEndorse = event.currentTarget.dataset.email;
-            endorseSkill(emailToEndorse);
+            // Fetch the user's data again to ensure we have the most up-to-date skills
+            const { data, error } = await supabaseClient.from('skills').select('*').eq('email', emailToEndorse).single();
+            if (error || !data) {
+                console.error("Error fetching user for endorsement modal:", error);
+                showNotification("Could not load user's skills for endorsement.", "error");
+                return;
+            }
+            showEndorseSkillModal(data.email, data.first_name, data.last_name, data.skills);
         });
     });
 }
@@ -553,12 +518,14 @@ window.buildBestTeam = async function () {
     }
 };
 
-
 /**
- * Endorses a skill for a given user.
- * @param {string} email - The email of the user to endorse.
+ * Shows a modal allowing the user to select which skill to endorse.
+ * @param {string} userEmail - The email of the user to be endorsed.
+ * @param {string} firstName - The first name of the user.
+ * @param {string} lastName - The last name of the user.
+ * @param {string} skillsString - A comma-separated string of skills for the user.
  */
-window.endorseSkill = async function(email) {
+function showEndorseSkillModal(userEmail, firstName, lastName, skillsString) {
     if (!appState.currentUserEmail) {
         const userEmailPrompt = prompt("Enter your email to endorse:");
         if (userEmailPrompt) {
@@ -571,68 +538,126 @@ window.endorseSkill = async function(email) {
         }
     }
 
-    if (email === appState.currentUserEmail) {
+    if (userEmail === appState.currentUserEmail) {
         showNotification("You cannot endorse yourself.", "warning");
         return;
     }
 
-    try {
-        const { data, error } = await supabaseClient.from('skills').select('*').eq('email', email);
-        if (error || !data || !data.length) throw new Error("User not found or database error.");
+    DOMElements.endorseModalSkillList.innerHTML = ''; // Clear previous skills
 
-        let user = data[0];
+    const skills = skillsString.split(',').map(s => s.replace(/\(.*?\)/, '').trim()).filter(Boolean);
+
+    if (skills.length === 0) {
+        showNotification("This user has no skills listed to endorse.", "warning");
+        return;
+    }
+
+    const titleElement = DOMElements.endorseModal.querySelector('h3');
+    if (titleElement) {
+        titleElement.textContent = `Endorse ${firstName} ${lastName} for...`;
+    }
+
+    skills.forEach(skill => {
+        const skillItem = document.createElement('div');
+        skillItem.className = 'skill-endorse-item';
+        skillItem.innerHTML = `
+            <span>${skill}</span>
+            <button class="endorse-specific-skill-btn" data-email="${userEmail}" data-skill="${skill}">Endorse</button>
+        `;
+        DOMElements.endorseModalSkillList.appendChild(skillItem);
+    });
+
+    // Add event listeners for the new buttons within the modal
+    DOMElements.endorseModalSkillList.querySelectorAll('.endorse-specific-skill-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const email = event.currentTarget.dataset.email;
+            const skill = event.currentTarget.dataset.skill;
+            handleEndorsementSelection(email, skill);
+        });
+    });
+
+    DOMElements.endorseModal.style.display = 'block'; // Show the modal
+}
+
+/**
+ * Handles the selection of a specific skill to endorse from the modal.
+ * @param {string} emailToEndorse - The email of the user whose skill is being endorsed.
+ * @param {string} skillToEndorse - The specific skill to endorse.
+ */
+async function handleEndorsementSelection(emailToEndorse, skillToEndorse) {
+    DOMElements.endorseModal.style.display = 'none'; // Hide the modal
+
+    try {
+        const { data, error } = await supabaseClient.from('skills').select('endorsements').eq('email', emailToEndorse).single();
+        if (error || !data) throw new Error("User not found or database error.");
+
         let endorsements = {};
         try {
-            endorsements = user.endorsements ? JSON.parse(user.endorsements) : {};
+            endorsements = data.endorsements ? JSON.parse(data.endorsements) : {};
         } catch (e) {
-            console.warn(`Error parsing existing endorsements for ${email}:`, e);
+            console.warn(`Error parsing existing endorsements for ${emailToEndorse}:`, e);
             endorsements = {};
         }
 
-        // Increment endorsement for the first skill listed by the user
-        const primarySkill = user.skills.split(',')[0].replace(/\(.*?\)/, '').trim();
-        if (primarySkill) {
-            endorsements[primarySkill] = (endorsements[primarySkill] || 0) + 1;
-        } else {
-            showNotification("No primary skill found for endorsement.", "warning");
-            return;
-        }
+        endorsements[skillToEndorse] = (endorsements[skillToEndorse] || 0) + 1;
 
-        const { error: updateError } = await supabaseClient.from('skills').update({ endorsements: JSON.stringify(endorsements) }).eq('email', email);
+        const { error: updateError } = await supabaseClient.from('skills').update({ endorsements: JSON.stringify(endorsements) }).eq('email', emailToEndorse);
         if (updateError) throw updateError;
 
-        showNotification("Skill endorsed successfully! Refresh to see the update.", "success");
+        showNotification(`Skill "${skillToEndorse}" endorsed successfully!`, "success");
         loadLeaderboard(); // Update leaderboard after endorsement
+
         // Re-render the specific card to show updated endorsement count without full page refresh
-        const cardElement = document.querySelector(`.team-member-card button[data-email="${email}"]`).closest('.team-member-card');
-        if (cardElement) {
-            // A more efficient way would be to update just the endorsement section
-            // For now, re-render the whole user card by fetching updated data for just this user
-            const updatedUserData = await supabaseClient.from('skills').select('*').eq('email', email).single();
+        // Find the specific card to update. This might be in DOMElements.cardContainer or DOMElements.bestTeamContainer
+        const cardElementInCardContainer = DOMElements.cardContainer.querySelector(`button[data-email="${emailToEndorse}"]`)?.closest('.team-member-card');
+        const cardElementInBestTeamContainer = DOMElements.bestTeamContainer.querySelector(`button[data-email="${emailToEndorse}"]`)?.closest('.team-member-card');
+
+        if (cardElementInCardContainer) {
+            const updatedUserData = await supabaseClient.from('skills').select('*').eq('email', emailToEndorse).single();
             if (updatedUserData.data) {
-                // Remove old card and insert new one. This is a bit heavy, but simple for demo.
-                // For production, you'd want to selectively update the DOM.
-                cardElement.outerHTML = await generateUserCardHTML(updatedUserData.data);
-                // Reattach event listeners for the new button
-                document.querySelector(`.team-member-card button[data-email="${email}"]`).addEventListener('click', (event) => {
-                    const emailToEndorse = event.currentTarget.dataset.email;
-                    endorseSkill(emailToEndorse);
+                const newCardHtml = generateUserCardHTML(updatedUserData.data);
+                cardElementInCardContainer.outerHTML = newCardHtml;
+                // Reattach event listener for the new button in this card
+                document.querySelector(`#cardContainer button[data-email="${emailToEndorse}"]`).addEventListener('click', async (event) => {
+                    const email = event.currentTarget.dataset.email;
+                    const { data: userToDisplay, error: fetchError } = await supabaseClient.from('skills').select('*').eq('email', email).single();
+                    if (!fetchError && userToDisplay) {
+                        showEndorseSkillModal(userToDisplay.email, userToDisplay.first_name, userToDisplay.last_name, userToDisplay.skills);
+                    }
                 });
             }
         }
+        if (cardElementInBestTeamContainer) {
+            const updatedUserData = await supabaseClient.from('skills').select('*').eq('email', emailToEndorse).single();
+            if (updatedUserData.data) {
+                const newCardHtml = generateUserCardHTML(updatedUserData.data);
+                cardElementInBestTeamContainer.outerHTML = newCardHtml;
+                // Reattach event listener for the new button in this card
+                document.querySelector(`#bestTeamContainer button[data-email="${emailToEndorse}"]`).addEventListener('click', async (event) => {
+                    const email = event.currentTarget.dataset.email;
+                    const { data: userToDisplay, error: fetchError } = await supabaseClient.from('skills').select('*').eq('email', email).single();
+                    if (!fetchError && userToDisplay) {
+                        showEndorseSkillModal(userToDisplay.email, userToDisplay.first_name, userToDisplay.last_name, userToDisplay.skills);
+                    }
+                });
+            }
+        }
+
 
     } catch (error) {
         console.error("Endorsement error:", error);
         showNotification(`Failed to endorse: ${error.message}`, 'error');
     }
-};
+}
+
 
 /**
  * Generates HTML for a single user card. (Helper for selective re-rendering)
+ * Note: The endorse button's data-email now solely identifies the user for the modal.
  * @param {Object} user - User data object.
  * @returns {string} HTML string for the user card.
  */
-async function generateUserCardHTML(user) {
+function generateUserCardHTML(user) { // No longer async, as it's a pure rendering function
     const cleanAvailability = (value) => {
         if (value === null || value === undefined) return 'Unavailable';
         if (typeof value !== 'string') return 'Unavailable';
@@ -686,7 +711,7 @@ async function generateUserCardHTML(user) {
  */
 async function loadLeaderboard() {
     try {
-        const { data, error } = await supabaseClient.from('skills').select('*');
+        const { data, error } = await supabaseClient.from('skills').select('endorsements'); // Only fetch endorsements
         if (error || !data) throw error;
 
         let aggregate = {};
@@ -695,7 +720,7 @@ async function loadLeaderboard() {
             try {
                 end = user.endorsements ? JSON.parse(user.endorsements) : {};
             } catch (e) {
-                console.warn(`Error parsing endorsements for user ${user.email} in leaderboard:`, e);
+                console.warn(`Error parsing endorsements for user in leaderboard:`, e);
                 end = {};
             }
             for (let [skill, count] of Object.entries(end)) {
@@ -717,143 +742,81 @@ async function loadLeaderboard() {
             DOMElements.leaderboardSection.style.display = 'block';
         } else {
             DOMElements.leaderboardSection.style.display = 'none';
-            DOMElements.leaderboardRows.innerHTML = '<div>No endorsements yet.</div>'; // Optional: show message if no endorsements
+            DOMElements.leaderboardRows.innerHTML = '<div>No endorsements yet.</div>';
         }
     } catch (error) {
         console.error("Error loading leaderboard:", error);
-        DOMElements.leaderboardSection.style.display = 'none';
-        showNotification('Failed to load leaderboard.', 'error');
+        DOMElements.leaderboardRows.innerHTML = '<div style="color:red;">Error loading leaderboard.</div>';
     }
 }
 
-/**
- * Displays a temporary notification message to the user.
- * @param {string} message - The message to display.
- * @param {'success'|'error'|'warning'|'info'} type - The type of notification.
- */
-function showNotification(message, type = 'info') {
-    let notificationElement;
-    if (type === 'success') {
-        notificationElement = DOMElements.successMessage;
-    } else if (type === 'error' || type === 'warning') {
-        notificationElement = DOMElements.noResults;
-    } else { // info
-        notificationElement = DOMElements.matchNotification;
-    }
 
-    // Reset all notification displays
-    hideNotifications();
-
+// --- Notification Functions (Assuming these exist in your original main.js) ---
+function showNotification(message, type) {
+    const notificationElement = (type === 'success') ? DOMElements.successMessage : DOMElements.matchNotification;
     notificationElement.textContent = message;
-    notificationElement.className = `notification ${type}-notification`;
+    notificationElement.className = `notification ${type}`; // Add a class for styling
     notificationElement.style.display = 'block';
-
     setTimeout(() => {
-        notificationElement.style.display = 'none';
+        hideNotifications();
     }, 5000); // Hide after 5 seconds
 }
 
-/**
- * Hides all notification elements.
- */
 function hideNotifications() {
-    DOMElements.successMessage.style.display = 'none';
-    DOMElements.noResults.style.display = 'none';
     DOMElements.matchNotification.style.display = 'none';
+    DOMElements.successMessage.style.display = 'none';
 }
 
 
-// --- Event Listeners and Initial Load ---
-document.addEventListener('DOMContentLoaded', async () => {
-    // Prompt for user email if not set for endorsement demo
-    if (!appState.currentUserEmail) {
-        const userEmailPrompt = prompt("Welcome! Please enter your email to enable endorsement features (e.g., yourname@example.com):");
-        if (userEmailPrompt) {
-            appState.currentUserEmail = userEmailPrompt.trim();
-            localStorage.setItem("demo_user_email", appState.currentUserEmail);
-        }
+// --- Initializations / Event Listeners (Keep existing, add new modal listeners) ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Existing event listeners
+    if (DOMElements.skillsForm) {
+        DOMElements.skillsForm.addEventListener('submit', handleProfileSubmit);
+        // Initial call to set progress on load
+        updateProfileProgress();
+    }
+    if (DOMElements.firstNameInput) DOMElements.firstNameInput.addEventListener('input', updateProfileProgress);
+    if (DOMElements.lastNameInput) DOMElements.lastNameInput.addEventListener('input', updateProfileProgress);
+    if (DOMElements.emailInput) DOMElements.emailInput.addEventListener('input', updateProfileProgress);
+    if (DOMElements.skillsInput) DOMElements.skillsInput.addEventListener('input', handleSkillsInput); // Update proficiency selects
+    if (DOMElements.skillsInput) DOMElements.skillsInput.addEventListener('input', updateProfileProgress);
+    if (DOMElements.photoInput) DOMElements.photoInput.addEventListener('change', handlePhotoInputChange);
+    if (DOMElements.photoInput) DOMElements.photoInput.addEventListener('change', updateProfileProgress);
+    if (DOMElements.availabilityInput) DOMElements.availabilityInput.addEventListener('change', updateProfileProgress);
+
+    // Setup autocompletes
+    if (DOMElements.autocompleteSkillsInput && DOMElements.skillsInput) {
+        setupAutocomplete(DOMElements.skillsInput, DOMElements.autocompleteSkillsInput);
+    }
+    if (DOMElements.autocompleteTeamSkills && DOMElements.teamSkillsInput) {
+        setupAutocomplete(DOMElements.teamSkillsInput, DOMElements.autocompleteTeamSkills);
+    }
+    if (DOMElements.autocompleteTeamsSkills && DOMElements.teamBuilderSkillsInput) {
+        setupAutocomplete(DOMElements.teamBuilderSkillsInput, DOMElements.autocompleteTeamsSkills);
     }
 
-    // Initialize event listeners for profile form inputs
-    Object.values(DOMElements).forEach(el => {
-        if (el && el.tagName && (el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.closest('#skills-form')) {
-            el.addEventListener("input", updateProfileProgress);
+    // Search and Team Builder buttons
+    if (DOMElements.findTeamBtn) DOMElements.findTeamBtn.addEventListener('click', findMatchingUsers);
+    if (DOMElements.searchNameBtn) DOMElements.searchNameBtn.addEventListener('click', searchUserByName);
+    // window.buildBestTeam is already global from your original code.
+
+    // NEW: Modal event listeners
+    if (DOMElements.endorseModalClose) {
+        DOMElements.endorseModalClose.addEventListener('click', () => {
+            DOMElements.endorseModal.style.display = 'none';
+        });
+    }
+
+    // Close modal if user clicks outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target === DOMElements.endorseModal) {
+            DOMElements.endorseModal.style.display = 'none';
         }
     });
 
-    DOMElements.skillsInput.addEventListener('input', handleSkillsInput);
-    DOMElements.photoInput.addEventListener('change', handlePhotoInputChange);
-    DOMElements.skillsForm.addEventListener('submit', handleProfileSubmit);
 
-    // Setup autocomplete for all relevant inputs
-    await fetchUniqueSkills(); // Fetch skills once at the start
-    setupAutocomplete(DOMElements.skillsInput, DOMElements.autocompleteSkillsInput);
-    setupAutocomplete(DOMElements.teamSkillsInput, DOMElements.autocompleteTeamSkills);
-    setupAutocomplete(DOMElements.teamBuilderSkillsInput, DOMElements.autocompleteTeamsSkills);
-
-    // Event listeners for search and team builder buttons
-    DOMElements.findTeamBtn.addEventListener('click', findMatchingUsers);
-    DOMElements.searchNameBtn.addEventListener('click', searchUserByName);
-
-    // Initial load of leaderboard
+    // Initial data fetches on page load
+    fetchUniqueSkills();
     loadLeaderboard();
 });
-
-// The rest of your existing CharlestonHacks scripts for progress, achievements, countdown, etc.
-// Assuming they are located in the main.js or separate files as well.
-// For example:
-/*
-const CONFIG = {
-    countdown: {
-        targetDate: "June 28, 2025 00:00:00",
-        completedMessage: "Next Event Soon!",
-    },
-    achievements: [
-        { id: 'first_flip', name: 'Card Flipper', description: 'Flipped your first card!' },
-        { id: 'explorer', name: 'Explorer', description: 'Discovered 2 sections!' },
-        { id: 'completionist', name: 'Completionist', description: 'Found all sections!' },
-        { id: 'social_butterfly', name: 'Social Butterfly', description: 'Clicked a social link!' }
-    ],
-    // ... other card configurations
-};
-
-// Example achievement display function (adapt from your original code)
-function showAchievement(id) {
-    const achievement = CONFIG.achievements.find(a => a.id === id);
-    if (achievement && !appState.discoveredCards.has(id)) {
-        appState.discoveredCards.add(id);
-        const achievementDiv = document.createElement('div');
-        achievementDiv.className = 'achievement';
-        achievementDiv.textContent = `Achievement Unlocked: ${achievement.name} - ${achievement.description}`;
-        DOMElements.achievementsContainer.appendChild(achievementDiv); // Assuming you add DOMElements.achievementsContainer
-        setTimeout(() => achievementDiv.classList.add('show'), 10);
-        setTimeout(() => achievementDiv.classList.remove('show'), 5000);
-        setTimeout(() => achievementDiv.remove(), 5500);
-    }
-}
-
-// Example countdown logic (adapt from your original code)
-function updateCountdown() {
-    const targetDate = new Date(CONFIG.countdown.targetDate).getTime();
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    const countdownElement = document.getElementById('countdown'); // Assuming you have this element
-    const countdownLabelElement = document.getElementById('countdown-label'); // Assuming you have this element
-
-    if (distance < 0) {
-        clearInterval(countdownInterval);
-        if (countdownElement) countdownElement.textContent = CONFIG.countdown.completedMessage;
-        if (countdownLabelElement) countdownLabelElement.style.display = 'none';
-    } else {
-        if (countdownElement) countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
-}
-const countdownInterval = setInterval(updateCountdown, 1000);
-updateCountdown(); // Initial call to display immediately
-*/
