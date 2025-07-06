@@ -482,10 +482,15 @@ async function searchUserByName() {
 /**
  * Builds the best team based on required skills and team size.
  */
-window.buildBestTeam = async function() {
+window.buildBestTeam = async function () {
     const skillInputRaw = DOMElements.teamBuilderSkillsInput.value;
     const teamSize = parseInt(DOMElements.teamSizeInput.value, 10);
-    const skillInput = skillInputRaw.toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+
+    const skillInput = skillInputRaw
+        .toLowerCase()
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean); // remove empty strings
 
     if (!skillInput.length || isNaN(teamSize) || teamSize < 1) {
         showNotification('Please enter required skills and a valid team size (1 or more).', 'warning');
@@ -494,24 +499,52 @@ window.buildBestTeam = async function() {
     }
 
     try {
-        const { data: users, error } = await supabaseClient.from('skills').select('*');
+        const { data: users, error } = await supabaseClient
+            .from('skills')
+            .select('*');
+
         if (error || !users) throw error;
 
         const scoredUsers = users
             .map(user => {
-                const userSkillsRaw = user.skills.split(',').map(s => s.trim());
+                // Normalize user skills
+                const userSkillsRaw = user.skills
+                    .split(',')
+                    .map(s => s.replace(/\(.*?\)/, '').trim().toLowerCase());
+
+                // Find exact skill matches
                 const matchingSkills = skillInput.filter(requiredSkill =>
-                    userSkillsRaw.some(us => us.replace(/\(.*?\)/, '').toLowerCase().includes(requiredSkill))
+                    userSkillsRaw.includes(requiredSkill)
                 );
-                return matchingSkills.length ? { ...user, matchingSkills, matchCount: matchingSkills.length } : null;
+
+                return matchingSkills.length
+                    ? {
+                        ...user,
+                        matchingSkills,
+                        matchCount: matchingSkills.length
+                    }
+                    : null;
             })
             .filter(Boolean)
-            .sort((a, b) => b.matchCount - a.matchCount || b.endorsements.length - a.endorsements.length) // Sort by endorsements if matchCount is same
+            .sort((a, b) =>
+                b.matchCount - a.matchCount ||
+                (b.endorsements?.length || 0) - (a.endorsements?.length || 0) // Sort by endorsements if matchCount is same
+            )
             .slice(0, teamSize);
 
-        renderUserCards(scoredUsers, DOMElements.bestTeamContainer);
+        // Ensure defaults for missing avatars or bios
+        const scoredUsersCleaned = scoredUsers.map(user => ({
+            ...user,
+            avatar_url: user.avatar_url || "https://via.placeholder.com/150",
+            bio: user.bio || "No bio provided."
+        }));
+
+        renderUserCards(scoredUsersCleaned, DOMElements.bestTeamContainer);
+
         if (scoredUsers.length > 0) {
             showNotification(`Built a team of ${scoredUsers.length} member(s).`, 'success');
+        } else {
+            showNotification('No team members matched the required skills.', 'info');
         }
     } catch (error) {
         console.error("Error building team:", error);
@@ -519,6 +552,7 @@ window.buildBestTeam = async function() {
         DOMElements.bestTeamContainer.innerHTML = '<span style="color:white;">Error loading users.</span>';
     }
 };
+
 
 /**
  * Endorses a skill for a given user.
