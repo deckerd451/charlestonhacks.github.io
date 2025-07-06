@@ -19,6 +19,72 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Base styles for the tab content panes */
+        .tab-content-pane {
+            display: none; /* All tab content panes are hidden by default */
+            padding: 20px 0; /* Add some padding to separate from tabs */
+        }
+        .tab-content-pane.active-tab-pane {
+            display: block; /* The active tab content pane is shown */
+        }
+
+        /* Styles for the tab buttons/navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center; /* Center the tabs */
+            margin-bottom: 20px; /* Space between tabs and content */
+            border-bottom: 2px solid #333; /* Underline for tabs */
+            padding-bottom: 5px;
+            gap: 10px; /* Space between tab buttons */
+        }
+        .tab-button {
+            background-color: #2a2a3a; /* Darker background for tabs */
+            color: #eee;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px 5px 0 0; /* Rounded top corners */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap; /* Prevent wrapping on smaller screens */
+        }
+        .tab-button:hover {
+            background-color: #3a3a4a;
+            color: #ffd700; /* Gold on hover */
+        }
+        .tab-button.active {
+            background-color: #ffd700; /* Gold for active tab */
+            color: #222; /* Dark text for active tab */
+            font-weight: bold;
+            border-bottom: 2px solid #ffd700; /* Match active border */
+        }
+
+        /* Adjustments for existing sections when they become tab panes */
+        .panel {
+            /* Ensure the panel can contain the tab content properly, e.g., for relative positioning */
+            position: relative; /* If you add absolute positioned elements later, this is crucial */
+            padding-top: 0; /* Remove top padding if tabs are directly inside, adjust as needed */
+            box-sizing: border-box;
+        }
+
+        /* Ensure section titles within tabs still look good */
+        .tab-content-pane .section-title {
+            margin-top: 0; /* Remove top margin if needed when inside a tab */
+        }
+
+        /* Media queries for tab buttons if they get too crowded */
+        @media (max-width: 768px) {
+            .tab-nav {
+                flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+                justify-content: flex-start; /* Align to start when wrapping */
+            }
+            .tab-button {
+                flex-grow: 1; /* Allow buttons to grow to fill space */
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="achievements" class="achievements" aria-live="polite"></div>
@@ -28,79 +94,148 @@
             <p>Connect, Build, and Innovate Together</p>
         </header>
         <main class="panel">
-            <section id="matchmaking-section">
+            <div class="tab-nav">
+                <button class="tab-button active" data-tab="profile">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> Create Profile
+                </button>
+                <button class="tab-button" data-tab="search">
+                    <i class="fas fa-search" aria-hidden="true"></i> Individual Search
+                </button>
+                <button class="tab-button" data-tab="team-builder">
+                    <i class="fas fa-users" aria-hidden="true"></i> Team Builder
+                </button>
+                <button class="tab-button" data-tab="leaderboard">
+                    <i class="fas fa-trophy" aria-hidden="true"></i> Leaderboard
+                </button>
+            </div>
+
+            <div id="profile" class="tab-content-pane active-tab-pane">
+                <section id="matchmaking-section">
+                    <h2 class="section-title">
+                        Create Your Profile
+                    </h2>
+                    <form id="skills-form">
+                        <div class="input-container">
+                            <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name">
+                            <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name">
+                            <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email">
+                            <label for="skills-input">Professional Skills (comma separated)</label>
+                            <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
+                            <div id="skills-proficiency-container"></div>
+                            <div id="autocomplete-skills-input" class="autocomplete-box"></div>
+                            <label for="photo-input">Upload Your Photo</label>
+                            <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
+                            <img id="preview" src="#" alt="Image Preview" class="image-preview" />
+                            <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
+                            <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
+                            <label for="availability-input">Current Availability</label>
+                            <select id="availability-input" aria-label="Current Availability">
+                                <option value="Available">Available</option>
+                                <option value="Busy">Busy</option>
+                                <option value="Not Looking">Not Looking</option>
+                            </select>
+                            <button type="submit">Register & Subscribe</button>
+                        </div>
+                        <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
+                        <div id="profile-progress-msg" class="profile-incomplete"></div>
+                    </form>
+                    <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
+                </section>
+            </div>
+
+            <div id="search" class="tab-content-pane">
                 <h2 class="section-title">
-                    <i class="fas fa-user-plus" aria-hidden="true"></i> Create Your Profile
+                    Individual Search
                 </h2>
-                <form id="skills-form">
-                    <div class="input-container">
-                        <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name">
-                        <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name">
-                        <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email">
-                        <label for="skills-input">Professional Skills (comma separated)</label>
-                        <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
-                        <div id="skills-proficiency-container"></div>
-                        <div id="autocomplete-skills-input" class="autocomplete-box"></div>
-                        <label for="photo-input">Upload Your Photo</label>
-                        <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
-                        <img id="preview" src="#" alt="Image Preview" class="image-preview" />
-                        <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
-                        <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
-                        <label for="availability-input">Current Availability</label>
-                        <select id="availability-input" aria-label="Current Availability">
-                            <option value="Available">Available</option>
-                            <option value="Busy">Busy</option>
-                            <option value="Not Looking">Not Looking</option>
-                        </select>
-                        <button type="submit">Register & Subscribe</button>
-                    </div>
-                    <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
-                    <div id="profile-progress-msg" class="profile-incomplete"></div>
-                </form>
-                <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
-            </section>
-
-            <div class="leaderboard" id="leaderboard-section" style="display:none;">
-                <h2>Top Endorsed Skills</h2>
-                <div id="leaderboard-rows"></div>
+                <div class="input-container">
+                    <label for="teamSkillsInput">Required Skills</label>
+                    <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
+                    <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+                    <button id="find-team-btn" type="button">Get People</button> <br> <br>
+                    <label for="nameInput">Search by First/Last Name</label>
+                    <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
+                    <button id="search-name-btn" type="button">Find by Name</button>
+                </div>
+                <div id="matchNotification" class="notification match-notification" style="display: none;"></div>
+                <div id="noResults" class="notification no-results-notification" style="display: none;"></div>
+                <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
             </div>
 
-            <h2 class="section-title">
-                <i class="fas fa-search" aria-hidden="true"></i> Individual Search
-            </h2>
-            <div class="input-container">
-                <label for="teamSkillsInput">Required Skills</label>
-                <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
-                <div id="autocomplete-team-skills" class="autocomplete-box"></div>
-                <button id="find-team-btn" type="button">Get People</button> <br> <br>
-                <label for="nameInput">Search by First/Last Name</label>
-                <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
-                <button id="search-name-btn" type="button">Find by Name</button>
+            <div id="team-builder" class="tab-content-pane">
+                <h2 class="section-title">
+                    Team Builder
+                </h2>
+                <div class="input-container">
+                    <p class="instructions">
+                        Let’s build your team. Enter required skills and number of people needed.
+                    </p>
+                    <label for="team-skills-input">Required Skills</label>
+                    <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
+                    <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
+                    <label for="teamSize">Team Size</label>
+                    <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
+                    <button onclick="buildBestTeam()">Build Team</button>
+                </div>
+                <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
             </div>
-            <div id="matchNotification" class="notification match-notification" style="display: none;"></div>
-            <div id="noResults" class="notification no-results-notification" style="display: none;"></div>
-            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
 
-            <h2 class="section-title">
-                <i class="fas fa-users" aria-hidden="true"></i> Team Builder
-            </h2>
-            <div class="input-container">
-                <p class="instructions">
-                    Let’s build your team. Enter required skills and number of people needed.
-                </p>
-                <label for="team-skills-input">Required Skills</label>
-                <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
-                <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
-                <label for="teamSize">Team Size</label>
-                <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
-                <button onclick="buildBestTeam()">Build Team</button>
+            <div id="leaderboard" class="tab-content-pane">
+                <div class="leaderboard" id="leaderboard-section">
+                    <h2>Top Endorsed Skills</h2>
+                    <div id="leaderboard-rows"></div>
+                </div>
             </div>
-            <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="main.js" defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to show a specific tab and hide others
+            function showTab(tabId) {
+                // Hide all tab content panes
+                document.querySelectorAll('.tab-content-pane').forEach(pane => {
+                    pane.classList.remove('active-tab-pane');
+                });
+
+                // Deactivate all tab buttons
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Show the selected tab content pane
+                const activePane = document.getElementById(tabId);
+                if (activePane) {
+                    activePane.classList.add('active-tab-pane');
+                }
+
+                // Activate the corresponding tab button
+                const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+
+                // Scroll to the top of the panel to ensure content is visible
+                const panel = document.querySelector('.panel');
+                if (panel) {
+                    panel.scrollTop = 0;
+                }
+            }
+
+            // Add click event listeners to tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    showTab(tabId);
+                });
+            });
+
+            // Show the default tab (e.g., 'profile') when the page loads
+            showTab('profile'); // This makes the "Create Profile" tab active by default
+        });
+    </script>
 </body>
 </html>
-    
