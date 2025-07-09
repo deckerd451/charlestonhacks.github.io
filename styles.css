@@ -738,6 +738,8 @@ footer {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
+<div style="height: 60px;"></div>
+
 
 /* ==========================================================================
    UTILITY CLASSES & MISC
