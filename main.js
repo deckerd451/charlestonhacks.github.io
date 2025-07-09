@@ -631,7 +631,7 @@ async function handleEndorsementSelection(emailToEndorse, skillToEndorse) {
  * @param {Object} user - User data object.
  * @returns {string} HTML string for the user card.
  */
-function generateUserCardHTML(user) { // No longer async, as it's a pure rendering function
+function generateUserCardHTML(user) {
     const cleanAvailability = (value) => {
         if (value === null || value === undefined) return 'Unavailable';
         if (typeof value !== 'string') return 'Unavailable';
@@ -667,6 +667,7 @@ function generateUserCardHTML(user) { // No longer async, as it's a pure renderi
         <div class="team-member-card" role="listitem">
             ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name} ${user.last_name}" loading="lazy" />` : ''}
             <div class="member-name">${user.first_name} ${user.last_name}</div>
+            <div class="member-email" style="color:##FFC107; font-size:0.9em; margin:3px 0;">${user.email}</div>
             ${user.Bio ? `<div style="color:var(--primary-color);font-size:.96em;margin:3px 0;">${user.Bio}</div>` : ''}
             <div class="user-status">Status: ${cleanAvailability(user.Availability)}</div>
             <div class="profile-section skill-tags">${skillBadges}</div>
