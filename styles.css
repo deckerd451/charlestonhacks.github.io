@@ -737,7 +737,7 @@ html, footer, .icons-container {
     font-size: 2rem;
     font-weight: 700;
     color: #ffd700;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .countdown-label {
@@ -780,7 +780,7 @@ html, footer, .icons-container {
     font-size: clamp(1.5rem, 4vw, 2.5rem); /* Responsive countdown size */
     font-weight: 700;
     color: #ffd700;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 footer {
