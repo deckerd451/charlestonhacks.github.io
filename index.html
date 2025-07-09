@@ -1,125 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json"> <!-- Link to manifest file -->
+    <!-- Add other meta tags and links as needed -->
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
-    <meta property="og:title" content="CharlestonHacks - Home" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
-    
     <title>CharlestonHacks - Home</title>
-    
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    
     <style>
-        /* ==========================================================================
-           CSS VARIABLES & RESET
-           ========================================================================== */
-        :root {
-            --primary-color: #FF0000;
-            --secondary-color: #FFFF00;
-            --text-color: white;
-            --background-color: black;
-            --transition-speed: 0.3s;
-            --border-radius: 50%;
-            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-            --clickable-size: 14vw;
-            --clickable-max-size: 90px;
-            --center-clickable-size: 16.5vw;
-            --center-clickable-max-size: 110px;
-        }
-
-        * {
+        /* Resetting default margin and padding */
+        body, h1, h2, h3, p, ul {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
-        /* ==========================================================================
-           BASE STYLES
-           ========================================================================== */
+        /* General styles */
+        /* Add the following CSS animation for the clickable elements */
+        #background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5; /* Adjust opacity if needed */
+    pointer-events: none; /* Prevent interaction with the video */
+}
+
+@keyframes animateClickables {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.clickable-area {
+    animation: animateClickables 1s ease-out forwards;
+    opacity: 0; /* Make them invisible initially */
+}
+
+.clickable-area.loaded {
+    opacity: 1; /* Make them visible after animation */
+}
+        /* Define the animation */
+@keyframes fadeInScaleUp {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+}
+    .clickable-area:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Apply the animation to the clickable elements */
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 10vw;
+    max-width: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    animation: fadeInScaleUp 1s ease-out forwards;
+}
+
+/* Customize individual positions */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
+.top-right {
+    top: 2%;
+    right: 4%;
+}
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
+.center-top {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.center-bottom {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+body {
+    position: relative;
+    z-index: 1;
+}
+
+
         body {
-            background-color: var(--background-color);
-            color: var(--text-color);
+            background-color: black;
+            color: white;
             font-family: 'Britannic Bold', Arial, sans-serif;
             overflow-x: hidden;
             position: relative;
             text-align: center;
-            z-index: 1;
         }
 
-        /* ==========================================================================
-           BACKGROUND VIDEO
-           ========================================================================== */
-        #background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        /* ==========================================================================
-           ANIMATIONS
-           ========================================================================== */
-        @keyframes fadeInScaleUp {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1.15);
-            }
-        }
-
-        @keyframes animateClickables {
-            from { 
-                opacity: 0; 
-                transform: translateY(20px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        @keyframes flipImageX {
-            0% { opacity: 1; }
-            50% { transform: rotateX(180deg); }
-            100% { transform: rotateX(360deg); opacity: 0; }
-        }
-
-        @keyframes flipImageY {
-            0% { opacity: 1; }
-            50% { transform: rotateY(180deg); }
-            100% { transform: rotateY(360deg); opacity: 0; }
-        }
-
-        /* ==========================================================================
-           PANEL & LAYOUT
-           ========================================================================== */
         .panel {
             width: 100%;
             min-height: 90vh;
@@ -134,9 +132,16 @@
             position: relative;
             z-index: 3;
             width: 100%;
-            max-width: 600px;
+            max-width: 600px; /* Adjust the max-width as needed */
             margin: 0 auto;
             overflow: hidden;
+        }
+
+        #missionVideo {
+            pointer-events: none;
+        }
+        #missionVideo.show {
+            pointer-events: auto;
         }
 
         .media-container img,
@@ -144,8 +149,8 @@
             width: 100%;
             height: auto;
             display: block;
-            object-fit: contain;
-        }
+             object-fit: contain; /* Maintains aspect ratio without distortion */
+}
 
         .media-container video {
             position: absolute;
@@ -155,86 +160,64 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
             z-index: 0;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
         }
 
-        /* ==========================================================================
-           CLICKABLE AREAS
-           ========================================================================== */
-        .clickable-area {
-            border: none;
-            background: none;
-            padding: 0;
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-            border-radius: var(--border-radius);
-            aspect-ratio: 1/1;
-            width: var(--clickable-size);
-            max-width: var(--clickable-max-size);
-            box-shadow: var(--box-shadow);
-            animation: fadeInScaleUp 1s ease-out forwards;
-            transition: transform var(--transition-speed) ease-in-out;
-            opacity: 0;
+        @media (max-width: 768px) {
+            .media-container {
+                max-width: 90%;
+            }
+        }
+        @media (max-width: 768px) {
+    #countdownWrapper {
+        position: absolute;
+        top: 25%; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
+
+    #countdown {
+        font-size: 24px;
+    }
+}
+@media (max-width: 768px) {
+    .center-top {
+        top: -30%; /* Move up by adjusting this value */
+    }
+
+    .center-bottom {
+        bottom: 0%; /* Move up by adjusting this value */
+    }
+}
+     
+  .clickable-area img {
+      padding: 0;
+      margin: 0;
+  }
+
+    .center-top, .center-bottom {
+        width: 16.5vw; /* Increase by 10% from 15vw */
+        max-width: 110px; /* Increase by 10% from 100px */
+    }
+
+  @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .clickable-area:hover {
-            transform: scale(1.2);
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
 
-        .clickable-area.loaded {
-            opacity: 1;
+        .fade-out {
+            animation: fadeOut 2s ease forwards;
         }
 
-        .clickable-area img {
-            padding: 0;
-            margin: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Position classes for clickable areas */
-        .top-left {
-            top: 2%;
-            left: 5%;
-        }
-
-        .top-right {
-            top: 2%;
-            right: 5%;
-        }
-
-        .bottom-left {
-            bottom: 2%;
-            left: 5%;
-        }
-
-        .bottom-right {
-            bottom: 2%;
-            right: 5%;
-        }
-
-        .center-top {
-            top: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: var(--center-clickable-size);
-            max-width: var(--center-clickable-max-size);
-        }
-
-        .center-bottom {
-            bottom: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: var(--center-clickable-size);
-            max-width: var(--center-clickable-max-size);
-        }
-
-        /* ==========================================================================
-           MISSION CONTENT
-           ========================================================================== */
         #missionContent {
             animation: fadeIn 0.9s ease forwards;
             position: absolute;
@@ -250,36 +233,47 @@
             opacity: 1;
         }
 
-        #missionContent p, 
-        #missionContent a {
-            color: var(--text-color);
+        #missionContent p, #missionContent a {
+            color: white;
         }
 
-        .body-text {
-            margin: 30px 0;
+        @keyframes flipImageX {
+            0% { opacity: 1; }
+            50% { transform: rotateX(180deg); }
+            to { transform: rotateX(360deg); opacity: 0; }
         }
 
-        .body-text a {
-            color: var(--text-color);
+        @keyframes flipImageY {
+            0% { opacity: 1; }
+            50% { transform: rotateY(180deg); }
+            to { transform: rotateY(360deg); opacity: 0; }
         }
 
-        .body-text p {
-            margin-bottom: 10px;
+        .flip-image-x {
+            animation: flipImageX 3s ease forwards;
+            z-index: 5; /* Ensure it's above everything else */
         }
 
-        .logo {
-            display: block;
-            margin: 0 auto 5px auto;
+        .flip-image-y {
+            animation: flipImageY 3s ease forwards;
+            z-index: 5; /* Ensure it's above everything else */
         }
 
-        .info {
-            color: var(--secondary-color);
-            font-size: 20px;
+        #missionVideo.fadeOut {
+            animation: fadeOut 18s ease forwards !important;
+            z-index: 1;
         }
 
-        /* ==========================================================================
-           COUNTDOWN
-           ========================================================================== */
+        #cardFrame {
+            display: none; /* Initially hidden */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Positioned under other elements */
+        }
+
         #countdownWrapper {
             margin-top: 20px;
             text-align: center;
@@ -287,24 +281,59 @@
 
         #countdown {
             font-size: 32px;
-            color: var(--primary-color);
+            color: #FF0000;
         }
 
-        /* ==========================================================================
-           UTILITY CLASSES
-           ========================================================================== */
-        .fade-out {
-            animation: fadeOut 2s ease forwards;
+        @media (max-width: 768px) {
+            #countdown {
+                font-size: 24px; /* Smaller font size for mobile */
+            }
         }
 
-        .flip-image-x {
-            animation: flipImageX 3s ease forwards;
-            z-index: 5;
+        .logo {
+            display: block;
+            margin: 0 auto 5px auto; /* Center horizontally and add bottom margin */
         }
 
-        .flip-image-y {
-            animation: flipImageY 3s ease forwards;
-            z-index: 5;
+        .info {
+            color: #FFFF00;
+            font-size: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .info {
+                font-size: 16px; /* Smaller font size for mobile */
+            }
+        }
+
+        .body-text {
+            margin: 30px 0;
+        }
+
+        .body-text a {
+            color: white;
+        }
+
+        .body-text p {
+            margin-bottom: 10px;
+        }
+
+        #previousEventsToggle {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #previousEventsToggle i {
+            background: none;
+            border: none;
+            padding: 0;
         }
 
         .loading-indicator {
@@ -316,456 +345,401 @@
             z-index: 3;
         }
 
-        #cardFrame {
+        /* Spinning progress wheel */
+        .spinner {
             display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 8px solid #fff;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            z-index: 1000; /* Ensure it's above everything else */
         }
 
-        #spinner {
-            display: none;
-            /* Add spinner styles here */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* ==========================================================================
-           RESPONSIVE DESIGN
-           ========================================================================== */
-        @media (max-width: 768px) {
-            .media-container {
-                max-width: 90%;
-            }
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%; /* Make it circular */
+    aspect-ratio: 1/1; /* Maintain perfect circle */
+    width: 15vw; /* Adjust size based on viewport width */
+    max-width: 100px; /* Prevent it from getting too large */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+}
 
-            #countdown {
-                font-size: 24px;
-            }
+.clickable-area:hover {
+    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
 
-            .info {
-                font-size: 16px;
-            }
+}
 
-            .center-top {
-                top: -30%;
-            }
+/* Adjust position as needed */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
 
-            .center-bottom {
-                bottom: 0%;
-            }
+.top-right {
+    top: 2%;
+    right: 4%;
+}
 
-            #countdownWrapper {
-                position: absolute;
-                top: 25%;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-            }
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
 
-            #missionContent {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding-bottom: 70px;
-            }
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
+        .fade-out-body *:not(.spinner) {
+            animation: fadeOut 2s ease forwards;
         }
 
+        /* Make hcard and all elements 20% smaller on web only */
         @media (min-width: 769px) {
             .media-container {
                 transform: scale(0.8);
-            }
-        }
-
-        /* ==========================================================================
-           FOOTER
-           ========================================================================== */
-        .icons-container {
+        
+    @media (max-width: 768px) {
+        #missionContent {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
-            padding: 20px;
         }
-
-        .icons-container a {
-            color: var(--text-color);
-            font-size: 24px;
-            transition: color var(--transition-speed) ease;
+        
+        #countdownWrapper {
+            position: static;
+            margin-top: 20px;
+            order: 2; /* This ensures it appears below the banner */
+            width: 100%;
+            transform: none;
         }
-
-        .icons-container a:hover {
-            color: var(--secondary-color);
+        
+        .body-text {
+            order: 1; /* This ensures the banner appears above the countdown */
+            width: 100%;
         }
+    @media (max-width: 768px) {
+        #countdownWrapper {
+            position: absolute;
+            top: auto; /* Remove any existing top positioning */
+            bottom: -60px; /* Position it below the banner */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+        
+        #missionContent {
+            padding-bottom: 70px; /* Add padding to make room for the countdown */
+        }
+    }
     </style>
 </head>
 
+   <video autoplay muted id="background-video">
+    <source src="assets/Happy-Hour.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+
+<script>
+    // Adjust the playback speed
+    document.getElementById('background-video').playbackRate = 0.8;
+</script>
+
+
+
 <body class="is-preload">
-    <main>
-        <div id="main">
-            <article class="post featured">
-                <header class="major">
-                    <div class="panel">
-                        <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                            <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
-                            
-                            <div id="missionContent">
-                                <div class="body-text">
-                                    <p>
-                                        <img id="aiffBanner" 
-                                             src="images/iegold.svg" 
-                                             alt="Innovation Engine" 
-                                             style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
-                                             onclick="flipAndRedirect()">
-                                    </p>
-                                </div>
-                                <div id="countdownWrapper">
-                                    <div id="countdown"></div>
-                                </div>
+    <div id="main">
+        <article class="post featured">
+            <header class="major">
+                <div class="panel">
+                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
+                        <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
+                        <div id="missionContent">
+                            <div class="body-text">
+                                <p>
+                                    <img id="aiffBanner" src="images/aiffspin.svg" alt="AI Film Fest" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" onclick="flipAndRedirect()">
+                                </p>
                             </div>
-
-                            <video id="missionVideo" 
-                                   muted 
-                                   playsinline 
-                                   controls>
-                                <source src="images/universe.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            
-                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
-                            
-                            <div class="loading-indicator" id="loadingIndicator">
-                                <i class="fas fa-spinner fa-spin"></i>
+                            <div id="countdownWrapper">
+                               
+                                <div id="countdown"></div>
                             </div>
+                        </div>
+                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
+                            <source src="images/aiffcardvideo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
+                        <div class="loading-indicator" id="loadingIndicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
 
-                            <!-- Navigation buttons -->
-                            <button type="button" class="clickable-area top-left" 
-                                    data-sound="chime" 
-                                    data-image="images/yellowscullcard.png" 
-                                    data-url="Poster.html">
-                                <img src="images/infon.svg" alt="Info">
-                            </button>
-                            
-                            <button type="button" class="clickable-area top-right" 
-                                    data-sound="chime" 
-                                    data-image="images/redscullcard.png" 
-                                    data-url="2card.html">
-                                <img src="images/peoplen.svg" alt="People">
-                            </button>
-                            
-                            <button type="button" class="clickable-area bottom-left" 
-                                    data-sound="chime" 
-                                    data-image="images/Descartes.png" 
-                                    data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
-                                <img src="images/newsn.svg" alt="News">
-                            </button>
-                            
-                            <button type="button" class="clickable-area bottom-right" 
-                                    data-sound="chime" 
-                                    data-image="images/Alexandor.png" 
-                                    data-url="subscribe.html">
-                                <img src="images/envelopen.svg" alt="Envelope">
-                            </button>
-                        </a>
-                    </div>
-                </header>
-            </article>
-        </div>
-    </main>
+                        <!-- Clickable areas -->
+                        <div class="clickable-area top-left" data-sound="keys" data-url="Poster.html">
+                            <img src="images/infon.svg" alt="Info">
+                        </div>
+                        <div class="clickable-area top-right" data-sound="keys" data-url="2card.html">
+                            <img src="images/peoplen.svg" alt="People">
+                        </div>
+                        <div class="clickable-area bottom-left" data-sound="keys" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+                            <img src="images/newsn.svg" alt="News">
+                        </div>
+                        <div class="clickable-area bottom-right" data-sound="keys" data-url="subscribe.html">
+                            <img src="images/envelopen.svg" alt="Envelope">
+                        </div>
+                    </a>
+                </div>
+            </header>
+        </article>
+    </div>
 
+    <!-- Spinning progress wheel -->
     <div id="spinner" class="spinner"></div>
-
-    <footer>
-        <section class="icons-container">
-            <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
-                <i class="fas fa-info-circle"></i>
-            </a>
-            <a href="https://www.youtube.com/shorts/RXvlYF1jVuE" aria-label="YouTube Shorts">
-                <i class="fas fa-users"></i>
-            </a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
-                <i class="fas fa-envelope"></i>
-            </a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </section>
-    </footer>
 
     <script src="ho-script.js"></script>
     <script>
-        // ==========================================================================
-        // CONFIGURATION
-        // ==========================================================================
-        const CONFIG = {
-            countdown: {
-                targetDate: "June 1, 2025 19:00:00",
-                completedMessage: "Innovation Engine is here!"
-            },
-            audio: {
-                cardflip: 'assets/atmospherel.m4a',
-                keys: 'assets/keys.m4a',
-                chime: 'assets/chime.mp3'
-            },
-            cardImages: [
-                "images/yellowscullcard.png",
-                "images/redscullcard.png",
-                "images/Descartes.png",
-                "images/Alexandor.png",
-                "images/Medusa.png",
-                "images/Elara.png",
-                "images/adventurercard.png",
-                "images/collaboratorcard.png",
-                "images/humanitariancard.png",
-                "images/nextcard.png",
-                "images/Aegis.png",
-                "images/resilientcard.png",
-                "images/Astrid.png",
-                "images/nicolecard.png"
-            ]
+        var countdownElement = document.getElementById('countdown');
+        var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
+        var countdownFunction = setInterval(function () {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                countdownElement.innerHTML = "AIFF is Here!";
+            }
+        }, 1000);
+
+        var cardImages = [
+            "images/yellowscullcard.png",
+            "images/redscullcard.png",
+            "images/Descartes.png",
+            "images/Alexandor.png",
+            "images/Medusa.png",
+            "images/Elara.png",
+            "images/adventurercard.png",
+            "images/collaboratorcard.png",
+            "images/humanitariancard.png",
+            "images/nextcard.png",
+            "images/Aegis.png",
+            "images/resilientcard.png",
+            "images/Astrid.png",
+            "images/nicolecard.png"
+        ];
+
+        let cardClicked = false;
+
+        // Simplify audio handling with a sound map
+        const sounds = {
+            cardflip: new Audio('assets/atmospherel.m4a'),
+            keys: new Audio('assets/keys.m4a'),
+            ding: new Audio('assets/ding.mp3')
         };
 
-        // ==========================================================================
-        // AUDIO CONTROLLER
-        // ==========================================================================
-        const AudioController = {
-            preloaded: false,
-            
-            preloadAudio() {
-                if (this.preloaded) return;
-                
-                Object.keys(CONFIG.audio).forEach(key => {
-                    const src = CONFIG.audio[key];
-                    if (src) new Audio(src);
-                });
-                
-                this.preloaded = true;
-            },
-            
-            playSound(soundKey) {
-                const soundSrc = CONFIG.audio[soundKey];
-                if (!soundSrc) return;
-                
-                const audio = new Audio(soundSrc);
-                audio.volume = 0.2;
+        // Lower the volume of all sounds by 30%
+        Object.keys(sounds).forEach(key => {
+            sounds[key].volume = 0.3;
+        });
+
+        function getRandomImage() {
+            var randomIndex = Math.floor(Math.random() * cardImages.length);
+            return cardImages[randomIndex];
+        }
+
+        function playSound(soundKey) {
+            const audio = sounds[soundKey];
+            if (audio) {
+                audio.currentTime = 0; // Reset to start
                 audio.play().catch(error => {
                     console.error('Audio playback failed:', error);
                 });
             }
-        };
+        }
 
-        // ==========================================================================
-        // VIDEO CONTROLLER
-        // ==========================================================================
-        const VideoController = {
-            showLoadingIndicator() {
-                document.getElementById('loadingIndicator').style.display = 'block';
-            },
-            
-            hideLoadingIndicator() {
-                document.getElementById('loadingIndicator').style.display = 'none';
-            },
-            
-            handleError() {
-                alert("Error loading video. Please try again later.");
-            },
-            
-            showCardFrame() {
-                document.getElementById('cardFrame').style.display = 'block';
-            }
-        };
-
-        // ==========================================================================
-        // COUNTDOWN CONTROLLER
-        // ==========================================================================
-        const CountdownController = {
-            element: null,
-            interval: null,
-            
-            init() {
-                this.element = document.getElementById('countdown');
-                this.start();
-            },
-            
-            start() {
-                const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
-                
-                this.interval = setInterval(() => {
-                    const now = new Date().getTime();
-                    const distance = countDownDate - now;
-                    
-                    if (distance < 0) {
-                        this.stop();
-                        this.element.innerHTML = CONFIG.countdown.completedMessage;
-                        return;
-                    }
-                    
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
-                    this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-                }, 1000);
-            },
-            
-            stop() {
-                if (this.interval) {
-                    clearInterval(this.interval);
-                    this.interval = null;
-                }
-            }
-        };
-
-        // ==========================================================================
-        // CARD CONTROLLER
-        // ==========================================================================
-        const CardController = {
-            clicked: false,
-            
-            getRandomImage() {
-                const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
-                return CONFIG.cardImages[randomIndex];
-            },
-            
-            getRandomFlip() {
-                return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            },
-            
-            flipCard(imageSrc, url) {
-                const missionImage = document.getElementById('missionImage');
-                const randomFlip = this.getRandomFlip();
-                
-                missionImage.classList.add(randomFlip);
-                document.body.classList.add('fade-out-body');
-                document.getElementById('spinner').style.display = 'block';
-                
-                // Redirect immediately
-                window.location.href = url;
-                
-                setTimeout(() => {
-                    missionImage.src = imageSrc;
-                }, 2000);
-            }
-        };
-
-        // ==========================================================================
-        // MAIN APPLICATION
-        // ==========================================================================
-        const App = {
-            init() {
-                this.setupEventListeners();
-                this.setupClickableAreas();
-                this.setupVideoHandlers();
-                CountdownController.init();
-            },
-            
-            setupEventListeners() {
-                // Preload audio on first user interaction
-                window.addEventListener('pointerdown', () => {
-                    AudioController.preloadAudio();
-                }, { once: true });
-                
-                // Handle page navigation
-                window.addEventListener('beforeunload', () => {
-                    document.getElementById('spinner').style.display = 'none';
-                });
-                
-                window.addEventListener('pageshow', () => {
-                    document.body.classList.remove('fade-out-body');
-                });
-                
-                // Show clickable areas when DOM is loaded
-                document.addEventListener('DOMContentLoaded', () => {
-                    document.querySelectorAll('.clickable-area').forEach(element => {
-                        element.classList.add('loaded');
-                    });
-                });
-            },
-            
-            setupVideoHandlers() {
-                const video = document.getElementById('missionVideo');
-                if (video) {
-                    video.addEventListener('loadstart', VideoController.showLoadingIndicator);
-                    video.addEventListener('canplay', VideoController.hideLoadingIndicator);
-                    video.addEventListener('error', VideoController.handleError);
-                    video.addEventListener('ended', VideoController.showCardFrame);
-                }
-            },
-            
-            setupClickableAreas() {
-                document.querySelectorAll('.clickable-area').forEach(area => {
-                    area.addEventListener('click', function() {
-                        const sound = this.getAttribute('data-sound');
-                        const image = this.getAttribute('data-image');
-                        const url = this.getAttribute('data-url');
-                        
-                        AudioController.playSound(sound);
-                        CardController.flipCard(image, url);
-                    });
-                    
-                    area.addEventListener('keydown', function(e) {
-                        if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            this.click();
-                        }
-                    });
-                });
-            }
-        };
-
-        // ==========================================================================
-        // GLOBAL FUNCTIONS (for inline event handlers)
-        // ==========================================================================
         function toggleMissionContent() {
-            if (CardController.clicked) return;
-            CardController.clicked = true;
-            
-            AudioController.playSound('cardflip');
-            
-            const image = document.getElementById('missionImage');
-            image.src = CardController.getRandomImage();
-            
-            const video = document.getElementById('missionVideo');
+            if (cardClicked) return;
+            cardClicked = true;
+
+            var image = document.getElementById('missionImage');
+            image.src = getRandomImage();
+
+            var video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 0;
-            
-            setTimeout(() => {
+            setTimeout(function() {
                 video.style.opacity = 1;
-            }, 100);
-            
+            }, 100); // Delay to allow transition to take effect
             video.play();
+
             document.getElementById('missionContent').style.display = 'block';
-            
-            const randomFlip = CardController.getRandomFlip();
+
+            setTimeout(function () {
+                video.classList.add('fadeOut');
+                setTimeout(function () {
+                    video.style.display = 'none';
+                }, 18000);
+            }, 18000);
+
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             image.classList.add(randomFlip);
         }
-        
+
         function flipAndRedirect() {
-            const banner = document.getElementById('aiffBanner');
-            const randomFlip = CardController.getRandomFlip();
-            
+            var banner = document.getElementById('aiffBanner');
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             banner.classList.add(randomFlip);
-            
-            setTimeout(() => {
-                window.location.href = 'https://innovation-engine.devpost.com/';
+            setTimeout(function () {
+                window.location.href = 'https://charlestonhacks.com/techweek.html';
             }, 2000);
         }
 
-        // ==========================================================================
-        // INITIALIZE APPLICATION
-        // ==========================================================================
-        App.init();
+        function flipCard(imageSrc, url) {
+            var missionImage = document.getElementById('missionImage');
+            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            missionImage.classList.add(randomFlip);
+
+            // Apply fade-out effect to the body content except the spinner
+            document.body.classList.add('fade-out-body');
+
+            // Show spinner
+            document.getElementById('spinner').style.display = 'block';
+
+            // Redirect immediately
+            window.location.href = url;
+
+            setTimeout(function () {
+                missionImage.src = imageSrc;
+            }, 2000); // Adjust the delay to match the fade-out duration
+        }
+
+        document.querySelectorAll('.clickable-area').forEach(area => {
+            area.addEventListener('click', function() {
+                const sound = this.getAttribute('data-sound');
+                const image = this.getAttribute('data-image');
+                const url = this.getAttribute('data-url');
+                playSound(sound);
+                flipCard(image, url);
+            });
+        });
+
+        function toggleVisibility() {
+            var eventsSection = document.querySelector('.previous-events');
+            eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'block';
+        }
+
+        function hideLoadingIndicator() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+
+        function handleVideoError() {
+            alert("Error loading video. Please try again later.");
+        }
+
+        function showCardFrame() {
+            document.getElementById('cardFrame').style.display = 'block';
+        }
+
+        const videoElement = document.getElementById('missionVideo');
+        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
+        videoElement.addEventListener('ended', showCardFrame);
+
+        // Ensure the spinner remains visible until the link is opened
+        window.addEventListener('beforeunload', function () {
+            document.getElementById('spinner').style.display = 'none';
+        });
+
+        // Remove fade-out class when the page is loaded or navigated back
+        window.addEventListener('pageshow', function () {
+            document.body.classList.remove('fade-out-body');
+        });
     </script>
-    <script src="dist/bundle.js"></script>
+<script>
+    window.onload = () => {
+        // Select all clickable areas
+        const clickableElements = document.querySelectorAll('.clickable-area');
+
+        // Add the "loaded" class to each clickable area to trigger the animation
+        clickableElements.forEach(element => {
+            element.classList.add('loaded');
+        });
+    };
+</script>
+    <script>
+    function showLoadingIndicator() {
+        document.getElementById('loadingIndicator').style.display = 'block';
+    }
+
+    function hideLoadingIndicator() {
+        document.getElementById('loadingIndicator').style.display = 'none';
+    }
+
+    function handleVideoError() {
+        alert("Error loading video. Please try again later.");
+    }
+
+    function showCardFrame() {
+        document.getElementById('cardFrame').style.display = 'block';
+    }
+
+    // Other existing functions...
+
+    const videoElement = document.getElementById('missionVideo');
+    videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
+    videoElement.addEventListener('ended', showCardFrame);
+
+    // Ensure the spinner remains visible until the link is opened
+    window.addEventListener('beforeunload', function () {
+        document.getElementById('spinner').style.display = 'none';
+    });
+
+    // Remove fade-out class when the page is loaded or navigated back
+    window.addEventListener('pageshow', function () {
+        document.body.classList.remove('fade-out-body');
+    });
+        
+</script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all clickable areas
+        const clickableAreas = document.querySelectorAll(".clickable-area");
+
+        clickableAreas.forEach(area => {
+            area.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default navigation
+
+                const targetUrl = area.getAttribute("data-url"); // Ensure each clickable has a data-url attribute
+
+                if (targetUrl) {
+                    const userConfirmed = confirm("Do you want to navigate to this page?");
+                    
+                    if (userConfirmed) {
+                        window.location.href = targetUrl; // Navigate if user confirms
+                    }
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
