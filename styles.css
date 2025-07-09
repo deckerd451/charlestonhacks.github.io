@@ -668,13 +668,20 @@ html, footer, .icons-container {
 }
 
 /* --- Footer Social for new UI (different from original .icons-container) --- */
+/* Fully responsive footer */
 .social-container {
-    padding-top: clamp(15px, 4vw, 40px); /* Min 15px, max 40px, scales with viewport */
+    display: flex;
+    justify-content: center;
+    gap: clamp(15px, 3vw, 25px); /* Responsive gap between icons */
+    margin-top: auto;
+    padding-top: clamp(15px, 4vw, 40px); /* Already responsive */
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 0.8s forwards;
 }
 
 .social-link {
-    width: 50px;
-    height: 50px;
+    width: clamp(40px, 8vw, 60px); /* Responsive icon size */
+    height: clamp(40px, 8vw, 60px); /* Responsive icon size */
     background: linear-gradient(135deg,#ffd700,#ff6b35);
     border-radius: 50%;
     display: flex;
@@ -682,7 +689,7 @@ html, footer, .icons-container {
     justify-content: center;
     color: white;
     text-decoration: none;
-    font-size: 20px;
+    font-size: clamp(16px, 3vw, 24px); /* Responsive font size */
     transition: var(--transition);
 }
 
@@ -690,12 +697,20 @@ html, footer, .icons-container {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
+
+.countdown {
+    font-size: clamp(1.5rem, 4vw, 2.5rem); /* Responsive countdown size */
+    font-weight: 700;
+    color: #ffd700;
+    margin-bottom: 10px;
+}
+
 footer {
     background: transparent !important;
     position: relative;
     z-index: 1;
+    padding: clamp(10px, 2vw, 20px); /* Responsive footer padding */
 }
-
 /* ==========================================================================
    UTILITY CLASSES & MISC
    ========================================================================== */
