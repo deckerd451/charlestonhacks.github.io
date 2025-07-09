@@ -157,6 +157,21 @@ html, footer, .icons-container {
         opacity:1;
         transform: translateY(0);
     }
+   @keyframes fadeZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.splash-animated {
+  animation: fadeZoomIn 1s ease-out forwards;
+}
+
 }
 
 /* ==========================================================================
