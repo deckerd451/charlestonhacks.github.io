@@ -326,55 +326,57 @@
             z-index: 1;
         }
 
+        #spinner {
+            display: none;
+            /* Add spinner styles here */
+        }
+
         /* ==========================================================================
            RESPONSIVE DESIGN
            ========================================================================== */
-@media (max-width: 768px) {
-    .media-container {
-        max-width: 90%;
-    }
+        @media (max-width: 768px) {
+            .media-container {
+                max-width: 90%;
+            }
 
-    #countdown {
-        font-size: 24px;
-    }
+            #countdown {
+                font-size: 24px;
+            }
 
-    .info {
-        font-size: 16px;
-    }
+            .info {
+                font-size: 16px;
+            }
 
-    .center-top {
-        top: -30%;
-    }
+            .center-top {
+                top: -30%;
+            }
 
-    .center-bottom {
-        bottom: 0%;
-    }
+            .center-bottom {
+                bottom: 0%;
+            }
 
-    #missionContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 70px;
-    }
+            #countdownWrapper {
+                position: absolute;
+                top: 25%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+            }
 
-    #aiffBanner {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 40px;
-    }
+            #missionContent {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-bottom: 70px;
+            }
+        }
 
-    /* ---- Add these here ---- */
-    #countdownWrapper {
-        margin-bottom: 30px; /* or more, as needed */
-    }
-    .icons-container {
-        margin-bottom: 30px; /* or more, as needed */
-    }
-    footer {
-        padding-bottom: 30px; /* for extra space at bottom */
-    }
-}
+        @media (min-width: 769px) {
+            .media-container {
+                transform: scale(0.8);
+            }
+        }
+
         /* ==========================================================================
            FOOTER
            ========================================================================== */
@@ -395,14 +397,6 @@
         .icons-container a:hover {
             color: var(--secondary-color);
         }
-        html, body, footer, .icons-container {
-  background: var(--background-color, black) !important;
-}
-        @media (min-width: 769px) {
-    .media-container {
-        transform: scale(0.8);
-    }
-}
     </style>
 </head>
 
@@ -419,11 +413,14 @@
                                 <div class="body-text">
                                     <p>
                                         <img id="aiffBanner" 
-                                             src="images/engine.webp" 
+                                             src="images/iegold.svg" 
                                              alt="Innovation Engine" 
                                              style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
                                              onclick="flipAndRedirect()">
                                     </p>
+                                </div>
+                                <div id="countdownWrapper">
+                                    <div id="countdown"></div>
                                 </div>
                             </div>
 
@@ -436,6 +433,10 @@
                             </video>
                             
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
+                            
+                            <div class="loading-indicator" id="loadingIndicator">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
 
                             <!-- Navigation buttons -->
                             <button type="button" class="clickable-area top-left" 
@@ -472,10 +473,9 @@
         </div>
     </main>
 
+    <div id="spinner" class="spinner"></div>
+
     <footer>
-        <div id="countdownWrapper">
-        <div id="countdown"></div>
-                                </div>
         <section class="icons-container">
             <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
                 <i class="fas fa-info-circle"></i>
@@ -508,8 +508,8 @@
         // ==========================================================================
         const CONFIG = {
             countdown: {
-                targetDate: "June 27, 2025 12:00:00",
-                completedMessage: "Submission Deadline is Here!"
+                targetDate: "June 1, 2025 19:00:00",
+                completedMessage: "Innovation Engine is here!"
             },
             audio: {
                 cardflip: 'assets/atmospherel.m4a',
@@ -647,7 +647,7 @@
                 
                 missionImage.classList.add(randomFlip);
                 document.body.classList.add('fade-out-body');
-                
+                document.getElementById('spinner').style.display = 'block';
                 
                 // Redirect immediately
                 window.location.href = url;
@@ -677,7 +677,7 @@
                 
                 // Handle page navigation
                 window.addEventListener('beforeunload', () => {
-                   
+                    document.getElementById('spinner').style.display = 'none';
                 });
                 
                 window.addEventListener('pageshow', () => {
@@ -766,5 +766,6 @@
         // ==========================================================================
         App.init();
     </script>
+    <script src="dist/bundle.js"></script>
 </body>
 </html>
