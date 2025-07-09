@@ -669,13 +669,7 @@ html, footer, .icons-container {
 
 /* --- Footer Social for new UI (different from original .icons-container) --- */
 .social-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: auto;
-    padding-top: 0px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.8s forwards;
+    padding-top: clamp(15px, 4vw, 40px); /* Min 15px, max 40px, scales with viewport */
 }
 
 .social-link {
