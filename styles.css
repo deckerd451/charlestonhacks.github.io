@@ -681,10 +681,23 @@ footer {
     transform: translateX(0);
 }
 
-/* --- Countdown for new UI (if different from original) --- */
+/* ==========================================================================
+   CARD CONTAINER - MODIFIED MARGIN TO REDUCE SPACING BELOW CARDS
+   ========================================================================== */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 0 0 8px 0; /* Reduced bottom margin from 20px */
+}
+
+/* ==========================================================================
+   COUNTDOWN CONTAINER - MODIFIED MARGIN TO REDUCE SPACING ABOVE COUNTDOWN
+   ========================================================================== */
 .countdown-container {
     text-align: center;
-    margin: 32px 0 8px 0;
+    margin: 8px 0 10px 0; /* Reduced top margin from 32px to 8px */
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.6s forwards;
 }
@@ -693,12 +706,7 @@ footer {
     font-size: 2rem;
     font-weight: 700;
     color: #ffd700;
-    margin-bottom: 10px;
-}
-
-.countdown-label {
-    font-size: 1rem;
-    opacity: 0.7;
+    margin-bottom: 5px;
 }
 
 /* --- Footer Social for new UI (different from original .icons-container) --- */
