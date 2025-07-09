@@ -83,8 +83,40 @@
                 max-width: 90%;
             }
         }
+        @media (max-width: 768px) {
+    #countdownWrapper {
+        position: absolute;
+        top: 25%; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
 
-        @keyframes fadeIn {
+    #countdown {
+        font-size: 24px;
+    }
+}
+@media (max-width: 768px) {
+    .center-top {
+        top: -30%; /* Move up by adjusting this value */
+    }
+
+    .center-bottom {
+        bottom: 0%; /* Move up by adjusting this value */
+    }
+}
+     
+  .clickable-area img {
+      padding: 0;
+      margin: 0;
+  }
+
+    .center-top, .center-bottom {
+        width: 16.5vw; /* Increase by 10% from 15vw */
+        max-width: 110px; /* Increase by 10% from 100px */
+    }
+
+  @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
@@ -172,7 +204,7 @@
 
         .logo {
             display: block;
-            margin: 0 auto 20px auto; /* Center horizontally and add bottom margin */
+            margin: 0 auto 5px auto; /* Center horizontally and add bottom margin */
         }
 
         .info {
@@ -246,64 +278,56 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* New clickable areas on the card */
-        .clickable-area {
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-        }
+.clickable-area {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: 50%; /* Make it circular */
+    aspect-ratio: 1/1; /* Maintain perfect circle */
+    width: 15vw; /* Adjust size based on viewport width */
+    max-width: 100px; /* Prevent it from getting too large */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+}
 
-        .top-left {
-            top: .5%;
-            left: 2%;
-            width: 20%;
-            height: 20%;
-        }
+.clickable-area:hover {
+    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
 
-        .top-right {
-            top: .5%;
-            right: 2.4%;
-            width: 20%;
-            height: 20%;
-        }
+}
 
-        .bottom-left {
-            bottom: -4.6%;
-            left: 2%;
-            width: 20%;
-            height: 20%;
-        }
+/* Adjust position as needed */
+.top-left {
+    top: 2%;
+    left: 4%;
+}
 
-        .bottom-right {
-            bottom: -4.6%;
-            right: 2.4%;
-            width: 20%;
-            height: 20%;
-        }
+.top-right {
+    top: 2%;
+    right: 4%;
+}
 
-        .center-top {
-            top: .6%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20%;
-            height: 20%;
-        }
+.bottom-left {
+    bottom: 2%;
+    left: 4%;
+}
 
-        .center-bottom {
-            bottom: -4.4%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20%;
-            height: 20%;
-        }
-        
-        /* Placeholder asset style */
-        .clickable-area img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-        }
+.bottom-right {
+    bottom: 2%;
+    right: 4%;
+}
+
+.center-top {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.center-bottom {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
 
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
@@ -324,7 +348,7 @@
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/hcard1.png" alt="CharlestonHacks" style="z-index: 3;" />
+                        <img id="missionImage" src="images/hcardsimple.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
@@ -333,7 +357,7 @@
                                 </p>
                             </div>
                             <div id="countdownWrapper">
-                                <p class="info"><b>Countdown to AI Film Fest:</b></p>
+                               
                                 <div id="countdown"></div>
                             </div>
                         </div>
@@ -360,10 +384,10 @@
                             <img src="images/envelopeg.svg" alt="Envelope">
                         </div>
                         <div class="clickable-area center-top" data-sound="keys" data-image="images/Medusa.png" data-url="https://www.linkedin.com/company/charlestonhacks">
-                            <img src="images/crest1.svg" alt="Crest">
+                            <img src="images/crestn.svg" alt="Crest">
                         </div>
                         <div class="clickable-area center-bottom" data-sound="keys" data-image="images/Elara.png" data-url="https://www.instagram.com/charlestonhacks/">
-                            <img src="images/keys1.svg" alt="Keys">
+                            <img src="images/keysn.svg" alt="Keys">
                         </div>
                     </a>
                 </div>
