@@ -788,6 +788,7 @@ footer {
     position: relative;
     z-index: 1;
     padding: clamp(10px, 2vw, 20px); /* Responsive footer padding */
+padding-bottom: 60px; /* 👈 Add this line */
 }
 /* ==========================================================================
    UTILITY CLASSES & MISC
