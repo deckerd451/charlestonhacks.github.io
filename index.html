@@ -3,121 +3,422 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-    <meta property="og:title" content="<title>CharlestonHacks | Charleston Hackathons & Tech Events</title>" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
+    <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
+    <meta property="og:title" content="CharlestonHacks - Home" />
+    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
+    
     <title>CharlestonHacks - Home</title>
+    
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    
     <style>
+        /* ==========================================================================
+           CSS VARIABLES & RESET
+           ========================================================================== */
+        :root {
+            --primary-color: #FF0000;
+            --secondary-color: #FFFF00;
+            --text-color: white;
+            --background-color: black;
+            --transition-speed: 0.3s;
+            --border-radius: 50%;
+            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            --clickable-size: 14vw;
+            --clickable-max-size: 90px;
+            --center-clickable-size: 16.5vw;
+            --center-clickable-max-size: 110px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ==========================================================================
+           BASE STYLES
+           ========================================================================== */
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Britannic Bold', Arial, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            text-align: center;
+            z-index: 1;
+        }
+
+        /* ==========================================================================
+           BACKGROUND VIDEO
+           ========================================================================== */
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           ANIMATIONS
+           ========================================================================== */
+        @keyframes fadeInScaleUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.15);
+            }
+        }
+
+        @keyframes animateClickables {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes flipImageX {
+            0% { opacity: 1; }
+            50% { transform: rotateX(180deg); }
+            100% { transform: rotateX(360deg); opacity: 0; }
+        }
+
+        @keyframes flipImageY {
+            0% { opacity: 1; }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); opacity: 0; }
+        }
+
+        /* ==========================================================================
+           PANEL & LAYOUT
+           ========================================================================== */
         .panel {
+            width: 100%;
+            min-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
             position: relative;
         }
-        .clickable-area {
-            position: absolute;
-            width: 96px;
-            height: 96px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 5;
-            opacity: 0.92;
-            border-radius: 50%;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-            transition: box-shadow 0.1s;
+
+        .media-container {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
         }
-        .clickable-area img {
-            width: 88px;
-            height: 88px;
-            object-fit: contain;
-            pointer-events: none;
+
+        .media-container img,
+        .media-container video {
+            width: 100%;
+            height: auto;
             display: block;
-        }
-        /* Desktop default positions (moved top buttons up and bottom buttons down) */
-        .top-left { top: 20px; left: 36px; }
-        .top-right { top: 20px; right: 36px; }
-        .bottom-left { bottom: 20px; left: 36px; }
-        .bottom-right { bottom: 20px; right: 36px; }
-
-        @keyframes glow {
-            0% { box-shadow: 0 0 0px #ffd700;}
-            50% { box-shadow: 0 0 32px 14px #ffd700;}
-            100% { box-shadow: 0 0 0px #ffd700;}
-        }
-        .glow-animate {
-            animation: glow 0.45s;
+            object-fit: contain;
         }
 
-        /* Responsive styles for buttons */
-        @media (max-width: 900px) {
-            .clickable-area {
-                width: 80px;
-                height: 80px;
-                padding: 8px;
-            }
-            .clickable-area img {
-                width: 72px;
-                height: 72px;
-            }
-            .top-left, .top-right { top: 14px; }
-            .bottom-left, .bottom-right { bottom: 14px; }
-            .top-left, .bottom-left { left: 12px; }
-            .top-right, .bottom-right { right: 12px; }
+        .media-container video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
-        @media (max-width: 600px) {
-            .clickable-area {
-                width: 68px;
-                height: 68px;
-                padding: 5px;
-            }
-            .clickable-area img {
-                width: 60px;
-                height: 60px;
-            }
-            /* Move further out (closer to edge) on mobile */
-            .top-left, .bottom-left { left: 4px; }
-            .top-right, .bottom-right { right: 4px; }
-            .top-left, .top-right { top: 6px; }
-            .bottom-left, .bottom-right { bottom: 6px; }
+
+        /* ==========================================================================
+           CLICKABLE AREAS
+           ========================================================================== */
+        .clickable-area {
+            border: none;
+            background: none;
+            padding: 0;
+            position: absolute;
+            z-index: 4;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            aspect-ratio: 1/1;
+            width: var(--clickable-size);
+            max-width: var(--clickable-max-size);
+            box-shadow: var(--box-shadow);
+            animation: fadeInScaleUp 1s ease-out forwards;
+            transition: transform var(--transition-speed) ease-in-out;
+            opacity: 0;
         }
-         /* --- NEW CSS FOR FOOTER TEAM BUILDER ICON --- */
-        .icons-container a:first-child .fas.fa-people-arrows {
-            color: #000080; /* Dark blue color */
+
+        .clickable-area:hover {
+            transform: scale(1.2);
         }
-        /* --- END NEW CSS --- */
+
+        .clickable-area.loaded {
+            opacity: 1;
+        }
+
+        .clickable-area img {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Position classes for clickable areas */
+        .top-left {
+            top: 2%;
+            left: 5%;
+        }
+
+        .top-right {
+            top: 2%;
+            right: 5%;
+        }
+
+        .bottom-left {
+            bottom: 2%;
+            left: 5%;
+        }
+
+        .bottom-right {
+            bottom: 2%;
+            right: 5%;
+        }
+
+        .center-top {
+            top: 2%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: var(--center-clickable-size);
+            max-width: var(--center-clickable-max-size);
+        }
+
+        .center-bottom {
+            bottom: 2%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: var(--center-clickable-size);
+            max-width: var(--center-clickable-max-size);
+        }
+
+        /* ==========================================================================
+           MISSION CONTENT
+           ========================================================================== */
+        #missionContent {
+            animation: fadeIn 0.9s ease forwards;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+            display: none;
+            z-index: 2;
+            opacity: 1;
+        }
+
+        #missionContent p, 
+        #missionContent a {
+            color: var(--text-color);
+        }
+
+        .body-text {
+            margin: 30px 0;
+        }
+
+        .body-text a {
+            color: var(--text-color);
+        }
+
+        .body-text p {
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 5px auto;
+        }
+
+        .info {
+            color: var(--secondary-color);
+            font-size: 20px;
+        }
+
+        /* ==========================================================================
+           COUNTDOWN
+           ========================================================================== */
+        #countdownWrapper {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #countdown {
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+
+        /* ==========================================================================
+           UTILITY CLASSES
+           ========================================================================== */
+        .fade-out {
+            animation: fadeOut 2s ease forwards;
+        }
+
+        .flip-image-x {
+            animation: flipImageX 3s ease forwards;
+            z-index: 5;
+        }
+
+        .flip-image-y {
+            animation: flipImageY 3s ease forwards;
+            z-index: 5;
+        }
+
+        .loading-indicator {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+        }
+
+        #cardFrame {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+@media (max-width: 768px) {
+    .media-container {
+        max-width: 90%;
+    }
+
+    #countdown {
+        font-size: 24px;
+    }
+
+    .info {
+        font-size: 16px;
+    }
+
+    .center-top {
+        top: -30%;
+    }
+
+    .center-bottom {
+        bottom: 0%;
+    }
+
+    #missionContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 70px;
+    }
+
+    #aiffBanner {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 40px;
+    }
+
+    /* ---- Add these here ---- */
+    #countdownWrapper {
+        margin-bottom: 30px; /* or more, as needed */
+    }
+    .icons-container {
+        margin-bottom: 30px; /* or more, as needed */
+    }
+    footer {
+        padding-bottom: 30px; /* for extra space at bottom */
+    }
+}
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        .icons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .icons-container a {
+            color: var(--text-color);
+            font-size: 24px;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .icons-container a:hover {
+            color: var(--secondary-color);
+        }
+        html, body, footer, .icons-container {
+  background: var(--background-color, black) !important;
+}
+        @media (min-width: 769px) {
+    .media-container {
+        transform: scale(0.8);
+    }
+}
     </style>
 </head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-6NDKG07DY6');
-</script>
 <body class="is-preload">
     <main>
         <div id="main">
             <article class="post featured">
                 <header class="major">
                     <div class="panel">
-                        <div class="media-container" aria-label="Toggle mission content" onclick="toggleMissionContent()">
+                        <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
                             <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
+                            
                             <div id="missionContent">
                                 <div class="body-text">
                                     <p>
-                                        <img id="IEBanner" 
+                                        <img id="aiffBanner" 
                                              src="images/engine.webp" 
                                              alt="Innovation Engine" 
                                              style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
@@ -125,54 +426,62 @@
                                     </p>
                                 </div>
                             </div>
+
                             <video id="missionVideo" 
-                                muted 
-                                playsinline 
-                                controls>
+                                   muted 
+                                   playsinline 
+                                   controls>
                                 <source src="images/universe.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
+                            
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-                            <!-- Glow effect only, larger images, responsive, moved further outward on mobile, up/down on desktop -->
-                            <button type="button" class="clickable-area top-left"
-                                data-sound="chime" 
-                                data-image="images/yellowscullcard.png" 
-                                data-url="Poster.html">
-                                <img src="images/informationbutton.webp" alt="Info">
+                            <!-- Navigation buttons -->
+                            <button type="button" class="clickable-area top-left" 
+                                    data-sound="chime" 
+                                    data-image="images/yellowscullcard.png" 
+                                    data-url="Poster.html">
+                                <img src="images/infon.svg" alt="Info">
                             </button>
-                            <button type="button" class="clickable-area top-right"
-                                data-sound="chime" 
-                                data-image="images/redscullcard.png" 
-                                data-url="2card.html">
-                                <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
+                            
+                            <button type="button" class="clickable-area top-right" 
+                                    data-sound="chime" 
+                                    data-image="images/redscullcard.png" 
+                                    data-url="2card.html">
+                                <img src="images/peoplen.svg" alt="People">
                             </button>
-                            <button type="button" class="clickable-area bottom-left"
-                                data-sound="chime" 
-                                data-image="images/Descartes.png" 
-                                data-url="news.html">
-                                <img src="images/newsbutton.webp" alt="News">
+                            
+                            <button type="button" class="clickable-area bottom-left" 
+                                    data-sound="chime" 
+                                    data-image="images/Descartes.png" 
+                                    data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+                                <img src="images/newsn.svg" alt="News">
                             </button>
-                            <button type="button" class="clickable-area bottom-right"
-                                data-sound="chime" 
-                                data-image="images/Alexandor.png" 
-                                data-url="cardmatchgame.html">
-                                <img src="images/peoplebutton.webp" alt="People">
+                            
+                            <button type="button" class="clickable-area bottom-right" 
+                                    data-sound="chime" 
+                                    data-image="images/Alexandor.png" 
+                                    data-url="subscribe.html">
+                                <img src="images/envelopen.svg" alt="Envelope">
                             </button>
-                        </div>
+                        </a>
                     </div>
                 </header>
             </article>
         </div>
     </main>
+
     <footer>
         <div id="countdownWrapper">
-            <div id="countdown"></div>
-        </div>
+        <div id="countdown"></div>
+                                </div>
         <section class="icons-container">
-            
-            <a href="teambuilder.html" aria-label="Innovation Engine">
-                <i class="fas fa-people-arrows"></i>
+            <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
+                <i class="fas fa-info-circle"></i>
+            </a>
+            <a href="https://www.youtube.com/shorts/RXvlYF1jVuE" aria-label="YouTube Shorts">
+                <i class="fas fa-users"></i>
             </a>
             <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
                 <i class="fab fa-linkedin"></i>
@@ -189,53 +498,18 @@
             <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook"></i>
             </a>
-            <a href="subscribe.html" aria-label="Subscribe">
-                <i class="fas fa-bell"></i>
-            </a>
         </section>
     </footer>
+
     <script src="ho-script.js"></script>
     <script>
-        // All buttons: glow effect & delayed navigation for visual feedback
-        function addButtonGlowAndNavigation() {
-            document.querySelectorAll('.clickable-area').forEach(area => {
-                area.addEventListener('click', function(e) {
-                    const sound = this.getAttribute('data-sound');
-                    const url = this.getAttribute('data-url');
-                    // Add glow animation
-                    this.classList.add('glow-animate');
-
-                    // Play sound (if present)
-                    if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
-                        AudioController.playSound(sound);
-                    }
-
-                    // Delay navigation so glow appears (matched to animation: 450ms)
-                    setTimeout(() => {
-                        window.location.href = url;
-                    }, 460);
-                });
-
-                area.addEventListener('keydown', function(e) {
-                    if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
-
-                // Remove glow-animate class after animation ends to allow re-clicking
-                area.addEventListener('animationend', function(e) {
-                    if (e.animationName === "glow") {
-                        this.classList.remove('glow-animate');
-                    }
-                });
-            });
-        }
-
+        // ==========================================================================
+        // CONFIGURATION
+        // ==========================================================================
         const CONFIG = {
             countdown: {
-                targetDate: "June 28, 2025 00:00:00",
-                completedMessage: "Countdown to Next Event Soon!"
+                targetDate: "June 27, 2025 12:00:00",
+                completedMessage: "Submission Deadline is Here!"
             },
             audio: {
                 cardflip: 'assets/atmospherel.m4a',
@@ -260,19 +534,27 @@
             ]
         };
 
+        // ==========================================================================
+        // AUDIO CONTROLLER
+        // ==========================================================================
         const AudioController = {
             preloaded: false,
+            
             preloadAudio() {
                 if (this.preloaded) return;
+                
                 Object.keys(CONFIG.audio).forEach(key => {
                     const src = CONFIG.audio[key];
                     if (src) new Audio(src);
                 });
+                
                 this.preloaded = true;
             },
+            
             playSound(soundKey) {
                 const soundSrc = CONFIG.audio[soundKey];
                 if (!soundSrc) return;
+                
                 const audio = new Audio(soundSrc);
                 audio.volume = 0.2;
                 audio.play().catch(error => {
@@ -281,39 +563,61 @@
             }
         };
 
+        // ==========================================================================
+        // VIDEO CONTROLLER
+        // ==========================================================================
         const VideoController = {
+            showLoadingIndicator() {
+                document.getElementById('loadingIndicator').style.display = 'block';
+            },
+            
+            hideLoadingIndicator() {
+                document.getElementById('loadingIndicator').style.display = 'none';
+            },
+            
             handleError() {
                 alert("Error loading video. Please try again later.");
             },
+            
             showCardFrame() {
                 document.getElementById('cardFrame').style.display = 'block';
             }
         };
 
+        // ==========================================================================
+        // COUNTDOWN CONTROLLER
+        // ==========================================================================
         const CountdownController = {
             element: null,
             interval: null,
+            
             init() {
                 this.element = document.getElementById('countdown');
                 this.start();
             },
+            
             start() {
                 const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
+                
                 this.interval = setInterval(() => {
                     const now = new Date().getTime();
                     const distance = countDownDate - now;
+                    
                     if (distance < 0) {
                         this.stop();
                         this.element.innerHTML = CONFIG.countdown.completedMessage;
                         return;
                     }
+                    
                     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
                     this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 }, 1000);
             },
+            
             stop() {
                 if (this.interval) {
                     clearInterval(this.interval);
@@ -322,147 +626,145 @@
             }
         };
 
+        // ==========================================================================
+        // CARD CONTROLLER
+        // ==========================================================================
         const CardController = {
             clicked: false,
+            
             getRandomImage() {
                 const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
                 return CONFIG.cardImages[randomIndex];
             },
+            
             getRandomFlip() {
                 return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             },
+            
             flipCard(imageSrc, url) {
                 const missionImage = document.getElementById('missionImage');
                 const randomFlip = this.getRandomFlip();
+                
                 missionImage.classList.add(randomFlip);
                 document.body.classList.add('fade-out-body');
+                
+                
+                // Redirect immediately
                 window.location.href = url;
+                
                 setTimeout(() => {
                     missionImage.src = imageSrc;
                 }, 2000);
             }
         };
 
-        function resetCardState() {
-            document.getElementById('missionImage').src = "images/hsoftest.png";
-            const video = document.getElementById('missionVideo');
-            video.pause();
-            video.style.display = 'none';
-            video.style.opacity = 0;
-            document.getElementById('missionContent').style.display = 'none';
-            document.getElementById('aiffBanner').style.display = 'none';
-            document.getElementById('cardFrame').style.display = 'none';
-            document.body.classList.remove('fade-out-body');
-            const img = document.getElementById('missionImage');
-            img.classList.remove('flip-image-x', 'flip-image-y');
-            if (typeof CardController !== "undefined") {
-                CardController.clicked = false;
-            }
-        }
-
+        // ==========================================================================
+        // MAIN APPLICATION
+        // ==========================================================================
         const App = {
             init() {
                 this.setupEventListeners();
+                this.setupClickableAreas();
                 this.setupVideoHandlers();
                 CountdownController.init();
-                addButtonGlowAndNavigation();
             },
+            
             setupEventListeners() {
+                // Preload audio on first user interaction
                 window.addEventListener('pointerdown', () => {
                     AudioController.preloadAudio();
                 }, { once: true });
-                window.addEventListener('beforeunload', () => {});
+                
+                // Handle page navigation
+                window.addEventListener('beforeunload', () => {
+                   
+                });
+                
                 window.addEventListener('pageshow', () => {
                     document.body.classList.remove('fade-out-body');
-                    resetCardState();
                 });
+                
+                // Show clickable areas when DOM is loaded
                 document.addEventListener('DOMContentLoaded', () => {
                     document.querySelectorAll('.clickable-area').forEach(element => {
                         element.classList.add('loaded');
                     });
                 });
             },
+            
             setupVideoHandlers() {
                 const video = document.getElementById('missionVideo');
                 if (video) {
+                    video.addEventListener('loadstart', VideoController.showLoadingIndicator);
+                    video.addEventListener('canplay', VideoController.hideLoadingIndicator);
                     video.addEventListener('error', VideoController.handleError);
                     video.addEventListener('ended', VideoController.showCardFrame);
                 }
+            },
+            
+            setupClickableAreas() {
+                document.querySelectorAll('.clickable-area').forEach(area => {
+                    area.addEventListener('click', function() {
+                        const sound = this.getAttribute('data-sound');
+                        const image = this.getAttribute('data-image');
+                        const url = this.getAttribute('data-url');
+                        
+                        AudioController.playSound(sound);
+                        CardController.flipCard(image, url);
+                    });
+                    
+                    area.addEventListener('keydown', function(e) {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                });
             }
         };
 
+        // ==========================================================================
+        // GLOBAL FUNCTIONS (for inline event handlers)
+        // ==========================================================================
         function toggleMissionContent() {
             if (CardController.clicked) return;
             CardController.clicked = true;
+            
             AudioController.playSound('cardflip');
+            
             const image = document.getElementById('missionImage');
             image.src = CardController.getRandomImage();
+            
             const video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 0;
+            
             setTimeout(() => {
                 video.style.opacity = 1;
             }, 100);
+            
             video.play();
             document.getElementById('missionContent').style.display = 'block';
-            document.getElementById('aiffBanner').style.display = 'block';
+            
             const randomFlip = CardController.getRandomFlip();
             image.classList.add(randomFlip);
         }
+        
         function flipAndRedirect() {
             const banner = document.getElementById('aiffBanner');
             const randomFlip = CardController.getRandomFlip();
+            
             banner.classList.add(randomFlip);
+            
             setTimeout(() => {
                 window.location.href = 'https://innovation-engine.devpost.com/';
             }, 2000);
         }
+
+        // ==========================================================================
+        // INITIALIZE APPLICATION
+        // ==========================================================================
         App.init();
     </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Function to show a specific tab and hide others
-        function showTab(tabId) {
-            // Hide all tab content panes
-            document.querySelectorAll('.tab-content-pane').forEach(pane => {
-                pane.classList.remove('active-tab-pane');
-            });
-
-            // Deactivate all tab buttons
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-
-            // Show the selected tab content pane
-            const activePane = document.getElementById(tabId);
-            if (activePane) {
-                activePane.classList.add('active-tab-pane');
-            }
-
-            // Activate the corresponding tab button
-            const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-            if (activeButton) {
-                activeButton.classList.add('active');
-            }
-
-            // Scroll to the top of the panel to ensure content is visible
-            const panel = document.querySelector('.panel');
-            if (panel) {
-                panel.scrollTop = 0;
-            }
-        }
-
-        // Add click event listeners to tab buttons
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                showTab(tabId);
-            });
-        });
-
-        // Show the default tab (e.g., 'profile') when the page loads
-        showTab('profile'); // This makes the "Create Profile" tab active by default
-    });
-</script>
 </body>
 </html>
