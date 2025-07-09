@@ -15,6 +15,44 @@
      <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json" />
     <style>
+        .image-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Reposition centered clickables relative to the image */
+.image-wrapper .center-top,
+.image-wrapper .center-bottom {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.image-wrapper .center-top {
+    top: 5%;
+}
+
+.image-wrapper .center-bottom {
+    bottom: 5%;
+}
+
+@media (max-width: 768px) {
+    .image-wrapper .center-top {
+        top: 5%;
+    }
+
+    .image-wrapper .center-bottom {
+        bottom: 5%;
+    }
+}
+
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
             margin: 0;
