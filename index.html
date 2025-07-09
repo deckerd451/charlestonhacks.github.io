@@ -2,13 +2,10 @@
 <html lang="en">
 
 <head>
-  
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
     <meta property="og:title" content="CharlestonHacks - Home" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
@@ -24,95 +21,6 @@
         }
 
         /* General styles */
-        /* Add the following CSS animation for the clickable elements */
-        #background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1;
-    opacity: 0.5; /* Adjust opacity if needed */
-    pointer-events: none; /* Prevent interaction with the video */
-}
-
-@keyframes animateClickables {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.clickable-area {
-    animation: animateClickables 1s ease-out forwards;
-    opacity: 0; /* Make them invisible initially */
-}
-
-.clickable-area.loaded {
-    opacity: 1; /* Make them visible after animation */
-}
-        /* Define the animation */
-@keyframes fadeInScaleUp {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1.15);
-    }
-    .clickable-area:hover {
-    transform: scale(1.2);
-    transition: transform 0.3s ease-in-out;
-}
-
-}
-
-/* Apply the animation to the clickable elements */
-.clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
-    width: 10vw;
-    max-width: 60px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    animation: fadeInScaleUp 1s ease-out forwards;
-}
-
-/* Customize individual positions */
-.top-left {
-    top: 2%;
-    left: 4%;
-}
-.top-right {
-    top: 2%;
-    right: 4%;
-}
-.bottom-left {
-    bottom: 2%;
-    left: 4%;
-}
-.bottom-right {
-    bottom: 2%;
-    right: 4%;
-}
-.center-top {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.center-bottom {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-body {
-    position: relative;
-    z-index: 1;
-}
-
-
         body {
             background-color: black;
             color: white;
@@ -153,8 +61,8 @@ body {
             width: 100%;
             height: auto;
             display: block;
-             object-fit: contain; /* Maintains aspect ratio without distortion */
-}
+            object-fit: cover; /* Maintain aspect ratio */
+        }
 
         .media-container video {
             position: absolute;
@@ -406,6 +314,21 @@ body {
     bottom: 2%;
     right: 4%;
 }
+
+.center-top {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.center-bottom {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
@@ -414,54 +337,10 @@ body {
         @media (min-width: 769px) {
             .media-container {
                 transform: scale(0.8);
-        
-    @media (max-width: 768px) {
-        #missionContent {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            }
         }
-        
-        #countdownWrapper {
-            position: static;
-            margin-top: 20px;
-            order: 2; /* This ensures it appears below the banner */
-            width: 100%;
-            transform: none;
-        }
-        
-        .body-text {
-            order: 1; /* This ensures the banner appears above the countdown */
-            width: 100%;
-        }
-    @media (max-width: 768px) {
-        #countdownWrapper {
-            position: absolute;
-            top: auto; /* Remove any existing top positioning */
-            bottom: -60px; /* Position it below the banner */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-        }
-        
-        #missionContent {
-            padding-bottom: 70px; /* Add padding to make room for the countdown */
-        }
-    }
     </style>
 </head>
-
-   <video autoplay muted id="background-video">
-    <source src="assets/Happy-Hour.mp4" type="video/mp4">
-    Your browser does not support HTML5 video.
-</video>
-
-<script>
-    // Adjust the playback speed
-    document.getElementById('background-video').playbackRate = 0.8;
-</script>
-
-
 
 <body class="is-preload">
     <div id="main">
@@ -469,11 +348,12 @@ body {
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
+                        <img id="missionImage" src="images/hcardtest.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
+                            <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
                                 <p>
-                                    <img id="aiffBanner" src="images/aiffspin.svg" alt="AI Film Fest" style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" onclick="flipAndRedirect()">
+                                    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
                                 </p>
                             </div>
                             <div id="countdownWrapper">
@@ -485,12 +365,12 @@ body {
                             <source src="images/aiffcardvideo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
+                        <img id="cardFrame" src="images/cardframe.png" alt="Card Frame" />
                         <div class="loading-indicator" id="loadingIndicator">
                             <i class="fas fa-spinner fa-spin"></i>
                         </div>
 
-                        <!-- Clickable areas -->
+                        <!-- Clickable areas with placeholder assets -->
                         <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
                             <img src="images/infon.svg" alt="Info">
                         </div>
@@ -502,6 +382,12 @@ body {
                         </div>
                         <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
                             <img src="images/envelopen.svg" alt="Envelope">
+                        </div>
+                        <div class="clickable-area center-top" data-sound="keys" data-image="images/Medusa.png" data-url="https://www.linkedin.com/company/charlestonhacks">
+                            <img src="images/crestl.svg" alt="Crest">
+                        </div>
+                        <div class="clickable-area center-bottom" data-sound="keys" data-image="images/Elara.png" data-url="https://www.instagram.com/charlestonhacks/">
+                            <img src="images/keysl.svg" alt="Keys">
                         </div>
                     </a>
                 </div>
@@ -678,16 +564,6 @@ body {
         });
     </script>
     <script src="dist/bundle.js"></script>
-<script>
-    window.onload = () => {
-        // Select all clickable areas
-        const clickableElements = document.querySelectorAll('.clickable-area');
-
-        // Add the "loaded" class to each clickable area to trigger the animation
-        clickableElements.forEach(element => {
-            element.classList.add('loaded');
-        });
-    };
-</script>
 </body>
+
 </html>
