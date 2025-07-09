@@ -262,7 +262,7 @@
 
         .top-right {
             top: .5%;
-            right: 2%;
+            right: 2.4%;
             width: 20%;
             height: 20%;
         }
@@ -276,7 +276,7 @@
 
         .bottom-right {
             bottom: -4.6%;
-            right: 2%;
+            right: 2.4%;
             width: 20%;
             height: 20%;
         }
@@ -308,6 +308,13 @@
         .fade-out-body *:not(.spinner) {
             animation: fadeOut 2s ease forwards;
         }
+
+        /* Make hcard and all elements 20% smaller on web only */
+        @media (min-width: 769px) {
+            .media-container {
+                transform: scale(0.8);
+            }
+        }
     </style>
 </head>
 
@@ -316,8 +323,8 @@
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="media-container" onclick="playCardSoundAndToggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/hcard.png" alt="CharlestonHacks" style="z-index: 3;" />
+                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
+                        <img id="missionImage" src="images/hcard1.png" alt="CharlestonHacks" style="z-index: 3;" />
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
@@ -340,29 +347,23 @@
                         </div>
 
                         <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" onclick="flipCard('images/yellowscullcard.png', 'Poster.html')">
-                            <!-- Placeholder asset for Top Left -->
-                            <img src="images/info1.svg" alt="Placeholder Top Left">
+                        <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
+                            <img src="images/infog.svg" alt="Info">
                         </div>
-                        <div class="clickable-area top-right" onclick="flipCard('images/redscullcard.png', '2card.html')">
-                            <!-- Placeholder asset for Top Right -->
-                            <img src="images/people1.svg" alt="Placeholder Top Right">
+                        <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
+                            <img src="images/peopleg.svg" alt="People">
                         </div>
-                        <div class="clickable-area bottom-left" onclick="flipCard('images/Descartes.png', 'https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/')">
-                            <!-- Placeholder asset for Bottom Left -->
-                            <img src="images/news1.svg" alt="Placeholder Bottom Left">
+                        <div class="clickable-area bottom-left" data-sound="keys" data-image="images/Descartes.png" data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
+                            <img src="images/newsg.svg" alt="News">
                         </div>
-                        <div class="clickable-area bottom-right" onclick="flipCard('images/Alexandor.png', 'subscribe.html')">
-                            <!-- Placeholder asset for Bottom Right -->
-                            <img src="images/envelope1.svg" alt="Placeholder Bottom Right">
+                        <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
+                            <img src="images/envelopeg.svg" alt="Envelope">
                         </div>
-                        <div class="clickable-area center-top" onclick="flipCard('images/Medusa.png', 'https://www.linkedin.com/company/charlestonhacks')">
-                            <!-- Placeholder asset for Center Top -->
-                            <img src="images/crest1.svg" alt="Placeholder Center Top">
+                        <div class="clickable-area center-top" data-sound="keys" data-image="images/Medusa.png" data-url="https://www.linkedin.com/company/charlestonhacks">
+                            <img src="images/crest1.svg" alt="Crest">
                         </div>
-                        <div class="clickable-area center-bottom" onclick="playKeySoundAndFlipCard('images/Elara.png', 'https://www.instagram.com/charlestonhacks/')">
-                            <!-- Placeholder asset for Center Bottom -->
-                            <img src="images/keys1.svg" alt="Placeholder Center Bottom">
+                        <div class="clickable-area center-bottom" data-sound="keys" data-image="images/Elara.png" data-url="https://www.instagram.com/charlestonhacks/">
+                            <img src="images/keys1.svg" alt="Keys">
                         </div>
                     </a>
                 </div>
@@ -410,14 +411,31 @@
 
         let cardClicked = false;
 
+        // Simplify audio handling with a sound map
+        const sounds = {
+            cardflip: new Audio('assets/atmospherel.m4a'),
+            keys: new Audio('assets/keys.m4a'),
+            ding: new Audio('assets/ding.mp3')
+        };
+
+        // Lower the volume of all sounds by 30%
+        Object.keys(sounds).forEach(key => {
+            sounds[key].volume = 0.7;
+        });
+
         function getRandomImage() {
             var randomIndex = Math.floor(Math.random() * cardImages.length);
             return cardImages[randomIndex];
         }
 
-        function playCardSoundAndToggleMissionContent() {
-            playSound();
-            toggleMissionContent();
+        function playSound(soundKey) {
+            const audio = sounds[soundKey];
+            if (audio) {
+                audio.currentTime = 0; // Reset to start
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                });
+            }
         }
 
         function toggleMissionContent() {
@@ -448,16 +466,6 @@
             image.classList.add(randomFlip);
         }
 
-        function playSound() {
-            var audio = new Audio('assets/cardflip.m4a'); // Use a standard click sound effect
-            audio.play();
-        }
-
-        function playKeySound() {
-            var audio = new Audio('assets/keys.m4a'); // Use the keys sound effect
-            audio.play();
-        }
-
         function flipAndRedirect() {
             var banner = document.getElementById('aiffBanner');
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
@@ -478,18 +486,23 @@
             // Show spinner
             document.getElementById('spinner').style.display = 'block';
 
+            // Redirect immediately
+            window.location.href = url;
+
             setTimeout(function () {
                 missionImage.src = imageSrc;
-                setTimeout(function () {
-                    window.location.href = url;
-                }, 2000); // Adjust the delay to match the fade-out duration
-            }, 2000);
+            }, 2000); // Adjust the delay to match the fade-out duration
         }
 
-        function playKeySoundAndFlipCard(imageSrc, url) {
-            playKeySound();
-            flipCard(imageSrc, url);
-        }
+        document.querySelectorAll('.clickable-area').forEach(area => {
+            area.addEventListener('click', function() {
+                const sound = this.getAttribute('data-sound');
+                const image = this.getAttribute('data-image');
+                const url = this.getAttribute('data-url');
+                playSound(sound);
+                flipCard(image, url);
+            });
+        });
 
         function toggleVisibility() {
             var eventsSection = document.querySelector('.previous-events');
@@ -513,7 +526,7 @@
         }
 
         const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound);
+        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
         videoElement.addEventListener('ended', showCardFrame);
 
         // Ensure the spinner remains visible until the link is opened
@@ -524,9 +537,8 @@
         // Remove fade-out class when the page is loaded or navigated back
         window.addEventListener('pageshow', function () {
             document.body.classList.remove('fade-out-body');
-            document.getElementById('spinner').style.display = 'none';
         });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
-    <script>
-        window.dataLayer = window.dataLayer ||
+</body>
+
+</html>
