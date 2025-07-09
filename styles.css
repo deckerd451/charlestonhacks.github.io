@@ -20,7 +20,7 @@
     --media-scale: 0.8;
     --countdown-size: 32px;
     --info-size: 20px;
-    --footer-spacing: 10px;
+    --footer-spacing: 20px;
 
     /* Original dynamic theme background image URL */
     --bg-url: url('images/background.webp');
