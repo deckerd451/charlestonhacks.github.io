@@ -1,36 +1,36 @@
 /* ==========================================================================
-   CSS VARIABLES & RESET - RESTORED ORIGINAL, MERGED WITH NEW FOR COMPONENTS
+   CSS VARIABLES & RESET
    ========================================================================== */
 :root {
-    /* RESTORED ORIGINAL GLOBAL COLORS & LAYOUT VARS */
-    --primary-color: #FF0000; /* Original Red */
-    --secondary-color: #FFFF00; /* Original Yellow */
-    --text-color: white; /* Original text color */
-    --background-color: black; /* Original background color for fallback/layers */
+    /* Colors & layout variables */
+    --primary-color: #FF0000;
+    --secondary-color: #FFFF00;
+    --text-color: white;
+    --background-color: black;
 
+    /* Transitions */
     --transition-speed: 0.3s;
-    --border-radius: 50%; /* For original clickable areas */
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* For original clickable areas */
+    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+
+    /* Sizes */
+    --border-radius: 50%;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     --clickable-size: 14vw;
     --clickable-max-size: 90px;
-    --center-clickable-size: 16.5vw;
-    --center-clickable-max-size: 110px;
+    --card-bg: #2a2a2a;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 
-    /* RESTORED ORIGINAL RESPONSIVE VARS */
+    /* Responsive & misc */
     --media-scale: 0.8;
     --countdown-size: 32px;
     --info-size: 20px;
     --footer-spacing: 5px;
 
-    /* Original dynamic theme background image URL */
+    /* Background */
     --bg-url: url('images/background.webp');
-
-    /* KEPT NEW VARIABLES FOR SPECIFIC COMPONENTS */
-    --card-bg: #2a2a2a; /* Card background for new sections */
-    --shadow: 0 4px 20px rgba(0,0,0,0.3); /* For new components' shadows */
-    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1); /* For new animations/transitions */
 }
 
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -38,47 +38,36 @@
 }
 
 /* ==========================================================================
-   BODY & GLOBAL LAYOUT - RESTORED ORIGINAL FIXED BACKGROUND
+   BODY & GLOBAL LAYOUT
    ========================================================================== */
 body {
-    margin: 0;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Crucial: Set background to transparent to allow ::before and ::after to show */
     background: transparent !important;
-    color: var(--text-color); /* Use original text color */
-    font-family: 'Britannic Bold', Arial, sans-serif; /* RESTORED ORIGINAL FONT */
+    color: var(--text-color);
+    font-family: 'Britannic Bold', Arial, sans-serif;
     position: relative;
     text-align: center;
     z-index: 1;
-    /* Removed the new transition and background-color directly on body to favor original background layers */
 }
 
-/* Fully opaque black layer behind the background image - RESTORED */
 body::after {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     background: black;
     z-index: -2;
     pointer-events: none;
 }
 
-/* Background image layer (now supports theme change via --bg-url) - RESTORED */
 body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: var(--bg-url, url('images/background.webp')) no-repeat center center;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: var(--bg-url) no-repeat center center;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     z-index: -1;
     pointer-events: none;
     transition: background 0.5s;
@@ -89,22 +78,19 @@ body.two-card-page::before {
 }
 
 /* ==========================================================================
-   BASE STYLES - RESTORED ORIGINAL
+   BASE STYLES
    ========================================================================== */
 html, footer, .icons-container {
-    /* Ensure these elements are transparent or use original background */
     background: transparent !important;
 }
 
 /* ==========================================================================
-   BACKGROUND VIDEO - RESTORED ORIGINAL
+   BACKGROUND VIDEO
    ========================================================================== */
 #background-video {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     object-fit: cover;
     z-index: -1;
     opacity: 0.5;
@@ -112,7 +98,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   ANIMATIONS - ALL KEPT (both original and new, as they apply to different elements)
+   ANIMATIONS
    ========================================================================== */
 @keyframes fadeInScaleUp {
     0% {
@@ -126,8 +112,14 @@ html, footer, .icons-container {
 }
 
 @keyframes animateClickables {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeIn {
@@ -152,107 +144,39 @@ html, footer, .icons-container {
     100% { transform: rotateY(360deg); opacity: 0; }
 }
 
-@keyframes fadeInUp { /* For new sections (header, countdown, social icons) */
+@keyframes fadeInUp {
     to {
         opacity:1;
         transform: translateY(0);
     }
 }
-.panel {
-    position: relative;
-}
-.clickable-area {
-    position: absolute;
-    width: 96px;
-    height: 96px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 5;
-    opacity: 0.92;
-    border-radius: 50%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    transition: box-shadow 0.1s;
-}
-.clickable-area img {
-    width: 88px;
-    height: 88px;
-    object-fit: contain;
-    pointer-events: none;
-    display: block;
-}
-/* Desktop default positions */
-.top-left { top: 20px; left: 36px; }
-.top-right { top: 20px; right: 36px; }
-.bottom-left { bottom: 20px; left: 36px; }
-.bottom-right { bottom: 20px; right: 36px; }
 
 @keyframes glow {
     0% { box-shadow: 0 0 0px #ffd700;}
     50% { box-shadow: 0 0 32px 14px #ffd700;}
     100% { box-shadow: 0 0 0px #ffd700;}
 }
+
 .glow-animate {
     animation: glow 0.45s;
 }
 
-/* Responsive styles */
-@media (max-width: 900px) {
-    .clickable-area {
-        width: 80px;
-        height: 80px;
-        padding: 8px;
-    }
-    .clickable-area img {
-        width: 72px;
-        height: 72px;
-    }
-    .top-left, .top-right { top: 14px; }
-    .bottom-left, .bottom-right { bottom: 14px; }
-    .top-left, .bottom-left { left: 12px; }
-    .top-right, .bottom-right { right: 12px; }
-}
-@media (max-width: 600px) {
-    .clickable-area {
-        width: 68px;
-        height: 68px;
-        padding: 5px;
-    }
-    .clickable-area img {
-        width: 60px;
-        height: 60px;
-    }
-    .top-left, .bottom-left { left: 4px; }
-    .top-right, .bottom-right { right: 4px; }
-    .top-left, .top-right { top: 6px; }
-    .bottom-left, .bottom-right { bottom: 6px; }
-}
-
-/* Footer team builder icon override */
-.icons-container a:first-child .fas.fa-people-arrows {
-    color: #000080;
-}
-
 /* ==========================================================================
-   PANEL & LAYOUT - RESTORED ORIGINAL FOR GENERAL PANEL, KEPT NEW FOR SPECIFIC CONTAINERS
+   PANEL & LAYOUT
    ========================================================================== */
 .panel {
     width: 100%;
-    min-height: 90vh; /* Original height */
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     position: relative;
-    /* Removed max-width, background, border-radius, box-shadow to allow original design */
-    padding: 0; /* Ensure no extra padding from newer styles */
-    margin: 0 auto; /* Ensure centering is controlled by container if needed */
+    padding: 0;
+    margin: 0 auto;
 }
 
+/* Media container disables overflow */
 .media-container {
     position: relative;
     z-index: 3;
@@ -273,8 +197,7 @@ html, footer, .icons-container {
 
 .media-container video {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
@@ -285,23 +208,27 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - RESTORED ORIGINAL
+   CLICKABLE AREAS
    ========================================================================== */
 .clickable-area {
-    border: none;
-    background: none;
-    padding: 0;
     position: absolute;
+    width: var(--clickable-size);
+    max-width: var(--clickable-max-size);
+    height: auto;
     z-index: 4;
     cursor: pointer;
     border-radius: var(--border-radius);
-    aspect-ratio: 1/1;
-    width: var(--clickable-size);
-    max-width: var(--clickable-max-size);
     box-shadow: var(--box-shadow);
+    padding: 0; /* Remove inner padding */
+    border: none;
+    background: none;
+    opacity: 0;
     animation: fadeInScaleUp 1s ease-out forwards;
     transition: transform var(--transition-speed) ease-in-out;
-    opacity: 0;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .clickable-area:hover {
@@ -313,26 +240,26 @@ html, footer, .icons-container {
 }
 
 .clickable-area img {
-    padding: 0;
-    margin: 0;
     width: 100%;
     height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    display: block;
 }
 
-/* Position classes for clickable areas */
+/* Positions */
 .top-left    { top: 2%; left: 5%; }
 .top-right   { top: 2%; right: 5%; }
 .bottom-left { bottom: 2%; left: 5%; }
 .bottom-right{ bottom: 2%; right: 5%; }
 
 /* ==========================================================================
-   MISSION CONTENT - RESTORED ORIGINAL
+   MISSION CONTENT
    ========================================================================== */
 #missionContent {
     animation: fadeIn 0.9s ease forwards;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 400px;
@@ -374,120 +301,22 @@ html, footer, .icons-container {
     display: none;
 }
 
-
-
 /* ==========================================================================
-   NEW UI ELEMENTS - KEPT THEIR MODERN STYLING
+   CARD CONTAINER & CARDS
    ========================================================================== */
-/* --- Main Layout Container for new UI sections --- */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* --- Header for new UI --- */
-.header {
-    text-align: center;
-    margin-bottom: 12px;
-    opacity: 0;
-    transform: translateY(-20px);
-    animation: fadeInUp 0.8s ease forwards;
-}
-
-.header h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    /* Use the new gradient colors for this specific H1 */
-    background: linear-gradient(135deg, #ffd700, #ff6b35);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 10px;
-}
-
-.header p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-    color: var(--text-color); /* Ensure text color is consistent */
-}
-
-/* Common Section Title Styling for new UI sections */
-/* Common Section Title Styling for new UI sections */
-.section-title {
-    color: #ffd700; /* Use specific primary color for these titles */
-    text-align: left; /* Keep this */
-    margin-bottom: 20px;
-    /* CHANGE THIS: Remove or change display to block */
-    display: block; /* Change from inline-block to block */
-    /* Or, if you want it to behave like a flex item for specific layout within its parent,
-       you might need to adjust the parent's flex properties.
-       But for simple left-justification of the whole H2, 'block' is usually best. */
-}
-
-.section-title .fas {
-    margin-right: 8px;
-}
-
-.input-container {
-    margin-bottom: 20px;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.input-container label {
-    color: #ffd700; /* Use specific primary color for labels */
-    text-align: left;
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.input-container input,
-.input-container select {
-    padding: 12px;
-    font-size: 16px;
-    border: 2px solid #ffd700; /* Specific border color */
-    background-color: #2c2c2c;
-    color: #fff;
-    border-radius: 5px;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.input-container button {
-    padding: 12px 24px;
-    font-size: 16px;
-    background: #ffd700; /* Specific button background */
-    color: #121212;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-top: 10px;
-}
-
-.input-container button:hover {
-    background: #FFC000;
-}
-
 .card-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    margin: 20px 0;
+    margin: 0 0 8px 0; /* Reduced bottom margin for closer spacing */
 }
 
 .team-member-card {
     background: var(--card-bg);
     border-radius: 8px;
     padding: 12px 8px 10px;
-    box-shadow: 0 0 10px rgba(255,215,0,0.25);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
     width: 200px;
     display: flex;
     flex-direction: column;
@@ -504,45 +333,112 @@ html, footer, .icons-container {
     margin-bottom: 8px;
 }
 
-.image-preview {
-    display: none;
-    max-width: 120px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 2px solid #ffd700;
+/* ==========================================================================
+   COUNTDOWN
+   ========================================================================== */
+.countdown-container {
+    text-align: center;
+    margin: 8px 0 10px 0; /* Reduced from larger margin for closer proximity to cards */
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 0.6s forwards;
 }
 
-.member-name {
-    font-weight: bold;
+.countdown {
+    font-size: 2rem;
+    font-weight: 700;
     color: #ffd700;
+    margin-bottom: 4px; /* Reduced bottom margin */
 }
 
-.badge {
-    background: #333;
-    border-left: 4px solid #ffd700;
-    color: #ffd700;
-    border-radius: 3px;
-    padding: 2px 8px;
-    font-size: 0.9em;
-    margin: 6px 0;
+/* ==========================================================================
+   FOOTER & SOCIAL ICONS
+   ========================================================================== */
+footer {
+    background: transparent !important;
+    position: relative;
+    z-index: 1;
+    padding: clamp(10px, 2vw, 20px);
+    padding-bottom: 60px;
 }
 
-.skill-tags {
+.social-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 3px;
     justify-content: center;
+    gap: clamp(15px, 3vw, 25px);
+    margin-top: auto;
+    padding-top: clamp(15px, 4vw, 40px);
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 0.8s forwards;
 }
 
-.skill-tag {
-    background: rgba(255,215,0,0.2);
-    color: #ffd700;
-    padding: 2px 6px;
-    border-radius: 12px;
-    font-size: 0.7rem;
+.social-link {
+    width: clamp(40px, 8vw, 60px);
+    height: clamp(40px, 8vw, 60px);
+    background: linear-gradient(135deg, #ffd700, #ff6b35);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: clamp(16px, 3vw, 24px);
+    transition: var(--transition);
 }
 
+.social-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* ==========================================================================
+   INPUTS, BUTTONS & FORM ELEMENTS
+   ========================================================================== */
+.input-container {
+    margin-bottom: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-container label {
+    color: var(--secondary-color);
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-container input,
+.input-container select {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid var(--secondary-color);
+    background-color: #2c2c2c;
+    color: #fff;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-container button {
+    padding: 12px 24px;
+    font-size: 16px;
+    background: var(--secondary-color);
+    color: #121212;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.input-container button:hover {
+    background: #FFC000;
+}
+
+/* ==========================================================================
+   MISCELLANEOUS UI & UTILITIES
+   ========================================================================== */
 .profile-bar {
     width: 100%;
     background: #333;
@@ -554,11 +450,11 @@ html, footer, .icons-container {
 
 .profile-bar-inner {
     height: 100%;
-    background: #ffd700;
+    background: var(--secondary-color);
 }
 
 .endorse-btn {
-    background: #ffd700;
+    background: var(--secondary-color);
     color: #121212;
     font-weight: bold;
     border: none;
@@ -576,131 +472,19 @@ html, footer, .icons-container {
 }
 
 .endorsements {
-    font-size: .85em;
-    color: #ffd700;
+    font-size: 0.85em;
+    color: var(--secondary-color);
     margin-left: 7px;
     vertical-align: middle;
 }
 
 .user-status {
-    font-size: .85em;
+    font-size: 0.85em;
     color: #00FF87;
     margin: 4px 0;
 }
 
-.leaderboard {
-    margin: 20px auto;
-    background: var(--card-bg);
-    border-radius: 8px;
-    padding: 15px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 0 10px rgba(255,215,0,0.25);
-}
-
-.leaderboard h2 {
-    color: #ffd700;
-    font-size: 1.3em;
-    margin-bottom: 12px;
-}
-
-.leaderboard-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 6px 0;
-}
-
-.leaderboard-rank {
-    font-weight: bold;
-    color: #ffd700;
-    width: 24px;
-}
-
-.leaderboard-name {
-    flex: 1;
-    text-align: left;
-}
-
-.leaderboard-skill {
-    color: #ffd700;
-}
-
-.profile-complete {
-    color: #00FF87;
-    font-size: .93em;
-    margin-top: 6px;
-}
-
-.profile-incomplete {
-    color: #FF6B6B;
-    font-size: .93em;
-    margin-top: 6px;
-}
-
-.profile-section {
-    margin: 15px 0;
-}
-
-.proficiency-select {
-    width: 100px;
-    margin-bottom: 10px;
-}
-
-.autocomplete-box {
-    position: absolute;
-    z-index: 1000;
-    background: #fff;
-    color: #000;
-    border: 1px solid #ccc;
-    display: none;
-    max-height: 200px;
-    overflow-y: auto;
-    box-shadow: var(--shadow);
-    border-radius: 4px;
-    width: calc(100% - 40px);
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.autocomplete-box div {
-    padding: 8px 10px;
-    cursor: pointer;
-}
-
-.autocomplete-box div:hover {
-    background-color: #f0f0f0;
-}
-
-.optional-text {
-    color: #888;
-}
-
-.success-message {
-    color: green;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.notification {
-    margin-bottom: 6px;
-    text-align: center;
-}
-
-.match-notification {
-    color: gold;
-}
-
-.no-results-notification {
-    color: red;
-}
-
-.instructions {
-    max-width: 600px;
-    margin-bottom: 10px;
-}
-
-/* --- Achievements for new UI --- */
+/* Notifications */
 .achievements {
     position: fixed;
     top: 20px;
@@ -709,7 +493,7 @@ html, footer, .icons-container {
 }
 
 .achievement {
-    background: linear-gradient(135deg, #ffd700, #ff6b35); /* Specific gradient for these */
+    background: linear-gradient(135deg, #ffd700, #ff6b35);
     color: white;
     padding: 12px 20px;
     border-radius: 25px;
@@ -725,118 +509,39 @@ html, footer, .icons-container {
     transform: translateX(0);
 }
 
-/* --- Countdown for new UI (if different from original) --- */
-.countdown-container {
-    text-align: center;
-    margin: 32px 0 8px 0;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.6s forwards;
-}
-
-.countdown {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffd700;
-    margin-bottom: 5px;
-}
-
-.countdown-label {
-    font-size: 1rem;
-    opacity: 0.7;
-}
-
-/* --- Footer Social for new UI (different from original .icons-container) --- */
-/* Fully responsive footer */
-.social-container {
-    display: flex;
-    justify-content: center;
-    gap: clamp(15px, 3vw, 25px); /* Responsive gap between icons */
-    margin-top: auto;
-    padding-top: clamp(15px, 4vw, 40px); /* Already responsive */
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.8s forwards;
-}
-
-.social-link {
-    width: clamp(40px, 8vw, 60px); /* Responsive icon size */
-    height: clamp(40px, 8vw, 60px); /* Responsive icon size */
-    background: linear-gradient(135deg,#ffd700,#ff6b35);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    font-size: clamp(16px, 3vw, 24px); /* Responsive font size */
-    transition: var(--transition);
-}
-
-.social-link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-.countdown {
-    font-size: clamp(1.5rem, 4vw, 2.5rem); /* Responsive countdown size */
-    font-weight: 700;
-    color: #ffd700;
-    margin-bottom: 5px;
-}
-
-footer {
-    background: transparent !important;
-    position: relative;
-    z-index: 1;
-    padding: clamp(10px, 2vw, 20px); /* Responsive footer padding */
-padding-bottom: 60px; /* 👈 Add this line */
-}
 /* ==========================================================================
-   UTILITY CLASSES & MISC
+   RESPONSIVE DESIGN
    ========================================================================== */
-.standout {
-    display: block;
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #22577A;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 8px #eaf6fb;
-    letter-spacing: 0.01em;
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
-#cardFrame {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-#matchmaking-section {
-    margin-top: 85px;
-}
-
-/* ==========================================================================
-   RESPONSIVE DESIGN - MERGED
-   ========================================================================== */
-@media (max-width: 800px) {
-    .card-container, .leaderboard {
-        flex-direction: column;
-        align-items: center;
+@media (max-width: 900px) {
+    .clickable-area {
+        width: 80px;
+        height: 80px;
+        padding: 8px;
     }
+    .clickable-area img {
+        width: 72px;
+        height: 72px;
+    }
+    .top-left, .top-right { top: 14px; }
+    .bottom-left, .bottom-right { bottom: 14px; }
+    .top-left, .bottom-left { left: 12px; }
+    .top-right, .bottom-right { right: 12px; }
+}
+
+@media (max-width: 600px) {
+    .clickable-area {
+        width: 68px;
+        height: 68px;
+        padding: 5px;
+    }
+    .clickable-area img {
+        width: 60px;
+        height: 60px;
+    }
+    .top-left, .bottom-left { left: 4px; }
+    .top-right, .bottom-right { right: 4px; }
+    .top-left, .top-right { top: 6px; }
+    .bottom-left, .bottom-right { bottom: 6px; }
 }
 
 @media (max-width: 768px) {
@@ -851,6 +556,7 @@ padding-bottom: 60px; /* 👈 Add this line */
         background: var(--bg-url, url('images/backgroundmobile.jpg')) no-repeat center center;
         background-size: cover;
     }
+
     body.two-card-page::before {
         background-image: url('images/background for mobile ie.jpg');
     }
@@ -870,67 +576,9 @@ padding-bottom: 60px; /* 👈 Add this line */
     .input-container {
         padding: 0 10px;
     }
-   /* Base styles for the tab content panes */
-.tab-content-pane {
-    display: none; /* All tab content panes are hidden by default */
-    padding: 20px 0; /* Add some padding to separate from tabs */
-}
-.tab-content-pane.active-tab-pane {
-    display: block; /* The active tab content pane is shown */
-}
 
-/* Styles for the tab buttons/navigation */
-.tab-nav {
-    display: flex;
-    justify-content: center; /* Center the tabs */
-    margin-bottom: 20px; /* Space between tabs and content */
-    border-bottom: 2px solid #333; /* Underline for tabs */
-    padding-bottom: 5px;
-    gap: 10px; /* Space between tab buttons */
-}
-.tab-button {
-    background-color: #2a2a3a; /* Darker background for tabs */
-    color: #eee;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1em;
-    border-radius: 5px 5px 0 0; /* Rounded top corners */
-    transition: background-color 0.3s ease, color 0.3s ease;
-    white-space: nowrap; /* Prevent wrapping on smaller screens */
-}
-.tab-button:hover {
-    background-color: #3a3a4a;
-    color: #ffd700; /* Gold on hover */
-}
-.tab-button.active {
-    background-color: #ffd700; /* Gold for active tab */
-    color: #222; /* Dark text for active tab */
-    font-weight: bold;
-    border-bottom: 2px solid #ffd700; /* Match active border */
-}
-
-/* Adjustments for existing sections when they become tab panes */
-.panel {
-    position: relative; /* If you add absolute positioned elements later, this is crucial */
-    padding-top: 0; /* Remove top padding if tabs are directly inside, adjust as needed */
-    box-sizing: border-box;
-}
-
-/* Ensure section titles within tabs still look good */
-.tab-content-pane .section-title {
-    margin-top: 0; /* Remove top margin if needed when inside a tab */
-}
-
-/* Media queries for tab buttons if they get too crowded */
-@media (max-width: 768px) {
-    .tab-nav {
-        flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
-        justify-content: flex-start; /* Align to start when wrapping */
+    .card-container, .leaderboard {
+        flex-direction: column;
+        align-items: center;
     }
-    .tab-button {
-        flex-grow: 1; /* Allow buttons to grow to fill space */
-        text-align: center;
-    }
-}
 }
