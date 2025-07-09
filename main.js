@@ -814,7 +814,10 @@ document.addEventListener('DOMContentLoaded', () => {
             showEndorseSkillModal(data.email, data.first_name, data.last_name, data.skills);
         }
     });
-
+    window.addEventListener('load', function () {
+  const splash = document.querySelector('.clickable-area');
+  splash.classList.add('splash-bg-animated');
+});
 
     // Initial data loads
     fetchUniqueSkills();
