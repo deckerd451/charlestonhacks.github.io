@@ -296,41 +296,7 @@ html, footer, .icons-container {
     display: none;
 }
 
-/* ==========================================================================
-   FOOTER & COUNTDOWN - RESTORED ORIGINAL, KEPT NEW FOR SPECIFIC CONTAINERS
-   ========================================================================== */
-footer {
-    padding: var(--footer-spacing);
-    background: transparent !important;
-}
 
-#countdownWrapper { /* Original specific countdown wrapper */
-    margin-bottom: 0;
-    text-align: center;
-}
-
-#countdown { /* Original specific countdown text */
-    font-size: var(--countdown-size);
-    color: var(--primary-color);
-}
-
-.icons-container { /* Original social icons container */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    background: transparent !important;
-}
-
-.icons-container a {
-    color: var(--text-color);
-    font-size: 30px;
-    transition: color var(--transition-speed) ease;
-}
-
-.icons-container a:hover {
-    color: var(--secondary-color);
-}
 
 /* ==========================================================================
    NEW UI ELEMENTS - KEPT THEIR MODERN STYLING
