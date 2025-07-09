@@ -351,7 +351,17 @@
             <header class="major">
                 <div class="panel">
                     <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/cardframe2.svg" alt="CharlestonHacks" style="z-index: 3;" />
+                        <div class="image-wrapper">
+    <img id="missionImage" src="images/cardframe2.svg" alt="CharlestonHacks" />
+    <!-- center-top and center-bottom will move here -->
+    <div class="clickable-area center-top" data-sound="keys" data-image="images/Medusa.png" data-url="https://www.linkedin.com/company/charlestonhacks">
+        <img src="images/crestl.svg" alt="Crest">
+    </div>
+    <div class="clickable-area center-bottom" data-sound="keys" data-image="images/Elara.png" data-url="https://www.instagram.com/charlestonhacks/">
+        <img src="images/keysl.svg" alt="Keys">
+    </div>
+</div>
+
                         <div id="missionContent">
                             <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                             <div class="body-text">
