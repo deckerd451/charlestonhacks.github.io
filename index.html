@@ -1,450 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
-    <meta property="og:title" content="CharlestonHacks - Home" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
+    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
+    <meta property="og:title" content="<title>CharlestonHacks | Charleston Hackathons & Tech Events</title>" />
+    <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>CharlestonHacks - Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        .image-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
-
-.image-wrapper img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Reposition centered clickables relative to the image */
-.image-wrapper .center-top,
-.image-wrapper .center-bottom {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.image-wrapper .center-top {
-    top: 5%;
-}
-
-.image-wrapper .center-bottom {
-    bottom: 5%;
-}
-
-@media (max-width: 768px) {
-    .image-wrapper .center-top {
-        top: 5%;
-    }
-
-    .image-wrapper .center-bottom {
-        bottom: 5%;
-    }
-}
-
-        /* Resetting default margin and padding */
-        body, h1, h2, h3, p, ul {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* General styles */
-        body {
-            background-color: black;
-            color: white;
-            font-family: 'Britannic Bold', Arial, sans-serif;
-            overflow-x: hidden;
-            position: relative;
-            text-align: center;
-        }
-
         .panel {
-            width: 100%;
-            min-height: 90vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
             position: relative;
         }
-
-        .media-container {
-            position: relative;
-            z-index: 3;
-            width: 100%;
-            max-width: 600px; /* Adjust the max-width as needed */
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        #missionVideo {
-            pointer-events: none;
-        }
-        #missionVideo.show {
-            pointer-events: auto;
-        }
-
-        .media-container img,
-        .media-container video {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover; /* Maintain aspect ratio */
-        }
-
-        .media-container video {
+        .clickable-area {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 1s ease-in-out; /* Smooth transition for fade in and out */
-        }
-
-        @media (max-width: 768px) {
-            .media-container {
-                max-width: 90%;
-            }
-        }
-        @media (max-width: 768px) {
-    #countdownWrapper {
-        position: absolute;
-        top: 25%; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-    }
-
-    #countdown {
-        font-size: 24px;
-    }
-}
-@media (max-width: 768px) {
-    .center-top {
-        top: 5%; /* Keep consistent positioning */
-    }
-
-    .center-bottom {
-        bottom: 5%;
-    }
-}
-
-     
-  .clickable-area img {
-      padding: 0;
-      margin: 0;
-  }
-
-    .center-top, .center-bottom {
-        width: 16.5vw; /* Increase by 10% from 15vw */
-        max-width: 110px; /* Increase by 10% from 100px */
-    }
-
-  @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        .fade-out {
-            animation: fadeOut 2s ease forwards;
-        }
-
-        #missionContent {
-            animation: fadeIn 0.9s ease forwards;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 2;
-            opacity: 1;
-        }
-
-        #missionContent p, #missionContent a {
-            color: white;
-        }
-
-        @keyframes flipImageX {
-            0% { opacity: 1; }
-            50% { transform: rotateX(180deg); }
-            to { transform: rotateX(360deg); opacity: 0; }
-        }
-
-        @keyframes flipImageY {
-            0% { opacity: 1; }
-            50% { transform: rotateY(180deg); }
-            to { transform: rotateY(360deg); opacity: 0; }
-        }
-
-        .flip-image-x {
-            animation: flipImageX 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
-        }
-
-        .flip-image-y {
-            animation: flipImageY 3s ease forwards;
-            z-index: 5; /* Ensure it's above everything else */
-        }
-
-        #missionVideo.fadeOut {
-            animation: fadeOut 18s ease forwards !important;
-            z-index: 1;
-        }
-
-        #cardFrame {
-            display: none; /* Initially hidden */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Positioned under other elements */
-        }
-
-        #countdownWrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #countdown {
-            font-size: 32px;
-            color: #FF0000;
-        }
-
-        @media (max-width: 768px) {
-            #countdown {
-                font-size: 24px; /* Smaller font size for mobile */
-            }
-        }
-
-        .logo {
-            display: block;
-            margin: 0 auto 5px auto; /* Center horizontally and add bottom margin */
-        }
-
-        .info {
-            color: #FFFF00;
-            font-size: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .info {
-                font-size: 16px; /* Smaller font size for mobile */
-            }
-        }
-
-        .body-text {
-            margin: 30px 0;
-        }
-
-        .body-text a {
-            color: white;
-        }
-
-        .body-text p {
-            margin-bottom: 10px;
-        }
-
-        #previousEventsToggle {
+            width: 96px;
+            height: 96px;
             background: none;
             border: none;
-            padding: 0;
-            font-size: 20px;
-            color: white;
             cursor: pointer;
+            z-index: 5;
+            opacity: 0.92;
+            border-radius: 50%;
+            padding: 10px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            box-sizing: border-box;
+            transition: box-shadow 0.1s;
+        }
+        .clickable-area img {
+            width: 88px;
+            height: 88px;
+            object-fit: contain;
+            pointer-events: none;
+            display: block;
+        }
+        /* Desktop default positions (moved top buttons up and bottom buttons down) */
+        .top-left { top: 20px; left: 36px; }
+        .top-right { top: 20px; right: 36px; }
+        .bottom-left { bottom: 20px; left: 36px; }
+        .bottom-right { bottom: 20px; right: 36px; }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 0px #ffd700;}
+            50% { box-shadow: 0 0 32px 14px #ffd700;}
+            100% { box-shadow: 0 0 0px #ffd700;}
+        }
+        .glow-animate {
+            animation: glow 0.45s;
         }
 
-        #previousEventsToggle i {
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .loading-indicator {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3;
-        }
-
-        /* Spinning progress wheel */
-        .spinner {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 8px solid #fff;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            z-index: 1000; /* Ensure it's above everything else */
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-.clickable-area {
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: 50%; /* Make it circular */
-    aspect-ratio: 1/1; /* Maintain perfect circle */
-    width: 15vw; /* Adjust size based on viewport width */
-    max-width: 100px; /* Prevent it from getting too large */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow */
-}
-
-.clickable-area:hover {
-    box-shadow: 15px 15px 30px 15px rgba(0, 0, 0, 0.6);
-
-}
-
-/* Adjust position as needed */
-.top-left {
-    top: 2%;
-    left: 4%;
-}
-
-.top-right {
-    top: 2%;
-    right: 4%;
-}
-
-.bottom-left {
-    bottom: 2%;
-    left: 4%;
-}
-
-.bottom-right {
-    bottom: 2%;
-    right: 4%;
-}
-
-.center-top {
-    top: 5%; /* or adjust to your liking */
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
-.center-bottom {
-    bottom: 5%; /* or adjust to your liking */
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
-
-
-
-        .fade-out-body *:not(.spinner) {
-            animation: fadeOut 2s ease forwards;
-        }
-
-        /* Make hcard and all elements 20% smaller on web only */
-        @media (min-width: 769px) {
-            .media-container {
-                transform: scale(0.8);
+        /* Responsive styles for buttons */
+        @media (max-width: 900px) {
+            .clickable-area {
+                width: 80px;
+                height: 80px;
+                padding: 8px;
             }
+            .clickable-area img {
+                width: 72px;
+                height: 72px;
+            }
+            .top-left, .top-right { top: 14px; }
+            .bottom-left, .bottom-right { bottom: 14px; }
+            .top-left, .bottom-left { left: 12px; }
+            .top-right, .bottom-right { right: 12px; }
         }
+        @media (max-width: 600px) {
+            .clickable-area {
+                width: 68px;
+                height: 68px;
+                padding: 5px;
+            }
+            .clickable-area img {
+                width: 60px;
+                height: 60px;
+            }
+            /* Move further out (closer to edge) on mobile */
+            .top-left, .bottom-left { left: 4px; }
+            .top-right, .bottom-right { right: 4px; }
+            .top-left, .top-right { top: 6px; }
+            .bottom-left, .bottom-right { bottom: 6px; }
+        }
+         /* --- NEW CSS FOR FOOTER TEAM BUILDER ICON --- */
+        .icons-container a:first-child .fas.fa-people-arrows {
+            color: #000080; /* Dark blue color */
+        }
+        /* --- END NEW CSS --- */
     </style>
 </head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-6NDKG07DY6');
+</script>
 <body class="is-preload">
-    <div id="main">
-        <article class="post featured">
-            <header class="major">
-                <div class="panel">
-                    <a class="media-container" onclick="playSound('cardflip'); toggleMissionContent()" aria-label="Toggle mission content">
-                        <div class="image-wrapper">
-    <img id="missionImage" src="images/cardframe2.svg" alt="CharlestonHacks" />
-    <!-- center-top and center-bottom will move here -->
-    <div class="clickable-area center-top" data-sound="keys" data-image="images/Medusa.png" data-url="https://www.linkedin.com/company/charlestonhacks">
-        <img src="images/crestl.svg" alt="Crest">
-    </div>
-    <div class="clickable-area center-bottom" data-sound="keys" data-image="images/Elara.png" data-url="https://www.instagram.com/charlestonhacks/">
-        <img src="images/keysl.svg" alt="Keys">
-    </div>
-</div>
-
-                        <div id="missionContent">
-                            <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
-                            <div class="body-text">
-                                <p>
-                                    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
-                                </p>
+    <main>
+        <div id="main">
+            <article class="post featured">
+                <header class="major">
+                    <div class="panel">
+                        <div class="media-container" aria-label="Toggle mission content" onclick="toggleMissionContent()">
+                            <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
+                            <div id="missionContent">
+                                <div class="body-text">
+                                    <p>
+                                        <img id="IEBanner" 
+                                             src="images/engine.webp" 
+                                             alt="Innovation Engine" 
+                                             style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
+                                             onclick="flipAndRedirect()">
+                                    </p>
+                                </div>
                             </div>
-                            <div id="countdownWrapper">
-                               
-                                <div id="countdown"></div>
-                            </div>
-                        </div>
-                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()" onended="showCardFrame()">
-                            <source src="images/aiffcardvideo.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <img id="cardFrame" src="images/cardframe.png" alt="Card Frame" />
+                            <video id="missionVideo" 
+                                muted 
+                                playsinline 
+                                controls>
+                                <source src="images/universe.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-                        <!-- Clickable areas with placeholder assets -->
-                        <div class="clickable-area top-left" data-sound="keys" data-image="images/yellowscullcard.png" data-url="Poster.html">
-                            <img src="images/informationbutton.webp" alt="Info">
+                            <!-- Glow effect only, larger images, responsive, moved further outward on mobile, up/down on desktop -->
+                            <button type="button" class="clickable-area top-left"
+                                data-sound="chime" 
+                                data-image="images/yellowscullcard.png" 
+                                data-url="Poster.html">
+                                <img src="images/informationbutton.webp" alt="Info">
+                            </button>
+                            <button type="button" class="clickable-area top-right"
+                                data-sound="chime" 
+                                data-image="images/redscullcard.png" 
+                                data-url="2card.html">
+                                <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
+                            </button>
+                            <button type="button" class="clickable-area bottom-left"
+                                data-sound="chime" 
+                                data-image="images/Descartes.png" 
+                                data-url="news.html">
+                                <img src="images/newsbutton.webp" alt="News">
+                            </button>
+                            <button type="button" class="clickable-area bottom-right"
+                                data-sound="chime" 
+                                data-image="images/Alexandor.png" 
+                                data-url="cardmatchgame.html">
+                                <img src="images/peoplebutton.webp" alt="People">
+                            </button>
                         </div>
-                        <div class="clickable-area top-right" data-sound="keys" data-image="images/redscullcard.png" data-url="2card.html">
-                            <img src="images/innovationenginebutton.webp" alt="People">
-                        </div>
-                        <div class="clickable-area bottom-left" data-sound="keys" data-image="mages/newsbutton.webp" data-url="news.html"
-                            <img src="images/newsbutton.webp" alt="News">
-                        </div>
-                        <div class="clickable-area bottom-right" data-sound="keys" data-image="images/Alexandor.png" data-url="subscribe.html">
-                            <img src="images/envelopen.svg" alt="Envelope">
-                        </div>
-                        <div class="clickable-area center-top" data-sound="keys" data-image="images/Medusa.png" data-url="https://www.linkedin.com/company/charlestonhacks">
-                            <img src="images/crestl.svg" alt="Crest">
-                        </div>
-                        <div class="clickable-area center-bottom" data-sound="keys" data-image="images/Elara.png" data-url="https://www.instagram.com/charlestonhacks/">
-                            <img src="images/keysl.svg" alt="Keys">
-                        </div>
-                    </a>
-                </div>
-            </header>
-        </article>
-    </div>
-
-    <!-- Spinning progress wheel -->
-    <div id="spinner" class="spinner"></div>
+                    </div>
+                </header>
+            </article>
+        </div>
+    </main>
     <footer>
         <div id="countdownWrapper">
             <div id="countdown"></div>
@@ -474,173 +194,275 @@
             </a>
         </section>
     </footer>
-
     <script src="ho-script.js"></script>
     <script>
-        var countdownElement = document.getElementById('countdown');
-        var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
-        var countdownFunction = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                countdownElement.innerHTML = "AIFF is Here!";
-            }
-        }, 1000);
+        // All buttons: glow effect & delayed navigation for visual feedback
+        function addButtonGlowAndNavigation() {
+            document.querySelectorAll('.clickable-area').forEach(area => {
+                area.addEventListener('click', function(e) {
+                    const sound = this.getAttribute('data-sound');
+                    const url = this.getAttribute('data-url');
+                    // Add glow animation
+                    this.classList.add('glow-animate');
 
-        var cardImages = [
-            "images/yellowscullcard.png",
-            "images/redscullcard.png",
-            "images/Descartes.png",
-            "images/Alexandor.png",
-            "images/Medusa.png",
-            "images/Elara.png",
-            "images/adventurercard.png",
-            "images/collaboratorcard.png",
-            "images/humanitariancard.png",
-            "images/nextcard.png",
-            "images/Aegis.png",
-            "images/resilientcard.png",
-            "images/Astrid.png",
-            "images/nicolecard.png"
-        ];
+                    // Play sound (if present)
+                    if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
+                        AudioController.playSound(sound);
+                    }
 
-        let cardClicked = false;
+                    // Delay navigation so glow appears (matched to animation: 450ms)
+                    setTimeout(() => {
+                        window.location.href = url;
+                    }, 460);
+                });
 
-        // Simplify audio handling with a sound map
-        const sounds = {
-            cardflip: new Audio('assets/atmospherel.m4a'),
-            keys: new Audio('assets/keys.m4a'),
-            ding: new Audio('assets/ding.mp3')
-        };
+                area.addEventListener('keydown', function(e) {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
 
-        // Lower the volume of all sounds by 30%
-        Object.keys(sounds).forEach(key => {
-            sounds[key].volume = 0.3;
-        });
-
-        function getRandomImage() {
-            var randomIndex = Math.floor(Math.random() * cardImages.length);
-            return cardImages[randomIndex];
+                // Remove glow-animate class after animation ends to allow re-clicking
+                area.addEventListener('animationend', function(e) {
+                    if (e.animationName === "glow") {
+                        this.classList.remove('glow-animate');
+                    }
+                });
+            });
         }
 
-        function playSound(soundKey) {
-            const audio = sounds[soundKey];
-            if (audio) {
-                audio.currentTime = 0; // Reset to start
+        const CONFIG = {
+            countdown: {
+                targetDate: "June 28, 2025 00:00:00",
+                completedMessage: "Countdown to Next Event Soon!"
+            },
+            audio: {
+                cardflip: 'assets/atmospherel.m4a',
+                keys: 'assets/keys.m4a',
+                chime: 'assets/chime.mp3'
+            },
+            cardImages: [
+                "images/yellowscullcard.png",
+                "images/redscullcard.png",
+                "images/Descartes.png",
+                "images/Alexandor.png",
+                "images/Medusa.png",
+                "images/Elara.png",
+                "images/adventurercard.png",
+                "images/collaboratorcard.png",
+                "images/humanitariancard.png",
+                "images/nextcard.png",
+                "images/Aegis.png",
+                "images/resilientcard.png",
+                "images/Astrid.png",
+                "images/nicolecard.png"
+            ]
+        };
+
+        const AudioController = {
+            preloaded: false,
+            preloadAudio() {
+                if (this.preloaded) return;
+                Object.keys(CONFIG.audio).forEach(key => {
+                    const src = CONFIG.audio[key];
+                    if (src) new Audio(src);
+                });
+                this.preloaded = true;
+            },
+            playSound(soundKey) {
+                const soundSrc = CONFIG.audio[soundKey];
+                if (!soundSrc) return;
+                const audio = new Audio(soundSrc);
+                audio.volume = 0.2;
                 audio.play().catch(error => {
                     console.error('Audio playback failed:', error);
                 });
             }
+        };
+
+        const VideoController = {
+            handleError() {
+                alert("Error loading video. Please try again later.");
+            },
+            showCardFrame() {
+                document.getElementById('cardFrame').style.display = 'block';
+            }
+        };
+
+        const CountdownController = {
+            element: null,
+            interval: null,
+            init() {
+                this.element = document.getElementById('countdown');
+                this.start();
+            },
+            start() {
+                const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
+                this.interval = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = countDownDate - now;
+                    if (distance < 0) {
+                        this.stop();
+                        this.element.innerHTML = CONFIG.countdown.completedMessage;
+                        return;
+                    }
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                }, 1000);
+            },
+            stop() {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
+            }
+        };
+
+        const CardController = {
+            clicked: false,
+            getRandomImage() {
+                const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
+                return CONFIG.cardImages[randomIndex];
+            },
+            getRandomFlip() {
+                return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            },
+            flipCard(imageSrc, url) {
+                const missionImage = document.getElementById('missionImage');
+                const randomFlip = this.getRandomFlip();
+                missionImage.classList.add(randomFlip);
+                document.body.classList.add('fade-out-body');
+                window.location.href = url;
+                setTimeout(() => {
+                    missionImage.src = imageSrc;
+                }, 2000);
+            }
+        };
+
+        function resetCardState() {
+            document.getElementById('missionImage').src = "images/hsoftest.png";
+            const video = document.getElementById('missionVideo');
+            video.pause();
+            video.style.display = 'none';
+            video.style.opacity = 0;
+            document.getElementById('missionContent').style.display = 'none';
+            document.getElementById('aiffBanner').style.display = 'none';
+            document.getElementById('cardFrame').style.display = 'none';
+            document.body.classList.remove('fade-out-body');
+            const img = document.getElementById('missionImage');
+            img.classList.remove('flip-image-x', 'flip-image-y');
+            if (typeof CardController !== "undefined") {
+                CardController.clicked = false;
+            }
         }
+
+        const App = {
+            init() {
+                this.setupEventListeners();
+                this.setupVideoHandlers();
+                CountdownController.init();
+                addButtonGlowAndNavigation();
+            },
+            setupEventListeners() {
+                window.addEventListener('pointerdown', () => {
+                    AudioController.preloadAudio();
+                }, { once: true });
+                window.addEventListener('beforeunload', () => {});
+                window.addEventListener('pageshow', () => {
+                    document.body.classList.remove('fade-out-body');
+                    resetCardState();
+                });
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.querySelectorAll('.clickable-area').forEach(element => {
+                        element.classList.add('loaded');
+                    });
+                });
+            },
+            setupVideoHandlers() {
+                const video = document.getElementById('missionVideo');
+                if (video) {
+                    video.addEventListener('error', VideoController.handleError);
+                    video.addEventListener('ended', VideoController.showCardFrame);
+                }
+            }
+        };
 
         function toggleMissionContent() {
-            if (cardClicked) return;
-            cardClicked = true;
-
-            var image = document.getElementById('missionImage');
-            image.src = getRandomImage();
-
-            var video = document.getElementById('missionVideo');
+            if (CardController.clicked) return;
+            CardController.clicked = true;
+            AudioController.playSound('cardflip');
+            const image = document.getElementById('missionImage');
+            image.src = CardController.getRandomImage();
+            const video = document.getElementById('missionVideo');
             video.style.display = 'block';
             video.style.opacity = 0;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.style.opacity = 1;
-            }, 100); // Delay to allow transition to take effect
+            }, 100);
             video.play();
-
             document.getElementById('missionContent').style.display = 'block';
-
-            setTimeout(function () {
-                video.classList.add('fadeOut');
-                setTimeout(function () {
-                    video.style.display = 'none';
-                }, 18000);
-            }, 18000);
-
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            document.getElementById('aiffBanner').style.display = 'block';
+            const randomFlip = CardController.getRandomFlip();
             image.classList.add(randomFlip);
         }
-
         function flipAndRedirect() {
-            var banner = document.getElementById('aiffBanner');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            const banner = document.getElementById('aiffBanner');
+            const randomFlip = CardController.getRandomFlip();
             banner.classList.add(randomFlip);
-            setTimeout(function () {
-                window.location.href = 'https://charlestonhacks.com/techweek.html';
+            setTimeout(() => {
+                window.location.href = 'https://innovation-engine.devpost.com/';
             }, 2000);
         }
+        App.init();
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to show a specific tab and hide others
+        function showTab(tabId) {
+            // Hide all tab content panes
+            document.querySelectorAll('.tab-content-pane').forEach(pane => {
+                pane.classList.remove('active-tab-pane');
+            });
 
-        function flipCard(imageSrc, url) {
-            var missionImage = document.getElementById('missionImage');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            missionImage.classList.add(randomFlip);
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
 
-            // Apply fade-out effect to the body content except the spinner
-            document.body.classList.add('fade-out-body');
+            // Show the selected tab content pane
+            const activePane = document.getElementById(tabId);
+            if (activePane) {
+                activePane.classList.add('active-tab-pane');
+            }
 
-            // Show spinner
-            document.getElementById('spinner').style.display = 'block';
+            // Activate the corresponding tab button
+            const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
 
-            // Redirect immediately
-            window.location.href = url;
-
-            setTimeout(function () {
-                missionImage.src = imageSrc;
-            }, 2000); // Adjust the delay to match the fade-out duration
+            // Scroll to the top of the panel to ensure content is visible
+            const panel = document.querySelector('.panel');
+            if (panel) {
+                panel.scrollTop = 0;
+            }
         }
 
-        document.querySelectorAll('.clickable-area').forEach(area => {
-            area.addEventListener('click', function() {
-                const sound = this.getAttribute('data-sound');
-                const image = this.getAttribute('data-image');
-                const url = this.getAttribute('data-url');
-                playSound(sound);
-                flipCard(image, url);
+        // Add click event listeners to tab buttons
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                showTab(tabId);
             });
         });
 
-        function toggleVisibility() {
-            var eventsSection = document.querySelector('.previous-events');
-            eventsSection.style.display = eventsSection.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function showLoadingIndicator() {
-            document.getElementById('loadingIndicator').style.display = 'block';
-        }
-
-        function hideLoadingIndicator() {
-            document.getElementById('loadingIndicator').style.display = 'none';
-        }
-
-        function handleVideoError() {
-            alert("Error loading video. Please try again later.");
-        }
-
-        function showCardFrame() {
-            document.getElementById('cardFrame').style.display = 'block';
-        }
-
-        const videoElement = document.getElementById('missionVideo');
-        videoElement.addEventListener('play', playSound.bind(null, 'cardflip'));
-        videoElement.addEventListener('ended', showCardFrame);
-
-        // Ensure the spinner remains visible until the link is opened
-        window.addEventListener('beforeunload', function () {
-            document.getElementById('spinner').style.display = 'none';
-        });
-
-        // Remove fade-out class when the page is loaded or navigated back
-        window.addEventListener('pageshow', function () {
-            document.body.classList.remove('fade-out-body');
-        });
-    </script>
-    <script src="dist/bundle.js"></script>
+        // Show the default tab (e.g., 'profile') when the page loads
+        showTab('profile'); // This makes the "Create Profile" tab active by default
+    });
+</script>
 </body>
-
 </html>
