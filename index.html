@@ -1,18 +1,11 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
-    <meta property="og:title" content="CharlestonHacks - Home" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
-    <meta property="og:image" content="images/universalcard-01.png" />
-    <meta property="og:url" content="https://charlestonhacks.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>CharlestonHacks - Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="manifest" href="manifest.json" />
-    <style>
+    <title>Home</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
         /* Resetting default margin and padding */
         body, h1, h2, h3, p, ul {
             margin: 0;
@@ -30,23 +23,23 @@
         }
 
         .panel {
-            position: relative;
-            width: 100%;
-            min-height: 90vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin-bottom: 0;
-        }
+    position: relative;
+    width: 100%;
+    min-height: 90vh; /* Reduce height so icons appear closer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+            margin-bottom: 0; /* Ensures no extra space below */
+}
+
 
         .panel img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 10px auto 0;
-            loading: lazy; /* Lazy loading images */
-        }
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto 0; /* Adjust top margin to move image down */
+}
 
         .panel video {
             position: absolute;
@@ -72,7 +65,17 @@
             100% { opacity: 1; }
         }
 
+        @-webkit-keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
         @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @-webkit-keyframes fadeOut {
             0% { opacity: 1; }
             100% { opacity: 0; }
         }
@@ -85,7 +88,7 @@
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 400px;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0);
             padding: 20px;
             text-align: center;
             display: none;
@@ -93,7 +96,7 @@
             opacity: 0;
         }
 
-        #missionContent p, #missionContent a {
+        #missionContent p, #missionContent button {
             color: white;
         }
 
@@ -111,14 +114,16 @@
 
         .flip-image-x {
             animation: flipImageX 2s ease forwards;
+            -webkit-animation: flipImageX 1.5s ease-in-out forwards;
         }
 
         .flip-image-y {
             animation: flipImageY 2s ease forwards;
+            -webkit-animation: flipImageY 1.5s ease-in-out forwards;
         }
 
         #missionVideo.fadeOut {
-            animation: fadeOut 25s ease forwards;
+            animation: fadeOut 25s ease forwards; /* Change this if you want to effect the length of the Medusa video */
         }
 
         #countdownWrapper {
@@ -135,9 +140,18 @@
             margin-bottom: 20px;
         }
 
+        .event-logo {
+            margin-bottom: 20px;
+        }
+
         .info {
             color: #FFFF00;
             font-size: 20px;
+        }
+
+        #previousEventsToggle {
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
 
         .body-text {
@@ -152,158 +166,109 @@
             margin-bottom: 10px;
         }
 
+    
         .icon {
-            color: #FF0000;
-            font-size: 24px;
-            margin-right: 5px;
+            color: #FF0000; /* Red color */
+            font-size: 24px; /* Adjust size if needed */
+             margin-right: 5px; /* Adds space between icons */
         }
 
-        footer .icons-container {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 5px 0;
-            z-index: 10;
-        }
+footer .icons-container {
+    display: flex;
+    justify-content: space-evenly; /* Distribute icons evenly across the width */
+    align-items: center;      /* Centers icons vertically */
+    gap: 15px;                /* Adds space between the icons */
+    flex-wrap: wrap;         /* Allows the icons to wrap onto the next line if space is limited */
+    position: fixed;          /* Use fixed to keep it always at the bottom */
+    bottom: 0;                /* Aligns the icons at the bottom */
+    width: 100%;              /* Ensures full-width */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: background color */
+    padding: 5px 0;          /* Space around the icons */
+    z-index: 10;              /* Ensures icons appear above video */
+}
 
-        @media (max-width: 768px) {
-            footer .icons-container a {
-                font-size: 20px;
-            }
-        }
+    @media (max-width: 768px) {
+    footer .icons-container a {
+        font-size: 20px; /* Reduces icon size for smaller screens */
+    }
+    .scroll-instruction p {
+    color: #39FF14; /* Acid Green */
+    font-weight: bold; /* Optional: Makes it stand out */
+    font-size: 20px; /* Optional: Adjust size if needed */
+    text-align: center;
+    margin-top: 10px; /* Optional: Adjust spacing */
+}
+    /* Scroll Indicator at the Bottom */
+    .scroll-indicator {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 5px;
+        background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+        border-radius: 5px;
+        animation: fadeIndicator 2s infinite;
+    }
 
-        .scroll-instruction p {
-            color: #39FF14;
-            font-weight: bold;
-            font-size: 20px;
-            text-align: center;
-            margin-top: 10px;
-        }
+    @keyframes fadeIndicator {
+        0% { opacity: 0.3; }
+        50% { opacity: 1; }
+        100% { opacity: 0.3; }
+    }
 
-        .scroll-indicator {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 5px;
-            background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
-            border-radius: 5px;
-            animation: fadeIndicator 2s infinite;
-        }
+    /* Footer Arrow Icon Pulse Animation */
+    .icon:hover {
+        animation: bounce 1s ease infinite;
+    }
 
-        @keyframes fadeIndicator {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
-        }
+    @keyframes bounce {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0); }
+    }
 
-        .icon:hover {
-            animation: bounce 1s ease infinite;
-        }
+    /* Toggle button */
+  #previousEventsToggle {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Adds space between text and arrow */
+}
 
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
-        }
-
-        #previousEventsToggle {
-            background: none;
-            border: none;
-            padding: 0;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #previousEventsToggle i {
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .dark-mode-toggle {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 20;
-        }
-
-        .dark-mode-toggle .fa-sun {
-            display: none;
-        }
-
-        body.light-mode .dark-mode-toggle .fa-sun {
-            display: inline;
-        }
-
-        body.light-mode .dark-mode-toggle .fa-moon {
-            display: none;
-        }
-
-        body.light-mode {
-            background-color: white;
-            color: black;
-        }
-
-        body.light-mode .icon {
-            color: #0000FF;
-        }
-
-        body.light-mode .info {
-            color: #0000FF;
-        }
-
-        .loading-indicator {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-        }
-
-    </style>
+#previousEventsToggle i {
+    background: none;
+    border: none;
+    padding: 0;
+}
+         </style>
 </head>
 <body class="is-preload">
-    <button class="dark-mode-toggle" aria-label="Toggle dark mode">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
-    </button>
     <div id="main">
         <article class="post featured">
             <header class="major">
                 <div class="panel">
-                    <a class="image main" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                        <img id="missionImage" src="images/universalcard-01.png" alt="CharlestonHacks" />
-                        <video id="missionVideo" muted playsinline controls onloadstart="showLoadingIndicator()" oncanplay="hideLoadingIndicator()" onerror="handleVideoError()"> <!-- Added controls for video playback -->
-                            <source src="assets/trailer.mp4" type="video/mp4">
+                    <a class="image main" onclick="toggleMissionContent()">
+                        <img id="missionImage" src="images/Front.png" alt="CharlestonHacks" />
+                        <video id="missionVideo" muted playsinline>
+                            <source src="assets/trailer.mp4" type="video/mp4"> <!-- Replace this video when a new one becomes available -->
+
                             Your browser does not support the video tag.
                         </video>
-                        <div class="loading-indicator" id="loadingIndicator">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </div>
                     </a>
                     <div id="missionContent">
                         <img src="images/chred.png" alt="CharlestonHacks Logo" class="logo" style="max-width: 70%; height: auto;">
                         <div class="body-text">
                             <p>
-                                <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 100%; height: auto;" onclick="flipAndRedirect()">
+                                <a href="https://charlestonhacks.com/techweek.html" target="_blank">
+    <img id="aiffBanner" src="images/banner.png" alt="AI Film Fest" style="cursor: pointer; width: 900px; height: auto;"><!-- Replace this image when there is a new event to advertise -->
+</a>
+
                             </p>
                             <p>
                                 <a href="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
@@ -313,9 +278,10 @@
                             <p>
                                 <a href="subscribe.html" target="_blank">Join the Mailing List</a>
                             </p>
-                            <p>
+                             <p>
                                 <a href="Poster.html" target="_blank">Our Events</a>
                             </p>
+                            
                         </div>
                         <div id="countdownWrapper">
                             <p class="info"><b>Countdown to 30 Second AI Film Fest:</b></p>
@@ -325,25 +291,26 @@
                 </div>
             </header>
         </article>
-        <section class="previous-events" style="display: none;">
-            <!-- Placeholder for previous events content -->
-            <h2>Previous Events</h2>
-            <p>Details about previous events will be displayed here.</p>
-        </section>
     </div>
-    <footer>
-        <section class="icons-container">
-            <a href="https://charlestonhacks.mailchimpsites.com/" target="_blank" aria-label="Mailchimp"><i class="fas fa-info-circle icon"></i></a>
-            <a href="2card.html" aria-label="Users"><i class="fas fa-users icon"></i></a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin icon"></i></a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram icon"></i></a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email"><i class="fas fa-envelope icon"></i></a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter icon"></i></a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook icon"></i></a>
-        </section>
-    </footer>
+<footer>
+    <section class="icons-container" style="display: flex; justify-content: center; align-items: center;">
+        <a href="https://charlestonhacks.mailchimpsites.com/" target="_blank">
+            <i class="fas fa-info-circle icon"></i>
+        </a>
+        <a href="2card.html"><i class="fas fa-users icon"></i></a>
+        <!-- Removed Chevron Icon and Previous Events Toggle -->
+        <a href="https://www.linkedin.com/company/charlestonhacks"><i class="fab fa-linkedin icon"></i></a>
+        <a href="https://www.instagram.com/charlestonhacks/" target="_blank"><i class="fab fa-instagram icon"></i></a>
+        <a href="mailto:hello@charlestonhacks.com"><i class="fas fa-envelope icon"></i></a>
+        <a href="https://twitter.com/Descart84114619" target="_blank"><i class="fab fa-twitter icon"></i></a>
+        <a href="https://www.facebook.com/deckerdb26354" target="_blank"><i class="fab fa-facebook icon"></i></a>
+    </section>
+    
+    
+</footer>
 
-    <script src="ho-script.js"></script>
+
+<script src="ho-script.js"></script>
     <script>
         var countdownElement = document.getElementById('countdown');
         var countDownDate = new Date("May 1, 2025 19:00:00").getTime();
@@ -401,55 +368,24 @@
                 setTimeout(function() {
                     video.style.display = 'none';
                 }, 8000);
-            }, 25000);
+            }, 100);
 
+            // Randomly apply X or Y flip
             var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
             setTimeout(function() {
                 image.classList.add(randomFlip);
             }, 100);
         }
 
-        function flipAndRedirect() {
-            var banner = document.getElementById('aiffBanner');
-            var randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            banner.classList.add(randomFlip);
-            setTimeout(function() {
-                window.location.href = 'https://charlestonhacks.com/techweek.html';
-            }, 2000); // Adjust the delay to match the animation duration
-        }
-
         function toggleVisibility() {
-            var eventsSection = document.querySelector('.previous-events');
-            if (eventsSection.style.display === 'none') {
-                eventsSection.style.display = 'block';
-            } else {
-                eventsSection.style.display = 'none';
-            }
-        }
+    var eventsSection = document.querySelector('.previous-events');
+    if (eventsSection.style.display === 'none') {
+        eventsSection.style.display = 'block';
+    } else {
+        eventsSection.style.display = 'none';
+    }
+}
 
-        document.querySelector('.dark-mode-toggle').addEventListener('click', function() {
-            document.body.classList.toggle('light-mode');
-        });
-
-        function showLoadingIndicator() {
-            document.getElementById('loadingIndicator').style.display = 'block';
-        }
-
-        function hideLoadingIndicator() {
-            document.getElementById('loadingIndicator').style.display = 'none';
-        }
-
-        function handleVideoError() {
-            alert("Error loading video. Please try again later.");
-        }
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-XXXXX-Y');
     </script>
 </body>
 </html>
