@@ -890,5 +890,17 @@ footer {
         flex-grow: 1; /* Allow buttons to grow to fill space */
         text-align: center;
     }
+   /* Responsive styles for icons on small screens */
+.icons-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.icons-container a {
+    font-size: 24px;
+    padding: 8px;
+}
+
 }
 }
