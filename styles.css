@@ -174,10 +174,7 @@ html, footer, .icons-container {
     align-items: center;
     box-sizing: border-box;
 }
-.panel {
-    background: rgba(255, 0, 0, 0.1);
-    border: 1px solid red;
-}
+
 
 
 
@@ -332,7 +329,7 @@ html, footer, .icons-container {
 footer {
     padding: var(--footer-spacing);
     background: transparent !important;
-   padding-bottom: 40px;
+   padding-bottom: 20px;
 }
 
 
