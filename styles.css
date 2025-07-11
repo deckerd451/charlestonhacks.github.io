@@ -163,12 +163,9 @@ html, footer, .icons-container {
    ========================================================================== */
 .panel {
   display: inline-block; /* shrink to fit content width and height */
-  background: rgba(255, 0, 0, 0.1);
-  border: 1px solid red;
   padding: 15px; /* add padding as needed */
   box-sizing: border-box; /* ensure padding included in size */
 }
-
 /* Responsive tweaks for smaller screens */
 @media (max-width: 768px) {
     .panel {
