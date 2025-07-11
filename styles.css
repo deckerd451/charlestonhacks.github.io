@@ -169,6 +169,10 @@ html, footer, .icons-container {
         box-shadow: 0 0 10px 4px rgba(255, 0, 0, 0.6);
     }
 }
+.glow-effect {
+    animation: glow 2s infinite;
+}
+
 
 
 
