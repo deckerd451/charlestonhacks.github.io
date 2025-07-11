@@ -329,13 +329,14 @@ footer {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px; /* Ensures mobile tap target size */
-    font-size: clamp(20px, 5vw, 30px); /* Responsive size */
+    width: clamp(40px, 8vw, 60px); /* fixed responsive width */
+    height: clamp(40px, 8vw, 60px); /* equal height */
+    padding: 0; /* remove padding */
+    font-size: clamp(20px, 5vw, 30px);
     color: var(--text-color);
     transition: color var(--transition-speed) ease;
+    border-radius: 50%; /* make them circular */
 }
-
-
 
 .icons-container a:hover {
     color: var(--secondary-color);
