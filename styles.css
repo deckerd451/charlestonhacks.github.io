@@ -302,7 +302,9 @@ html, footer, .icons-container {
 footer {
     padding: var(--footer-spacing);
     background: transparent !important;
+   padding-bottom: 40px;
 }
+
 
 #countdownWrapper { /* Original specific countdown wrapper */
     margin-bottom: var(--footer-spacing);
