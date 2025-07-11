@@ -162,65 +162,29 @@ html, footer, .icons-container {
    PANEL & LAYOUT - updated 2
    ========================================================================== */
 .panel {
-  display: inline-block; /* shrink to fit content width */
-  /* or */
-  display: flow-root; /* creates a new block formatting context, fixes float issues */
+  display: inline-block; /* shrink to fit content width and height */
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid red;
+  padding: 15px; /* add padding as needed */
+  box-sizing: border-box; /* ensure padding included in size */
 }
-
-.panel {
-    background: rgba(255, 0, 0, 0.1);
-    border: 1px solid red;
-}
-
-
 
 /* Responsive tweaks for smaller screens */
 @media (max-width: 768px) {
     .panel {
-        width: 95%; /* Take almost full width on small screens */
-        min-height: 50vh; /* Slightly smaller min height */
-        padding: 10px;
+        display: block; /* full width block on smaller screens */
+        width: 95%;       /* Almost full width */
+        min-height: auto; /* Let height shrink to content */
+        padding: 10px;    /* Comfortable padding */
+        box-sizing: border-box;
     }
 }
 
 @media (max-width: 480px) {
     .panel {
-        width: 100%; /* Full width on very small screens */
-        padding: 5px;
-        min-height: 40vh;
+        width: 100%;      /* Full width */
+        padding: 5px;     /* Slightly smaller padding */
     }
-}
-
-
-.media-container {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    overflow: hidden;
-    transform: scale(var(--media-scale));
-}
-
-.media-container img,
-.media-container video {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-}
-
-.media-container video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
 }
 
 /* ==========================================================================
