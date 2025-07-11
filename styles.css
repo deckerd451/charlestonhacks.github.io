@@ -159,20 +159,40 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   PANEL & LAYOUT - RESTORED ORIGINAL FOR GENERAL PANEL, KEPT NEW FOR SPECIFIC CONTAINERS
+   PANEL & LAYOUT - updated
    ========================================================================== */
 .panel {
-    width: 100%;
-    min-height: 90vh; /* Original height */
+    width: 90%; /* Let it take most of the width but leave some margin */
+    max-width: 1200px; /* Prevent it from becoming too wide on large screens */
+    min-height: 60vh; /* Minimum height to keep content visible, smaller than before */
+    max-height: 90vh; /* Optional: prevent panel from getting too tall */
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     position: relative;
-    /* Removed max-width, background, border-radius, box-shadow to allow original design */
-    padding: 0; /* Ensure no extra padding from newer styles */
-    margin: 0 auto; /* Ensure centering is controlled by container if needed */
+    padding: 20px; /* Add some padding for breathing room */
+    margin: 20px auto; /* Center horizontally and add vertical margin */
+    box-sizing: border-box; /* Make sure padding is included in width */
 }
+
+/* Responsive tweaks for smaller screens */
+@media (max-width: 768px) {
+    .panel {
+        width: 95%; /* Take almost full width on small screens */
+        min-height: 50vh; /* Slightly smaller min height */
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .panel {
+        width: 100%; /* Full width on very small screens */
+        padding: 5px;
+        min-height: 40vh;
+    }
+}
+
 
 .media-container {
     position: relative;
