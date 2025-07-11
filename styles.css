@@ -1,34 +1,30 @@
 /* ==========================================================================
-   CSS VARIABLES & RESET - RESTORED ORIGINAL, MERGED WITH NEW FOR COMPONENTS
+   CSS VARIABLES & RESET
    ========================================================================== */
 :root {
-    /* RESTORED ORIGINAL GLOBAL COLORS & LAYOUT VARS */
     --primary-color: #FF0000; /* Original Red */
     --secondary-color: #FFFF00; /* Original Yellow */
-    --text-color: white; /* Original text color */
-    --background-color: black; /* Original background color for fallback/layers */
+    --text-color: white;
+    --background-color: black;
 
     --transition-speed: 0.3s;
-    --border-radius: 50%; /* For original clickable areas */
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* For original clickable areas */
+    --border-radius: 50%;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     --clickable-size: 14vw;
     --clickable-max-size: 90px;
     --center-clickable-size: 16.5vw;
     --center-clickable-max-size: 110px;
 
-    /* RESTORED ORIGINAL RESPONSIVE VARS */
     --media-scale: 0.8;
     --countdown-size: 32px;
     --info-size: 20px;
     --footer-spacing: 20px;
 
-    /* Original dynamic theme background image URL */
     --bg-url: url('images/background.webp');
 
-    /* KEPT NEW VARIABLES FOR SPECIFIC COMPONENTS */
-    --card-bg: #2a2a2a; /* Card background for new sections */
-    --shadow: 0 4px 20px rgba(0,0,0,0.3); /* For new components' shadows */
-    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1); /* For new animations/transitions */
+    --card-bg: #2a2a2a;
+    --shadow: 0 4px 20px rgba(0,0,0,0.3);
+    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
 * {
@@ -38,43 +34,35 @@
 }
 
 /* ==========================================================================
-   BODY & GLOBAL LAYOUT - RESTORED ORIGINAL FIXED BACKGROUND
+   BODY & GLOBAL LAYOUT
    ========================================================================== */
 body {
     margin: 0;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Crucial: Set background to transparent to allow ::before and ::after to show */
     background: transparent !important;
-    color: var(--text-color); /* Use original text color */
-    font-family: 'Britannic Bold', Arial, sans-serif; /* RESTORED ORIGINAL FONT */
+    color: var(--text-color);
+    font-family: 'Britannic Bold', Arial, sans-serif;
     position: relative;
     text-align: center;
     z-index: 1;
-    /* Removed the new transition and background-color directly on body to favor original background layers */
 }
 
-/* Fully opaque black layer behind the background image - RESTORED */
 body::after {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     background: black;
     z-index: -2;
     pointer-events: none;
 }
 
-/* Background image layer (now supports theme change via --bg-url) - RESTORED */
 body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     background: var(--bg-url, url('images/background.webp')) no-repeat center center;
     background-size: cover;
     background-position: center;
@@ -89,22 +77,16 @@ body.two-card-page::before {
 }
 
 /* ==========================================================================
-   BASE STYLES - RESTORED ORIGINAL
+   BASE ELEMENTS
    ========================================================================== */
 html, footer, .icons-container {
-    /* Ensure these elements are transparent or use original background */
     background: transparent !important;
 }
 
-/* ==========================================================================
-   BACKGROUND VIDEO - RESTORED ORIGINAL
-   ========================================================================== */
 #background-video {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     object-fit: cover;
     z-index: -1;
     opacity: 0.5;
@@ -112,7 +94,359 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   ANIMATIONS - ALL KEPT (both original and new, as they apply to different elements)
+   PANEL & LAYOUT
+   ========================================================================== */
+.panel {
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.media-container {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    overflow: hidden;
+    transform: scale(var(--media-scale));
+}
+
+.media-container img,
+.media-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.media-container video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* ==========================================================================
+   CLICKABLE AREAS
+   ========================================================================== */
+.clickable-area {
+    border: none;
+    background: none;
+    padding: 0;
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    aspect-ratio: 1/1;
+    width: var(--clickable-size);
+    max-width: var(--clickable-max-size);
+    box-shadow: var(--box-shadow);
+    animation: fadeInScaleUp 1s ease-out forwards;
+    transition: transform var(--transition-speed) ease-in-out;
+    opacity: 0;
+}
+
+.clickable-area:hover {
+    transform: scale(1.2);
+}
+
+.clickable-area.loaded {
+    opacity: 1;
+}
+
+.clickable-area img {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Position classes */
+.top-left    { top: 2%; left: 5%; }
+.top-right   { top: 2%; right: 5%; }
+.bottom-left { bottom: 2%; left: 5%; }
+.bottom-right{ bottom: 2%; right: 5%; }
+
+/* ==========================================================================
+   MISSION CONTENT
+   ========================================================================== */
+#missionContent {
+    animation: fadeIn 0.9s ease forwards;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    text-align: center;
+    display: none;
+    z-index: 2;
+    opacity: 1;
+}
+
+#missionContent p,
+#missionContent a {
+    color: var(--text-color);
+}
+
+/* ==========================================================================
+   FOOTER & COUNTDOWN
+   ========================================================================== */
+footer {
+    padding: var(--footer-spacing);
+    background: transparent !important;
+}
+
+#countdownWrapper {
+    margin-bottom: var(--footer-spacing);
+    text-align: center;
+}
+
+#countdown {
+    font-size: var(--countdown-size);
+    color: var(--primary-color);
+}
+
+.icons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    background: transparent !important;
+    flex-wrap: wrap;
+}
+
+.icons-container a {
+    color: var(--text-color);
+    font-size: 30px;
+    transition: color var(--transition-speed) ease;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.icons-container a:hover,
+.icons-container a:focus {
+    color: var(--secondary-color);
+    outline: none;
+}
+
+@media (max-width: 480px) {
+    .icons-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .icons-container a {
+        font-size: 28px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 768px) and (min-width: 481px) {
+    .icons-container {
+        gap: 12px 20px;
+        justify-content: center;
+    }
+}
+
+/* ==========================================================================
+   NEW UI ELEMENTS - Headers, Containers, Titles
+   ========================================================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffd700, #ff6b35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    color: var(--text-color);
+}
+
+.section-title {
+    color: #ffd700;
+    text-align: left;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.section-title .fas {
+    margin-right: 8px;
+}
+
+/* ==========================================================================
+   INPUTS, BUTTONS & CARDS (shared with Team Builder and other tabs)
+   ========================================================================== */
+.input-container {
+    margin-bottom: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.input-container label {
+    color: var(--secondary-color);
+    text-align: left;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.input-container input,
+.input-container select {
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid var(--secondary-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.input-container button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background: var(--secondary-color);
+    color: var(--background-color);
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+    width: fit-content;
+    align-self: flex-start;
+}
+
+.input-container button:hover,
+.input-container button:focus {
+    background: #e0b800;
+    outline: none;
+}
+
+@media (max-width: 480px) {
+    .input-container button {
+        width: 100%;
+        align-self: stretch;
+    }
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+/* ==========================================================================
+   TEAM BUILDER SPECIFIC (No extra overrides needed since input-container and card-container are global)
+   ========================================================================== */
+
+/* ==========================================================================
+   TABS & TAB NAVIGATION
+   ========================================================================== */
+.tab-content-pane {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-content-pane.active-tab-pane {
+    display: block;
+}
+
+.tab-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    gap: 10px;
+}
+
+.tab-button {
+    background-color: #2a2a3a;
+    color: #eee;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap;
+}
+
+.tab-button:hover {
+    background-color: #3a3a4a;
+    color: #ffd700;
+}
+
+.tab-button.active {
+    background-color: #ffd700;
+    color: #222;
+    font-weight: bold;
+    border-bottom: 2px solid #ffd700;
+}
+
+@media (max-width: 768px) {
+    .tab-nav {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .tab-button {
+        flex-grow: 1;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   ANIMATIONS
    ========================================================================== */
 @keyframes fadeInScaleUp {
     0% {
@@ -152,736 +486,9 @@ html, footer, .icons-container {
     100% { transform: rotateY(360deg); opacity: 0; }
 }
 
-@keyframes fadeInUp { /* For new sections (header, countdown, social icons) */
+@keyframes fadeInUp {
     to {
         opacity:1;
         transform: translateY(0);
     }
-}
-
-/* ==========================================================================
-   PANEL & LAYOUT - RESTORED ORIGINAL FOR GENERAL PANEL, KEPT NEW FOR SPECIFIC CONTAINERS
-   ========================================================================== */
-.panel {
-    width: 100%;
-    min-height: 90vh; /* Original height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    position: relative;
-    /* Removed max-width, background, border-radius, box-shadow to allow original design */
-    padding: 0; /* Ensure no extra padding from newer styles */
-    margin: 0 auto; /* Ensure centering is controlled by container if needed */
-}
-
-.media-container {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    overflow: hidden;
-    transform: scale(var(--media-scale));
-}
-
-.media-container img,
-.media-container video {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-}
-
-.media-container video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-}
-
-/* ==========================================================================
-   CLICKABLE AREAS - RESTORED ORIGINAL
-   ========================================================================== */
-.clickable-area {
-    border: none;
-    background: none;
-    padding: 0;
-    position: absolute;
-    z-index: 4;
-    cursor: pointer;
-    border-radius: var(--border-radius);
-    aspect-ratio: 1/1;
-    width: var(--clickable-size);
-    max-width: var(--clickable-max-size);
-    box-shadow: var(--box-shadow);
-    animation: fadeInScaleUp 1s ease-out forwards;
-    transition: transform var(--transition-speed) ease-in-out;
-    opacity: 0;
-}
-
-.clickable-area:hover {
-    transform: scale(1.2);
-}
-
-.clickable-area.loaded {
-    opacity: 1;
-}
-
-.clickable-area img {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-}
-
-/* Position classes for clickable areas */
-.top-left    { top: 2%; left: 5%; }
-.top-right   { top: 2%; right: 5%; }
-.bottom-left { bottom: 2%; left: 5%; }
-.bottom-right{ bottom: 2%; right: 5%; }
-
-/* ==========================================================================
-   MISSION CONTENT - RESTORED ORIGINAL
-   ========================================================================== */
-#missionContent {
-    animation: fadeIn 0.9s ease forwards;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 400px;
-    padding: 20px;
-    text-align: center;
-    display: none;
-    z-index: 2;
-    opacity: 1;
-}
-
-#missionContent p,
-#missionContent a {
-    color: var(--text-color);
-}
-
-.body-text {
-    margin: 30px 0;
-}
-
-.body-text a {
-    color: var(--text-color);
-}
-
-.body-text p {
-    margin-bottom: 10px;
-}
-
-.logo {
-    display: block;
-    margin: 0 auto 5px auto;
-}
-
-.info {
-    color: var(--secondary-color);
-    font-size: var(--info-size);
-}
-
-#aiffBanner {
-    display: none;
-}
-
-/* ==========================================================================
-   FOOTER & COUNTDOWN - RESTORED ORIGINAL, KEPT NEW FOR SPECIFIC CONTAINERS
-   ========================================================================== */
-footer {
-    padding: var(--footer-spacing);
-    background: transparent !important;
-}
-
-#countdownWrapper { /* Original specific countdown wrapper */
-    margin-bottom: var(--footer-spacing);
-    text-align: center;
-}
-
-#countdown { /* Original specific countdown text */
-    font-size: var(--countdown-size);
-    color: var(--primary-color);
-}
-
-.icons-container { /* Original social icons container */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    background: transparent !important;
-}
-
-.icons-container a {
-    color: var(--text-color);
-    font-size: 30px;
-    transition: color var(--transition-speed) ease;
-}
-
-.icons-container a:hover {
-    color: var(--secondary-color);
-}
-
-/* ==========================================================================
-   NEW UI ELEMENTS - KEPT THEIR MODERN STYLING
-   ========================================================================== */
-/* --- Main Layout Container for new UI sections --- */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* --- Header for new UI --- */
-.header {
-    text-align: center;
-    margin-bottom: 32px;
-    opacity: 0;
-    transform: translateY(-20px);
-    animation: fadeInUp 0.8s ease forwards;
-}
-
-.header h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    /* Use the new gradient colors for this specific H1 */
-    background: linear-gradient(135deg, #ffd700, #ff6b35);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 10px;
-}
-
-.header p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-    color: var(--text-color); /* Ensure text color is consistent */
-}
-
-/* Common Section Title Styling for new UI sections */
-/* Common Section Title Styling for new UI sections */
-.section-title {
-    color: #ffd700; /* Use specific primary color for these titles */
-    text-align: left; /* Keep this */
-    margin-bottom: 20px;
-    /* CHANGE THIS: Remove or change display to block */
-    display: block; /* Change from inline-block to block */
-    /* Or, if you want it to behave like a flex item for specific layout within its parent,
-       you might need to adjust the parent's flex properties.
-       But for simple left-justification of the whole H2, 'block' is usually best. */
-}
-
-.section-title .fas {
-    margin-right: 8px;
-}
-
-.input-container {
-    margin-bottom: 20px;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.input-container label {
-    color: #ffd700; /* Use specific primary color for labels */
-    text-align: left;
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.input-container input,
-.input-container select {
-    padding: 12px;
-    font-size: 16px;
-    border: 2px solid #ffd700; /* Specific border color */
-    background-color: #2c2c2c;
-    color: #fff;
-    border-radius: 5px;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.input-container button {
-    padding: 12px 24px;
-    font-size: 16px;
-    background: #ffd700; /* Specific button background */
-    color: #121212;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-top: 10px;
-}
-
-.input-container button:hover {
-    background: #FFC000;
-}
-
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.team-member-card {
-    background: var(--card-bg);
-    border-radius: 8px;
-    padding: 12px 8px 10px;
-    box-shadow: 0 0 10px rgba(255,215,0,0.25);
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
-
-.team-member-card img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 2px solid #ffd700;
-    margin-bottom: 8px;
-}
-
-.image-preview {
-    display: none;
-    max-width: 120px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 2px solid #ffd700;
-}
-
-.member-name {
-    font-weight: bold;
-    color: #ffd700;
-}
-
-.badge {
-    background: #333;
-    border-left: 4px solid #ffd700;
-    color: #ffd700;
-    border-radius: 3px;
-    padding: 2px 8px;
-    font-size: 0.9em;
-    margin: 6px 0;
-}
-
-.skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 3px;
-    justify-content: center;
-}
-
-.skill-tag {
-    background: rgba(255,215,0,0.2);
-    color: #ffd700;
-    padding: 2px 6px;
-    border-radius: 12px;
-    font-size: 0.7rem;
-}
-
-.profile-bar {
-    width: 100%;
-    background: #333;
-    height: 6px;
-    border-radius: 3px;
-    margin: 8px 0 4px 0;
-    overflow: hidden;
-}
-
-.profile-bar-inner {
-    height: 100%;
-    background: #ffd700;
-}
-
-.endorse-btn {
-    background: #ffd700;
-    color: #121212;
-    font-weight: bold;
-    border: none;
-    border-radius: 3px;
-    padding: 2px 10px;
-    cursor: pointer;
-    font-size: 0.85em;
-    margin: 2px 0 0 0;
-}
-
-.endorse-btn:disabled {
-    background: #ccc;
-    color: #666;
-    cursor: not-allowed;
-}
-
-.endorsements {
-    font-size: .85em;
-    color: #ffd700;
-    margin-left: 7px;
-    vertical-align: middle;
-}
-
-.user-status {
-    font-size: .85em;
-    color: #00FF87;
-    margin: 4px 0;
-}
-
-.leaderboard {
-    margin: 20px auto;
-    background: var(--card-bg);
-    border-radius: 8px;
-    padding: 15px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 0 10px rgba(255,215,0,0.25);
-}
-
-.leaderboard h2 {
-    color: #ffd700;
-    font-size: 1.3em;
-    margin-bottom: 12px;
-}
-
-.leaderboard-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 6px 0;
-}
-
-.leaderboard-rank {
-    font-weight: bold;
-    color: #ffd700;
-    width: 24px;
-}
-
-.leaderboard-name {
-    flex: 1;
-    text-align: left;
-}
-
-.leaderboard-skill {
-    color: #ffd700;
-}
-
-.profile-complete {
-    color: #00FF87;
-    font-size: .93em;
-    margin-top: 6px;
-}
-
-.profile-incomplete {
-    color: #FF6B6B;
-    font-size: .93em;
-    margin-top: 6px;
-}
-
-.profile-section {
-    margin: 15px 0;
-}
-
-.proficiency-select {
-    width: 100px;
-    margin-bottom: 10px;
-}
-
-.autocomplete-box {
-    position: absolute;
-    z-index: 1000;
-    background: #fff;
-    color: #000;
-    border: 1px solid #ccc;
-    display: none;
-    max-height: 200px;
-    overflow-y: auto;
-    box-shadow: var(--shadow);
-    border-radius: 4px;
-    width: calc(100% - 40px);
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.autocomplete-box div {
-    padding: 8px 10px;
-    cursor: pointer;
-}
-
-.autocomplete-box div:hover {
-    background-color: #f0f0f0;
-}
-
-.optional-text {
-    color: #888;
-}
-
-.success-message {
-    color: green;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.notification {
-    margin-bottom: 6px;
-    text-align: center;
-}
-
-.match-notification {
-    color: gold;
-}
-
-.no-results-notification {
-    color: red;
-}
-
-.instructions {
-    max-width: 600px;
-    margin-bottom: 10px;
-}
-
-/* --- Achievements for new UI --- */
-.achievements {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.achievement {
-    background: linear-gradient(135deg, #ffd700, #ff6b35); /* Specific gradient for these */
-    color: white;
-    padding: 12px 20px;
-    border-radius: 25px;
-    margin-bottom: 10px;
-    transform: translateX(300px);
-    transition: var(--transition);
-    box-shadow: var(--shadow);
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.achievement.show {
-    transform: translateX(0);
-}
-
-/* ==========================================================================
-   CARD CONTAINER - MODIFIED MARGIN TO REDUCE SPACING BELOW CARDS
-   ========================================================================== */
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin: 0 0 8px 0; /* Reduced bottom margin from 20px */
-}
-
-/* ==========================================================================
-   COUNTDOWN CONTAINER - MODIFIED MARGIN TO REDUCE SPACING ABOVE COUNTDOWN
-   ========================================================================== */
-.countdown-container {
-    text-align: center;
-    margin: 8px 0 10px 0; /* Reduced top margin from 32px to 8px */
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.6s forwards;
-}
-
-.countdown {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffd700;
-    margin-bottom: 5px;
-}
-
-/* --- Footer Social for new UI (different from original .icons-container) --- */
-.social-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: auto;
-    padding-top: 40px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.8s forwards;
-}
-
-.social-link {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg,#ffd700,#ff6b35);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    font-size: 20px;
-    transition: var(--transition);
-}
-
-.social-link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-<div style="height: 60px;"></div>
-
-
-/* ==========================================================================
-   UTILITY CLASSES & MISC
-   ========================================================================== */
-.standout {
-    display: block;
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #22577A;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 8px #eaf6fb;
-    letter-spacing: 0.01em;
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
-#cardFrame {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-#matchmaking-section {
-    margin-top: 85px;
-}
-
-/* ==========================================================================
-   RESPONSIVE DESIGN - MERGED
-   ========================================================================== */
-@media (max-width: 800px) {
-    .card-container, .leaderboard {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-
-@media (max-width: 768px) {
-    :root {
-        --media-scale: 1;
-        --countdown-size: 24px;
-        --info-size: 16px;
-        --footer-spacing: 7px;
-    }
-
-    body::before {
-        background: var(--bg-url, url('images/backgroundmobile.jpg')) no-repeat center center;
-        background-size: cover;
-    }
-    body.two-card-page::before {
-        background-image: url('images/background for mobile ie.jpg');
-    }
-
-    #missionContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 70px;
-    }
-
-    #aiffBanner {
-        display: block;
-        margin: 40px auto 0;
-    }
-
-    .input-container {
-        padding: 0 10px;
-    }
-   /* Base styles for the tab content panes */
-.tab-content-pane {
-    display: none; /* All tab content panes are hidden by default */
-    padding: 20px 0; /* Add some padding to separate from tabs */
-}
-.tab-content-pane.active-tab-pane {
-    display: block; /* The active tab content pane is shown */
-}
-
-/* Styles for the tab buttons/navigation */
-.tab-nav {
-    display: flex;
-    justify-content: center; /* Center the tabs */
-    margin-bottom: 20px; /* Space between tabs and content */
-    border-bottom: 2px solid #333; /* Underline for tabs */
-    padding-bottom: 5px;
-    gap: 10px; /* Space between tab buttons */
-}
-.tab-button {
-    background-color: #2a2a3a; /* Darker background for tabs */
-    color: #eee;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1em;
-    border-radius: 5px 5px 0 0; /* Rounded top corners */
-    transition: background-color 0.3s ease, color 0.3s ease;
-    white-space: nowrap; /* Prevent wrapping on smaller screens */
-}
-.tab-button:hover {
-    background-color: #3a3a4a;
-    color: #ffd700; /* Gold on hover */
-}
-.tab-button.active {
-    background-color: #ffd700; /* Gold for active tab */
-    color: #222; /* Dark text for active tab */
-    font-weight: bold;
-    border-bottom: 2px solid #ffd700; /* Match active border */
-}
-
-/* Adjustments for existing sections when they become tab panes */
-.panel {
-    position: relative; /* If you add absolute positioned elements later, this is crucial */
-    padding-top: 0; /* Remove top padding if tabs are directly inside, adjust as needed */
-    box-sizing: border-box;
-}
-
-/* Ensure section titles within tabs still look good */
-.tab-content-pane .section-title {
-    margin-top: 0; /* Remove top margin if needed when inside a tab */
-}
-
-/* Media queries for tab buttons if they get too crowded */
-@media (max-width: 768px) {
-    .tab-nav {
-        flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
-        justify-content: flex-start; /* Align to start when wrapping */
-    }
-    .tab-button {
-        flex-grow: 1; /* Allow buttons to grow to fill space */
-        text-align: center;
-    }
-}
 }
