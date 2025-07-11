@@ -1,8 +1,7 @@
 /* ==========================================================================
-   CSS VARIABLES & RESET - RESTORED ORIGINAL, MERGED WITH NEW FOR COMPONENTS
+   CSS VARIABLES & RESET 
    ========================================================================== */
 :root {
-    /* RESTORED ORIGINAL GLOBAL COLORS & LAYOUT VARS */
     --primary-color: #FF0000; /* Original Red */
     --secondary-color: #FFFF00; /* Original Yellow */
     --text-color: white; /* Original text color */
@@ -16,7 +15,7 @@
     --center-clickable-size: 16.5vw;
     --center-clickable-max-size: 110px;
 
-    /* RESTORED ORIGINAL RESPONSIVE VARS */
+    /* RESPONSIVE VARS */
     --media-scale: 0.8;
     --countdown-size: 32px;
     --info-size: 20px;
