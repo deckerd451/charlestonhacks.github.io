@@ -1,128 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators." />
-  
-  <!-- Open Graph / Social Preview -->
-  <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
-  <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
-  <meta property="og:image" content="images/reactiveh.png" />
-  <meta property="og:url" content="https://charlestonhacks.com" />
-  <meta name="twitter:card" content="summary_large_image" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
+    <meta property="og:title" content="<title>CharlestonHacks | Charleston Hackathons & Tech Events</title>" />
+    <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
+    <meta property="og:image" content="images/reactiveh.png" />
+    <meta property="og:url" content="https://charlestonhacks.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>CharlestonHacks - Home</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .panel {
+            position: relative;
+/* Responsive styles for buttons */
+@media (max-width: 900px) {
+    .clickable-area {
+        width: 80px;
+        height: 80px;
+        padding: 8px;
+    }
+    .clickable-area img {
+        width: 72px;
+        height: 72px;
+    }
+    .top-left, .top-right { top: 14px; }
+    .bottom-left, .bottom-right { bottom: 14px; }
+    .top-left, .bottom-left { left: 12px; }
+    .top-right, .bottom-right { right: 12px; }
 
-  <title>CharlestonHacks - Home</title>
+    /* New positions adjustments */
+    .center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .middle-left {
+        top: 50%;
+        left: 12px;
+        transform: translateY(-50%);
+    }
+    .middle-right {
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+    }
+    .top-center {
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .bottom-center {
+        bottom: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
 
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="styles.css" />
+@media (max-width: 600px) {
+    .clickable-area {
+        width: 68px;
+        height: 68px;
+        padding: 5px;
+    }
+    .clickable-area img {
+        width: 60px;
+        height: 60px;
+    }
+    /* Move further out (closer to edge) on mobile */
+    .top-left, .bottom-left { left: 4px; }
+    .top-right, .bottom-right { right: 4px; }
+    .top-left, .top-right { top: 6px; }
+    .bottom-left, .bottom-right { bottom: 6px; }
+
+    /* New positions adjustments */
+    .middle-left {
+        top: 50%;
+        left: 4px;
+        transform: translateY(-50%);
+    }
+    .middle-right {
+        top: 50%;
+        right: 4px;
+        transform: translateY(-50%);
+    }
+    .top-center {
+        top: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .bottom-center {
+        bottom: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    /* .center remains centered at 50%/50% */
+    .center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* --- NEW CSS FOR FOOTER TEAM BUILDER ICON --- */
+.icons-container a:first-child .fas.fa-people-arrows {
+    color: #000080; /* Dark blue color */
+}
+/* --- END NEW CSS --- */
+
+        /* --- END NEW CSS --- */
+    </style>
 </head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-6NDKG07DY6');
+</script>
 <body class="is-preload">
-  <!-- Google Tag Manager -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-6NDKG07DY6');
-  </script>
+    <main>
+        <div id="main">
+            <article class="post featured">
+                <header class="major">
+                    <div class="panel">
+                        <div class="media-container" aria-label="Toggle mission content" onclick="toggleMissionContent()">
+                            <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
+                            <div id="missionContent">
+                                <div class="body-text">
+                                    <p>
+                                        <img id="aiffBanner" 
+                                             src="images/engine.webp" 
+                                             alt="Innovation Engine" 
+                                             style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
+                                             onclick="flipAndRedirect()">
+                                    </p>
+                                </div>
+                            </div>
+                            <video id="missionVideo" 
+                                muted 
+                                playsinline 
+                                controls>
+                                <source src="images/universe.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-  <main>
-    <article class="post featured">
-      <header class="major">
-        <div class="panel">
-          <div 
-            class="media-container" 
-            id="missionToggle" 
-            role="button" 
-            tabindex="0" 
-            aria-label="Toggle mission content">
-            
-            <img 
-              id="missionImage" 
-              src="images/hsoftest.png" 
-              alt="CharlestonHacks" 
-              style="z-index: 3;" />
-            
-            <div id="missionContent" style="display:none;">
-              <div class="body-text">
-                <p>
-                  <img 
-                    id="IEBanner"
-                    src="images/engine.webp"
-                    alt="Innovation Engine"
-                    style="cursor: pointer; width: 85%; height: auto; display: block; margin: auto;" 
-                    role="button" 
-                    tabindex="0"
-                  />
-                </p>
-              </div>
-            </div>
-
-            <video 
-              id="missionVideo" 
-              muted 
-              playsinline 
-              controls 
-              hidden
-              poster="images/video-poster.jpg" 
-              preload="metadata"
-            >
-              <source src="images/universe.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-
-            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
-
-            <!-- Glow effect buttons -->
-            <button 
-              type="button" 
-              class="clickable-area top-left"
-              data-sound="chime" 
-              data-image="images/yellowscullcard.png" 
-              data-url="Poster.html"
-              aria-label="Information"
-            >
-              <img src="images/informationbutton.webp" alt="Info" />
-            </button>
-
-            <button 
-              type="button" 
-              class="clickable-area top-right"
-              data-sound="chime" 
-              data-image="images/redscullcard.png" 
-              data-url="2card.html" 
-              aria-label="Innovation Engine"
-            >
-              <img src="images/innovationenginebutton.webp" alt="Innovation Engine" />
-            </button>
-
-            <button 
-              type="button" 
-              class="clickable-area bottom-left"
-              data-sound="chime" 
-              data-image="images/Descartes.png" 
-              data-url="news.html" 
-              aria-label="News"
-            >
-              <img src="images/newsbutton.webp" alt="News" />
-            </button>
-
-            <button 
-              type="button" 
-              class="clickable-area bottom-right"
-              data-sound="chime" 
-              data-image="images/Alexandor.png" 
-              data-url="cardmatchgame.html" 
-              aria-label="People"
-            >
-              <img src="images/peoplebutton.webp" alt="People" />
-            </button>
-            <!-- Top Center Clickable Area -->
+                            <!-- Glow effect only, larger images, responsive, moved further outward on mobile, up/down on desktop -->
+                            <button type="button" class="clickable-area top-left"
+                                data-sound="chime" 
+                                data-image="images/yellowscullcard.png" 
+                                data-url="Poster.html">
+                                <img src="images/informationbutton.webp" alt="Info">
+                            </button>
+                            <button type="button" class="clickable-area top-right"
+                                data-sound="chime" 
+                                data-image="images/redscullcard.png" 
+                                data-url="2card.html">
+                                <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
+                            </button>
+                            <button type="button" class="clickable-area bottom-left"
+                                data-sound="chime" 
+                                data-image="images/Descartes.png" 
+                                data-url="news.html">
+                                <img src="images/newsbutton.webp" alt="News">
+                            </button>
+                            <button type="button" class="clickable-area bottom-right"
+                                data-sound="chime" 
+                                data-image="images/Alexandor.png" 
+                                data-url="cardmatchgame.html">
+                                <img src="images/peoplebutton.webp" alt="People">
+                            </button>
+                          <!-- Top Center Clickable Area -->
 <button 
   type="button" 
   class="clickable-area top-center"
@@ -146,324 +202,310 @@
   <img src="images/placeholder-bottom.png" alt="Bottom Center Placeholder" />
 </button>
 
-          </div>
+                        </div>
+                    </div>
+                </header>
+            </article>
         </div>
-      </header>
-    </article>
-  </main>
+    </main>
+    <footer>
+        <div id="countdownWrapper">
+            <div id="countdown"></div>
+        </div>
+        <section class="icons-container">
+            
+            <a href="teambuilder.html" aria-label="Innovation Engine">
+                <i class="fas fa-people-arrows"></i>
+            </a>
+            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="subscribe.html" aria-label="Subscribe">
+                <i class="fas fa-bell"></i>
+            </a>
+        </section>
+    </footer>
+    <script src="ho-script.js"></script>
+    <script>
+        // All buttons: glow effect & delayed navigation for visual feedback
+        function addButtonGlowAndNavigation() {
+            document.querySelectorAll('.clickable-area').forEach(area => {
+                area.addEventListener('click', function(e) {
+                    const sound = this.getAttribute('data-sound');
+                    const url = this.getAttribute('data-url');
+                    // Add glow animation
+                    this.classList.add('glow-animate');
 
-  <footer>
-    <div id="countdown" class="countdown" aria-live="polite" aria-atomic="true"></div>
-    <div class="social-container">
-      <a href="teambuilder.html" class="social-link" aria-label="Innovation Engine">
-        <i class="fas fa-people-arrows"></i>
-      </a>
-      <a href="https://www.linkedin.com/company/charlestonhacks" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="https://www.instagram.com/charlestonhacks/" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="mailto:hello@charlestonhacks.com" class="social-link" aria-label="Email CharlestonHacks">
-        <i class="fas fa-envelope"></i>
-      </a>
-      <a href="https://twitter.com/Descart84114619" class="social-link" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="https://www.facebook.com/deckerdb26354" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="subscribe.html" class="social-link" aria-label="Subscribe">
-        <i class="fas fa-bell"></i>
-      </a>
-    </div>
-  </footer>
+                    // Play sound (if present)
+                    if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
+                        AudioController.playSound(sound);
+                    }
 
-  <script src="ho-script.js" defer></script>
+                    // Delay navigation so glow appears (matched to animation: 450ms)
+                    setTimeout(() => {
+                        window.location.href = url;
+                    }, 460);
+                });
 
-  <script>
-    (function () {
-      const CONFIG = {
-        countdown: {
-          targetDate: "2025-06-28T00:00:00Z",
-          completedMessage: "Welcome to CharlestonHacks"
-        },
-        audio: {
-          cardflip: 'assets/atmospherel.m4a',
-          keys: 'assets/keys.m4a',
-          chime: 'assets/chime.mp3',
-        },
-        cardImages: [
-          "images/yellowscullcard.png",
-          "images/redscullcard.png",
-          "images/Descartes.png",
-          "images/Alexandor.png",
-          "images/Medusa.png",
-          "images/Elara.png",
-          "images/adventurercard.png",
-          "images/collaboratorcard.png",
-          "images/humanitariancard.png",
-          "images/nextcard.png",
-          "images/Aegis.png",
-          "images/resilientcard.png",
-          "images/Astrid.png",
-          "images/nicolecard.png"
-        ]
-      };
+                area.addEventListener('keydown', function(e) {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
 
-      const AudioController = {
-        audioMap: {},
-        preloaded: false,
-        preloadAudio() {
-          if (this.preloaded) return;
-          Object.entries(CONFIG.audio).forEach(([key, src]) => {
-            const audio = new Audio(src);
-            audio.volume = 0.2;
-            this.audioMap[key] = audio;
-          });
-          this.preloaded = true;
-        },
-        playSound(soundKey) {
-          const audio = this.audioMap[soundKey];
-          if (!audio) return;
-          audio.currentTime = 0;
-          audio.play().catch(err => console.error("Audio playback failed:", err));
-        }
-      };
-
-      const VideoController = {
-        handleError() {
-          alert("Error loading video. Please try again later.");
-        },
-        showCardFrame() {
-          const cf = document.getElementById('cardFrame');
-          if (cf) {
-            cf.style.display = 'block';
-          }
-        }
-      };
-
-      const CountdownController = {
-        element: null,
-        interval: null,
-        init() {
-          this.element = document.getElementById('countdown');
-          this.start();
-        },
-        start() {
-          const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
-          this.interval = setInterval(() => {
-            const now = Date.now();
-            const distance = countDownDate - now;
-
-            if (distance < 0) {
-              this.stop();
-              this.element.textContent = CONFIG.countdown.completedMessage;
-              return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            this.element.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-          }, 1000);
-        },
-        stop() {
-          clearInterval(this.interval);
-          this.interval = null;
-        }
-      };
-
-      const CardController = {
-        clicked: false,
-        getRandomImage() {
-          const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
-          return CONFIG.cardImages[randomIndex];
-        },
-        getRandomFlip() {
-          return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-        }
-      };
-
-      const addButtonGlowAndNavigation = () => {
-        document.querySelectorAll('.clickable-area').forEach(area => {
-          area.addEventListener('click', function () {
-            const sound = this.getAttribute('data-sound');
-            const url = this.getAttribute('data-url');
-
-            this.classList.add('glow-animate');
-
-            if (sound) {
-              AudioController.playSound(sound);
-            }
-
-            setTimeout(() => {
-              window.location.href = url;
-            }, 460); // Match CSS animation duration
-          });
-
-          area.addEventListener('keydown', function (e) {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              this.click();
-            }
-          });
-
-          area.addEventListener('animationend', function (e) {
-            if (e.animationName === "glow") {
-              this.classList.remove('glow-animate');
-            }
-          });
-        });
-      };
-
-      const resetCardState = () => {
-        const missionImage = document.getElementById('missionImage');
-        const missionVideo = document.getElementById('missionVideo');
-        const missionContent = document.getElementById('missionContent');
-        const cardFrame = document.getElementById('cardFrame');
-        const IEBanner = document.getElementById('IEBanner');
-
-        missionImage.src = "images/hsoftest.png";
-        missionVideo.pause();
-        missionVideo.hidden = true;
-        missionVideo.style.opacity = 0;
-        missionContent.style.display = 'none';
-        if (IEBanner) IEBanner.style.display = 'none';
-        if (cardFrame) cardFrame.style.display = 'none';
-        document.body.classList.remove('fade-out-body');
-        missionImage.classList.remove('flip-image-x', 'flip-image-y');
-        CardController.clicked = false;
-      };
-
-      const App = {
-        init() {
-          this.setupEventListeners();
-          this.setupVideoHandlers();
-          CountdownController.init();
-          addButtonGlowAndNavigation();
-        },
-        setupEventListeners() {
-          const missionToggle = document.getElementById('missionToggle');
-          if (missionToggle) {
-            missionToggle.addEventListener('click', () => {
-              this.toggleMissionContent();
+                // Remove glow-animate class after animation ends to allow re-clicking
+                area.addEventListener('animationend', function(e) {
+                    if (e.animationName === "glow") {
+                        this.classList.remove('glow-animate');
+                    }
+                });
             });
-            missionToggle.addEventListener('keydown', (e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                this.toggleMissionContent();
-              }
-            });
-          }
+        }
 
-          // IEBanner click
-          const IEBanner = document.getElementById('IEBanner');
-          if (IEBanner) {
-            IEBanner.addEventListener('click', () => {
-              this.flipAndRedirect();
-            });
-            IEBanner.addEventListener('keydown', (e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                this.flipAndRedirect();
-              }
-            });
-          }
+        const CONFIG = {
+            countdown: {
+                targetDate: "June 28, 2025 00:00:00",
+                completedMessage: "Countdown to Next Event Soon!"
+            },
+            audio: {
+                cardflip: 'assets/atmospherel.m4a',
+                keys: 'assets/keys.m4a',
+                chime: 'assets/chime.mp3'
+            },
+            cardImages: [
+                "images/yellowscullcard.png",
+                "images/redscullcard.png",
+                "images/Descartes.png",
+                "images/Alexandor.png",
+                "images/Medusa.png",
+                "images/Elara.png",
+                "images/adventurercard.png",
+                "images/collaboratorcard.png",
+                "images/humanitariancard.png",
+                "images/nextcard.png",
+                "images/Aegis.png",
+                "images/resilientcard.png",
+                "images/Astrid.png",
+                "images/nicolecard.png"
+            ]
+        };
 
-          window.addEventListener('pointerdown', () => {
-            AudioController.preloadAudio();
-          }, { once: true });
+        const AudioController = {
+            preloaded: false,
+            preloadAudio() {
+                if (this.preloaded) return;
+                Object.keys(CONFIG.audio).forEach(key => {
+                    const src = CONFIG.audio[key];
+                    if (src) new Audio(src);
+                });
+                this.preloaded = true;
+            },
+            playSound(soundKey) {
+                const soundSrc = CONFIG.audio[soundKey];
+                if (!soundSrc) return;
+                const audio = new Audio(soundSrc);
+                audio.volume = 0.2;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                });
+            }
+        };
 
-          window.addEventListener('pageshow', () => {
+        const VideoController = {
+            handleError() {
+                alert("Error loading video. Please try again later.");
+            },
+            showCardFrame() {
+                document.getElementById('cardFrame').style.display = 'block';
+            }
+        };
+
+        const CountdownController = {
+            element: null,
+            interval: null,
+            init() {
+                this.element = document.getElementById('countdown');
+                this.start();
+            },
+            start() {
+                const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
+                this.interval = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = countDownDate - now;
+                    if (distance < 0) {
+                        this.stop();
+                        this.element.innerHTML = CONFIG.countdown.completedMessage;
+                        return;
+                    }
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                }, 1000);
+            },
+            stop() {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
+            }
+        };
+
+        const CardController = {
+            clicked: false,
+            getRandomImage() {
+                const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
+                return CONFIG.cardImages[randomIndex];
+            },
+            getRandomFlip() {
+                return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            },
+            flipCard(imageSrc, url) {
+                const missionImage = document.getElementById('missionImage');
+                const randomFlip = this.getRandomFlip();
+                missionImage.classList.add(randomFlip);
+                document.body.classList.add('fade-out-body');
+                window.location.href = url;
+                setTimeout(() => {
+                    missionImage.src = imageSrc;
+                }, 2000);
+            }
+        };
+
+        function resetCardState() {
+            document.getElementById('missionImage').src = "images/hsoftest.png";
+            const video = document.getElementById('missionVideo');
+            video.pause();
+            video.style.display = 'none';
+            video.style.opacity = 0;
+            document.getElementById('missionContent').style.display = 'none';
+            document.getElementById('aiffBanner').style.display = 'none';
+            document.getElementById('cardFrame').style.display = 'none';
             document.body.classList.remove('fade-out-body');
-            resetCardState();
-          });
-
-          document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.clickable-area').forEach(element => {
-              element.classList.add('loaded');
-            });
-          });
-        },
-        setupVideoHandlers() {
-          const video = document.getElementById('missionVideo');
-          if (video) {
-            video.addEventListener('error', VideoController.handleError);
-            video.addEventListener('ended', VideoController.showCardFrame);
-          }
-        },
-        toggleMissionContent() {
-          if (CardController.clicked) return;
-          CardController.clicked = true;
-
-          AudioController.playSound('cardflip');
-          const missionImage = document.getElementById('missionImage');
-          missionImage.src = CardController.getRandomImage();
-
-          const video = document.getElementById('missionVideo');
-          video.hidden = false;
-          video.style.opacity = 0;
-
-          setTimeout(() => {
-            video.style.opacity = 1;
-          }, 100);
-
-          video.play();
-
-          document.getElementById('missionContent').style.display = 'block';
-          const IEBanner = document.getElementById('IEBanner');
-          if (IEBanner) IEBanner.style.display = 'block';
-
-          const randomFlip = CardController.getRandomFlip();
-          missionImage.classList.add(randomFlip);
-        },
-        flipAndRedirect() {
-          const banner = document.getElementById('IEBanner');
-          const randomFlip = CardController.getRandomFlip();
-          banner.classList.add(randomFlip);
-          setTimeout(() => {
-            window.location.href = 'https://innovation-engine.devpost.com/';
-          }, 2000);
+            const img = document.getElementById('missionImage');
+            img.classList.remove('flip-image-x', 'flip-image-y');
+            if (typeof CardController !== "undefined") {
+                CardController.clicked = false;
+            }
         }
-      };
 
-      // Tab system script
-      document.addEventListener('DOMContentLoaded', function () {
+        const App = {
+            init() {
+                this.setupEventListeners();
+                this.setupVideoHandlers();
+                CountdownController.init();
+                addButtonGlowAndNavigation();
+            },
+            setupEventListeners() {
+                window.addEventListener('pointerdown', () => {
+                    AudioController.preloadAudio();
+                }, { once: true });
+                window.addEventListener('beforeunload', () => {});
+                window.addEventListener('pageshow', () => {
+                    document.body.classList.remove('fade-out-body');
+                    resetCardState();
+                });
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.querySelectorAll('.clickable-area').forEach(element => {
+                        element.classList.add('loaded');
+                    });
+                });
+            },
+            setupVideoHandlers() {
+                const video = document.getElementById('missionVideo');
+                if (video) {
+                    video.addEventListener('error', VideoController.handleError);
+                    video.addEventListener('ended', VideoController.showCardFrame);
+                }
+            }
+        };
+
+        function toggleMissionContent() {
+            if (CardController.clicked) return;
+            CardController.clicked = true;
+            AudioController.playSound('cardflip');
+            const image = document.getElementById('missionImage');
+            image.src = CardController.getRandomImage();
+            const video = document.getElementById('missionVideo');
+            video.style.display = 'block';
+            video.style.opacity = 0;
+            setTimeout(() => {
+                video.style.opacity = 1;
+            }, 100);
+            video.play();
+            document.getElementById('missionContent').style.display = 'block';
+            document.getElementById('aiffBanner').style.display = 'block';
+            const randomFlip = CardController.getRandomFlip();
+            image.classList.add(randomFlip);
+        }
+        function flipAndRedirect() {
+            const banner = document.getElementById('aiffBanner');
+            const randomFlip = CardController.getRandomFlip();
+            banner.classList.add(randomFlip);
+            setTimeout(() => {
+                window.location.href = 'https://innovation-engine.devpost.com/';
+            }, 2000);
+        }
+        App.init();
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to show a specific tab and hide others
         function showTab(tabId) {
-          document.querySelectorAll('.tab-content-pane').forEach(pane => {
-            pane.classList.remove('active-tab-pane');
-          });
-          document.querySelectorAll('.tab-button').forEach(button => {
-            button.classList.remove('active');
-          });
-          const activePane = document.getElementById(tabId);
-          if (activePane) activePane.classList.add('active-tab-pane');
+            // Hide all tab content panes
+            document.querySelectorAll('.tab-content-pane').forEach(pane => {
+                pane.classList.remove('active-tab-pane');
+            });
 
-          const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-          if (activeButton) activeButton.classList.add('active');
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
 
-          const panel = document.querySelector('.panel');
-          if (panel) panel.scrollTop = 0;
+            // Show the selected tab content pane
+            const activePane = document.getElementById(tabId);
+            if (activePane) {
+                activePane.classList.add('active-tab-pane');
+            }
+
+            // Activate the corresponding tab button
+            const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+
+            // Scroll to the top of the panel to ensure content is visible
+            const panel = document.querySelector('.panel');
+            if (panel) {
+                panel.scrollTop = 0;
+            }
         }
 
+        // Add click event listeners to tab buttons
         document.querySelectorAll('.tab-button').forEach(button => {
-          button.addEventListener('click', () => {
-            const tabId = button.getAttribute('data-tab');
-            showTab(tabId);
-          });
+            button.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                showTab(tabId);
+            });
         });
 
-        showTab('profile');
-      });
-
-      window.App = App;
-      document.addEventListener('DOMContentLoaded', () => {
-        App.init();
-      });
-    })();
-  </script>
+        // Show the default tab (e.g., 'profile') when the page loads
+        showTab('profile'); // This makes the "Create Profile" tab active by default
+    });
+</script>
 </body>
 </html>
