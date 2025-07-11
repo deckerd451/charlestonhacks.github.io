@@ -314,19 +314,26 @@ footer {
     color: var(--primary-color);
 }
 
-.icons-container { /* Original social icons container */
+.icons-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
-    background: transparent !important;
+    gap: clamp(10px, 4vw, 20px); /* Responsive gap */
+    flex-wrap: wrap; /* Let icons wrap on very small screens */
 }
 
+
 .icons-container a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px; /* Ensures mobile tap target size */
+    font-size: clamp(20px, 5vw, 30px); /* Responsive size */
     color: var(--text-color);
-    font-size: 30px;
     transition: color var(--transition-speed) ease;
 }
+
+
 
 .icons-container a:hover {
     color: var(--secondary-color);
