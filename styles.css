@@ -162,18 +162,11 @@ html, footer, .icons-container {
    PANEL & LAYOUT - updated 2
    ========================================================================== */
 .panel {
-    width: 90%;
-    max-width: 1200px;
-    min-height: 60vh;
-    height: auto;      /* Let it grow with content */
-    padding: 20px;
-    margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;  /* Align content top */
-    align-items: center;
-    box-sizing: border-box;
+  display: inline-block; /* shrink to fit content width */
+  /* or */
+  display: flow-root; /* creates a new block formatting context, fixes float issues */
 }
+
 .panel {
     background: rgba(255, 0, 0, 0.1);
     border: 1px solid red;
