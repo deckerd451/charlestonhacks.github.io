@@ -156,7 +156,24 @@ html, footer, .icons-container {
         opacity:1;
         transform: translateY(0);
     }
+   @keyframes glow {
+    0% {
+        box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.5);
+    }
 }
+
+.glow-animate {
+    animation: glow 0.45s ease-in-out;
+}
+
+}
+
 
 /* ==========================================================================
    PANEL & LAYOUT - updated 2
