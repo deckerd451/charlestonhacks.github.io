@@ -357,7 +357,7 @@ footer {
 /* --- Header for new UI --- */
 .header {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 0px;
     opacity: 0;
     transform: translateY(-20px);
     animation: fadeInUp 0.8s ease forwards;
