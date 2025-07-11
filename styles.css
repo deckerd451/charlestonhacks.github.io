@@ -226,7 +226,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - RESTORED ORIGINAL
+   CLICKABLE AREAS - RESTORED ORIGINAL + ADDITIONAL POSITIONS
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -261,10 +261,16 @@ html, footer, .icons-container {
 }
 
 /* Position classes for clickable areas */
-.top-left    { top: 2%; left: 5%; }
-.top-right   { top: 2%; right: 5%; }
-.bottom-left { bottom: 2%; left: 5%; }
-.bottom-right{ bottom: 2%; right: 5%; }
+.top-left      { top: 2%; left: 5%; }
+.top-right     { top: 2%; right: 5%; }
+.bottom-left   { bottom: 2%; left: 5%; }
+.bottom-right  { bottom: 2%; right: 5%; }
+.center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.middle-left   { top: 50%; left: 5%; transform: translateY(-50%); }
+.middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
+.top-center   { top: 2%; left: 50%; transform: translateX(-50%); }
+.bottom-center{ bottom: 2%; left: 50%; transform: translateX(-50%); }
+
 
 /* ==========================================================================
    MISSION CONTENT - RESTORED ORIGINAL
