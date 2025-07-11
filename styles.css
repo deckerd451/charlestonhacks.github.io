@@ -252,7 +252,7 @@ html, footer, .icons-container {
     border: none;
     background: none;
     padding: 0;
-    position: absolute; !important;
+    position: absolute !important;
     z-index: 4;
     cursor: pointer;
     border-radius: var(--border-radius);
