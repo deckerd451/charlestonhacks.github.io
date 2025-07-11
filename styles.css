@@ -159,22 +159,22 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   PANEL & LAYOUT - updated
+   PANEL & LAYOUT - updated 2
    ========================================================================== */
 .panel {
-    width: 90%; /* Let it take most of the width but leave some margin */
-    max-width: 1200px; /* Prevent it from becoming too wide on large screens */
-    min-height: 60vh; /* Minimum height to keep content visible, smaller than before */
-    max-height: 90vh; /* Optional: prevent panel from getting too tall */
+    width: 90%;
+    max-width: 1200px;
+    min-height: 60vh;
+    height: auto;      /* Let it grow with content */
+    padding: 20px;
+    margin: 20px auto;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    position: relative;
-    padding: 20px; /* Add some padding for breathing room */
-    margin: 20px auto; /* Center horizontally and add vertical margin */
-    box-sizing: border-box; /* Make sure padding is included in width */
+    justify-content: flex-start;  /* Align content top */
+    align-items: center;
+    box-sizing: border-box;
 }
+
 
 /* Responsive tweaks for smaller screens */
 @media (max-width: 768px) {
