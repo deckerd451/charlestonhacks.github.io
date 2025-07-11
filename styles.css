@@ -290,10 +290,12 @@ footer {
 }
 
 
-#countdownWrapper { /* Original specific countdown wrapper */
+#countdownWrapper {
+    margin-top: 20px; /* or whatever space you want */
     margin-bottom: var(--footer-spacing);
     text-align: center;
 }
+
 
 #countdown { /* Original specific countdown text */
     font-size: var(--countdown-size);
