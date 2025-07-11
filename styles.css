@@ -221,43 +221,83 @@ footer {
     color: var(--primary-color);
 }
 
+/* ==========================================================================
+   Social Footer Icons - Enhanced Styling
+   ========================================================================== */
 .icons-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
     padding: 15px 0;
     background: transparent !important;
     flex-wrap: wrap;
 }
 
 .icons-container a {
+    position: relative;
     color: var(--text-color);
-    font-size: 30px;
-    transition: color var(--transition-speed) ease;
-    width: 44px;
-    height: 44px;
+    font-size: 28px;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #ffd700, #ff6b35);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
 .icons-container a:hover,
 .icons-container a:focus {
-    color: var(--secondary-color);
+    color: #222;
+    transform: scale(1.15);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     outline: none;
 }
 
+.icons-container a:focus-visible {
+    outline: 3px solid #ffd700;
+    outline-offset: 4px;
+}
+
+.icons-container a[title]:hover::after,
+.icons-container a[title]:focus::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #ffd700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.icons-container a[title]::after {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease 0.2s;
+}
+
+/* Responsive footer icons */
 @media (max-width: 480px) {
     .icons-container {
         flex-direction: column;
         gap: 12px;
     }
     .icons-container a {
-        font-size: 28px;
-        width: 50px;
-        height: 50px;
+        width: 56px;
+        height: 56px;
+        font-size: 32px;
     }
 }
 
@@ -384,10 +424,6 @@ footer {
     justify-content: center;
     margin: 20px 0;
 }
-
-/* ==========================================================================
-   TEAM BUILDER SPECIFIC (No extra overrides needed since input-container and card-container are global)
-   ========================================================================== */
 
 /* ==========================================================================
    TABS & TAB NAVIGATION
