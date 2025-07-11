@@ -89,7 +89,7 @@ body.two-card-page::before {
 }
 
 /* ==========================================================================
-   BASE STYLES - RESTORED ORIGINAL
+   BASE STYLES - 
    ========================================================================== */
 html, footer, .icons-container {
     /* Ensure these elements are transparent or use original background */
@@ -97,7 +97,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   BACKGROUND VIDEO - RESTORED ORIGINAL
+   BACKGROUND VIDEO - 
    ========================================================================== */
 #background-video {
     position: fixed;
@@ -110,9 +110,76 @@ html, footer, .icons-container {
     opacity: 0.5;
     pointer-events: none;
 }
+/* ========================
+   Team Builder Styles
+   ======================== */
+
+#team-builder .input-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#team-builder .input-container label {
+  display: block;
+  font-weight: bold;
+  color: var(--secondary-color);
+  margin-bottom: 6px;
+}
+
+#team-builder .input-container input[type="text"],
+#team-builder .input-container input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 2px solid var(--secondary-color);
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+#team-builder .input-container button {
+  padding: 12px 20px;
+  border-radius: 5px;
+  background: var(--secondary-color);
+  color: var(--background-color);
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+  width: fit-content;
+  align-self: flex-start;
+}
+
+#team-builder .input-container button:hover,
+#team-builder .input-container button:focus {
+  background: #e0b800;
+  outline: none;
+}
+
+/* Responsive styles */
+@media (max-width: 480px) {
+  #team-builder .input-container button {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+#team-builder .card-container {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
 
 /* ==========================================================================
-   ANIMATIONS - ALL KEPT (both original and new, as they apply to different elements)
+   ANIMATIONS - 
    ========================================================================== */
 @keyframes fadeInScaleUp {
     0% {
@@ -207,7 +274,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - RESTORED ORIGINAL
+   CLICKABLE AREAS - 
    ========================================================================== */
 .clickable-area {
     border: none;
