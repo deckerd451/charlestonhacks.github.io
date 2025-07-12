@@ -267,33 +267,30 @@ html, footer, .icons-container {
     opacity: 0;
 }
 
-/* Base hover effect for corner positions that don't use transform */
-.clickable-area.top-left:hover,
-.clickable-area.top-right:hover,
-.clickable-area.bottom-left:hover,
-.clickable-area.bottom-right:hover {
+/* Universal hover effect that preserves existing transforms */
+.clickable-area:hover {
     transform: scale(1.2);
 }
 
-/* Hover effects for centered positions - preserve positioning transforms */
+/* Override hover for elements that use positioning transforms */
 .clickable-area.center:hover {
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: translate(-50%, -50%) scale(1.2) !important;
 }
 
 .clickable-area.middle-left:hover {
-    transform: translateY(-50%) scale(1.2);
+    transform: translateY(-50%) scale(1.2) !important;
 }
 
 .clickable-area.middle-right:hover {
-    transform: translateY(-50%) scale(1.2);
+    transform: translateY(-50%) scale(1.2) !important;
 }
 
 .clickable-area.top-center:hover {
-    transform: translateX(-50%) scale(1.2);
+    transform: translateX(-50%) scale(1.2) !important;
 }
 
 .clickable-area.bottom-center:hover {
-    transform: translateX(-50%) scale(1.2);
+    transform: translateX(-50%) scale(1.2) !important;
 }
 
 .clickable-area.loaded {
