@@ -874,6 +874,7 @@ footer {
         background: var(--bg-url, url('images/backgroundmobile.jpg')) no-repeat center center;
         background-size: cover;
     }
+    
     body.two-card-page::before {
         background-image: url('images/background for mobile ie.jpg');
     }
@@ -893,11 +894,26 @@ footer {
     .input-container {
         padding: 0 10px;
     }
-   /* Base styles for the tab content panes */
+
+    /* Responsive styles for icons on small screens */
+    .icons-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .icons-container a {
+        font-size: 24px;
+        padding: 8px;
+    }
+}
+
+/* Base styles for the tab content panes */
 .tab-content-pane {
     display: none; /* All tab content panes are hidden by default */
     padding: 20px 0; /* Add some padding to separate from tabs */
 }
+
 .tab-content-pane.active-tab-pane {
     display: block; /* The active tab content pane is shown */
 }
@@ -911,6 +927,7 @@ footer {
     padding-bottom: 5px;
     gap: 10px; /* Space between tab buttons */
 }
+
 .tab-button {
     background-color: #2a2a3a; /* Darker background for tabs */
     color: #eee;
@@ -922,10 +939,12 @@ footer {
     transition: background-color 0.3s ease, color 0.3s ease;
     white-space: nowrap; /* Prevent wrapping on smaller screens */
 }
+
 .tab-button:hover {
     background-color: #3a3a4a;
     color: #ffd700; /* Gold on hover */
 }
+
 .tab-button.active {
     background-color: #ffd700; /* Gold for active tab */
     color: #222; /* Dark text for active tab */
@@ -951,21 +970,9 @@ footer {
         flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
         justify-content: flex-start; /* Align to start when wrapping */
     }
+    
     .tab-button {
         flex-grow: 1; /* Allow buttons to grow to fill space */
         text-align: center;
     }
-   /* Responsive styles for icons on small screens */
-.icons-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.icons-container a {
-    font-size: 24px;
-    padding: 8px;
-}
-
-}
 }
