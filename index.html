@@ -15,103 +15,101 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
+<style>
         .panel {
             position: relative;
-/* Responsive styles for buttons */
-@media (max-width: 900px) {
-    .clickable-area {
-        width: 72px;
-        height: 72px;
-        padding: 8px;
-    }
-    .clickable-area img {
-        width: 72px;
-        height: 72px;
-    }
-    .top-left, .top-right { top: 14px; }
-    .bottom-left, .bottom-right { bottom: 14px; }
-    .top-left, .bottom-left { left: 12px; }
-    .top-right, .bottom-right { right: 12px; }
-    .center {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .middle-left {
-        top: 50%;
-        left: 12px;
-        transform: translateY(-50%);
-    }
-    .middle-right {
-        top: 50%;
-        right: 12px;
-        transform: translateY(-50%);
-    }
-    .top-center {
-        top: 14px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .bottom-center {
-        bottom: 14px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
+        }
 
-@media (max-width: 600px) {
-    .clickable-area {
-        width: 68px;
-        height: 68px;
-        padding: 5px;
-    }
-    .clickable-area img {
-        width: 60px;
-        height: 60px;
-    }
-    /* Move further out (closer to edge) on mobile */
-    .top-left, .bottom-left { left: 4px; }
-    .top-right, .bottom-right { right: 4px; }
-    .top-left, .top-right { top: 6px; }
-    .bottom-left, .bottom-right { bottom: 6px; }
+        /* Responsive styles for buttons */
+        @media (max-width: 900px) {
+            .clickable-area {
+                width: 72px;
+                height: 72px;
+                padding: 8px;
+            }
+            .clickable-area img {
+                width: 72px;
+                height: 72px;
+            }
+            .top-left, .top-right { top: 14px; }
+            .bottom-left, .bottom-right { bottom: 14px; }
+            .top-left, .bottom-left { left: 12px; }
+            .top-right, .bottom-right { right: 12px; }
+            .center {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .middle-left {
+                top: 50%;
+                left: 12px;
+                transform: translateY(-50%);
+            }
+            .middle-right {
+                top: 50%;
+                right: 12px;
+                transform: translateY(-50%);
+            }
+            .top-center {
+                top: 14px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .bottom-center {
+                bottom: 14px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
 
-    /* New positions adjustments */
-    .middle-left {
-        top: 50%;
-        left: 4px;
-        transform: translateY(-50%);
-    }
-    .middle-right {
-        top: 50%;
-        right: 4px;
-        transform: translateY(-50%);
-    }
-    .top-center {
-        top: 6px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .bottom-center {
-        bottom: 6px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    /* .center remains centered at 50%/50% */
-    .center {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-}
+        @media (max-width: 600px) {
+            .clickable-area {
+                width: 68px;
+                height: 68px;
+                padding: 5px;
+            }
+            .clickable-area img {
+                width: 60px;
+                height: 60px;
+            }
+            /* Move further out (closer to edge) on mobile */
+            .top-left, .bottom-left { left: 4px; }
+            .top-right, .bottom-right { right: 4px; }
+            .top-left, .top-right { top: 6px; }
+            .bottom-left, .bottom-right { bottom: 6px; }
 
-/* --- NEW CSS FOR FOOTER TEAM BUILDER ICON --- */
-.icons-container a:first-child .fas.fa-people-arrows {
-    color: #000080; /* Dark blue color */
-}
-/* --- END NEW CSS --- */
+            /* New positions adjustments */
+            .middle-left {
+                top: 50%;
+                left: 4px;
+                transform: translateY(-50%);
+            }
+            .middle-right {
+                top: 50%;
+                right: 4px;
+                transform: translateY(-50%);
+            }
+            .top-center {
+                top: 6px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .bottom-center {
+                bottom: 6px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .center {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
 
-        /* --- END NEW CSS --- */
+        /* Footer team builder icon styling */
+        .icons-container a:first-child .fas.fa-people-arrows {
+            color: #000080;
+        }
     </style>
 </head>
     <!-- Google tag (gtag.js) -->
