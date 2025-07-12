@@ -159,18 +159,20 @@ html, footer, .icons-container {
 }
 
 @keyframes glow {
-    0% {
-        box-shadow: 0 0 10px 4px rgba(255, 0, 0, 0.6);
-    }
-    50% {
-        box-shadow: 0 0 20px 8px rgba(255, 0, 0, 1);
-    }
-    100% {
-        box-shadow: 0 0 10px 4px rgba(255, 0, 0, 0.6);
-    }
+  0% {
+    box-shadow: 0 0 0px rgba(255, 255, 0, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 0, 1);
+  }
+  100% {
+    box-shadow: 0 0 0px rgba(255, 255, 0, 0.8);
+  }
 }
-.glow-effect {
-    animation: glow 2s infinite;
+
+.glow-animate {
+  animation: glow 0.45s ease-in-out;
+  border-radius: 50%; /* Optional: rounded buttons */
 }
 
 
@@ -183,7 +185,7 @@ html, footer, .icons-container {
     width: 90%;
     max-width: 1200px;
     min-height: 60vh;
-    height: auto;      /* Let it grow with content */
+    height: auto;              /* Let it grow with content */
     padding: 20px;
     margin: 20px auto;
     display: flex;
@@ -191,10 +193,8 @@ html, footer, .icons-container {
     justify-content: flex-start;  /* Align content top */
     align-items: center;
     box-sizing: border-box;
+    overflow: visible;          /* Allow glow effects to show */
 }
-
-
-
 
 /* Responsive tweaks for smaller screens */
 @media (max-width: 768px) {
