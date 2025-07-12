@@ -484,50 +484,50 @@
         }
         App.init();
     </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Function to show a specific tab and hide others
-        function showTab(tabId) {
-            // Hide all tab content panes
-            document.querySelectorAll('.tab-content-pane').forEach(pane => {
-                pane.classList.remove('active-tab-pane');
-            });
+  <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to show a specific tab and hide others
+            function showTab(tabId) {
+                // Hide all tab content panes
+                document.querySelectorAll('.tab-content-pane').forEach(pane => {
+                    pane.classList.remove('active-tab-pane');
+                });
 
-            // Deactivate all tab buttons
+                // Deactivate all tab buttons
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Show the selected tab content pane
+                const activePane = document.getElementById(tabId);
+                if (activePane) {
+                    activePane.classList.add('active-tab-pane');
+                }
+
+                // Activate the corresponding tab button
+                const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+
+                // Scroll to the top of the panel to ensure content is visible
+                const panel = document.querySelector('.panel');
+                if (panel) {
+                    panel.scrollTop = 0;
+                }
+            }
+
+            // Add click event listeners to tab buttons
             document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    showTab(tabId);
+                });
             });
 
-            // Show the selected tab content pane
-            const activePane = document.getElementById(tabId);
-            if (activePane) {
-                activePane.classList.add('active-tab-pane');
-            }
-
-            // Activate the corresponding tab button
-            const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-            if (activeButton) {
-                activeButton.classList.add('active');
-            }
-
-            // Scroll to the top of the panel to ensure content is visible
-            const panel = document.querySelector('.panel');
-            if (panel) {
-                panel.scrollTop = 0;
-            }
-        }
-
-        // Add click event listeners to tab buttons
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                showTab(tabId);
-            });
+            // Show the default tab (e.g., 'profile') when the page loads
+            showTab('profile'); // This makes the "Create Profile" tab active by default
         });
-
-        // Show the default tab (e.g., 'profile') when the page loads
-        showTab('profile'); // This makes the "Create Profile" tab active by default
-    });
-</script>
+    </script>
 </body>
 </html>
