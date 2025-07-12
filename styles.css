@@ -37,7 +37,7 @@
 }
 
 /* ==========================================================================
-   BODY & GLOBAL LAYOUT - RESTORED ORIGINAL FIXED BACKGROUND
+   BODY & GLOBAL LAYOUT 
    ========================================================================== */
 body {
     margin: 0;
@@ -53,7 +53,7 @@ body {
     /* Removed the new transition and background-color directly on body to favor original background layers */
 }
 
-/* Fully opaque black layer behind the background image - RESTORED */
+/* Fully opaque black layer behind the background image */
 body::after {
     content: "";
     position: fixed;
@@ -66,7 +66,7 @@ body::after {
     pointer-events: none;
 }
 
-/* Background image layer (now supports theme change via --bg-url) - RESTORED */
+/* Background image layer (now supports theme change via --bg-url) - */
 body::before {
     content: "";
     position: fixed;
@@ -88,7 +88,7 @@ body.two-card-page::before {
 }
 
 /* ==========================================================================
-   BASE STYLES - RESTORED ORIGINAL
+   BASE STYLES
    ========================================================================== */
 html, footer, .icons-container {
     /* Ensure these elements are transparent or use original background */
@@ -96,7 +96,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   BACKGROUND VIDEO - RESTORED ORIGINAL
+   BACKGROUND VIDEO 
    ========================================================================== */
 #background-video {
     position: fixed;
@@ -111,7 +111,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   ANIMATIONS - ALL KEPT (both original and new, as they apply to different elements)
+   ANIMATIONS 
    ========================================================================== */
 @keyframes fadeInScaleUp {
     0% {
@@ -177,7 +177,7 @@ html, footer, .icons-container {
 
 
 /* ==========================================================================
-   PANEL & LAYOUT - updated 2
+   PANEL & LAYOUT 
    ========================================================================== */
 .panel {
     width: 90%;
@@ -246,7 +246,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - RESTORED ORIGINAL + ADDITIONAL POSITIONS
+   CLICKABLE AREAS
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -290,6 +290,21 @@ html, footer, .icons-container {
 .middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
 .top-center   { top: 2%; left: 50%; transform: translateX(-50%); }
 .bottom-center{ bottom: 2%; left: 50%; transform: translateX(-50%); }
+
+/* Center horizontally at the top */
+.clickable-area.top-center {
+    top: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Center horizontally at the bottom */
+.clickable-area.bottom-center {
+    bottom: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 
 
 /* ==========================================================================
