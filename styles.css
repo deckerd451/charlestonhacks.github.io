@@ -309,8 +309,8 @@ html, footer, .icons-container {
 .top-right     { top: 2%; right: 5%; }
 .bottom-left   { bottom: 2%; left: 5%; }
 .bottom-right  { bottom: 2%; right: 5%; }
-.center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-.middle-left   { top: 50%; left: 5%; transform: translateY(-50%); }
+.center { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.15); }
+.middle-left { top: 50%; left: 5%; transform: translateY(-50%) scale(1.15); }
 .middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
 .top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
