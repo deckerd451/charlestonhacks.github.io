@@ -267,8 +267,33 @@ html, footer, .icons-container {
     opacity: 0;
 }
 
-.clickable-area:hover {
+/* Base hover effect for corner positions that don't use transform */
+.clickable-area.top-left:hover,
+.clickable-area.top-right:hover,
+.clickable-area.bottom-left:hover,
+.clickable-area.bottom-right:hover {
     transform: scale(1.2);
+}
+
+/* Hover effects for centered positions - preserve positioning transforms */
+.clickable-area.center:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+.clickable-area.middle-left:hover {
+    transform: translateY(-50%) scale(1.2);
+}
+
+.clickable-area.middle-right:hover {
+    transform: translateY(-50%) scale(1.2);
+}
+
+.clickable-area.top-center:hover {
+    transform: translateX(-50%) scale(1.2);
+}
+
+.clickable-area.bottom-center:hover {
+    transform: translateX(-50%) scale(1.2);
 }
 
 .clickable-area.loaded {
@@ -290,8 +315,8 @@ html, footer, .icons-container {
 .center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
 .middle-left   { top: 50%; left: 5%; transform: translateY(-50%); }
 .middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
-.top-center   { top: 2%; left: 50%; transform: translateX(-50%); }
-.bottom-center{ bottom: 2%; left: 50%; transform: translateX(-50%); }
+.top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
+.bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
 
 /* Center horizontally at the top */
 .clickable-area.top-center {
@@ -306,8 +331,6 @@ html, footer, .icons-container {
     left: 50%;
     transform: translateX(-50%);
 }
-
-
 
 /* ==========================================================================
    MISSION CONTENT - RESTORED ORIGINAL
