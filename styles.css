@@ -194,6 +194,8 @@ html, footer, .icons-container {
     align-items: center;
     box-sizing: border-box;
     overflow: visible;          /* Allow glow effects to show */
+   position: relative; /* <-- needed for absolutely positioned buttons inside */
+
 }
 
 /* Responsive tweaks for smaller screens */
@@ -216,13 +218,11 @@ html, footer, .icons-container {
 
 .media-container {
     position: relative;
-    z-index: 3;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    overflow: hidden;
-    transform: scale(var(--media-scale));
 }
+
 
 .media-container img,
 .media-container video {
@@ -230,6 +230,8 @@ html, footer, .icons-container {
     height: auto;
     display: block;
     object-fit: contain;
+   margin: 0;
+    padding: 0;
 }
 
 .media-container video {
