@@ -317,14 +317,14 @@ html, footer, .icons-container {
 
 /* Center horizontally at the top */
 .clickable-area.top-center {
-    top: 4%;
+    top: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 /* Center horizontally at the bottom */
 .clickable-area.bottom-center {
-    bottom: 4%;
+    bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -333,7 +333,7 @@ html, footer, .icons-container {
    MISSION CONTENT - RESTORED ORIGINAL
    ========================================================================== */
 #missionContent {
-    animation: fadeIn 0.9s ease forwards;
+    animation: fadeIn 1.2s ease forwards;
     position: absolute;
     top: 50%;
     left: 50%;
