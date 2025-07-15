@@ -995,4 +995,17 @@ footer {
         flex-grow: 1; /* Allow buttons to grow to fill space */
         text-align: center;
     }
+   .home-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: #000000;
+    cursor: pointer;
+}
+
+.home-icon:hover {
+    color: #0056b3;
+}
+
 }
