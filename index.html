@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-    <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
+   <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
     <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
@@ -12,436 +12,232 @@
     <title>CharlestonHacks - Home</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#ff6600">
+   <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6600">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <style>
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #fff;
-            overflow-x: hidden;
-            transition: opacity 0.3s ease;
-        }
-
-        body.fade-out-body {
-            opacity: 0;
-        }
-
-        body.is-preload {
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Main Layout */
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        #main {
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .post.featured {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .major {
-            text-align: center;
-        }
-
-        /* Panel and Media Container */
+    <link rel="stylesheet" href="styles.css">
+<style>
         .panel {
             position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
         }
 
-        .media-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            background: rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .media-container:hover {
-            transform: scale(1.02);
-        }
-
-        /* Mission Image */
-        #missionImage {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-            border-radius: 15px;
-        }
-
-        #missionImage.flip-image-x {
-            transform: rotateY(180deg);
-        }
-
-        #missionImage.flip-image-y {
-            transform: rotateX(180deg);
-        }
-
-        /* Fallback image styles */
-        .fallback-image {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #ff6600, #ff9900);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-            font-weight: bold;
-            border-radius: 15px;
-        }
-
-        /* Mission Content */
-        #missionContent {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            border-radius: 15px;
-            z-index: 5;
-        }
-
-        #aiffBanner {
-            max-width: 85%;
-            height: auto;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            border-radius: 10px;
-            display: none;
-        }
-
-        #aiffBanner:hover {
-            transform: scale(1.05);
-        }
-
-        /* Video */
-        #missionVideo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            border-radius: 15px;
-            z-index: 4;
-        }
-
-        /* Card Frame */
-        #cardFrame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            z-index: 6;
-            pointer-events: none;
-        }
-
-        /* Clickable Areas */
-        .clickable-area {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            z-index: 10;
-        }
-
-        .clickable-area:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
-        }
-
-        .clickable-area img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            border-radius: 50%;
-        }
-
-        /* Glow Animation */
-        .glow-animate {
-            animation: glow 0.45s ease-in-out;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 102, 0, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(255, 102, 0, 0.8), 0 0 60px rgba(255, 102, 0, 0.6); }
-        }
-
-        /* Position classes */
-        .top-left { top: 20px; left: 20px; }
-        .top-right { top: 20px; right: 20px; }
-        .bottom-left { bottom: 20px; left: 20px; }
-        .bottom-right { bottom: 20px; right: 20px; }
-        .middle-left { top: 50%; left: 20px; transform: translateY(-50%); }
-        .middle-right { top: 50%; right: 20px; transform: translateY(-50%); }
-        .top-center { top: 20px; left: 50%; transform: translateX(-50%); }
-        .bottom-center { bottom: 20px; left: 50%; transform: translateX(-50%); }
-        .center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-
-        /* Footer */
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            z-index: 1000;
-        }
-
-        #countdownWrapper {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        #countdown {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ff6600;
-            text-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
-        }
-
-        .icons-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .icons-container a {
-            color: #fff;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            padding: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .icons-container a:hover {
-            color: #ff6600;
-            transform: scale(1.2);
-            background: rgba(255, 102, 0, 0.2);
-        }
-
-        /* Error Message */
-        .error-message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 0, 0, 0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: none;
-            z-index: 10000;
-        }
-
-        /* Loading Spinner */
-        .loading-spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid #ff6600;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            z-index: 5;
-        }
-
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* Responsive Design */
+        /* Responsive styles for buttons */
         @media (max-width: 900px) {
             .clickable-area {
-                width: 70px;
-                height: 70px;
+                width: 72px;
+                height: 72px;
+                padding: 8px;
             }
             .clickable-area img {
-                width: 50px;
-                height: 50px;
+                width: 72px;
+                height: 72px;
             }
-            .post.featured {
-                padding: 20px;
+            .top-left, .top-right { top: 14px; }
+            .bottom-left, .bottom-right { bottom: 14px; }
+            .top-left, .bottom-left { left: 12px; }
+            .top-right, .bottom-right { right: 12px; }
+            .center {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .middle-left {
+                top: 50%;
+                left: 12px;
+                transform: translateY(-50%);
+            }
+            .middle-right {
+                top: 50%;
+                right: 12px;
+                transform: translateY(-50%);
+            }
+            .top-center {
+                top: 14px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .bottom-center {
+                bottom: 14px;
+                left: 50%;
+                transform: translateX(-50%);
             }
         }
 
         @media (max-width: 600px) {
             .clickable-area {
+                width: 68px;
+                height: 68px;
+                padding: 5px;
+            }
+            .clickable-area img {
                 width: 60px;
                 height: 60px;
             }
-            .clickable-area img {
-                width: 40px;
-                height: 40px;
+            /* Move further out (closer to edge) on mobile */
+            .top-left, .bottom-left { left: 4px; }
+            .top-right, .bottom-right { right: 4px; }
+            .top-left, .top-right { top: 6px; }
+            .bottom-left, .bottom-right { bottom: 6px; }
+
+            /* New positions adjustments */
+            .middle-left {
+                top: 50%;
+                left: 4px;
+                transform: translateY(-50%);
             }
-            .top-left, .bottom-left { left: 10px; }
-            .top-right, .bottom-right { right: 10px; }
-            .top-left, .top-right { top: 10px; }
-            .bottom-left, .bottom-right { bottom: 10px; }
-            .middle-left { left: 10px; }
-            .middle-right { right: 10px; }
-            .top-center { top: 10px; }
-            .bottom-center { bottom: 10px; }
-            
-            main {
-                padding: 10px;
+            .middle-right {
+                top: 50%;
+                right: 4px;
+                transform: translateY(-50%);
             }
-            
-            #countdown {
-                font-size: 1.2rem;
+            .top-center {
+                top: 6px;
+                left: 50%;
+                transform: translateX(-50%);
             }
-            
-            .icons-container {
-                gap: 15px;
+            .bottom-center {
+                bottom: 6px;
+                left: 50%;
+                transform: translateX(-50%);
             }
-            
-            .icons-container a {
-                font-size: 1.2rem;
-                padding: 8px;
+            .center {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
+        }
+
+        /* Footer team builder icon styling */
+        .icons-container a:first-child .fas.fa-people-arrows {
+            color: #000080;
         }
     </style>
 </head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6NDKG07DY6');
+</script>
 <body class="is-preload">
-    <div class="error-message" id="errorMessage"></div>
-    
     <main>
         <div id="main">
             <article class="post featured">
                 <header class="major">
                     <div class="panel">
-                        <div class="media-container" aria-label="Toggle mission content">
-                            <div class="loading-spinner" id="loadingSpinner"></div>
-                            <img id="missionImage" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIgcng9IjIwIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmNjYwMCIvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZjk5MDAiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8dGV4dCB4PSIyMDAiIHk9IjIwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiPkNoYXJsZXN0b25IYWNrczwvdGV4dD4KPC9zdmc+" alt="CharlestonHacks" style="z-index: 3;" />
-                            
+                        <div class="media-container" aria-label="Toggle mission content" onclick="toggleMissionContent()">
+                            <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
                             <div id="missionContent">
                                 <div class="body-text">
-                                    <img id="aiffBanner" 
-                                         src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDMwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMzMzIiByeD0iMTAiLz4KPHR0ZXh0IHg9IjE1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSJib2xkIj5Jbm5vdmF0aW9uIEVuZ2luZTwvdGV4dD4KPC9zdmc+" 
-                                         alt="Innovation Engine" 
-                                         style="cursor: pointer; width: 85%; height: auto; display: block; margin: 0 auto;">
+                                    <p>
+                                        <img id="aiffBanner" 
+                                             src="images/engine.webp" 
+                                             alt="Innovation Engine" 
+                                             style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
+                                             onclick="flipAndRedirect()">
+                                    </p>
                                 </div>
                             </div>
-                            
-                            <video id="missionVideo" muted playsinline controls>
-                                <source src="data:video/mp4;base64," type="video/mp4">
+                            <video id="missionVideo" 
+                                muted 
+                                playsinline 
+                                controls>
+                                <source src="images/universe.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-                            
-                            <div id="cardFrame" style="display: none;"></div>
+                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
 
-                            <!-- Navigation Buttons -->
-                            <button type="button" class="clickable-area top-left" data-sound="chime" data-url="javascript:void(0)">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiNmZjY2MDAiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0xIDEzaC0ydi02aDJ2NnptMC04aC0yVjVoMnYyeiIvPgo8L3N2Zz4KPC9zdmc+" alt="Info">
+                            <!-- Glow effect only, larger images, responsive, moved further outward on mobile, up/down on desktop -->
+                            <button type="button" class="clickable-area top-left"
+                                data-sound="chime" 
+                                data-image="images/yellowscullcard.png" 
+                                data-url="Poster.html">
+                                <img src="images/informationbutton.webp" alt="Info">
+                            </button>
+                            <button type="button" class="clickable-area top-right"
+                                data-sound="chime" 
+                                data-image="images/redscullcard.png" 
+                                data-url="2card.html">
+                                <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
+                            </button>
+                            <button type="button" class="clickable-area bottom-left"
+                                data-sound="chime" 
+                                data-image="images/Descartes.png" 
+                                data-url="news.html">
+                                <img src="images/newsbutton.webp" alt="News">
+                            </button>
+                            <button type="button" class="clickable-area bottom-right"
+                                data-sound="chime" 
+                                data-image="images/Alexandor.png" 
+                                data-url="cardmatchgame.html">
+                                <img src="images/peoplebutton.webp" alt="People">
                             </button>
                             
-                            <button type="button" class="clickable-area top-right" data-sound="chime" data-url="javascript:void(0)">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiNmZjAwMDAiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xIDIxaDRWOUgxdjEyem0yMi0xMWMwLTEuMS0uOS0yLTItMmgtNi4zMWwtLjk1LTQuNTdMMTMuNjUgMWMtLjQ0IDAtLjgtLjMtLjgtLjc1bC0uMDMtLjI1TDEyLjggMEw4IDUuNWwxLjY1IDEuNjVMMTMuNjUgM2wuNyAzSDJjLTEuMSAwLTIgLjktMiAybDEgMTJjMCAxLjEuOSAyIDIgMmgxM2MuNzIgMCAxLjM3LS4zNyAxLjc1LS45NmwzLjU4LTYuNDljLjM3LS42Ni4zNy0xLjQ5IDAtMi4xNUwxNyA5em0tMS4xIDEuMDRMMTguMjUgMTJsLTMuMzMgNkg5VjEwLjVsMTEuOS0uNDZ6Ii8+Cjwvc3ZnPgo8L3N2Zz4=" alt="Innovation Engine">
-                            </button>
-                            
-                            <button type="button" class="clickable-area bottom-left" data-sound="chime" data-url="javascript:void(0)">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiMwMDY2ZmYiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMyAzTDMgMTQuMTQgNi45MyAxNyAxMiA5LjA4IDEzIDNtNS4xNSAzLjg1TDEzIDEyIDkuMjUgMTdoNS4wOGwxLjUuMTRhNC4xNSA0LjE1IDAgMDAgMi45Mi0xLjE3TDIzIDEyLjA4IDEzIDJ2NWMwIDEuMzguNyAyLjU4IDEuNzQgMy4yNGwxLjQtMS4yNnoiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="News">
-                            </button>
-                            
-                            <button type="button" class="clickable-area bottom-right" data-sound="chime" data-url="javascript:void(0)">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiM2NjAwZmYiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xNiA0YzEuMTEgMCAyIC44OSAyIDJzLS44OSAyLTIgMi0yLS44OS0yLTIgLjg5LTIgMi0yem0xIDEuNWMtLjgzIDAtMS41LS42Ny0xLjUtMS41UzE2LjE3IDIgMTcgMnMxLjUuNjcgMS41IDEuNS0uNjcgMS41LTEuNSAxLjVaTTEwIDRjMS4xMSAwIDItLjg5IDItMnMtLjg5LTItMi0yLTIgLjg5LTIgMiAuODkgMiAyIDJ6bTEgMS41Yy0uODMgMC0xLjUtLjY3LTEuNS0xLjVTMTAuMTcgMiAxMSAyIDEyLjUgMi42NyAxMi41IDQgMTEuODMgNS41IDExIDUuNXptNiAxMGMxLjEgMCAyLS45IDItMnMtLjktMi0yLTItMiAuOS0yIDIgLjkgMiAyIDJ6bTAgMTJjMS4xIDAgMi0uOSAyLTJzLS45LTItMi0yLTIgLjktMiAyIC45IDIgMiAyem0tNiAwYzEuMSAwIDItLjkgMi0ycy0uOS0yLTItMi0yIC45LTIgMiAuOSAyIDIgMnoiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="People">
-                            </button>
-                            
-                            <button type="button" class="clickable-area middle-left" data-sound="chime" data-url="javascript:void(0)">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiM2NjMzOTkiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xNiAzdjE4SDh2LTRoMnYyaDR2LTJoLTJWM2g0em0wIDE0aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnoiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Case">
-                            </button>
-                            
-                            <button type="button" class="clickable-area middle-right" data-sound="chime" data-url="javascript:void(0)">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiMwMDk5NjYiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xNCA2VjRoLTR2Mkg4djE4bDE0LTEwLjA1IDQgMi40NVY2SDE0em0wIDEwVjhIMjBWMTZsLTYtMC44NXoiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Experiment">
-                            </button>
-                            
-                            <button type="button" class="clickable-area top-center" data-sound="chime" data-url="https://www.youtube.com/watch?v=BkqZVR5uipU&t=56s">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiNmZmQ3MDAiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiA5VjhoNHYzaDNsLTQgNEwxMCAxMUgxMXptLTEgNGg0djFoLTR2LTF6Ii8+Cjwvc3ZnPgo8L3N2Zz4=" alt="Crest">
-                            </button>
-                            
-                            <button type="button" class="clickable-area bottom-center" data-sound="chime" data-url="https://www.youtube.com/@charlestonHacks-mc4ct">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiNmZjMzMDAiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiA5VjhoNHYzaDNsLTQgNEwxMCAxMUgxMXptLTEgNGg0djFoLTR2LTF6Ii8+Cjwvc3ZnPgo8L3N2Zz4=" alt="Keys">
-                            </button>
+<!-- Middle Left Clickable Area -->
+<button 
+  type="button" 
+  class="clickable-area middle-left"
+  data-sound="chime" 
+  data-image="images/case.webp" 
+  data-url="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/"
+  aria-label="Middle Left Link"
+>
+  <img src="images/case.webp" alt="Middle Left" />
+</button>
+
+<!-- Middle Right Clickable Area -->
+<button 
+  type="button" 
+  class="clickable-area middle-right"
+  data-sound="chime" 
+  data-image="images/experiment.webp" 
+  data-url="teambuilder.html"
+  aria-label="Middle Right Link"
+>
+  <img src="images/experiment.webp" alt="Middle Right" />
+</button>
+
+                
+<!-- Top Center Clickable Area -->
+<button 
+  type="button" 
+  class="clickable-area top-center"
+  data-sound="chime" 
+  data-image="images/crestn.svg" 
+  data-url="https://www.youtube.com/watch?v=BkqZVR5uipU&t=56s"
+  aria-label="Top Center Link"
+>
+  <img src="images/crestn.svg" alt="crest card button" />
+</button>
+
+<!-- Bottom Center Clickable Area -->
+<button 
+  type="button" 
+  class="clickable-area bottom-center"
+  data-sound="chime" 
+  data-image="images/keysn.svg" 
+  data-url="https://www.youtube.com/@charlestonHacks-mc4ct"
+  aria-label="Bottom Center Link"
+>
+  <img src="images/keysn.svg" alt="keys card button" />
+</button>
+
                         </div>
                     </div>
                 </header>
             </article>
         </div>
     </main>
-    
     <footer>
         <div id="countdownWrapper">
             <div id="countdown"></div>
         </div>
         <section class="icons-container">
-            <a href="javascript:void(0)" aria-label="Team Builder">
+            
+            <a href="teambuilder.html" aria-label="Innovation Engine">
                 <i class="fas fa-people-arrows"></i>
             </a>
             <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
@@ -459,363 +255,288 @@
             <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook"></i>
             </a>
-            <a href="javascript:void(0)" aria-label="Subscribe">
+            <a href="subscribe.html" aria-label="Subscribe">
                 <i class="fas fa-bell"></i>
             </a>
         </section>
     </footer>
-
+    <script src="ho-script.js"></script>
     <script>
-        // Enhanced Application Controller
-        class EnhancedApp {
-            constructor() {
-                this.config = {
-                    countdown: {
-                        targetDate: "June 28, 2025 00:00:00",
-                        completedMessage: "Welcome to CharlestonHacks"
-                    },
-                    audio: {
-                        enabled: false,
-                        preloaded: false,
-                        sounds: {
-                            cardflip: null,
-                            chime: null,
-                            keys: null
-                        }
-                    },
-                    fallbackImages: [
-                        "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZ3JhZGllbnQpIiByeD0iMjAiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2NjAwIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY5OTAwIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHRleHQgeD0iMjAwIiB5PSIxNjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIj5DaGFybGVzdG9uPC90ZXh0Pjx0ZXh0IHg9IjIwMCIgeT0iMjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCI+SGFja3M8L3RleHQ+PHRleHQgeD0iMjAwIiB5PSIyNjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiPkNsaWNrIHRvIEV4cGxvcmU8L3RleHQ+PC9zdmc+"
-                    ],
-                    state: {
-                        cardClicked: false,
-                        initialized: false
+        // All buttons: glow effect & delayed navigation for visual feedback
+        function addButtonGlowAndNavigation() {
+            document.querySelectorAll('.clickable-area').forEach(area => {
+                area.addEventListener('click', function(e) {
+                    const sound = this.getAttribute('data-sound');
+                    const url = this.getAttribute('data-url');
+                    // Add glow animation
+                    this.classList.add('glow-animate');
+
+                    // Play sound (if present)
+                    if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
+                        AudioController.playSound(sound);
                     }
-                };
-                
-                this.elements = {};
-                this.countdownInterval = null;
-            }
 
-            init() {
-                if (this.config.state.initialized) return;
-                
-                this.cacheElements();
-                this.setupEventListeners();
-                this.initCountdown();
-                this.setupButtonHandlers();
-                this.handleImageErrors();
-                this.hideLoadingSpinner();
-                
-                this.config.state.initialized = true;
-                console.log('CharlestonHacks app initialized successfully');
-            }
-
-            cacheElements() {
-                this.elements = {
-                    missionImage: document.getElementById('missionImage'),
-                    missionVideo: document.getElementById('missionVideo'),
-                    missionContent: document.getElementById('missionContent'),
-                    aiffBanner: document.getElementById('aiffBanner'),
-                    cardFrame: document.getElementById('cardFrame'),
-                    countdown: document.getElementById('countdown'),
-                    mediaContainer: document.querySelector('.media-container'),
-                    loadingSpinner: document.getElementById('loadingSpinner'),
-                    errorMessage: document.getElementById('errorMessage'),
-                    clickableAreas: document.querySelectorAll('.clickable-area')
-                };
-            }
-
-            setupEventListeners() {
-                // Media container click handler
-                if (this.elements.mediaContainer) {
-                    this.elements.mediaContainer.addEventListener('click', (e) => {
-                        if (e.target === this.elements.mediaContainer || e.target === this.elements.missionImage) {
-                            this.toggleMissionContent();
-                        }
-                    });
-                }
-
-                // Banner click handler
-                if (this.elements.aiffBanner) {
-                    this.elements.aiffBanner.addEventListener('click', () => {
-                        this.flipAndRedirect('https://innovation-engine.devpost.com/');
-                    });
-                }
-
-                // Video handlers
-                if (this.elements.missionVideo) {
-                    this.elements.missionVideo.addEventListener('error', () => {
-                        this.showError('Video failed to load');
-                    });
-                    
-                    this.elements.missionVideo.addEventListener('ended', () => {
-                        if (this.elements.cardFrame) {
-                            this.elements.cardFrame.style.display = 'block';
-                        }
-                    });
-                }
-
-                // Page lifecycle handlers
-                window.addEventListener('pageshow', () => {
-                    this.resetCardState();
-                });
-
-                window.addEventListener('beforeunload', () => {
-                    this.cleanup();
-                });
-
-                // Audio initialization on first user interaction
-                document.addEventListener('click', () => {
-                    this.initAudio();
-                }, { once: true });
-            }
-
-            setupButtonHandlers() {
-                this.elements.clickableAreas.forEach(area => {
-                    area.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        this.handleButtonClick(area);
-                    });
-
-                    area.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            this.handleButtonClick(area);
-                        }
-                    });
-
-                    area.addEventListener('animationend', (e) => {
-                        if (e.animationName === 'glow') {
-                            area.classList.remove('glow-animate');
-                        }
-                    });
-                });
-            }
-
-            handleButtonClick(area) {
-                const url = area.getAttribute('data-url');
-                const sound = area.getAttribute('data-sound');
-                
-                // Add glow effect
-                area.classList.add('glow-animate');
-                
-                // Play sound if available
-                if (sound) {
-                    this.playSound(sound);
-                }
-                
-                // Navigate after animation
-                setTimeout(() => {
-                    if (url && url !== 'javascript:void(0)') {
-                        if (url.startsWith('http')) {
-                            window.open(url, '_blank');
-                        } else {
-                            // For local navigation, show placeholder message
-                            this.showError(`Navigation to ${url} - Page not available in demo`);
-                        }
-                    }
-                }, 460);
-            }
-
-            toggleMissionContent() {
-                if (this.config.state.cardClicked) return;
-                
-                this.config.state.cardClicked = true;
-                this.playSound('cardflip');
-                
-                const randomImage = this.getRandomFallbackImage();
-                this.elements.missionImage.src = randomImage;
-                
-                // Show mission content
-                this.elements.missionContent.style.display = 'flex';
-                this.elements.aiffBanner.style.display = 'block';
-                
-                // Try to play video (will fail gracefully)
-                if (this.elements.missionVideo) {
-                    this.elements.missionVideo.style.display = 'block';
-                    this.elements.missionVideo.style.opacity = '0';
-                    
+                    // Delay navigation so glow appears (matched to animation: 450ms)
                     setTimeout(() => {
-                        this.elements.missionVideo.style.opacity = '1';
-                    }, 100);
-                    
-                    this.elements.missionVideo.play().catch(() => {
-                        // Video playback failed, just show the banner
-                        console.log('Video playback not available');
-                    });
-                }
-                
-                // Add flip animation
-                const randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-                this.elements.missionImage.classList.add(randomFlip);
-            }
+                        window.location.href = url;
+                    }, 460);
+                });
 
-            flipAndRedirect(url) {
-                const randomFlip = Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-                this.elements.aiffBanner.classList.add(randomFlip);
-                
-                setTimeout(() => {
-                    window.open(url, '_blank');
-                }, 2000);
-            }
+                area.addEventListener('keydown', function(e) {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
 
-            resetCardState() {
-                this.config.state.cardClicked = false;
-                
-                // Reset image
-                this.elements.missionImage.src = this.elements.missionImage.dataset.originalSrc || this.elements.missionImage.src;
-                this.elements.missionImage.classList.remove('flip-image-x', 'flip-image-y');
-                
-                // Reset video
-                if (this.elements.missionVideo) {
-                    this.elements.missionVideo.pause();
-                    this.elements.missionVideo.style.display = 'none';
-                    this.elements.missionVideo.style.opacity = '0';
-                }
-                
-                // Reset content
-                this.elements.missionContent.style.display = 'none';
-                this.elements.aiffBanner.style.display = 'none';
-                this.elements.cardFrame.style.display = 'none';
-                
-                // Reset body
-                document.body.classList.remove('fade-out-body');
-            }
+                // Remove glow-animate class after animation ends to allow re-clicking
+                area.addEventListener('animationend', function(e) {
+                    if (e.animationName === "glow") {
+                        this.classList.remove('glow-animate');
+                    }
+                });
+            });
+        }
 
-            getRandomFallbackImage() {
-                const images = this.config.fallbackImages;
-                return images[Math.floor(Math.random() * images.length)];
-            }
+        const CONFIG = {
+            countdown: {
+                targetDate: "June 28, 2025 00:00:00",
+                completedMessage: "Welcome to CharlestonHacks"
+            },
+            audio: {
+                cardflip: 'assets/atmospherel.m4a',
+                keys: 'assets/keys.m4a',
+                chime: 'assets/chime.mp3'
+            },
+            cardImages: [
+                "images/yellowscullcard.png",
+                "images/redscullcard.png",
+                "images/Descartes.png",
+                "images/Alexandor.png",
+                "images/Medusa.png",
+                "images/Elara.png",
+                "images/adventurercard.png",
+                "images/collaboratorcard.png",
+                "images/humanitariancard.png",
+                "images/nextcard.png",
+                "images/Aegis.png",
+                "images/resilientcard.png",
+                "images/Astrid.png",
+                "images/nicolecard.png"
+            ]
+        };
 
-            initCountdown() {
-                const countDownDate = new Date(this.config.countdown.targetDate).getTime();
-                
-                this.countdownInterval = setInterval(() => {
+        const AudioController = {
+            preloaded: false,
+            preloadAudio() {
+                if (this.preloaded) return;
+                Object.keys(CONFIG.audio).forEach(key => {
+                    const src = CONFIG.audio[key];
+                    if (src) new Audio(src);
+                });
+                this.preloaded = true;
+            },
+            playSound(soundKey) {
+                const soundSrc = CONFIG.audio[soundKey];
+                if (!soundSrc) return;
+                const audio = new Audio(soundSrc);
+                audio.volume = 0.2;
+                audio.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                });
+            }
+        };
+
+        const VideoController = {
+            handleError() {
+                alert("Error loading video. Please try again later.");
+            },
+            showCardFrame() {
+                document.getElementById('cardFrame').style.display = 'block';
+            }
+        };
+
+        const CountdownController = {
+            element: null,
+            interval: null,
+            init() {
+                this.element = document.getElementById('countdown');
+                this.start();
+            },
+            start() {
+                const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
+                this.interval = setInterval(() => {
                     const now = new Date().getTime();
                     const distance = countDownDate - now;
-                    
                     if (distance < 0) {
-                        this.elements.countdown.innerHTML = this.config.countdown.completedMessage;
-                        clearInterval(this.countdownInterval);
+                        this.stop();
+                        this.element.innerHTML = CONFIG.countdown.completedMessage;
                         return;
                     }
-                    
                     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
-                    this.elements.countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 }, 1000);
-            }
-
-            initAudio() {
-                if (this.config.audio.preloaded) return;
-                
-                // Create silent audio context to enable audio playback
-                try {
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    audioContext.resume();
-                    this.config.audio.enabled = true;
-                } catch (error) {
-                    console.log('Audio not supported:', error);
-                }
-                
-                this.config.audio.preloaded = true;
-            }
-
-            playSound(soundKey) {
-                if (!this.config.audio.enabled) return;
-                
-                // Create a simple beep sound using Web Audio API
-                try {
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.frequency.value = soundKey === 'chime' ? 800 : 400;
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                } catch (error) {
-                    console.log('Sound playback failed:', error);
+            },
+            stop() {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
                 }
             }
+        };
 
-            handleImageErrors() {
-                // Handle main image error
-                this.elements.missionImage.addEventListener('error', () => {
-                    this.elements.missionImage.src = this.getRandomFallbackImage();
-                });
-
-                // Handle banner image error
-                this.elements.aiffBanner.addEventListener('error', () => {
-                    this.elements.aiffBanner.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDMwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiMzMzMiIHJ4PSIxMCIvPjx0ZXh0IHg9IjE1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSJib2xkIj5Jbm5vdmF0aW9uIEVuZ2luZTwvdGV4dD48L3N2Zz4=";
-                });
-
-                // Handle button image errors
-                this.elements.clickableAreas.forEach(area => {
-                    const img = area.querySelector('img');
-                    if (img) {
-                        img.addEventListener('error', () => {
-                            img.style.display = 'none';
-                            area.innerHTML = '<span style="color: white; font-size: 12px;">●</span>';
-                        });
-                    }
-                });
-            }
-
-            hideLoadingSpinner() {
+        const CardController = {
+            clicked: false,
+            getRandomImage() {
+                const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
+                return CONFIG.cardImages[randomIndex];
+            },
+            getRandomFlip() {
+                return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+            },
+            flipCard(imageSrc, url) {
+                const missionImage = document.getElementById('missionImage');
+                const randomFlip = this.getRandomFlip();
+                missionImage.classList.add(randomFlip);
+                document.body.classList.add('fade-out-body');
+                window.location.href = url;
                 setTimeout(() => {
-                    if (this.elements.loadingSpinner) {
-                        this.elements.loadingSpinner.style.display = 'none';
-                    }
-                }, 1000);
+                    missionImage.src = imageSrc;
+                }, 2000);
             }
+        };
 
-            showError(message) {
-                if (this.elements.errorMessage) {
-                    this.elements.errorMessage.textContent = message;
-                    this.elements.errorMessage.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        this.elements.errorMessage.style.display = 'none';
-                    }, 3000);
+        function resetCardState() {
+            document.getElementById('missionImage').src = "images/hsoftest.png";
+            const video = document.getElementById('missionVideo');
+            video.pause();
+            video.style.display = 'none';
+            video.style.opacity = 0;
+            document.getElementById('missionContent').style.display = 'none';
+            document.getElementById('aiffBanner').style.display = 'none';
+            document.getElementById('cardFrame').style.display = 'none';
+            document.body.classList.remove('fade-out-body');
+            const img = document.getElementById('missionImage');
+            img.classList.remove('flip-image-x', 'flip-image-y');
+            if (typeof CardController !== "undefined") {
+                CardController.clicked = false;
+            }
+        }
+
+        const App = {
+            init() {
+                this.setupEventListeners();
+                this.setupVideoHandlers();
+                CountdownController.init();
+                addButtonGlowAndNavigation();
+            },
+            setupEventListeners() {
+                window.addEventListener('pointerdown', () => {
+                    AudioController.preloadAudio();
+                }, { once: true });
+                window.addEventListener('beforeunload', () => {});
+                window.addEventListener('pageshow', () => {
+                    document.body.classList.remove('fade-out-body');
+                    resetCardState();
+                });
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.querySelectorAll('.clickable-area').forEach(element => {
+                        element.classList.add('loaded');
+                    });
+                });
+            },
+            setupVideoHandlers() {
+                const video = document.getElementById('missionVideo');
+                if (video) {
+                    video.addEventListener('error', VideoController.handleError);
+                    video.addEventListener('ended', VideoController.showCardFrame);
                 }
             }
+        };
 
-            cleanup() {
-                if (this.countdownInterval) {
-                    clearInterval(this.countdownInterval);
-                }
-            }
+        function toggleMissionContent() {
+            if (CardController.clicked) return;
+            CardController.clicked = true;
+            AudioController.playSound('cardflip');
+            const image = document.getElementById('missionImage');
+            image.src = CardController.getRandomImage();
+            const video = document.getElementById('missionVideo');
+            video.style.display = 'block';
+            video.style.opacity = 0;
+            setTimeout(() => {
+                video.style.opacity = 1;
+            }, 100);
+            video.play();
+            document.getElementById('missionContent').style.display = 'block';
+            document.getElementById('aiffBanner').style.display = 'block';
+            const randomFlip = CardController.getRandomFlip();
+            image.classList.add(randomFlip);
         }
-
-        // Service Worker Registration with error handling
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(() => console.log('Service Worker registered'))
-                .catch(() => console.log('Service Worker not available'));
+        function flipAndRedirect() {
+            const banner = document.getElementById('aiffBanner');
+            const randomFlip = CardController.getRandomFlip();
+            banner.classList.add(randomFlip);
+            setTimeout(() => {
+                window.location.href = 'https://innovation-engine.devpost.com/';
+            }, 2000);
         }
-
-        // Initialize the application
-        const app = new EnhancedApp();
-        
-        // Initialize when DOM is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => app.init());
-        } else {
-            app.init();
-        }
-
-        // Legacy function exports for backward compatibility
-        window.toggleMissionContent = () => app.toggleMissionContent();
-        window.flipAndRedirect = (url) => app.flipAndRedirect(url);
+        App.init();
     </script>
+  <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to show a specific tab and hide others
+            function showTab(tabId) {
+                // Hide all tab content panes
+                document.querySelectorAll('.tab-content-pane').forEach(pane => {
+                    pane.classList.remove('active-tab-pane');
+                });
+
+                // Deactivate all tab buttons
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Show the selected tab content pane
+                const activePane = document.getElementById(tabId);
+                if (activePane) {
+                    activePane.classList.add('active-tab-pane');
+                }
+
+                // Activate the corresponding tab button
+                const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+
+                // Scroll to the top of the panel to ensure content is visible
+                const panel = document.querySelector('.panel');
+                if (panel) {
+                    panel.scrollTop = 0;
+                }
+            }
+
+            // Add click event listeners to tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    showTab(tabId);
+                });
+            });
+
+            // Show the default tab (e.g., 'profile') when the page loads
+            showTab('profile'); // This makes the "Create Profile" tab active by default
+        });
+    </script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(() => console.log('Service Worker registered'))
+      .catch(err => console.error('Service Worker registration failed:', err));
+  }
+</script>
+
 </body>
 </html>
