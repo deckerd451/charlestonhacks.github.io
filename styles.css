@@ -189,7 +189,7 @@ body.two-card-page::before {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS
+   CLICKABLE AREAS -- FIXED POSITIONING
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -214,7 +214,6 @@ body.two-card-page::before {
         filter 0.2s,
         background 0.2s;
 }
-
 .clickable-area.loaded {
     opacity: 1;
     visibility: visible;
@@ -240,15 +239,17 @@ body.two-card-page::before {
     animation: glow 0.45s ease-in-out;
 }
 
-/* ========== ABSOLUTE POSITIONING FOR BUTTONS ========== */
-
 /* Corners */
-.top-left      { top: 2%; left: 5%; transform: scale(0.8);}
-.top-right     { top: 2%; right: 5%; transform: scale(0.8);}
-.bottom-left   { bottom: 2%; left: 5%; transform: scale(0.8);}
-.bottom-right  { bottom: 2%; right: 5%; transform: scale(0.8);}
+.top-left      { top: 18px; left: 18px; transform: scale(0.8);}
+.top-left.loaded { transform: scale(1);}
+.top-right     { top: 18px; right: 18px; transform: scale(0.8);}
+.top-right.loaded { transform: scale(1);}
+.bottom-left   { bottom: 18px; left: 18px; transform: scale(0.8);}
+.bottom-left.loaded { transform: scale(1);}
+.bottom-right  { bottom: 18px; right: 18px; transform: scale(0.8);}
+.bottom-right.loaded { transform: scale(1);}
 
-/* Centered clickable */
+/* Center */
 .center {
     top: 50%; left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
@@ -257,39 +258,47 @@ body.two-card-page::before {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* Middle left/right */
-.middle-left {
-    top: 50%; left: 0;
-    transform: translateY(-50%) scale(0.8);
-}
-.middle-left.loaded {
-    transform: translateY(-50%) scale(1);
-}
-.middle-right {
-    top: 50%; right: 0;
-    transform: translateY(-50%) scale(0.8);
-}
-.middle-right.loaded {
-    transform: translateY(-50%) scale(1);
-}
-
-/* Top/bottom center */
+/* Top Center - horizontally centered, offset from top */
 .top-center {
-    top: 0; left: 50%;
+    top: 18px;
+    left: 50%;
     transform: translateX(-50%) scale(0.8);
 }
 .top-center.loaded {
     transform: translateX(-50%) scale(1);
 }
+
+/* Bottom Center - horizontally centered, offset from bottom */
 .bottom-center {
-    bottom: 0; left: 50%;
+    bottom: 18px;
+    left: 50%;
     transform: translateX(-50%) scale(0.8);
 }
 .bottom-center.loaded {
     transform: translateX(-50%) scale(1);
 }
 
-/* Responsive clickable sizes and positions */
+/* Middle Left - vertically centered, offset from left */
+.middle-left {
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%) scale(0.8);
+}
+.middle-left.loaded {
+    transform: translateY(-50%) scale(1);
+}
+
+/* Middle Right - vertically centered, offset from right */
+.middle-right {
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%) scale(0.8);
+}
+.middle-right.loaded {
+    transform: translateY(-50%) scale(1);
+}
+
+/* Responsive adjustments */
 @media (max-width: 900px) {
     .clickable-area {
         width: 72px;
@@ -298,67 +307,47 @@ body.two-card-page::before {
         max-height: 72px;
         padding: 8px;
     }
-    .top-left, .top-right { top: 14px; }
-    .bottom-left, .bottom-right { bottom: 14px; }
-    .top-left, .bottom-left { left: 12px; }
-    .top-right, .bottom-right { right: 12px; }
-    .center,
-    .center.loaded { top: 50%; left: 50%; }
-    .center { transform: translate(-50%, -50%) scale(0.8);}
-    .center.loaded { transform: translate(-50%, -50%) scale(1);}
-    .middle-left,
-    .middle-left.loaded { top: 50%; left: 12px;}
-    .middle-left { transform: translateY(-50%) scale(0.8);}
-    .middle-left.loaded { transform: translateY(-50%) scale(1);}
-    .middle-right,
-    .middle-right.loaded { top: 50%; right: 12px;}
-    .middle-right { transform: translateY(-50%) scale(0.8);}
-    .middle-right.loaded { transform: translateY(-50%) scale(1);}
-    .top-center,
-    .top-center.loaded { left: 50%; }
-    .top-center { top: 14px; transform: translateX(-50%) scale(0.8);}
-    .top-center.loaded { top: 14px; transform: translateX(-50%) scale(1);}
-    .bottom-center,
-    .bottom-center.loaded { left: 50%; }
-    .bottom-center { bottom: 14px; transform: translateX(-50%) scale(0.8);}
-    .bottom-center.loaded { bottom: 14px; transform: translateX(-50%) scale(1);}
+    .top-left, .top-left.loaded,
+    .middle-left, .middle-left.loaded,
+    .bottom-left, .bottom-left.loaded { left: 8px; }
+    .top-right, .top-right.loaded,
+    .middle-right, .middle-right.loaded,
+    .bottom-right, .bottom-right.loaded { right: 8px; }
+    .top-left, .top-left.loaded,
+    .top-right, .top-right.loaded,
+    .top-center, .top-center.loaded { top: 8px; }
+    .bottom-left, .bottom-left.loaded,
+    .bottom-right, .bottom-right.loaded,
+    .bottom-center, .bottom-center.loaded { bottom: 8px; }
+    .top-center, .top-center.loaded,
+    .bottom-center, .bottom-center.loaded { left: 50%; }
 }
 @media (max-width: 600px) {
     .clickable-area {
-        width: 68px;
-        height: 68px;
-        max-width: 68px;
-        max-height: 68px;
+        width: 60px;
+        height: 60px;
+        max-width: 60px;
+        max-height: 60px;
         padding: 5px;
     }
     .clickable-area img {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
     }
-    .top-left, .bottom-left { left: 4px; }
-    .top-right, .bottom-right { right: 4px; }
-    .top-left, .top-right { top: 6px; }
-    .bottom-left, .bottom-right { bottom: 6px; }
-    .middle-left,
-    .middle-left.loaded { top: 50%; left: 4px;}
-    .middle-left { transform: translateY(-50%) scale(0.8);}
-    .middle-left.loaded { transform: translateY(-50%) scale(1);}
-    .middle-right,
-    .middle-right.loaded { top: 50%; right: 4px;}
-    .middle-right { transform: translateY(-50%) scale(0.8);}
-    .middle-right.loaded { transform: translateY(-50%) scale(1);}
-    .top-center,
-    .top-center.loaded { left: 50%; }
-    .top-center { top: 6px; transform: translateX(-50%) scale(0.8);}
-    .top-center.loaded { top: 6px; transform: translateX(-50%) scale(1);}
-    .bottom-center,
-    .bottom-center.loaded { left: 50%; }
-    .bottom-center { bottom: 6px; transform: translateX(-50%) scale(0.8);}
-    .bottom-center.loaded { bottom: 6px; transform: translateX(-50%) scale(1);}
-    .center,
-    .center.loaded { top: 50%; left: 50%; }
-    .center { transform: translate(-50%, -50%) scale(0.8);}
-    .center.loaded { transform: translate(-50%, -50%) scale(1);}
+    .top-left, .top-left.loaded,
+    .middle-left, .middle-left.loaded,
+    .bottom-left, .bottom-left.loaded { left: 2px; }
+    .top-right, .top-right.loaded,
+    .middle-right, .middle-right.loaded,
+    .bottom-right, .bottom-right.loaded { right: 2px; }
+    .top-left, .top-left.loaded,
+    .top-right, .top-right.loaded,
+    .top-center, .top-center.loaded { top: 2px; }
+    .bottom-left, .bottom-left.loaded,
+    .bottom-right, .bottom-right.loaded,
+    .bottom-center, .bottom-center.loaded { bottom: 2px; }
+    .top-center, .top-center.loaded,
+    .bottom-center, .bottom-center.loaded { left: 50%; }
 }
 
 /* ==========================================================================
