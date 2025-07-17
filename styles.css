@@ -2,18 +2,17 @@
    CSS VARIABLES & RESET 
    ========================================================================== */
 :root {
-    --primary-color: #FF0000;
-    --secondary-color: #FFFF00;
+    --primary-color: #FF6600;
+    --secondary-color: #FFD700;
     --text-color: #fff;
     --background-color: #000;
     --transition-speed: 0.3s;
     --border-radius: 50%;
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    --box-shadow: 0 4px 16px rgba(0,0,0,0.5);
     --clickable-size: 14vw;
     --clickable-max-size: 90px;
     --center-clickable-size: 16.5vw;
     --center-clickable-max-size: 110px;
-    --media-scale: 0.8;
     --countdown-size: 32px;
     --info-size: 20px;
     --footer-spacing: 20px;
@@ -23,9 +22,7 @@
     --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
-*,
-*::before,
-*::after {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -48,10 +45,8 @@ body {
 body::after {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     background: #000;
     z-index: -2;
     pointer-events: none;
@@ -60,11 +55,9 @@ body::after {
 body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: var(--bg-url, url('images/background.webp')) no-repeat center center;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: var(--bg-url) no-repeat center center;
     background-size: cover;
     z-index: -1;
     pointer-events: none;
@@ -83,22 +76,13 @@ body.two-card-page::before {
     100% { opacity: 1; transform: scale(1);}
 }
 @keyframes glow {
-    0%   { box-shadow: 0 0 0 0 #ffd700; }
-    50%  { box-shadow: 0 0 32px 16px #ffd700; }
-    100% { box-shadow: 0 0 0 0 #ffd700; }
+    0%   { box-shadow: 0 0 0 0 var(--secondary-color);}
+    50%  { box-shadow: 0 0 32px 16px var(--secondary-color);}
+    100% { box-shadow: 0 0 0 0 var(--secondary-color);}
 }
 @keyframes fadeInUp { 
     0% { opacity: 0; transform: translateY(20px);}
     100% { opacity: 1; transform: translateY(0);}
-}
-
-/* ==========================================================================
-   GLOW EFFECT
-   ========================================================================== */
-.glow-animate {
-    animation: glow 0.45s ease-in-out;
-    border-radius: 50%;
-    z-index: 10;
 }
 
 /* ==========================================================================
@@ -118,6 +102,7 @@ body.two-card-page::before {
     overflow: visible;
     position: relative;
 }
+
 @media (max-width: 768px) {
     .panel {
         width: 95%;
@@ -133,18 +118,79 @@ body.two-card-page::before {
     }
 }
 
+/* ==========================================================================
+   MEDIA CONTAINER & CARD LAYOUT
+   ========================================================================== */
 .media-container {
     position: relative;
-    width: 100%;
-    max-width: 600px;
     margin: 0 auto;
-    min-height: 420px;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 3/4;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 440px;
+}
+
+#missionImage,
+#cardFrame {
+    display: block;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    z-index: 3;
+}
+
+#missionVideo {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    z-index: 2;
+    display: none;
+    opacity: 0;
+    background: #000;
+    border-radius: 18px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.30);
+}
+
+#missionContent {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    max-width: 340px;
+    z-index: 4;
+    display: none;
+    background: rgba(20,20,20,0.85);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 600px) {
+    .media-container {
+        max-width: 98vw;
+        min-height: 260px;
+    }
+    #missionContent {
+        padding: 10px;
+        max-width: 96vw;
+    }
 }
 
 /* ==========================================================================
    CLICKABLE AREAS
    ========================================================================== */
-/* Initial state: hidden and scaled down, combined with transform for position */
 .clickable-area {
     border: none;
     background: none;
@@ -169,32 +215,29 @@ body.two-card-page::before {
         background 0.2s;
 }
 
-/* Appear and scale to normal when loaded */
 .clickable-area.loaded {
     opacity: 1;
     visibility: visible;
     animation: fadeInScaleUp 0.5s cubic-bezier(0.4,0,0.2,1) 1;
     animation-fill-mode: forwards;
 }
-
 .clickable-area img {
     width: 100%;
     height: 100%;
-    padding: 0;
-    margin: 0;
     display: block;
     border-radius: 50%;
     pointer-events: none;
 }
-
 .clickable-area:focus-visible {
     outline: 2px solid var(--secondary-color);
 }
-
 .clickable-area:hover,
 .clickable-area:focus-visible {
     filter: brightness(1.1);
     z-index: 11;
+}
+.glow-animate {
+    animation: glow 0.45s ease-in-out;
 }
 
 /* ========== ABSOLUTE POSITIONING FOR BUTTONS ========== */
@@ -246,7 +289,7 @@ body.two-card-page::before {
     transform: translateX(-50%) scale(1);
 }
 
-/* Responsive adjustments for clickable positions */
+/* Responsive clickable sizes and positions */
 @media (max-width: 900px) {
     .clickable-area {
         width: 72px;
@@ -259,41 +302,26 @@ body.two-card-page::before {
     .bottom-left, .bottom-right { bottom: 14px; }
     .top-left, .bottom-left { left: 12px; }
     .top-right, .bottom-right { right: 12px; }
-    .center {
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%) scale(0.8);
-    }
-    .center.loaded {
-        transform: translate(-50%, -50%) scale(1);
-    }
-    .middle-left {
-        top: 50%; left: 12px;
-        transform: translateY(-50%) scale(0.8);
-    }
-    .middle-left.loaded {
-        transform: translateY(-50%) scale(1);
-    }
-    .middle-right {
-        top: 50%; right: 12px;
-        transform: translateY(-50%) scale(0.8);
-    }
-    .middle-right.loaded {
-        transform: translateY(-50%) scale(1);
-    }
-    .top-center {
-        top: 14px; left: 50%;
-        transform: translateX(-50%) scale(0.8);
-    }
-    .top-center.loaded {
-        transform: translateX(-50%) scale(1);
-    }
-    .bottom-center {
-        bottom: 14px; left: 50%;
-        transform: translateX(-50%) scale(0.8);
-    }
-    .bottom-center.loaded {
-        transform: translateX(-50%) scale(1);
-    }
+    .center,
+    .center.loaded { top: 50%; left: 50%; }
+    .center { transform: translate(-50%, -50%) scale(0.8);}
+    .center.loaded { transform: translate(-50%, -50%) scale(1);}
+    .middle-left,
+    .middle-left.loaded { top: 50%; left: 12px;}
+    .middle-left { transform: translateY(-50%) scale(0.8);}
+    .middle-left.loaded { transform: translateY(-50%) scale(1);}
+    .middle-right,
+    .middle-right.loaded { top: 50%; right: 12px;}
+    .middle-right { transform: translateY(-50%) scale(0.8);}
+    .middle-right.loaded { transform: translateY(-50%) scale(1);}
+    .top-center,
+    .top-center.loaded { left: 50%; }
+    .top-center { top: 14px; transform: translateX(-50%) scale(0.8);}
+    .top-center.loaded { top: 14px; transform: translateX(-50%) scale(1);}
+    .bottom-center,
+    .bottom-center.loaded { left: 50%; }
+    .bottom-center { bottom: 14px; transform: translateX(-50%) scale(0.8);}
+    .bottom-center.loaded { bottom: 14px; transform: translateX(-50%) scale(1);}
 }
 @media (max-width: 600px) {
     .clickable-area {
@@ -311,66 +339,27 @@ body.two-card-page::before {
     .top-right, .bottom-right { right: 4px; }
     .top-left, .top-right { top: 6px; }
     .bottom-left, .bottom-right { bottom: 6px; }
-    .middle-left {
-        top: 50%; left: 4px;
-        transform: translateY(-50%) scale(0.8);
-    }
-    .middle-left.loaded {
-        transform: translateY(-50%) scale(1);
-    }
-    .middle-right {
-        top: 50%; right: 4px;
-        transform: translateY(-50%) scale(0.8);
-    }
-    .middle-right.loaded {
-        transform: translateY(-50%) scale(1);
-    }
-    .top-center {
-        top: 6px; left: 50%;
-        transform: translateX(-50%) scale(0.8);
-    }
-    .top-center.loaded {
-        transform: translateX(-50%) scale(1);
-    }
-    .bottom-center {
-        bottom: 6px; left: 50%;
-        transform: translateX(-50%) scale(0.8);
-    }
-    .bottom-center.loaded {
-        transform: translateX(-50%) scale(1);
-    }
-    .center {
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%) scale(0.8);
-    }
-    .center.loaded {
-        transform: translate(-50%, -50%) scale(1);
-    }
+    .middle-left,
+    .middle-left.loaded { top: 50%; left: 4px;}
+    .middle-left { transform: translateY(-50%) scale(0.8);}
+    .middle-left.loaded { transform: translateY(-50%) scale(1);}
+    .middle-right,
+    .middle-right.loaded { top: 50%; right: 4px;}
+    .middle-right { transform: translateY(-50%) scale(0.8);}
+    .middle-right.loaded { transform: translateY(-50%) scale(1);}
+    .top-center,
+    .top-center.loaded { left: 50%; }
+    .top-center { top: 6px; transform: translateX(-50%) scale(0.8);}
+    .top-center.loaded { top: 6px; transform: translateX(-50%) scale(1);}
+    .bottom-center,
+    .bottom-center.loaded { left: 50%; }
+    .bottom-center { bottom: 6px; transform: translateX(-50%) scale(0.8);}
+    .bottom-center.loaded { bottom: 6px; transform: translateX(-50%) scale(1);}
+    .center,
+    .center.loaded { top: 50%; left: 50%; }
+    .center { transform: translate(-50%, -50%) scale(0.8);}
+    .center.loaded { transform: translate(-50%, -50%) scale(1);}
 }
-
-/* ==========================================================================
-   MISSION CONTENT
-   ========================================================================== */
-#missionContent {
-    animation: fadeInUp 1.2s ease forwards;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 400px;
-    padding: 20px;
-    text-align: center;
-    display: none;
-    z-index: 2;
-    opacity: 1;
-}
-#missionContent p, #missionContent a { color: var(--text-color); }
-.body-text { margin: 30px 0; }
-.body-text a { color: var(--text-color); }
-.body-text p { margin-bottom: 10px; }
-.logo { display: block; margin: 0 auto 5px auto; }
-.info { color: var(--secondary-color); font-size: var(--info-size); }
-#aiffBanner { display: none; }
 
 /* ==========================================================================
    FOOTER & COUNTDOWN
