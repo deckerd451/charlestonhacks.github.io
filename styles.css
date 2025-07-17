@@ -189,7 +189,7 @@ body.two-card-page::before {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS -- FIXED POSITIONING
+   CLICKABLE AREAS -- IMPROVED POSITIONING
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -214,6 +214,7 @@ body.two-card-page::before {
         filter 0.2s,
         background 0.2s;
 }
+
 .clickable-area.loaded {
     opacity: 1;
     visibility: visible;
@@ -239,89 +240,94 @@ body.two-card-page::before {
     animation: glow 0.45s ease-in-out;
 }
 
-/* Corners */
-.top-left      { top: 18px; left: 18px; transform: scale(0.8);}
-.top-left.loaded { transform: scale(1);}
-.top-right     { top: 18px; right: 18px; transform: scale(0.8);}
-.top-right.loaded { transform: scale(1);}
-.bottom-left   { bottom: 18px; left: 18px; transform: scale(0.8);}
-.bottom-left.loaded { transform: scale(1);}
-.bottom-right  { bottom: 18px; right: 18px; transform: scale(0.8);}
-.bottom-right.loaded { transform: scale(1);}
-
 /* Center */
 .center {
-    top: 50%; left: 50%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
 }
 .center.loaded {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* Top Center - horizontally centered, offset from top */
+/* Top Center - horizontally centered, spaced from top */
 .top-center {
-    top: 18px;
+    top: 7%;
     left: 50%;
-    transform: translateX(-50%) scale(0.8);
+    transform: translate(-50%, -50%) scale(0.8);
 }
 .top-center.loaded {
-    transform: translateX(-50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
 }
 
-/* Bottom Center - horizontally centered, offset from bottom */
+/* Bottom Center - horizontally centered, spaced from bottom */
 .bottom-center {
-    bottom: 18px;
+    bottom: 7%;
     left: 50%;
-    transform: translateX(-50%) scale(0.8);
+    transform: translate(-50%, 50%) scale(0.8);
 }
 .bottom-center.loaded {
-    transform: translateX(-50%) scale(1);
+    transform: translate(-50%, 50%) scale(1);
 }
 
-/* Middle Left - vertically centered, offset from left */
+/* Middle Left - vertically centered, spaced from left */
 .middle-left {
+    left: 7%;
     top: 50%;
-    left: 18px;
-    transform: translateY(-50%) scale(0.8);
+    transform: translate(-50%, -50%) scale(0.8);
 }
 .middle-left.loaded {
-    transform: translateY(-50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
 }
 
-/* Middle Right - vertically centered, offset from right */
+/* Middle Right - vertically centered, spaced from right */
 .middle-right {
+    right: 7%;
     top: 50%;
-    right: 18px;
-    transform: translateY(-50%) scale(0.8);
+    transform: translate(50%, -50%) scale(0.8);
 }
 .middle-right.loaded {
-    transform: translateY(-50%) scale(1);
+    transform: translate(50%, -50%) scale(1);
 }
 
-/* Responsive adjustments */
-@media (max-width: 900px) {
-    .clickable-area {
-        width: 72px;
-        height: 72px;
-        max-width: 72px;
-        max-height: 72px;
-        padding: 8px;
-    }
-    .top-left, .top-left.loaded,
-    .middle-left, .middle-left.loaded,
-    .bottom-left, .bottom-left.loaded { left: 8px; }
-    .top-right, .top-right.loaded,
-    .middle-right, .middle-right.loaded,
-    .bottom-right, .bottom-right.loaded { right: 8px; }
-    .top-left, .top-left.loaded,
-    .top-right, .top-right.loaded,
-    .top-center, .top-center.loaded { top: 8px; }
-    .bottom-left, .bottom-left.loaded,
-    .bottom-right, .bottom-right.loaded,
-    .bottom-center, .bottom-center.loaded { bottom: 8px; }
-    .top-center, .top-center.loaded,
-    .bottom-center, .bottom-center.loaded { left: 50%; }
+/* Corner buttons - spaced from both edges */
+.top-left {
+    top: 7%;
+    left: 7%;
+    transform: translate(-50%, -50%) scale(0.8);
 }
+.top-left.loaded {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.top-right {
+    top: 7%;
+    right: 7%;
+    transform: translate(50%, -50%) scale(0.8);
+}
+.top-right.loaded {
+    transform: translate(50%, -50%) scale(1);
+}
+
+.bottom-left {
+    bottom: 7%;
+    left: 7%;
+    transform: translate(-50%, 50%) scale(0.8);
+}
+.bottom-left.loaded {
+    transform: translate(-50%, 50%) scale(1);
+}
+
+.bottom-right {
+    bottom: 7%;
+    right: 7%;
+    transform: translate(50%, 50%) scale(0.8);
+}
+.bottom-right.loaded {
+    transform: translate(50%, 50%) scale(1);
+}
+
+/* Responsive adjustment for mobile screens */
 @media (max-width: 600px) {
     .clickable-area {
         width: 60px;
@@ -334,20 +340,22 @@ body.two-card-page::before {
         width: 50px;
         height: 50px;
     }
-    .top-left, .top-left.loaded,
-    .middle-left, .middle-left.loaded,
-    .bottom-left, .bottom-left.loaded { left: 2px; }
-    .top-right, .top-right.loaded,
-    .middle-right, .middle-right.loaded,
-    .bottom-right, .bottom-right.loaded { right: 2px; }
-    .top-left, .top-left.loaded,
-    .top-right, .top-right.loaded,
-    .top-center, .top-center.loaded { top: 2px; }
-    .bottom-left, .bottom-left.loaded,
-    .bottom-right, .bottom-right.loaded,
-    .bottom-center, .bottom-center.loaded { bottom: 2px; }
     .top-center, .top-center.loaded,
-    .bottom-center, .bottom-center.loaded { left: 50%; }
+    .top-left, .top-left.loaded,
+    .top-right, .top-right.loaded {
+        top: 11%;
+    }
+    .bottom-center, .bottom-center.loaded,
+    .bottom-left, .bottom-left.loaded,
+    .bottom-right, .bottom-right.loaded {
+        bottom: 11%;
+    }
+    .middle-left, .middle-left.loaded {
+        left: 11%;
+    }
+    .middle-right, .middle-right.loaded {
+        right: 11%;
+    }
 }
 
 /* ==========================================================================
