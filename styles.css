@@ -63,9 +63,11 @@ body {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 1.5rem;
-  background: rgba(30,34,54,0.92);
+  /* No background or border */
+  background: none !important;
+  border: none !important;
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
