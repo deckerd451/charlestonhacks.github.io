@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-   <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
+    <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
     <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
@@ -12,11 +12,11 @@
     <title>CharlestonHacks - Home</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-   <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#ff6600">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ff6600">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-<style>
+    <style>
         .panel {
             position: relative;
         }
@@ -107,31 +107,30 @@
             }
         }
     </style>
-</head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6NDKG07DY6');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6NDKG07DY6');
+    </script>
+</head>
 <body class="is-preload">
     <main>
         <div id="main">
             <article class="post featured">
                 <header class="major">
                     <div class="panel">
-                        <div class="media-container" aria-label="Toggle mission content" onclick="toggleMissionContent()">
+                        <div class="media-container" aria-label="Toggle mission content" tabindex="0" onclick="toggleMissionContent()" onkeydown="if(event.key==='Enter'||event.key===' '){toggleMissionContent();}">
                             <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
-                            <div id="missionContent">
+                            <div id="missionContent" style="display:none;">
                                 <div class="body-text">
                                     <p>
                                         <img id="aiffBanner" 
                                              src="images/engine.webp" 
                                              alt="Innovation Engine" 
-                                             style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
+                                             style="cursor: pointer; width: 85%; height: auto; display: none; margin-left: auto; margin-right: auto;" 
                                              onclick="flipAndRedirect()">
                                     </p>
                                 </div>
@@ -139,11 +138,12 @@
                             <video id="missionVideo" 
                                 muted 
                                 playsinline 
-                                controls>
+                                controls
+                                style="display:none;opacity:0;">
                                 <source src="images/universe.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
+                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
 
                             <!-- Glow effect only, larger images, responsive, moved further outward on mobile, up/down on desktop -->
                             <button type="button" class="clickable-area top-left"
@@ -170,56 +170,34 @@
                                 data-url="cardmatchgame.html">
                                 <img src="images/peoplebutton.webp" alt="People">
                             </button>
-                            
-<!-- Middle Left Clickable Area -->
-<button 
-  type="button" 
-  class="clickable-area middle-left"
-  data-sound="chime" 
-  data-image="images/case.webp" 
-  data-url="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/"
-  aria-label="Middle Left Link"
->
-  <img src="images/case.webp" alt="Middle Left" />
-</button>
-
-<!-- Middle Right Clickable Area -->
-<button 
-  type="button" 
-  class="clickable-area middle-right"
-  data-sound="chime" 
-  data-image="images/experiment.webp" 
-  data-url="teambuilder.html"
-  aria-label="Middle Right Link"
->
-  <img src="images/experiment.webp" alt="Middle Right" />
-</button>
-
-                
-<!-- Top Center Clickable Area -->
-<button 
-  type="button" 
-  class="clickable-area top-center"
-  data-sound="chime" 
-  data-image="images/crestn.svg" 
-  data-url="https://www.youtube.com/watch?v=BkqZVR5uipU&t=56s"
-  aria-label="Top Center Link"
->
-  <img src="images/crestn.svg" alt="crest card button" />
-</button>
-
-<!-- Bottom Center Clickable Area -->
-<button 
-  type="button" 
-  class="clickable-area bottom-center"
-  data-sound="chime" 
-  data-image="images/keysn.svg" 
-  data-url="https://www.youtube.com/@charlestonHacks-mc4ct"
-  aria-label="Bottom Center Link"
->
-  <img src="images/keysn.svg" alt="keys card button" />
-</button>
-
+                            <button type="button" class="clickable-area middle-left"
+                                data-sound="chime" 
+                                data-image="images/case.webp" 
+                                data-url="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/"
+                                aria-label="Middle Left Link">
+                                <img src="images/case.webp" alt="Middle Left" />
+                            </button>
+                            <button type="button" class="clickable-area middle-right"
+                                data-sound="chime" 
+                                data-image="images/experiment.webp" 
+                                data-url="teambuilder.html"
+                                aria-label="Middle Right Link">
+                                <img src="images/experiment.webp" alt="Middle Right" />
+                            </button>
+                            <button type="button" class="clickable-area top-center"
+                                data-sound="chime" 
+                                data-image="images/crestn.svg" 
+                                data-url="https://www.youtube.com/watch?v=BkqZVR5uipU&t=56s"
+                                aria-label="Top Center Link">
+                                <img src="images/crestn.svg" alt="crest card button" />
+                            </button>
+                            <button type="button" class="clickable-area bottom-center"
+                                data-sound="chime" 
+                                data-image="images/keysn.svg" 
+                                data-url="https://www.youtube.com/@charlestonHacks-mc4ct"
+                                aria-label="Bottom Center Link">
+                                <img src="images/keysn.svg" alt="keys card button" />
+                            </button>
                         </div>
                     </div>
                 </header>
@@ -231,60 +209,34 @@
             <div id="countdown"></div>
         </div>
         <section class="icons-container">
-            
-            <a href="teambuilder.html" aria-label="Innovation Engine">
-                <i class="fas fa-people-arrows"></i>
-            </a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
-                <i class="fas fa-envelope"></i>
-            </a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="subscribe.html" aria-label="Subscribe">
-                <i class="fas fa-bell"></i>
-            </a>
+            <a href="teambuilder.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
+            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope"></i></a>
+            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
         </section>
     </footer>
     <script src="ho-script.js"></script>
     <script>
-        // All buttons: glow effect & delayed navigation for visual feedback
         function addButtonGlowAndNavigation() {
             document.querySelectorAll('.clickable-area').forEach(area => {
                 area.addEventListener('click', function(e) {
                     const sound = this.getAttribute('data-sound');
                     const url = this.getAttribute('data-url');
-                    // Add glow animation
                     this.classList.add('glow-animate');
-
-                    // Play sound (if present)
                     if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
                         AudioController.playSound(sound);
                     }
-
-                    // Delay navigation so glow appears (matched to animation: 450ms)
-                    setTimeout(() => {
-                        window.location.href = url;
-                    }, 460);
+                    setTimeout(() => { window.location.href = url; }, 460);
                 });
-
                 area.addEventListener('keydown', function(e) {
                     if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         this.click();
                     }
                 });
-
-                // Remove glow-animate class after animation ends to allow re-clicking
                 area.addEventListener('animationend', function(e) {
                     if (e.animationName === "glow") {
                         this.classList.remove('glow-animate');
@@ -391,16 +343,6 @@
             },
             getRandomFlip() {
                 return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            },
-            flipCard(imageSrc, url) {
-                const missionImage = document.getElementById('missionImage');
-                const randomFlip = this.getRandomFlip();
-                missionImage.classList.add(randomFlip);
-                document.body.classList.add('fade-out-body');
-                window.location.href = url;
-                setTimeout(() => {
-                    missionImage.src = imageSrc;
-                }, 2000);
             }
         };
 
@@ -432,7 +374,6 @@
                 window.addEventListener('pointerdown', () => {
                     AudioController.preloadAudio();
                 }, { once: true });
-                window.addEventListener('beforeunload', () => {});
                 window.addEventListener('pageshow', () => {
                     document.body.classList.remove('fade-out-body');
                     resetCardState();
@@ -480,58 +421,38 @@
         }
         App.init();
     </script>
-  <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Function to show a specific tab and hide others
             function showTab(tabId) {
-                // Hide all tab content panes
                 document.querySelectorAll('.tab-content-pane').forEach(pane => {
                     pane.classList.remove('active-tab-pane');
                 });
-
-                // Deactivate all tab buttons
                 document.querySelectorAll('.tab-button').forEach(button => {
                     button.classList.remove('active');
                 });
-
-                // Show the selected tab content pane
                 const activePane = document.getElementById(tabId);
-                if (activePane) {
-                    activePane.classList.add('active-tab-pane');
-                }
-
-                // Activate the corresponding tab button
+                if (activePane) activePane.classList.add('active-tab-pane');
                 const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-                if (activeButton) {
-                    activeButton.classList.add('active');
-                }
-
-                // Scroll to the top of the panel to ensure content is visible
+                if (activeButton) activeButton.classList.add('active');
                 const panel = document.querySelector('.panel');
-                if (panel) {
-                    panel.scrollTop = 0;
-                }
+                if (panel) panel.scrollTop = 0;
             }
-
-            // Add click event listeners to tab buttons
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.addEventListener('click', function() {
                     const tabId = this.getAttribute('data-tab');
                     showTab(tabId);
                 });
             });
-
-            // Show the default tab (e.g., 'profile') when the page loads
-            showTab('profile'); // This makes the "Create Profile" tab active by default
+            showTab('profile');
         });
     </script>
     <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(() => console.log('Service Worker registered'))
-      .catch(err => console.error('Service Worker registration failed:', err));
-  }
-</script>
-
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log('Service Worker registered'))
+                .catch(err => console.error('Service Worker registration failed:', err));
+        }
+    </script>
 </body>
 </html>
