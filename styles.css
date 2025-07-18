@@ -253,7 +253,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS (Aligned & Sized Fix - Symmetrical)
+   CLICKABLE AREAS (Aligned & Sized Fix - Symmetrical and Precise)
    ========================================================================== */
 .clickable-area {
     position: absolute;
@@ -289,15 +289,15 @@ html, footer, .icons-container {
     padding: 0;
 }
 
-/* Symmetric positioning for card border alignment */
-.top-left      { top: 5%; left: 5%; }
-.top-right     { top: 5%; right: 5%; }
-.bottom-left   { bottom: 5%; left: 5%; }
-.bottom-right  { bottom: 5%; right: 5%; }
-.middle-left   { top: 50%; left: 5%; transform: translateY(-50%); }
-.middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
+/* ===== Refined Positional Adjustments Based on Visual Layout ===== */
+.top-left      { top: 6.5%;  left: 6.5%; }
+.top-right     { top: 6.5%;  right: 6.5%; }
+.bottom-left   { bottom: 6.5%; left: 6.5%; }
+.bottom-right  { bottom: 6.5%; right: 6.5%; }
+.middle-left   { top: 50%; left: 4.5%; transform: translateY(-50%); }
+.middle-right  { top: 50%; right: 4.5%; transform: translateY(-50%); }
 
-/* Unique hover transforms for some positions */
+/* Unique hover transforms */
 .clickable-area.center:hover {
     transform: translate(-50%, -50%) scale(1.2);
 }
@@ -316,15 +316,18 @@ html, footer, .icons-container {
     min-width: 44px;
     min-height: 44px;
   }
+
   .clickable-area img {
     width: 70%;
     height: 70%;
   }
-  .top-left, .top-right { top: 6%; }
-  .bottom-left, .bottom-right { bottom: 6%; }
-  .middle-left { left: 6%; }
-  .middle-right { right: 6%; }
+
+  .top-left, .top-right { top: 7.5%; }
+  .bottom-left, .bottom-right { bottom: 7.5%; }
+  .middle-left { left: 5%; }
+  .middle-right { right: 5%; }
 }
+
 
 /* ==========================================================================
    MISSION CONTENT 
