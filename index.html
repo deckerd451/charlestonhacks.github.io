@@ -298,7 +298,7 @@
             }
         };
 
-        function toggleMissionContent() {
+       function toggleMissionContent() {
     if (CardController.clicked) return;
     CardController.clicked = true;
     AudioController.playSound('cardflip');
@@ -306,16 +306,17 @@
     image.src = CardController.getRandomImage();
     const video = document.getElementById('missionVideo');
     video.style.display = 'block';
-    document.getElementById('cardFrame').style.display = 'block'; // <--- This shows the card frame!
+    document.getElementById('cardFrame').style.display = 'block';
     video.style.opacity = 0;
-    setTimeout(() => {
-        video.style.opacity = 1;
-    }, 100);
-    video.play();
     document.getElementById('missionContent').style.display = 'block';
     document.getElementById('aiffBanner').style.display = 'block';
     const randomFlip = CardController.getRandomFlip();
     image.classList.add(randomFlip);
+    // Delay showing video and starting it
+    setTimeout(() => {
+        video.style.opacity = 1;
+        video.play();
+    }, 1200); // 1200ms = 1.2 seconds
 }
         function flipAndRedirect() {
             const banner = document.getElementById('aiffBanner');
