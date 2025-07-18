@@ -126,10 +126,10 @@ html, footer, .icons-container {
 
 /* Synchronized flip with JS delay: both 1.2s */
 .flip-image-x {
-    animation: flipImageX 1.2s forwards;
+    animation: flipImageX 1.5s forwards;
 }
 .flip-image-y {
-    animation: flipImageY 1.2s forwards;
+    animation: flipImageY 1.5s forwards;
 }
 
 /* ==========================================================================
