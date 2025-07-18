@@ -174,12 +174,8 @@ html, footer, .icons-container {
   animation: glow 0.45s ease-in-out;
   border-radius: 50%; /* Optional: rounded buttons */
 }
-
-
-
-
 /* ==========================================================================
-   PANEL & LAYOUT 
+   PANEL & LAYOUT (with container queries for clickable area sizing)
    ========================================================================== */
 .panel {
     width: 90%;
@@ -194,27 +190,26 @@ html, footer, .icons-container {
     align-items: center;
     box-sizing: border-box;
     overflow: visible;          /* Allow glow effects to show */
-   position: relative; /* <-- needed for absolutely positioned buttons inside */
-
+    position: relative;         /* For absolutely positioned buttons inside */
+    container-type: inline-size; /* Enable container queries for children */
 }
 
 /* Responsive tweaks for smaller screens */
 @media (max-width: 768px) {
     .panel {
-        width: 95%; /* Take almost full width on small screens */
-        min-height: 50vh; /* Slightly smaller min height */
+        width: 95%;
+        min-height: 50vh;
         padding: 10px;
     }
 }
 
 @media (max-width: 480px) {
     .panel {
-        width: 100%; /* Full width on very small screens */
+        width: 100%;
         padding: 5px;
         min-height: 40vh;
     }
 }
-
 
 .media-container {
     position: relative;
@@ -223,14 +218,13 @@ html, footer, .icons-container {
     margin: 0 auto;
 }
 
-
 .media-container img,
 .media-container video {
     width: 100%;
     height: auto;
     display: block;
     object-fit: contain;
-   margin: 0;
+    margin: 0;
     padding: 0;
 }
 
@@ -248,7 +242,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS
+   CLICKABLE AREAS (scaled to panel width using container query units)
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -257,22 +251,25 @@ html, footer, .icons-container {
     position: absolute !important;
     z-index: 4;
     cursor: pointer;
-    border-radius: var(--border-radius);
+    border-radius: 50%;
     aspect-ratio: 1/1;
-    width: var(--clickable-size);
-    max-width: var(--clickable-max-size);
-    box-shadow: var(--box-shadow);
+    width: 14cqw;             /* 14% of panel width */
+    max-width: 90px;          /* Fallback for large screens */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     animation: fadeInScaleUp 1s ease-out forwards;
-    transition: transform var(--transition-speed) ease-in-out;
+    transition: transform 0.3s ease-in-out;
     opacity: 0;
 }
 
-/* Universal hover effect that preserves existing transforms */
+.clickable-area.center {
+    width: 16.5cqw;           /* Center button is larger */
+    max-width: 110px;
+}
+
 .clickable-area:hover {
     transform: scale(1.2);
 }
 
-/* Override hover for elements that use positioning transforms */
 .clickable-area.center:hover {
     transform: translate(-50%, -50%) scale(1.2) !important;
 }
@@ -309,8 +306,8 @@ html, footer, .icons-container {
 .top-right     { top: 2%; right: 5%; }
 .bottom-left   { bottom: 2%; left: 5%; }
 .bottom-right  { bottom: 2%; right: 5%; }
-.center { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.15); }
-.middle-left { top: 50%; left: 5%; transform: translateY(-50%) scale(1.15); }
+.center        { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.15); }
+.middle-left   { top: 50%; left: 5%; transform: translateY(-50%) scale(1.15); }
 .middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
 .top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
@@ -327,6 +324,20 @@ html, footer, .icons-container {
     bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
+}
+
+/* ==========================================================================
+   Container Query Responsive Tweaks for clickable areas
+   ========================================================================== */
+@container (max-width: 600px) {
+    .clickable-area {
+        width: 18cqw;
+        max-width: 70px;
+    }
+    .clickable-area.center {
+        width: 20cqw;
+        max-width: 90px;
+    }
 }
 
 /* ==========================================================================
