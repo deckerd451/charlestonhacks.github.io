@@ -135,8 +135,8 @@ html, footer, .icons-container {
    PANEL & LAYOUT
    ========================================================================== */
 .panel {
-    width: 90%;
-    max-width: 1200px;
+    width: 60%;
+    max-width: 600px;
     min-height: 60vh;
     height: auto;
     padding: 20px;
@@ -245,9 +245,15 @@ html, footer, .icons-container {
     transform: translateX(-50%);
 }
 
-@container (max-width: 600px) {
-    .clickable-area { width: 18cqw; max-width: 70px; }
-    .clickable-area.center { width: 20cqw; max-width: 90px; }
+@container (min-width: 600px) {
+  .clickable-area {
+    width: 10cqw;        /* Smaller clickable area: 10% of container */
+    max-width: 60px;     /* Reduced max-width */
+  }
+  .clickable-area.center {
+    width: 12cqw;
+    max-width: 80px;
+  }
 }
 
 /* ==========================================================================
