@@ -253,7 +253,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS (Simplified)
+   CLICKABLE AREAS (Aligned & Sized Fix)
    ========================================================================== */
 .clickable-area {
     position: absolute;
@@ -266,10 +266,15 @@ html, footer, .icons-container {
     aspect-ratio: 1/1;
     width: var(--clickable-size);
     max-width: var(--clickable-max-size);
+    min-width: 70px;  /* Ensures buttons are not too small on large screens */
+    min-height: 70px;
     box-shadow: var(--box-shadow);
     animation: fadeInScaleUp 1s ease-out forwards;
     transition: transform var(--transition-speed) ease-in-out;
     opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .clickable-area.loaded {
@@ -277,26 +282,23 @@ html, footer, .icons-container {
 }
 
 .clickable-area img {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
     margin: 0;
     padding: 0;
+    object-fit: contain;
 }
 
-.clickable-area:hover {
-    transform: scale(1.2);
-}
-
-/* Positioning classes */
-.top-left      { top: 2%; left: 5%; }
-.top-right     { top: 2%; right: 5%; }
-.bottom-left   { bottom: 2%; left: 5%; }
-.bottom-right  { bottom: 2%; right: 5%; }
+/* Positioning classes - More symmetric alignment */
+.top-left      { top: 6%; left: 8%; }
+.top-right     { top: 6%; right: 8%; }
+.bottom-left   { bottom: 6%; left: 8%; }
+.bottom-right  { bottom: 6%; right: 8%; }
 .center        { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.15); }
-.middle-left   { top: 50%; left: 5%; transform: translateY(-50%) scale(1.15); }
-.middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
-.top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
-.bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
+.middle-left   { top: 50%; left: 8%; transform: translateY(-50%) scale(1.15); }
+.middle-right  { top: 50%; right: 8%; transform: translateY(-50%); }
+.top-center    { top: 6%; left: 50%; transform: translateX(-50%); }
+.bottom-center { bottom: 6%; left: 50%; transform: translateX(-50%); }
 
 /* Unique hover transforms for some positions */
 .clickable-area.center:hover {
@@ -309,6 +311,51 @@ html, footer, .icons-container {
 .clickable-area.top-center:hover,
 .clickable-area.bottom-center:hover {
     transform: translateX(-50%) scale(1.2);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN FIXES FOR CLICKABLES
+   ========================================================================== */
+@media (max-width: 768px) {
+    .clickable-area {
+        width: 13vw;
+        max-width: 70px;
+        min-width: 50px;
+        min-height: 50px;
+    }
+    .clickable-area img {
+        width: 75%;
+        height: 75%;
+    }
+    .top-left, .top-right, .top-center { top: 7%; }
+    .bottom-left, .bottom-right, .bottom-center { bottom: 7%; }
+    .top-left, .bottom-left, .middle-left { left: 6%; }
+    .top-right, .bottom-right, .middle-right { right: 6%; }
+    .center { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.05); }
+    .middle-left { top: 50%; left: 6%; transform: translateY(-50%) scale(1.05); }
+    .middle-right { top: 50%; right: 6%; transform: translateY(-50%); }
+    .top-center, .bottom-center { left: 50%; transform: translateX(-50%); }
+}
+
+@media (max-width: 480px) {
+    .clickable-area {
+        width: 17vw;
+        max-width: 54px;
+        min-width: 40px;
+        min-height: 40px;
+    }
+    .clickable-area img {
+        width: 70%;
+        height: 70%;
+    }
+    .top-left, .top-right, .top-center { top: 8%; }
+    .bottom-left, .bottom-right, .bottom-center { bottom: 8%; }
+    .top-left, .bottom-left, .middle-left { left: 4%; }
+    .top-right, .bottom-right, .middle-right { right: 4%; }
+    .center { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); }
+    .middle-left { top: 50%; left: 4%; transform: translateY(-50%) scale(1); }
+    .middle-right { top: 50%; right: 4%; transform: translateY(-50%); }
+    .top-center, .bottom-center { left: 50%; transform: translateX(-50%); }
 }
 
 /* ==========================================================================
