@@ -182,20 +182,20 @@ html, footer, .icons-container {
    PANEL & LAYOUT 
    ========================================================================== */
 .panel {
-    width: 90%;
+    position: relative;
+    width: 90vw;
     max-width: 1200px;
-    min-height: 60vh;
-    height: auto;              /* Let it grow with content */
-    padding: 20px;
-    margin: 20px auto;
+    height: 100vh;              /* Fill the vertical viewport */
+    min-height: 500px;          /* Optional: fallback minimum */
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;  /* Align content top */
+    justify-content: center;    /* Vertically center contents */
     align-items: center;
     box-sizing: border-box;
-    overflow: visible;          /* Allow glow effects to show */
-   position: relative; /* <-- needed for absolutely positioned buttons inside */
-
+    overflow: hidden;           /* Prevent scrollbars in panel */
+    /* Remove extra padding to maximize usable space */
+    padding: 0;
 }
 
 /* Responsive tweaks for smaller screens */
