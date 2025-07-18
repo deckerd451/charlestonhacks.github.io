@@ -175,9 +175,6 @@ html, footer, .icons-container {
   border-radius: 50%; /* Optional: rounded buttons */
 }
 
-
-
-
 /* ==========================================================================
    PANEL & LAYOUT 
    ========================================================================== */
@@ -215,7 +212,6 @@ html, footer, .icons-container {
     }
 }
 
-
 .media-container {
     position: relative;
     width: 100%;
@@ -223,15 +219,25 @@ html, footer, .icons-container {
     margin: 0 auto;
 }
 
-
 .media-container img,
 .media-container video {
     width: 100%;
     height: auto;
     display: block;
     object-fit: contain;
-   margin: 0;
+    margin: 0;
     padding: 0;
+}
+
+/* Panel main image fix for desktop */
+#missionImage {
+    max-width: 550px;
+    max-height: 70vh;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
 }
 
 .media-container video {
@@ -267,12 +273,10 @@ html, footer, .icons-container {
     opacity: 0;
 }
 
-/* Universal hover effect that preserves existing transforms */
 .clickable-area:hover {
     transform: scale(1.2);
 }
 
-/* Override hover for elements that use positioning transforms */
 .clickable-area.center:hover {
     transform: translate(-50%, -50%) scale(1.2) !important;
 }
@@ -304,7 +308,6 @@ html, footer, .icons-container {
     height: 100%;
 }
 
-/* Position classes for clickable areas */
 .top-left      { top: 2%; left: 5%; }
 .top-right     { top: 2%; right: 5%; }
 .bottom-left   { bottom: 2%; left: 5%; }
@@ -315,14 +318,12 @@ html, footer, .icons-container {
 .top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
 
-/* Center horizontally at the top */
 .clickable-area.top-center {
     top: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
-/* Center horizontally at the bottom */
 .clickable-area.bottom-center {
     bottom: 2%;
     left: 50%;
@@ -384,16 +385,15 @@ html, footer, .icons-container {
 footer {
     padding: var(--footer-spacing);
     background: transparent !important;
-   padding-bottom: 20px;
+    padding-bottom: 20px;
 }
 
-
-#countdownWrapper { /* Original specific countdown wrapper */
+#countdownWrapper {
     margin-bottom: var(--footer-spacing);
     text-align: center;
 }
 
-#countdown { /* Original specific countdown text */
+#countdown {
     font-size: var(--countdown-size);
     color: var(--primary-color);
 }
@@ -402,22 +402,21 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: clamp(10px, 4vw, 20px); /* Responsive gap */
-    flex-wrap: wrap; /* Let icons wrap on very small screens */
+    gap: clamp(10px, 4vw, 20px);
+    flex-wrap: wrap;
 }
-
 
 .icons-container a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: clamp(40px, 8vw, 60px); /* fixed responsive width */
-    height: clamp(40px, 8vw, 60px); /* equal height */
-    padding: 0; /* remove padding */
+    width: clamp(40px, 8vw, 60px);
+    height: clamp(40px, 8vw, 60px);
+    padding: 0;
     font-size: clamp(20px, 5vw, 30px);
     color: var(--text-color);
     transition: color var(--transition-speed) ease;
-    border-radius: 50%; /* make them circular */
+    border-radius: 50%;
 }
 
 .icons-container a:hover {
@@ -427,7 +426,6 @@ footer {
 /* ==========================================================================
    NEW UI ELEMENTS - KEPT THEIR MODERN STYLING
    ========================================================================== */
-/* --- Main Layout Container for new UI sections --- */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -437,7 +435,6 @@ footer {
     flex-direction: column;
 }
 
-/* --- Header for new UI --- */
 .header {
     text-align: center;
     margin-bottom: 0px;
@@ -449,7 +446,6 @@ footer {
 .header h1 {
     font-size: 3rem;
     font-weight: 800;
-    /* Use the new gradient colors for this specific H1 */
     background: linear-gradient(135deg, #ffd700, #ff6b35);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -460,20 +456,14 @@ footer {
 .header p {
     font-size: 1.2rem;
     opacity: 0.8;
-    color: var(--text-color); /* Ensure text color is consistent */
+    color: var(--text-color);
 }
 
-/* Common Section Title Styling for new UI sections */
-/* Common Section Title Styling for new UI sections */
 .section-title {
-    color: #ffd700; /* Use specific primary color for these titles */
-    text-align: left; /* Keep this */
+    color: #ffd700;
+    text-align: left;
     margin-bottom: 20px;
-    /* CHANGE THIS: Remove or change display to block */
-    display: block; /* Change from inline-block to block */
-    /* Or, if you want it to behave like a flex item for specific layout within its parent,
-       you might need to adjust the parent's flex properties.
-       But for simple left-justification of the whole H2, 'block' is usually best. */
+    display: block;
 }
 
 .section-title .fas {
@@ -488,7 +478,7 @@ footer {
 }
 
 .input-container label {
-    color: #ffd700; /* Use specific primary color for labels */
+    color: #ffd700;
     text-align: left;
     display: block;
     margin-bottom: 5px;
@@ -499,7 +489,7 @@ footer {
 .input-container select {
     padding: 12px;
     font-size: 16px;
-    border: 2px solid #ffd700; /* Specific border color */
+    border: 2px solid #ffd700;
     background-color: #2c2c2c;
     color: #fff;
     border-radius: 5px;
@@ -510,7 +500,7 @@ footer {
 .input-container button {
     padding: 12px 24px;
     font-size: 16px;
-    background: #ffd700; /* Specific button background */
+    background: #ffd700;
     color: #121212;
     border-radius: 5px;
     border: none;
@@ -757,7 +747,7 @@ footer {
 }
 
 .achievement {
-    background: linear-gradient(135deg, #ffd700, #ff6b35); /* Specific gradient for these */
+    background: linear-gradient(135deg, #ffd700, #ff6b35);
     color: white;
     padding: 12px 20px;
     border-radius: 25px;
@@ -781,7 +771,7 @@ footer {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    margin: 0 0 8px 0; /* Reduced bottom margin from 20px */
+    margin: 0 0 8px 0;
 }
 
 /* ==========================================================================
@@ -789,7 +779,7 @@ footer {
    ========================================================================== */
 .countdown-container {
     text-align: center;
-    margin: 8px 0 10px 0; /* Reduced top margin from 32px to 8px */
+    margin: 8px 0 10px 0;
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.6s forwards;
 }
@@ -830,8 +820,6 @@ footer {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
-
-
 
 /* ==========================================================================
    UTILITY CLASSES & MISC
@@ -915,7 +903,6 @@ footer {
         padding: 0 10px;
     }
 
-    /* Responsive styles for icons on small screens */
     .icons-container {
         flex-direction: row;
         flex-wrap: wrap;
@@ -930,69 +917,65 @@ footer {
 
 /* Base styles for the tab content panes */
 .tab-content-pane {
-    display: none; /* All tab content panes are hidden by default */
-    padding: 20px 0; /* Add some padding to separate from tabs */
+    display: none;
+    padding: 20px 0;
 }
 
 .tab-content-pane.active-tab-pane {
-    display: block; /* The active tab content pane is shown */
+    display: block;
 }
 
-/* Styles for the tab buttons/navigation */
 .tab-nav {
     display: flex;
-    justify-content: center; /* Center the tabs */
-    margin-bottom: 20px; /* Space between tabs and content */
-    border-bottom: 2px solid #333; /* Underline for tabs */
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
     padding-bottom: 5px;
-    gap: 10px; /* Space between tab buttons */
+    gap: 10px;
 }
 
 .tab-button {
-    background-color: #2a2a3a; /* Darker background for tabs */
+    background-color: #2a2a3a;
     color: #eee;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
     font-size: 1em;
-    border-radius: 5px 5px 0 0; /* Rounded top corners */
+    border-radius: 5px 5px 0 0;
     transition: background-color 0.3s ease, color 0.3s ease;
-    white-space: nowrap; /* Prevent wrapping on smaller screens */
+    white-space: nowrap;
 }
 
 .tab-button:hover {
     background-color: #3a3a4a;
-    color: #ffd700; /* Gold on hover */
+    color: #ffd700;
 }
 
 .tab-button.active {
-    background-color: #ffd700; /* Gold for active tab */
-    color: #222; /* Dark text for active tab */
+    background-color: #ffd700;
+    color: #222;
     font-weight: bold;
-    border-bottom: 2px solid #ffd700; /* Match active border */
+    border-bottom: 2px solid #ffd700;
 }
 
-/* Adjustments for existing sections when they become tab panes */
 .panel {
-    position: relative; /* If you add absolute positioned elements later, this is crucial */
-    padding-top: 0; /* Remove top padding if tabs are directly inside, adjust as needed */
+    position: relative;
+    padding-top: 0;
     box-sizing: border-box;
 }
 
-/* Ensure section titles within tabs still look good */
 .tab-content-pane .section-title {
-    margin-top: 0; /* Remove top margin if needed when inside a tab */
+    margin-top: 0;
 }
 
-/* Media queries for tab buttons if they get too crowded */
 @media (max-width: 768px) {
     .tab-nav {
-        flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
-        justify-content: flex-start; /* Align to start when wrapping */
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
     
     .tab-button {
-        flex-grow: 1; /* Allow buttons to grow to fill space */
+        flex-grow: 1;
         text-align: center;
     }
 }
