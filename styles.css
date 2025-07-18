@@ -253,13 +253,13 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS
+   CLICKABLE AREAS (Simplified)
    ========================================================================== */
 .clickable-area {
+    position: absolute;
     border: none;
     background: none;
     padding: 0;
-    position: absolute !important;
     z-index: 4;
     cursor: pointer;
     border-radius: var(--border-radius);
@@ -272,65 +272,47 @@ html, footer, .icons-container {
     opacity: 0;
 }
 
-.clickable-area:hover {
-    transform: scale(1.2);
-}
-
-.clickable-area.center:hover {
-    transform: translate(-50%, -50%) scale(1.2) !important;
-}
-
-.clickable-area.middle-left:hover {
-    transform: translateY(-50%) scale(1.2) !important;
-}
-
-.clickable-area.middle-right:hover {
-    transform: translateY(-50%) scale(1.2) !important;
-}
-
-.clickable-area.top-center:hover {
-    transform: translateX(-50%) scale(1.2) !important;
-}
-
-.clickable-area.bottom-center:hover {
-    transform: translateX(-50%) scale(1.2) !important;
-}
-
 .clickable-area.loaded {
     opacity: 1;
 }
 
 .clickable-area img {
-    padding: 0;
-    margin: 0;
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
+.clickable-area:hover {
+    transform: scale(1.2);
+}
+
+/* Positioning classes */
 .top-left      { top: 2%; left: 5%; }
 .top-right     { top: 2%; right: 5%; }
 .bottom-left   { bottom: 2%; left: 5%; }
 .bottom-right  { bottom: 2%; right: 5%; }
-.center { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.15); }
-.middle-left { top: 50%; left: 5%; transform: translateY(-50%) scale(1.15); }
+.center        { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.15); }
+.middle-left   { top: 50%; left: 5%; transform: translateY(-50%) scale(1.15); }
 .middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
 .top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
 
-.clickable-area.top-center {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
+/* Unique hover transforms for some positions */
+.clickable-area.center:hover {
+    transform: translate(-50%, -50%) scale(1.2);
 }
-
-.clickable-area.bottom-center {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
+.clickable-area.middle-left:hover,
+.clickable-area.middle-right:hover {
+    transform: translateY(-50%) scale(1.2);
+}
+.clickable-area.top-center:hover,
+.clickable-area.bottom-center:hover {
+    transform: translateX(-50%) scale(1.2);
 }
 
 /* ==========================================================================
-   MISSION CONTENT - RESTORED ORIGINAL
+   MISSION CONTENT 
    ========================================================================== */
 #missionContent {
     animation: fadeIn 1.2s ease forwards;
