@@ -187,7 +187,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - UNIFORM BUTTON BEHAVIOR
+   CLICKABLE AREAS - NO MISALIGNMENT, PURE POSITIONING
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -201,22 +201,30 @@ html, footer, .icons-container {
     width: 14cqw;
     max-width: 90px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+    /* Remove all transforms from animation and transition! */
+    /* If you want a fade, use transition: opacity only */
     animation: fadeInScaleUp 1s ease-out forwards;
-    transition: transform 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
     opacity: 0;
 }
 
+/* Adjusted center size for proportion, but no transforms */
 .clickable-area.center {
     width: 16.5cqw;
     max-width: 110px;
 }
 
-/* --- All clickable areas scale up on hover --- */
+/* --- All clickable areas: NO HOVER TRANSFORM --- */
 .clickable-area:hover {
-    transform: scale(1.2);
+    /* No transform at all */
+    /* If you want a visual effect, use box-shadow, border, or opacity */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.7); /* just a visual effect */
+    opacity: 1;
 }
 
+/* Show when loaded */
 .clickable-area.loaded { opacity: 1; }
+
 .clickable-area img {
     padding: 0; margin: 0; width: 100%; height: 100%;
 }
