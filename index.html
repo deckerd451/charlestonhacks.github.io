@@ -253,7 +253,7 @@
         };
 
         function resetCardState() {
-           
+           document.getElementById('missionImage').src = "images/hsoftest.png";
             const video = document.getElementById('missionVideo');
             video.pause();
             video.style.display = 'none';
@@ -300,23 +300,24 @@
         };
 
         function toggleMissionContent() {
-            if (CardController.clicked) return;
-            CardController.clicked = true;
-            AudioController.playSound('cardflip');
-            const image = document.getElementById('missionImage');
-            image.src = CardController.getRandomImage();
-            const video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 0;
-            setTimeout(() => {
-                video.style.opacity = 1;
-            }, 100);
-            video.play();
-            document.getElementById('missionContent').style.display = 'block';
-            document.getElementById('aiffBanner').style.display = 'block';
-            const randomFlip = CardController.getRandomFlip();
-            image.classList.add(randomFlip);
-        }
+    if (CardController.clicked) return;
+    CardController.clicked = true;
+    AudioController.playSound('cardflip');
+    const image = document.getElementById('missionImage');
+    image.src = CardController.getRandomImage();
+    const video = document.getElementById('missionVideo');
+    video.style.display = 'block';
+    document.getElementById('cardFrame').style.display = 'block'; // <--- This shows the card frame!
+    video.style.opacity = 0;
+    setTimeout(() => {
+        video.style.opacity = 1;
+    }, 100);
+    video.play();
+    document.getElementById('missionContent').style.display = 'block';
+    document.getElementById('aiffBanner').style.display = 'block';
+    const randomFlip = CardController.getRandomFlip();
+    image.classList.add(randomFlip);
+}
         function flipAndRedirect() {
             const banner = document.getElementById('aiffBanner');
             const randomFlip = CardController.getRandomFlip();
