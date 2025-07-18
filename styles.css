@@ -231,8 +231,8 @@ html, footer, .icons-container {
 
 /* Panel main image fix for desktop */
 #missionImage {
-    max-width: 700px;
-    max-height: 80vh;
+    max-width: 1200px;    /* Increased from 700px */
+    max-height: 90vh;     /* Increased from 80vh */
     width: 100%;
     height: auto;
     object-fit: contain;
