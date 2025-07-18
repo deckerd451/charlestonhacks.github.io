@@ -135,8 +135,8 @@ html, footer, .icons-container {
    PANEL & LAYOUT
    ========================================================================== */
 .panel {
-    width: 60%;
-    max-width: 600px;
+    width: 40%;
+    max-width: 400px;
     min-height: 60vh;
     height: auto;
     padding: 20px;
@@ -276,12 +276,12 @@ html, footer, .icons-container {
 /* --- Container query for desktop sizing --- */
 @container (min-width: 600px) {
     .clickable-area {
-        width: 10cqw;
-        max-width: 60px;
+        width: 8cqw;
+        max-width: 38px;
     }
     .clickable-area.center {
-        width: 12cqw;
-        max-width: 80px;
+        width: 10cqw;
+        max-width: 48px;
     }
 }
 
