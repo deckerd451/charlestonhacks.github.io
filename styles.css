@@ -211,17 +211,33 @@ html, footer, .icons-container {
     max-width: 110px;
 }
 
-.clickable-area:hover { transform: scale(1.2); }
-.clickable-area.center:hover { transform: translate(-50%, -50%) scale(1.2) !important; }
-.clickable-area.middle-left:hover { transform: translateY(-50%) scale(1.2) !important; }
-.clickable-area.middle-right:hover { transform: translateY(-50%) scale(1.2) !important; }
-.clickable-area.top-center:hover { transform: translateX(-50%) scale(1.2) !important; }
-.clickable-area.bottom-center:hover { transform: translateX(-50%) scale(1.2) !important; }
-.clickable-area.loaded { opacity: 1; }
-
-.clickable-area img {
-    padding: 0; margin: 0; width: 100%; height: 100%;
+/* These are correct: hover keeps translate */
+.clickable-area.center:hover {
+    transform: translate(-50%, -50%) scale(1.2) !important;
 }
+.clickable-area.middle-left:hover {
+    transform: translateY(-50%) scale(1.2) !important;
+}
+.clickable-area.middle-right:hover {
+    transform: translateY(-50%) scale(1.2) !important;
+}
+.clickable-area.top-center:hover {
+    transform: translateX(-50%) scale(1.2) !important;
+}
+.clickable-area.bottom-center:hover {
+    transform: translateX(-50%) scale(1.2) !important;
+}
+
+/* For clickable areas that DON'T use transform for position, scale is fine */
+.clickable-area.top-left:hover,
+.clickable-area.top-right:hover,
+.clickable-area.bottom-left:hover,
+.clickable-area.bottom-right:hover {
+    transform: scale(1.2);
+}
+
+.clickable-area.loaded { opacity: 1; }
+.clickable-area img { padding: 0; margin: 0; width: 100%; height: 100%; }
 
 /* Position classes for clickable areas */
 .top-left      { top: 2%; left: 5%; }
@@ -234,21 +250,10 @@ html, footer, .icons-container {
 .top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
 
-.clickable-area.top-center {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.clickable-area.bottom-center {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 @container (min-width: 600px) {
   .clickable-area {
-    width: 10cqw;        /* Smaller clickable area: 10% of container */
-    max-width: 60px;     /* Reduced max-width */
+    width: 10cqw;
+    max-width: 60px;
   }
   .clickable-area.center {
     width: 12cqw;
