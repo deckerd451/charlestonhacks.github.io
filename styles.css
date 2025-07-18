@@ -135,8 +135,8 @@ html, footer, .icons-container {
    PANEL & LAYOUT
    ========================================================================== */
 .panel {
-    width: 40%;
-    max-width: 400px;
+    width: 50%;
+    max-width: 500px;
     min-height: 60vh;
     height: auto;
     padding: 20px;
