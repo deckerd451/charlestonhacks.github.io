@@ -187,7 +187,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS
+   CLICKABLE AREAS - CORRECTED TRANSFORMS
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -211,16 +211,33 @@ html, footer, .icons-container {
     max-width: 110px;
 }
 
-/* These are correct: hover keeps translate */
+/* --- Hover transforms: must match default positioning transform, just with bigger scale --- */
+.clickable-area.top-left:hover {
+    /* No transform for top-left at rest, just scale on hover */
+    transform: scale(1.2);
+}
+.clickable-area.top-right:hover {
+    transform: scale(1.2);
+}
+.clickable-area.bottom-left:hover {
+    transform: scale(1.2);
+}
+.clickable-area.bottom-right:hover {
+    transform: scale(1.2);
+}
+
+/* Center button: keep translate, change scale */
 .clickable-area.center:hover {
     transform: translate(-50%, -50%) scale(1.2) !important;
 }
+/* Middle left/right: keep translateY, change scale */
 .clickable-area.middle-left:hover {
     transform: translateY(-50%) scale(1.2) !important;
 }
 .clickable-area.middle-right:hover {
     transform: translateY(-50%) scale(1.2) !important;
 }
+/* Top/bottom center: keep translateX, change scale */
 .clickable-area.top-center:hover {
     transform: translateX(-50%) scale(1.2) !important;
 }
@@ -228,18 +245,12 @@ html, footer, .icons-container {
     transform: translateX(-50%) scale(1.2) !important;
 }
 
-/* For clickable areas that DON'T use transform for position, scale is fine */
-.clickable-area.top-left:hover,
-.clickable-area.top-right:hover,
-.clickable-area.bottom-left:hover,
-.clickable-area.bottom-right:hover {
-    transform: scale(1.2);
+.clickable-area.loaded { opacity: 1; }
+.clickable-area img {
+    padding: 0; margin: 0; width: 100%; height: 100%;
 }
 
-.clickable-area.loaded { opacity: 1; }
-.clickable-area img { padding: 0; margin: 0; width: 100%; height: 100%; }
-
-/* Position classes for clickable areas */
+/* --- Position classes for clickable areas --- */
 .top-left      { top: 2%; left: 5%; }
 .top-right     { top: 2%; right: 5%; }
 .bottom-left   { bottom: 2%; left: 5%; }
@@ -250,15 +261,28 @@ html, footer, .icons-container {
 .top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
 
+/* Redundant overrides (for specificity, if needed) */
+.clickable-area.top-center {
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.clickable-area.bottom-center {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* --- Container query for desktop sizing --- */
 @container (min-width: 600px) {
-  .clickable-area {
-    width: 10cqw;
-    max-width: 60px;
-  }
-  .clickable-area.center {
-    width: 12cqw;
-    max-width: 80px;
-  }
+    .clickable-area {
+        width: 10cqw;
+        max-width: 60px;
+    }
+    .clickable-area.center {
+        width: 12cqw;
+        max-width: 80px;
+    }
 }
 
 /* ==========================================================================
