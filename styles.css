@@ -187,7 +187,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - NO MISALIGNMENT, PURE POSITIONING
+   CLICKABLE AREAS - CORRECTED POSITIONING
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -201,8 +201,6 @@ html, footer, .icons-container {
     width: 14cqw;
     max-width: 90px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-    /* Remove all transforms from animation and transition! */
-    /* If you want a fade, use transition: opacity only */
     animation: fadeInScaleUp 1s ease-out forwards;
     transition: opacity 0.3s ease-in-out;
     opacity: 0;
@@ -216,9 +214,7 @@ html, footer, .icons-container {
 
 /* --- All clickable areas: NO HOVER TRANSFORM --- */
 .clickable-area:hover {
-    /* No transform at all */
-    /* If you want a visual effect, use box-shadow, border, or opacity */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.7); /* just a visual effect */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.7);
     opacity: 1;
 }
 
@@ -234,11 +230,13 @@ html, footer, .icons-container {
 .top-right     { top: 2%; right: 5%; }
 .bottom-left   { bottom: 2%; left: 5%; }
 .bottom-right  { bottom: 2%; right: 5%; }
-.center        { top: 50%; left: 50%; }
-.middle-left   { top: 50%; left: 5%; }
-.middle-right  { top: 50%; right: 5%; }
-.top-center    { top: 2%; left: 50%; }
-.bottom-center { bottom: 2%; left: 50%; }
+
+/* --- Correct centering for edge clickable areas --- */
+.top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
+.bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
+.middle-left   { top: 50%; left: 5%; transform: translateY(-50%); }
+.middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
+.center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
 /* --- Container query for desktop sizing --- */
 @container (min-width: 600px) {
@@ -251,6 +249,7 @@ html, footer, .icons-container {
         max-width: 48px;
     }
 }
+
 /* ==========================================================================
    MISSION CONTENT
    ========================================================================== */
