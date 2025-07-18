@@ -43,14 +43,12 @@ body {
     margin: 0;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Crucial: Set background to transparent to allow ::before and ::after to show */
     background: transparent !important;
-    color: var(--text-color); /* Use original text color */
-    font-family: 'Britannic Bold', Arial, sans-serif; /* RESTORED ORIGINAL FONT */
+    color: var(--text-color);
+    font-family: 'Britannic Bold', Arial, sans-serif;
     position: relative;
     text-align: center;
     z-index: 1;
-    /* Removed the new transition and background-color directly on body to favor original background layers */
 }
 
 /* Fully opaque black layer behind the background image */
@@ -91,7 +89,6 @@ body.two-card-page::before {
    BASE STYLES
    ========================================================================== */
 html, footer, .icons-container {
-    /* Ensure these elements are transparent or use original background */
     background: transparent !important;
 }
 
@@ -151,7 +148,7 @@ html, footer, .icons-container {
     100% { transform: rotateY(360deg); opacity: 0; }
 }
 
-@keyframes fadeInUp { /* For new sections (header, countdown, social icons) */
+@keyframes fadeInUp {
     to {
         opacity: 1;
         transform: translateY(0);
@@ -159,21 +156,25 @@ html, footer, .icons-container {
 }
 
 @keyframes glow {
-  0% {
-    box-shadow: 0 0 0px rgba(255, 255, 0, 0.8);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 255, 0, 1);
-  }
-  100% {
-    box-shadow: 0 0 0px rgba(255, 255, 0, 0.8);
-  }
+    0% { box-shadow: 0 0 0px rgba(255, 255, 0, 0.8);}
+    50% { box-shadow: 0 0 20px rgba(255, 255, 0, 1);}
+    100% { box-shadow: 0 0 0px rgba(255, 255, 0, 0.8);}
 }
 
 .glow-animate {
-  animation: glow 0.45s ease-in-out;
-  border-radius: 50%; /* Optional: rounded buttons */
+    animation: glow 0.45s ease-in-out;
+    border-radius: 50%;
 }
+
+/* ----------- ADDED: Card flip animation classes ----------- */
+.flip-image-x {
+    animation: flipImageX 2s forwards;
+}
+.flip-image-y {
+    animation: flipImageY 2s forwards;
+}
+/* --------------------------------------------------------- */
+
 /* ==========================================================================
    PANEL & LAYOUT (with container queries for clickable area sizing)
    ========================================================================== */
@@ -181,17 +182,17 @@ html, footer, .icons-container {
     width: 90%;
     max-width: 1200px;
     min-height: 60vh;
-    height: auto;              /* Let it grow with content */
+    height: auto;
     padding: 20px;
     margin: 20px auto;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;  /* Align content top */
+    justify-content: flex-start;
     align-items: center;
     box-sizing: border-box;
-    overflow: visible;          /* Allow glow effects to show */
-    position: relative;         /* For absolutely positioned buttons inside */
-    container-type: inline-size; /* Enable container queries for children */
+    overflow: visible;
+    position: relative;
+    container-type: inline-size;
 }
 
 /* Responsive tweaks for smaller screens */
@@ -253,8 +254,8 @@ html, footer, .icons-container {
     cursor: pointer;
     border-radius: 50%;
     aspect-ratio: 1/1;
-    width: 14cqw;             /* 14% of panel width */
-    max-width: 90px;          /* Fallback for large screens */
+    width: 14cqw;
+    max-width: 90px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     animation: fadeInScaleUp 1s ease-out forwards;
     transition: transform 0.3s ease-in-out;
@@ -262,7 +263,7 @@ html, footer, .icons-container {
 }
 
 .clickable-area.center {
-    width: 16.5cqw;           /* Center button is larger */
+    width: 16.5cqw;
     max-width: 110px;
 }
 
@@ -312,14 +313,12 @@ html, footer, .icons-container {
 .top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
 
-/* Center horizontally at the top */
 .clickable-area.top-center {
     top: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
-/* Center horizontally at the bottom */
 .clickable-area.bottom-center {
     bottom: 2%;
     left: 50%;
@@ -395,16 +394,15 @@ html, footer, .icons-container {
 footer {
     padding: var(--footer-spacing);
     background: transparent !important;
-   padding-bottom: 20px;
+    padding-bottom: 20px;
 }
 
-
-#countdownWrapper { /* Original specific countdown wrapper */
+#countdownWrapper {
     margin-bottom: var(--footer-spacing);
     text-align: center;
 }
 
-#countdown { /* Original specific countdown text */
+#countdown {
     font-size: var(--countdown-size);
     color: var(--primary-color);
 }
@@ -413,22 +411,21 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: clamp(10px, 4vw, 20px); /* Responsive gap */
-    flex-wrap: wrap; /* Let icons wrap on very small screens */
+    gap: clamp(10px, 4vw, 20px);
+    flex-wrap: wrap;
 }
-
 
 .icons-container a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: clamp(40px, 8vw, 60px); /* fixed responsive width */
-    height: clamp(40px, 8vw, 60px); /* equal height */
-    padding: 0; /* remove padding */
+    width: clamp(40px, 8vw, 60px);
+    height: clamp(40px, 8vw, 60px);
+    padding: 0;
     font-size: clamp(20px, 5vw, 30px);
     color: var(--text-color);
     transition: color var(--transition-speed) ease;
-    border-radius: 50%; /* make them circular */
+    border-radius: 50%;
 }
 
 .icons-container a:hover {
@@ -438,7 +435,6 @@ footer {
 /* ==========================================================================
    NEW UI ELEMENTS - KEPT THEIR MODERN STYLING
    ========================================================================== */
-/* --- Main Layout Container for new UI sections --- */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -448,7 +444,6 @@ footer {
     flex-direction: column;
 }
 
-/* --- Header for new UI --- */
 .header {
     text-align: center;
     margin-bottom: 0px;
@@ -460,7 +455,6 @@ footer {
 .header h1 {
     font-size: 3rem;
     font-weight: 800;
-    /* Use the new gradient colors for this specific H1 */
     background: linear-gradient(135deg, #ffd700, #ff6b35);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -471,20 +465,14 @@ footer {
 .header p {
     font-size: 1.2rem;
     opacity: 0.8;
-    color: var(--text-color); /* Ensure text color is consistent */
+    color: var(--text-color);
 }
 
-/* Common Section Title Styling for new UI sections */
-/* Common Section Title Styling for new UI sections */
 .section-title {
-    color: #ffd700; /* Use specific primary color for these titles */
-    text-align: left; /* Keep this */
+    color: #ffd700;
+    text-align: left;
     margin-bottom: 20px;
-    /* CHANGE THIS: Remove or change display to block */
-    display: block; /* Change from inline-block to block */
-    /* Or, if you want it to behave like a flex item for specific layout within its parent,
-       you might need to adjust the parent's flex properties.
-       But for simple left-justification of the whole H2, 'block' is usually best. */
+    display: block;
 }
 
 .section-title .fas {
@@ -499,7 +487,7 @@ footer {
 }
 
 .input-container label {
-    color: #ffd700; /* Use specific primary color for labels */
+    color: #ffd700;
     text-align: left;
     display: block;
     margin-bottom: 5px;
@@ -510,7 +498,7 @@ footer {
 .input-container select {
     padding: 12px;
     font-size: 16px;
-    border: 2px solid #ffd700; /* Specific border color */
+    border: 2px solid #ffd700;
     background-color: #2c2c2c;
     color: #fff;
     border-radius: 5px;
@@ -521,7 +509,7 @@ footer {
 .input-container button {
     padding: 12px 24px;
     font-size: 16px;
-    background: #ffd700; /* Specific button background */
+    background: #ffd700;
     color: #121212;
     border-radius: 5px;
     border: none;
@@ -768,7 +756,7 @@ footer {
 }
 
 .achievement {
-    background: linear-gradient(135deg, #ffd700, #ff6b35); /* Specific gradient for these */
+    background: linear-gradient(135deg, #ffd700, #ff6b35);
     color: white;
     padding: 12px 20px;
     border-radius: 25px;
@@ -792,7 +780,7 @@ footer {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    margin: 0 0 8px 0; /* Reduced bottom margin from 20px */
+    margin: 0 0 8px 0;
 }
 
 /* ==========================================================================
@@ -800,7 +788,7 @@ footer {
    ========================================================================== */
 .countdown-container {
     text-align: center;
-    margin: 8px 0 10px 0; /* Reduced top margin from 32px to 8px */
+    margin: 8px 0 10px 0;
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.6s forwards;
 }
@@ -841,8 +829,6 @@ footer {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
-
-
 
 /* ==========================================================================
    UTILITY CLASSES & MISC
@@ -926,7 +912,6 @@ footer {
         padding: 0 10px;
     }
 
-    /* Responsive styles for icons on small screens */
     .icons-container {
         flex-direction: row;
         flex-wrap: wrap;
@@ -941,69 +926,65 @@ footer {
 
 /* Base styles for the tab content panes */
 .tab-content-pane {
-    display: none; /* All tab content panes are hidden by default */
-    padding: 20px 0; /* Add some padding to separate from tabs */
+    display: none;
+    padding: 20px 0;
 }
 
 .tab-content-pane.active-tab-pane {
-    display: block; /* The active tab content pane is shown */
+    display: block;
 }
 
 /* Styles for the tab buttons/navigation */
 .tab-nav {
     display: flex;
-    justify-content: center; /* Center the tabs */
-    margin-bottom: 20px; /* Space between tabs and content */
-    border-bottom: 2px solid #333; /* Underline for tabs */
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
     padding-bottom: 5px;
-    gap: 10px; /* Space between tab buttons */
+    gap: 10px;
 }
 
 .tab-button {
-    background-color: #2a2a3a; /* Darker background for tabs */
+    background-color: #2a2a3a;
     color: #eee;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
     font-size: 1em;
-    border-radius: 5px 5px 0 0; /* Rounded top corners */
+    border-radius: 5px 5px 0 0;
     transition: background-color 0.3s ease, color 0.3s ease;
-    white-space: nowrap; /* Prevent wrapping on smaller screens */
+    white-space: nowrap;
 }
 
 .tab-button:hover {
     background-color: #3a3a4a;
-    color: #ffd700; /* Gold on hover */
+    color: #ffd700;
 }
 
 .tab-button.active {
-    background-color: #ffd700; /* Gold for active tab */
-    color: #222; /* Dark text for active tab */
+    background-color: #ffd700;
+    color: #222;
     font-weight: bold;
-    border-bottom: 2px solid #ffd700; /* Match active border */
+    border-bottom: 2px solid #ffd700;
 }
 
-/* Adjustments for existing sections when they become tab panes */
 .panel {
-    position: relative; /* If you add absolute positioned elements later, this is crucial */
-    padding-top: 0; /* Remove top padding if tabs are directly inside, adjust as needed */
+    position: relative;
+    padding-top: 0;
     box-sizing: border-box;
 }
 
-/* Ensure section titles within tabs still look good */
 .tab-content-pane .section-title {
-    margin-top: 0; /* Remove top margin if needed when inside a tab */
+    margin-top: 0;
 }
 
-/* Media queries for tab buttons if they get too crowded */
 @media (max-width: 768px) {
     .tab-nav {
-        flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
-        justify-content: flex-start; /* Align to start when wrapping */
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
-    
     .tab-button {
-        flex-grow: 1; /* Allow buttons to grow to fill space */
+        flex-grow: 1;
         text-align: center;
     }
 }
