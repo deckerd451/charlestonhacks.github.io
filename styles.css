@@ -231,15 +231,14 @@ html, footer, .icons-container {
 
 /* Panel main image fix for desktop */
 #missionImage {
-    max-width: 550px;
-    max-height: 70vh;
+    max-width: 700px;
+    max-height: 80vh;
     width: 100%;
     height: auto;
     object-fit: contain;
     display: block;
     margin: 0 auto;
 }
-
 .media-container video {
     position: absolute;
     top: 50%;
