@@ -187,7 +187,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - CORRECTED TRANSFORMS
+   CLICKABLE AREAS - UNIFORM BUTTON BEHAVIOR
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -211,38 +211,9 @@ html, footer, .icons-container {
     max-width: 110px;
 }
 
-/* --- Hover transforms: must match default positioning transform, just with bigger scale --- */
-.clickable-area.top-left:hover {
-    /* No transform for top-left at rest, just scale on hover */
+/* --- All clickable areas scale up on hover --- */
+.clickable-area:hover {
     transform: scale(1.2);
-}
-.clickable-area.top-right:hover {
-    transform: scale(1.2);
-}
-.clickable-area.bottom-left:hover {
-    transform: scale(1.2);
-}
-.clickable-area.bottom-right:hover {
-    transform: scale(1.2);
-}
-
-/* Center button: keep translate, change scale */
-.clickable-area.center:hover {
-    transform: translate(-50%, -50%) scale(1.2) !important;
-}
-/* Middle left/right: keep translateY, change scale */
-.clickable-area.middle-left:hover {
-    transform: translateY(-50%) scale(1.2) !important;
-}
-.clickable-area.middle-right:hover {
-    transform: translateY(-50%) scale(1.2) !important;
-}
-/* Top/bottom center: keep translateX, change scale */
-.clickable-area.top-center:hover {
-    transform: translateX(-50%) scale(1.2) !important;
-}
-.clickable-area.bottom-center:hover {
-    transform: translateX(-50%) scale(1.2) !important;
 }
 
 .clickable-area.loaded { opacity: 1; }
@@ -250,28 +221,16 @@ html, footer, .icons-container {
     padding: 0; margin: 0; width: 100%; height: 100%;
 }
 
-/* --- Position classes for clickable areas --- */
+/* --- Position classes: NO transform, just top/left/right/bottom --- */
 .top-left      { top: 2%; left: 5%; }
 .top-right     { top: 2%; right: 5%; }
 .bottom-left   { bottom: 2%; left: 5%; }
 .bottom-right  { bottom: 2%; right: 5%; }
-.center        { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.15); }
-.middle-left   { top: 50%; left: 5%; transform: translateY(-50%) scale(1.15); }
-.middle-right  { top: 50%; right: 5%; transform: translateY(-50%); }
-.top-center    { top: 2%; left: 50%; transform: translateX(-50%); }
-.bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%); }
-
-/* Redundant overrides (for specificity, if needed) */
-.clickable-area.top-center {
-    top: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.clickable-area.bottom-center {
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-}
+.center        { top: 50%; left: 50%; }
+.middle-left   { top: 50%; left: 5%; }
+.middle-right  { top: 50%; right: 5%; }
+.top-center    { top: 2%; left: 50%; }
+.bottom-center { bottom: 2%; left: 50%; }
 
 /* --- Container query for desktop sizing --- */
 @container (min-width: 600px) {
@@ -284,7 +243,6 @@ html, footer, .icons-container {
         max-width: 48px;
     }
 }
-
 /* ==========================================================================
    MISSION CONTENT
    ========================================================================== */
