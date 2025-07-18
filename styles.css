@@ -124,11 +124,12 @@ html, footer, .icons-container {
     border-radius: 50%;
 }
 
+/* Synchronized flip with JS delay: both 1.2s */
 .flip-image-x {
-    animation: flipImageX 2s forwards;
+    animation: flipImageX 1.2s forwards;
 }
 .flip-image-y {
-    animation: flipImageY 2s forwards;
+    animation: flipImageY 1.2s forwards;
 }
 
 /* ==========================================================================
