@@ -2,32 +2,17 @@
    CSS VARIABLES & RESET 
    ========================================================================== */
 :root {
-    --primary-color: #FF0000; /* Original Red */
-    --secondary-color: #FFFF00; /* Original Yellow */
-    --text-color: white; /* Original text color */
-    --background-color: black; /* Original background color for fallback/layers */
-
-    --transition-speed: 0.3s;
-    --border-radius: 50%; /* For original clickable areas */
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* For original clickable areas */
-    --clickable-size: 14vw;
-    --clickable-max-size: 90px;
-    --center-clickable-size: 16.5vw;
-    --center-clickable-max-size: 110px;
-
-    /* RESPONSIVE VARS */
-    --media-scale: 0.8;
+    --primary-color: #FF0000;
+    --secondary-color: #FFFF00;
+    --text-color: white;
+    --background-color: black;
     --countdown-size: 32px;
     --info-size: 20px;
     --footer-spacing: 20px;
-
-    /* Original dynamic theme background image URL */
     --bg-url: url('images/background.webp');
-
-    /* KEPT NEW VARIABLES FOR SPECIFIC COMPONENTS */
-    --card-bg: #2a2a2a; /* Card background for new sections */
-    --shadow: 0 4px 20px rgba(0,0,0,0.3); /* For new components' shadows */
-    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1); /* For new animations/transitions */
+    --card-bg: #2a2a2a;
+    --shadow: 0 4px 20px rgba(0,0,0,0.3);
+    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
 * {
@@ -51,31 +36,23 @@ body {
     z-index: 1;
 }
 
-/* Fully opaque black layer behind the background image */
 body::after {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     background: black;
     z-index: -2;
     pointer-events: none;
 }
 
-/* Background image layer (now supports theme change via --bg-url) - */
 body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     background: var(--bg-url, url('images/background.webp')) no-repeat center center;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     z-index: -1;
     pointer-events: none;
     transition: background 0.5s;
@@ -85,9 +62,6 @@ body.two-card-page::before {
     background-image: url('images/backgroundie.jpg');
 }
 
-/* ==========================================================================
-   BASE STYLES
-   ========================================================================== */
 html, footer, .icons-container {
     background: transparent !important;
 }
@@ -97,10 +71,8 @@ html, footer, .icons-container {
    ========================================================================== */
 #background-video {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     object-fit: cover;
     z-index: -1;
     opacity: 0.5;
@@ -111,19 +83,8 @@ html, footer, .icons-container {
    ANIMATIONS 
    ========================================================================== */
 @keyframes fadeInScaleUp {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1.15);
-    }
-}
-
-@keyframes animateClickables {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.15); }
 }
 
 @keyframes fadeIn {
@@ -149,16 +110,13 @@ html, footer, .icons-container {
 }
 
 @keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes glow {
-    0% { box-shadow: 0 0 0px rgba(255, 255, 0, 0.8);}
-    50% { box-shadow: 0 0 20px rgba(255, 255, 0, 1);}
-    100% { box-shadow: 0 0 0px rgba(255, 255, 0, 0.8);}
+    0% { box-shadow: 0 0 0px rgba(255,255,0,0.8);}
+    50% { box-shadow: 0 0 20px rgba(255,255,0,1);}
+    100% { box-shadow: 0 0 0px rgba(255,255,0,0.8);}
 }
 
 .glow-animate {
@@ -166,17 +124,15 @@ html, footer, .icons-container {
     border-radius: 50%;
 }
 
-/* ----------- ADDED: Card flip animation classes ----------- */
 .flip-image-x {
     animation: flipImageX 2s forwards;
 }
 .flip-image-y {
     animation: flipImageY 2s forwards;
 }
-/* --------------------------------------------------------- */
 
 /* ==========================================================================
-   PANEL & LAYOUT (with container queries for clickable area sizing)
+   PANEL & LAYOUT
    ========================================================================== */
 .panel {
     width: 90%;
@@ -195,21 +151,11 @@ html, footer, .icons-container {
     container-type: inline-size;
 }
 
-/* Responsive tweaks for smaller screens */
 @media (max-width: 768px) {
-    .panel {
-        width: 95%;
-        min-height: 50vh;
-        padding: 10px;
-    }
+    .panel { width: 95%; min-height: 50vh; padding: 10px; }
 }
-
 @media (max-width: 480px) {
-    .panel {
-        width: 100%;
-        padding: 5px;
-        min-height: 40vh;
-    }
+    .panel { width: 100%; min-height: 40vh; padding: 5px; }
 }
 
 .media-container {
@@ -231,11 +177,9 @@ html, footer, .icons-container {
 
 .media-container video {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     z-index: 0;
     opacity: 0;
@@ -243,7 +187,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS (scaled to panel width using container query units)
+   CLICKABLE AREAS
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -256,7 +200,7 @@ html, footer, .icons-container {
     aspect-ratio: 1/1;
     width: 14cqw;
     max-width: 90px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
     animation: fadeInScaleUp 1s ease-out forwards;
     transition: transform 0.3s ease-in-out;
     opacity: 0;
@@ -267,39 +211,16 @@ html, footer, .icons-container {
     max-width: 110px;
 }
 
-.clickable-area:hover {
-    transform: scale(1.2);
-}
-
-.clickable-area.center:hover {
-    transform: translate(-50%, -50%) scale(1.2) !important;
-}
-
-.clickable-area.middle-left:hover {
-    transform: translateY(-50%) scale(1.2) !important;
-}
-
-.clickable-area.middle-right:hover {
-    transform: translateY(-50%) scale(1.2) !important;
-}
-
-.clickable-area.top-center:hover {
-    transform: translateX(-50%) scale(1.2) !important;
-}
-
-.clickable-area.bottom-center:hover {
-    transform: translateX(-50%) scale(1.2) !important;
-}
-
-.clickable-area.loaded {
-    opacity: 1;
-}
+.clickable-area:hover { transform: scale(1.2); }
+.clickable-area.center:hover { transform: translate(-50%, -50%) scale(1.2) !important; }
+.clickable-area.middle-left:hover { transform: translateY(-50%) scale(1.2) !important; }
+.clickable-area.middle-right:hover { transform: translateY(-50%) scale(1.2) !important; }
+.clickable-area.top-center:hover { transform: translateX(-50%) scale(1.2) !important; }
+.clickable-area.bottom-center:hover { transform: translateX(-50%) scale(1.2) !important; }
+.clickable-area.loaded { opacity: 1; }
 
 .clickable-area img {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
+    padding: 0; margin: 0; width: 100%; height: 100%;
 }
 
 /* Position classes for clickable areas */
@@ -318,38 +239,26 @@ html, footer, .icons-container {
     left: 50%;
     transform: translateX(-50%);
 }
-
 .clickable-area.bottom-center {
     bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
 }
 
-/* ==========================================================================
-   Container Query Responsive Tweaks for clickable areas
-   ========================================================================== */
 @container (max-width: 600px) {
-    .clickable-area {
-        width: 18cqw;
-        max-width: 70px;
-    }
-    .clickable-area.center {
-        width: 20cqw;
-        max-width: 90px;
-    }
+    .clickable-area { width: 18cqw; max-width: 70px; }
+    .clickable-area.center { width: 20cqw; max-width: 90px; }
 }
 
 /* ==========================================================================
-   MISSION CONTENT - RESTORED ORIGINAL
+   MISSION CONTENT
    ========================================================================== */
 #missionContent {
     animation: fadeIn 1.2s ease forwards;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 400px;
+    width: 90%; max-width: 400px;
     padding: 20px;
     text-align: center;
     display: none;
@@ -358,55 +267,31 @@ html, footer, .icons-container {
 }
 
 #missionContent p,
-#missionContent a {
-    color: var(--text-color);
-}
+#missionContent a { color: var(--text-color); }
 
-.body-text {
-    margin: 30px 0;
-}
-
-.body-text a {
-    color: var(--text-color);
-}
-
-.body-text p {
-    margin-bottom: 10px;
-}
-
-.logo {
-    display: block;
-    margin: 0 auto 5px auto;
-}
-
-.info {
-    color: var(--secondary-color);
-    font-size: var(--info-size);
-}
-
-#aiffBanner {
-    display: none;
-}
+.body-text { margin: 30px 0; }
+.body-text a { color: var(--text-color); }
+.body-text p { margin-bottom: 10px; }
+.logo { display: block; margin: 0 auto 5px auto; }
+.info { color: var(--secondary-color); font-size: var(--info-size); }
+#aiffBanner { display: none; }
 
 /* ==========================================================================
-   FOOTER & COUNTDOWN - RESTORED ORIGINAL, KEPT NEW FOR SPECIFIC CONTAINERS
+   FOOTER & COUNTDOWN
    ========================================================================== */
 footer {
     padding: var(--footer-spacing);
     background: transparent !important;
     padding-bottom: 20px;
 }
-
 #countdownWrapper {
     margin-bottom: var(--footer-spacing);
     text-align: center;
 }
-
 #countdown {
     font-size: var(--countdown-size);
     color: var(--primary-color);
 }
-
 .icons-container {
     display: flex;
     justify-content: center;
@@ -414,7 +299,6 @@ footer {
     gap: clamp(10px, 4vw, 20px);
     flex-wrap: wrap;
 }
-
 .icons-container a {
     display: inline-flex;
     align-items: center;
@@ -424,16 +308,13 @@ footer {
     padding: 0;
     font-size: clamp(20px, 5vw, 30px);
     color: var(--text-color);
-    transition: color var(--transition-speed) ease;
+    transition: color 0.3s ease;
     border-radius: 50%;
 }
-
-.icons-container a:hover {
-    color: var(--secondary-color);
-}
+.icons-container a:hover { color: var(--secondary-color); }
 
 /* ==========================================================================
-   NEW UI ELEMENTS - KEPT THEIR MODERN STYLING
+   NEW UI ELEMENTS
    ========================================================================== */
 .container {
     max-width: 1200px;
@@ -443,7 +324,6 @@ footer {
     display: flex;
     flex-direction: column;
 }
-
 .header {
     text-align: center;
     margin-bottom: 0px;
@@ -451,7 +331,6 @@ footer {
     transform: translateY(-20px);
     animation: fadeInUp 0.8s ease forwards;
 }
-
 .header h1 {
     font-size: 3rem;
     font-weight: 800;
@@ -461,31 +340,19 @@ footer {
     background-clip: text;
     margin-bottom: 10px;
 }
-
 .header p {
     font-size: 1.2rem;
     opacity: 0.8;
     color: var(--text-color);
 }
-
-.section-title {
-    color: #ffd700;
-    text-align: left;
-    margin-bottom: 20px;
-    display: block;
-}
-
-.section-title .fas {
-    margin-right: 8px;
-}
-
+.section-title { color: #ffd700; text-align: left; margin-bottom: 20px; display: block; }
+.section-title .fas { margin-right: 8px; }
 .input-container {
     margin-bottom: 20px;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
 }
-
 .input-container label {
     color: #ffd700;
     text-align: left;
@@ -493,7 +360,6 @@ footer {
     margin-bottom: 5px;
     font-weight: bold;
 }
-
 .input-container input,
 .input-container select {
     padding: 12px;
@@ -505,7 +371,6 @@ footer {
     width: 100%;
     margin-bottom: 10px;
 }
-
 .input-container button {
     padding: 12px 24px;
     font-size: 16px;
@@ -517,11 +382,7 @@ footer {
     transition: background 0.3s;
     margin-top: 10px;
 }
-
-.input-container button:hover {
-    background: #FFC000;
-}
-
+.input-container button:hover { background: #FFC000; }
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -529,7 +390,6 @@ footer {
     justify-content: center;
     margin: 20px 0;
 }
-
 .team-member-card {
     background: var(--card-bg);
     border-radius: 8px;
@@ -541,7 +401,6 @@ footer {
     align-items: center;
     position: relative;
 }
-
 .team-member-card img {
     width: 120px;
     height: 120px;
@@ -550,7 +409,6 @@ footer {
     border: 2px solid #ffd700;
     margin-bottom: 8px;
 }
-
 .image-preview {
     display: none;
     max-width: 120px;
@@ -558,12 +416,7 @@ footer {
     border-radius: 5px;
     border: 2px solid #ffd700;
 }
-
-.member-name {
-    font-weight: bold;
-    color: #ffd700;
-}
-
+.member-name { font-weight: bold; color: #ffd700; }
 .badge {
     background: #333;
     border-left: 4px solid #ffd700;
@@ -573,7 +426,6 @@ footer {
     font-size: 0.9em;
     margin: 6px 0;
 }
-
 .skill-tags {
     display: flex;
     flex-wrap: wrap;
@@ -581,7 +433,6 @@ footer {
     margin-top: 3px;
     justify-content: center;
 }
-
 .skill-tag {
     background: rgba(255,215,0,0.2);
     color: #ffd700;
@@ -589,7 +440,6 @@ footer {
     border-radius: 12px;
     font-size: 0.7rem;
 }
-
 .profile-bar {
     width: 100%;
     background: #333;
@@ -598,12 +448,7 @@ footer {
     margin: 8px 0 4px 0;
     overflow: hidden;
 }
-
-.profile-bar-inner {
-    height: 100%;
-    background: #ffd700;
-}
-
+.profile-bar-inner { height: 100%; background: #ffd700; }
 .endorse-btn {
     background: #ffd700;
     color: #121212;
@@ -615,26 +460,14 @@ footer {
     font-size: 0.85em;
     margin: 2px 0 0 0;
 }
-
-.endorse-btn:disabled {
-    background: #ccc;
-    color: #666;
-    cursor: not-allowed;
-}
-
+.endorse-btn:disabled { background: #ccc; color: #666; cursor: not-allowed; }
 .endorsements {
     font-size: .85em;
     color: #ffd700;
     margin-left: 7px;
     vertical-align: middle;
 }
-
-.user-status {
-    font-size: .85em;
-    color: #00FF87;
-    margin: 4px 0;
-}
-
+.user-status { font-size: .85em; color: #00FF87; margin: 4px 0; }
 .leaderboard {
     margin: 20px auto;
     background: var(--card-bg);
@@ -644,56 +477,20 @@ footer {
     max-width: 600px;
     box-shadow: 0 0 10px rgba(255,215,0,0.25);
 }
-
-.leaderboard h2 {
-    color: #ffd700;
-    font-size: 1.3em;
-    margin-bottom: 12px;
-}
-
+.leaderboard h2 { color: #ffd700; font-size: 1.3em; margin-bottom: 12px; }
 .leaderboard-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 6px 0;
 }
-
-.leaderboard-rank {
-    font-weight: bold;
-    color: #ffd700;
-    width: 24px;
-}
-
-.leaderboard-name {
-    flex: 1;
-    text-align: left;
-}
-
-.leaderboard-skill {
-    color: #ffd700;
-}
-
-.profile-complete {
-    color: #00FF87;
-    font-size: .93em;
-    margin-top: 6px;
-}
-
-.profile-incomplete {
-    color: #FF6B6B;
-    font-size: .93em;
-    margin-top: 6px;
-}
-
-.profile-section {
-    margin: 15px 0;
-}
-
-.proficiency-select {
-    width: 100px;
-    margin-bottom: 10px;
-}
-
+.leaderboard-rank { font-weight: bold; color: #ffd700; width: 24px; }
+.leaderboard-name { flex: 1; text-align: left; }
+.leaderboard-skill { color: #ffd700; }
+.profile-complete { color: #00FF87; font-size: .93em; margin-top: 6px; }
+.profile-incomplete { color: #FF6B6B; font-size: .93em; margin-top: 6px; }
+.profile-section { margin: 15px 0; }
+.proficiency-select { width: 100px; margin-bottom: 10px; }
 .autocomplete-box {
     position: absolute;
     z-index: 1000;
@@ -709,52 +506,22 @@ footer {
     left: 50%;
     transform: translateX(-50%);
 }
+.autocomplete-box div { padding: 8px 10px; cursor: pointer; }
+.autocomplete-box div:hover { background-color: #f0f0f0; }
+.optional-text { color: #888; }
+.success-message { color: green; margin-top: 10px; text-align: center; }
+.notification { margin-bottom: 6px; text-align: center; }
+.match-notification { color: gold; }
+.no-results-notification { color: red; }
+.instructions { max-width: 600px; margin-bottom: 10px; }
 
-.autocomplete-box div {
-    padding: 8px 10px;
-    cursor: pointer;
-}
-
-.autocomplete-box div:hover {
-    background-color: #f0f0f0;
-}
-
-.optional-text {
-    color: #888;
-}
-
-.success-message {
-    color: green;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.notification {
-    margin-bottom: 6px;
-    text-align: center;
-}
-
-.match-notification {
-    color: gold;
-}
-
-.no-results-notification {
-    color: red;
-}
-
-.instructions {
-    max-width: 600px;
-    margin-bottom: 10px;
-}
-
-/* --- Achievements for new UI --- */
+/* Achievements */
 .achievements {
     position: fixed;
     top: 20px;
     right: 20px;
     z-index: 1000;
 }
-
 .achievement {
     background: linear-gradient(135deg, #ffd700, #ff6b35);
     color: white;
@@ -767,14 +534,9 @@ footer {
     font-size: 14px;
     font-weight: 600;
 }
+.achievement.show { transform: translateX(0); }
 
-.achievement.show {
-    transform: translateX(0);
-}
-
-/* ==========================================================================
-   CARD CONTAINER - MODIFIED MARGIN TO REDUCE SPACING BELOW CARDS
-   ========================================================================== */
+/* Card Container */
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -783,24 +545,16 @@ footer {
     margin: 0 0 8px 0;
 }
 
-/* ==========================================================================
-   COUNTDOWN CONTAINER - MODIFIED MARGIN TO REDUCE SPACING ABOVE COUNTDOWN
-   ========================================================================== */
+/* Countdown Container */
 .countdown-container {
     text-align: center;
     margin: 8px 0 10px 0;
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.6s forwards;
 }
+.countdown { font-size: 2rem; font-weight: 700; color: #ffd700; margin-bottom: 5px; }
 
-.countdown {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffd700;
-    margin-bottom: 5px;
-}
-
-/* --- Footer Social for new UI (different from original .icons-container) --- */
+/* Footer Social */
 .social-container {
     display: flex;
     justify-content: center;
@@ -810,7 +564,6 @@ footer {
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.8s forwards;
 }
-
 .social-link {
     width: 50px;
     height: 50px;
@@ -824,7 +577,6 @@ footer {
     font-size: 20px;
     transition: var(--transition);
 }
-
 .social-link:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -842,7 +594,6 @@ footer {
     text-shadow: 0 2px 8px #eaf6fb;
     letter-spacing: 0.01em;
 }
-
 .sr-only {
     position: absolute;
     width: 1px;
@@ -854,23 +605,17 @@ footer {
     white-space: nowrap;
     border: 0;
 }
-
 #cardFrame {
     display: none;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     z-index: 1;
 }
-
-#matchmaking-section {
-    margin-top: 85px;
-}
+#matchmaking-section { margin-top: 85px; }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN - MERGED
+   RESPONSIVE DESIGN
    ========================================================================== */
 @media (max-width: 800px) {
     .card-container, .leaderboard {
@@ -881,7 +626,6 @@ footer {
 
 @media (max-width: 768px) {
     :root {
-        --media-scale: 1;
         --countdown-size: 24px;
         --info-size: 16px;
         --footer-spacing: 7px;
@@ -891,50 +635,24 @@ footer {
         background: var(--bg-url, url('images/backgroundmobile.jpg')) no-repeat center center;
         background-size: cover;
     }
-    
     body.two-card-page::before {
         background-image: url('images/background for mobile ie.jpg');
     }
-
     #missionContent {
         display: flex;
         flex-direction: column;
         align-items: center;
         padding-bottom: 70px;
     }
-
-    #aiffBanner {
-        display: block;
-        margin: 40px auto 0;
-    }
-
-    .input-container {
-        padding: 0 10px;
-    }
-
-    .icons-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .icons-container a {
-        font-size: 24px;
-        padding: 8px;
-    }
+    #aiffBanner { display: block; margin: 40px auto 0; }
+    .input-container { padding: 0 10px; }
+    .icons-container { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+    .icons-container a { font-size: 24px; padding: 8px; }
 }
 
-/* Base styles for the tab content panes */
-.tab-content-pane {
-    display: none;
-    padding: 20px 0;
-}
-
-.tab-content-pane.active-tab-pane {
-    display: block;
-}
-
-/* Styles for the tab buttons/navigation */
+/* Tab Content and Navigation */
+.tab-content-pane { display: none; padding: 20px 0; }
+.tab-content-pane.active-tab-pane { display: block; }
 .tab-nav {
     display: flex;
     justify-content: center;
@@ -943,7 +661,6 @@ footer {
     padding-bottom: 5px;
     gap: 10px;
 }
-
 .tab-button {
     background-color: #2a2a3a;
     color: #eee;
@@ -955,12 +672,7 @@ footer {
     transition: background-color 0.3s ease, color 0.3s ease;
     white-space: nowrap;
 }
-
-.tab-button:hover {
-    background-color: #3a3a4a;
-    color: #ffd700;
-}
-
+.tab-button:hover { background-color: #3a3a4a; color: #ffd700; }
 .tab-button.active {
     background-color: #ffd700;
     color: #222;
@@ -973,18 +685,9 @@ footer {
     padding-top: 0;
     box-sizing: border-box;
 }
-
-.tab-content-pane .section-title {
-    margin-top: 0;
-}
+.tab-content-pane .section-title { margin-top: 0; }
 
 @media (max-width: 768px) {
-    .tab-nav {
-        flex-wrap: wrap;
-        justify-content: flex-start;
-    }
-    .tab-button {
-        flex-grow: 1;
-        text-align: center;
-    }
+    .tab-nav { flex-wrap: wrap; justify-content: flex-start; }
+    .tab-button { flex-grow: 1; text-align: center; }
 }
