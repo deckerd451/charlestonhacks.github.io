@@ -298,7 +298,7 @@
             }
         };
 
-       function toggleMissionContent() {
+    function toggleMissionContent() {
     if (CardController.clicked) return;
     CardController.clicked = true;
     AudioController.playSound('cardflip');
@@ -312,11 +312,12 @@
     document.getElementById('aiffBanner').style.display = 'block';
     const randomFlip = CardController.getRandomFlip();
     image.classList.add(randomFlip);
-    // Delay showing video and starting it
+
+    // Wait for flip animation to finish, then show and play video
     setTimeout(() => {
         video.style.opacity = 1;
         video.play();
-    }, 1200); // 1200ms = 1.2 seconds
+    }, 2000); // 2 seconds matches flip animation duration
 }
         function flipAndRedirect() {
             const banner = document.getElementById('aiffBanner');
