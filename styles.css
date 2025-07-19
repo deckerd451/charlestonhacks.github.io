@@ -37,15 +37,12 @@ body::before {
     pointer-events: none;
 }
 
-.panel {
+.main-wrapper {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    background: transparent;
+    padding-top: 32px;
+    padding-bottom: 32px;
 }
 
 .media-container {
@@ -57,13 +54,15 @@ body::before {
     aspect-ratio: 1/1;
 }
 
-#missionImage, #cardFrame {
+#missionImage {
+    display: block;
     width: 100%;
     max-width: 600px;
+    margin: 0 auto;
     border-radius: 18px;
     box-shadow: 0 2px 16px #222;
-    display: block;
-    margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 #cardFrame {
@@ -109,7 +108,7 @@ body::before {
     border-radius: 50%;
 }
 
-/* Position around card */
+/* Position buttons around card */
 .top-left      { top: 5%; left: 8%; }
 .top-center    { top: 5%; left: 50%; transform: translateX(-50%); }
 .top-right     { top: 5%; right: 8%; }
@@ -119,17 +118,12 @@ body::before {
 .bottom-center { bottom: 5%; left: 50%; transform: translateX(-50%); }
 .bottom-right  { bottom: 5%; right: 8%; }
 
-/* Responsive */
 @media (max-width: 700px) {
+    .main-wrapper, .media-container, #missionImage, #cardFrame { max-width: 98vw; }
     .media-container { min-height: 300px; }
-    .panel, #missionImage, #cardFrame, .media-container { max-width: 98vw; }
-    .clickable-area {
-        width: 44px;
-        height: 44px;
-    }
+    .clickable-area { width: 44px; height: 44px; }
 }
 
-/* Footer */
 footer {
     padding: 16px;
     background: transparent;
