@@ -233,8 +233,8 @@ html, footer, .icons-container {
 .bottom-right  { bottom: 2%; right: 5%; }
 
 /* --- Correct centering for edge clickable areas --- */
-.top-center    { top: 2%; left: 55%; transform: translateX(-50%); }
-.bottom-center { bottom: 2%; left: 55%; transform: translateX(-50%); }
+.top-center    { top: 2%; left: 45%; transform: translateX(-50%); }
+.bottom-center { bottom: 2%; left: 45%; transform: translateX(-50%); }
 .middle-left   { top: 50%; left: 7%; transform: translateY(-50%); }
 .middle-right  { top: 50%; right: 7%; transform: translateY(-50%); }
 .center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
