@@ -189,7 +189,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - CORRECTED POSITIONING
+   CLICKABLE AREAS - 15% SMALLER FOR DESKTOP
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -200,28 +200,25 @@ html, footer, .icons-container {
     cursor: pointer;
     border-radius: 50%;
     aspect-ratio: 1/1;
-    width: 14cqw;
-    max-width: 90px;
+    width: 11.9cqw;     /* 14cqw * 0.85 */
+    max-width: 76.5px;  /* 90px * 0.85 */
     box-shadow: 0 4px 8px rgba(0,0,0,0.6);
     animation: fadeInScaleUp 1s ease-out forwards;
     transition: opacity 0.3s ease-in-out;
     opacity: 0;
 }
 
-/* ---- ADDED: Make top-center and bottom-center clickable areas larger ALWAYS ---- */
 .clickable-area.top-center,
 .clickable-area.bottom-center {
-    width: 18cqw;
-    max-width: 130px;
+    width: 15.3cqw;     /* 18cqw * 0.85 */
+    max-width: 110.5px; /* 130px * 0.85 */
 }
 
-/* Adjusted center size for proportion, but no transforms */
 .clickable-area.center {
-    width: 16.5cqw;
-    max-width: 110px;
+    width: 14.025cqw;   /* 16.5cqw * 0.85 */
+    max-width: 93.5px;  /* 110px * 0.85 */
 }
 
-/* --- All clickable areas: NO HOVER TRANSFORM --- */
 .clickable-area:hover {
     box-shadow: 0 8px 20px rgba(0,0,0,0.7);
     opacity: 1;
@@ -240,27 +237,26 @@ html, footer, .icons-container {
 .bottom-left   { bottom: 2%; left: 5%; }
 .bottom-right  { bottom: 2%; right: 5%; }
 
-/* --- Correct centering for edge clickable areas --- */
 .top-center    { top: 2%; left: 43%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 43%; transform: translateX(-50%); }
 .middle-left   { top: 45%; left: 5%; transform: translateY(-50%); }
 .middle-right  { top: 45%; right: 5%; transform: translateY(-50%); }
 .center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
-/* --- Container query for desktop sizing --- */
+/* --- Container query for desktop sizing (15% smaller) --- */
 @container (min-width: 600px) {
     .clickable-area {
-        width: 8cqw;
-        max-width: 38px;
+        width: 6.8cqw;      /* 8cqw * 0.85 */
+        max-width: 32.3px;  /* 38px * 0.85 */
     }
     .clickable-area.center {
-        width: 10cqw;
-        max-width: 48px;
+        width: 8.5cqw;      /* 10cqw * 0.85 */
+        max-width: 40.8px;  /* 48px * 0.85 */
     }
     .clickable-area.top-center,
     .clickable-area.bottom-center {
-        width: 18cqw;
-        max-width: 130px;
+        width: 15.3cqw;     /* 18cqw * 0.85 */
+        max-width: 110.5px; /* 130px * 0.85 */
     }
 }
 
