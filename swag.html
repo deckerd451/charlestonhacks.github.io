@@ -50,8 +50,16 @@
     .logo {
       display: block;
       margin: 0 auto 18px auto;
-      width: 120px; height: auto;
+      width: min(100%, 360px);
+      max-width: 90vw;
+      height: auto;
       filter: drop-shadow(0 2px 16px #222);
+      transition: width 0.3s;
+    }
+    @media (max-width: 600px) {
+      .logo {
+        width: min(100%, 220px);
+      }
     }
     .section-title {
       color: var(--secondary-color);
