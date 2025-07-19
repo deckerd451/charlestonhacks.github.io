@@ -15,6 +15,7 @@ const assetsToCache = [
   '/2card.html',
   '/Poster.html',
   '/cardmatchgame.html',
+  '/docs.html',
   '/hacknights24.html',
   '/hackops.html',
   '/harborhack23.html',
