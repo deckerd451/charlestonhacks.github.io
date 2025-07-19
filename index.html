@@ -148,5 +148,15 @@
         });
     });
     </script>
+     <script>
+    document.addEventListener("DOMContentLoaded", function() {
+  var missionVideo = document.getElementById('missionVideo');
+  if (window.matchMedia("(max-width: 600px)").matches) {
+    missionVideo.removeAttribute('controls');
+  } else {
+    missionVideo.setAttribute('controls', '');
+  }
+});
+          </script>
 </body>
 </html>
