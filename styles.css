@@ -249,6 +249,12 @@ html, footer, .icons-container {
         width: 10cqw;
         max-width: 48px;
     }
+   /* Make top-center and bottom-center clickable areas larger */
+.clickable-area.top-center,
+.clickable-area.bottom-center {
+    width: 18cqw;          /* larger than default 14cqw */
+    max-width: 130px;      /* larger than default 90px */
+}
 }
 
 /* ==========================================================================
