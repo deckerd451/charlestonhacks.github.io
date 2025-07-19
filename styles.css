@@ -160,11 +160,16 @@ html, footer, .icons-container {
     .panel { width: 100%; min-height: 40vh; padding: 5px; }
 }
 
+/* ==========================================================================
+   MEDIA CONTAINER & CARD IMAGE
+   ========================================================================== */
 .media-container {
     position: relative;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
+    min-height: 480px;
+    aspect-ratio: 1/1; /* square for card area */
 }
 
 .media-container img,
@@ -177,19 +182,37 @@ html, footer, .icons-container {
     padding: 0;
 }
 
+#missionImage, #cardFrame {
+    width: 100%;
+    height: auto;
+    max-width: 600px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px #222;
+}
+
+#cardFrame {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+}
+
 .media-container video {
     position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0; left: 0;
     width: 100%; height: 100%;
     object-fit: cover;
-    z-index: 0;
+    z-index: 2;
     opacity: 0;
     transition: opacity 1s ease-in-out;
+    border-radius: 18px;
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS - CORRECTED POSITIONING
+   CLICKABLE AREAS - FIXED POSITIONING
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -200,67 +223,40 @@ html, footer, .icons-container {
     cursor: pointer;
     border-radius: 50%;
     aspect-ratio: 1/1;
-    width: 14cqw;
+    width: 80px;
+    height: 80px;
     max-width: 90px;
+    max-height: 90px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.6);
     animation: fadeInScaleUp 1s ease-out forwards;
     transition: opacity 0.3s ease-in-out;
     opacity: 0;
 }
 
-/* ---- ADDED: Make top-center and bottom-center clickable areas larger ALWAYS ---- */
-.clickable-area.top-center,
-.clickable-area.bottom-center {
-    width: 18cqw;
-    max-width: 130px;
-}
-
-/* Adjusted center size for proportion, but no transforms */
-.clickable-area.center {
-    width: 16.5cqw;
-    max-width: 110px;
-}
-
-/* --- All clickable areas: NO HOVER TRANSFORM --- */
-.clickable-area:hover {
-    box-shadow: 0 8px 20px rgba(0,0,0,0.7);
-    opacity: 1;
-}
-
-/* Show when loaded */
 .clickable-area.loaded { opacity: 1; }
 
 .clickable-area img {
     padding: 0; margin: 0; width: 100%; height: 100%;
 }
 
-/* --- Position classes: NO transform, just top/left/right/bottom --- */
-.top-left      { top: 2%; left: 5%; }
-.top-right     { top: 2%; right: 5%; }
-.bottom-left   { bottom: 2%; left: 5%; }
-.bottom-right  { bottom: 2%; right: 5%; }
-
-/* --- Correct centering for edge clickable areas --- */
-.top-center    { top: 2%; left: 43%; transform: translateX(-50%); }
-.bottom-center { bottom: 2%; left: 43%; transform: translateX(-50%); }
-.middle-left   { top: 45%; left: 5%; transform: translateY(-50%); }
-.middle-right  { top: 45%; right: 5%; transform: translateY(-50%); }
+/* --- Position classes --- */
+.top-left      { top: 5%; left: 8%; }
+.top-right     { top: 5%; right: 8%; }
+.bottom-left   { bottom: 5%; left: 8%; }
+.bottom-right  { bottom: 5%; right: 8%; }
+.top-center    { top: 5%; left: 50%; transform: translateX(-50%); }
+.bottom-center { bottom: 5%; left: 50%; transform: translateX(-50%); }
+.middle-left   { top: 50%; left: 7%; transform: translateY(-50%);}
+.middle-right  { top: 50%; right: 7%; transform: translateY(-50%);}
 .center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
-/* --- Container query for desktop sizing --- */
-@container (min-width: 600px) {
+@media (max-width: 700px) {
+    .media-container { min-height: 300px; }
     .clickable-area {
-        width: 8cqw;
-        max-width: 38px;
-    }
-    .clickable-area.center {
-        width: 10cqw;
+        width: 48px;
+        height: 48px;
         max-width: 48px;
-    }
-    .clickable-area.top-center,
-    .clickable-area.bottom-center {
-        width: 18cqw;
-        max-width: 130px;
+        max-height: 48px;
     }
 }
 
@@ -279,10 +275,8 @@ html, footer, .icons-container {
     z-index: 2;
     opacity: 1;
 }
-
 #missionContent p,
 #missionContent a { color: var(--text-color); }
-
 .body-text { margin: 30px 0; }
 .body-text a { color: var(--text-color); }
 .body-text p { margin-bottom: 10px; }
@@ -619,13 +613,6 @@ footer {
     white-space: nowrap;
     border: 0;
 }
-#cardFrame {
-    display: none;
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 1;
-}
 #matchmaking-section { margin-top: 85px; }
 
 /* ==========================================================================
@@ -662,6 +649,16 @@ footer {
     .input-container { padding: 0 10px; }
     .icons-container { flex-direction: row; flex-wrap: wrap; gap: 10px; }
     .icons-container a { font-size: 24px; padding: 8px; }
+    .media-container {
+        min-height: 250px;
+        aspect-ratio: 1/1;
+    }
+    .clickable-area {
+        width: 38px;
+        height: 38px;
+        max-width: 38px;
+        max-height: 38px;
+    }
 }
 
 /* Tab Content and Navigation */
