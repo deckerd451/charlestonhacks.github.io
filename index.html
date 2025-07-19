@@ -16,85 +16,164 @@
     <meta name="theme-color" content="#ff6600">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-6NDKG07DY6');
-    </script>
     <style>
-        /* Card Flip Animation */
-        .card-animated-flip {
-            transition: transform 1s cubic-bezier(.4,2,.3,1);
-            transform-style: preserve-3d;
+        /* ========== GUARANTEED RESET CSS: See styles.css for full details ========== */
+        :root {
+            --primary-color: #FF0000;
+            --secondary-color: #FFFF00;
+            --text-color: white;
+            --background-color: black;
+            --countdown-size: 32px;
+            --info-size: 20px;
+            --footer-spacing: 20px;
+            --bg-url: url('images/background.webp');
+            --card-bg: #2a2a2a;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
         }
-        .card-flipped {
-            transform: rotateY(180deg);
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: transparent !important;
+            color: var(--text-color);
+            font-family: 'Britannic Bold', Arial, sans-serif;
+            position: relative;
+            text-align: center;
+            z-index: 1;
         }
-        .card-video {
-            position: absolute;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            border-radius: 18px;
-            background: #222;
-            object-fit: cover;
-            box-shadow: 0 4px 24px #ffd700cc;
-            z-index: 9;
-            pointer-events: auto;
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: black;
+            z-index: -2;
+            pointer-events: none;
         }
-        .clickable-area {
-            position: absolute;
-            z-index: 10;
-            background: none;
-            border: none;
-            cursor: pointer;
-            outline: none;
-            padding: 0;
-            transition: box-shadow 0.2s;
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: var(--bg-url, url('images/background.webp')) no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            pointer-events: none;
+            transition: background 0.5s;
         }
-        /* Responsive positioning for card buttons */
-        .top-left { top: 5%; left: 5%; }
-        .top-right { top: 5%; right: 5%; }
-        .bottom-left { bottom: 5%; left: 5%; }
-        .bottom-right { bottom: 5%; right: 5%; }
-        .middle-left { top: 50%; left: 2%; transform: translateY(-50%);}
-        .middle-right { top: 50%; right: 2%; transform: translateY(-50%);}
-        .top-center { top: 2%; left: 50%; transform: translateX(-50%);}
-        .bottom-center { bottom: 2%; left: 50%; transform: translateX(-50%);}
-        .clickable-area img { width: 54px; height: 54px; border-radius: 13px; }
-        @media (max-width:700px) {
-            .clickable-area img { width: 38px; height: 38px;}
-        }
-        /* Card container for flip effect */
+
         .media-container {
             position: relative;
-            perspective: 1200px;
             width: 100%;
-            max-width: 560px;
+            max-width: 600px;
             margin: 0 auto;
+            min-height: 480px;
+            aspect-ratio: 1/1;
         }
+
         #missionImage, #cardFrame {
             width: 100%;
-            max-width: 560px;
-            border-radius: 18px;
+            height: auto;
+            max-width: 600px;
             display: block;
             margin: 0 auto;
+            border-radius: 18px;
             box-shadow: 0 2px 16px #222;
         }
-        #cardFrame { position: absolute; left:0; top:0; pointer-events:none; }
-        #missionVideo {
+
+        #cardFrame {
+            display: none;
             position: absolute;
-            left:0; top:0;
+            top: 0; left: 0;
             width: 100%; height: 100%;
-            border-radius: 18px;
-            background: #222;
-            object-fit: cover;
-            box-shadow: 0 4px 24px #ffd700cc;
-            z-index: 9;
-            pointer-events: auto;
+            z-index: 1;
         }
+
+        .media-container video {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            border-radius: 18px;
+        }
+
+        .clickable-area {
+            border: none;
+            background: none;
+            padding: 0;
+            position: absolute !important;
+            z-index: 4;
+            cursor: pointer;
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+            width: 80px;
+            height: 80px;
+            max-width: 90px;
+            max-height: 90px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .clickable-area.loaded { opacity: 1; }
+
+        .clickable-area img {
+            padding: 0; margin: 0; width: 100%; height: 100%;
+        }
+
+        .top-left      { top: 5%; left: 8%; }
+        .top-right     { top: 5%; right: 8%; }
+        .bottom-left   { bottom: 5%; left: 8%; }
+        .bottom-right  { bottom: 5%; right: 8%; }
+        .top-center    { top: 5%; left: 50%; transform: translateX(-50%); }
+        .bottom-center { bottom: 5%; left: 50%; transform: translateX(-50%); }
+        .middle-left   { top: 50%; left: 7%; transform: translateY(-50%);}
+        .middle-right  { top: 50%; right: 7%; transform: translateY(-50%);}
+        .center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        @media (max-width: 700px) {
+            .media-container { min-height: 300px; }
+            .clickable-area {
+                width: 38px;
+                height: 38px;
+                max-width: 38px;
+                max-height: 38px;
+            }
+        }
+
+        footer {
+            padding: var(--footer-spacing);
+            background: transparent !important;
+            padding-bottom: 20px;
+        }
+        .icons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 4vw, 20px);
+            flex-wrap: wrap;
+        }
+        .icons-container a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(40px, 8vw, 60px);
+            height: clamp(40px, 8vw, 60px);
+            padding: 0;
+            font-size: clamp(20px, 5vw, 30px);
+            color: var(--text-color);
+            transition: color 0.3s ease;
+            border-radius: 50%;
+        }
+        .icons-container a:hover { color: var(--secondary-color); }
     </style>
 </head>
 <body class="is-preload">
@@ -104,73 +183,60 @@
                 <header class="major">
                     <div class="panel">
                         <div class="media-container" aria-label="Toggle mission content" tabindex="0">
-                            <div style="position:relative;">
-                                <img id="missionImage" src="images/websitepanel.webp" alt="Big Playing Card" style="z-index: 3;" />
-                                <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none; position:absolute; left:0; top:0;"/>
-                                <video id="missionVideo"
-                                    muted
-                                    playsinline
-                                    controls
-                                    style="display:none;opacity:0;">
-                                    <source src="images/universe.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                            <div id="missionContent" style="display:none;">
-                                <div class="body-text">
-                                    <p>
-                                        <img id="aiffBanner" 
-                                             src="images/engine.webp" 
-                                             alt="Innovation Engine" 
-                                             style="cursor: pointer; width: 85%; height: auto; display: none; margin-left: auto; margin-right: auto;" 
-                                             onclick="flipAndRedirect()">
-                                    </p>
-                                </div>
-                            </div>
+                            <img id="missionImage" src="images/websitepanel.webp" alt="Big Playing Card" style="z-index: 3;" />
+                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
+                            <video id="missionVideo"
+                                muted
+                                playsinline
+                                controls
+                                style="display:none;opacity:0;">
+                                <source src="images/universe.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                             <!-- Card Buttons -->
-                            <button type="button" class="clickable-area top-left"
+                            <button type="button" class="clickable-area top-left loaded"
                                 data-sound="chime" 
                                 data-image="images/informationbutton.webp" 
                                 data-url="Poster.html">
                                 <img src="images/informationbutton.webp" alt="Info">
                             </button>
-                            <button type="button" class="clickable-area top-right"
+                            <button type="button" class="clickable-area top-right loaded"
                                 data-sound="chime" 
                                 data-image="images/innovationenginebutton.webp" 
                                 data-url="2card.html">
                                 <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
                             </button>
-                            <button type="button" class="clickable-area bottom-left"
+                            <button type="button" class="clickable-area bottom-left loaded"
                                 data-sound="chime" 
                                 data-image="images/newsbutton.webp" 
                                 data-url="news.html">
                                 <img src="images/newsbutton.webp" alt="News">
                             </button>
-                            <button type="button" class="clickable-area bottom-right"
+                            <button type="button" class="clickable-area bottom-right loaded"
                                 data-sound="chime" 
                                 data-image="images/peoplebutton.webp" 
                                 data-url="cardmatchgame.html">
                                 <img src="images/peoplebutton.webp" alt="People">
                             </button>
-                            <button type="button" class="clickable-area middle-left"
+                            <button type="button" class="clickable-area middle-left loaded"
                                 data-sound="chime" 
                                 data-image="images/experiment.webp" 
                                 data-url="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/">
                                 <img src="images/experiment.webp" alt="briefcase" />
                             </button>
-                            <button type="button" class="clickable-area middle-right"
+                            <button type="button" class="clickable-area middle-right loaded"
                                 data-sound="chime" 
                                 data-image="images/case.webp" 
                                 data-url="swag.html">
                                 <img src="images/case.webp" alt="Beaker" />
                             </button>
-                            <button type="button" class="clickable-area top-center"
+                            <button type="button" class="clickable-area top-center loaded"
                                 data-sound="chime" 
                                 data-image="images/crestn.svg" 
                                 data-url="docs.html">
                                 <img src="images/crestn.svg" alt="crest card button" />
                             </button>
-                            <button type="button" class="clickable-area bottom-center"
+                            <button type="button" class="clickable-area bottom-center loaded"
                                 data-sound="chime" 
                                 data-image="images/keysn.svg" 
                                 data-url="https://charlestonhacks.mailchimpsites.com/">
@@ -196,127 +262,5 @@
             <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
         </section>
     </footer>
-    <script src="ho-script.js"></script>
-    <script>
-    // Video pool for card buttons
-    const cardVideos = [
-        "images/Descartesvideo.mp4",
-        "images/medusa best.mp4",
-        "images/medusa 1.mp4",
-        "images/young medusa.mp4",
-        "images/Alexandorvideo.mp4",
-        "images/Elaravideo.mp4",
-        "images/elara rage.mp4",
-        "images/astridvideo.mp4",
-        "images/aegisvideo.mp4",
-        "images/wolfvideo.mp4",
-        "images/merlin.mp4",
-        "images/hermesvideo.mp4",
-        "images/Mystery.mp4"
-    ];
-
-    // Shuffle and assign videos to .clickable-area buttons
-    function shuffle(array) {
-        let arr = array.slice();
-        for (let i = arr.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
-    }
-    const assignedVideos = shuffle(cardVideos);
-
-    document.addEventListener("DOMContentLoaded", function() {
-        // Assign videos to each button
-        const cardButtons = document.querySelectorAll('.clickable-area');
-        cardButtons.forEach((btn, idx) => {
-            btn.dataset.cardVideo = assignedVideos[idx % assignedVideos.length];
-            btn.dataset.flipped = "false";
-        });
-
-        // Card flip + video logic
-        cardButtons.forEach((btn) => {
-            btn.addEventListener('click', function(e) {
-                // Only flip and play video on first click
-                if (btn.dataset.flipped === "false") {
-                    btn.dataset.flipped = "true";
-                    flipCardAndPlayVideo(btn);
-                } else {
-                    // On subsequent clicks, follow original navigation logic
-                    triggerButtonNavigation(btn);
-                }
-            });
-            btn.addEventListener('keydown', function(e) {
-                if ((e.key === "Enter" || e.key === " ") && btn.dataset.flipped === "false") {
-                    btn.dataset.flipped = "true";
-                    flipCardAndPlayVideo(btn);
-                } else if (e.key === "Enter" || e.key === " ") {
-                    triggerButtonNavigation(btn);
-                }
-            });
-        });
-
-        function flipCardAndPlayVideo(btn) {
-            // Card flip effect
-            const mediaContainer = btn.closest('.media-container');
-            const cardImg = mediaContainer.querySelector('#missionImage');
-            const cardFrame = mediaContainer.querySelector('#cardFrame');
-            const cardVideo = mediaContainer.querySelector('#missionVideo');
-
-            cardImg.classList.add('card-animated-flip');
-            setTimeout(() => {
-                cardImg.classList.add('card-flipped');
-                cardFrame.style.display = 'block';
-
-                // Show and play video
-                cardVideo.style.display = 'block';
-                cardVideo.style.opacity = 1;
-                cardVideo.muted = false;
-                cardVideo.controls = true;
-                cardVideo.src = btn.dataset.cardVideo;
-                cardVideo.load();
-                cardVideo.play();
-
-                // When video ends, navigate (as original button would)
-                cardVideo.onended = () => {
-                    cardVideo.style.display = 'none';
-                    cardImg.classList.remove('card-flipped', 'card-animated-flip');
-                    cardFrame.style.display = 'none';
-                    btn.dataset.flipped = "false";
-                    triggerButtonNavigation(btn);
-                };
-            }, 650); // flip transition duration
-
-            // Prevent navigation until video ends
-            e.preventDefault();
-        }
-
-        function triggerButtonNavigation(btn) {
-            const sound = btn.getAttribute('data-sound');
-            const url = btn.getAttribute('data-url');
-            btn.classList.add('glow-animate');
-            if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
-                AudioController.playSound(sound);
-            }
-            setTimeout(() => { window.location.href = url; }, 460);
-        }
-    });
-    </script>
-    <!-- The rest of the scripts here, unchanged -->
-    <script>
-        function addButtonGlowAndNavigation() {
-            document.querySelectorAll('.clickable-area').forEach(area => {
-                area.addEventListener('animationend', function(e) {
-                    if (e.animationName === "glow") {
-                        this.classList.remove('glow-animate');
-                    }
-                });
-            });
-        }
-        // ... rest of your original script (AudioController, CountdownController, etc)
-    </script>
-    <script>
-        // ... rest of your original App/init, tab logic, service worker, etc
-    </script>
 </body>
 </html>
