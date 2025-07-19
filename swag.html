@@ -21,7 +21,7 @@
 <body>
   <div class="container">
     <h1>CharlestonHacks Swag Interest</h1>
-    <form id="interestForm">
+    <form id="interestForm" action="https://formspree.io/f/mqalezkd" method="POST">
       <div class="swag-grid">
         <div class="swag-item">
           <img src="icons/tshirt.webp" alt="T-Shirt">
@@ -52,31 +52,27 @@
         <label for="email">Your Email (optional):</label>
         <input type="email" id="email" name="email" style="width:100%;padding:8px;border-radius:5px;border:none;margin-top:4px;">
       </div>
+      <!-- Optional: Add a hidden field to set the subject line in Formspree emails -->
+      <input type="hidden" name="_subject" value="CharlestonHacks Swag Interest Submission">
+      <!-- Optional: Add a redirect URL after successful submission -->
+      <!-- <input type="hidden" name="_next" value="https://charlestonhacks.com/swag-success.html"> -->
       <button type="submit">Submit Interest</button>
-      <div id="successMsg" class="success" style="display:none;"></div>
     </form>
+    <div id="successMsg" class="success" style="display:none;"></div>
   </div>
   <script>
+    // Show a custom thank-you message after successful submission
     document.getElementById('interestForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const swag = Array.from(document.querySelectorAll('input[name="swag"]:checked')).map(cb => cb.value);
-      const email = document.getElementById('email').value;
-      // For MVP, log to console. For production, send to server/email/Sheet.
-      console.log("Interest:", swag, "Email:", email);
-
-      // Example: Email you via mailto (not reliable for real logging, use server/Sheet for production)
-      if (swag.length === 0) {
+      // Let the form submit normally, Formspree will process it.
+      // Optionally, you can add validation before submitting:
+      var swagChecked = document.querySelectorAll('input[name="swag"]:checked').length;
+      if(swagChecked === 0) {
+        e.preventDefault();
         alert("Please select at least one swag item!");
-        return;
+        return false;
       }
-      document.getElementById('successMsg').textContent = "Thank you! We'll let you know when swag is available.";
-      document.getElementById('successMsg').style.display = "block";
-      // Optionally, send to Google Forms, a backend, or similar here.
-      // Reset form after submit
-      setTimeout(() => {
-        document.getElementById('interestForm').reset();
-        document.getElementById('successMsg').style.display = "none";
-      }, 2500);
+      // Optionally show message after submit, but note this will reload the page on success unless using AJAX (advanced)
+      // To use AJAX with Formspree, see Formspree docs: https://formspree.io/docs/faq/#can-i-use-ajax
     });
   </script>
 </body>
