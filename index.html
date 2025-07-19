@@ -19,46 +19,40 @@
 </head>
 <body>
     <main>
-        <div id="main">
-            <article class="post featured">
-                <header class="major">
-                    <div class="panel">
-                        <div class="media-container">
-                            <img id="missionImage" src="images/websitepanel.webp" alt="Big Playing Card" />
-                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
-                            <video id="missionVideo" muted playsinline controls style="display:none;">
-                                <source src="" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <!-- Card Buttons -->
-                            <button type="button" class="clickable-area top-left">
-                                <img src="images/informationbutton.webp" alt="Info">
-                            </button>
-                            <button type="button" class="clickable-area top-center">
-                                <img src="images/crestn.svg" alt="crest card button" />
-                            </button>
-                            <button type="button" class="clickable-area top-right">
-                                <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
-                            </button>
-                            <button type="button" class="clickable-area middle-left">
-                                <img src="images/experiment.webp" alt="briefcase" />
-                            </button>
-                            <button type="button" class="clickable-area middle-right">
-                                <img src="images/case.webp" alt="Beaker" />
-                            </button>
-                            <button type="button" class="clickable-area bottom-left">
-                                <img src="images/newsbutton.webp" alt="News">
-                            </button>
-                            <button type="button" class="clickable-area bottom-center">
-                                <img src="images/keysn.svg" alt="keys card button" />
-                            </button>
-                            <button type="button" class="clickable-area bottom-right">
-                                <img src="images/peoplebutton.webp" alt="People">
-                            </button>
-                        </div>
-                    </div>
-                </header>
-            </article>
+        <div class="main-wrapper">
+            <div class="media-container">
+                <img id="missionImage" src="images/websitepanel.webp" alt="Big Playing Card" />
+                <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
+                <video id="missionVideo" muted playsinline controls style="display:none;">
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Card Buttons -->
+                <button type="button" class="clickable-area top-left">
+                    <img src="images/informationbutton.webp" alt="Info">
+                </button>
+                <button type="button" class="clickable-area top-center">
+                    <img src="images/crestn.svg" alt="Crest">
+                </button>
+                <button type="button" class="clickable-area top-right">
+                    <img src="images/innovationenginebutton.webp" alt="Innovation">
+                </button>
+                <button type="button" class="clickable-area middle-left">
+                    <img src="images/experiment.webp" alt="Experiment">
+                </button>
+                <button type="button" class="clickable-area middle-right">
+                    <img src="images/case.webp" alt="Case">
+                </button>
+                <button type="button" class="clickable-area bottom-left">
+                    <img src="images/newsbutton.webp" alt="News">
+                </button>
+                <button type="button" class="clickable-area bottom-center">
+                    <img src="images/keysn.svg" alt="Keys">
+                </button>
+                <button type="button" class="clickable-area bottom-right">
+                    <img src="images/peoplebutton.webp" alt="People">
+                </button>
+            </div>
         </div>
     </main>
     <footer>
@@ -73,7 +67,7 @@
         </section>
     </footer>
     <script>
-    // Button URLs
+    // Button URLs in order
     const buttonURLs = [
         "Poster.html",         // top-left
         "docs.html",           // top-center
@@ -84,7 +78,7 @@
         "https://charlestonhacks.mailchimpsites.com/", // bottom-center
         "cardmatchgame.html"   // bottom-right
     ];
-    // Video pool
+    // Videos in order (or shuffled if you wish)
     const videos = [
         "images/Descartesvideo.mp4",
         "images/medusa best.mp4",
@@ -100,7 +94,7 @@
         "images/hermesvideo.mp4",
         "images/Mystery.mp4"
     ];
-    // Shuffle helper
+    // Shuffle helper if you want random video assignment
     function shuffle(array) {
         let arr = array.slice();
         for (let i = arr.length - 1; i > 0; i--) {
@@ -110,6 +104,7 @@
         return arr;
     }
     document.addEventListener("DOMContentLoaded", function() {
+        // Assign a video to each button (shuffled or sequential)
         const shuffledVideos = shuffle(videos);
         const buttons = document.querySelectorAll('.clickable-area');
         const missionVideo = document.getElementById('missionVideo');
@@ -120,7 +115,7 @@
             btn.dataset.played = "false";
             btn.dataset.url = buttonURLs[i];
         });
-        // Button click handler
+        // Button click logic
         buttons.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 if (btn.dataset.played === "false") {
