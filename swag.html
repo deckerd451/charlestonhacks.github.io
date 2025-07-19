@@ -5,17 +5,142 @@
   <title>CharlestonHacks Swag Interest</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: Arial, sans-serif; background: #222; color: #fff; margin: 0; }
-    .container { max-width: 600px; margin: 40px auto; padding: 24px; background: #2a2a2a; border-radius: 14px; box-shadow: 0 0 32px rgba(0,0,0,0.3);}
-    h1 { color: #ffd700; text-align: center; }
-    .swag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0 20px 0; }
-    .swag-item { background: #333; border-radius: 10px; padding: 12px; text-align: center; }
-    .swag-item img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 8px;}
-    label { display: block; margin-bottom: 8px; }
-    .form-group { margin-bottom: 18px; }
-    button { background: #ffd700; color: #222; border: none; padding: 12px 32px; border-radius: 7px; font-size: 1.1em; cursor: pointer; transition: background 0.2s;}
-    button:hover { background: #ffc000;}
-    .success { color: #00ff87; font-weight: bold; text-align: center; margin-top: 12px;}
+    body {
+      font-family: Arial, sans-serif;
+      background: #222;
+      color: #fff;
+      margin: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 24px;
+      background: #2a2a2a;
+      border-radius: 14px;
+      box-shadow: 0 0 32px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #ffd700;
+      text-align: center;
+    }
+    .swag-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 28px 0 20px 0;
+    }
+    .swag-item {
+      background: #333;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      position: relative;
+      transition: box-shadow 0.3s;
+      box-shadow: 0 2px 8px #0008;
+    }
+    .swag-item img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      margin-bottom: 8px;
+      border-radius: 9px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 8px #ffd70088;
+      cursor: zoom-in;
+    }
+    .swag-item img:hover {
+      transform: scale(1.12) rotate(-2deg);
+      box-shadow: 0 0 18px #ffd700cc, 0 0 6px #333;
+      z-index: 2;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    button {
+      background: #ffd700;
+      color: #222;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 7px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #ffc000;
+    }
+    .success {
+      color: #00ff87;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    /* Modal Styles */
+    .img-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.92);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      animation: fadeInModal 0.35s cubic-bezier(.25,.8,.25,1);
+    }
+    .img-modal.active {
+      display: flex;
+    }
+    @keyframes fadeInModal {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .img-modal-img {
+      max-width: 90vw;
+      max-height: 70vh;
+      border-radius: 16px;
+      box-shadow: 0 0 64px #ffd700cc, 0 0 12px #333;
+      background: #222;
+      animation: modalPop 0.39s cubic-bezier(.36,1.63,.63,1) backwards;
+    }
+    @keyframes modalPop {
+      0% { transform: scale(0.7) rotate(-7deg); opacity: 0;}
+      100% { transform: scale(1) rotate(0deg); opacity: 1;}
+    }
+    .img-modal-caption {
+      color: #ffd700;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 14px;
+      text-shadow: 0 2px 8px #222;
+    }
+    .img-modal-close {
+      position: absolute;
+      top: 36px;
+      right: 48px;
+      font-size: 2.6rem;
+      color: #ffd700;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      text-shadow: 0 2px 10px #000;
+      z-index: 10101;
+      transition: color 0.2s;
+    }
+    .img-modal-close:hover {
+      color: #fff;
+    }
+    @media (max-width: 700px) {
+      .container { padding: 8px; }
+      .img-modal-img { max-width: 98vw; max-height: 56vh;}
+      .img-modal-close { top: 16px; right: 16px; font-size: 2.2rem; }
+    }
   </style>
 </head>
 <body>
@@ -24,27 +149,27 @@
     <form id="interestForm" action="https://formspree.io/f/mqalezkd" method="POST">
       <div class="swag-grid">
         <div class="swag-item">
-          <img src="icons/tshirt.webp" alt="T-Shirt">
+          <img src="icons/tshirt.webp" alt="T-Shirt" data-large="icons/tshirt.webp" data-caption="T-Shirt">
           <label><input type="checkbox" name="swag" value="T-Shirt"> T-Shirt</label>
         </div>
         <div class="swag-item">
-          <img src="icons/sticker.webp" alt="Sticker">
+          <img src="icons/sticker.webp" alt="Sticker" data-large="icons/sticker.webp" data-caption="Sticker">
           <label><input type="checkbox" name="swag" value="Sticker"> Sticker</label>
         </div>
         <div class="swag-item">
-          <img src="images/hat.png" alt="Hat">
+          <img src="images/hat.png" alt="Hat" data-large="images/hat.png" data-caption="Hat">
           <label><input type="checkbox" name="swag" value="Hat"> Hat</label>
         </div>
         <div class="swag-item">
-          <img src="images/hoodie.png" alt="Hoodie">
+          <img src="images/hoodie.png" alt="Hoodie" data-large="images/hoodie.png" data-caption="Hoodie">
           <label><input type="checkbox" name="swag" value="Hoodie"> Hoodie</label>
         </div>
         <div class="swag-item">
-          <img src="images/mug.png" alt="Mug">
+          <img src="images/mug.png" alt="Mug" data-large="images/mug.png" data-caption="Mug">
           <label><input type="checkbox" name="swag" value="Mug"> Mug</label>
         </div>
         <div class="swag-item">
-          <img src="icons/gauntlet.webp" alt="Pin">
+          <img src="icons/gauntlet.webp" alt="Gauntlet" data-large="icons/gauntlet.webp" data-caption="Gauntlet">
           <label><input type="checkbox" name="swag" value="Gauntlet"> Gauntlet</label>
         </div>
       </div>
@@ -52,27 +177,62 @@
         <label for="email">Your Email (optional):</label>
         <input type="email" id="email" name="email" style="width:100%;padding:8px;border-radius:5px;border:none;margin-top:4px;">
       </div>
-      <!-- Optional: Add a hidden field to set the subject line in Formspree emails -->
       <input type="hidden" name="_subject" value="CharlestonHacks Swag Interest Submission">
-      <!-- Optional: Add a redirect URL after successful submission -->
-      <!-- <input type="hidden" name="_next" value="https://charlestonhacks.com/swag-success.html"> -->
       <button type="submit">Submit Interest</button>
     </form>
     <div id="successMsg" class="success" style="display:none;"></div>
   </div>
+
+  <!-- Fancy Modal for Enlarge Image -->
+  <div class="img-modal" id="imgModal">
+    <button class="img-modal-close" id="imgModalClose" title="Close">&times;</button>
+    <img src="" alt="" class="img-modal-img" id="imgModalImg">
+    <div class="img-modal-caption" id="imgModalCaption"></div>
+  </div>
+
   <script>
-    // Show a custom thank-you message after successful submission
+    // Fancy Enlarge Image Modal Logic
+    const imgModal = document.getElementById('imgModal');
+    const imgModalImg = document.getElementById('imgModalImg');
+    const imgModalCaption = document.getElementById('imgModalCaption');
+    const imgModalClose = document.getElementById('imgModalClose');
+
+    document.querySelectorAll('.swag-item img').forEach(img => {
+      img.addEventListener('click', function(e) {
+        imgModalImg.src = this.getAttribute('data-large') || this.src;
+        imgModalImg.alt = this.alt;
+        imgModalCaption.textContent = this.getAttribute('data-caption') || this.alt;
+        imgModal.classList.add('active');
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    function closeModal() {
+      imgModal.classList.remove('active');
+      imgModalImg.src = "";
+      imgModalCaption.textContent = "";
+      document.body.style.overflow = "";
+    }
+
+    imgModalClose.addEventListener('click', closeModal);
+    imgModal.addEventListener('click', function(e) {
+      // Click outside the image to close
+      if (e.target === imgModal) closeModal();
+    });
+
+    // Escape key to close modal
+    document.addEventListener('keydown', function(e) {
+      if (imgModal.classList.contains('active') && e.key === 'Escape') closeModal();
+    });
+
+    // Form validation for at least one swag item
     document.getElementById('interestForm').addEventListener('submit', function(e) {
-      // Let the form submit normally, Formspree will process it.
-      // Optionally, you can add validation before submitting:
       var swagChecked = document.querySelectorAll('input[name="swag"]:checked').length;
       if(swagChecked === 0) {
         e.preventDefault();
         alert("Please select at least one swag item!");
         return false;
       }
-      // Optionally show message after submit, but note this will reload the page on success unless using AJAX (advanced)
-      // To use AJAX with Formspree, see Formspree docs: https://formspree.io/docs/faq/#can-i-use-ajax
     });
   </script>
 </body>
