@@ -1,4 +1,4 @@
-const cacheName = 'charlestonhacks-v1';
+const cacheName = 'charlestonhacks-v2'; // <-- update version when you deploy
 const assetsToCache = [
   '/',
   '/index.html',
@@ -11,7 +11,6 @@ const assetsToCache = [
   '/images/bubbleh.png',
   '/images/bubbleh512.png',
   '/h-favicon-01.png',
-
   // HTML pages
   '/2card.html',
   '/Poster.html',
@@ -32,16 +31,23 @@ const assetsToCache = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(cacheName).then(cache => {
-      return cache.addAll(assetsToCache);
-    })
+    caches.open(cacheName).then(cache => cache.addAll(assetsToCache))
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(key => key !== cacheName)
+            .map(key => caches.delete(key))
+      )
+    )
   );
 });
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
