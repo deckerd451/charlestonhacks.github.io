@@ -3,106 +3,58 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>CharlestonHacks - Home</title>
     <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
     <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
     <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/websitepanel.webp" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>CharlestonHacks - Home</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ff6600">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-6NDKG07DY6');
-    </script>
 </head>
-<body class="is-preload">
+<body>
     <main>
         <div id="main">
             <article class="post featured">
                 <header class="major">
                     <div class="panel">
-                        <div class="media-container" aria-label="Toggle mission content" tabindex="0" onclick="toggleMissionContent()" onkeydown="if(event.key==='Enter'||event.key===' '){toggleMissionContent();}">
-                            <img id="missionImage" src="images/websitepanel.webp" alt="Big Playing Card" style="z-index: 3;" />
-                            <div id="missionContent" style="display:none;">
-                                <div class="body-text">
-                                    <p>
-                                        <img id="aiffBanner" 
-                                             src="images/engine.webp" 
-                                             alt="Innovation Engine" 
-                                             style="cursor: pointer; width: 85%; height: auto; display: none; margin-left: auto; margin-right: auto;" 
-                                             onclick="flipAndRedirect()">
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="media-container">
+                            <img id="missionImage" src="images/websitepanel.webp" alt="Big Playing Card" />
                             <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
-                            <video id="missionVideo" 
-                                muted 
-                                playsinline 
-                                controls
-                                style="display:none;opacity:0;">
-                                <source src="images/universe.mp4" type="video/mp4">
+                            <video id="missionVideo" muted playsinline controls style="display:none;">
+                                <source src="" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-
- <!-- Clickable areas, buttons markup -->
-<button type="button" class="clickable-area top-left"
-    data-sound="chime" 
-    data-image="images/informationbutton.webp" 
-    data-url="Poster.html">
-    <img src="images/informationbutton.webp" alt="Info">
-</button>
-<button type="button" class="clickable-area top-right"
-    data-sound="chime" 
-    data-image="images/innovationenginebutton.webp" 
-    data-url="2card.html">
-    <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
-</button>
-<button type="button" class="clickable-area bottom-left"
-    data-sound="chime" 
-    data-image="images/newsbutton.webp" 
-    data-url="news.html">
-    <img src="images/newsbutton.webp" alt="News">
-</button>
-<button type="button" class="clickable-area bottom-right"
-    data-sound="chime" 
-    data-image="images/peoplebutton.webp" 
-    data-url="cardmatchgame.html">
-    <img src="images/peoplebutton.webp" alt="People">
-</button>
-<button type="button" class="clickable-area middle-left"
-    data-sound="chime" 
-    data-image="images/experiment.webp" 
-    data-url="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/">
-    <img src="images/experiment.webp" alt="briefcase" />
-</button>
-<button type="button" class="clickable-area middle-right"
-    data-sound="chime" 
-    data-image="images/case.webp" 
-    data-url="swag.html">
-    <img src="images/case.webp" alt="Beaker" />
-</button>
-<button type="button" class="clickable-area top-center"
-    data-sound="chime" 
-    data-image="images/crestn.svg" 
-    data-url="docs.html">
-    <img src="images/crestn.svg" alt="crest card button" />
-</button>
-<button type="button" class="clickable-area bottom-center"
-    data-sound="chime" 
-    data-image="images/keysn.svg" 
-    data-url="https://charlestonhacks.mailchimpsites.com/">
-    <img src="images/keysn.svg" alt="keys card button" />
-</button>
+                            <!-- Card Buttons -->
+                            <button type="button" class="clickable-area top-left">
+                                <img src="images/informationbutton.webp" alt="Info">
+                            </button>
+                            <button type="button" class="clickable-area top-center">
+                                <img src="images/crestn.svg" alt="crest card button" />
+                            </button>
+                            <button type="button" class="clickable-area top-right">
+                                <img src="images/innovationenginebutton.webp" alt="Innovation Engine">
+                            </button>
+                            <button type="button" class="clickable-area middle-left">
+                                <img src="images/experiment.webp" alt="briefcase" />
+                            </button>
+                            <button type="button" class="clickable-area middle-right">
+                                <img src="images/case.webp" alt="Beaker" />
+                            </button>
+                            <button type="button" class="clickable-area bottom-left">
+                                <img src="images/newsbutton.webp" alt="News">
+                            </button>
+                            <button type="button" class="clickable-area bottom-center">
+                                <img src="images/keysn.svg" alt="keys card button" />
+                            </button>
+                            <button type="button" class="clickable-area bottom-right">
+                                <img src="images/peoplebutton.webp" alt="People">
+                            </button>
                         </div>
                     </div>
                 </header>
@@ -110,9 +62,6 @@
         </div>
     </main>
     <footer>
-        <div id="countdownWrapper">
-            <div id="countdown"></div>
-        </div>
         <section class="icons-container">
             <a href="2card.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
             <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
@@ -123,244 +72,88 @@
             <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
         </section>
     </footer>
-    <script src="ho-script.js"></script>
     <script>
-        function addButtonGlowAndNavigation() {
-            document.querySelectorAll('.clickable-area').forEach(area => {
-                area.addEventListener('click', function(e) {
-                    const sound = this.getAttribute('data-sound');
-                    const url = this.getAttribute('data-url');
-                    this.classList.add('glow-animate');
-                    if (sound && typeof AudioController !== "undefined" && AudioController.playSound) {
-                        AudioController.playSound(sound);
-                    }
-                    setTimeout(() => { window.location.href = url; }, 460);
-                });
-                area.addEventListener('keydown', function(e) {
-                    if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
-                area.addEventListener('animationend', function(e) {
-                    if (e.animationName === "glow") {
-                        this.classList.remove('glow-animate');
-                    }
-                });
-            });
+    // Button URLs
+    const buttonURLs = [
+        "Poster.html",         // top-left
+        "docs.html",           // top-center
+        "2card.html",          // top-right
+        "https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/", // middle-left
+        "swag.html",           // middle-right
+        "news.html",           // bottom-left
+        "https://charlestonhacks.mailchimpsites.com/", // bottom-center
+        "cardmatchgame.html"   // bottom-right
+    ];
+    // Video pool
+    const videos = [
+        "images/Descartesvideo.mp4",
+        "images/medusa best.mp4",
+        "images/medusa 1.mp4",
+        "images/young medusa.mp4",
+        "images/Alexandorvideo.mp4",
+        "images/Elaravideo.mp4",
+        "images/elara rage.mp4",
+        "images/astridvideo.mp4",
+        "images/aegisvideo.mp4",
+        "images/wolfvideo.mp4",
+        "images/merlin.mp4",
+        "images/hermesvideo.mp4",
+        "images/Mystery.mp4"
+    ];
+    // Shuffle helper
+    function shuffle(array) {
+        let arr = array.slice();
+        for (let i = arr.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
-
-        const CONFIG = {
-            countdown: {
-                targetDate: "June 28, 2025 00:00:00",
-                completedMessage: "Welcome to CharlestonHacks"
-            },
-            audio: {
-                cardflip: 'assets/atmospherel.m4a',
-                keys: 'assets/keys.m4a',
-                chime: 'assets/chime.mp3'
-            },
-            cardImages: [
-                "images/yellowscullcard.png",
-                "images/redscullcard.png",
-                "images/Descartes.png",
-                "images/Alexandor.png",
-                "images/Medusa.png",
-                "images/Elara.png",
-                "images/adventurercard.png",
-                "images/collaboratorcard.png",
-                "images/humanitariancard.png",
-                "images/nextcard.png",
-                "images/Aegis.png",
-                "images/resilientcard.png",
-                "images/Astrid.png",
-                "images/nicolecard.png"
-            ]
-        };
-
-        const AudioController = {
-            preloaded: false,
-            preloadAudio() {
-                if (this.preloaded) return;
-                Object.keys(CONFIG.audio).forEach(key => {
-                    const src = CONFIG.audio[key];
-                    if (src) new Audio(src);
-                });
-                this.preloaded = true;
-            },
-            playSound(soundKey) {
-                const soundSrc = CONFIG.audio[soundKey];
-                if (!soundSrc) return;
-                const audio = new Audio(soundSrc);
-                audio.volume = 0.2;
-                audio.play().catch(error => {
-                    console.error('Audio playback failed:', error);
-                });
-            }
-        };
-
-        const VideoController = {
-            handleError() {
-                alert("Error loading video. Please try again later.");
-            },
-            showCardFrame() {
-                document.getElementById('cardFrame').style.display = 'block';
-            }
-        };
-
-        const CountdownController = {
-            element: null,
-            interval: null,
-            init() {
-                this.element = document.getElementById('countdown');
-                this.start();
-            },
-            start() {
-                const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
-                this.interval = setInterval(() => {
-                    const now = new Date().getTime();
-                    const distance = countDownDate - now;
-                    if (distance < 0) {
-                        this.stop();
-                        this.element.innerHTML = CONFIG.countdown.completedMessage;
-                        return;
-                    }
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-                }, 1000);
-            },
-            stop() {
-                if (this.interval) {
-                    clearInterval(this.interval);
-                    this.interval = null;
-                }
-            }
-        };
-
-        const CardController = {
-            clicked: false,
-            getRandomImage() {
-                const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
-                return CONFIG.cardImages[randomIndex];
-            },
-            getRandomFlip() {
-                return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            }
-        };
-
-        function resetCardState() {
-           document.getElementById('missionImage').src = "images/hsoftest.png";
-            const video = document.getElementById('missionVideo');
-            video.pause();
-            video.style.display = 'none';
-            video.style.opacity = 0;
-            document.getElementById('missionContent').style.display = 'none';
-            document.getElementById('aiffBanner').style.display = 'none';
-            document.getElementById('cardFrame').style.display = 'none';
-            document.body.classList.remove('fade-out-body');
-            const img = document.getElementById('missionImage');
-            img.classList.remove('flip-image-x', 'flip-image-y');
-            if (typeof CardController !== "undefined") {
-                CardController.clicked = false;
-            }
-        }
-
-        const App = {
-            init() {
-                this.setupEventListeners();
-                this.setupVideoHandlers();
-                CountdownController.init();
-                addButtonGlowAndNavigation();
-            },
-            setupEventListeners() {
-                window.addEventListener('pointerdown', () => {
-                    AudioController.preloadAudio();
-                }, { once: true });
-                window.addEventListener('pageshow', () => {
-                    document.body.classList.remove('fade-out-body');
-                    resetCardState();
-                });
-                document.addEventListener('DOMContentLoaded', () => {
-                    document.querySelectorAll('.clickable-area').forEach(element => {
-                        element.classList.add('loaded');
-                    });
-                });
-            },
-            setupVideoHandlers() {
-                const video = document.getElementById('missionVideo');
-                if (video) {
-                    video.addEventListener('error', VideoController.handleError);
-                    video.addEventListener('ended', VideoController.showCardFrame);
-                }
-            }
-        };
-
-    function toggleMissionContent() {
-    if (CardController.clicked) return;
-    CardController.clicked = true;
-    AudioController.playSound('cardflip');
-    const image = document.getElementById('missionImage');
-    image.src = CardController.getRandomImage();
-    const video = document.getElementById('missionVideo');
-    video.style.display = 'block';
-    document.getElementById('cardFrame').style.display = 'block';
-    video.style.opacity = 0;
-    document.getElementById('missionContent').style.display = 'block';
-    document.getElementById('aiffBanner').style.display = 'block';
-    const randomFlip = CardController.getRandomFlip();
-    image.classList.add(randomFlip);
-
-    // Wait for flip animation to finish, then show and play video
-    setTimeout(() => {
-        video.style.opacity = 1;
-        video.play();
-    }, 2000); // 2 seconds matches flip animation duration
-}
-        function flipAndRedirect() {
-            const banner = document.getElementById('aiffBanner');
-            const randomFlip = CardController.getRandomFlip();
-            banner.classList.add(randomFlip);
-            setTimeout(() => {
-                window.location.href = 'https://innovation-engine.devpost.com/';
-            }, 2000);
-        }
-        App.init();
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to show a specific tab and hide others
-            function showTab(tabId) {
-                document.querySelectorAll('.tab-content-pane').forEach(pane => {
-                    pane.classList.remove('active-tab-pane');
-                });
-                document.querySelectorAll('.tab-button').forEach(button => {
-                    button.classList.remove('active');
-                });
-                const activePane = document.getElementById(tabId);
-                if (activePane) activePane.classList.add('active-tab-pane');
-                const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-                if (activeButton) activeButton.classList.add('active');
-                const panel = document.querySelector('.panel');
-                if (panel) panel.scrollTop = 0;
-            }
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    showTab(tabId);
-                });
-            });
-            showTab('profile');
+        return arr;
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        const shuffledVideos = shuffle(videos);
+        const buttons = document.querySelectorAll('.clickable-area');
+        const missionVideo = document.getElementById('missionVideo');
+        const cardFrame = document.getElementById('cardFrame');
+        buttons.forEach((btn, i) => {
+            btn.dataset.buttonIndex = i;
+            btn.dataset.video = shuffledVideos[i % shuffledVideos.length];
+            btn.dataset.played = "false";
+            btn.dataset.url = buttonURLs[i];
         });
-    </script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(() => console.log('Service Worker registered'))
-                .catch(err => console.error('Service Worker registration failed:', err));
-        }
+        // Button click handler
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (btn.dataset.played === "false") {
+                    btn.dataset.played = "true";
+                    // Show video overlay
+                    missionVideo.src = btn.dataset.video;
+                    missionVideo.style.display = "block";
+                    missionVideo.style.opacity = "1";
+                    cardFrame.style.display = "block";
+                    missionVideo.muted = false;
+                    missionVideo.controls = true;
+                    missionVideo.load();
+                    missionVideo.play();
+                    buttons.forEach(b => b.disabled = true);
+                    missionVideo.onended = () => {
+                        missionVideo.pause();
+                        missionVideo.style.display = "none";
+                        missionVideo.style.opacity = "0";
+                        cardFrame.style.display = "none";
+                        buttons.forEach(b => b.disabled = false);
+                    };
+                    e.preventDefault();
+                } else {
+                    window.location.href = btn.dataset.url;
+                }
+            });
+            btn.addEventListener('keydown', function(e) {
+                if (e.key === "Enter" || e.key === " ") {
+                    btn.click();
+                }
+            });
+        });
+    });
     </script>
 </body>
 </html>
