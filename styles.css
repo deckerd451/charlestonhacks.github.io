@@ -286,42 +286,40 @@ html, footer, .icons-container {
 .info { color: var(--secondary-color); font-size: var(--info-size); }
 #aiffBanner { display: none; }
 
+
 /* ==========================================================================
-   FOOTER & COUNTDOWN
+   FOOTER ICONS: VERTICAL RIGHT OF PANEL (DESKTOP)
    ========================================================================== */
-footer {
-    padding: var(--footer-spacing);
+@media (min-width: 769px) {
+  .icons-container {
+    /* Remove default horizontal styling */
+    flex-direction: column;
+    justify-content: space-between; /* Even vertical spacing */
+    align-items: center;
+
+    /* Position fixed to the right of the panel */
+    position: fixed;
+    top: 60px; /* Adjust as needed for spacing from top */
+    right: 40px; /* Adjust as needed for spacing from right */
+    height: 65vh; /* Vertical space for icons, tweak as needed */
+    width: auto;
+    z-index: 100;
+    gap: 0; /* gap is controlled by space-between now */
     background: transparent !important;
-    padding-bottom: 20px;
-}
-#countdownWrapper {
-    margin-bottom: var(--footer-spacing);
-    text-align: center;
-}
-#countdown {
-    font-size: var(--countdown-size);
-    color: var(--primary-color);
-}
-.icons-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: clamp(10px, 4vw, 20px);
-    flex-wrap: wrap;
-}
-.icons-container a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: clamp(40px, 8vw, 60px);
-    height: clamp(40px, 8vw, 60px);
+    box-shadow: none;
     padding: 0;
-    font-size: clamp(20px, 5vw, 30px);
-    color: var(--text-color);
-    transition: color 0.3s ease;
-    border-radius: 50%;
+  }
+  .icons-container a {
+    margin: 0;
+    /* You can tweak the icon size if needed */
+  }
+  footer {
+    padding: 0; /* Remove bottom padding for fixed icons */
+    background: transparent !important;
+    padding-bottom: 0;
+  }
 }
-.icons-container a:hover { color: var(--secondary-color); }
+
 
 /* ==========================================================================
    NEW UI ELEMENTS
