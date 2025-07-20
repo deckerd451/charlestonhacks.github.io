@@ -578,7 +578,7 @@ html, footer, .icons-container {
     justify-content: center;
     gap: 20px;
     margin-top: auto;
-    padding-top: 40px;
+    padding-top: 0px;
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.8s forwards;
 }
