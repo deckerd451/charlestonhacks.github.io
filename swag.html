@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>CharlestonHacks Swag Interest</title>
+  <title>CharlestonHacks Swag Voting</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Import site font and icons if needed -->
   <link href="https://fonts.googleapis.com/css2?family=Britannic+Bold:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
@@ -56,11 +55,6 @@
       filter: drop-shadow(0 2px 16px #222);
       transition: width 0.3s;
     }
-    @media (max-width: 600px) {
-      .logo {
-        width: min(100%, 220px);
-      }
-    }
     .section-title {
       color: var(--secondary-color);
       font-size: 2.1rem;
@@ -81,7 +75,6 @@
       margin-bottom: 24px;
       text-align: center;
     }
-    /* Swag Grid */
     .swag-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
@@ -125,51 +118,23 @@
       font-weight: bold;
       letter-spacing: 0.02em;
     }
-    .swag-item input[type="checkbox"] {
-      accent-color: var(--secondary-color);
-      margin-right: 6px;
-      vertical-align: middle;
-      transform: scale(1.25);
-    }
-    .form-group {
-      margin-bottom: 22px;
-      width: 100%;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: left;
-    }
-    .form-group label {
-      color: var(--secondary-color);
-      font-weight: 700;
-      margin-bottom: 7px;
-      display: block;
-      font-size: 1.09em;
-    }
-    .form-group input[type="email"] {
-      padding: 12px;
-      font-size: 17px;
-      border: 2px solid var(--secondary-color);
-      background-color: #2c2c2c;
-      color: #fff;
-      border-radius: 6px;
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    .form-btn {
-      padding: 13px 38px;
-      font-size: 1.2em;
+    .vote-btn {
+      margin-top: 8px;
+      padding: 8px 22px;
+      font-size: 1.08em;
       background: linear-gradient(135deg,#ffd700,#ff6b35);
       color: #1a1a1a;
       border-radius: 8px;
       border: none;
       cursor: pointer;
       font-weight: bold;
-      margin-top: 8px;
       box-shadow: 0 2px 12px #ffd70066;
       transition: background 0.3s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .form-btn:hover { background: #FFC000; }
+    .vote-btn:hover { background: #FFC000; }
     .success-message {
       color: #00FF87;
       font-weight: bold;
@@ -178,164 +143,155 @@
       font-size: 1.15em;
       animation: fadeIn 0.5s;
     }
-    /* Modal Styles */
-    .img-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.93);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      animation: fadeInModal 0.35s cubic-bezier(.25,.8,.25,1);
+    .leaderboard {
+      margin: 32px auto 0 auto;
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 10px rgba(255,215,0,0.25);
     }
-    .img-modal.active {
+    .leaderboard h2 { color: #ffd700; font-size: 1.3em; margin-bottom: 12px; }
+    .leaderboard-row {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 6px 0;
+      font-size: 1.09em;
+      color: #ffd700;
     }
-    @keyframes fadeInModal {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .img-modal-img {
-      max-width: 92vw;
-      max-height: 72vh;
-      border-radius: 16px;
-      box-shadow: 0 0 64px #ffd700cc, 0 0 12px #333;
-      background: #222;
-      animation: modalPop 0.39s cubic-bezier(.36,1.63,.63,1) backwards;
-      border: 3px solid #ffd70099;
-    }
-    @keyframes modalPop {
-      0% { transform: scale(0.85) rotate(-7deg); opacity: 0;}
-      100% { transform: scale(1) rotate(0deg); opacity: 1;}
-    }
-    .img-modal-caption {
-      color: var(--secondary-color);
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-top: 16px;
-      text-shadow: 0 2px 8px #222;
-      background: none;
-    }
-    .img-modal-close {
-      position: absolute;
-      top: 34px;
-      right: 40px;
-      font-size: 2.6rem;
-      color: var(--secondary-color);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      text-shadow: 0 2px 10px #000;
-      z-index: 10101;
-      transition: color 0.2s;
-    }
-    .img-modal-close:hover {
-      color: #fff;
-    }
+    .leaderboard-rank { font-weight: bold; color: #ffd700; width: 24px; }
+    .leaderboard-swag { flex: 1; text-align: left; }
+    .leaderboard-count { color: #ffd700; }
     @media (max-width: 800px) {
-      .img-modal-img { max-width: 97vw; max-height: 48vh;}
-      .img-modal-close { top: 16px; right: 16px; font-size: 2.2rem; }
       .swag-grid { grid-template-columns: 1fr 1fr;}
     }
     @media (max-width: 480px) {
       .swag-grid { grid-template-columns: 1fr;}
-      .img-modal-img { max-width: 98vw; max-height: 38vh;}
     }
   </style>
 </head>
 <body>
   <div class="main-content">
     <img src="icons/header swag.webp" alt="CharlestonHacks Logo" class="logo" />
-    <span class="section-title"><i class="fas fa-gift"></i> Swag Interest</span>
+    <span class="section-title"><i class="fas fa-gift"></i> Swag Voting</span>
     <div class="subtitle">
-      Let us know what swag you’d love to see at CharlestonHacks!<br>
-      You’ll be the first to know when it’s available.
+      Vote for your favorite swag! See what's trending below.<br>
+      <span style="color:#FFD700; font-weight:bold;">Leaderboard shows top-voted swag.</span>
     </div>
-    <form id="interestForm" action="https://formspree.io/f/mqalezkd" method="POST" autocomplete="off">
-      <div class="swag-grid">
-        <div class="swag-item">
-          <img src="icons/tshirt.webp" alt="T-Shirt" data-large="icons/tshirt.webp" data-caption="T-Shirt">
-          <label><input type="checkbox" name="swag" value="T-Shirt"> T-Shirt</label>
-        </div>
-        <div class="swag-item">
-          <img src="icons/sticker.webp" alt="Sticker" data-large="icons/sticker.webp" data-caption="Sticker">
-          <label><input type="checkbox" name="swag" value="Sticker"> Sticker</label>
-        </div>
-        <div class="swag-item">
-          <img src="images/hat.png" alt="Hat" data-large="images/hat.png" data-caption="Hat">
-          <label><input type="checkbox" name="swag" value="Hat"> Hat</label>
-        </div>
-        <div class="swag-item">
-          <img src="images/hoodie.png" alt="Hoodie" data-large="images/hoodie.png" data-caption="Hoodie">
-          <label><input type="checkbox" name="swag" value="Hoodie"> Hoodie</label>
-        </div>
-        <div class="swag-item">
-          <img src="images/mug.png" alt="Mug" data-large="images/mug.png" data-caption="Mug">
-          <label><input type="checkbox" name="swag" value="Mug"> Mug</label>
-        </div>
-        <div class="swag-item">
-          <img src="icons/gauntlet.webp" alt="Gauntlet" data-large="icons/gauntlet.webp" data-caption="Gauntlet">
-          <label><input type="checkbox" name="swag" value="Gauntlet"> Gauntlet</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="email"><i class="fas fa-envelope"></i> Your Email (optional):</label>
-        <input type="email" id="email" name="email" placeholder="you@email.com">
-      </div>
-      <input type="hidden" name="_subject" value="CharlestonHacks Swag Interest Submission">
-      <button type="submit" class="form-btn"><i class="fas fa-paper-plane"></i> Submit Interest</button>
-    </form>
-    <div id="successMsg" class="success-message" style="display:none;"></div>
+    <div class="swag-grid" id="swagGrid"></div>
+    <div class="success-message" id="successMsg" style="display:none;"></div>
+    <div class="leaderboard" id="leaderboard-section">
+      <h2>Most Popular Swag</h2>
+      <div id="leaderboard-rows"></div>
+    </div>
   </div>
-
-  <!-- Modal for enlarged swag images -->
-  <div class="img-modal" id="imgModal">
-    <button class="img-modal-close" id="imgModalClose" title="Close" aria-label="Close">&times;</button>
-    <img src="" alt="" class="img-modal-img" id="imgModalImg">
-    <div class="img-modal-caption" id="imgModalCaption"></div>
-  </div>
-
   <script>
-    // Enlarged image modal logic
-    const imgModal = document.getElementById('imgModal');
-    const imgModalImg = document.getElementById('imgModalImg');
-    const imgModalCaption = document.getElementById('imgModalCaption');
-    const imgModalClose = document.getElementById('imgModalClose');
-    document.querySelectorAll('.swag-item img').forEach(img => {
-      img.addEventListener('click', function(e) {
-        imgModalImg.src = this.getAttribute('data-large') || this.src;
-        imgModalImg.alt = this.alt;
-        imgModalCaption.textContent = this.getAttribute('data-caption') || this.alt;
-        imgModal.classList.add('active');
-        document.body.style.overflow = "hidden";
+    // --- Swag Items List ---
+    const swagItems = [
+      { name: "T-Shirt", img: "icons/tshirt.webp" },
+      { name: "Sticker", img: "icons/sticker.webp" },
+      { name: "Hat", img: "images/hat.png" },
+      { name: "Hoodie", img: "images/hoodie.png" },
+      { name: "Mug", img: "images/mug.png" },
+      { name: "Gauntlet", img: "icons/gauntlet.webp" }
+    ];
+
+    // --- DOM Elements ---
+    const swagGrid = document.getElementById('swagGrid');
+    const successMsg = document.getElementById('successMsg');
+    const leaderboardRows = document.getElementById('leaderboard-rows');
+
+    // --- Supabase Setup ---
+    // You must have your Supabase client setup
+    // Example: const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // --- Render Swag Items with Vote Buttons ---
+    function renderSwagItems() {
+      swagGrid.innerHTML = '';
+      swagItems.forEach(item => {
+        const swagDiv = document.createElement('div');
+        swagDiv.className = 'swag-item';
+        swagDiv.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" data-large="${item.img}" data-caption="${item.name}">
+          <label>${item.name}</label>
+          <button class="vote-btn" data-swag="${item.name}"><i class="fa fa-thumbs-up"></i> Vote</button>
+        `;
+        swagGrid.appendChild(swagDiv);
       });
-    });
-    function closeModal() {
-      imgModal.classList.remove('active');
-      imgModalImg.src = "";
-      imgModalCaption.textContent = "";
-      document.body.style.overflow = "";
     }
-    imgModalClose.addEventListener('click', closeModal);
-    imgModal.addEventListener('click', function(e) {
-      if (e.target === imgModal) closeModal();
-    });
-    document.addEventListener('keydown', function(e) {
-      if (imgModal.classList.contains('active') && e.key === 'Escape') closeModal();
+
+    // --- Voting Handler ---
+    swagGrid.addEventListener('click', async function(e) {
+      const voteBtn = e.target.closest('.vote-btn');
+      if(!voteBtn) return;
+      const swagName = voteBtn.getAttribute('data-swag');
+      voteBtn.disabled = true;
+
+      try {
+        // Fetch current swag votes from Supabase
+        let { data, error } = await supabaseClient.from('swag_votes').select('*').eq('swag', swagName).single();
+        let currentVotes = data && data.votes ? data.votes : 0;
+        // Update votes
+        if(data) {
+          const { error: updateError } = await supabaseClient.from('swag_votes').update({ votes: currentVotes + 1 }).eq('swag', swagName);
+          if(updateError) throw updateError;
+        } else {
+          // If swag doesn't exist, insert it
+          const { error: insertError } = await supabaseClient.from('swag_votes').insert([{ swag: swagName, votes: 1 }]);
+          if(insertError) throw insertError;
+        }
+        successMsg.textContent = `You voted for "${swagName}"!`;
+        successMsg.style.display = "block";
+        setTimeout(() => { successMsg.style.display = "none"; }, 1800);
+        loadLeaderboard();
+      } catch (err) {
+        console.error("Voting error:", err);
+        successMsg.textContent = `Vote failed: ${err.message}`;
+        successMsg.style.display = "block";
+        setTimeout(() => { successMsg.style.display = "none"; }, 2500);
+      } finally {
+        voteBtn.disabled = false;
+      }
     });
 
-    // Formspree validation and success handling
-    document.getElementById('interestForm').addEventListener('submit', function(e) {
-      var swagChecked = document.querySelectorAll('input[name="swag"]:checked').length;
-      if(swagChecked === 0) {
-        e.preventDefault();
-        alert("Please select at least one swag item!");
-        return false;
+    // --- Leaderboard Loader ---
+    async function loadLeaderboard() {
+      try {
+        const { data, error } = await supabaseClient.from('swag_votes').select('*');
+        if (error) throw error;
+        const swagCounts = {};
+        swagItems.forEach(item => swagCounts[item.name] = 0);
+        data.forEach(row => {
+          swagCounts[row.swag] = row.votes;
+        });
+        const sortedSwag = Object.entries(swagCounts).sort(([, countA], [, countB]) => countB - countA);
+        leaderboardRows.innerHTML = '';
+        if (sortedSwag.length === 0) {
+          leaderboardRows.innerHTML = '<p>No votes yet. Be the first!</p>';
+          return;
+        }
+        sortedSwag.forEach(([swag, count], idx) => {
+          const row = document.createElement('div');
+          row.className = 'leaderboard-row';
+          row.innerHTML = `
+            <span class="leaderboard-rank">${idx + 1}.</span>
+            <span class="leaderboard-swag">${swag}</span>
+            <span class="leaderboard-count">${count} <i class="fa fa-thumbs-up"></i></span>
+          `;
+          leaderboardRows.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Error loading leaderboard:", error.message);
+        leaderboardRows.innerHTML = '<p style="color:red;">Failed to load leaderboard.</p>';
       }
+    }
+
+    // --- INIT ---
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSwagItems();
+      loadLeaderboard();
     });
   </script>
 </body>
