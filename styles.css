@@ -737,17 +737,4 @@ html, footer, .icons-container {
         width: 25%;
         max-width: 300px;
     }
-   /* ...existing CSS... */
-
-@media (max-width: 768px) {
-    .media-container {
-        height: 100vh;
-        justify-content: center;
-        align-items: center;
-    }
-    #btcPrice {
-        bottom: auto;
-        top: 10%;
-    }
 }
-
