@@ -256,16 +256,6 @@ html, footer, .icons-container {
     opacity: 1;
 }
 
-#missionContent p,
-#missionContent a { color: var(--text-color); }
-
-.body-text { margin: 30px 0; }
-.body-text a { color: var(--text-color); }
-.body-text p { margin-bottom: 10px; }
-.logo { display: block; margin: 0 auto 5px auto; }
-.info { color: var(--secondary-color); font-size: var(--info-size); }
-#aiffBanner { display: none; }
-
 
 /* ==========================================================================
    FOOTER ICONS: VERTICAL RIGHT OF PANEL (DESKTOP)
@@ -279,7 +269,7 @@ html, footer, .icons-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 32px; /* even vertical spacing */
+    gap: 28px; /* even vertical spacing */
     height: auto;
     background: transparent !important;
     box-shadow: none;
@@ -312,7 +302,7 @@ html, footer, .icons-container {
 
 
 /* ==========================================================================
-   NEW UI ELEMENTS
+   Teambuilder Styles
    ========================================================================== */
 .container {
     max-width: 1200px;
@@ -610,7 +600,7 @@ html, footer, .icons-container {
     width: 100%; height: 100%;
     z-index: 1;
 }
-#matchmaking-section { margin-top: 85px; }
+#matchmaking-section { margin-top: 75px; }
 
 /* ==========================================================================
    RESPONSIVE DESIGN
@@ -677,12 +667,29 @@ html, footer, .icons-container {
     font-weight: bold;
     border-bottom: 2px solid #ffd700;
 }
+/* ==========================================================================
+  Code for Main Card on home page
+   ========================================================================== */
 
 .panel {
     position: relative;
-    padding-top: 15px;
+    margin-top: 40px;
     box-sizing: border-box;
 }
+
+@media (max-width: 768px) {
+    .panel { width: 95%; min-height: 50vh; padding: 10px; }
+}
+@media (max-width: 480px) {
+    .panel { width: 100%; min-height: 40vh; padding: 5px; }
+}
+@media (min-width: 769px) {
+    .panel {
+        width: 25%;
+        max-width: 300px;
+    }
+   }
+
 .tab-content-pane .section-title { margin-top: 0; }
 
 @media (max-width: 768px) {
