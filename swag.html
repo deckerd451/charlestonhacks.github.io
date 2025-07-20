@@ -164,11 +164,72 @@
     .leaderboard-rank { font-weight: bold; color: #ffd700; width: 24px; }
     .leaderboard-swag { flex: 1; text-align: left; }
     .leaderboard-count { color: #ffd700; }
+    /* Modal Styles */
+    .img-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.93);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      animation: fadeInModal 0.35s cubic-bezier(.25,.8,.25,1);
+    }
+    .img-modal.active {
+      display: flex;
+    }
+    @keyframes fadeInModal {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .img-modal-img {
+      max-width: 92vw;
+      max-height: 72vh;
+      border-radius: 16px;
+      box-shadow: 0 0 64px #ffd700cc, 0 0 12px #333;
+      background: #222;
+      animation: modalPop 0.39s cubic-bezier(.36,1.63,.63,1) backwards;
+      border: 3px solid #ffd70099;
+    }
+    @keyframes modalPop {
+      0% { transform: scale(0.85) rotate(-7deg); opacity: 0;}
+      100% { transform: scale(1) rotate(0deg); opacity: 1;}
+    }
+    .img-modal-caption {
+      color: var(--secondary-color);
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 16px;
+      text-shadow: 0 2px 8px #222;
+      background: none;
+    }
+    .img-modal-close {
+      position: absolute;
+      top: 34px;
+      right: 40px;
+      font-size: 2.6rem;
+      color: var(--secondary-color);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      text-shadow: 0 2px 10px #000;
+      z-index: 10101;
+      transition: color 0.2s;
+    }
+    .img-modal-close:hover {
+      color: #fff;
+    }
     @media (max-width: 800px) {
+      .img-modal-img { max-width: 97vw; max-height: 48vh;}
+      .img-modal-close { top: 16px; right: 16px; font-size: 2.2rem; }
       .swag-grid { grid-template-columns: 1fr 1fr;}
     }
     @media (max-width: 480px) {
       .swag-grid { grid-template-columns: 1fr;}
+      .img-modal-img { max-width: 98vw; max-height: 38vh;}
     }
   </style>
 </head>
@@ -187,6 +248,14 @@
       <div id="leaderboard-rows"></div>
     </div>
   </div>
+
+  <!-- Modal for enlarged swag images -->
+  <div class="img-modal" id="imgModal">
+    <button class="img-modal-close" id="imgModalClose" title="Close" aria-label="Close">&times;</button>
+    <img src="" alt="" class="img-modal-img" id="imgModalImg">
+    <div class="img-modal-caption" id="imgModalCaption"></div>
+  </div>
+
   <script>
     // --- Swag Items List ---
     const swagItems = [
@@ -220,7 +289,37 @@
         `;
         swagGrid.appendChild(swagDiv);
       });
+
+      // Add image click handler for modal after swag items are rendered
+      document.querySelectorAll('.swag-item img').forEach(img => {
+        img.addEventListener('click', function(e) {
+          imgModalImg.src = this.getAttribute('data-large') || this.src;
+          imgModalImg.alt = this.alt;
+          imgModalCaption.textContent = this.getAttribute('data-caption') || this.alt;
+          imgModal.classList.add('active');
+          document.body.style.overflow = "hidden";
+        });
+      });
     }
+
+    // --- Modal Logic ---
+    const imgModal = document.getElementById('imgModal');
+    const imgModalImg = document.getElementById('imgModalImg');
+    const imgModalCaption = document.getElementById('imgModalCaption');
+    const imgModalClose = document.getElementById('imgModalClose');
+    function closeModal() {
+      imgModal.classList.remove('active');
+      imgModalImg.src = "";
+      imgModalCaption.textContent = "";
+      document.body.style.overflow = "";
+    }
+    imgModalClose.addEventListener('click', closeModal);
+    imgModal.addEventListener('click', function(e) {
+      if (e.target === imgModal) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (imgModal.classList.contains('active') && e.key === 'Escape') closeModal();
+    });
 
     // --- Voting Handler ---
     swagGrid.addEventListener('click', async function(e) {
