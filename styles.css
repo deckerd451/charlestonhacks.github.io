@@ -169,7 +169,7 @@ html, footer, .icons-container {
 }
 
 /* ==========================================================================
-   CLICKABLE AREAS
+   Clickable Areas on Main Card
    ========================================================================== */
 .clickable-area {
     border: none;
@@ -240,21 +240,6 @@ html, footer, .icons-container {
     }
 }
 
-/* ==========================================================================
-   MISSION CONTENT
-   ========================================================================== */
-#missionContent {
-    animation: fadeIn 1.2s ease forwards;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%; max-width: 400px;
-    padding: 20px;
-    text-align: center;
-    display: none;
-    z-index: 2;
-    opacity: 1;
-}
 
 
 /* ==========================================================================
@@ -533,20 +518,12 @@ html, footer, .icons-container {
     margin: 0 0 8px 0;
 }
 
-/* Countdown Container */
-.countdown-container {
-    text-align: center;
-    margin: 8px 0 10px 0;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.6s forwards;
-}
-.countdown { font-size: 2rem; font-weight: 700; color: #ffd700; margin-bottom: 5px; }
 
 /* Footer Social */
 .social-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
     margin-top: 0px;
     padding-top: 0px;
     opacity: 0;
