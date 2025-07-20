@@ -326,6 +326,7 @@ html, footer, .icons-container {
     padding: 0;
     background: transparent !important;
     padding-bottom: 0;
+      display: none; /* <--- ADD THIS LINE HERE */
   }
 }
 
