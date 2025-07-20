@@ -105,48 +105,53 @@
         return arr;
     }
     document.addEventListener("DOMContentLoaded", function() {
-        const shuffledVideos = shuffle(videos);
-        const buttons = document.querySelectorAll('.clickable-area');
-        const missionVideo = document.getElementById('missionVideo');
-        const cardFrame = document.getElementById('cardFrame');
-        buttons.forEach((btn, i) => {
-            btn.dataset.buttonIndex = i;
-            btn.dataset.video = shuffledVideos[i % shuffledVideos.length];
-            btn.dataset.played = "false";
-            btn.dataset.url = buttonURLs[i];
-        });
-        buttons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                if (btn.dataset.played === "false") {
-                    btn.dataset.played = "true";
-                    missionVideo.src = btn.dataset.video;
-                    missionVideo.style.display = "block";
-                    missionVideo.style.opacity = "1";
-                    cardFrame.style.display = "block";
-                    missionVideo.muted = false;
-                    missionVideo.controls = true;
-                    missionVideo.load();
-                    missionVideo.play();
-                    buttons.forEach(b => b.disabled = true);
-                    missionVideo.onended = () => {
-                        missionVideo.pause();
-                        missionVideo.style.display = "none";
-                        missionVideo.style.opacity = "0";
-                        cardFrame.style.display = "none";
-                        buttons.forEach(b => b.disabled = false);
-                    };
-                    e.preventDefault();
+    const shuffledVideos = shuffle(videos);
+    const buttons = document.querySelectorAll('.clickable-area');
+    const missionVideo = document.getElementById('missionVideo');
+    const cardFrame = document.getElementById('cardFrame');
+    buttons.forEach((btn, i) => {
+        btn.dataset.buttonIndex = i;
+        btn.dataset.video = shuffledVideos[i % shuffledVideos.length];
+        btn.dataset.played = "false";
+        btn.dataset.url = buttonURLs[i];
+    });
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (btn.dataset.played === "false") {
+                btn.dataset.played = "true";
+                missionVideo.src = btn.dataset.video;
+                missionVideo.style.display = "block";
+                missionVideo.style.opacity = "1";
+                cardFrame.style.display = "block";
+                missionVideo.muted = false;
+                // Only show controls on desktop
+                if (window.matchMedia("(max-width: 600px)").matches) {
+                  missionVideo.removeAttribute('controls');
                 } else {
-                    window.location.href = btn.dataset.url;
+                  missionVideo.setAttribute('controls', '');
                 }
-            });
-            btn.addEventListener('keydown', function(e) {
-                if (e.key === "Enter" || e.key === " ") {
-                    btn.click();
-                }
-            });
+                missionVideo.load();
+                missionVideo.play();
+                buttons.forEach(b => b.disabled = true);
+                missionVideo.onended = () => {
+                    missionVideo.pause();
+                    missionVideo.style.display = "none";
+                    missionVideo.style.opacity = "0";
+                    cardFrame.style.display = "none";
+                    buttons.forEach(b => b.disabled = false);
+                };
+                e.preventDefault();
+            } else {
+                window.location.href = btn.dataset.url;
+            }
+        });
+        btn.addEventListener('keydown', function(e) {
+            if (e.key === "Enter" || e.key === " ") {
+                btn.click();
+            }
         });
     });
+});
     </script>
      <script>
     document.addEventListener("DOMContentLoaded", function() {
