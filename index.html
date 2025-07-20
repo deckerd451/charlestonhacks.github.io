@@ -18,48 +18,47 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Atmosphere and click sounds -->
-    <audio id="atmosphereSound" src="sounds/atmosphere.mp3" loop></audio>
-    <audio id="clickSound" src="sounds/click.mp3"></audio>
+    <!-- Preload sounds -->
+    <audio id="cardflipSound" src="assets/atmospherel.m4a" preload="auto"></audio>
+    <audio id="chimeSound" src="assets/chime.mp3" preload="auto"></audio>
+    <audio id="keysSound" src="assets/keys.m4a" preload="auto"></audio>
     <main>
         <div class="main-wrapper">
-            <div class="media-container">
-                <div class="card-center">
-                    <img id="missionImage" src="icons/card.png" alt="Big Playing Card" />
-                    <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
-                    <video id="missionVideo" muted playsinline controls style="display:none;">
-                        <source src="" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <!-- Card Buttons -->
-                <button type="button" class="clickable-area top-left">
+            <div class="media-container" aria-label="Toggle mission content" tabindex="0">
+                <img id="missionImage" src="icons/card.png" alt="Big Playing Card" style="z-index: 3;" />
+                <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;"/>
+                <video id="missionVideo" muted playsinline controls style="display:none;opacity:0;">
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Card Buttons with sound and urls -->
+                <button type="button" class="clickable-area top-left" data-sound="chime" data-url="Poster.html">
                     <img src="images/informationbutton.webp" alt="Info">
                 </button>
-                <button type="button" class="clickable-area top-center">
+                <button type="button" class="clickable-area top-center" data-sound="chime" data-url="docs.html">
                     <img src="images/crestn.svg" alt="Crest">
                 </button>
-                <button type="button" class="clickable-area top-right">
+                <button type="button" class="clickable-area top-right" data-sound="chime" data-url="2card.html">
                     <img src="images/innovationenginebutton.webp" alt="Innovation">
                 </button>
-                <button type="button" class="clickable-area middle-left">
+                <button type="button" class="clickable-area middle-left" data-sound="chime" data-url="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/">
                     <img src="images/experiment.webp" alt="Experiment">
                 </button>
-                <button type="button" class="clickable-area middle-right">
+                <button type="button" class="clickable-area middle-right" data-sound="chime" data-url="swag.html">
                     <img src="images/case.webp" alt="Case">
                 </button>
-                <button type="button" class="clickable-area bottom-left">
+                <button type="button" class="clickable-area bottom-left" data-sound="chime" data-url="news.html">
                     <img src="images/newsbutton.webp" alt="News">
                 </button>
-                <button type="button" class="clickable-area bottom-center">
+                <button type="button" class="clickable-area bottom-center" data-sound="keys" data-url="https://charlestonhacks.mailchimpsites.com/">
                     <img src="images/keysn.svg" alt="Keys">
                 </button>
-                <button type="button" class="clickable-area bottom-right">
+                <button type="button" class="clickable-area bottom-right" data-sound="chime" data-url="cardmatchgame.html">
                     <img src="images/peoplebutton.webp" alt="People">
                 </button>
             </div>
         </div>
-        <!-- Move icons-container OUTSIDE footer, directly under main-wrapper -->
+        <!-- Icons Container -->
         <section class="icons-container">
             <a href="2card.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
             <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
@@ -74,126 +73,164 @@
         <!-- Footer is now empty or can be used for copyright, etc. -->
     </footer>
     <script>
-    // Button URLs in order
-    const buttonURLs = [
-        "Poster.html",         // top-left
-        "docs.html",           // top-center
-        "2card.html",          // top-right
-        "https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/", // middle-left
-        "swag.html",           // middle-right
-        "news.html",           // bottom-left
-        "https://charlestonhacks.mailchimpsites.com/", // bottom-center
-        "cardmatchgame.html"   // bottom-right
-    ];
-    // Videos in order (or shuffled if you wish)
-    const videos = [
-        "images/Descartesvideo.mp4",
-        "images/medusa best.mp4",
-        "images/medusa 1.mp4",
-        "images/young medusa.mp4",
-        "images/Alexandorvideo.mp4",
-        "images/Elaravideo.mp4",
-        "images/elara rage.mp4",
-        "images/astridvideo.mp4",
-        "images/aegisvideo.mp4",
-        "images/wolfvideo.mp4",
-        "images/merlin.mp4",
-        "images/hermesvideo.mp4",
-        "images/Mystery.mp4"
-    ];
-    function shuffle(array) {
-        let arr = array.slice();
-        for (let i = arr.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+    // --- Config & Assets ---
+    const CONFIG = {
+        cardImages: [
+            "images/yellowscullcard.png",
+            "images/redscullcard.png",
+            "images/Descartes.png",
+            "images/Alexandor.png",
+            "images/Medusa.png",
+            "images/Elara.png",
+            "images/adventurercard.png",
+            "images/collaboratorcard.png",
+            "images/humanitariancard.png",
+            "images/nextcard.png",
+            "images/Aegis.png",
+            "images/resilientcard.png",
+            "images/Astrid.png",
+            "images/nicolecard.png"
+        ],
+        videos: [
+            "images/Descartesvideo.mp4",
+            "images/medusa best.mp4",
+            "images/medusa 1.mp4",
+            "images/young medusa.mp4",
+            "images/Alexandorvideo.mp4",
+            "images/Elaravideo.mp4",
+            "images/elara rage.mp4",
+            "images/astridvideo.mp4",
+            "images/aegisvideo.mp4",
+            "images/wolfvideo.mp4",
+            "images/merlin.mp4",
+            "images/hermesvideo.mp4",
+            "images/Mystery.mp4"
+        ],
+        sounds: {
+            cardflip: document.getElementById('cardflipSound'),
+            chime: document.getElementById('chimeSound'),
+            keys: document.getElementById('keysSound')
         }
-        return arr;
+    };
+
+    // --- Helpers ---
+    function getRandomCardImage() {
+        const arr = CONFIG.cardImages;
+        return arr[Math.floor(Math.random() * arr.length)];
     }
-    // Wait for DOM ready
+    function getRandomFlipClass() {
+        return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+    }
+    function playSound(soundKey) {
+        const audio = CONFIG.sounds[soundKey];
+        if (audio) {
+            audio.currentTime = 0;
+            audio.volume = soundKey === "cardflip" ? 0.45 : 0.7;
+            audio.play().catch(()=>{});
+        }
+    }
+
+    // --- Main UI Logic ---
     document.addEventListener("DOMContentLoaded", function() {
-        const shuffledVideos = shuffle(videos);
         const buttons = document.querySelectorAll('.clickable-area');
+        const missionImage = document.getElementById('missionImage');
         const missionVideo = document.getElementById('missionVideo');
         const cardFrame = document.getElementById('cardFrame');
-        const atmosphereSound = document.getElementById('atmosphereSound');
-        const clickSound = document.getElementById('clickSound');
-        let soundStarted = false;
+        let videoPlaying = false;
 
-        // Start atmosphere sound after first user interaction (autoplay policy)
-        function startAtmosphereSound() {
-            if (!soundStarted) {
-                atmosphereSound.volume = 0.45;
-                atmosphereSound.play().catch(()=>{}); // ignore errors
-                soundStarted = true;
-            }
-        }
-        // Listen for any user gesture to start sound
-        window.addEventListener('click', startAtmosphereSound, { once: true });
-        window.addEventListener('keydown', startAtmosphereSound, { once: true });
-        window.addEventListener('touchstart', startAtmosphereSound, { once: true });
+        // Card flipping logic triggered by clicking the card (image itself)
+        missionImage.addEventListener('click', function() {
+            if (videoPlaying) return;
+            playSound('cardflip');
+            missionImage.src = getRandomCardImage();
+            const flipClass = getRandomFlipClass();
+            missionImage.classList.add(flipClass);
+            setTimeout(() => { missionImage.classList.remove(flipClass); }, 1200);
 
-        // Setup button data and click events
-        buttons.forEach((btn, i) => {
-            btn.dataset.buttonIndex = i;
-            btn.dataset.video = shuffledVideos[i % shuffledVideos.length];
-            btn.dataset.played = "false";
-            btn.dataset.url = buttonURLs[i];
-        });
-        buttons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // Play click sound on every click
-                if (clickSound) {
-                    clickSound.currentTime = 0;
-                    clickSound.volume = 0.7;
-                    clickSound.play().catch(()=>{});
-                }
-                startAtmosphereSound();
-
-                if (btn.dataset.played === "false") {
-                    btn.dataset.played = "true";
-                    missionVideo.src = btn.dataset.video;
-                    missionVideo.style.display = "block";
-                    missionVideo.style.opacity = "1";
-                    cardFrame.style.display = "block";
-                    missionVideo.muted = false;
-                    // Only show controls on desktop
-                    if (window.matchMedia("(max-width: 600px)").matches) {
-                        missionVideo.removeAttribute('controls');
-                    } else {
-                        missionVideo.setAttribute('controls', '');
-                    }
-                    missionVideo.load();
-                    missionVideo.play();
-                    buttons.forEach(b => b.disabled = true);
-                    missionVideo.onended = () => {
-                        missionVideo.pause();
-                        missionVideo.style.display = "none";
-                        missionVideo.style.opacity = "0";
-                        cardFrame.style.display = "none";
-                        buttons.forEach(b => b.disabled = false);
-                        window.location.href = btn.dataset.url;
-                    };
-                    e.preventDefault();
-                } else {
-                    window.location.href = btn.dataset.url;
-                }
-            });
-            btn.addEventListener('keydown', function(e) {
-                if (e.key === "Enter" || e.key === " ") {
-                    btn.click();
-                }
-            });
-        });
-
-        // Video controls for desktop/mobile
-        if (missionVideo) {
+            // Show video with random video
+            missionVideo.src = CONFIG.videos[Math.floor(Math.random() * CONFIG.videos.length)];
+            missionVideo.style.display = "block";
+            cardFrame.style.display = "block";
+            setTimeout(() => { missionVideo.style.opacity = 1; }, 100);
+            missionVideo.muted = false;
             if (window.matchMedia("(max-width: 600px)").matches) {
                 missionVideo.removeAttribute('controls');
             } else {
                 missionVideo.setAttribute('controls', '');
             }
-        }
+            missionVideo.load();
+            missionVideo.play();
+            videoPlaying = true;
+            buttons.forEach(b => b.disabled = true);
+
+            missionVideo.onended = () => {
+                missionVideo.pause();
+                missionVideo.style.display = "none";
+                missionVideo.style.opacity = 0;
+                cardFrame.style.display = "none";
+                buttons.forEach(b => b.disabled = false);
+                videoPlaying = false;
+            };
+        });
+
+        // Keyboard accessibility for card image flip
+        missionImage.setAttribute('tabindex', '0');
+        missionImage.addEventListener('keydown', function(e) {
+            if (e.key === "Enter" || e.key === " ") {
+                missionImage.click();
+            }
+        });
+
+        // Button click logic for sound + navigation
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const soundKey = btn.dataset.sound;
+                playSound(soundKey);
+                btn.classList.add('glow-animate');
+                setTimeout(() => {
+                    window.location.href = btn.dataset.url;
+                }, 460);
+            });
+            btn.addEventListener('keydown', function(e) {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    btn.click();
+                }
+            });
+            btn.addEventListener('animationend', function(e) {
+                if (e.animationName === "glow") {
+                    btn.classList.remove('glow-animate');
+                }
+            });
+        });
+
+        // Preload audio on first interaction for autoplay policy
+        window.addEventListener('pointerdown', () => {
+            Object.values(CONFIG.sounds).forEach(audio => {
+                audio.load();
+            });
+        }, { once: true });
     });
     </script>
+    <style>
+    /* Add minimal flip and glow animation styles */
+    .flip-image-x { animation: flipX 1.2s; }
+    .flip-image-y { animation: flipY 1.2s; }
+    @keyframes flipX {
+        0% { transform: rotateY(0deg);}
+        50% { transform: rotateY(180deg);}
+        100% { transform: rotateY(0deg);}
+    }
+    @keyframes flipY {
+        0% { transform: rotateX(0deg);}
+        50% { transform: rotateX(180deg);}
+        100% { transform: rotateX(0deg);}
+    }
+    .glow-animate { animation: glow 0.46s; }
+    @keyframes glow {
+        0% { box-shadow: 0 0 2px 1px #ff6600;}
+        100% { box-shadow: none;}
+    }
+    </style>
 </body>
 </html>
