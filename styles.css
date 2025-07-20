@@ -700,4 +700,33 @@ footer {
 @media (max-width: 768px) {
     .tab-nav { flex-wrap: wrap; justify-content: flex-start; }
     .tab-button { flex-grow: 1; text-align: center; }
+   
+   /* Change These Values To Change Button Size and Panel Size on Desktop */
+}
+@media (min-width: 769px) {
+    .clickable-area {
+        width: 60px;
+        height: 60px;
+        max-width: 100px;
+        max-height: 100px;
+    }
+    .clickable-area.top-center,
+    .clickable-area.bottom-center {
+        width: 80px;
+        height: 80px;
+        max-width: 130px;
+        max-height: 130px;
+    }
+    .clickable-area.center {
+        width: 70px;
+        height: 70px;
+        max-width: 110px;
+        max-height: 110px;
+    }
+}
+@media (min-width: 769px) {
+    .panel {
+        width: 36%;
+        max-width: 370px;
+    }
 }
