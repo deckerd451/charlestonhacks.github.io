@@ -680,7 +680,7 @@ html, footer, .icons-container {
 
 .panel {
     position: relative;
-    padding-top: 0;
+    padding-top: 15px;
     box-sizing: border-box;
 }
 .tab-content-pane .section-title { margin-top: 0; }
