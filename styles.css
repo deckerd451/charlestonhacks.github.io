@@ -292,29 +292,37 @@ html, footer, .icons-container {
    ========================================================================== */
 @media (min-width: 769px) {
   .icons-container {
-    /* Remove default horizontal styling */
-    flex-direction: column;
-    justify-content: space-between; /* Even vertical spacing */
-    align-items: center;
-
-    /* Position fixed to the right of the panel */
     position: fixed;
-    top: 60px; /* Adjust as needed for spacing from top */
-    right: 40px; /* Adjust as needed for spacing from right */
-    height: 65vh; /* Vertical space for icons, tweak as needed */
-    width: auto;
+    top: 60px;
+    right: 40px;
     z-index: 100;
-    gap: 0; /* gap is controlled by space-between now */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px; /* even vertical spacing */
+    height: auto;
     background: transparent !important;
     box-shadow: none;
     padding: 0;
   }
   .icons-container a {
+    width: 64px;
+    height: 64px;
+    font-size: 2.2rem;
     margin: 0;
-    /* You can tweak the icon size if needed */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+  }
+  .icons-container a:hover {
+    color: var(--secondary-color);
+    background: #222;
+    box-shadow: 0 0 16px #ffd70099;
   }
   footer {
-    padding: 0; /* Remove bottom padding for fixed icons */
+    padding: 0;
     background: transparent !important;
     padding-bottom: 0;
   }
