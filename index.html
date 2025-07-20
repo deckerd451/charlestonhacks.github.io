@@ -25,6 +25,14 @@
     <main>
         <div class="main-wrapper">
             <div class="media-container" aria-label="Toggle mission content" tabindex="0">
+                <div id="btcPrice" style="
+    position: absolute;
+    left: 0; right: 0; top: 40%; text-align: center; 
+    font-size: 2em; color: #f2a900; opacity: 0.15; 
+    z-index: 2; pointer-events: none; font-weight: bold; 
+    font-family: monospace, sans-serif;">
+    <!-- BTC price will appear here -->
+</div>
                 <img id="missionImage" src="icons/card.png" alt="Big Playing Card" style="z-index: 3;" />
                 <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;"/>
                 <video id="missionVideo" muted playsinline controls style="display:none;opacity:0;">
@@ -232,5 +240,22 @@
         100% { box-shadow: none;}
     }
     </style>
+    <script>
+function updateBTCPrice() {
+    fetch('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
+        .then(response => response.json())
+        .then(data => {
+            const price = data.bpi.USD.rate_float.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+            document.getElementById('btcPrice').textContent = `BTC: ${price}`;
+        })
+        .catch(() => {
+            document.getElementById('btcPrice').textContent = '';
+        });
+}
+document.addEventListener("DOMContentLoaded", () => {
+    updateBTCPrice();
+    setInterval(updateBTCPrice, 60000); // Update every minute
+});
+</script>
 </body>
 </html>
