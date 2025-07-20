@@ -133,19 +133,6 @@ html, footer, .icons-container {
     animation: flipImageY 2.0s forwards;
 }
 
-/* ==========================================================================
-   PANEL (large card that is central to the whole website)
-   ========================================================================== */
-.panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin-top: 40px;           /* space outside panel at top */
-  margin-bottom: 40px;        /* space outside panel at bottom */
-}
-
 @media (max-width: 768px) {
     .panel { width: 95%; min-height: 50vh; padding: 10px; }
 }
