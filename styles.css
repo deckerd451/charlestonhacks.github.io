@@ -306,6 +306,7 @@ html, footer, .icons-container {
     padding: 0;
   }
   .icons-container a {
+   color: var(--text-color); /* <-- ensure this line is present! */
     width: 64px;
     height: 64px;
     font-size: 2.2rem;
