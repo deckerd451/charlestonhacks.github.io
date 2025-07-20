@@ -232,10 +232,10 @@ html, footer, .icons-container {
 }
 
 /* --- Position classes: NO transform, just top/left/right/bottom --- */
-.top-left      { top: 2%; left: 5%; }
-.top-right     { top: 2%; right: 5%; }
-.bottom-left   { bottom: 2%; left: 5%; }
-.bottom-right  { bottom: 2%; right: 5%; }
+.top-left      { top: 3%; left: 5%; }
+.top-right     { top: 3%; right: 5%; }
+.bottom-left   { bottom: 3%; left: 5%; }
+.bottom-right  { bottom: 3%; right: 5%; }
 
 .top-center    { top: 2%; left: 43%; transform: translateX(-50%); }
 .bottom-center { bottom: 2%; left: 43%; transform: translateX(-50%); }
