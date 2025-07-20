@@ -133,13 +133,15 @@
                 missionVideo.load();
                 missionVideo.play();
                 buttons.forEach(b => b.disabled = true);
-                missionVideo.onended = () => {
-                    missionVideo.pause();
-                    missionVideo.style.display = "none";
-                    missionVideo.style.opacity = "0";
-                    cardFrame.style.display = "none";
-                    buttons.forEach(b => b.disabled = false);
-                };
+            missionVideo.onended = () => {
+    missionVideo.pause();
+    missionVideo.style.display = "none";
+    missionVideo.style.opacity = "0";
+    cardFrame.style.display = "none";
+    buttons.forEach(b => b.disabled = false);
+    // Open the link automatically
+    window.location.href = btn.dataset.url;
+};
                 e.preventDefault();
             } else {
                 window.location.href = btn.dataset.url;
