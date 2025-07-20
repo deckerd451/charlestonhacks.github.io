@@ -251,14 +251,14 @@
     </style>
     <script>
 function updateBTCPrice() {
-    fetch('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')
         .then(response => response.json())
         .then(data => {
-            const price = data.bpi.USD.rate_float.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+            const price = data.bitcoin.usd.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
             document.getElementById('btcPrice').textContent = `BTC: ${price}`;
         })
         .catch(() => {
-            document.getElementById('btcPrice').textContent = '';
+            document.getElementById('btcPrice').textContent = 'BTC price unavailable';
         });
 }
 document.addEventListener("DOMContentLoaded", () => {
