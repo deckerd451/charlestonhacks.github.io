@@ -23,53 +23,57 @@
     <audio id="clickSound" src="sounds/click.mp3"></audio>
     <main>
         <div class="main-wrapper">
-            <div class="media-container">
-                <div class="card-center">
-                    <img id="missionImage" src="icons/card.png" alt="Big Playing Card" />
-                    <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
-                    <video id="missionVideo" muted playsinline controls style="display:none;">
-                        <source src="" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+            <div class="panel">
+                <div class="media-container">
+                    <div class="card-center">
+                        <img id="missionImage" src="icons/card.png" alt="Big Playing Card" />
+                        <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
+                        <video id="missionVideo" muted playsinline controls style="display:none;">
+                            <source src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <!-- Card Buttons -->
+                    <button type="button" class="clickable-area top-left">
+                        <img src="images/informationbutton.webp" alt="Info">
+                    </button>
+                    <button type="button" class="clickable-area top-center">
+                        <img src="images/crestn.svg" alt="Crest">
+                    </button>
+                    <button type="button" class="clickable-area top-right">
+                        <img src="images/innovationenginebutton.webp" alt="Innovation">
+                    </button>
+                    <button type="button" class="clickable-area middle-left">
+                        <img src="images/experiment.webp" alt="Experiment">
+                    </button>
+                    <button type="button" class="clickable-area middle-right">
+                        <img src="images/case.webp" alt="Case">
+                    </button>
+                    <button type="button" class="clickable-area bottom-left">
+                        <img src="images/newsbutton.webp" alt="News">
+                    </button>
+                    <button type="button" class="clickable-area bottom-center">
+                        <img src="images/keysn.svg" alt="Keys">
+                    </button>
+                    <button type="button" class="clickable-area bottom-right">
+                        <img src="images/peoplebutton.webp" alt="People">
+                    </button>
                 </div>
-                <!-- Card Buttons -->
-                <button type="button" class="clickable-area top-left">
-                    <img src="images/informationbutton.webp" alt="Info">
-                </button>
-                <button type="button" class="clickable-area top-center">
-                    <img src="images/crestn.svg" alt="Crest">
-                </button>
-                <button type="button" class="clickable-area top-right">
-                    <img src="images/innovationenginebutton.webp" alt="Innovation">
-                </button>
-                <button type="button" class="clickable-area middle-left">
-                    <img src="images/experiment.webp" alt="Experiment">
-                </button>
-                <button type="button" class="clickable-area middle-right">
-                    <img src="images/case.webp" alt="Case">
-                </button>
-                <button type="button" class="clickable-area bottom-left">
-                    <img src="images/newsbutton.webp" alt="News">
-                </button>
-                <button type="button" class="clickable-area bottom-center">
-                    <img src="images/keysn.svg" alt="Keys">
-                </button>
-                <button type="button" class="clickable-area bottom-right">
-                    <img src="images/peoplebutton.webp" alt="People">
-                </button>
+                <!-- Vertically aligned icons beside the panel edge on desktop -->
+                <section class="icons-container">
+                    <a href="2card.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
+                    <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope"></i></a>
+                    <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
+                </section>
             </div>
         </div>
     </main>
     <footer>
-        <section class="icons-container">
-            <a href="2card.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope"></i></a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
-        </section>
+        <!-- Footer content if any, leave empty or use for mobile icons if desired -->
     </footer>
     <script>
     // Button URLs in order
