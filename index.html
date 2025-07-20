@@ -24,6 +24,10 @@
     <main>
         <div class="main-wrapper">
             <div class="media-container">
+
+                <!-- BTC price badge: behind the card, move with CSS as needed -->
+                <span id="btc-price" aria-label="Bitcoin price"></span>
+
                 <div class="card-center">
                     <img id="missionImage" src="icons/card.png" alt="Big Playing Card" />
                     <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
@@ -58,142 +62,39 @@
                     <img src="images/peoplebutton.webp" alt="People">
                 </button>
             </div>
+            <!-- Move icons-container OUTSIDE footer, directly under main-wrapper -->
+            <section class="icons-container">
+                <a href="2card.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
+                <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope"></i></a>
+                <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
+            </section>
         </div>
-        <!-- Move icons-container OUTSIDE footer, directly under main-wrapper -->
-        <section class="icons-container">
-            <a href="2card.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope"></i></a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
-        </section>
     </main>
     <footer>
         <!-- Footer is now empty or can be used for copyright, etc. -->
     </footer>
     <script>
-    // Button URLs in order
-    const buttonURLs = [
-        "Poster.html",         // top-left
-        "docs.html",           // top-center
-        "2card.html",          // top-right
-        "https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/", // middle-left
-        "swag.html",           // middle-right
-        "news.html",           // bottom-left
-        "https://charlestonhacks.mailchimpsites.com/", // bottom-center
-        "cardmatchgame.html"   // bottom-right
-    ];
-    // Videos in order (or shuffled if you wish)
-    const videos = [
-        "images/Descartesvideo.mp4",
-        "images/medusa best.mp4",
-        "images/medusa 1.mp4",
-        "images/young medusa.mp4",
-        "images/Alexandorvideo.mp4",
-        "images/Elaravideo.mp4",
-        "images/elara rage.mp4",
-        "images/astridvideo.mp4",
-        "images/aegisvideo.mp4",
-        "images/wolfvideo.mp4",
-        "images/merlin.mp4",
-        "images/hermesvideo.mp4",
-        "images/Mystery.mp4"
-    ];
-    function shuffle(array) {
-        let arr = array.slice();
-        for (let i = arr.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
+    // Bitcoin price fetcher (only on homepage)
+    function updateBTCPrice() {
+      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('btc-price').textContent =
+            `BTC: $${data.bitcoin.usd.toLocaleString()} `;
+        })
+        .catch(() => {
+          document.getElementById('btc-price').textContent = 'BTC: n/a';
+        });
     }
-    // Wait for DOM ready
-    document.addEventListener("DOMContentLoaded", function() {
-        const shuffledVideos = shuffle(videos);
-        const buttons = document.querySelectorAll('.clickable-area');
-        const missionVideo = document.getElementById('missionVideo');
-        const cardFrame = document.getElementById('cardFrame');
-        const atmosphereSound = document.getElementById('atmosphereSound');
-        const clickSound = document.getElementById('clickSound');
-        let soundStarted = false;
+    updateBTCPrice();
+    setInterval(updateBTCPrice, 180000); // every 3 minutes
 
-        // Start atmosphere sound after first user interaction (autoplay policy)
-        function startAtmosphereSound() {
-            if (!soundStarted) {
-                atmosphereSound.volume = 0.45;
-                atmosphereSound.play().catch(()=>{}); // ignore errors
-                soundStarted = true;
-            }
-        }
-        // Listen for any user gesture to start sound
-        window.addEventListener('click', startAtmosphereSound, { once: true });
-        window.addEventListener('keydown', startAtmosphereSound, { once: true });
-        window.addEventListener('touchstart', startAtmosphereSound, { once: true });
-
-        // Setup button data and click events
-        buttons.forEach((btn, i) => {
-            btn.dataset.buttonIndex = i;
-            btn.dataset.video = shuffledVideos[i % shuffledVideos.length];
-            btn.dataset.played = "false";
-            btn.dataset.url = buttonURLs[i];
-        });
-        buttons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // Play click sound on every click
-                if (clickSound) {
-                    clickSound.currentTime = 0;
-                    clickSound.volume = 0.7;
-                    clickSound.play().catch(()=>{});
-                }
-                startAtmosphereSound();
-
-                if (btn.dataset.played === "false") {
-                    btn.dataset.played = "true";
-                    missionVideo.src = btn.dataset.video;
-                    missionVideo.style.display = "block";
-                    missionVideo.style.opacity = "1";
-                    cardFrame.style.display = "block";
-                    missionVideo.muted = false;
-                    // Only show controls on desktop
-                    if (window.matchMedia("(max-width: 600px)").matches) {
-                        missionVideo.removeAttribute('controls');
-                    } else {
-                        missionVideo.setAttribute('controls', '');
-                    }
-                    missionVideo.load();
-                    missionVideo.play();
-                    buttons.forEach(b => b.disabled = true);
-                    missionVideo.onended = () => {
-                        missionVideo.pause();
-                        missionVideo.style.display = "none";
-                        missionVideo.style.opacity = "0";
-                        cardFrame.style.display = "none";
-                        buttons.forEach(b => b.disabled = false);
-                        window.location.href = btn.dataset.url;
-                    };
-                    e.preventDefault();
-                } else {
-                    window.location.href = btn.dataset.url;
-                }
-            });
-            btn.addEventListener('keydown', function(e) {
-                if (e.key === "Enter" || e.key === " ") {
-                    btn.click();
-                }
-            });
-        });
-
-        // Video controls for desktop/mobile
-        if (missionVideo) {
-            if (window.matchMedia("(max-width: 600px)").matches) {
-                missionVideo.removeAttribute('controls');
-            } else {
-                missionVideo.setAttribute('controls', '');
-            }
-        }
-    });
+    // ...rest of your existing JS...
+    // (keep the big script block as in your current index.html)
     </script>
 </body>
 </html>
