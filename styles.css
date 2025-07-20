@@ -726,7 +726,7 @@ footer {
 }
 @media (min-width: 769px) {
     .panel {
-        width: 30%;
-        max-width: 340px;
+        width: 25%;
+        max-width: 300px;
     }
 }
