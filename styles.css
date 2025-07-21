@@ -650,7 +650,7 @@ html, footer, .icons-container {
 
 .panel {
     position: relative;
-    margin-top: 40px;
+margin-top: 0 !important; }
     box-sizing: border-box;
 }
 
