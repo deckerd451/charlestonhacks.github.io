@@ -727,7 +727,7 @@ main, .main-wrapper, .media-container {
   .icons-container {
     position: fixed;
     left: 0;
-    bottom: 10px; /* 10px from bottom of viewport */
+    bottom: 5px; /* 5px from bottom of viewport */
     width: 100vw;
     display: flex;
     justify-content: center;
