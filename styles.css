@@ -740,5 +740,11 @@ main, .main-wrapper, .media-container {
   .icons-container a {
     font-size: 28px;
     padding: 8px;
+    color: #00CFFF; /* light blue for all icons */
+    transition: color 0.3s;
+  }
+  .icons-container a .fa-heart,
+  .icons-container a .fas.fa-heart {
+    color: #FF69B4; /* pink just for heart icon (FontAwesome) */
   }
 }
