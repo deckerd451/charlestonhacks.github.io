@@ -696,3 +696,16 @@ html, footer, .icons-container {
         max-height: 110px;
     }
 }
+@media (min-width: 769px) {
+    .panel {
+        width: 40%;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+.panels-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
