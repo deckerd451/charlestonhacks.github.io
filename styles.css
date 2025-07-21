@@ -246,7 +246,7 @@ html, footer, .icons-container {
 @media (min-width: 769px) {
   .icons-container {
     position: fixed;
-    top: 30px; /* <-- THIS VALUE controls how far from the top */
+    top: 30px;
     right: 40px;
     z-index: 100;
     display: flex;
@@ -606,8 +606,7 @@ html, footer, .icons-container {
     }
     #aiffBanner { display: block; margin: 40px auto 0; }
     .input-container { padding: 0 10px; }
-    .icons-container { flex-direction: row; flex-wrap: wrap; gap: 10px; }
-    .icons-container a { font-size: 24px; padding: 8px; }
+    /* Removed duplicate/less complete icon styles here */
 }
 
 /* Tab Content and Navigation */
