@@ -246,7 +246,7 @@ html, footer, .icons-container {
 @media (min-width: 769px) {
   .icons-container {
     position: fixed;
-    top: 50px;
+    top: 30px; /* <-- THIS VALUE controls how far from the top */
     right: 40px;
     z-index: 100;
     display: flex;
