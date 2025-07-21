@@ -696,9 +696,3 @@ html, footer, .icons-container {
         max-height: 110px;
     }
 }
-@media (min-width: 769px) {
-    .panel {
-        width: 25%;
-        max-width: 300px;
-    }
-}
