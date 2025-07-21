@@ -252,7 +252,7 @@ html, footer, .icons-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 28px;
+    gap: 26px;
     height: auto;
     background: transparent !important;
     box-shadow: none;
