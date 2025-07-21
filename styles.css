@@ -707,7 +707,9 @@ html, footer, .icons-container {
 .panels-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;      /* This centers vertically */
-    min-height: 100vh;        /* This makes the container full viewport height */
+    align-items: center;
+    min-height: 100vh;      /* This fills the vertical space */
     gap: 40px;
+    margin: 0;              /* Remove any default margin */
+    padding: 0;             /* Remove any default padding */
 }
