@@ -240,8 +240,6 @@ html, footer, .icons-container {
     }
 }
 
-
-
 /* ==========================================================================
    FOOTER ICONS: VERTICAL RIGHT OF PANEL (DESKTOP)
    ========================================================================== */
@@ -254,14 +252,14 @@ html, footer, .icons-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 28px; /* even vertical spacing */
+    gap: 28px;
     height: auto;
     background: transparent !important;
     box-shadow: none;
     padding: 0;
   }
   .icons-container a {
-   color: var(--text-color); /* <-- ensure this line is present! */
+    color: var(--text-color);
     width: 64px;
     height: 64px;
     font-size: 2.2rem;
@@ -281,10 +279,8 @@ html, footer, .icons-container {
     padding: 0;
     background: transparent !important;
     padding-bottom: 0;
-  /* <--- disply none doesnt work ADD THIS LINE HERE */
   }
 }
-
 
 /* ==========================================================================
    Teambuilder Styles
@@ -518,7 +514,6 @@ html, footer, .icons-container {
     margin: 0 0 8px 0;
 }
 
-
 /* Footer Social */
 .social-container {
     display: flex;
@@ -650,8 +645,8 @@ html, footer, .icons-container {
 
 .panel {
     position: relative;
-margin-top: 0 !important; }
     box-sizing: border-box;
+    margin-top: 0 !important;
 }
 
 @media (max-width: 768px) {
@@ -665,15 +660,13 @@ margin-top: 0 !important; }
         width: 25%;
         max-width: 300px;
     }
-   }
+}
 
 .tab-content-pane .section-title { margin-top: 0; }
 
 @media (max-width: 768px) {
     .tab-nav { flex-wrap: wrap; justify-content: flex-start; }
     .tab-button { flex-grow: 1; text-align: center; }
-   
-   /* Change These Values To Change Button Size and Panel Size on Desktop */
 }
 @media (min-width: 769px) {
     .clickable-area {
@@ -704,19 +697,29 @@ margin-top: 0 !important; }
         margin-right: auto;
     }
 }
+
 .panels-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;      /* This fills the vertical space */
+    min-height: 100vh;
     gap: 40px;
-    margin: 0;              /* Remove any default margin */
-    padding: 0;             /* Remove any default padding */
+    margin: 0;
+    padding: 0;
 }
+
+/*
+  Only the top-level flex container should handle vertical centering.
+  Remove flex centering from main, .main-wrapper, .media-container unless you have a layout reason.
+  If you want true vertical centering for just the card, use only panels-wrapper.
+*/
+
 main, .main-wrapper, .media-container {
-    display: flex;
-    flex-direction: column; /* or row, if you want horizontal layout */
+    /* If you need these to be flex for another reason, keep them.
+       Otherwise, remove flex centering here. */
+    /* display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* fills the viewport */
+    min-height: 100vh; */
 }
