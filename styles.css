@@ -713,3 +713,10 @@ html, footer, .icons-container {
     margin: 0;              /* Remove any default margin */
     padding: 0;             /* Remove any default padding */
 }
+main, .main-wrapper, .media-container {
+    display: flex;
+    flex-direction: column; /* or row, if you want horizontal layout */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* fills the viewport */
+}
