@@ -1,4 +1,4 @@
-const cacheName = 'charlestonhacks-v21'; // update this on each deploy
+const cacheName = 'charlestonhacks-v22'; // update this on each deploy
 const assetsToCache = [
   '/',
   '/index.html',
