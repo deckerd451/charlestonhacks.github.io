@@ -17,6 +17,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <style>
+    /* Splash overlay styles */
+    #splash-overlay {
+      position: fixed;
+      z-index: 10000;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.7s;
+      opacity: 1;
+      pointer-events: all;
+    }
+    #splash-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #splash-content {
+      text-align: center;
+      max-width: 400px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #222;
+    }
+    #splash-content h1 {
+      color: #ff6600;
+      font-size: 2.3em;
+      margin-bottom: 0.5em;
+      font-family: 'Britannic Bold', Arial, sans-serif;
+      letter-spacing: 0.5px;
+    }
+    #splash-content p {
+      font-size: 1.18em;
+      color: #222;
+    }
+    @media (max-width: 600px) {
+      #splash-content h1 { font-size: 1.5em; }
+      #splash-content p { font-size: 1em; }
+    }
+    body.splash-active {
+      overflow: hidden;
+    }
     /* Minimal flip and glow animation styles */
     .flip-image-x { animation: flipX 1.2s; }
     .flip-image-y { animation: flipY 1.2s; }
@@ -81,7 +122,16 @@
     }
     </style>
 </head>
-<body>
+<body class="splash-active">
+    <!-- Splash Screen Overlay -->
+    <div id="splash-overlay">
+      <div id="splash-content">
+        <h1>Welcome to CharlestonHacks</h1>
+        <p>
+          You'll soon be presented with an interactive card that will take you to different parts of our lore.
+        </p>
+      </div>
+    </div>
     <!-- Preload sounds -->
     <audio id="cardflipSound" src="assets/atmospherel.m4a" preload="auto"></audio>
     <audio id="chimeSound" src="assets/chime.mp3" preload="auto"></audio>
@@ -155,6 +205,18 @@
     <footer>
         <!-- Footer is now empty or can be used for copyright, etc. -->
     </footer>
+    <script>
+    // SPLASH SCREEN LOGIC
+    window.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        document.getElementById('splash-overlay').classList.add('fade-out');
+        document.body.classList.remove('splash-active');
+        setTimeout(function() {
+          document.getElementById('splash-overlay').style.display = 'none';
+        }, 700); // matches the CSS transition
+      }, 3000); // 3 seconds splash
+    });
+    </script>
     <script>
     // --- Config & Assets ---
     const CONFIG = {
