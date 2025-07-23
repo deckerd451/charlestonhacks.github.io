@@ -146,12 +146,12 @@
         background: linear-gradient(90deg, rgba(40,40,40,0.94) 85%, rgba(255, 179, 0, 0.18));
         transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
     }
-    @keyframes infoSlideUpBounce {
-      0% { transform: translateY(40px) scale(0.93); opacity: 0; }
-      60% { transform: translateY(-8px) scale(1.08); opacity: 1; }
-      90% { transform: translateY(1.5px) scale(0.98);}
-      100% { transform: translateY(0) scale(1.00);}
-    }
+ @keyframes infoSlideUpBounce {
+  0%   { transform: translateX(-50%) translateY(40px) scale(0.93); opacity: 0; }
+  60%  { transform: translateX(-50%) translateY(-8px) scale(1.08); opacity: 1; }
+  90%  { transform: translateX(-50%) translateY(1.5px) scale(0.98);}
+  100% { transform: translateX(-50%) translateY(0) scale(1.00);}
+}
     .info-particle {
         display: inline-block;
         margin-right: 4px;
