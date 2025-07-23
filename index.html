@@ -91,6 +91,10 @@
     body.splash-active {
       overflow: hidden;
     }
+        .media-container {
+  transform: scale(0.93);
+  transform-origin: center top;
+}
     /* Minimal flip and glow animation styles */
     .flip-image-x { animation: flipX 1.2s; }
     .flip-image-y { animation: flipY 1.2s; }
@@ -111,29 +115,28 @@
     }
     /* Info line styling - ENHANCED */
     .info-line {
-  position: fixed;
-  left: 50%;
-  bottom: 40px; /* or whatever looks good */
-  transform: translateX(-50%);
-        min-width: 180px;
-    /* max-width: 90vm */
-        background: rgba(40,40,40,0.92);
-        color: #ffd700;
-        font-size: 1em;
-        font-family: 'Britannic Bold', Arial, sans-serif;
-        text-align: center;
-        border-radius: 8px;
-        padding: 8px 16px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.18);
-        z-index: 10;
-        pointer-events: none;
-        transition: opacity 0.25s, box-shadow 0.35s;
-        opacity: 0;
-        border: 2px solid transparent;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
+      position: fixed;
+      left: 50%;
+      bottom: 40px; /* or whatever looks good */
+      transform: translateX(-50%);
+      min-width: 180px;
+      background: rgba(40,40,40,0.92);
+      color: #ffd700;
+      font-size: 1em;
+      font-family: 'Britannic Bold', Arial, sans-serif;
+      text-align: center;
+      border-radius: 8px;
+      padding: 8px 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+      z-index: 10;
+      pointer-events: none;
+      transition: opacity 0.25s, box-shadow 0.35s;
+      opacity: 0;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     .info-line.visible {
         display: flex;
@@ -146,12 +149,12 @@
         background: linear-gradient(90deg, rgba(40,40,40,0.94) 85%, rgba(255, 179, 0, 0.18));
         transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
     }
- @keyframes infoSlideUpBounce {
-  0%   { transform: translateX(-50%) translateY(40px) scale(0.93); opacity: 0; }
-  60%  { transform: translateX(-50%) translateY(-8px) scale(1.08); opacity: 1; }
-  90%  { transform: translateX(-50%) translateY(1.5px) scale(0.98);}
-  100% { transform: translateX(-50%) translateY(0) scale(1.00);}
-}
+    @keyframes infoSlideUpBounce {
+      0%   { transform: translateX(-50%) translateY(40px) scale(0.93); opacity: 0; }
+      60%  { transform: translateX(-50%) translateY(-8px) scale(1.08); opacity: 1; }
+      90%  { transform: translateX(-50%) translateY(1.5px) scale(0.98);}
+      100% { transform: translateX(-50%) translateY(0) scale(1.00);}
+    }
     .info-particle {
         display: inline-block;
         margin-right: 4px;
@@ -186,6 +189,34 @@
     .media-container {
         position: relative;
     }
+    /* Horizontal countdown styles */
+    #countdown {
+      position: absolute;
+      left: 50%;
+      top: 19%;
+      transform: translateX(-50%);
+      font-size: 1.3em;
+      color: #ffd700;
+      opacity: 0.92;
+      z-index: 4;
+      pointer-events: none;
+      font-weight: bold;
+      font-family: 'Britannic Bold', Arial, sans-serif;
+      width: 80%;
+      text-align: center;
+      letter-spacing: 0.03em;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+    @media (max-width: 600px) {
+      #countdown {
+        font-size: 1em;
+        gap: 10px;
+      }
+    }
     </style>
 </head>
 <body class="splash-active">
@@ -209,21 +240,25 @@
     <main>
         <div class="main-wrapper">
             <div class="media-container" aria-label="Toggle mission content" tabindex="0">
+                <!-- Horizontal Countdown -->
+                <div id="countdown">
+                  <!-- Countdown will appear here -->
+                </div>
                 <div id="btcPrice" style="
-    position: absolute;
-    left: 50%;
-    bottom: 19%;
-    transform: translateX(-50%);
-    font-size: 1.3em;
-    color: #2196f3;
-    opacity: 0.8;
-    z-index: 4;
-    pointer-events: none;
-    font-weight: bold;
-    font-family: monospace, sans-serif;
-    width: 80%;
-    text-align: center;">
-    <!-- BTC price will appear here -->
+      position: absolute;
+      left: 50%;
+      bottom: 19%;
+      transform: translateX(-50%);
+      font-size: 1.3em;
+      color: #2196f3;
+      opacity: 0.8;
+      z-index: 4;
+      pointer-events: none;
+      font-weight: bold;
+      font-family: monospace, sans-serif;
+      width: 80%;
+      text-align: center;">
+      <!-- BTC price will appear here -->
                 </div>
                 <img id="missionImage" src="icons/card.png" alt="Big Playing Card" style="z-index: 3;" />
                 <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;"/>
@@ -528,6 +563,44 @@
     document.addEventListener("DOMContentLoaded", () => {
         updateBTCPrice();
         setInterval(updateBTCPrice, 60000); // Update every minute
+    });
+    </script>
+    <script>
+    // Horizontal Countdown to October 3rd, 2025
+    function updateCountdown() {
+        const eventDate = new Date('2025-10-03T00:00:00-04:00');
+        const now = new Date();
+        let diff = eventDate - now;
+        if (diff < 0) diff = 0;
+
+        const days = Math.floor(diff / (1000*60*60*24));
+        const hours = Math.floor((diff / (1000*60*60)) % 24);
+        const minutes = Math.floor((diff / (1000*60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        const pad = n => n.toString().padStart(2, '0');
+
+        document.getElementById('countdown').innerHTML = `
+          <span style="font-size:1.07em; color:#ffd700; letter-spacing:0.02em; margin-right:10px;">
+            <b>Countdown to Oct 3, 2025:</b>
+          </span>
+          <span style="font-size:1.23em; color:#ffd700; font-weight:bold; margin:0 8px;">
+            ${days}<span style="font-size:0.7em; color:#fff5b8; font-weight:normal; margin-left:2px;">d</span>
+          </span>
+          <span style="font-size:1.23em; color:#ffd700; font-weight:bold; margin:0 8px;">
+            ${pad(hours)}<span style="font-size:0.7em; color:#fff5b8; font-weight:normal; margin-left:2px;">h</span>
+          </span>
+          <span style="font-size:1.23em; color:#ffd700; font-weight:bold; margin:0 8px;">
+            ${pad(minutes)}<span style="font-size:0.7em; color:#fff5b8; font-weight:normal; margin-left:2px;">m</span>
+          </span>
+          <span style="font-size:1.23em; color:#ffd700; font-weight:bold; margin:0 8px;">
+            ${pad(seconds)}<span style="font-size:0.7em; color:#fff5b8; font-weight:normal; margin-left:2px;">s</span>
+          </span>
+        `;
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
     });
     </script>
 </body>
