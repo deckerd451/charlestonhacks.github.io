@@ -291,8 +291,8 @@ main, .main-wrapper, .media-container {
 .bottom-left   { bottom: 3%; left: 5%; }
 .bottom-right  { bottom: 3%; right: 5%; }
 
-.top-center    { top: 1%; left: 50%; transform: translateX(-50%); }
-.bottom-center { bottom: 1%; left: 50%; transform: translateX(-50%); }
+.top-center    { top: 1%; left: 40%; transform: translateX(-50%); }
+.bottom-center { bottom: 1%; left: 40%; transform: translateX(-50%); }
 .middle-left   { top: 45%; left: 5%; transform: translateY(-50%); }
 .middle-right  { top: 45%; right: 5%; transform: translateY(-50%); }
 .center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
