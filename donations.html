@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donate to CharlestonHacks</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Support CharlestonHacks</h1>
+      <p>Your contribution helps grow the creative tech community.</p>
+    </header>
+
+    <section class="card-container">
+      <!-- GitHub Sponsors Card -->
+      <div class="team-member-card">
+        <img src="images/githubsponsor.webp" alt="GitHub Sponsors" />
+        <div class="member-name">GitHub Sponsors</div>
+        <p class="user-status">Become a recurring sponsor</p>
+        <button class="endorse-btn" onclick="window.open('https://github.com/sponsors/deckerd451', '_blank')">
+          <i class="fab fa-github"></i> Sponsor on GitHub
+        </button>
+      </div>
+
+      <!-- BTCPay Donate Card -->
+      <div class="team-member-card">
+        <img src="images/bitcoin.webp" alt="Bitcoin Donation" />
+        <div class="member-name">Donate with Bitcoin</div>
+        <p class="user-status">Secure & borderless</p>
+        <form method="POST" action="https://your-btcpay-server-url.com/api/v1/invoices" target="_blank">
+          <input type="hidden" name="storeId" value="YOUR_STORE_ID" />
+          <input type="hidden" name="price" value="10" />
+          <input type="hidden" name="currency" value="USD" />
+          <input type="hidden" name="checkoutDesc" value="Donation to CharlestonHacks" />
+          <button type="submit" class="endorse-btn">
+            <i class="fab fa-bitcoin"></i> Donate BTC
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <p class="profile-complete" style="text-align:center; margin-top:20px;">Thank you for supporting innovation and community tech in Charleston!</p>
+  </main>
+
+  <footer>
+    <p style="text-align:center; font-size:0.9em; color:#666; padding:1em 0;">&copy; 2025 CharlestonHacks. All rights reserved.</p>
+  </footer>
+</body>
+</html>
