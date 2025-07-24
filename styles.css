@@ -181,7 +181,7 @@ html, footer, .icons-container {
 .panel {
     position: relative;
     box-sizing: border-box;
-    margin-top: 0 !important;
+    margin-top: 40px; /* Adjust as needed */
 }
 
 /* Responsive Sizing */
