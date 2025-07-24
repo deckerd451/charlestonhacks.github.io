@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>CharlestonHacks - Home</title>
-    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-    <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
-    <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
-    <meta property="og:image" content="images/websitepanel.webp" />
-    <meta property="og:url" content="https://charlestonhacks.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#ff6600">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-    /* Splash overlay styles */
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CharlestonHacks - Home</title>
+  <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
+  <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
+  <meta property="og:description" content="CharlestonHacks promotes tech events, meetups and hackathons. Join us for exciting events and stay updated." />
+  <meta property="og:image" content="images/websitepanel.webp" />
+  <meta property="og:url" content="https://charlestonhacks.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ff6600">
+  <link rel="canonical" href="https://charlestonhacks.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Reinserting CSS from original document */
+    body.splash-active {
+      overflow: hidden;
+    }
     #splash-overlay {
       position: fixed;
       z-index: 10000;
@@ -60,8 +64,8 @@
       animation: logo-bounce 1s;
     }
     @keyframes logo-bounce {
-      0%   { transform: scale(0.2); opacity: 0; }
-      60%  { transform: scale(1.15); opacity: 1; }
+      0% { transform: scale(0.2); opacity: 0; }
+      60% { transform: scale(1.15); opacity: 1; }
       100% { transform: scale(1.0); }
     }
     #skip-splash-btn {
@@ -88,36 +92,32 @@
       #splash-logo { width: 90px; }
       #skip-splash-btn { font-size: 1em; }
     }
-    body.splash-active {
-      overflow: hidden;
+    .media-container {
+      position: relative;
+      transform: scale(0.93);
+      transform-origin: center top;
     }
-        .media-container {
-  transform: scale(0.93);
-  transform-origin: center top;
-}
-    /* Minimal flip and glow animation styles */
     .flip-image-x { animation: flipX 1.2s; }
     .flip-image-y { animation: flipY 1.2s; }
     @keyframes flipX {
-        0% { transform: rotateY(0deg);}
-        50% { transform: rotateY(180deg);}
-        100% { transform: rotateY(0deg);}
+      0% { transform: rotateY(0deg); }
+      50% { transform: rotateY(180deg); }
+      100% { transform: rotateY(0deg); }
     }
     @keyframes flipY {
-        0% { transform: rotateX(0deg);}
-        50% { transform: rotateX(180deg);}
-        100% { transform: rotateX(0deg);}
+      0% { transform: rotateX(0deg); }
+      50% { transform: rotateX(180deg); }
+      100% { transform: rotateX(0deg); }
     }
     .glow-animate { animation: glow 0.46s; }
     @keyframes glow {
-        0% { box-shadow: 0 0 2px 1px #ff6600;}
-        100% { box-shadow: none;}
+      0% { box-shadow: 0 0 2px 1px #ff6600; }
+      100% { box-shadow: none; }
     }
-    /* Info line styling - ENHANCED */
     .info-line {
       position: fixed;
       left: 50%;
-      bottom: 40px; /* or whatever looks good */
+      bottom: 40px;
       transform: translateX(-50%);
       min-width: 180px;
       background: rgba(40,40,40,0.92);
@@ -139,57 +139,45 @@
       gap: 8px;
     }
     .info-line.visible {
-        display: flex;
-        opacity: 1;
-        animation: infoSlideUpBounce 0.7s cubic-bezier(.42,0,.58,1.0);
+      display: flex;
+      opacity: 1;
+      animation: infoSlideUpBounce 0.7s cubic-bezier(.42,0,.58,1.0);
     }
     .info-line.glow {
-        box-shadow: 0 0 16px 5px #ffb700, 0 0 0px 2px #ff6600;
-        border-color: #ffb700;
-        background: linear-gradient(90deg, rgba(40,40,40,0.94) 85%, rgba(255, 179, 0, 0.18));
-        transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      box-shadow: 0 0 16px 5px #ffb700, 0 0 0px 2px #ff6600;
+      border-color: #ffb700;
+      background: linear-gradient(90deg, rgba(40,40,40,0.94) 85%, rgba(255, 179, 0, 0.18));
+      transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
     }
     @keyframes infoSlideUpBounce {
-      0%   { transform: translateX(-50%) translateY(40px) scale(0.93); opacity: 0; }
-      60%  { transform: translateX(-50%) translateY(-8px) scale(1.08); opacity: 1; }
-      90%  { transform: translateX(-50%) translateY(1.5px) scale(0.98);}
-      100% { transform: translateX(-50%) translateY(0) scale(1.00);}
+      0% { transform: translateX(-50%) translateY(40px) scale(0.93); opacity: 0; }
+      60% { transform: translateX(-50%) translateY(-8px) scale(1.08); opacity: 1; }
+      90% { transform: translateX(-50%) translateY(1.5px) scale(0.98); }
+      100% { transform: translateX(-50%) translateY(0) scale(1.00); }
     }
     .info-particle {
-        display: inline-block;
-        margin-right: 4px;
-        opacity: 0;
-        transform: scale(0.5) rotate(-15deg);
-        animation: particleIn 1.1s forwards;
-        font-size: 1.22em;
-        filter: drop-shadow(0 0 2px #fff1a8);
-        pointer-events: none;
-        user-select: none;
+      display: inline-block;
+      margin-right: 4px;
+      opacity: 0;
+      transform: scale(0.5) rotate(-15deg);
+      animation: particleIn 1.1s forwards;
+      font-size: 1.22em;
+      filter: drop-shadow(0 0 2px #fff1a8);
+      pointer-events: none;
+      user-select: none;
     }
     @keyframes particleIn {
-        0% { opacity: 0; transform: scale(0.5) translateY(5px) rotate(-15deg);}
-        30% { opacity: 1; transform: scale(1.18) translateY(-8px) rotate(8deg);}
-        65% { opacity: 1; transform: scale(1.04) translateY(0px) rotate(-8deg);}
-        100% { opacity: 0; transform: scale(0.2) translateY(-25px) rotate(18deg);}
+      0% { opacity: 0; transform: scale(0.5) translateY(5px) rotate(-15deg); }
+      30% { opacity: 1; transform: scale(1.18) translateY(-8px) rotate(8deg); }
+      65% { opacity: 1; transform: scale(1.04) translateY(0px) rotate(-8deg); }
+      100% { opacity: 0; transform: scale(0.2) translateY(-25px) rotate(18deg); }
     }
     @media (max-width: 600px) {
-        .info-line {
-            font-size: 0.94em;
-            padding: 7px 8px;
-            min-width: 120px;
-        }
+      .info-line { font-size: 0.94em; padding: 7px 8px; min-width: 120px; }
     }
     @media (max-width: 400px) {
-        .info-line {
-            font-size: 0.9em;
-            padding: 6px 4px;
-            min-width: 80px;
-        }
+      .info-line { font-size: 0.9em; padding: 6px 4px; min-width: 80px; }
     }
-    .media-container {
-        position: relative;
-    }
-    /* Horizontal countdown styles */
     #countdown {
       position: absolute;
       left: 50%;
@@ -212,39 +200,9 @@
       gap: 7px;
     }
     @media (max-width: 600px) {
-      #countdown {
-        font-size: 1em;
-        gap: 10px;
-      }
+      #countdown { font-size: 1em; gap: 10px; }
     }
-    </style>
-</head>
-<body class="splash-active">
-    <!-- Splash Screen Overlay -->
-    <div id="splash-overlay" role="dialog" aria-modal="true" aria-labelledby="splash-title" aria-describedby="splash-desc">
-      <div id="splash-content">
-        <img id="splash-logo" src="images/charlestonhackslogo.svg" alt="CharlestonHacks Logo" />
-        <h1 id="splash-title">Welcome to CharlestonHacks</h1>
-        <p id="splash-desc">
-          You'll soon be presented with an interactive card that will take you to different parts of our lore.
-        </p>
-        <button id="skip-splash-btn" type="button" aria-label="Skip welcome screen (press Enter)">
-          Skip
-        </button>
-      </div>
-    </div>
-    <!-- Preload sounds -->
-    <audio id="cardflipSound" src="assets/atmospherel.m4a" preload="auto"></audio>
-    <audio id="chimeSound" src="assets/chime.mp3" preload="auto"></audio>
-    <audio id="keysSound" src="assets/keys.m4a" preload="auto"></audio>
-    <main>
-        <div class="main-wrapper">
-            <div class="media-container" aria-label="Toggle mission content" tabindex="0">
-                <!-- Horizontal Countdown -->
-                <div id="countdown">
-                  <!-- Countdown will appear here -->
-                </div>
-                <div id="btcPrice" style="
+    #btcPrice {
       position: absolute;
       left: 50%;
       bottom: 19%;
@@ -257,351 +215,291 @@
       font-weight: bold;
       font-family: monospace, sans-serif;
       width: 80%;
-      text-align: center;">
-      <!-- BTC price will appear here -->
-                </div>
-                <img id="missionImage" src="icons/card.png" alt="Big Playing Card" style="z-index: 3;" />
-                <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;"/>
-                <video id="missionVideo" muted playsinline controls style="display:none;opacity:0;">
-                    <source src="" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <!-- Card Buttons with sound and urls -->
-                <button type="button" class="clickable-area top-left" data-sound="chime" data-url="Poster.html" data-info="Learn more about the event poster.">
-                    <img src="images/informationbutton.webp" alt="Info">
-                </button>
-                <button type="button" class="clickable-area top-center" data-sound="chime" data-url="docs.html" data-info="Read event documentation and resources.">
-                    <img src="images/crestn.svg" alt="Crest">
-                </button>
-                <button type="button" class="clickable-area top-right" data-sound="chime" data-url="2card.html" data-info="Explore the innovation engine.">
-                    <img src="images/innovationenginebutton.webp" alt="Innovation">
-                </button>
-                <button type="button" class="clickable-area middle-left" data-sound="chime" data-url="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/" data-info="Experiment in the sandbox environment.">
-                    <img src="images/experiment.webp" alt="Experiment">
-                </button>
-                <button type="button" class="clickable-area middle-right" data-sound="chime" data-url="swag.html" data-info="View and order event swag.">
-                    <img src="images/case.webp" alt="Case">
-                </button>
-                <button type="button" class="clickable-area bottom-left" data-sound="chime" data-url="news.html" data-info="Catch up on the latest news.">
-                    <img src="images/newsbutton.webp" alt="News">
-                </button>
-                <button type="button" class="clickable-area bottom-center" data-sound="keys" data-url="https://github.com/sponsors/deckerd451" data-info="Sponsor CharlestonHacks and unlock perks.">
-                    <img src="images/keysn.svg" alt="Keys">
-                </button>
-                <button type="button" class="clickable-area bottom-right" data-sound="chime" data-url="cardmatchgame.html" data-info="Play the card match game.">
-                    <img src="images/peoplebutton.webp" alt="People">
-                </button>
-                <!-- Info line for clickable areas -->
-                <div id="infoLine" class="info-line"><span id="infoParticle"></span><span id="infoText"></span></div>
-            </div>
-        </div>
-        <!-- Icons Container -->
-        <section class="icons-container">
-            <a href="https://github.com/sponsors/deckerd451" target="_blank" aria-label="Sponsor CharlestonHacks"><i class="fas fa-heart"></i></a>
-            <a href="2card.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
-            <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope"></i></a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-        </section>
-    </main>
-    <footer>
-        <!-- Footer is now empty or can be used for copyright, etc. -->
-    </footer>
-    <script>
-    // SPLASH SCREEN LOGIC - ENHANCED
-    (function() {
-      const splashOverlay = document.getElementById('splash-overlay');
-      const skipBtn = document.getElementById('skip-splash-btn');
-      const splashKey = 'chs_splash_seen_v2';
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="splash-active">
+  <div id="splash-overlay" role="dialog" aria-modal="true" aria-labelledby="splash-title" aria-describedby="splash-desc">
+    <div id="splash-content">
+      <img id="splash-logo" src="images/charlestonhackslogo.svg" alt="CharlestonHacks Logo" />
+      <h1 id="splash-title">Welcome to CharlestonHacks</h1>
+      <p id="splash-desc">You'll soon be presented with an interactive card that will take you to different parts of our lore.</p>
+      <button id="skip-splash-btn" type="button" aria-label="Skip welcome screen (press Enter)">Skip</button>
+    </div>
+  </div>
 
-      function hideSplash(immediate=false) {
-        splashOverlay.classList.add('fade-out');
-        document.body.classList.remove('splash-active');
-        setTimeout(function() {
-          splashOverlay.style.display = 'none';
-        }, immediate ? 0 : 700);
-      }
+  <audio id="cardflipSound" src="assets/atmospherel.m4a" preload="auto"></audio>
+  <audio id="chimeSound" src="assets/chime.mp3" preload="auto"></audio>
+  <audio id="keysSound" src="assets/keys.m4a" preload="auto"></audio>
 
-      function maybeShowSplash() {
-        if (localStorage.getItem(splashKey)) {
-          hideSplash(true);
-        } else {
-          document.body.classList.add('splash-active');
-          splashOverlay.style.display = 'flex';
-          // Allow skipping with button or Enter/Space key
-          skipBtn.onclick = dismissSplash;
-          skipBtn.onkeyup = function(e) {
-            if (e.key === "Enter" || e.key === " ") dismissSplash();
-          };
-          window.addEventListener('keydown', function(e) {
-            // Only dismiss if splash is visible
-            if (
-              splashOverlay.style.display !== 'none' &&
-              (e.key === "Enter" || e.key === " ")
-            ) {
-              skipBtn.focus();
-              dismissSplash();
-            }
-          });
-          // Auto-dismiss after 3 seconds
-          setTimeout(dismissSplash, 3000);
+  <main>
+    <div class="main-wrapper">
+      <div class="media-container" aria-label="Toggle mission content" tabindex="0">
+        <div id="countdown" aria-live="polite"></div>
+        <div id="btcPrice" aria-live="polite"></div>
+        <img id="missionImage" src="icons/card.png" alt="Big Playing Card" style="z-index: 3;" />
+        <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" style="display:none;" />
+        <video id="missionVideo" muted playsinline controls style="display:none; opacity:0;">
+          <source src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+
+        <!-- Interactive Card Buttons -->
+        <button type="button" class="clickable-area top-left" data-sound="chime" data-url="Poster.html" data-info="Learn more about the event poster." role="button">
+          <img src="images/informationbutton.webp" alt="Info">
+        </button>
+        <button type="button" class="clickable-area top-center" data-sound="chime" data-url="docs.html" data-info="Read event documentation and resources." role="button">
+          <img src="images/crestn.svg" alt="Crest">
+        </button>
+        <button type="button" class="clickable-area top-right" data-sound="chime" data-url="2card.html" data-info="Explore the innovation engine." role="button">
+          <img src="images/innovationenginebutton.webp" alt="Innovation">
+        </button>
+        <button type="button" class="clickable-area middle-left" data-sound="chime" data-url="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/" data-info="Experiment in the sandbox environment." role="button">
+          <img src="images/experiment.webp" alt="Experiment">
+        </button>
+        <button type="button" class="clickable-area middle-right" data-sound="chime" data-url="swag.html" data-info="View and order event swag." role="button">
+          <img src="images/case.webp" alt="Case">
+        </button>
+        <button type="button" class="clickable-area bottom-left" data-sound="chime" data-url="news.html" data-info="Catch up on the latest news." role="button">
+          <img src="images/newsbutton.webp" alt="News">
+        </button>
+        <button type="button" class="clickable-area bottom-center" data-sound="keys" data-url="https://github.com/sponsors/deckerd451" data-info="Sponsor CharlestonHacks and unlock perks." role="button">
+          <img src="images/keysn.svg" alt="Keys">
+        </button>
+        <button type="button" class="clickable-area bottom-right" data-sound="chime" data-url="cardmatchgame.html" data-info="Play the card match game." role="button">
+          <img src="images/peoplebutton.webp" alt="People">
+        </button>
+
+        <div id="infoLine" class="info-line"><span id="infoParticle"></span><span id="infoText"></span></div>
+      </div>
+    </div>
+
+    <section class="icons-container">
+      <a href="https://github.com/sponsors/deckerd451" target="_blank" aria-label="Sponsor CharlestonHacks"><i class="fas fa-heart"></i></a>
+      <a href="2card.html" aria-label="Innovation Engine"><i class="fas fa-people-arrows"></i></a>
+      <a href="subscribe.html" aria-label="Subscribe"><i class="fas fa-bell"></i></a>
+      <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks"><i class="fas fa-envelope"></i></a>
+      <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+    </section>
+  </main>
+
+  <footer>
+    <p style="text-align:center; font-size:0.9em; color:#666; padding:1em 0;">&copy; 2025 CharlestonHacks. All rights reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+// SPLASH SCREEN LOGIC
+(function() {
+  const splashOverlay = document.getElementById('splash-overlay');
+  const skipBtn = document.getElementById('skip-splash-btn');
+  const splashKey = 'chs_splash_seen_v2';
+
+  function hideSplash(immediate = false) {
+    splashOverlay.classList.add('fade-out');
+    document.body.classList.remove('splash-active');
+    setTimeout(() => { splashOverlay.style.display = 'none'; }, immediate ? 0 : 700);
+  }
+
+  function maybeShowSplash() {
+    if (localStorage.getItem(splashKey)) {
+      hideSplash(true);
+    } else {
+      document.body.classList.add('splash-active');
+      splashOverlay.style.display = 'flex';
+      skipBtn.onclick = dismissSplash;
+      skipBtn.onkeyup = e => { if (e.key === 'Enter' || e.key === ' ') dismissSplash(); };
+      window.addEventListener('keydown', e => {
+        if (splashOverlay.style.display !== 'none' && (e.key === 'Enter' || e.key === ' ')) {
+          skipBtn.focus();
+          dismissSplash();
         }
-      }
+      });
+      setTimeout(dismissSplash, 3000);
+    }
+  }
 
-      function dismissSplash() {
-        localStorage.setItem(splashKey, 'yes');
-        hideSplash();
-      }
+  function dismissSplash() {
+    localStorage.setItem(splashKey, 'yes');
+    hideSplash();
+  }
 
-      window.addEventListener('DOMContentLoaded', maybeShowSplash);
-    })();
-    </script>
-    <script>
-    // --- Config & Assets ---
-    const CONFIG = {
-        cardImages: [
-            "images/yellowscullcard.png",
-            "images/redscullcard.png",
-            "images/Descartes.png",
-            "images/Alexandor.png",
-            "images/Medusa.png",
-            "images/Elara.png",
-            "images/adventurercard.png",
-            "images/collaboratorcard.png",
-            "images/humanitariancard.png",
-            "images/nextcard.png",
-            "images/Aegis.png",
-            "images/resilientcard.png",
-            "images/Astrid.png",
-            "images/nicolecard.png"
-        ],
-        videos: [
-            "images/Descartesvideo.mp4",
-            "images/medusa best.mp4",
-            "images/medusa 1.mp4",
-            "images/young medusa.mp4",
-            "images/Alexandorvideo.mp4",
-            "images/Elaravideo.mp4",
-            "images/elara rage.mp4",
-            "images/astridvideo.mp4",
-            "images/aegisvideo.mp4",
-            "images/wolfvideo.mp4",
-            "images/merlin.mp4",
-            "images/hermesvideo.mp4",
-            "images/Mystery.mp4"
-        ],
-        sounds: {
-            cardflip: document.getElementById('cardflipSound'),
-            chime: document.getElementById('chimeSound'),
-            keys: document.getElementById('keysSound')
-        }
+  window.addEventListener('DOMContentLoaded', maybeShowSplash);
+})();
+
+// BTC PRICE FETCH
+function updateBTCPrice() {
+  fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')
+    .then(res => res.json())
+    .then(data => {
+      const price = data.bitcoin.usd.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+      document.getElementById('btcPrice').textContent = `BTC: ${price}`;
+    })
+    .catch(() => {
+      document.getElementById('btcPrice').textContent = 'BTC price unavailable';
+    });
+}
+
+// COUNTDOWN
+function updateCountdown() {
+  const eventDate = new Date('2025-10-03T00:00:00-04:00');
+  const now = new Date();
+  let diff = Math.max(0, eventDate - now);
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+  const pad = n => n.toString().padStart(2, '0');
+
+  document.getElementById('countdown').innerHTML = `
+    <span><b>TBD:</b></span>
+    <span>${days}<small>d</small></span>
+    <span>${pad(hours)}<small>h</small></span>
+    <span>${pad(minutes)}<small>m</small></span>
+    <span>${pad(seconds)}<small>s</small></span>
+  `;
+}
+
+// CARD INTERACTIVITY
+const CONFIG = {
+  cardImages: [
+    'images/yellowscullcard.png', 'images/redscullcard.png', 'images/Descartes.png',
+    'images/Alexandor.png', 'images/Medusa.png', 'images/Elara.png',
+    'images/adventurercard.png', 'images/collaboratorcard.png', 'images/humanitariancard.png',
+    'images/nextcard.png', 'images/Aegis.png', 'images/resilientcard.png',
+    'images/Astrid.png', 'images/nicolecard.png'
+  ],
+  videos: [
+    'images/Descartesvideo.mp4', 'images/medusa best.mp4', 'images/medusa 1.mp4',
+    'images/young medusa.mp4', 'images/Alexandorvideo.mp4', 'images/Elaravideo.mp4',
+    'images/elara rage.mp4', 'images/astridvideo.mp4', 'images/aegisvideo.mp4',
+    'images/wolfvideo.mp4', 'images/merlin.mp4', 'images/hermesvideo.mp4',
+    'images/Mystery.mp4'
+  ],
+  sounds: {
+    cardflip: document.getElementById('cardflipSound'),
+    chime: document.getElementById('chimeSound'),
+    keys: document.getElementById('keysSound')
+  }
+};
+
+function getRandomCardImage() {
+  const arr = CONFIG.cardImages;
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function getRandomFlipClass() {
+  return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
+}
+function playSound(soundKey) {
+  const audio = CONFIG.sounds[soundKey];
+  if (audio) {
+    audio.currentTime = 0;
+    audio.volume = soundKey === 'cardflip' ? 0.45 : 0.7;
+    audio.play().catch(() => {});
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateBTCPrice();
+  updateCountdown();
+  setInterval(updateBTCPrice, 60000);
+  setInterval(updateCountdown, 1000);
+
+  const buttons = document.querySelectorAll('.clickable-area');
+  const missionImage = document.getElementById('missionImage');
+  const missionVideo = document.getElementById('missionVideo');
+  const cardFrame = document.getElementById('cardFrame');
+  const infoLine = document.getElementById('infoLine');
+  const infoParticle = document.getElementById('infoParticle');
+  const infoText = document.getElementById('infoText');
+  let videoPlaying = false;
+  let infoTimeout;
+  const infoParticles = ['✨', '⚡', '🌟', '🔮', '💡', '🪄', '🔥', '🌠'];
+
+  missionImage.addEventListener('click', () => {
+    if (videoPlaying) return;
+    playSound('cardflip');
+    missionImage.src = getRandomCardImage();
+    const flipClass = getRandomFlipClass();
+    missionImage.classList.add(flipClass);
+    setTimeout(() => missionImage.classList.remove(flipClass), 1200);
+
+    const randomVideo = CONFIG.videos[Math.floor(Math.random() * CONFIG.videos.length)];
+    missionVideo.src = randomVideo;
+    missionVideo.style.display = 'block';
+    cardFrame.style.display = 'block';
+    setTimeout(() => { missionVideo.style.opacity = 1; }, 100);
+    missionVideo.muted = false;
+    if (window.matchMedia('(max-width: 600px)').matches) {
+      missionVideo.removeAttribute('controls');
+    } else {
+      missionVideo.setAttribute('controls', '');
+    }
+    missionVideo.load();
+    missionVideo.play();
+    videoPlaying = true;
+    buttons.forEach(b => b.disabled = true);
+
+    missionVideo.onended = () => {
+      missionVideo.pause();
+      missionVideo.style.display = 'none';
+      missionVideo.style.opacity = 0;
+      cardFrame.style.display = 'none';
+      buttons.forEach(b => b.disabled = false);
+      videoPlaying = false;
+      hideInfoLine();
     };
+  });
 
-    // --- Helpers ---
-    function getRandomCardImage() {
-        const arr = CONFIG.cardImages;
-        return arr[Math.floor(Math.random() * arr.length)];
-    }
-    function getRandomFlipClass() {
-        return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-    }
-    function playSound(soundKey) {
-        const audio = CONFIG.sounds[soundKey];
-        if (audio) {
-            audio.currentTime = 0;
-            audio.volume = soundKey === "cardflip" ? 0.45 : 0.7;
-            audio.play().catch(()=>{});
-        }
-    }
+  missionImage.setAttribute('tabindex', '0');
+  missionImage.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') missionImage.click();
+  });
 
-    // --- Main UI Logic ---
-    document.addEventListener("DOMContentLoaded", function() {
-        const buttons = document.querySelectorAll('.clickable-area');
-        const missionImage = document.getElementById('missionImage');
-        const missionVideo = document.getElementById('missionVideo');
-        const cardFrame = document.getElementById('cardFrame');
-        const infoLine = document.getElementById('infoLine');
-        const infoParticle = document.getElementById('infoParticle');
-        const infoText = document.getElementById('infoText');
-        let videoPlaying = false;
-        let infoTimeout = null;
-
-        // Configurable: choose a random particle icon for each info appearance
-        const infoParticles = ["✨", "⚡", "🌟", "🔮", "💡", "🪄", "🔥", "🌠"];
-
-        // Card flipping logic triggered by clicking the card (image itself)
-        missionImage.addEventListener('click', function() {
-            if (videoPlaying) return;
-            playSound('cardflip');
-            missionImage.src = getRandomCardImage();
-            const flipClass = getRandomFlipClass();
-            missionImage.classList.add(flipClass);
-            setTimeout(() => { missionImage.classList.remove(flipClass); }, 1200);
-
-            // Show video with random video
-            missionVideo.src = CONFIG.videos[Math.floor(Math.random() * CONFIG.videos.length)];
-            missionVideo.style.display = "block";
-            cardFrame.style.display = "block";
-            setTimeout(() => { missionVideo.style.opacity = 1; }, 100);
-            missionVideo.muted = false;
-            if (window.matchMedia("(max-width: 600px)").matches) {
-                missionVideo.removeAttribute('controls');
-            } else {
-                missionVideo.setAttribute('controls', '');
-            }
-            missionVideo.load();
-            missionVideo.play();
-            videoPlaying = true;
-            buttons.forEach(b => b.disabled = true);
-
-            missionVideo.onended = () => {
-                missionVideo.pause();
-                missionVideo.style.display = "none";
-                missionVideo.style.opacity = 0;
-                cardFrame.style.display = "none";
-                buttons.forEach(b => b.disabled = false);
-                videoPlaying = false;
-                hideInfoLine();
-            };
-        });
-
-        // Keyboard accessibility for card image flip
-        missionImage.setAttribute('tabindex', '0');
-        missionImage.addEventListener('keydown', function(e) {
-            if (e.key === "Enter" || e.key === " ") {
-                missionImage.click();
-            }
-        });
-
-        // Button click logic for sound + navigation, plus info line
-        buttons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const soundKey = btn.dataset.sound;
-                playSound(soundKey);
-
-                // Show info line with this button's info text
-                showInfoLine(btn.dataset.info);
-
-                btn.classList.add('glow-animate');
-                setTimeout(() => {
-                    window.location.href = btn.dataset.url;
-                }, 460);
-            });
-
-            btn.addEventListener('keydown', function(e) {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    btn.click();
-                }
-            });
-
-            btn.addEventListener('animationend', function(e) {
-                if (e.animationName === "glow") {
-                    btn.classList.remove('glow-animate');
-                }
-            });
-        });
-
-        function showInfoLine(text) {
-            // Pick a random particle icon
-            const particle = infoParticles[Math.floor(Math.random() * infoParticles.length)];
-
-            // Remove any previous particle (for animation restart)
-            infoParticle.innerHTML = "";
-            // Create a span for the animated particle
-            const pEl = document.createElement('span');
-            pEl.className = "info-particle";
-            pEl.textContent = particle;
-            infoParticle.appendChild(pEl);
-
-            infoText.textContent = text;
-
-            infoLine.classList.add('visible', 'glow');
-
-            // Remove 'glow' after a short pulse
-            setTimeout(() => {
-                infoLine.classList.remove('glow');
-            }, 580);
-
-            clearTimeout(infoTimeout);
-            infoTimeout = setTimeout(hideInfoLine, 2500);
-        }
-
-        function hideInfoLine() {
-            infoLine.classList.remove('visible');
-            infoParticle.innerHTML = "";
-            infoText.textContent = "";
-        }
-
-        // Hide info line if video ends (card flip ends)
-        missionVideo.onended = () => {
-            hideInfoLine();
-        };
-
-        // Preload audio on first interaction for autoplay policy
-        window.addEventListener('pointerdown', () => {
-            Object.values(CONFIG.sounds).forEach(audio => {
-                audio.load();
-            });
-        }, { once: true });
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      playSound(btn.dataset.sound);
+      showInfoLine(btn.dataset.info);
+      btn.classList.add('glow-animate');
+      setTimeout(() => window.location.href = btn.dataset.url, 460);
     });
-    </script>
-    <script>
-    function updateBTCPrice() {
-        fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')
-            .then(response => response.json())
-            .then(data => {
-                const price = data.bitcoin.usd.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-                document.getElementById('btcPrice').textContent = `BTC: ${price}`;
-            })
-            .catch(() => {
-                document.getElementById('btcPrice').textContent = 'BTC price unavailable';
-            });
-    }
-    document.addEventListener("DOMContentLoaded", () => {
-        updateBTCPrice();
-        setInterval(updateBTCPrice, 60000); // Update every minute
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
     });
-    </script>
-    <script>
-    // Horizontal Countdown to October 3rd, 2025
-    function updateCountdown() {
-        const eventDate = new Date('2025-10-03T00:00:00-04:00');
-        const now = new Date();
-        let diff = eventDate - now;
-        if (diff < 0) diff = 0;
-
-        const days = Math.floor(diff / (1000*60*60*24));
-        const hours = Math.floor((diff / (1000*60*60)) % 24);
-        const minutes = Math.floor((diff / (1000*60)) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
-
-        const pad = n => n.toString().padStart(2, '0');
-
-        document.getElementById('countdown').innerHTML = `
-          <span style="font-size:1.07em; color:#ffd700; letter-spacing:0.02em; margin-right:10px;">
-            <b>TBD:</b>
-          </span>
-          <span style="font-size:1.23em; color:#ffd700; font-weight:bold; margin:0 8px;">
-            ${days}<span style="font-size:0.7em; color:#fff5b8; font-weight:normal; margin-left:2px;">d</span>
-          </span>
-          <span style="font-size:1.23em; color:#ffd700; font-weight:bold; margin:0 8px;">
-            ${pad(hours)}<span style="font-size:0.7em; color:#fff5b8; font-weight:normal; margin-left:2px;">h</span>
-          </span>
-          <span style="font-size:1.23em; color:#ffd700; font-weight:bold; margin:0 8px;">
-            ${pad(minutes)}<span style="font-size:0.7em; color:#fff5b8; font-weight:normal; margin-left:2px;">m</span>
-          </span>
-          <span style="font-size:1.23em; color:#ffd700; font-weight:bold; margin:0 8px;">
-            ${pad(seconds)}<span style="font-size:0.7em; color:#fff5b8; font-weight:normal; margin-left:2px;">s</span>
-          </span>
-        `;
-    }
-    document.addEventListener("DOMContentLoaded", () => {
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+    btn.addEventListener('animationend', e => {
+      if (e.animationName === 'glow') {
+        btn.classList.remove('glow-animate');
+      }
     });
-    </script>
+  });
+
+  function showInfoLine(text) {
+    const particle = infoParticles[Math.floor(Math.random() * infoParticles.length)];
+    infoParticle.innerHTML = '';
+    const pEl = document.createElement('span');
+    pEl.className = 'info-particle';
+    pEl.textContent = particle;
+    infoParticle.appendChild(pEl);
+    infoText.textContent = text;
+    infoLine.classList.add('visible', 'glow');
+    setTimeout(() => infoLine.classList.remove('glow'), 580);
+    clearTimeout(infoTimeout);
+    infoTimeout = setTimeout(hideInfoLine, 2500);
+  }
+
+  function hideInfoLine() {
+    infoLine.classList.remove('visible');
+    infoParticle.innerHTML = '';
+    infoText.textContent = '';
+  }
+});
+</script>
 </body>
 </html>
