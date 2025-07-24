@@ -963,9 +963,106 @@ main, .main-wrapper, .media-container {
 main, .main-wrapper {
     /* Left for optional layout extensions */
 }
+/* ==========================================================================
+   HACK NIGHTS STYLES
+   Scoped styles for the Hack Nights (24) event page
+   ========================================================================== */
+
+.hacknights-page {
+  background-color: black;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+.hacknights-page body,
+.hacknights-page h1,
+.hacknights-page h2,
+.hacknights-page h3,
+.hacknights-page p,
+.hacknights-page ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Devpost CTA */
+.hacknights-page .devpost-link {
+  text-align: center;
+  margin: 20px auto;
+}
+.hacknights-page .devpost-link .button.large {
+  max-width: 90%;
+  width: 400px;
+  display: block;
+  margin: 0 auto;
+}
+.hacknights-page .devpost-link img {
+  width: 100%;
+  height: auto;
+}
+
+/* Gallery image style */
+.hacknights-page .gallery-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Modal styling */
+.hacknights-page .image-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.hacknights-page .image-modal-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+}
+.hacknights-page .close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Collapsible section */
+.hacknights-page .collapsible {
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  padding: 14px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  font-size: 18px;
+  transition: 0.4s;
+}
+.hacknights-page .collapsible.active,
+.hacknights-page .collapsible:hover {
+  background-color: #555;
+}
+.hacknights-page .content {
+  display: none;
+  overflow: hidden;
+  padding: 0 18px;
+}
+
 
 /* ==========================================================================
    DUPLICATE CARD CONTAINER CLEANUP (if needed)
    ========================================================================== */
 /* Only one .card-container should be defined in production —
    retain the more complete one defined earlier */
+
