@@ -323,22 +323,22 @@ main, .main-wrapper, .media-container {
 @media (min-width: 769px) {
   .clickable-area.top-center {
     top: 2%;
-    left: 44%;
+    left: 45%;
     transform: translateX(-50%);
-     width: 80px;
-    height: 80px;
-    max-width: 90px;
-    max-height: 90px;
+     width: 90px;
+    height: 90px;
+    max-width: 100px;
+    max-height: 100px;
   }
 
   .clickable-area.bottom-center {
     bottom: 2%;
-    left: 44%;
+    left: 45%;
     transform: translateX(-50%);
-    width: 80px;
-    height: 80px;
-    max-width: 90px;
-    max-height: 90px;
+    width: 90px;
+    height: 90px;
+    max-width: 100px;
+    max-height: 100px;
   }
 }
 /* ==========================================================================
