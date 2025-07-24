@@ -322,21 +322,21 @@ main, .main-wrapper, .media-container {
    ========================================================================== */
 @media (min-width: 769px) {
   .clickable-area.top-center {
-    top: 1.2%;
-    left: 42%;
+    top: 2%;
+    left: 44%;
     transform: translateX(-50%);
-     width: 65px;
-    height: 65px;
+     width: 80px;
+    height: 80px;
     max-width: 90px;
     max-height: 90px;
   }
 
   .clickable-area.bottom-center {
-    bottom: 1.2%;
-    left: 41.5%;
+    bottom: 2%;
+    left: 44%;
     transform: translateX(-50%);
-    width: 65px;
-    height: 65px;
+    width: 80px;
+    height: 80px;
     max-width: 90px;
     max-height: 90px;
   }
