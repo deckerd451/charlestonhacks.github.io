@@ -323,7 +323,7 @@ main, .main-wrapper, .media-container {
 @media (min-width: 769px) {
   .clickable-area.top-center {
     top: 2%;
-    left: 44%;
+    left: 50%;
     transform: translateX(-50%);
      width: 90px;
     height: 90px;
@@ -333,7 +333,7 @@ main, .main-wrapper, .media-container {
 
   .clickable-area.bottom-center {
     bottom: 2%;
-    left: 44%;
+    left: 50%;
     transform: translateX(-50%);
     width: 90px;
     height: 90px;
