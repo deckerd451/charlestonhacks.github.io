@@ -295,6 +295,62 @@ main, .main-wrapper, .media-container {
 .middle-left   { top: 45%; left: 5%; transform: translateY(-50%); }
 .middle-right  { top: 45%; right: 5%; transform: translateY(-50%); }
 .center        { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+/* ==========================================================================
+   BUTTON STYLES 
+   ========================================================================== */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+.btn {
+  padding: 0.8em 1.4em;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary-color);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn:hover {
+  background: #ff8533;
+}
+
+.btn:active.center-top    { transform: translateY(10px); }
+.btn:active.center-bottom { transform: translateY(-10px); }
+.btn:active.middle-left   { transform: translateX(10px); }
+.btn:active.middle-right  { transform: translateX(-10px); }
+
+.btn:active.top-left,
+.btn:active.top-right,
+.btn:active.bottom-left,
+.btn:active.bottom-right {
+  transform: scale(0.95);
+}
+
+#infoBox {
+  background: #222;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 1rem auto;
+  font-size: 1rem;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+#infoBox.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 /* ==========================================================================
    CONTAINER QUERIES (Refines button size on wider viewports)
