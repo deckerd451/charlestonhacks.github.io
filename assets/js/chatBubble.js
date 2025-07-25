@@ -2,17 +2,17 @@
 
 export function setupChatBubble() {
   // 1. Create Crate container
-  const crateScript = document.createElement('script');
-  crateScript.src = 'https://cdn.jsdelivr.net/npm/@widgetbot/crate@3';
-  crateScript.async = true;
-  crateScript.defer = true;
-  crateScript.onload = () => {
-    window.CrateInstance = new Crate({
-      server: '1365587542975713320',  // Charleston Hacks Server
-      channel: '1365587543696867384' // #general channel
-    });
-  };
-  document.body.appendChild(crateScript);
+const crateScript = document.createElement('script');
+crateScript.src = 'https://cdn.jsdelivr.net/npm/@widgetbot/html-embed';
+crateScript.async = true;
+crateScript.defer = true;
+crateScript.onload = () => {
+  window.CrateInstance = new window.WidgetBot.Crate({
+    server: '1365587542975713320',  // Charleston Hacks Server
+    channel: '1365587543696867384' // #general
+  });
+};
+document.body.appendChild(crateScript);
 
   // 2. Create the chat bubble
   const discordBubble = document.createElement('div');
