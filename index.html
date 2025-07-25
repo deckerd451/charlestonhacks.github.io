@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
-
+<body>
 <!-- Splash screen -->
 <div id="splash-overlay" role="dialog" aria-modal="true" aria-labelledby="splash-title" aria-describedby="splash-desc" tabindex="-1">
   <div id="splash-content">
@@ -48,6 +48,7 @@
      <!-- ✅ Add this here (outside the <script>) -->
     <p id="splash-copyright" style="font-size: 0.8rem; opacity: 0.7; margin-top: 2rem;">
       © 2025 CharlestonHacks. All rights reserved.
+       </p>
   </div>
 </div>
 
@@ -207,7 +208,7 @@ import { startCountdown } from './assets/js/countdown.js';
 startCountdown('countdown', '2025-10-03T00:00:00-04:00');
 
   // Sound and link logic for buttons
-  const buttons = document.querySelectorAll('.clickable-area');
+  const cardButtons = document.querySelectorAll('.clickable-area');
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       const soundId = btn.dataset.sound;
@@ -232,7 +233,7 @@ startCountdown('countdown', '2025-10-03T00:00:00-04:00');
   });
 </script>
   <script>
-  const buttons = document.querySelectorAll('.btn');
+  const panelButtons = document.querySelectorAll('.btn');
   const infoBox = document.getElementById('infoBox');
 
   buttons.forEach(btn => {
