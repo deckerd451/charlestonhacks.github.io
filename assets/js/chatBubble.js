@@ -18,16 +18,24 @@ export function setupChatBubble() {
     window.CrateInstance.options.transparent = true;
 
     // Inject CSS to control iframe pointer behavior
-    const iframeStyle = document.createElement('style');
-    iframeStyle.textContent = `
-      iframe[src^="https://widgetbot.io"] {
-        pointer-events: none !important;
-      }
-      iframe[src^="https://widgetbot.io"].visible {
-        pointer-events: auto !important;
-      }
-    `;
-    document.head.appendChild(iframeStyle);
+   const iframeStyle = document.createElement('style');
+iframeStyle.textContent = `
+  iframe[src^="https://widgetbot.io"] {
+    pointer-events: none !important;
+    z-index: 9998 !important;
+  }
+
+  iframe[src^="https://widgetbot.io"].visible {
+    pointer-events: auto !important;
+    z-index: 10001 !important;
+  }
+
+  #splash-overlay {
+    z-index: 9999;
+  }
+`;
+document.head.appendChild(iframeStyle);
+
   };
 
   crateScript.onerror = () => {
