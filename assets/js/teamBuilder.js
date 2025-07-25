@@ -1,8 +1,7 @@
 // src/teamBuilder.js
 
-import { DOMElements, showNotification } from './domUtils.js';
-import { renderUserCards } from './cardRenderer.js';
-import { supabaseClient } from './supabaseClient.js';
+import { renderUserCards, showNotification } from './uiHelpers.js';
+import { DOMElements, supabaseClient } from './globals.js';
 
 /**
  * Builds the best team based on required skills and team size.
@@ -15,7 +14,7 @@ export async function buildBestTeam() {
     .toLowerCase()
     .split(',')
     .map(s => s.trim())
-    .filter(Boolean); // remove empty strings
+    .filter(Boolean);
 
   if (!skillInput.length || isNaN(teamSize) || teamSize < 1) {
     showNotification('Please enter required skills and a valid team size (1 or more).', 'warning');
@@ -24,10 +23,7 @@ export async function buildBestTeam() {
   }
 
   try {
-    const { data: users, error } = await supabaseClient
-      .from('skills')
-      .select('*');
-
+    const { data: users, error } = await supabaseClient.from('skills').select('*');
     if (error || !users) throw error;
 
     const scoredUsers = users
