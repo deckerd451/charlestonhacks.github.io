@@ -821,171 +821,113 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLeaderboard();
     updateProfileProgress(); // Initialize progress bar on load
 });
-document.addEventListener('DOMContentLoaded', () => {
- document.addEventListener('DOMContentLoaded', () => {
-  // --- DISCORD CHAT MODAL INTEGRATION WITH TOUCH + PERSISTENCE ---
+// --- DISCORD CHAT BUBBLE WITH WIDGETBOT CRATE ---
 
-  const discordButton = document.createElement('div');
-  discordButton.id = 'discord-bubble';
-  discordButton.innerHTML = `<div id="discord-badge">💬</div>`;
-  document.body.appendChild(discordButton);
+// 1. Create Crate container
+const crateScript = document.createElement('script');
+crateScript.src = 'https://cdn.jsdelivr.net/npm/@widgetbot/crate@3';
+crateScript.async = true;
+crateScript.defer = true;
+crateScript.onload = () => {
+  window.CrateInstance = new Crate({
+    server: '1365587542975713320',  // Charleston Hacks Server
+    channel: '1365587543696867384' // #general channel
+  });
+};
+document.body.appendChild(crateScript);
 
-  const chatModal = document.createElement('div');
-  chatModal.id = 'discord-chat-modal';
-  chatModal.innerHTML = `
-    <div class="chat-header">
-      <span>CharlestonHacks Chat</span>
-      <button id="close-discord-chat" aria-label="Close chat">×</button>
-    </div>
-    <iframe 
-      src="https://e.widgetbot.io/channels/1365587542975713320/1365587543608188988"
-      width="100%" height="100%" frameborder="0"
-      allowtransparency="true">
-    </iframe>
-  `;
-  document.body.appendChild(chatModal);
+// 2. Create the chat bubble
+const discordBubble = document.createElement('div');
+discordBubble.id = 'discord-bubble';
+discordBubble.innerHTML = '💬';
+document.body.appendChild(discordBubble);
 
-  const closeBtn = chatModal.querySelector('#close-discord-chat');
-  closeBtn.onclick = () => chatModal.classList.remove('active');
-  discordButton.onclick = () => chatModal.classList.toggle('active');
+// 3. Load last position from localStorage (if available)
+const savedPosition = JSON.parse(localStorage.getItem('discordBubblePos'));
+if (savedPosition) {
+  discordBubble.style.left = savedPosition.left;
+  discordBubble.style.top = savedPosition.top;
+}
 
-  const badge = document.createElement('div');
-  badge.id = 'discord-notification';
-  badge.textContent = 'New!';
-  badge.style.display = 'none';
-  discordButton.appendChild(badge);
-  setTimeout(() => badge.style.display = 'block', 8000);
+// 4. Make the bubble draggable (mouse + touch)
+let offsetX, offsetY, dragging = false;
 
-  // --- DRAGGABLE LOGIC WITH TOUCH AND MEMORY ---
-  let isDragging = false, offsetX = 0, offsetY = 0;
+const startDrag = (e) => {
+  dragging = true;
+  const rect = discordBubble.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+};
 
-  // Load last position
-  const saved = JSON.parse(localStorage.getItem('discordBubblePos'));
-  if (saved) {
-    discordButton.style.left = saved.left;
-    discordButton.style.top = saved.top;
-    discordButton.style.right = 'auto';
-    discordButton.style.bottom = 'auto';
+const drag = (e) => {
+  if (!dragging) return;
+  e.preventDefault();
+  const x = e.clientX - offsetX;
+  const y = e.clientY - offsetY;
+  discordBubble.style.left = `${x}px`;
+  discordBubble.style.top = `${y}px`;
+};
+
+const endDrag = () => {
+  dragging = false;
+  localStorage.setItem('discordBubblePos', JSON.stringify({
+    left: discordBubble.style.left,
+    top: discordBubble.style.top
+  }));
+};
+
+// Mouse
+discordBubble.addEventListener('mousedown', startDrag);
+document.addEventListener('mousemove', drag);
+document.addEventListener('mouseup', endDrag);
+
+// Touch
+discordBubble.addEventListener('touchstart', (e) => {
+  const touch = e.touches[0];
+  startDrag({ clientX: touch.clientX, clientY: touch.clientY });
+}, { passive: false });
+
+document.addEventListener('touchmove', (e) => {
+  if (!dragging) return;
+  const touch = e.touches[0];
+  drag({ clientX: touch.clientX, clientY: touch.clientY });
+}, { passive: false });
+
+document.addEventListener('touchend', endDrag);
+
+// 5. Toggle Crate on click
+discordBubble.addEventListener('click', () => {
+  if (window.CrateInstance) {
+    window.CrateInstance.toggle();
   }
-
-  function savePosition() {
-    localStorage.setItem('discordBubblePos', JSON.stringify({
-      left: discordButton.style.left,
-      top: discordButton.style.top
-    }));
-  }
-
-  function startDrag(e) {
-    isDragging = true;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    offsetX = clientX - discordButton.offsetLeft;
-    offsetY = clientY - discordButton.offsetTop;
-    discordButton.style.transition = 'none';
-  }
-
-  function drag(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    discordButton.style.left = `${clientX - offsetX}px`;
-    discordButton.style.top = `${clientY - offsetY}px`;
-    discordButton.style.right = 'auto';
-    discordButton.style.bottom = 'auto';
-  }
-
-  function endDrag() {
-    isDragging = false;
-    savePosition();
-    discordButton.style.transition = 'transform 0.2s ease';
-  }
-
-  discordButton.addEventListener('mousedown', startDrag);
-  document.addEventListener('mousemove', drag);
-  document.addEventListener('mouseup', endDrag);
-
-  discordButton.addEventListener('touchstart', startDrag, { passive: true });
-  document.addEventListener('touchmove', drag, { passive: false });
-  document.addEventListener('touchend', endDrag);
-
-  // --- CSS INJECTION ---
-  const style = document.createElement('style');
-  style.textContent = `
-    #discord-bubble {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--card-bg, #7289DA);
-      color: var(--text-color, white);
-      font-size: 22px;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: grab;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: transform 0.2s ease;
-      z-index: 1000;
-      user-select: none;
-    }
-    #discord-bubble:active {
-      cursor: grabbing;
-    }
-    #discord-bubble #discord-notification {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: red;
-      color: white;
-      border-radius: 999px;
-      font-size: 12px;
-      padding: 2px 5px;
-    }
-    #discord-chat-modal {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      width: 350px;
-      height: 450px;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      display: none;
-      flex-direction: column;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      z-index: 999;
-    }
-    #discord-chat-modal.active {
-      display: flex;
-    }
-    .chat-header {
-      background: #5865F2;
-      color: white;
-      padding: 10px;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    #close-discord-chat {
-      background: transparent;
-      border: none;
-      font-size: 18px;
-      color: white;
-      cursor: pointer;
-    }
-    @media (max-width: 768px) {
-      #discord-chat-modal {
-        width: 100vw;
-        height: 100vh;
-        bottom: 0;
-        right: 0;
-        border-radius: 0;
-      }
-    }
-  `;
-  document.head.appendChild(style);
 });
+
+// 6. Add styles
+const style = document.createElement('style');
+style.textContent = `
+  #discord-bubble {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-color: #5865F2;
+    color: white;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+  }
+
+  #discord-bubble:active {
+    cursor: grabbing;
+  }
+`;
+document.head.appendChild(style);
