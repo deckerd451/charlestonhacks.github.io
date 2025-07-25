@@ -821,3 +821,111 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLeaderboard();
     updateProfileProgress(); // Initialize progress bar on load
 });
+// --- DISCORD CHAT MODAL INTEGRATION ---
+
+const discordButton = document.createElement('div');
+discordButton.id = 'discord-bubble';
+discordButton.innerHTML = `<div id="discord-badge">💬</div>`;
+document.body.appendChild(discordButton);
+
+const chatModal = document.createElement('div');
+chatModal.id = 'discord-chat-modal';
+chatModal.innerHTML = `
+  <div class="chat-header">
+    <span>CharlestonHacks Chat</span>
+    <button id="close-discord-chat" aria-label="Close chat">×</button>
+  </div>
+  <iframe 
+    src="https://e.widgetbot.io/channels/1365587542975713320/1365587543608188988"
+    width="100%" height="100%" frameborder="0"
+    allowtransparency="true"></iframe>
+`;
+document.body.appendChild(chatModal);
+
+// Toggle modal
+const closeBtn = chatModal.querySelector('#close-discord-chat');
+closeBtn.onclick = () => chatModal.classList.remove('active');
+discordButton.onclick = () => chatModal.classList.toggle('active');
+
+// --- OPTIONAL BADGE ---
+const badge = document.createElement('div');
+badge.id = 'discord-notification';
+badge.textContent = 'New!';
+badge.style.display = 'none';
+discordButton.appendChild(badge);
+
+// Trigger notification badge (custom site logic or polling)
+setTimeout(() => badge.style.display = 'block', 8000); // show after 8s
+
+// CSS (inject if not in your stylesheet)
+const style = document.createElement('style');
+style.textContent = `
+  #discord-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: #7289DA;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  #discord-bubble:hover { transform: scale(1.05); }
+  #discord-bubble #discord-notification {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border-radius: 999px;
+    font-size: 12px;
+    padding: 2px 5px;
+  }
+  #discord-chat-modal {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 350px;
+    height: 450px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    z-index: 999;
+  }
+  #discord-chat-modal.active { display: flex; }
+  .chat-header {
+    background: #5865F2;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #close-discord-chat {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+  }
+  @media (max-width: 768px) {
+    #discord-chat-modal {
+      width: 100vw;
+      height: 100vh;
+      bottom: 0;
+      right: 0;
+      border-radius: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
