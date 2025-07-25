@@ -688,7 +688,6 @@ main, .main-wrapper, .media-container {
   transform: translateX(-50%);
   font-size: clamp(1rem, 2vw, 1.4rem); /* Responsive font size */
   color: var(--secondary-color);
-  background: rgba(0, 0, 0, 0.5);
   padding: 6px 14px;
   border-radius: 8px;
   z-index: 10;
@@ -701,7 +700,6 @@ main, .main-wrapper, .media-container {
   transform: translateX(-50%);
   font-size: clamp(1rem, 2vw, 1.4rem); /* Responsive font size */
   color: var(--secondary-color);
-  background: rgba(0, 0, 0, 0.5);
   padding: 6px 14px;
   border-radius: 8px;
   z-index: 10;
