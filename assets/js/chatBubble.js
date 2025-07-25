@@ -14,7 +14,8 @@ export function setupChatBubble() {
       server: '1365587542975713320',  // Charleston Hacks Server
       channel: '1365587543696867384' // #general
     });
-  };
+    window.CrateInstance.options.transparent = true;
+};
   crateScript.onerror = () => {
     console.error('WidgetBot failed to load.');
   };
