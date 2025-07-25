@@ -701,7 +701,7 @@ main, .main-wrapper, .media-container {
   left: 50%;
   transform: translateX(-50%);
   font-size: var(--countdown-size);
-  color: #00FF87;
+  color: var(--secondary-color);
   background: rgba(0, 0, 0, 0.5);
   padding: 6px 14px;
   border-radius: 8px;
