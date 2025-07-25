@@ -110,3 +110,5 @@ document.body.appendChild(crateScript);
   `;
   document.head.appendChild(style);
 }
+setupChatBubble();
+
