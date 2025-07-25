@@ -496,6 +496,16 @@ main, .main-wrapper, .media-container {
   position: absolute;
   left: -9999px;
 }
+/* ==========================================================================
+   DESKTOP-SPECIFIC TEXT SIZE OVERRIDES
+   ========================================================================== */
+@media (min-width: 769px) {
+  #countdown,
+  #btcPrice {
+    font-size: 1.6rem; /* Adjust as needed */
+  }
+}
+
 
 /* ==========================================================================
    FOOTER ICONS (DESKTOP)
