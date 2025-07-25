@@ -117,5 +117,46 @@
       });
     }
   </script>
+  <script>
+  (function () {
+    const splashOverlay = document.getElementById('splash-overlay');
+    const skipBtn = document.getElementById('skip-splash-btn');
+    const splashKey = 'chs_splash_seen_v2';
+
+    function hideSplash(immediate = false) {
+      splashOverlay.classList.add('fade-out');
+      document.body.classList.remove('splash-active');
+      setTimeout(() => {
+        splashOverlay.style.display = 'none';
+        splashOverlay.style.pointerEvents = 'none'; // ✅ Important
+      }, immediate ? 0 : 700);
+    }
+
+    function maybeShowSplash() {
+      if (localStorage.getItem(splashKey)) {
+        hideSplash(true);
+      } else {
+        document.body.classList.add('splash-active');
+        splashOverlay.style.display = 'flex';
+        skipBtn.onclick = dismissSplash;
+        skipBtn.onkeyup = e => {
+          if (e.key === 'Enter' || e.key === ' ') dismissSplash();
+        };
+        window.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') dismissSplash();
+        });
+        setTimeout(dismissSplash, 3000);
+      }
+    }
+
+    function dismissSplash() {
+      localStorage.setItem(splashKey, 'yes');
+      hideSplash();
+    }
+
+    window.addEventListener('DOMContentLoaded', maybeShowSplash);
+  })();
+</script>
+
 </body>
 </html>
