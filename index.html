@@ -247,15 +247,16 @@ startCountdown('countdown', '2025-10-03T00:00:00-04:00');
 </script>
   <script>
   const panelButtons = document.querySelectorAll('.btn');
-  const infoBox = document.getElementById('infoBox');
+const infoBox = document.getElementById('infoBox');
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const info = btn.getAttribute('data-info');
-      infoBox.textContent = info;
-      infoBox.classList.remove('hidden');
-    });
+panelButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const info = btn.getAttribute('data-info');
+    infoBox.textContent = info;
+    infoBox.classList.remove('hidden');
   });
+});
+
 </script>
 </body>
 </html>
