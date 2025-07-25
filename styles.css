@@ -674,7 +674,7 @@ main, .main-wrapper, .media-container {
 }
 
 /* ==========================================================================
-   TEAM BUILDER CARD STYLES
+   TEAM BUILDER/2card CARD STYLES
    ========================================================================== */
 .card-container {
     display: flex;
@@ -1112,6 +1112,11 @@ main, .main-wrapper, .media-container {
 .section-title .fas {
     margin-right: 8px;
 }
+#splash-overlay.fade-out {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
 
 /* ==========================================================================
    REDUNDANT CONTAINERS (Optional Styling or Overrides)
