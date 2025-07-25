@@ -7,11 +7,11 @@ export function setupChatBubble() {
   crateScript.async = true;
   crateScript.defer = true;
   crateScript.onload = () => {
-    window.CrateInstance = new Crate({
-      server: '1365587542975713320',
-      channel: '1365587543696867384'
-    });
-  };
+    window.CrateInstance = new window.Crate({
+  server: '1365587542975713320',
+  channel: '1365587543696867384'
+});
+ };
   crateScript.onerror = () => console.error('WidgetBot Crate failed to load.');
   document.body.appendChild(crateScript);
 
