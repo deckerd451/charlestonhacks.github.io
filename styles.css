@@ -683,7 +683,7 @@ main, .main-wrapper, .media-container {
 /* Countdown styling - near the top of the card */
 #countdown {
   position: absolute;
-  top: 4%;  /* Responsive vertical spacing from top */
+  top: 15%;  /* Responsive vertical spacing from top */
   left: 50%;
   transform: translateX(-50%);
   font-size: clamp(1rem, 2vw, 1.4rem); /* Responsive font size */
@@ -696,7 +696,7 @@ main, .main-wrapper, .media-container {
 
 #btcPrice {
   position: absolute;
-  bottom: 4%;  /* Responsive vertical spacing from bottom */
+  bottom: 15%;  /* Responsive vertical spacing from bottom */
   left: 50%;
   transform: translateX(-50%);
   font-size: clamp(1rem, 2vw, 1.4rem); /* Responsive font size */
