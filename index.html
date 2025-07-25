@@ -155,14 +155,21 @@
   })();
 </script>
  <script type="module">
-   import { CONFIG } from './assets/js/config.js';
+  import { CONFIG } from './assets/js/config.js';
   import { setupChatBubble } from './assets/js/chatBubble.js';
   import { initCardFlip } from './assets/js/cardFlip.js';
 
-  setupChatBubble();
-  initCardFlip(); // ← this is the critical missing piece
+  // Attach DOM elements to CONFIG if needed
+  CONFIG.sounds = {
+    cardflip: document.getElementById('cardflipSound'),
+    chime: document.getElementById('chimeSound'),
+    keys: document.getElementById('keysSound')
+  };
 
-  // Clickable buttons with sound
+  setupChatBubble();
+  initCardFlip(CONFIG); // Pass CONFIG if cardFlip.js expects it
+
+  // Sound and link logic for buttons
   const buttons = document.querySelectorAll('.clickable-area');
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -173,6 +180,8 @@
       if (url) setTimeout(() => window.location.href = url, 400);
     });
   });
+</script>
+
 
   // Info hover
   const infoLine = document.getElementById('infoLine');
