@@ -1,23 +1,24 @@
 // src/chatBubble.js
 
 export function setupChatBubble() {
-  // 1. Create Crate container
-const crateScript = document.createElement('script');
-crateScript.src = 'https://cdn.jsdelivr.net/npm/@widgetbot/html-embed';
-crateScript.async = true;
-crateScript.defer = true;
-crateScript.onload = () => {
-  if (window.WidgetBot && window.WidgetBot.Crate) {
-    window.CrateInstance = new window.WidgetBot.Crate({
-      server: '1365587542975713320',
-      channel: '1365587543696867384'
-    });
-  } else {
-    console.error('WidgetBot failed to load.');
-  }
-};
+  if (document.getElementById('discord-bubble')) return; // prevent duplicates
 
-document.body.appendChild(crateScript);
+  // 1. Create Crate container
+  const crateScript = document.createElement('script');
+  crateScript.src = 'https://cdn.jsdelivr.net/npm/@widgetbot/crate@3';
+  crateScript.async = true;
+  crateScript.defer = true;
+  crateScript.onload = () => {
+    // No need for window.WidgetBot with Crate v3
+    window.CrateInstance = new Crate({
+      server: '1365587542975713320',  // Charleston Hacks Server
+      channel: '1365587543696867384' // #general
+    });
+  };
+  crateScript.onerror = () => {
+    console.error('WidgetBot failed to load.');
+  };
+  document.body.appendChild(crateScript);
 
   // 2. Create the chat bubble
   const discordBubble = document.createElement('div');
@@ -25,14 +26,14 @@ document.body.appendChild(crateScript);
   discordBubble.innerHTML = '💬';
   document.body.appendChild(discordBubble);
 
-  // 3. Load last position from localStorage (if available)
+  // 3. Restore position from localStorage
   const savedPosition = JSON.parse(localStorage.getItem('discordBubblePos'));
   if (savedPosition) {
     discordBubble.style.left = savedPosition.left;
     discordBubble.style.top = savedPosition.top;
   }
 
-  // 4. Make the bubble draggable (mouse + touch)
+  // 4. Make the bubble draggable
   let offsetX, offsetY, dragging = false;
 
   const startDrag = (e) => {
@@ -59,12 +60,10 @@ document.body.appendChild(crateScript);
     }));
   };
 
-  // Mouse
   discordBubble.addEventListener('mousedown', startDrag);
   document.addEventListener('mousemove', drag);
   document.addEventListener('mouseup', endDrag);
 
-  // Touch
   discordBubble.addEventListener('touchstart', (e) => {
     const touch = e.touches[0];
     startDrag({ clientX: touch.clientX, clientY: touch.clientY });
@@ -115,6 +114,6 @@ document.body.appendChild(crateScript);
   `;
   document.head.appendChild(style);
 }
+
+// Run after DOM is loaded
 window.addEventListener('DOMContentLoaded', setupChatBubble);
-
-
