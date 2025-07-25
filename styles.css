@@ -683,10 +683,10 @@ main, .main-wrapper, .media-container {
 /* Countdown styling - near the top of the card */
 #countdown {
   position: absolute;
-  top: 120px;
+  top: 4%;  /* Responsive vertical spacing from top */
   left: 50%;
   transform: translateX(-50%);
-  font-size: var(--countdown-size);
+  font-size: clamp(1rem, 2vw, 1.4rem); /* Responsive font size */
   color: var(--secondary-color);
   background: rgba(0, 0, 0, 0.5);
   padding: 6px 14px;
@@ -694,19 +694,19 @@ main, .main-wrapper, .media-container {
   z-index: 10;
 }
 
-/* BTC Price styling - near the bottom of the card */
 #btcPrice {
   position: absolute;
-  bottom: 120px;
+  bottom: 4%;  /* Responsive vertical spacing from bottom */
   left: 50%;
   transform: translateX(-50%);
-  font-size: var(--countdown-size);
+  font-size: clamp(1rem, 2vw, 1.4rem); /* Responsive font size */
   color: var(--secondary-color);
   background: rgba(0, 0, 0, 0.5);
   padding: 6px 14px;
   border-radius: 8px;
   z-index: 10;
 }
+
 
 
 
