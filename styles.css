@@ -706,7 +706,7 @@ main, .main-wrapper, .media-container {
 
 #btcPrice {
   position: absolute;
-  bottom: 18%;  /* Responsive vertical spacing from bottom */
+  bottom: 17%;  /* Responsive vertical spacing from bottom */
   left: 50%;
   transform: translateX(-50%);
   font-size: clamp(1rem, 2vw, 1.4rem); /* Responsive font size */
@@ -717,11 +717,11 @@ main, .main-wrapper, .media-container {
 }
 @media (max-width: 600px) {
   #countdown {
-    top: 17%;
+    top: 19%;
   }
 
   #btcPrice {
-    bottom: 17%;
+    bottom: 19%;
   }
 }
 /* ==========================================================================
