@@ -1,5 +1,5 @@
 // main.js (Entry point for the modular app)
-
+import { initCardFlip } from './cardFlip.js';
 import { setupProfileHandlers } from './profile.js';
 import { setupAutocompleteHandlers } from './autocomplete.js';
 import { setupSearchHandlers } from './search.js';
