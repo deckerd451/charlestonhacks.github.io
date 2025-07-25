@@ -231,5 +231,17 @@ startCountdown('countdown', '2025-10-03T00:00:00-04:00');
     });
   });
 </script>
+  <script>
+  const buttons = document.querySelectorAll('.btn');
+  const infoBox = document.getElementById('infoBox');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const info = btn.getAttribute('data-info');
+      infoBox.textContent = info;
+      infoBox.classList.remove('hidden');
+    });
+  });
+</script>
 </body>
 </html>
