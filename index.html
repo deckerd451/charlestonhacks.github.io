@@ -158,6 +158,8 @@
   import { CONFIG } from './assets/js/config.js';
   import { setupChatBubble } from './assets/js/chatBubble.js';
   import { initCardFlip } from './assets/js/cardFlip.js';
+  import { startBTCPriceTracker } from './assets/js/btc.js';
+import { startCountdown } from './assets/js/countdown.js';
 
   // Attach DOM elements to CONFIG if needed
   CONFIG.sounds = {
@@ -168,6 +170,8 @@
 
   setupChatBubble();
   initCardFlip(CONFIG); // Pass CONFIG if cardFlip.js expects it
+   startBTCPriceTracker('btcPrice');
+startCountdown('countdown', '2025-10-03T00:00:00-04:00');
 
   // Sound and link logic for buttons
   const buttons = document.querySelectorAll('.clickable-area');
