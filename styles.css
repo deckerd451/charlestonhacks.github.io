@@ -683,7 +683,7 @@ main, .main-wrapper, .media-container {
 /* Countdown styling - near the top of the card */
 #countdown {
   position: absolute;
-  top: 15px;
+  top: 30px;
   left: 50%;
   transform: translateX(-50%);
   font-size: var(--countdown-size);
@@ -697,7 +697,7 @@ main, .main-wrapper, .media-container {
 /* BTC Price styling - near the bottom of the card */
 #btcPrice {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   font-size: var(--countdown-size);
