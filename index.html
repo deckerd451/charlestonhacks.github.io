@@ -121,7 +121,11 @@
   <button class="btn bottom-right" data-info="Bottom right clicked">Bottom Right</button>
 </div>
 
-<div id="infoBox" class="info-box hidden"></div>
+    <div id="infoBox" class="info-box hidden">
+  <span id="infoContent"></span>
+  <button id="closeInfo" aria-label="Close info box">×</button>
+</div>
+
 
   </main>
 
@@ -246,15 +250,21 @@ startCountdown('countdown', '2025-10-03T00:00:00-04:00');
   });
 </script>
   <script>
-  const panelButtons = document.querySelectorAll('.btn');
+const panelButtons = document.querySelectorAll('.btn');
 const infoBox = document.getElementById('infoBox');
+const infoContent = document.getElementById('infoContent');
+const closeInfo = document.getElementById('closeInfo');
 
 panelButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     const info = btn.getAttribute('data-info');
-    infoBox.textContent = info;
+    infoContent.textContent = info;
     infoBox.classList.remove('hidden');
   });
+});
+
+closeInfo.addEventListener('click', () => {
+  infoBox.classList.add('hidden');
 });
 
 </script>
