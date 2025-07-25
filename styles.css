@@ -706,10 +706,15 @@ main, .main-wrapper, .media-container {
   border-radius: 8px;
   z-index: 10;
 }
+@media (max-width: 600px) {
+  #countdown {
+    top: 6%;
+  }
 
-
-
-
+  #btcPrice {
+    bottom: 6%;
+  }
+}
 /* ==========================================================================
    TEAM BUILDER/2card CARD STYLES
    ========================================================================== */
