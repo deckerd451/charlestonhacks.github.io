@@ -32,15 +32,15 @@
    BODY & BACKGROUND LAYOUT
    ========================================================================== */
 body {
-  display: flex;
-  justify-content: center; /* Horizontal centering */
-  background: black;
-  color: var(--text-color);
-  font-family: 'Britannic Bold', Arial, sans-serif;
-  overflow-x: hidden;
-  min-height: 100vh;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--text-color);
+    font-family: 'Britannic Bold', Arial, sans-serif;
+    text-align: center;
+    background: transparent !important;
+    position: relative;
+    z-index: 1;
 }
-
 
 /* Solid black base layer */
 body::after {
@@ -1091,22 +1091,13 @@ main, .main-wrapper, .media-container {
    MAIN CONTAINER
    ========================================================================== */
 .container {
-  max-width: 960px;
-  width: 100%;
-  padding: 40px 20px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  background: transparent;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-
-/* Center .panel inside the container */
-.panel {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 800px;
-}
-
 
 /* ==========================================================================
    SECTION TITLES (General)
@@ -1122,9 +1113,15 @@ main, .main-wrapper, .media-container {
     margin-right: 8px;
 }
 
-
+/* ==========================================================================
+   REDUNDANT CONTAINERS (Optional Styling or Overrides)
+   ========================================================================== */
 main, .main-wrapper {
     /* Left for optional layout extensions */
 }
 
-
+/* ==========================================================================
+   DUPLICATE CARD CONTAINER CLEANUP (if needed)
+   ========================================================================== */
+/* Only one .card-container should be defined in production —
+   retain the more complete one defined earlier */
