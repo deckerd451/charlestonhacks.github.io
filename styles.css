@@ -1239,6 +1239,23 @@ main, .main-wrapper, .media-container {
 #skip-splash-btn:focus {
   outline: 2px solid white;
 }
+#splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  gap: 1.2rem; /* <- add this for nice vertical spacing between elements */
+}
+#splash-desc {
+  font-size: 1.1rem;
+  max-width: 600px;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0 auto;
+}
 
 /* Optional: splash background image overlay for depth */
 #splash-overlay::before {
@@ -1247,6 +1264,7 @@ main, .main-wrapper, .media-container {
   inset: 0;
   background: var(--bg-url) no-repeat center center;
   background-size: cover;
+   height: 100vh; /* Add this */
   opacity: 0.2;
   z-index: -1;
   filter: blur(3px);
