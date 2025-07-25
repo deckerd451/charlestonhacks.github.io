@@ -1196,8 +1196,7 @@ main, .main-wrapper, .media-container {
 
 /* Splash logo animation */
 #splash-logo {
-  width: 120px;
-  max-width: 40vw;
+  width: clamp(180px, 30vw, 300px);
   margin-bottom: 1rem;
   animation: bounce-in 1s ease;
 }
