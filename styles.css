@@ -3,7 +3,7 @@
    ========================================================================== */
 :root {
     /* Colors */
-    --primary-color: #FF0000;
+    --primary-color: #FF0000; /* red */
    --secondary-color: #879EF2; /* deep periwinkle */
     --text-color: white;
     --background-color: black;
