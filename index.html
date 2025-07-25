@@ -28,17 +28,26 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="splash-active">
+<!-- Splash screen -->
+<div id="splash-overlay" role="dialog" aria-modal="true" aria-labelledby="splash-title" aria-describedby="splash-desc" tabindex="-1">
+  <div id="splash-content">
+    <img id="splash-logo" src="images/charlestonhackslogo.svg" alt="CharlestonHacks Logo" />
 
-  <!-- Splash screen -->
-  <div id="splash-overlay" role="dialog" aria-modal="true" aria-labelledby="splash-title" aria-describedby="splash-desc">
-    <div id="splash-content">
-      <img id="splash-logo" src="images/charlestonhackslogo.svg" alt="CharlestonHacks Logo" />
-      <h1 id="splash-title">Welcome to CharlestonHacks</h1>
-      <p id="splash-desc">You'll soon be presented with an interactive card that will take you to different parts of our lore.</p>
-      <button id="skip-splash-btn" type="button" aria-label="Skip welcome screen (press Enter)">Skip</button>
-    </div>
+    <h1 id="splash-title">Welcome to CharlestonHacks</h1>
+
+    <!-- Text changes dynamically via JS -->
+    <p id="splash-desc">Loading...</p>
+
+    <!-- New: Don't show again checkbox -->
+    <label id="dont-show-label" style="margin-top:1em; display: flex; align-items: center; gap: 0.5em; font-size: 0.9rem;">
+      <input type="checkbox" id="dont-show-again" />
+      Don't show this welcome screen again
+    </label>
+
+    <button id="skip-splash-btn" type="button" aria-label="Skip welcome screen (press Enter)">Skip</button>
   </div>
+</div>
+
 
   <!-- Audio assets -->
   <audio id="cardflipSound" src="assets/atmospherel.m4a" preload="auto"></audio>
@@ -114,10 +123,13 @@
       });
     }
   </script>
-  <script>
+ <script>
   (function () {
     const splashOverlay = document.getElementById('splash-overlay');
     const skipBtn = document.getElementById('skip-splash-btn');
+    const splashTitle = document.getElementById('splash-title');
+    const splashDesc = document.getElementById('splash-desc');
+    const dontShowCheckbox = document.getElementById('dont-show-again');
     const splashKey = 'chs_splash_seen_v2';
 
     function hideSplash(immediate = false) {
@@ -130,12 +142,33 @@
     }
 
     function dismissSplash() {
-      localStorage.setItem(splashKey, 'yes');
+      if (dontShowCheckbox.checked) {
+        localStorage.setItem(splashKey, 'never');
+      } else {
+        localStorage.setItem(splashKey, 'yes');
+      }
       hideSplash();
     }
 
     function maybeShowSplash() {
-      const hasVisited = localStorage.getItem(splashKey);
+      const splashPref = localStorage.getItem(splashKey);
+
+      // If user chose "never", skip splash completely
+      if (splashPref === 'never') {
+        hideSplash(true);
+        return;
+      }
+
+      const isReturning = splashPref === 'yes';
+
+      // Customize text based on visit status
+      splashDesc.textContent = isReturning
+        ? "Welcome back. We'll jump into the experience shortly."
+        : "You'll soon be presented with an interactive card that will take you to different parts of our lore.";
+
+      // Show checkbox only for first-time visitors
+      document.getElementById('dont-show-label').style.display = isReturning ? 'none' : 'flex';
+
       document.body.classList.add('splash-active');
       splashOverlay.style.display = 'flex';
 
@@ -147,8 +180,7 @@
         if (e.key === 'Enter' || e.key === ' ') dismissSplash();
       });
 
-      // 👇 Dynamic timeout based on visit history
-      const delay = hasVisited ? 3000 : 5000;
+      const delay = isReturning ? 3000 : 5000;
       setTimeout(dismissSplash, delay);
     }
 
