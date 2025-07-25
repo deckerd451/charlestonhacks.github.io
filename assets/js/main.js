@@ -6,7 +6,6 @@ import { setupSearchHandlers } from './search.js';
 import { setupTeamBuilderHandlers } from './team.js';
 import { setupEndorsementHandlers } from './endorsements.js';
 import { fetchUniqueSkills, loadLeaderboard, updateProfileProgress } from './utils.js';
-import { initializeDiscordBubble } from './chat.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Setup individual features
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   updateProfileProgress();
 
   // Load the draggable Discord chat bubble
-  initializeDiscordBubble();
   initCardFlip();
 
 });
