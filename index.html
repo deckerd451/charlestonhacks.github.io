@@ -510,6 +510,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+  <!-- Floating Discord Chat Button -->
+<div id="chat-toggle" aria-label="Open live chat" role="button" tabindex="0" title="Chat with us on Discord">
+  <i class="fab fa-discord"></i>
+  <span id="chat-badge">1</span>
+  <span id="chat-tooltip">💬 Need help?</span>
+</div>
+
+<!-- Modal Chat -->
+<div id="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-title" style="display: none;">
+  <div id="chat-backdrop"></div>
+  <div id="chat-dialog">
+    <button id="chat-close" aria-label="Close chat">&times;</button>
+    <button id="chat-minimize" aria-label="Minimize chat" title="Minimize chat">&#x2198;</button>
+    <h2 id="chat-title" class="sr-only">Live Chat with CharlestonHacks</h2>
+    <iframe
+      src="https://discord.com/widget?id=1365587542975713320&theme=dark&enable_unread_count=true"
+      width="100%" height="100%"
+      allowtransparency="true" frameborder="0"
+      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
+    </iframe>
+  </div>
+</div>
+
+<!-- Draggable Bubble -->
+<div id="chat-bubble" title="Open chat" role="button" tabindex="0">
+  <i class="fab fa-discord"></i>
+</div>
+
 </body>
   <script>
 // Service Worker Registration
