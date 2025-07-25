@@ -7,11 +7,16 @@ crateScript.src = 'https://cdn.jsdelivr.net/npm/@widgetbot/html-embed';
 crateScript.async = true;
 crateScript.defer = true;
 crateScript.onload = () => {
-  window.CrateInstance = new window.WidgetBot.Crate({
-    server: '1365587542975713320',  // Charleston Hacks Server
-    channel: '1365587543696867384' // #general
-  });
+  if (window.WidgetBot && window.WidgetBot.Crate) {
+    window.CrateInstance = new window.WidgetBot.Crate({
+      server: '1365587542975713320',
+      channel: '1365587543696867384'
+    });
+  } else {
+    console.error('WidgetBot failed to load.');
+  }
 };
+
 document.body.appendChild(crateScript);
 
   // 2. Create the chat bubble
