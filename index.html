@@ -157,6 +157,50 @@
     window.addEventListener('DOMContentLoaded', maybeShowSplash);
   })();
 </script>
+  <script type="module">
+  import { setupChatBubble } from './assets/js/chatBubble.js';
+  setupChatBubble();
 
+  // Splash logic
+  const splashOverlay = document.getElementById('splash-overlay');
+  const skipBtn = document.getElementById('skip-splash-btn');
+
+  function hideSplash(immediate = false) {
+    splashOverlay.classList.add('fade-out');
+    document.body.classList.remove('splash-active');
+    setTimeout(() => {
+      splashOverlay.style.display = 'none';
+      splashOverlay.style.pointerEvents = 'none';
+    }, immediate ? 0 : 700);
+  }
+
+  skipBtn?.addEventListener('click', () => hideSplash());
+
+  // Clickable buttons with sound
+  const buttons = document.querySelectorAll('.clickable-area');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const soundId = btn.dataset.sound;
+      const url = btn.dataset.url;
+      const sound = document.getElementById(`${soundId}Sound`);
+      if (sound) sound.play();
+      if (url) setTimeout(() => window.location.href = url, 400);
+    });
+  });
+
+  // Info hover
+  const infoLine = document.getElementById('infoLine');
+  const infoText = document.getElementById('infoText');
+  buttons.forEach(btn => {
+    btn.addEventListener('mouseover', () => {
+      infoLine.style.opacity = '1';
+      infoText.textContent = btn.dataset.info || '';
+    });
+    btn.addEventListener('mouseout', () => {
+      infoLine.style.opacity = '0';
+      infoText.textContent = '';
+    });
+  });
+</script>
 </body>
 </html>
