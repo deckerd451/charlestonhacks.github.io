@@ -1,40 +1,53 @@
 // src/chatBubble.js
 
 export function setupChatBubble() {
-  if (document.getElementById('discord-bubble')) return; // prevent duplicates
+  if (document.getElementById('discord-bubble')) return;
 
-  // 1. Create Crate container
+  // 1. Load Crate v3
   const crateScript = document.createElement('script');
   crateScript.src = 'https://cdn.jsdelivr.net/npm/@widgetbot/crate@3';
   crateScript.async = true;
   crateScript.defer = true;
   crateScript.onload = () => {
-    // No need for window.WidgetBot with Crate v3
     window.CrateInstance = new Crate({
-      server: '1365587542975713320',  // Charleston Hacks Server
-      channel: '1365587543696867384' // #general
+      server: '1365587542975713320',
+      channel: '1365587543696867384'
     });
+
+    // Important: make it transparent
     window.CrateInstance.options.transparent = true;
-};
+
+    // Inject CSS to control iframe pointer behavior
+    const iframeStyle = document.createElement('style');
+    iframeStyle.textContent = `
+      iframe[src^="https://widgetbot.io"] {
+        pointer-events: none !important;
+      }
+      iframe[src^="https://widgetbot.io"].visible {
+        pointer-events: auto !important;
+      }
+    `;
+    document.head.appendChild(iframeStyle);
+  };
+
   crateScript.onerror = () => {
     console.error('WidgetBot failed to load.');
   };
+
   document.body.appendChild(crateScript);
 
-  // 2. Create the chat bubble
+  // 2. Create draggable chat bubble
   const discordBubble = document.createElement('div');
   discordBubble.id = 'discord-bubble';
   discordBubble.innerHTML = '💬';
   document.body.appendChild(discordBubble);
 
-  // 3. Restore position from localStorage
   const savedPosition = JSON.parse(localStorage.getItem('discordBubblePos'));
   if (savedPosition) {
     discordBubble.style.left = savedPosition.left;
     discordBubble.style.top = savedPosition.top;
   }
 
-  // 4. Make the bubble draggable
   let offsetX, offsetY, dragging = false;
 
   const startDrag = (e) => {
@@ -78,14 +91,16 @@ export function setupChatBubble() {
 
   document.addEventListener('touchend', endDrag);
 
-  // 5. Toggle Crate on click
+  // 5. Toggle Crate & iframe click-through
   discordBubble.addEventListener('click', () => {
     if (window.CrateInstance) {
+      const iframes = document.querySelectorAll('iframe[src^="https://widgetbot.io"]');
+      iframes.forEach(iframe => iframe.classList.toggle('visible'));
       window.CrateInstance.toggle();
     }
   });
 
-  // 6. Add styles
+  // 6. Style for bubble
   const style = document.createElement('style');
   style.textContent = `
     #discord-bubble {
@@ -116,5 +131,4 @@ export function setupChatBubble() {
   document.head.appendChild(style);
 }
 
-// Run after DOM is loaded
 window.addEventListener('DOMContentLoaded', setupChatBubble);
