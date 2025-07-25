@@ -1,12 +1,17 @@
 // src/autocomplete.js
 
-import { appState, DOMElements } from './state.js';
+import { appState } from './state.js';
 
+/**
+ * Sets up autocomplete functionality for a given input field.
+ * @param {HTMLElement} inputElement - The input field for autocomplete.
+ * @param {HTMLElement} autocompleteBoxElement - The div to display suggestions.
+ */
 export function setupAutocomplete(inputElement, autocompleteBoxElement) {
   let timeoutId;
   inputElement.addEventListener('input', () => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
+    clearTimeout(timeoutId); // Clear previous timeout
+    timeoutId = setTimeout(() => { // Debounce input
       const userInput = inputElement.value.toLowerCase().trim().split(',').pop().trim();
       autocompleteBoxElement.innerHTML = '';
       if (!userInput || !appState.dynamicSkills.length) {
@@ -44,7 +49,6 @@ export function setupAutocomplete(inputElement, autocompleteBoxElement) {
       autocompleteBoxElement.style.top = `${rect.bottom + window.scrollY}px`;
       autocompleteBoxElement.style.width = `${rect.width}px`;
       autocompleteBoxElement.style.display = 'block';
-
     }, 300);
   });
 
@@ -95,4 +99,3 @@ export function setupAutocomplete(inputElement, autocompleteBoxElement) {
     }
   });
 }
-
