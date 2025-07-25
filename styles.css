@@ -672,6 +672,43 @@ main, .main-wrapper, .media-container {
 .input-container button:hover {
     background: #FFC000;
 }
+/* ==========================================================================
+   COUNTDOWN & BTC PRICE STYLES
+   ========================================================================== */
+/* Make the media-container relative so children can be absolutely positioned */
+.media-container {
+  position: relative;
+}
+
+/* Countdown styling - near the top of the card */
+#countdown {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--countdown-size);
+  color: var(--secondary-color);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 6px 14px;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+/* BTC Price styling - near the bottom of the card */
+#btcPrice {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--countdown-size);
+  color: #00FF87;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 6px 14px;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+
 
 /* ==========================================================================
    TEAM BUILDER/2card CARD STYLES
