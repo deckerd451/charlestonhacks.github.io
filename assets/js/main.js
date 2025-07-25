@@ -23,4 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load the draggable Discord chat bubble
   initializeDiscordBubble();
+  initCardFlip();
+
 });
