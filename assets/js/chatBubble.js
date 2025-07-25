@@ -115,5 +115,6 @@ document.body.appendChild(crateScript);
   `;
   document.head.appendChild(style);
 }
-setupChatBubble();
+window.addEventListener('DOMContentLoaded', setupChatBubble);
+
 
