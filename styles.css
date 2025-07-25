@@ -701,6 +701,7 @@ main, .main-wrapper, .media-container {
   padding: 6px 14px;
   border-radius: 8px;
   z-index: 10;
+   white-space: nowrap; /* prevents wrapping */
 }
 
 #btcPrice {
