@@ -340,6 +340,163 @@ main, .main-wrapper, .media-container {
     max-height: 100px;
   }
 }
+/* Core Chat Button */
+#chat-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ff6600;
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 50%;
+  font-size: 1.5em;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: 0 0 12px rgba(255, 102, 0, 0.6);
+  transition: background 0.2s, transform 0.2s, opacity 0.4s ease-in;
+  opacity: 0;
+  animation: fadeInChat 1.2s ease-out forwards;
+  animation-delay: 0.6s;
+}
+@keyframes fadeInChat {
+  to { opacity: 1; }
+}
+#chat-toggle:hover,
+#chat-toggle:focus {
+  background: #ff8800;
+  transform: scale(1.08);
+  outline: none;
+}
+
+/* Tooltip */
+#chat-tooltip {
+  position: absolute;
+  bottom: 140%;
+  right: -20px;
+  background: #222;
+  color: #ffb700;
+  font-size: 0.85em;
+  padding: 6px 10px;
+  border-radius: 10px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+#chat-toggle:hover #chat-tooltip {
+  opacity: 1;
+}
+
+/* Badge */
+#chat-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ffb700;
+  color: #1e1f22;
+  font-size: 0.7em;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 999px;
+  box-shadow: 0 0 3px #000;
+  animation: ping-bounce 1.3s ease-in-out infinite alternate;
+}
+@keyframes ping-bounce {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+/* Modal styles */
+#chat-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  animation: slideInModal 0.3s ease-out;
+}
+@keyframes slideInModal {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+#chat-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+#chat-dialog {
+  position: relative;
+  width: 90%;
+  max-width: 700px;
+  height: 80%;
+  background: #1e1f22;
+  border: 2px solid #ffb700;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  overflow: hidden;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Close and Minimize */
+#chat-close,
+#chat-minimize {
+  position: absolute;
+  top: 8px;
+  font-size: 1.8em;
+  background: none;
+  border: none;
+  color: #ffb700;
+  cursor: pointer;
+  z-index: 10;
+}
+#chat-close { right: 12px; }
+#chat-minimize { left: 12px; }
+#chat-close:hover,
+#chat-minimize:hover { color: white; }
+
+/* Bubble */
+#chat-bubble {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #5865f2;
+  color: white;
+  width: 52px;
+  height: 52px;
+  font-size: 1.5em;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  cursor: grab;
+  box-shadow: 0 0 12px rgba(0,0,0,0.25);
+}
+#chat-bubble:hover {
+  background: #4752c4;
+}
+
+@media (max-width: 600px) {
+  #chat-dialog {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+  #chat-close, #chat-minimize {
+    font-size: 2em;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  left: -9999px;
+}
+
 /* ==========================================================================
    FOOTER ICONS (DESKTOP)
    ========================================================================== */
