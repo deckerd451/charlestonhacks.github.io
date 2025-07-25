@@ -104,10 +104,7 @@
   </footer>
 
   <!-- Scripts -->
- <script type="module" src="assets/js/chatBubble.js"></script>
-
-
-  <!-- Service Worker -->
+ <!-- Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -157,24 +154,12 @@
     window.addEventListener('DOMContentLoaded', maybeShowSplash);
   })();
 </script>
-  <script type="module">
+ <script type="module">
   import { setupChatBubble } from './assets/js/chatBubble.js';
+  import { initCardFlip } from './assets/js/cardFlip.js';
+
   setupChatBubble();
-
-  // Splash logic
-  const splashOverlay = document.getElementById('splash-overlay');
-  const skipBtn = document.getElementById('skip-splash-btn');
-
-  function hideSplash(immediate = false) {
-    splashOverlay.classList.add('fade-out');
-    document.body.classList.remove('splash-active');
-    setTimeout(() => {
-      splashOverlay.style.display = 'none';
-      splashOverlay.style.pointerEvents = 'none';
-    }, immediate ? 0 : 700);
-  }
-
-  skipBtn?.addEventListener('click', () => hideSplash());
+  initCardFlip(); // ← this is the critical missing piece
 
   // Clickable buttons with sound
   const buttons = document.querySelectorAll('.clickable-area');
@@ -202,5 +187,6 @@
     });
   });
 </script>
+
 </body>
 </html>
