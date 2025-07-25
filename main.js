@@ -929,3 +929,35 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+#discord-bubble-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+#discord-bubble {
+  pointer-events: auto;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  font-size: 22px;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#discord-bubble:hover {
+  transform: scale(1.1);
+}
+
