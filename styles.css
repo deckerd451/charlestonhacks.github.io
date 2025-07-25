@@ -708,11 +708,11 @@ main, .main-wrapper, .media-container {
 }
 @media (max-width: 600px) {
   #countdown {
-    top: 6%;
+    top: 15%;
   }
 
   #btcPrice {
-    bottom: 6%;
+    bottom: 15%;
   }
 }
 /* ==========================================================================
