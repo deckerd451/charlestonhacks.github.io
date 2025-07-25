@@ -125,25 +125,8 @@
       document.body.classList.remove('splash-active');
       setTimeout(() => {
         splashOverlay.style.display = 'none';
-        splashOverlay.style.pointerEvents = 'none'; // ✅ Important
+        splashOverlay.style.pointerEvents = 'none';
       }, immediate ? 0 : 700);
-    }
-
-    function maybeShowSplash() {
-      if (localStorage.getItem(splashKey)) {
-        hideSplash(true);
-      } else {
-        document.body.classList.add('splash-active');
-        splashOverlay.style.display = 'flex';
-        skipBtn.onclick = dismissSplash;
-        skipBtn.onkeyup = e => {
-          if (e.key === 'Enter' || e.key === ' ') dismissSplash();
-        };
-        window.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') dismissSplash();
-        });
-        setTimeout(dismissSplash, 5000);
-      }
     }
 
     function dismissSplash() {
@@ -151,9 +134,28 @@
       hideSplash();
     }
 
+    function maybeShowSplash() {
+      const hasVisited = localStorage.getItem(splashKey);
+      document.body.classList.add('splash-active');
+      splashOverlay.style.display = 'flex';
+
+      skipBtn.onclick = dismissSplash;
+      skipBtn.onkeyup = e => {
+        if (e.key === 'Enter' || e.key === ' ') dismissSplash();
+      };
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') dismissSplash();
+      });
+
+      // 👇 Dynamic timeout based on visit history
+      const delay = hasVisited ? 3000 : 5000;
+      setTimeout(dismissSplash, delay);
+    }
+
     window.addEventListener('DOMContentLoaded', maybeShowSplash);
   })();
 </script>
+
  <script type="module">
   import { CONFIG } from './assets/js/config.js';
   import { setupChatBubble } from './assets/js/chatBubble.js';
