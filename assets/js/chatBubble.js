@@ -1,9 +1,7 @@
-// src/chatBubble.js
-
 export function setupChatBubble() {
   if (document.getElementById('discord-bubble')) return;
 
-  // 1. Load Crate v3
+  // Load WidgetBot Crate v3
   const crateScript = document.createElement('script');
   crateScript.src = 'https://cdn.jsdelivr.net/npm/@widgetbot/crate@3';
   crateScript.async = true;
@@ -13,67 +11,37 @@ export function setupChatBubble() {
       server: '1365587542975713320',
       channel: '1365587543696867384'
     });
-
-    // Important: make it transparent
-    window.CrateInstance.options.transparent = true;
-
-    // Inject CSS to control iframe pointer behavior
-   const iframeStyle = document.createElement('style');
-iframeStyle.textContent = `
-  iframe[src^="https://widgetbot.io"] {
-    pointer-events: none !important;
-    z-index: 9998 !important;
-  }
-
-  iframe[src^="https://widgetbot.io"].visible {
-    pointer-events: auto !important;
-    z-index: 10001 !important;
-  }
-
-  #splash-overlay {
-    z-index: 9999;
-  }
-`;
-document.head.appendChild(iframeStyle);
-
   };
-
-  crateScript.onerror = () => {
-    console.error('WidgetBot failed to load.');
-  };
-
+  crateScript.onerror = () => console.error('WidgetBot Crate failed to load.');
   document.body.appendChild(crateScript);
 
-  // 2. Create draggable chat bubble
+  // Create draggable bubble
   const discordBubble = document.createElement('div');
   discordBubble.id = 'discord-bubble';
   discordBubble.innerHTML = '💬';
   document.body.appendChild(discordBubble);
 
-  const savedPosition = JSON.parse(localStorage.getItem('discordBubblePos'));
-  if (savedPosition) {
-    discordBubble.style.left = savedPosition.left;
-    discordBubble.style.top = savedPosition.top;
+  // Restore position
+  const saved = JSON.parse(localStorage.getItem('discordBubblePos'));
+  if (saved) {
+    discordBubble.style.left = saved.left;
+    discordBubble.style.top = saved.top;
   }
 
+  // Drag handlers
   let offsetX, offsetY, dragging = false;
-
   const startDrag = (e) => {
     dragging = true;
     const rect = discordBubble.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
   };
-
   const drag = (e) => {
     if (!dragging) return;
     e.preventDefault();
-    const x = e.clientX - offsetX;
-    const y = e.clientY - offsetY;
-    discordBubble.style.left = `${x}px`;
-    discordBubble.style.top = `${y}px`;
+    discordBubble.style.left = `${e.clientX - offsetX}px`;
+    discordBubble.style.top = `${e.clientY - offsetY}px`;
   };
-
   const endDrag = () => {
     dragging = false;
     localStorage.setItem('discordBubblePos', JSON.stringify({
@@ -82,33 +50,31 @@ document.head.appendChild(iframeStyle);
     }));
   };
 
+  // Mouse events
   discordBubble.addEventListener('mousedown', startDrag);
   document.addEventListener('mousemove', drag);
   document.addEventListener('mouseup', endDrag);
 
+  // Touch events
   discordBubble.addEventListener('touchstart', (e) => {
-    const touch = e.touches[0];
-    startDrag({ clientX: touch.clientX, clientY: touch.clientY });
+    const t = e.touches[0];
+    startDrag({ clientX: t.clientX, clientY: t.clientY });
   }, { passive: false });
-
   document.addEventListener('touchmove', (e) => {
     if (!dragging) return;
-    const touch = e.touches[0];
-    drag({ clientX: touch.clientX, clientY: touch.clientY });
+    const t = e.touches[0];
+    drag({ clientX: t.clientX, clientY: t.clientY });
   }, { passive: false });
-
   document.addEventListener('touchend', endDrag);
 
-  // 5. Toggle Crate & iframe click-through
+  // Toggle chat
   discordBubble.addEventListener('click', () => {
     if (window.CrateInstance) {
-      const iframes = document.querySelectorAll('iframe[src^="https://widgetbot.io"]');
-      iframes.forEach(iframe => iframe.classList.toggle('visible'));
       window.CrateInstance.toggle();
     }
   });
 
-  // 6. Style for bubble
+  // Inject styles
   const style = document.createElement('style');
   style.textContent = `
     #discord-bubble {
@@ -131,12 +97,17 @@ document.head.appendChild(iframeStyle);
       user-select: none;
       touch-action: none;
     }
-
     #discord-bubble:active {
       cursor: grabbing;
+    }
+    iframe[src*="widgetbot.io"] {
+      pointer-events: none !important;
+      opacity: 0 !important;
+    }
+    iframe[src*="widgetbot.io"].visible {
+      pointer-events: auto !important;
+      opacity: 1 !important;
     }
   `;
   document.head.appendChild(style);
 }
-
-window.addEventListener('DOMContentLoaded', setupChatBubble);
