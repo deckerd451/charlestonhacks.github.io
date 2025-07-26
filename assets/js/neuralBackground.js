@@ -24,12 +24,15 @@ class Node {
     if (this.x < 0 || this.x > width) this.vx *= -1;
     if (this.y < 0 || this.y > height) this.vy *= -1;
   }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 1.8, 0, Math.PI * 2);
-    ctx.fillStyle = '#fff';
-    ctx.fill();
-  }
+draw() {
+  const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 8);
+  gradient.addColorStop(0, '#0ff');
+  gradient.addColorStop(1, 'transparent');
+
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, 2.2, 0, Math.PI * 2);
+  ctx.fillStyle = gradient;
+  ctx.fill();
 }
 
 function connectNodes() {
@@ -39,10 +42,11 @@ function connectNodes() {
       let dy = nodes[i].y - nodes[j].y;
       let dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < 100) {
+        ctx.strokeStyle = `rgba(0, 255, 255, ${1 - dist / 100})`;
+        ctx.lineWidth = 0.6;
         ctx.beginPath();
         ctx.moveTo(nodes[i].x, nodes[i].y);
         ctx.lineTo(nodes[j].x, nodes[j].y);
-        ctx.strokeStyle = `rgba(255,255,255,${1 - dist / 100})`;
         ctx.stroke();
       }
     }
