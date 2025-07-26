@@ -46,7 +46,7 @@ function connectNodes() {
       let dy = nodes[i].y - nodes[j].y;
       let dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < 100) {
-        ctx.strokeStyle = `rgba(0, 255, 255, ${1 - dist / 100})`;
+        ctx.strokeStyle = rgba(0, 255, 255, ${1 - dist / 100});
         ctx.lineWidth = 0.6;
         ctx.beginPath();
         ctx.moveTo(nodes[i].x, nodes[i].y);
