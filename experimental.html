@@ -133,12 +133,12 @@
 <!-- Gallery Thumbnails -->
   <main class="gallery-container">
 <div id="gallery" class="gallery">
-  <div class="gallery-item" data-video="https://www.youtube.com/embed/BkqZVR5uipU?autoplay=1">
-    <img src="images/xcard.png" alt="Lesson 1">
-  </div>
-  <div class="gallery-item" data-video="https://youtube.com/shorts/saPfF-apyJ8">
-    <img src="images/definition.png" alt="What is CharlestonHacks?">
-  </div>
+  <a class="gallery-item" href="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/" target="_blank" rel="noopener noreferrer">
+  <img src="images/xcard.png" alt="XCard Project">
+</a>
+<a class="gallery-item" href="https://hackathon-chs-git-main-maxs-projects-ff8c32db.vercel.app/" target="_blank" rel="noopener noreferrer">
+  <img src="images/xcard.png" alt="XCard Project">
+</a>
 </div>
     </main>
 
@@ -173,13 +173,17 @@
   const iframe = document.getElementById('videoFrame');
   const closeBtn = document.querySelector('.close-btn');
 
-  galleryItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const videoURL = item.getAttribute('data-video');
-      iframe.src = videoURL;
-      modal.classList.remove('hidden');
-    });
+galleryItems.forEach(item => {
+  item.addEventListener('click', (e) => {
+    const videoURL = item.getAttribute('data-video');
+    if (!videoURL) return; // Let <a> open directly
+
+    e.preventDefault(); // Stop default link if it’s a video
+    iframe.src = videoURL;
+    modal.classList.remove('hidden');
   });
+});
+
 
   closeBtn.addEventListener('click', () => {
     iframe.src = '';
