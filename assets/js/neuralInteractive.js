@@ -48,10 +48,10 @@ class Neuron {
     return Math.hypot(this.x - x, this.y - y) < 10;
   }
 
- draw() {
+// Inside Neuron class
+draw() {
   const pulse = 1 + Math.sin(Date.now() * 0.005 + this.x + this.y) * 0.3;
 
-  // Glowing aura
   const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 15);
   glow.addColorStop(0, 'rgba(0,255,255,0.9)');
   glow.addColorStop(1, 'rgba(0,255,255,0)');
@@ -61,26 +61,9 @@ class Neuron {
   ctx.fillStyle = glow;
   ctx.fill();
 
-  // Core circle
   ctx.beginPath();
-  ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
-  ctx.fillStyle = '#0ff';
-  ctx.fill();
+  ctx.arc(this.x, this.y, 2.
 
-  // Optional: avatar on top
-  if (this.meta.image_url) {
-    const img = new Image();
-    img.src = this.meta.image_url;
-    img.onload = () => {
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.clip();
-      ctx.drawImage(img, this.x - 12, this.y - 12, 24, 24);
-      ctx.restore();
-    };
-  }
 
   // Draw connections last (under other neurons if you prefer)
   this.connections.forEach(other => {
