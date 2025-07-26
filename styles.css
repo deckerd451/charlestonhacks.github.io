@@ -1281,9 +1281,10 @@ main, .main-wrapper, .media-container {
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  opacity: 0.2;
   pointer-events: none;
+  background: transparent;
 }
+
 #neural-interactive {
   position: fixed;
   top: 0;
