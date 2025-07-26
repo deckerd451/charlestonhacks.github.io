@@ -168,22 +168,19 @@
     <p style="margin-top: 16px; font-size: 16px;">© 2025 CharlestonHacks. All rights reserved.</p>
   </footer>
 <script>
-  const galleryItems = document.querySelectorAll('.gallery-item');
+  const galleryItems = document.querySelectorAll('.gallery-item[data-video]');
   const modal = document.getElementById('videoModal');
   const iframe = document.getElementById('videoFrame');
   const closeBtn = document.querySelector('.close-btn');
 
-galleryItems.forEach(item => {
-  item.addEventListener('click', (e) => {
-    const videoURL = item.getAttribute('data-video');
-
-
-    e.preventDefault(); // Stop default link if it’s a video
-    iframe.src = videoURL;
-    modal.classList.remove('hidden');
+  galleryItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const videoURL = item.getAttribute('data-video');
+      iframe.src = videoURL;
+      modal.classList.remove('hidden');
+    });
   });
-});
-
 
   closeBtn.addEventListener('click', () => {
     iframe.src = '';
