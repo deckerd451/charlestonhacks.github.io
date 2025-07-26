@@ -1285,13 +1285,15 @@ main, .main-wrapper, .media-container {
   pointer-events: none;
 }
 #neural-interactive {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
   width: 100%;
-  height: 600px;
-  background: #101010;
-  border-radius: 12px;
-  margin: 2rem auto;
-  display: block;
+  height: 100%;
+  pointer-events: none; /* lets clicks go through */
 }
+
 
 
 /* ==========================================================================
