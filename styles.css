@@ -1294,6 +1294,20 @@ main, .main-wrapper, .media-container {
   z-index: -1;
   pointer-events: none;
 }
+#neuron-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.85);
+  color: #0ff;
+  padding: 10px;
+  border-radius: 8px;
+  pointer-events: none;
+  font-size: 14px;
+  max-width: 200px;
+  line-height: 1.4;
+  z-index: 9999;
+  transition: opacity 0.2s ease;
+}
+
 /* ==========================================================================
    SPLASH SCREEN STYLES
    ========================================================================== */
