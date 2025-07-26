@@ -1,8 +1,8 @@
-// assets/js/loadNeurons.js
+// loadNeurons.js
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Keep this secure in real projects
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -12,7 +12,7 @@ export async function fetchNeurons() {
     .select('id, name, role, interests, x, y, image_url');
 
   if (error) {
-    console.error('Error fetching community neurons:', error.message);
+    console.error('Error loading neurons:', error.message);
     return [];
   }
 
@@ -21,8 +21,8 @@ export async function fetchNeurons() {
     label: member.name,
     role: member.role,
     interests: member.interests,
-    x: member.x || Math.random() * window.innerWidth,
-    y: member.y || Math.random() * window.innerHeight,
+    x: member.x,
+    y: member.y,
     image: member.image_url || null,
   }));
 }
