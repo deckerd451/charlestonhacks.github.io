@@ -52,6 +52,27 @@
   </style>
 </head>
 <body>
+  <div id="auth-box">
+  <div id="auth-status"></div>
+  <form id="auth-form">
+    <input type="email" id="email-input" placeholder="you@example.com" required />
+    <button type="submit">Send Magic Link</button>
+  </form>
+  <button id="logout-btn" style="display:none;">Log Out</button>
+</div>
+
+<!-- Avatar/Role Filter UI -->
+<div id="filter-bar">
+  <label for="roleFilter">Filter by Role:</label>
+  <select id="roleFilter">
+    <option value="">All</option>
+    <option value="Organizer">Organizer</option>
+    <option value="Developer">Developer</option>
+    <option value="Designer">Designer</option>
+    <option value="Mentor">Mentor</option>
+  </select>
+</div>
+
   <a href="index.html" class="back-link">← Home</a>
   <canvas id="neural-interactive" aria-label="Community Neural Map"></canvas>
     <!-- Tooltip for Neuron Info -->
