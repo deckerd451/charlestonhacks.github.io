@@ -1,14 +1,15 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
-
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // keep as is
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let canvas, ctx, width, height;
 let neurons = [];
 let tooltip;
 let activeNeuron = null;
+
+// === Loaders ===
 
 async function loadCommunityData() {
   const { data, error } = await supabase.from('community').select('*');
@@ -30,35 +31,24 @@ async function loadCommunityData() {
     availability: user.availability || ''
   }));
 }
-neurons = []; // Clear previous data
 
-function createNeuronsFromCommunity(data) {
-  const idToNeuron = new Map();
-
-  data.forEach(user => {
-    const neuron = new Neuron(user.x, user.y);
-    neuron.meta = user;
-    neurons.push(neuron);
-    idToNeuron.set(user.id, neuron);
-  });
-
-  data.forEach((userA, i) => {
-    for (let j = i + 1; j < data.length; j++) {
-      const userB = data[j];
-      const shared = userA.interests.filter(tag => userB.interests.includes(tag));
-      if (shared.length > 0) {
-        idToNeuron.get(userA.id).connectTo(idToNeuron.get(userB.id));
-        idToNeuron.get(userB.id).connectTo(idToNeuron.get(userA.id));
-      }
-    }
-  });
+async function loadConnections() {
+  const { data, error } = await supabase.from('connections').select('from_id, to_id');
+  if (error) {
+    console.error('❌ Failed to fetch connections:', error);
+    return [];
+  }
+  return data;
 }
+
+// === Classes ===
 
 class Neuron {
   constructor(x, y) {
     this.x = x;
     this.y = y;
     this.connections = [];
+    this.meta = {}; // will be set later
   }
 
   connectTo(other) {
@@ -99,16 +89,19 @@ class Neuron {
   }
 }
 
+// === UI / Rendering ===
+
+function resizeCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+
 function drawNetwork() {
   ctx.clearRect(0, 0, width, height);
   neurons.forEach(n => n.draw());
   requestAnimationFrame(drawNetwork);
 }
 
-function resizeCanvas() {
-  width = canvas.width = window.innerWidth;
-  height = canvas.height = window.innerHeight;
-}
 function showTooltip(neuron, x, y) {
   const { name, role, interests, email, image_url, availability } = neuron.meta || {};
   tooltip.innerHTML = `
@@ -130,6 +123,22 @@ function hideTooltip() {
   tooltip.style.opacity = '0';
 }
 
+function createNeuronsFromCommunity(data) {
+  neurons = [];
+  const idToNeuron = new Map();
+
+  data.forEach(user => {
+    const neuron = new Neuron(user.x, user.y);
+    neuron.meta = user;
+    neurons.push(neuron);
+    idToNeuron.set(user.id, neuron);
+  });
+
+  return idToNeuron;
+}
+
+// === Init ===
+
 window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-interactive');
   ctx = canvas.getContext('2d');
@@ -139,7 +148,18 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.addEventListener('resize', resizeCanvas);
 
   const communityData = await loadCommunityData();
-  createNeuronsFromCommunity(communityData);
+  const idToNeuron = createNeuronsFromCommunity(communityData);
+
+  const connections = await loadConnections();
+  connections.forEach(({ from_id, to_id }) => {
+    const fromNeuron = idToNeuron.get(from_id);
+    const toNeuron = idToNeuron.get(to_id);
+    if (fromNeuron && toNeuron) {
+      fromNeuron.connectTo(toNeuron);
+      toNeuron.connectTo(fromNeuron);
+    }
+  });
+
   drawNetwork();
 
   canvas.addEventListener('mousemove', e => {
@@ -180,17 +200,18 @@ window.addEventListener('DOMContentLoaded', async () => {
     hideTooltip();
   });
 
-  canvas.addEventListener('click', e => {
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const newNeuron = new Neuron(x, y);
-    neurons.forEach(n => {
-      if (Math.hypot(n.x - x, n.y - y) < 150) {
-        newNeuron.connectTo(n);
-        n.connectTo(newNeuron);
-      }
-    });
-    neurons.push(newNeuron);
-  });
+  // 🔒 Dev-only node injection — disabled in prod:
+  // canvas.addEventListener('click', e => {
+  //   const rect = canvas.getBoundingClientRect();
+  //   const x = e.clientX - rect.left;
+  //   const y = e.clientY - rect.top;
+  //   const newNeuron = new Neuron(x, y);
+  //   neurons.forEach(n => {
+  //     if (Math.hypot(n.x - x, n.y - y) < 150) {
+  //       newNeuron.connectTo(n);
+  //       n.connectTo(newNeuron);
+  //     }
+  //   });
+  //   neurons.push(newNeuron);
+  // });
 });
