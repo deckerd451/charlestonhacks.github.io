@@ -4,8 +4,8 @@ let width, height;
 let neurons = [];
 
 function resizeCanvas() {
-  width = canvas.width = canvas.clientWidth;
-  height = canvas.height = canvas.clientHeight;
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
 }
 
 window.addEventListener('resize', resizeCanvas);
