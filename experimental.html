@@ -176,7 +176,7 @@
 galleryItems.forEach(item => {
   item.addEventListener('click', (e) => {
     const videoURL = item.getAttribute('data-video');
-    if (!videoURL) return; // Let <a> open directly
+
 
     e.preventDefault(); // Stop default link if it’s a video
     iframe.src = videoURL;
