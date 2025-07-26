@@ -30,6 +30,7 @@ async function loadCommunityData() {
     availability: user.availability || ''
   }));
 }
+neurons = []; // Clear previous data
 
 function createNeuronsFromCommunity(data) {
   const idToNeuron = new Map();
