@@ -1,40 +1,49 @@
+<!-- neural.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Interactive Neural Network for CharlestonHacks" />
-  <title>CharlestonHacks Neural Map</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neural Network Map</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      background: black;
       overflow: hidden;
-      background-color: #000;
+      height: 100%;
+      font-family: sans-serif;
     }
+
     #neural-interactive {
       display: block;
       width: 100vw;
       height: 100vh;
     }
-    a.home-link {
-      position: absolute;
+
+    a.back-link {
+      position: fixed;
       top: 20px;
       left: 20px;
-      z-index: 10;
       color: #0ff;
-      font-size: 1.5em;
+      font-size: 1.2rem;
       text-decoration: none;
+      z-index: 10;
+    }
+
+    a.back-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <a class="home-link" href="index.html" title="Back to Home">
-    ← Home
-  </a>
+  <a href="index.html" class="back-link">← Home</a>
   <canvas id="neural-interactive" aria-label="Community Neural Map"></canvas>
 
+  <!-- Supabase if used -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+
+  <!-- Your interactive animation code -->
   <script type="module" src="assets/js/neuralInteractive.js"></script>
 </body>
 </html>
