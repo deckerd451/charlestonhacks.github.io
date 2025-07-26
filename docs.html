@@ -159,6 +159,32 @@
     </div>
     <p style="margin-top: 16px; font-size: 16px;">© 2025 CharlestonHacks. All rights reserved.</p>
   </footer>
+<script>
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const modal = document.getElementById('videoModal');
+  const iframe = document.getElementById('videoFrame');
+  const closeBtn = document.querySelector('.close-btn');
+
+  galleryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const videoURL = item.getAttribute('data-video');
+      iframe.src = videoURL;
+      modal.classList.remove('hidden');
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    iframe.src = '';
+    modal.classList.add('hidden');
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      iframe.src = '';
+      modal.classList.add('hidden');
+    }
+  });
+</script>
 
 </body>
 </html>
