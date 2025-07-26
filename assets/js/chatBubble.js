@@ -1,4 +1,7 @@
 export function setupChatBubble() {
+  if (window.CH_BUBBLE_INITIALIZED) return;
+  window.CH_BUBBLE_INITIALIZED = true;
+
   if (document.getElementById('discord-bubble')) return;
 
   // Load WidgetBot Crate v3
