@@ -1,3 +1,34 @@
+// === Step 1: Placeholder data for community members ===
+const communityData = [
+  {
+    id: 'user_001',
+    name: 'Alex Johnson',
+    role: 'Frontend Developer',
+    interests: ['web', 'design'],
+    x: 200,
+    y: 150
+  },
+  {
+    id: 'user_002',
+    name: 'Jordan Smith',
+    role: 'AI Researcher',
+    interests: ['ml', 'brain', 'ethics'],
+    x: 450,
+    y: 180
+  },
+  {
+    id: 'user_003',
+    name: 'Taylor Lee',
+    role: 'UX Designer',
+    interests: ['design', 'ux'],
+    x: 300,
+    y: 400
+  }
+];
+
+console.log("Loaded community nodes:", communityData);
+
+// === Canvas Setup ===
 const canvas = document.getElementById('neural-interactive');
 const ctx = canvas.getContext('2d');
 let width, height;
