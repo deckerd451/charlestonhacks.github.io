@@ -108,14 +108,14 @@ function resizeCanvas() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 }
-
 function showTooltip(neuron, x, y) {
-  const { name, role, interests, email, availability } = neuron.meta || {};
+  const { name, role, interests, email, image_url, availability } = neuron.meta || {};
   tooltip.innerHTML = `
+    ${image_url ? `<img src="${image_url}" alt="${name}" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px;" />` : ''}
     <strong>${name}</strong><br/>
     <em>${role}</em><br/>
     <small>Interests: ${interests?.join(', ')}</small><br/>
-    <small>Email: ${email}</small><br/>
+    ${email ? `<a href="mailto:${email}" style="color:#0ff;">${email}</a><br/>` : ''}
     <small>Availability: ${availability}</small>
   `;
   tooltip.style.left = x + 10 + 'px';
