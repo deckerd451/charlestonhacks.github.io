@@ -130,22 +130,24 @@
   </div>
 
   <!-- Gallery -->
-  <main class="gallery-container">
-    <div id="gallery" class="gallery">
+<!-- Gallery Thumbnails -->
+<div id="gallery" class="gallery">
+  <div class="gallery-item" data-video="https://www.youtube.com/embed/BkqZVR5uipU?autoplay=1">
+    <img src="images/workshop.png" alt="Lesson 1">
+  </div>
+  <div class="gallery-item" data-video="https://www.youtube.com/embed/abcdef1234?autoplay=1">
+    <img src="images/definition.png" alt="What is CharlestonHacks?">
+  </div>
+</div>
 
-      <div class="gallery-item">
-        <a href="https://www.youtube.com/watch?v=BkqZVR5uipU&t=56s" target="_blank" rel="noopener">
-          <img src="images/workshop.png" alt="Lesson 1 Workshop">
-        </a>
-      </div>
+<!-- Video Modal -->
+<div id="videoModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-btn" aria-label="Close video">&times;</span>
+    <iframe id="videoFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
 
-      <div class="gallery-item">
-        <a href="https://www.youtube.com/@charlestonHacks-mc4ct" target="_blank" rel="noopener">
-          <img src="images/definition.png" alt="What is CharlestonHacks?">
-        </a>
-      </div>
-
-    </div>
   </main>
 
   <!-- Footer -->
