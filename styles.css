@@ -1271,6 +1271,19 @@ main, .main-wrapper, .media-container {
   cursor: pointer;
   z-index: 10;
 }
+/* ==========================================================================
+   NEURAL NETWORK (EXPERIMENTAL)
+   ========================================================================== */
+#neural-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  opacity: 0.2;
+  pointer-events: none;
+}
 
 /* ==========================================================================
    SPLASH SCREEN STYLES
