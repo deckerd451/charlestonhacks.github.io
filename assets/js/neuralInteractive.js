@@ -1,87 +1,23 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+// Replace these with your actual Supabase credentials:
+const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
+const SUPABASE_KEY = 'YOUR_PUBLIC_ANON_KEY';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 window.addEventListener('DOMContentLoaded', () => {
-  // === Step 1: Placeholder data for community members ===
-  const communityData = [
-    {
-      id: 'user_001',
-      name: 'Alex Johnson',
-      role: 'Frontend Developer',
-      interests: ['web', 'design'],
-      x: 200,
-      y: 150
-    },
-    {
-      id: 'user_002',
-      name: 'Jordan Smith',
-      role: 'AI Researcher',
-      interests: ['ml', 'brain', 'ethics'],
-      x: 450,
-      y: 180
-    },
-    {
-      id: 'user_003',
-      name: 'Taylor Lee',
-      role: 'UX Designer',
-      interests: ['design', 'ux'],
-      x: 300,
-      y: 400
-    }
-  ];
-
-  console.log("Loaded community nodes:", communityData);
-
-  // === Canvas Setup ===
   const canvas = document.getElementById('neural-interactive');
   const ctx = canvas.getContext('2d');
   let width, height;
   let neurons = [];
-
   let tooltip = document.getElementById('neuron-tooltip');
-let activeNeuron = null;
-
+  let activeNeuron = null;
 
   function resizeCanvas() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
   }
-  canvas.addEventListener('mousemove', (e) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  let found = false;
-  for (const neuron of neurons) {
-    if (neuron.contains(x, y)) {
-      showTooltip(neuron, e.clientX, e.clientY);
-      activeNeuron = neuron;
-      found = true;
-      break;
-    }
-  }
-
-  if (!found) {
-    hideTooltip();
-    activeNeuron = null;
-  }
-});
-
-canvas.addEventListener('touchstart', (e) => {
-  const t = e.touches[0];
-  const rect = canvas.getBoundingClientRect();
-  const x = t.clientX - rect.left;
-  const y = t.clientY - rect.top;
-
-  for (const neuron of neurons) {
-    if (neuron.contains(x, y)) {
-      showTooltip(neuron, t.clientX, t.clientY);
-      activeNeuron = neuron;
-      return;
-    }
-  }
-
-  hideTooltip();
-});
-
-
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
@@ -92,16 +28,15 @@ canvas.addEventListener('touchstart', (e) => {
       this.connections = [];
     }
 
-connectTo(other) {
-  if (this !== other && !this.connections.includes(other)) {
-    this.connections.push(other);
-  }
-}
+    connectTo(other) {
+      if (this !== other && !this.connections.includes(other)) {
+        this.connections.push(other);
+      }
+    }
 
-contains(x, y) {
-  return Math.hypot(this.x - x, this.y - y) < 10;
-}
-
+    contains(x, y) {
+      return Math.hypot(this.x - x, this.y - y) < 10;
+    }
 
     draw() {
       const pulse = 1 + Math.sin(Date.now() * 0.005 + this.x + this.y) * 0.3;
@@ -131,7 +66,82 @@ contains(x, y) {
     }
   }
 
-  // === Step 2: Convert community data to Neuron objects ===
+  function showTooltip(neuron, x, y) {
+    const { name, role, interests } = neuron.meta || {};
+    tooltip.innerHTML = `
+      <strong>${name}</strong><br/>
+      <em>${role}</em><br/>
+      <small>Interests: ${interests?.join(', ')}</small>
+    `;
+    tooltip.style.left = x + 10 + 'px';
+    tooltip.style.top = y + 10 + 'px';
+    tooltip.style.display = 'block';
+    tooltip.style.opacity = '1';
+  }
+
+  function hideTooltip() {
+    tooltip.style.display = 'none';
+    tooltip.style.opacity = '0';
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    let found = false;
+    for (const neuron of neurons) {
+      if (neuron.contains(x, y)) {
+        showTooltip(neuron, e.clientX, e.clientY);
+        activeNeuron = neuron;
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      hideTooltip();
+      activeNeuron = null;
+    }
+  });
+
+  canvas.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = t.clientX - rect.left;
+    const y = t.clientY - rect.top;
+
+    for (const neuron of neurons) {
+      if (neuron.contains(x, y)) {
+        showTooltip(neuron, t.clientX, t.clientY);
+        activeNeuron = neuron;
+        return;
+      }
+    }
+
+    hideTooltip();
+  });
+
+  canvas.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const newNeuron = new Neuron(x, y);
+    neurons.forEach(n => {
+      if (Math.hypot(n.x - x, n.y - y) < 150) {
+        newNeuron.connectTo(n);
+        n.connectTo(newNeuron);
+      }
+    });
+    neurons.push(newNeuron);
+  });
+
+  function drawNetwork() {
+    ctx.clearRect(0, 0, width, height);
+    neurons.forEach(n => n.draw());
+    requestAnimationFrame(drawNetwork);
+  }
+
   function createNeuronsFromCommunity(data) {
     const idToNeuron = new Map();
 
@@ -154,45 +164,27 @@ contains(x, y) {
     });
   }
 
-  createNeuronsFromCommunity(communityData);
+  async function loadCommunityData() {
+    const { data, error } = await supabase.from('community').select('*');
 
-  canvas.addEventListener('click', e => {
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const newNeuron = new Neuron(x, y);
-    neurons.forEach(n => {
-      if (Math.hypot(n.x - x, n.y - y) < 150) {
-        newNeuron.connectTo(n);
-        n.connectTo(newNeuron);
-      }
-    });
-    neurons.push(newNeuron);
-  });
+    if (error) {
+      console.error("Failed to fetch community data:", error);
+      return [];
+    }
 
-  function drawNetwork() {
-    ctx.clearRect(0, 0, width, height);
-    neurons.forEach(n => n.draw());
-    requestAnimationFrame(drawNetwork);
+    return data.map((user, index) => ({
+      id: user.id,
+      name: user.name,
+      role: user.role || 'Contributor',
+      interests: user.interests || [],
+      x: user.x || 100 + index * 50,
+      y: user.y || 100 + (index % 5) * 60
+    }));
   }
-function showTooltip(neuron, x, y) {
-  const { name, role, interests } = neuron.meta || {};
-  tooltip.innerHTML = `
-    <strong>${name}</strong><br/>
-    <em>${role}</em><br/>
-    <small>Interests: ${interests?.join(', ')}</small>
-  `;
-  tooltip.style.left = x + 10 + 'px';
-  tooltip.style.top = y + 10 + 'px';
-  tooltip.style.display = 'block';
-  tooltip.style.opacity = '1';
-}
 
-function hideTooltip() {
-  tooltip.style.display = 'none';
-  tooltip.style.opacity = '0';
-}
-
-
-  drawNetwork(); // ✅ Animation starts after everything is loaded
+  loadCommunityData().then(fetchedData => {
+    console.log("Loaded from Supabase:", fetchedData);
+    createNeuronsFromCommunity(fetchedData);
+    drawNetwork();
+  });
 });
