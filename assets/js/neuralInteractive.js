@@ -34,6 +34,34 @@ const ctx = canvas.getContext('2d');
 let width, height;
 let neurons = [];
 
+// === Step 2: Convert community data to Neuron objects ===
+function createNeuronsFromCommunity(data) {
+  const idToNeuron = new Map();
+
+  data.forEach(user => {
+    const neuron = new Neuron(user.x, user.y);
+    neuron.meta = user; // Store user info for tooltips or future features
+    neurons.push(neuron);
+    idToNeuron.set(user.id, neuron);
+  });
+
+  // Connect based on shared interests
+  data.forEach((userA, i) => {
+    for (let j = i + 1; j < data.length; j++) {
+      const userB = data[j];
+      const shared = userA.interests.filter(tag => userB.interests.includes(tag));
+      if (shared.length > 0) {
+        idToNeuron.get(userA.id).connectTo(idToNeuron.get(userB.id));
+        idToNeuron.get(userB.id).connectTo(idToNeuron.get(userA.id));
+      }
+    }
+  });
+}
+
+// Call once at load
+createNeuronsFromCommunity(communityData);
+
+
 function resizeCanvas() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
