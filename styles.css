@@ -1307,11 +1307,12 @@ main, .main-wrapper, .media-container {
   z-index: 9999;
   transition: opacity 0.2s ease;
 }
+/* === Auth Box === */
 #auth-box {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   color: white;
   padding: 1rem 1.5rem;
   border: 1px solid #0ff;
@@ -1320,7 +1321,6 @@ main, .main-wrapper, .media-container {
   z-index: 999;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
 }
-
 #auth-box input[type="email"] {
   padding: 0.5rem;
   border-radius: 5px;
@@ -1329,7 +1329,6 @@ main, .main-wrapper, .media-container {
   font-size: 0.9rem;
   width: 180px;
 }
-
 #auth-box button {
   padding: 0.5rem 0.75rem;
   background: #0ff;
@@ -1339,17 +1338,26 @@ main, .main-wrapper, .media-container {
   cursor: pointer;
   font-weight: bold;
 }
-
 #auth-box button:hover {
   background: #00cccc;
 }
-
 #auth-status {
   font-size: 0.85rem;
   margin-bottom: 0.5rem;
 }
 
-
+/* === Role Filter === */
+#filter-bar {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 999;
+  background: #111;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: 1px solid #0ff;
+  border-radius: 8px;
+}
 /* ==========================================================================
    SPLASH SCREEN STYLES
    ========================================================================== */
