@@ -18,23 +18,27 @@ class Node {
     this.vx = (Math.random() - 0.5) * 0.5;
     this.vy = (Math.random() - 0.5) * 0.5;
   }
+
   update() {
     this.x += this.vx;
     this.y += this.vy;
     if (this.x < 0 || this.x > width) this.vx *= -1;
     if (this.y < 0 || this.y > height) this.vy *= -1;
   }
-draw() {
-  const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 8);
-  gradient.addColorStop(0, '#0ff');
-  gradient.addColorStop(1, 'transparent');
 
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, 2.2, 0, Math.PI * 2);
-  ctx.fillStyle = gradient;
-  ctx.fill();
+  draw() {
+    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 8);
+    gradient.addColorStop(0, '#0ff');
+    gradient.addColorStop(1, 'transparent');
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+  }
 }
 
+// These functions were incorrectly inside the class — now moved out:
 function connectNodes() {
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
@@ -61,5 +65,6 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+// Initialize nodes and start animation
 for (let i = 0; i < 80; i++) nodes.push(new Node());
 animate();
