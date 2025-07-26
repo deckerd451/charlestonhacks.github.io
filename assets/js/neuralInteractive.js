@@ -24,35 +24,32 @@ class Neuron {
     }
   }
 
-draw() {
-  const pulse = 1 + Math.sin(Date.now() * 0.005 + this.x + this.y) * 0.3;
+  draw() {
+    const pulse = 1 + Math.sin(Date.now() * 0.005 + this.x + this.y) * 0.3;
 
-  // Draw glowing node
-  const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 15);
-  glow.addColorStop(0, 'rgba(0,255,255,0.9)');
-  glow.addColorStop(1, 'rgba(0,255,255,0)');
+    const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 15);
+    glow.addColorStop(0, 'rgba(0,255,255,0.9)');
+    glow.addColorStop(1, 'rgba(0,255,255,0)');
 
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, 5 * pulse, 0, Math.PI * 2);
-  ctx.fillStyle = glow;
-  ctx.fill();
-
-  // Node core
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
-  ctx.fillStyle = '#0ff';
-  ctx.fill();
-
-  // Connection lines
-  this.connections.forEach(other => {
     ctx.beginPath();
-    ctx.moveTo(this.x, this.y);
-    ctx.lineTo(other.x, other.y);
-    ctx.strokeStyle = 'rgba(0,255,255,0.15)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  });
-}
+    ctx.arc(this.x, this.y, 5 * pulse, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#0ff';
+    ctx.fill();
+
+    this.connections.forEach(other => {
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(other.x, other.y);
+      ctx.strokeStyle = 'rgba(0,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+  }
 }
 
 canvas.addEventListener('click', e => {
@@ -67,12 +64,12 @@ canvas.addEventListener('click', e => {
     }
   });
   neurons.push(newNeuron);
-  drawNetwork();
 });
 
 function drawNetwork() {
   ctx.clearRect(0, 0, width, height);
   neurons.forEach(n => n.draw());
+  requestAnimationFrame(drawNetwork);
 }
 
-drawNetwork();
+drawNetwork(); // ✅ Start animation loop
