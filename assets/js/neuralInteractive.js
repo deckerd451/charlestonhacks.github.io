@@ -1,4 +1,4 @@
-// neuralInteractive.js — Stable, Optimized, and Toggleable Name Display
+// neuralInteractive.js — Stable, Optimized, Tooltip-Fixed, Toggleable Name Display + Debug + Duplication Check
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
@@ -10,8 +10,8 @@ let neurons = [], connections = [], canvas, ctx, tooltip;
 let selectedNeuron = null, CURRENT_USER_ID = null;
 let animationId = null;
 let lastFrame = 0;
-const FRAME_INTERVAL = 1000 / 30; // 30 FPS
-let showAllNames = false; // 🔁 Toggle for showing all names
+const FRAME_INTERVAL = 1000 / 30;
+let showAllNames = false;
 
 window.addEventListener('DOMContentLoaded', async () => {
   const toggle = document.createElement('button');
@@ -44,9 +44,27 @@ window.addEventListener('DOMContentLoaded', async () => {
   const { data: communityData, error: communityError } = await supabase.from('community').select('*');
   if (communityError) return console.error('❌ Failed to load community:', communityError);
 
-  neurons = communityData.filter(user => typeof user.x === 'number' && typeof user.y === 'number')
-    .map(user => ({ x: user.x, y: user.y, meta: user }));
+  const seenCoords = new Set();
+  const canvasW = window.innerWidth;
+  const canvasH = window.innerHeight;
+  neurons = communityData.filter(user => {
+    const isValid = typeof user.x === 'number' && typeof user.y === 'number';
+    if (!isValid) return false;
+    const key = `${user.x},${user.y}`;
+    if (seenCoords.has(key)) {
+      console.warn('⚠️ Duplicate position:', user.name, user.x, user.y);
+      return false;
+    }
+    if (user.x < 0 || user.y < 0 || user.x > canvasW || user.y > canvasH) {
+      console.warn('🚫 Out-of-bounds neuron:', user.name, user.x, user.y);
+      return false;
+    }
+    seenCoords.add(key);
+    return true;
+  }).map(user => ({ x: user.x, y: user.y, meta: user }));
+
   console.log('✅ Loaded neurons:', neurons);
+  window.neurons = neurons;
 
   const neuronMap = {};
   for (const neuron of neurons) neuronMap[String(neuron.meta.id).trim()] = neuron;
@@ -70,15 +88,17 @@ window.addEventListener('DOMContentLoaded', async () => {
     const to = neuronMap[String(conn.to_id).trim()];
     return from && to ? { from, to } : null;
   }).filter(Boolean);
+  window.connections = connections;
 
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
     let found = false;
     for (const neuron of neurons) {
       if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
-        showTooltip(neuron, e.clientX, e.clientY);
+        showTooltip(neuron, e.pageX, e.pageY);
         found = true;
         break;
       }
@@ -89,11 +109,12 @@ window.addEventListener('DOMContentLoaded', async () => {
   canvas.addEventListener('touchstart', e => {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
+    const scale = canvas.width / rect.width;
+    const x = (touch.clientX - rect.left) * scale;
+    const y = (touch.clientY - rect.top) * scale;
     for (const neuron of neurons) {
       if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
-        showTooltip(neuron, touch.clientX, touch.clientY);
+        showTooltip(neuron, touch.pageX, touch.pageY);
         return;
       }
     }
@@ -105,8 +126,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   canvas.addEventListener('click', e => {
     if (!CURRENT_USER_ID) return;
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
 
     for (const neuron of neurons) {
       if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
