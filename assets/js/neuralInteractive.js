@@ -8,9 +8,10 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 supabase.auth.getSession().then(({ data: { session } }) => {
   if (session) {
     console.log('🔁 Restored session:', session);
-    window.location.reload();
+    // No reload needed
   }
 });
+
 
 document.getElementById('auth-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
