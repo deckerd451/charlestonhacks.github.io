@@ -1,4 +1,4 @@
-// neuralInteractive.js — Fully Functional with Supabase Auth, Live Connections, Suggested Links, and Role-Based Filtering
+// neuralInteractive.js — Fully Functional with Supabase Auth, Live Connections, Suggested Links, Role-Based Filtering, Animated Glow by Role, and Floating Legend
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -11,6 +11,40 @@ let canvas, ctx, width, height;
 let neurons = [];
 let tooltip;
 let activeNeuron = null;
+
+const roleColors = {
+  'Organizer': '#ff6b6b',
+  'Developer': '#1dd1a1',
+  'Designer': '#54a0ff',
+  'Mentor': '#feca57'
+};
+
+function injectLegend() {
+  const legend = document.createElement('div');
+  legend.id = 'legend';
+  legend.innerHTML = `
+    <strong>Role Colors</strong><br/>
+    <span style="color: #ff6b6b">■ Organizer</span><br/>
+    <span style="color: #1dd1a1">■ Developer</span><br/>
+    <span style="color: #54a0ff">■ Designer</span><br/>
+    <span style="color: #feca57">■ Mentor</span>
+  `;
+  Object.assign(legend.style, {
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    background: 'rgba(0, 0, 0, 0.6)',
+    color: '#fff',
+    padding: '10px 14px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    zIndex: 1000,
+    lineHeight: '1.6',
+    fontFamily: 'sans-serif',
+    border: '1px solid #0ff'
+  });
+  document.body.appendChild(legend);
+}
 
 async function loadCommunityData() {
   const { data, error } = await supabase.from('community').select('*');
@@ -51,13 +85,18 @@ class Neuron {
   }
 
   draw() {
-    if (!this.visible) return;
-
     const pulse = 1 + Math.sin(Date.now() * 0.005 + this.x + this.y) * 0.3;
+    const baseColor = roleColors[this.meta.role] || '#0ff';
+
+    if (!this.visible) {
+      ctx.globalAlpha = 0.1;
+    } else {
+      ctx.globalAlpha = 1;
+    }
 
     const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 15);
-    glow.addColorStop(0, 'rgba(0,255,255,0.9)');
-    glow.addColorStop(1, 'rgba(0,255,255,0)');
+    glow.addColorStop(0, baseColor.replace(')', ', 0.9)').replace('rgb', 'rgba'));
+    glow.addColorStop(1, baseColor.replace(')', ', 0)').replace('rgb', 'rgba'));
 
     ctx.beginPath();
     ctx.arc(this.x, this.y, 5 * pulse, 0, Math.PI * 2);
@@ -66,7 +105,7 @@ class Neuron {
 
     ctx.beginPath();
     ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
-    ctx.fillStyle = '#0ff';
+    ctx.fillStyle = baseColor;
     ctx.fill();
 
     if (this._suggested?.length) {
@@ -92,6 +131,8 @@ class Neuron {
       ctx.lineWidth = 1;
       ctx.stroke();
     });
+
+    ctx.globalAlpha = 1; // reset
   }
 }
 
@@ -173,6 +214,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   tooltip = document.getElementById('neuron-tooltip');
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
+  injectLegend();
 
   const authStatus = document.getElementById('auth-status');
   const emailInput = document.getElementById('email-input');
