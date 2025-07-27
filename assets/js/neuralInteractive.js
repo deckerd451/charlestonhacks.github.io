@@ -1,4 +1,5 @@
 // neuralInteractive.js — Enhanced with Multi-Skill Glow, Bold Tooltips, Dimmed Filtering, and Connection Status + Auto-insert into Community
+window.supabase = supabase;
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
