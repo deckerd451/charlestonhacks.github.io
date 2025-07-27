@@ -41,16 +41,30 @@ function drawConnections() {
 
   ctx.lineWidth = 1.5;
   ctx.strokeStyle = 'rgba(0,255,255,0.2)';
+  ctx.font = '12px sans-serif';
+  ctx.fillStyle = 'rgba(0,255,255,0.6)';
+  ctx.textAlign = 'center';
 
   connections.forEach(({ from, to }) => {
     if (from && to) {
+      // Draw the line
       ctx.beginPath();
       ctx.moveTo(from.x, from.y);
       ctx.lineTo(to.x, to.y);
       ctx.stroke();
+
+      // Calculate midpoint
+      const midX = (from.x + to.x) / 2;
+      const midY = (from.y + to.y) / 2;
+
+      // Draw the name label
+      const fromName = from.meta.name || 'Unknown';
+      const toName = to.meta.name || 'Unknown';
+      ctx.fillText(`${fromName} ↔ ${toName}`, midX, midY - 6);
     }
   });
 }
+
 
 function drawNetwork(time = 0) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
