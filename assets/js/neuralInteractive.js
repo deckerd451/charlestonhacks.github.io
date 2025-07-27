@@ -237,8 +237,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
- // animationId = requestAnimationFrame(animate);
-drawNetwork(0); // Just draw once
+animationId = requestAnimationFrame(animate);
+
 
 });
 
