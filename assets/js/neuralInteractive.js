@@ -1,4 +1,4 @@
-// neuralInteractive.js — Fully Functional with Supabase Auth, Live Connections, and Suggested Links
+// neuralInteractive.js — Fully Functional with Supabase Auth, Live Connections, Suggested Links, and Role-Based Filtering
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -37,6 +37,7 @@ class Neuron {
     this.connections = [];
     this._suggested = [];
     this.meta = {};
+    this.visible = true;
   }
 
   connectTo(other) {
@@ -46,10 +47,12 @@ class Neuron {
   }
 
   contains(x, y) {
-    return Math.hypot(this.x - x, this.y - y) < 10;
+    return this.visible && Math.hypot(this.x - x, this.y - y) < 10;
   }
 
   draw() {
+    if (!this.visible) return;
+
     const pulse = 1 + Math.sin(Date.now() * 0.005 + this.x + this.y) * 0.3;
 
     const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 15);
@@ -68,6 +71,7 @@ class Neuron {
 
     if (this._suggested?.length) {
       this._suggested.forEach(other => {
+        if (!other.visible) return;
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
         ctx.lineTo(other.x, other.y);
@@ -80,6 +84,7 @@ class Neuron {
     }
 
     this.connections.forEach(other => {
+      if (!other.visible) return;
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);
       ctx.lineTo(other.x, other.y);
@@ -156,6 +161,12 @@ function generateSuggestedConnections() {
   });
 }
 
+function applyRoleFilter(selectedRole) {
+  neurons.forEach(n => {
+    n.visible = !selectedRole || n.meta.role === selectedRole;
+  });
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-interactive');
   ctx = canvas.getContext('2d');
@@ -178,6 +189,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   logoutBtn.addEventListener('click', async () => {
     await supabase.auth.signOut();
     location.reload();
+  });
+
+  const roleFilter = document.getElementById('roleFilter');
+  roleFilter.addEventListener('change', () => {
+    applyRoleFilter(roleFilter.value);
   });
 
   const { data: { session } } = await supabase.auth.getSession();
