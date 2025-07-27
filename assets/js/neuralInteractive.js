@@ -218,6 +218,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   drawNetwork();
+  
+  // ✅ Make available in console
+window.neurons = neurons;
+window.connections = connections;
+window.skillColors = skillColors;
 
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
@@ -248,3 +253,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+
+
+
