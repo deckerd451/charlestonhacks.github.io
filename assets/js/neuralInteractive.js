@@ -35,8 +35,14 @@ function drawNeuron(neuron, time) {
 }
 
 function drawConnections() {
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = 'rgba(0,255,255,0.05)';
+  if (!connections.length) {
+    console.warn('⚠️ No connections to draw.');
+    return;
+  }
+
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(0,255,255,0.2)'; // brighter than before
+
   connections.forEach(({ from, to }) => {
     if (from && to) {
       ctx.beginPath();
@@ -46,6 +52,7 @@ function drawConnections() {
     }
   });
 }
+
 
 function drawNetwork(time = 0) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
