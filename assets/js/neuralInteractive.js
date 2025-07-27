@@ -217,7 +217,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     }).filter(Boolean);
   }
 
+function animate() {
   drawNetwork();
+  requestAnimationFrame(animate);
+}
+animate();
+
   
   // ✅ Make available in console
 window.neurons = neurons;
