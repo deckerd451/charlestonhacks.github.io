@@ -1,4 +1,4 @@
-// neuralInteractive.js — Stable, Optimized, Tooltip-Fixed, Toggleable Name Display + Debug + Duplication Check
+// neuralInteractive.js — Stable, Optimized, Clustered by Role, Tooltip-Fixed, Toggleable Name Display
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
@@ -12,6 +12,40 @@ let animationId = null;
 let lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = false;
+
+function clusteredLayout(users, canvasW, canvasH) {
+  const groupBy = user => user.role || (user.interests?.[0] || 'unknown');
+  const groups = {};
+
+  for (const user of users) {
+    const key = groupBy(user);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(user);
+  }
+
+  const keys = Object.keys(groups);
+  const clusterRadius = 150;
+  const centerX = canvasW / 2;
+  const centerY = canvasH / 2;
+
+  let result = [];
+  keys.forEach((key, i) => {
+    const angle = (2 * Math.PI * i) / keys.length;
+    const cx = centerX + clusterRadius * Math.cos(angle);
+    const cy = centerY + clusterRadius * Math.sin(angle);
+
+    const group = groups[key];
+    group.forEach((user, j) => {
+      const offsetAngle = (2 * Math.PI * j) / group.length;
+      const spread = 30 + Math.floor(j / 3) * 10;
+      const x = cx + spread * Math.cos(offsetAngle);
+      const y = cy + spread * Math.sin(offsetAngle);
+      result.push({ x, y, meta: user });
+    });
+  });
+
+  return result;
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
   const toggle = document.createElement('button');
@@ -44,24 +78,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   const { data: communityData, error: communityError } = await supabase.from('community').select('*');
   if (communityError) return console.error('❌ Failed to load community:', communityError);
 
-  const seenCoords = new Set();
   const canvasW = window.innerWidth;
   const canvasH = window.innerHeight;
-  neurons = communityData.filter(user => {
-    const isValid = typeof user.x === 'number' && typeof user.y === 'number';
-    if (!isValid) return false;
-    const key = `${user.x},${user.y}`;
-    if (seenCoords.has(key)) {
-      console.warn('⚠️ Duplicate position:', user.name, user.x, user.y);
-      return false;
-    }
-    if (user.x < 0 || user.y < 0 || user.x > canvasW || user.y > canvasH) {
-      console.warn('🚫 Out-of-bounds neuron:', user.name, user.x, user.y);
-      return false;
-    }
-    seenCoords.add(key);
-    return true;
-  }).map(user => ({ x: user.x, y: user.y, meta: user }));
+  neurons = clusteredLayout(communityData, canvasW, canvasH);
 
   console.log('✅ Loaded neurons:', neurons);
   window.neurons = neurons;
