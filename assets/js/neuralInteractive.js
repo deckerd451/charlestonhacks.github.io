@@ -1,4 +1,4 @@
-// neuralInteractive.js — Fully Functional with Supabase Auth, Live Connections, Suggested Links, Role-Based Filtering, Animated Glow by Role, Draggable & Collapsible Legend, Mobile-Responsive, Supabase-Driven Role Colors
+// neuralInteractive.js — Updated to Use Supabase Skills Instead of Roles, with Dynamic Skill Colors, Glow, Filtering, and Draggable Legend
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -6,22 +6,16 @@ const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let CURRENT_USER_ID = null;
-let canvas, ctx, width, height;
-let neurons = [];
-let tooltip;
-let activeNeuron = null;
+let skillColors = {};
 
-let roleColors = {};
-
-async function fetchRoleColors() {
-  const { data, error } = await supabase.from('roles').select('*');
+async function fetchSkillColors() {
+  const { data, error } = await supabase.from('skill_colors').select('*');
   if (error) {
-    console.error('❌ Failed to fetch role colors:', error);
+    console.error('❌ Failed to fetch skill colors:', error);
     return;
   }
-  data.forEach(({ role, color }) => {
-    roleColors[role] = color;
+  data.forEach(({ skill, color }) => {
+    skillColors[skill] = color;
   });
 }
 
@@ -29,7 +23,7 @@ function injectLegend() {
   const legend = document.createElement('div');
   legend.id = 'legend';
   legend.innerHTML = `
-    <div id="legend-header">🎨 Role Colors <span id="legend-toggle">[–]</span></div>
+    <div id="legend-header">🎨 Skill Colors <span id="legend-toggle">[–]</span></div>
     <div id="legend-body"></div>
   `;
 
@@ -62,7 +56,6 @@ function injectLegend() {
     toggle.textContent = isVisible ? '[+]' : '[–]';
   };
 
-  // Draggable
   let isDragging = false;
   let offsetX = 0, offsetY = 0;
 
@@ -85,7 +78,6 @@ function injectLegend() {
     isDragging = false;
   });
 
-  // Responsive behavior
   const mobileQuery = window.matchMedia("(max-width: 600px)");
   const repositionLegend = () => {
     if (mobileQuery.matches) {
@@ -108,19 +100,16 @@ function injectLegend() {
   mobileQuery.addEventListener('change', repositionLegend);
 }
 
-function populateLegendFromRoles() {
+function populateLegendFromSkills() {
   const legendBody = document.getElementById('legend-body');
-  legendBody.innerHTML = Object.entries(roleColors).map(([role, color]) => {
-    return `<span style="color: ${color}">■ ${role}</span><br/>`;
+  legendBody.innerHTML = Object.entries(skillColors).map(([skill, color]) => {
+    return `<span style="color: ${color}">■ ${skill}</span><br/>`;
   }).join('');
 }
 
 // Call in your main DOMContentLoaded block:
-// await fetchRoleColors();
-// injectLegend();
-// populateLegendFromRoles();
-
-// All other logic remains unchanged and continues to use roleColors
-// for glow rendering and filtering.
-
-// Update roleColors dynamically and style via CSS if needed.
+window.addEventListener('DOMContentLoaded', async () => {
+  await fetchSkillColors();
+  injectLegend();
+  populateLegendFromSkills();
+});
