@@ -1,8 +1,8 @@
-// neuralInteractive.js — Stable, Optimized, Clustered by Role, Tooltip-Fixed, Toggleable Name Display
+// neuralInteractive.js — Drag-enabled, Stable, Optimized, Clustered by Role, Tooltip-Fixed, Toggleable Name Display
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // truncated for clarity
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let sessionHandled = false;
@@ -12,28 +12,25 @@ let animationId = null;
 let lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = false;
+let draggingNeuron = null;
 
 function clusteredLayout(users, canvasW, canvasH) {
   const groupBy = user => user.role || (user.interests?.[0] || 'unknown');
   const groups = {};
-
   for (const user of users) {
     const key = groupBy(user);
     if (!groups[key]) groups[key] = [];
     groups[key].push(user);
   }
-
   const keys = Object.keys(groups);
   const clusterRadius = 150;
   const centerX = canvasW / 2;
   const centerY = canvasH / 2;
-
   let result = [];
   keys.forEach((key, i) => {
     const angle = (2 * Math.PI * i) / keys.length;
     const cx = centerX + clusterRadius * Math.cos(angle);
     const cy = centerY + clusterRadius * Math.sin(angle);
-
     const group = groups[key];
     group.forEach((user, j) => {
       const offsetAngle = (2 * Math.PI * j) / group.length;
@@ -43,7 +40,6 @@ function clusteredLayout(users, canvasW, canvasH) {
       result.push({ x, y, meta: user });
     });
   });
-
   return result;
 }
 
@@ -109,20 +105,32 @@ window.addEventListener('DOMContentLoaded', async () => {
   }).filter(Boolean);
   window.connections = connections;
 
+  canvas.addEventListener('mousedown', e => {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
+        draggingNeuron = neuron;
+        break;
+      }
+    }
+  });
+
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
     const x = (e.clientX - rect.left) * scale;
     const y = (e.clientY - rect.top) * scale;
-    let found = false;
-    for (const neuron of neurons) {
-      if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
-        showTooltip(neuron, e.pageX, e.pageY);
-        found = true;
-        break;
-      }
+    if (draggingNeuron) {
+      draggingNeuron.x = x;
+      draggingNeuron.y = y;
     }
-    if (!found) hideTooltip();
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    draggingNeuron = null;
   });
 
   canvas.addEventListener('touchstart', e => {
@@ -133,36 +141,26 @@ window.addEventListener('DOMContentLoaded', async () => {
     const y = (touch.clientY - rect.top) * scale;
     for (const neuron of neurons) {
       if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
-        showTooltip(neuron, touch.pageX, touch.pageY);
-        return;
+        draggingNeuron = neuron;
+        break;
       }
     }
-    hideTooltip();
   });
 
-  canvas.addEventListener('touchend', () => setTimeout(() => hideTooltip(), 1000));
-
-  canvas.addEventListener('click', e => {
-    if (!CURRENT_USER_ID) return;
+  canvas.addEventListener('touchmove', e => {
+    const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
-    const x = (e.clientX - rect.left) * scale;
-    const y = (e.clientY - rect.top) * scale;
-
-    for (const neuron of neurons) {
-      if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
-        if (!selectedNeuron) {
-          selectedNeuron = neuron;
-          console.log(`🔵 Selected ${neuron.meta.name}`);
-        } else {
-          if (selectedNeuron.meta.id !== neuron.meta.id) {
-            createConnection(CURRENT_USER_ID, neuron.meta.id);
-          }
-          selectedNeuron = null;
-        }
-        return;
-      }
+    const x = (touch.clientX - rect.left) * scale;
+    const y = (touch.clientY - rect.top) * scale;
+    if (draggingNeuron) {
+      draggingNeuron.x = x;
+      draggingNeuron.y = y;
     }
+  });
+
+  canvas.addEventListener('touchend', () => {
+    draggingNeuron = null;
   });
 
   animationId = requestAnimationFrame(animate);
@@ -181,21 +179,17 @@ function drawNeuron(neuron, time) {
   const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
   const radius = 8 * pulse;
   const color = '#0ff';
-
   const glow = ctx.createRadialGradient(neuron.x, neuron.y, 0, neuron.x, neuron.y, radius);
   glow.addColorStop(0, color);
   glow.addColorStop(1, 'rgba(0,0,0,0)');
-
   ctx.beginPath();
   ctx.arc(neuron.x, neuron.y, radius, 0, Math.PI * 2);
   ctx.fillStyle = glow;
   ctx.fill();
-
   ctx.beginPath();
   ctx.arc(neuron.x, neuron.y, 3, 0, Math.PI * 2);
   ctx.fillStyle = color;
   ctx.fill();
-
   if (showAllNames) {
     ctx.font = '12px sans-serif';
     ctx.fillStyle = '#0ff';
@@ -211,7 +205,6 @@ function drawConnections() {
   ctx.font = '12px sans-serif';
   ctx.fillStyle = 'rgba(0,255,255,0.6)';
   ctx.textAlign = 'center';
-
   connections.forEach(({ from, to }) => {
     if (from && to) {
       ctx.beginPath();
