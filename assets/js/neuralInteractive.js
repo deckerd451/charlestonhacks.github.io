@@ -1,4 +1,4 @@
-// neuralInteractive.js — Enhanced with Skill Filtering, Glow by Skill, Tooltip Sync
+// neuralInteractive.js — Enhanced with Skill Filtering, Glow by Skill, Tooltip Sync, and Visual Live Connections
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -9,7 +9,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 let skillColors = {};
 let selectedSkill = '';
 let neurons = [];
-let canvas, ctx;
+let connections = [];
+let canvas, ctx, tooltip;
+let CURRENT_USER_ID = null;
 
 async function fetchSkillColors() {
   const { data, error } = await supabase.from('skill_colors').select('*');
@@ -32,23 +34,12 @@ function injectLegend() {
   `;
 
   Object.assign(legend.style, {
-    position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    background: 'rgba(0, 0, 0, 0.7)',
-    color: '#fff',
-    padding: '10px 14px',
-    borderRadius: '10px',
-    fontSize: '14px',
-    zIndex: 1000,
-    fontFamily: 'sans-serif',
-    border: '1px solid #0ff',
-    cursor: 'move',
-    maxWidth: '220px'
+    position: 'fixed', bottom: '20px', right: '20px', background: 'rgba(0, 0, 0, 0.7)',
+    color: '#fff', padding: '10px 14px', borderRadius: '10px', fontSize: '14px',
+    zIndex: 1000, fontFamily: 'sans-serif', border: '1px solid #0ff', cursor: 'move', maxWidth: '220px'
   });
 
   document.body.appendChild(legend);
-
   const header = document.getElementById('legend-header');
   const body = document.getElementById('legend-body');
   const toggle = document.getElementById('legend-toggle');
@@ -62,13 +53,11 @@ function injectLegend() {
 
   let isDragging = false;
   let offsetX = 0, offsetY = 0;
-
   header.addEventListener('mousedown', e => {
     isDragging = true;
     offsetX = e.clientX - legend.offsetLeft;
     offsetY = e.clientY - legend.offsetTop;
   });
-
   window.addEventListener('mousemove', e => {
     if (isDragging) {
       legend.style.left = `${e.clientX - offsetX}px`;
@@ -77,27 +66,18 @@ function injectLegend() {
       legend.style.bottom = 'unset';
     }
   });
-
-  window.addEventListener('mouseup', () => {
-    isDragging = false;
-  });
+  window.addEventListener('mouseup', () => isDragging = false);
 
   const mobileQuery = window.matchMedia("(max-width: 600px)");
   const repositionLegend = () => {
     if (mobileQuery.matches) {
-      legend.style.bottom = '0px';
-      legend.style.right = '0px';
-      legend.style.left = '0px';
-      legend.style.borderRadius = '0';
-      legend.style.maxWidth = '100%';
-      legend.style.fontSize = '12px';
+      Object.assign(legend.style, {
+        bottom: '0px', right: '0px', left: '0px', borderRadius: '0', maxWidth: '100%', fontSize: '12px'
+      });
     } else {
-      legend.style.bottom = '20px';
-      legend.style.right = '20px';
-      legend.style.left = '';
-      legend.style.borderRadius = '10px';
-      legend.style.maxWidth = '220px';
-      legend.style.fontSize = '14px';
+      Object.assign(legend.style, {
+        bottom: '20px', right: '20px', left: '', borderRadius: '10px', maxWidth: '220px', fontSize: '14px'
+      });
     }
   };
   repositionLegend();
@@ -110,10 +90,8 @@ function populateLegendFromSkills() {
   legendBody.innerHTML = Object.entries(skillColors).map(([skill, color]) => {
     return `<span style="color: ${color}">■ ${skill}</span><br/>`;
   }).join('');
-
   skillSelect.innerHTML = `<option value="">All Skills</option>` + Object.keys(skillColors).map(skill => `<option value="${skill}">${skill}</option>`).join('');
-
-  skillSelect.addEventListener('change', (e) => {
+  skillSelect.addEventListener('change', e => {
     selectedSkill = e.target.value;
     drawNetwork();
   });
@@ -138,8 +116,20 @@ function drawNeuron(neuron) {
   ctx.fill();
 }
 
+function drawConnections() {
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(0,255,255,0.1)';
+  connections.forEach(({ from, to }) => {
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(to.x, to.y);
+    ctx.stroke();
+  });
+}
+
 function drawNetwork() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawConnections();
   neurons.forEach(neuron => {
     if (!selectedSkill || neuron.meta.skills?.includes(selectedSkill)) {
       drawNeuron(neuron);
@@ -147,15 +137,38 @@ function drawNetwork() {
   });
 }
 
+function showTooltip(neuron, x, y) {
+  const { name, email, skills, image_url } = neuron.meta;
+  tooltip.innerHTML = `
+    ${image_url ? `<img src="${image_url}" alt="${name}" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px;" />` : ''}
+    <strong>${name}</strong><br/>
+    <small>Skills: ${skills?.join(', ')}</small><br/>
+    ${email ? `<a href="mailto:${email}" style="color:#0ff;">${email}</a><br/>` : ''}
+  `;
+  tooltip.style.left = x + 10 + 'px';
+  tooltip.style.top = y + 10 + 'px';
+  tooltip.style.display = 'block';
+  tooltip.style.opacity = '1';
+}
+
+function hideTooltip() {
+  tooltip.style.display = 'none';
+  tooltip.style.opacity = '0';
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-interactive');
   ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  tooltip = document.getElementById('neuron-tooltip');
 
   await fetchSkillColors();
   injectLegend();
   populateLegendFromSkills();
+
+  const { data: sessionData } = await supabase.auth.getSession();
+  CURRENT_USER_ID = sessionData?.session?.user?.id || null;
 
   const { data, error } = await supabase.from('community').select('*');
   if (error) {
@@ -163,5 +176,44 @@ window.addEventListener('DOMContentLoaded', async () => {
     return;
   }
   neurons = data.map(user => ({ x: user.x, y: user.y, meta: user }));
+
+  const { data: connectionData } = await supabase.from('connections').select('*');
+  if (connectionData) {
+    connections = connectionData.map(conn => {
+      const from = neurons.find(n => n.meta.id === conn.from_id);
+      const to = neurons.find(n => n.meta.id === conn.to_id);
+      return from && to ? { from, to } : null;
+    }).filter(Boolean);
+  }
+
   drawNetwork();
+
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    let found = false;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
+        showTooltip(neuron, e.clientX, e.clientY);
+        found = true;
+        break;
+      }
+    }
+    if (!found) hideTooltip();
+  });
+
+  canvas.addEventListener('click', async e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    for (const target of neurons) {
+      if (Math.hypot(target.x - x, target.y - y) < 10 && CURRENT_USER_ID && target.meta.id !== CURRENT_USER_ID) {
+        await supabase.from('connections').insert([{ from_id: CURRENT_USER_ID, to_id: target.meta.id }]);
+        connections.push({ from: neurons.find(n => n.meta.id === CURRENT_USER_ID), to: target });
+        drawNetwork();
+        break;
+      }
+    }
+  });
 });
