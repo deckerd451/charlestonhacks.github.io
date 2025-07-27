@@ -136,12 +136,19 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Load current user
   const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userData?.user?.id) {
-    CURRENT_USER_ID = userData.user.id;
-    console.log('✅ Logged in as:', CURRENT_USER_ID);
-  } else {
-    console.warn('⚠️ Not logged in — connection creation will be disabled');
-  }
+const authStatusEl = document.getElementById('auth-status');
+
+if (userData?.user?.id) {
+  CURRENT_USER_ID = userData.user.id;
+  console.log('✅ Logged in as:', CURRENT_USER_ID);
+  authStatusEl.textContent = '🟢 Connected as: ' + userData.user.email;
+  authStatusEl.style.color = '#0f0';
+} else {
+  console.warn('⚠️ Not logged in — connection creation will be disabled');
+  authStatusEl.textContent = '🔴 Not Logged In';
+  authStatusEl.style.color = '#f00';
+}
+
 
   // Load connections
   const { data: connData, error: connError } = await supabase.from('connections').select('*');
