@@ -1,19 +1,17 @@
-// neuralInteractive.js — Fully Functional Animated Neurons with Tooltips, Glow, and Click-to-Connect Support
+// neuralInteractive.js — Optimized Animated Neurons with Tooltips and Click-to-Connect
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 🔁 Auto-restore session if redirected from magic link
 supabase.auth.getSession().then(({ data: { session } }) => {
   if (session) {
     console.log('🔁 Restored session:', session);
-    window.location.reload(); // Refresh to re-trigger auth logic
+    window.location.reload();
   }
 });
 
-// Auth form handler
 document.getElementById('auth-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('email-input').value.trim();
@@ -21,7 +19,7 @@ document.getElementById('auth-form')?.addEventListener('submit', async (e) => {
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      shouldCreateUser: false, // ✅ Forces Magic Link instead of signup email
+      shouldCreateUser: false,
       emailRedirectTo: 'https://charlestonhacks.com/neural.html',
     }
   });
@@ -34,13 +32,8 @@ document.getElementById('auth-form')?.addEventListener('submit', async (e) => {
   }
 });
 
-let skillColors = {};
-let selectedSkill = '';
-let neurons = [];
-let connections = [];
-let canvas, ctx, tooltip;
-let selectedNeuron = null;
-let CURRENT_USER_ID = null;
+let neurons = [], connections = [], canvas, ctx, tooltip;
+let selectedNeuron = null, CURRENT_USER_ID = null;
 
 function drawNeuron(neuron, time) {
   const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
@@ -63,10 +56,7 @@ function drawNeuron(neuron, time) {
 }
 
 function drawConnections() {
-  if (!connections.length) {
-    console.warn('⚠️ No connections to draw.');
-    return;
-  }
+  if (!connections.length) return;
 
   ctx.lineWidth = 1.5;
   ctx.strokeStyle = 'rgba(0,255,255,0.2)';
@@ -76,18 +66,14 @@ function drawConnections() {
 
   connections.forEach(({ from, to }) => {
     if (from && to) {
-      // Draw the line
       ctx.beginPath();
       ctx.moveTo(from.x, from.y);
       ctx.lineTo(to.x, to.y);
       ctx.stroke();
 
-      // Label at midpoint
       const midX = (from.x + to.x) / 2;
       const midY = (from.y + to.y) / 2;
-      const fromName = from.meta.name || 'Unknown';
-      const toName = to.meta.name || 'Unknown';
-      ctx.fillText(`${fromName} ↔ ${toName}`, midX, midY - 6);
+      ctx.fillText(`${from.meta.name} ↔ ${to.meta.name}`, midX, midY - 6);
     }
   });
 }
@@ -95,24 +81,21 @@ function drawConnections() {
 function drawNetwork(time = 0) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawConnections();
-  neurons.forEach(neuron => {
-    ctx.globalAlpha = !selectedSkill || neuron.meta.skills?.includes(selectedSkill) ? 1 : 0.1;
-    drawNeuron(neuron, time);
-  });
-  ctx.globalAlpha = 1;
+  neurons.forEach(neuron => drawNeuron(neuron, time));
 }
 
+let animationId = null;
 let lastFrame = 0;
-const FRAME_INTERVAL = 1000 / 30; // Max 30 FPS
+const FRAME_INTERVAL = 1000 / 30; // Limit to 30 FPS
 
 function animate(time) {
+  if (document.hidden) return; // Don't render in background tab
   if (time - lastFrame >= FRAME_INTERVAL) {
     drawNetwork(time);
     lastFrame = time;
   }
-  requestAnimationFrame(animate);
+  animationId = requestAnimationFrame(animate);
 }
-
 
 function showTooltip(neuron, x, y) {
   if (!tooltip) return;
@@ -138,6 +121,14 @@ function resizeCanvas() {
   canvas.height = window.innerHeight;
 }
 
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    cancelAnimationFrame(animationId);
+  } else {
+    animationId = requestAnimationFrame(animate);
+  }
+});
+
 window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-interactive');
   ctx = canvas.getContext('2d');
@@ -151,40 +142,34 @@ window.addEventListener('DOMContentLoaded', async () => {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  // Load neurons
   const { data: communityData, error: communityError } = await supabase.from('community').select('*');
   if (communityError) {
     console.error('❌ Failed to load community:', communityError);
     return;
   }
+
   neurons = communityData
     .filter(user => typeof user.x === 'number' && typeof user.y === 'number')
     .map(user => ({ x: user.x, y: user.y, meta: user }));
   console.log('✅ Loaded neurons:', neurons);
 
-  // Build fast lookup
   const neuronMap = {};
   for (const neuron of neurons) {
     neuronMap[String(neuron.meta.id).trim()] = neuron;
   }
 
-  // Load current user
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-const authStatusEl = document.getElementById('auth-status');
+  const { data: userData } = await supabase.auth.getUser();
+  const authStatusEl = document.getElementById('auth-status');
 
-if (userData?.user?.id) {
-  CURRENT_USER_ID = userData.user.id;
-  console.log('✅ Logged in as:', CURRENT_USER_ID);
-  authStatusEl.textContent = '🟢 Connected as: ' + userData.user.email;
-  authStatusEl.style.color = '#0f0';
-} else {
-  console.warn('⚠️ Not logged in — connection creation will be disabled');
-  authStatusEl.textContent = '🔴 Not Logged In';
-  authStatusEl.style.color = '#f00';
-}
+  if (userData?.user?.id) {
+    CURRENT_USER_ID = userData.user.id;
+    authStatusEl.textContent = '🟢 Connected as: ' + userData.user.email;
+    authStatusEl.style.color = '#0f0';
+  } else {
+    authStatusEl.textContent = '🔴 Not Logged In';
+    authStatusEl.style.color = '#f00';
+  }
 
-
-  // Load connections
   const { data: connData, error: connError } = await supabase.from('connections').select('*');
   if (connError) {
     console.error('❌ Failed to load connections:', connError);
@@ -194,21 +179,9 @@ if (userData?.user?.id) {
   connections = connData.map(conn => {
     const from = neuronMap[String(conn.from_id).trim()];
     const to = neuronMap[String(conn.to_id).trim()];
-
-    if (!from || !to) {
-      console.warn('🔍 Skipping connection — neuron(s) not found:', {
-        from_id: conn.from_id,
-        to_id: conn.to_id,
-        availableIDs: Object.keys(neuronMap)
-      });
-    }
-
     return from && to ? { from, to } : null;
   }).filter(Boolean);
 
-  console.log('✅ Loaded connections:', connections);
-
-  // Tooltip handlers
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -242,10 +215,8 @@ if (userData?.user?.id) {
     setTimeout(() => hideTooltip(), 1000);
   });
 
-  // ✅ CLICK-TO-CONNECT
   canvas.addEventListener('click', e => {
     if (!CURRENT_USER_ID) return;
-
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -266,19 +237,14 @@ if (userData?.user?.id) {
     }
   });
 
-  animate();
+  animationId = requestAnimationFrame(animate);
 });
 
-// ✅ Create a new connection
 async function createConnection(from_id, to_id) {
   if (!from_id || !to_id) return;
 
   const { error } = await supabase.from('connections').insert([
-    {
-      from_id,
-      to_id,
-      created_at: new Date().toISOString()
-    }
+    { from_id, to_id, created_at: new Date().toISOString() }
   ]);
 
   if (error) {
