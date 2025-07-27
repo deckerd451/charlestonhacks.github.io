@@ -1,4 +1,4 @@
-// neuralInteractive.js — Drag-enabled, Stable, Optimized, Clustered by Role, Tooltip-Fixed, Toggleable Name Display
+// neuralInteractive.js — Drag-enabled, Click-to-Connect with Visual Feedback, Stable, Optimized, Clustered by Role, Tooltip-Fixed, Toggleable Name Display
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
@@ -13,6 +13,7 @@ let lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = false;
 let draggingNeuron = null;
+let wasDragging = false;
 
 function clusteredLayout(users, canvasW, canvasH) {
   const groupBy = user => user.role || (user.interests?.[0] || 'unknown');
@@ -77,7 +78,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   const canvasW = window.innerWidth;
   const canvasH = window.innerHeight;
   neurons = clusteredLayout(communityData, canvasW, canvasH);
-
   console.log('✅ Loaded neurons:', neurons);
   window.neurons = neurons;
 
@@ -106,6 +106,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.connections = connections;
 
   canvas.addEventListener('mousedown', e => {
+    wasDragging = false;
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
     const x = (e.clientX - rect.left) * scale;
@@ -119,21 +120,23 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   canvas.addEventListener('mousemove', e => {
+    if (!draggingNeuron) return;
+    wasDragging = true;
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
     const x = (e.clientX - rect.left) * scale;
     const y = (e.clientY - rect.top) * scale;
-    if (draggingNeuron) {
-      draggingNeuron.x = x;
-      draggingNeuron.y = y;
-    }
+    draggingNeuron.x = x;
+    draggingNeuron.y = y;
   });
 
-  canvas.addEventListener('mouseup', () => {
+  canvas.addEventListener('mouseup', e => {
+    if (!wasDragging) handleCanvasClick(e);
     draggingNeuron = null;
   });
 
   canvas.addEventListener('touchstart', e => {
+    wasDragging = false;
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
@@ -148,6 +151,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   canvas.addEventListener('touchmove', e => {
+    wasDragging = true;
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
@@ -159,36 +163,38 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  canvas.addEventListener('touchend', () => {
+  canvas.addEventListener('touchend', e => {
+    if (!wasDragging) handleCanvasClick(e.changedTouches[0]);
     draggingNeuron = null;
-  });
-
-  // ✅ Click to connect neurons
-  canvas.addEventListener('click', e => {
-    if (!CURRENT_USER_ID) return;
-    const rect = canvas.getBoundingClientRect();
-    const scale = canvas.width / rect.width;
-    const x = (e.clientX - rect.left) * scale;
-    const y = (e.clientY - rect.top) * scale;
-
-    for (const neuron of neurons) {
-      if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
-        if (!selectedNeuron) {
-          selectedNeuron = neuron;
-          console.log(`🔵 Selected ${neuron.meta.name}`);
-        } else {
-          if (selectedNeuron.meta.id !== neuron.meta.id) {
-            createConnection(CURRENT_USER_ID, neuron.meta.id);
-          }
-          selectedNeuron = null;
-        }
-        return;
-      }
-    }
   });
 
   animationId = requestAnimationFrame(animate);
 });
+
+function handleCanvasClick(e) {
+  if (!CURRENT_USER_ID) return;
+  const rect = canvas.getBoundingClientRect();
+  const scale = canvas.width / rect.width;
+  const x = (e.clientX - rect.left) * scale;
+  const y = (e.clientY - rect.top) * scale;
+
+  for (const neuron of neurons) {
+    if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
+      if (!selectedNeuron) {
+        selectedNeuron = neuron;
+        neuron.selected = true;
+        console.log(`🔵 Selected ${neuron.meta.name}`);
+      } else {
+        if (selectedNeuron.meta.id !== neuron.meta.id) {
+          createConnection(CURRENT_USER_ID, neuron.meta.id);
+        }
+        selectedNeuron.selected = false;
+        selectedNeuron = null;
+      }
+      return;
+    }
+  }
+}
 
 function resizeCanvas() {
   const dpr = window.devicePixelRatio || 1;
@@ -202,7 +208,7 @@ function resizeCanvas() {
 function drawNeuron(neuron, time) {
   const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
   const radius = 8 * pulse;
-  const color = '#0ff';
+  const color = neuron.selected ? '#ff0' : '#0ff';
   const glow = ctx.createRadialGradient(neuron.x, neuron.y, 0, neuron.x, neuron.y, radius);
   glow.addColorStop(0, color);
   glow.addColorStop(1, 'rgba(0,0,0,0)');
@@ -216,7 +222,7 @@ function drawNeuron(neuron, time) {
   ctx.fill();
   if (showAllNames) {
     ctx.font = '12px sans-serif';
-    ctx.fillStyle = '#0ff';
+    ctx.fillStyle = color;
     ctx.textAlign = 'center';
     ctx.fillText(neuron.meta.name, neuron.x, neuron.y - 14);
   }
