@@ -1,4 +1,4 @@
-// neuralInteractive.js — Fully Functional Animated Neurons with Tooltips, Glow, and Filtering + Mobile Touch Support
+// neuralInteractive.js — Fully Functional Animated Neurons with Tooltips, Glow, and Click-to-Connect Support
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -12,6 +12,8 @@ let selectedSkill = '';
 let neurons = [];
 let connections = [];
 let canvas, ctx, tooltip;
+let selectedNeuron = null;
+let CURRENT_USER_ID = null;
 
 function drawNeuron(neuron, time) {
   const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
@@ -53,18 +55,15 @@ function drawConnections() {
       ctx.lineTo(to.x, to.y);
       ctx.stroke();
 
-      // Calculate midpoint
+      // Label at midpoint
       const midX = (from.x + to.x) / 2;
       const midY = (from.y + to.y) / 2;
-
-      // Draw the name label
       const fromName = from.meta.name || 'Unknown';
       const toName = to.meta.name || 'Unknown';
       ctx.fillText(`${fromName} ↔ ${toName}`, midX, midY - 6);
     }
   });
 }
-
 
 function drawNetwork(time = 0) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -124,17 +123,24 @@ window.addEventListener('DOMContentLoaded', async () => {
     console.error('❌ Failed to load community:', communityError);
     return;
   }
-  neurons = communityData.map(user => ({
-    x: user.x,
-    y: user.y,
-    meta: user
-  }));
+  neurons = communityData
+    .filter(user => typeof user.x === 'number' && typeof user.y === 'number')
+    .map(user => ({ x: user.x, y: user.y, meta: user }));
   console.log('✅ Loaded neurons:', neurons);
 
-  // Build fast ID map for connection lookup
+  // Build fast lookup
   const neuronMap = {};
   for (const neuron of neurons) {
     neuronMap[String(neuron.meta.id).trim()] = neuron;
+  }
+
+  // Load current user
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userData?.user?.id) {
+    CURRENT_USER_ID = userData.user.id;
+    console.log('✅ Logged in as:', CURRENT_USER_ID);
+  } else {
+    console.warn('⚠️ Not logged in — connection creation will be disabled');
   }
 
   // Load connections
@@ -161,7 +167,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   console.log('✅ Loaded connections:', connections);
 
-  // Hover Tooltip (desktop)
+  // Tooltip handlers
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -177,7 +183,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (!found) hideTooltip();
   });
 
-  // Touch Tooltip (mobile)
   canvas.addEventListener('touchstart', e => {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
@@ -196,5 +201,51 @@ window.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => hideTooltip(), 1000);
   });
 
+  // ✅ CLICK-TO-CONNECT
+  canvas.addEventListener('click', e => {
+    if (!CURRENT_USER_ID) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
+        if (!selectedNeuron) {
+          selectedNeuron = neuron;
+          console.log(`🔵 Selected ${neuron.meta.name}`);
+        } else {
+          if (selectedNeuron.meta.id !== neuron.meta.id) {
+            createConnection(CURRENT_USER_ID, neuron.meta.id);
+          }
+          selectedNeuron = null;
+        }
+        return;
+      }
+    }
+  });
+
   animate();
 });
+
+// ✅ Create a new connection
+async function createConnection(from_id, to_id) {
+  if (!from_id || !to_id) return;
+
+  const { error } = await supabase.from('connections').insert([
+    {
+      from_id,
+      to_id,
+      created_at: new Date().toISOString()
+    }
+  ]);
+
+  if (error) {
+    console.error('❌ Failed to create connection:', error.message);
+  } else {
+    console.log(`✅ Connection created: ${from_id} → ${to_id}`);
+    const from = neurons.find(n => n.meta.id === from_id);
+    const to = neurons.find(n => n.meta.id === to_id);
+    if (from && to) connections.push({ from, to });
+  }
+}
