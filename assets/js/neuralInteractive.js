@@ -38,10 +38,12 @@ function drawConnections() {
   ctx.lineWidth = 1;
   ctx.strokeStyle = 'rgba(0,255,255,0.05)';
   connections.forEach(({ from, to }) => {
-    ctx.beginPath();
-    ctx.moveTo(from.x, from.y);
-    ctx.lineTo(to.x, to.y);
-    ctx.stroke();
+    if (from && to) {
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+    }
   });
 }
 
@@ -61,6 +63,7 @@ function animate(time) {
 }
 
 function showTooltip(neuron, x, y) {
+  if (!tooltip) return;
   tooltip.innerHTML = `
     <strong>${neuron.meta.name}</strong><br>
     <small>${(neuron.meta.skills || []).join(', ')}</small>
@@ -72,32 +75,49 @@ function showTooltip(neuron, x, y) {
 }
 
 function hideTooltip() {
-  tooltip.style.display = 'none';
-  tooltip.style.opacity = '0';
+  if (tooltip) {
+    tooltip.style.display = 'none';
+    tooltip.style.opacity = '0';
+  }
+}
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-interactive');
   ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
   tooltip = document.getElementById('neuron-tooltip');
+
+  if (!canvas || !ctx || !tooltip) {
+    console.error('❌ Missing canvas or tooltip in DOM');
+    return;
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
 
   const { data, error } = await supabase.from('community').select('*');
   if (error) {
-    console.error('Failed to load community:', error);
+    console.error('❌ Failed to load community:', error);
     return;
   }
   neurons = data.map(user => ({ x: user.x, y: user.y, meta: user }));
+  console.log('✅ Loaded neurons:', neurons);
 
-  const { data: connData } = await supabase.from('connections').select('*');
-  if (connData) {
-    connections = connData.map(conn => {
-      const from = neurons.find(n => n.meta.id === conn.from_id);
-      const to = neurons.find(n => n.meta.id === conn.to_id);
-      return from && to ? { from, to } : null;
-    }).filter(Boolean);
+  const { data: connData, error: connError } = await supabase.from('connections').select('*');
+  if (connError) {
+    console.error('❌ Failed to load connections:', connError);
+    return;
   }
+  connections = connData.map(conn => {
+    const from = neurons.find(n => n.meta.id === conn.from_id);
+    const to = neurons.find(n => n.meta.id === conn.to_id);
+    return from && to ? { from, to } : null;
+  }).filter(Boolean);
+  console.log('✅ Loaded connections:', connections);
 
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
