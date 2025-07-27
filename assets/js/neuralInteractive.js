@@ -1,4 +1,4 @@
-// neuralInteractive.js — Enhanced with Skill Filtering, Glow by Skill, Tooltip Sync, and Visual Live Connections
+// neuralInteractive.js — Enhanced with Multi-Skill Glow, Bold Tooltips, and Dimmed Filtering
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -99,20 +99,26 @@ function populateLegendFromSkills() {
 
 function drawNeuron(neuron) {
   const pulse = 1 + Math.sin(Date.now() * 0.005 + neuron.x + neuron.y) * 0.3;
-  const color = neuron.meta.skills?.map(s => skillColors[s]).find(Boolean) || '#0ff';
+  const skills = neuron.meta.skills || [];
 
-  const glow = ctx.createRadialGradient(neuron.x, neuron.y, 0, neuron.x, neuron.y, 15);
-  glow.addColorStop(0, color);
-  glow.addColorStop(1, 'rgba(0,255,255,0)');
+  skills.slice(0, 3).forEach((skill, index) => {
+    const color = skillColors[skill] || '#0ff';
+    const radius = 8 + (3 - index) * 4;
 
+    const glow = ctx.createRadialGradient(neuron.x, neuron.y, 0, neuron.x, neuron.y, radius);
+    glow.addColorStop(0, color);
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+
+    ctx.beginPath();
+    ctx.arc(neuron.x, neuron.y, radius * pulse, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+  });
+
+  const centerColor = skills.map(s => skillColors[s]).find(Boolean) || '#0ff';
   ctx.beginPath();
-  ctx.arc(neuron.x, neuron.y, 5 * pulse, 0, Math.PI * 2);
-  ctx.fillStyle = glow;
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.arc(neuron.x, neuron.y, 2.5, 0, Math.PI * 2);
-  ctx.fillStyle = color;
+  ctx.arc(neuron.x, neuron.y, 3, 0, Math.PI * 2);
+  ctx.fillStyle = centerColor;
   ctx.fill();
 }
 
@@ -131,10 +137,11 @@ function drawNetwork() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawConnections();
   neurons.forEach(neuron => {
-    if (!selectedSkill || neuron.meta.skills?.includes(selectedSkill)) {
-      drawNeuron(neuron);
-    }
+    const match = !selectedSkill || neuron.meta.skills?.includes(selectedSkill);
+    ctx.globalAlpha = match ? 1 : 0.15;
+    drawNeuron(neuron);
   });
+  ctx.globalAlpha = 1;
 }
 
 function showTooltip(neuron, x, y) {
@@ -142,7 +149,7 @@ function showTooltip(neuron, x, y) {
   tooltip.innerHTML = `
     ${image_url ? `<img src="${image_url}" alt="${name}" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px;" />` : ''}
     <strong>${name}</strong><br/>
-    <small>Skills: ${skills?.join(', ')}</small><br/>
+    <small>Skills: ${skills?.map(skill => skill === selectedSkill ? `<b>${skill}</b>` : skill).join(', ')}</small><br/>
     ${email ? `<a href="mailto:${email}" style="color:#0ff;">${email}</a><br/>` : ''}
   `;
   tooltip.style.left = x + 10 + 'px';
