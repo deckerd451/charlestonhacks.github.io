@@ -1,4 +1,4 @@
-// neuralInteractive.js — Enhanced with Multi-Skill Glow, Bold Tooltips, Dimmed Filtering, and Connection Status
+// neuralInteractive.js — Enhanced with Multi-Skill Glow, Bold Tooltips, Dimmed Filtering, and Connection Status + Auto-insert into Community
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -182,6 +182,20 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   const { data: sessionData } = await supabase.auth.getSession();
   CURRENT_USER_ID = sessionData?.session?.user?.id || null;
+
+  // Auto-insert current user into community if not exists
+  if (CURRENT_USER_ID) {
+    const { data: userRow, error: userErr } = await supabase
+      .from('community')
+      .select('*')
+      .eq('id', CURRENT_USER_ID)
+      .maybeSingle();
+
+    if (!userRow && !userErr) {
+      await supabase.from('community').insert([{ id: CURRENT_USER_ID, name: 'Anonymous', skills: [], x: Math.random() * canvas.width, y: Math.random() * canvas.height }]);
+      console.log('👤 Added current user to community.');
+    }
+  }
 
   const { data, error } = await supabase.from('community').select('*');
   if (error) {
