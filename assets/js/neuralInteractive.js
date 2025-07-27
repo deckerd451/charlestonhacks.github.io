@@ -1,4 +1,4 @@
-// neuralInteractive.js — Retina-ready, Scaled, and Fully Functional
+// neuralInteractive.js — Stable, Optimized, and Toggleable Name Display
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
@@ -10,9 +10,19 @@ let neurons = [], connections = [], canvas, ctx, tooltip;
 let selectedNeuron = null, CURRENT_USER_ID = null;
 let animationId = null;
 let lastFrame = 0;
-const FRAME_INTERVAL = 1000 / 30;
+const FRAME_INTERVAL = 1000 / 30; // 30 FPS
+let showAllNames = false; // 🔁 Toggle for showing all names
 
 window.addEventListener('DOMContentLoaded', async () => {
+  const toggle = document.createElement('button');
+  toggle.textContent = 'Show All Names';
+  toggle.style.cssText = 'position:fixed;bottom:20px;left:20px;padding:8px;background:#000;color:#0ff;border:1px solid #0ff;border-radius:6px;z-index:9999;';
+  toggle.onclick = () => {
+    showAllNames = !showAllNames;
+    toggle.textContent = showAllNames ? 'Hide Names' : 'Show All Names';
+  };
+  document.body.appendChild(toggle);
+
   if (!sessionHandled) {
     sessionHandled = true;
     try {
@@ -26,32 +36,20 @@ window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-interactive');
   ctx = canvas?.getContext('2d');
   tooltip = document.getElementById('neuron-tooltip');
-  if (!canvas || !ctx || !tooltip) {
-    console.error('❌ Missing canvas or tooltip in DOM');
-    return;
-  }
+  if (!canvas || !ctx || !tooltip) return console.error('❌ Missing canvas or tooltip in DOM');
 
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  // Load community
   const { data: communityData, error: communityError } = await supabase.from('community').select('*');
-  if (communityError) {
-    console.error('❌ Failed to load community:', communityError);
-    return;
-  }
+  if (communityError) return console.error('❌ Failed to load community:', communityError);
 
-  console.log('📦 Raw community data:', communityData);
-
-  neurons = communityData
-    .filter(user => typeof user.x === 'number' && typeof user.y === 'number')
+  neurons = communityData.filter(user => typeof user.x === 'number' && typeof user.y === 'number')
     .map(user => ({ x: user.x, y: user.y, meta: user }));
   console.log('✅ Loaded neurons:', neurons);
 
   const neuronMap = {};
-  for (const neuron of neurons) {
-    neuronMap[String(neuron.meta.id).trim()] = neuron;
-  }
+  for (const neuron of neurons) neuronMap[String(neuron.meta.id).trim()] = neuron;
 
   const { data: userData } = await supabase.auth.getUser();
   const authStatusEl = document.getElementById('auth-status');
@@ -65,10 +63,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   const { data: connData, error: connError } = await supabase.from('connections').select('*');
-  if (connError) {
-    console.error('❌ Failed to load connections:', connError);
-    return;
-  }
+  if (connError) return console.error('❌ Failed to load connections:', connError);
 
   connections = connData.map(conn => {
     const from = neuronMap[String(conn.from_id).trim()];
@@ -76,16 +71,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     return from && to ? { from, to } : null;
   }).filter(Boolean);
 
-  // Hover (desktop)
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const x = (e.clientX - rect.left) * dpr;
-    const y = (e.clientY - rect.top) * dpr;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     let found = false;
     for (const neuron of neurons) {
       if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
-        showTooltip(neuron, e.clientX, e.clientY); // screen coords for tooltip
+        showTooltip(neuron, e.clientX, e.clientY);
         found = true;
         break;
       }
@@ -93,13 +86,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (!found) hideTooltip();
   });
 
-  // Touch (mobile)
   canvas.addEventListener('touchstart', e => {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const x = (touch.clientX - rect.left) * dpr;
-    const y = (touch.clientY - rect.top) * dpr;
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
     for (const neuron of neurons) {
       if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
         showTooltip(neuron, touch.clientX, touch.clientY);
@@ -109,17 +100,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     hideTooltip();
   });
 
-  canvas.addEventListener('touchend', () => {
-    setTimeout(() => hideTooltip(), 1000);
-  });
+  canvas.addEventListener('touchend', () => setTimeout(() => hideTooltip(), 1000));
 
-  // Click-to-connect
   canvas.addEventListener('click', e => {
     if (!CURRENT_USER_ID) return;
     const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const x = (e.clientX - rect.left) * dpr;
-    const y = (e.clientY - rect.top) * dpr;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
     for (const neuron of neurons) {
       if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
@@ -167,6 +154,13 @@ function drawNeuron(neuron, time) {
   ctx.arc(neuron.x, neuron.y, 3, 0, Math.PI * 2);
   ctx.fillStyle = color;
   ctx.fill();
+
+  if (showAllNames) {
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#0ff';
+    ctx.textAlign = 'center';
+    ctx.fillText(neuron.meta.name, neuron.x, neuron.y - 14);
+  }
 }
 
 function drawConnections() {
@@ -183,7 +177,6 @@ function drawConnections() {
       ctx.moveTo(from.x, from.y);
       ctx.lineTo(to.x, to.y);
       ctx.stroke();
-
       const midX = (from.x + to.x) / 2;
       const midY = (from.y + to.y) / 2;
       ctx.fillText(`${from.meta.name} ↔ ${to.meta.name}`, midX, midY - 6);
@@ -219,10 +212,7 @@ document.addEventListener('visibilitychange', () => {
 
 function showTooltip(neuron, x, y) {
   if (!tooltip) return;
-  tooltip.innerHTML = `
-    <strong>${neuron.meta.name}</strong><br>
-    <small>${(neuron.meta.skills || []).join(', ')}</small>
-  `;
+  tooltip.innerHTML = `<strong>${neuron.meta.name}</strong><br><small>${(neuron.meta.skills || []).join(', ')}</small>`;
   tooltip.style.left = x + 10 + 'px';
   tooltip.style.top = y + 10 + 'px';
   tooltip.style.display = 'block';
