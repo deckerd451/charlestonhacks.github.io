@@ -12,7 +12,6 @@ let selectedSkill = '';
 let neurons = [];
 let connections = [];
 let canvas, ctx, tooltip;
-let CURRENT_USER_ID = null;
 
 function drawNeuron(neuron, time) {
   const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
@@ -41,7 +40,7 @@ function drawConnections() {
   }
 
   ctx.lineWidth = 1.5;
-  ctx.strokeStyle = 'rgba(0,255,255,0.2)'; // brighter than before
+  ctx.strokeStyle = 'rgba(0,255,255,0.2)';
 
   connections.forEach(({ from, to }) => {
     if (from && to) {
@@ -52,7 +51,6 @@ function drawConnections() {
     }
   });
 }
-
 
 function drawNetwork(time = 0) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -106,26 +104,50 @@ window.addEventListener('DOMContentLoaded', async () => {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  const { data, error } = await supabase.from('community').select('*');
-  if (error) {
-    console.error('❌ Failed to load community:', error);
+  // Load neurons
+  const { data: communityData, error: communityError } = await supabase.from('community').select('*');
+  if (communityError) {
+    console.error('❌ Failed to load community:', communityError);
     return;
   }
-  neurons = data.map(user => ({ x: user.x, y: user.y, meta: user }));
+  neurons = communityData.map(user => ({
+    x: user.x,
+    y: user.y,
+    meta: user
+  }));
   console.log('✅ Loaded neurons:', neurons);
 
+  // Build fast ID map for connection lookup
+  const neuronMap = {};
+  for (const neuron of neurons) {
+    neuronMap[String(neuron.meta.id).trim()] = neuron;
+  }
+
+  // Load connections
   const { data: connData, error: connError } = await supabase.from('connections').select('*');
   if (connError) {
     console.error('❌ Failed to load connections:', connError);
     return;
   }
+
   connections = connData.map(conn => {
-    const from = neurons.find(n => n.meta.id === conn.from_id);
-    const to = neurons.find(n => n.meta.id === conn.to_id);
+    const from = neuronMap[String(conn.from_id).trim()];
+    const to = neuronMap[String(conn.to_id).trim()];
+
+    if (!from || !to) {
+      console.warn('🔍 Skipping connection — neuron(s) not found:', {
+        from_id: conn.from_id,
+        to_id: conn.to_id,
+        availableIDs: Object.keys(neuronMap)
+      });
+    }
+
     return from && to ? { from, to } : null;
   }).filter(Boolean);
+
   console.log('✅ Loaded connections:', connections);
 
+  // Hover Tooltip (desktop)
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -141,6 +163,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (!found) hideTooltip();
   });
 
+  // Touch Tooltip (mobile)
   canvas.addEventListener('touchstart', e => {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
