@@ -1,11 +1,31 @@
 // neuralInteractive.js — Fully Functional Animated Neurons with Tooltips, Glow, and Click-to-Connect Support
-
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
-
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+// Auth form handler
+document.getElementById('auth-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email-input').value.trim();
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: true,
+      emailRedirectTo: 'https://charlestonhacks.com/neural.html',
+    }
+  });
+
+  if (error) {
+    alert('❌ ' + error.message);
+    console.error('Magic link error:', error);
+  } else {
+    alert('✅ Check your email for the login link!');
+  }
+});
 
 let skillColors = {};
 let selectedSkill = '';
