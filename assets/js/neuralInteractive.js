@@ -102,10 +102,17 @@ function drawNetwork(time = 0) {
   ctx.globalAlpha = 1;
 }
 
+let lastFrame = 0;
+const FRAME_INTERVAL = 1000 / 30; // Max 30 FPS
+
 function animate(time) {
-  drawNetwork(time);
+  if (time - lastFrame >= FRAME_INTERVAL) {
+    drawNetwork(time);
+    lastFrame = time;
+  }
   requestAnimationFrame(animate);
 }
+
 
 function showTooltip(neuron, x, y) {
   if (!tooltip) return;
