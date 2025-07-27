@@ -1,8 +1,8 @@
-// neuralInteractive.js — Stable, Optimized, and Safe Session Handling
+// neuralInteractive.js — Fully Scaled to All Users, Optimized and Stable
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // shortened for clarity
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let sessionHandled = false;
@@ -10,23 +10,21 @@ let neurons = [], connections = [], canvas, ctx, tooltip;
 let selectedNeuron = null, CURRENT_USER_ID = null;
 let animationId = null;
 let lastFrame = 0;
-const FRAME_INTERVAL = 1000 / 30; // 30 FPS
+const FRAME_INTERVAL = 1000 / 30;
 
 window.addEventListener('DOMContentLoaded', async () => {
-  // ✅ SESSION RESTORE – safe and locked
+  // ✅ SESSION RESTORE
   if (!sessionHandled) {
     sessionHandled = true;
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        console.log('🔁 Session active');
-      }
+      if (session) console.log('🔁 Session active');
     } catch (err) {
       console.error('⚠️ Session restore failed:', err);
     }
   }
 
-  // ✅ Canvas + tooltip
+  // ✅ INIT CANVAS + TOOLTIP
   canvas = document.getElementById('neural-interactive');
   ctx = canvas?.getContext('2d');
   tooltip = document.getElementById('neuron-tooltip');
@@ -38,7 +36,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  // ✅ Load community data
+  // ✅ LOAD NEURONS — ALL USERS
   const { data: communityData, error: communityError } = await supabase.from('community').select('*');
   if (communityError) {
     console.error('❌ Failed to load community:', communityError);
@@ -46,18 +44,17 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   neurons = communityData
-    .slice(0, 20) // ⚠️ TEMP: limit to 20 for testing
     .filter(user => typeof user.x === 'number' && typeof user.y === 'number')
     .map(user => ({ x: user.x, y: user.y, meta: user }));
-  console.log('✅ Loaded neurons:', neurons);
+  console.log('✅ Loaded neurons:', neurons.length);
 
-  // ✅ Neuron map for fast lookup
+  // ✅ BUILD LOOKUP MAP
   const neuronMap = {};
   for (const neuron of neurons) {
     neuronMap[String(neuron.meta.id).trim()] = neuron;
   }
 
-  // ✅ Load user
+  // ✅ AUTH STATUS
   const { data: userData } = await supabase.auth.getUser();
   const authStatusEl = document.getElementById('auth-status');
   if (userData?.user?.id) {
@@ -69,7 +66,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     authStatusEl.style.color = '#f00';
   }
 
-  // ✅ Load connections
+  // ✅ LOAD CONNECTIONS
   const { data: connData, error: connError } = await supabase.from('connections').select('*');
   if (connError) {
     console.error('❌ Failed to load connections:', connError);
@@ -82,7 +79,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     return from && to ? { from, to } : null;
   }).filter(Boolean);
 
-  // ✅ Tooltip handlers
+  // ✅ TOOLTIP EVENTS
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -112,11 +109,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     hideTooltip();
   });
 
-  canvas.addEventListener('touchend', () => {
-    setTimeout(() => hideTooltip(), 1000);
-  });
+  canvas.addEventListener('touchend', () => setTimeout(hideTooltip, 1000));
 
-  // ✅ Click-to-connect
+  // ✅ CLICK-TO-CONNECT
   canvas.addEventListener('click', e => {
     if (!CURRENT_USER_ID) return;
     const rect = canvas.getBoundingClientRect();
@@ -176,16 +171,14 @@ function drawConnections() {
   ctx.textAlign = 'center';
 
   connections.forEach(({ from, to }) => {
-    if (from && to) {
-      ctx.beginPath();
-      ctx.moveTo(from.x, from.y);
-      ctx.lineTo(to.x, to.y);
-      ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(to.x, to.y);
+    ctx.stroke();
 
-      const midX = (from.x + to.x) / 2;
-      const midY = (from.y + to.y) / 2;
-      ctx.fillText(`${from.meta.name} ↔ ${to.meta.name}`, midX, midY - 6);
-    }
+    const midX = (from.x + to.x) / 2;
+    const midY = (from.y + to.y) / 2;
+    ctx.fillText(`${from.meta.name} ↔ ${to.meta.name}`, midX, midY - 6);
   });
 }
 
