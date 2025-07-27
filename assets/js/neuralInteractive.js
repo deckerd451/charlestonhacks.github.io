@@ -145,13 +145,21 @@ function drawNetwork() {
 }
 
 function showTooltip(neuron, x, y) {
-  const { name, email, skills, image_url } = neuron.meta;
+  const { name, email, skills, image_url, id } = neuron.meta;
+
+  // ✅ Check if current user is already connected to this neuron
+  const isConnected = connections.some(conn =>
+    conn.from.meta.id === CURRENT_USER_ID && conn.to.meta.id === id
+  );
+
   tooltip.innerHTML = `
     ${image_url ? `<img src="${image_url}" alt="${name}" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px;" />` : ''}
     <strong>${name}</strong><br/>
     <small>Skills: ${skills?.map(skill => skill === selectedSkill ? `<b>${skill}</b>` : skill).join(', ')}</small><br/>
     ${email ? `<a href="mailto:${email}" style="color:#0ff;">${email}</a><br/>` : ''}
+    ${isConnected ? `<div style="color: #0f0; font-weight: bold;">✅ Already connected</div>` : ''}
   `;
+
   tooltip.style.left = x + 10 + 'px';
   tooltip.style.top = y + 10 + 'px';
   tooltip.style.display = 'block';
