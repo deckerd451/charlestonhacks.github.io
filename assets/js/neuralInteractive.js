@@ -223,6 +223,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 window.neurons = neurons;
 window.connections = connections;
 window.skillColors = skillColors;
+  window.drawNetwork = drawNetwork;
+
 
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
