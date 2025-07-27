@@ -1,4 +1,6 @@
-const cacheName = 'charlestonhacks-v60'; // Increment this for each deploy
+// ✅ service-worker.js — CharlestonHacks Safe Caching
+
+const cacheName = 'charlestonhacks-v61'; // 🔁 Update this on each deploy
 
 const assetsToCache = [
   '/',
@@ -31,15 +33,26 @@ const assetsToCache = [
   '/techweek.html'
 ];
 
-// Install: cache everything immediately
+// ✅ On install: Cache all core assets
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(cacheName).then(cache => cache.addAll(assetsToCache))
+    caches.open(cacheName).then(cache => {
+      return Promise.all(
+        assetsToCache.map(asset =>
+          fetch(asset).then(response => {
+            if (!response.ok) throw new Error(`❌ Failed to cache ${asset}`);
+            return cache.put(asset, response.clone());
+          }).catch(err => {
+            console.warn('⚠️ Skipped caching:', asset, err.message);
+          })
+        )
+      );
+    })
   );
 });
 
-// Activate: clean up old caches
+// ✅ On activate: Clean old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -51,30 +64,21 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: stale-while-revalidate strategy
+// ✅ On fetch: Stale-while-revalidate strategy
 self.addEventListener('fetch', event => {
-  // Skip non-GET or Supabase magic link requests
   if (event.request.method !== 'GET') return;
-
-  const url = new URL(event.request.url);
-  if (url.pathname.startsWith('/auth/v1/magiclink')) return;
 
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
-      const fetchPromise = fetch(event.request)
-        .then(networkResponse => {
-          // Only cache same-origin, successful, unconsumed responses
-          if (
-            networkResponse &&
-            networkResponse.status === 200 &&
-            networkResponse.type === 'basic'
-          ) {
-            const cloned = networkResponse.clone();
-            caches.open(cacheName).then(cache => cache.put(event.request, cloned));
-          }
-          return networkResponse;
-        })
-        .catch(() => cachedResponse); // Use cache if offline
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        if (networkResponse && networkResponse.status === 200) {
+          const cloned = networkResponse.clone();
+          caches.open(cacheName).then(cache => {
+            cache.put(event.request, cloned);
+          });
+        }
+        return networkResponse;
+      }).catch(() => cachedResponse);
 
       return cachedResponse || fetchPromise;
     })
