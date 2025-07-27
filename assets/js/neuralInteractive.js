@@ -14,7 +14,7 @@ document.getElementById('auth-form')?.addEventListener('submit', async (e) => {
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      shouldCreateUser: true,
+      shouldCreateUser: false, // ✅ Forces Magic Link instead of signup email
       emailRedirectTo: 'https://charlestonhacks.com/neural.html',
     }
   });
