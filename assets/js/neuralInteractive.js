@@ -1,4 +1,4 @@
-// neuralInteractive.js — Enhanced with Multi-Skill Glow, Bold Tooltips, and Dimmed Filtering
+// neuralInteractive.js — Enhanced with Multi-Skill Glow, Bold Tooltips, Dimmed Filtering, and Connection Status
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -147,7 +147,6 @@ function drawNetwork() {
 function showTooltip(neuron, x, y) {
   const { name, email, skills, image_url, id } = neuron.meta;
 
-  // ✅ Check if current user is already connected to this neuron
   const isConnected = connections.some(conn =>
     conn.from.meta.id === CURRENT_USER_ID && conn.to.meta.id === id
   );
@@ -159,7 +158,6 @@ function showTooltip(neuron, x, y) {
     ${email ? `<a href="mailto:${email}" style="color:#0ff;">${email}</a><br/>` : ''}
     ${isConnected ? `<div style="color: #0f0; font-weight: bold;">✅ Already connected</div>` : ''}
   `;
-
   tooltip.style.left = x + 10 + 'px';
   tooltip.style.top = y + 10 + 'px';
   tooltip.style.display = 'block';
