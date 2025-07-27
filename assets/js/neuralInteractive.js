@@ -237,7 +237,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  animationId = requestAnimationFrame(animate);
+ // animationId = requestAnimationFrame(animate);
+drawNetwork(0); // Just draw once
+
 });
 
 async function createConnection(from_id, to_id) {
