@@ -163,6 +163,30 @@ window.addEventListener('DOMContentLoaded', async () => {
     draggingNeuron = null;
   });
 
+  // ✅ Click to connect neurons
+  canvas.addEventListener('click', e => {
+    if (!CURRENT_USER_ID) return;
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
+        if (!selectedNeuron) {
+          selectedNeuron = neuron;
+          console.log(`🔵 Selected ${neuron.meta.name}`);
+        } else {
+          if (selectedNeuron.meta.id !== neuron.meta.id) {
+            createConnection(CURRENT_USER_ID, neuron.meta.id);
+          }
+          selectedNeuron = null;
+        }
+        return;
+      }
+    }
+  });
+
   animationId = requestAnimationFrame(animate);
 });
 
