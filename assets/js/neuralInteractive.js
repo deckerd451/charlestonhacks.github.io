@@ -13,7 +13,6 @@ let lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30; // 30 FPS
 
 window.addEventListener('DOMContentLoaded', async () => {
-  // ✅ SESSION RESTORE – safe and locked
   if (!sessionHandled) {
     sessionHandled = true;
     try {
@@ -26,7 +25,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // ✅ Canvas + tooltip
   canvas = document.getElementById('neural-interactive');
   ctx = canvas?.getContext('2d');
   tooltip = document.getElementById('neuron-tooltip');
@@ -38,26 +36,28 @@ window.addEventListener('DOMContentLoaded', async () => {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  // ✅ Load community data
   const { data: communityData, error: communityError } = await supabase.from('community').select('*');
   if (communityError) {
     console.error('❌ Failed to load community:', communityError);
     return;
   }
 
+  console.log('🧠 Raw data:', communityData);
+  communityData.forEach(user => {
+    console.log(user.name, 'x:', typeof user.x, 'y:', typeof user.y);
+  });
+
   neurons = communityData
-    .slice(0, 20) // ⚠️ TEMP: limit to 20 for testing
-    .filter(user => typeof user.x === 'number' && typeof user.y === 'number')
-    .map(user => ({ x: user.x, y: user.y, meta: user }));
+    .filter(user => !isNaN(+user.x) && !isNaN(+user.y))
+    .map(user => ({ x: +user.x, y: +user.y, meta: user }));
+
   console.log('✅ Loaded neurons:', neurons);
 
-  // ✅ Neuron map for fast lookup
   const neuronMap = {};
   for (const neuron of neurons) {
     neuronMap[String(neuron.meta.id).trim()] = neuron;
   }
 
-  // ✅ Load user
   const { data: userData } = await supabase.auth.getUser();
   const authStatusEl = document.getElementById('auth-status');
   if (userData?.user?.id) {
@@ -69,7 +69,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     authStatusEl.style.color = '#f00';
   }
 
-  // ✅ Load connections
   const { data: connData, error: connError } = await supabase.from('connections').select('*');
   if (connError) {
     console.error('❌ Failed to load connections:', connError);
@@ -82,7 +81,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     return from && to ? { from, to } : null;
   }).filter(Boolean);
 
-  // ✅ Tooltip handlers
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -116,7 +114,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => hideTooltip(), 1000);
   });
 
-  // ✅ Click-to-connect
   canvas.addEventListener('click', e => {
     if (!CURRENT_USER_ID) return;
     const rect = canvas.getBoundingClientRect();
