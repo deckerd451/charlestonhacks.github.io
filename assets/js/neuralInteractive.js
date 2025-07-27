@@ -64,6 +64,28 @@ draw() {
   ctx.beginPath();
   ctx.arc(this.x, this.y, 2.
 
+          // Suggested connections logic (basic AI)
+neurons.forEach((a, i) => {
+  for (let j = i + 1; j < neurons.length; j++) {
+    const b = neurons[j];
+
+    if (a.meta.id === CURRENT_USER_ID || b.meta.id === CURRENT_USER_ID) {
+      const shared = a.meta.interests?.filter(tag => b.meta.interests?.includes(tag)) || [];
+      const complement = (a.meta.role !== b.meta.role);
+      const available = a.meta.availability === 'Yes' || b.meta.availability === 'Yes';
+
+      const score = shared.length * 5 + (complement ? 3 : 0) + (available ? 2 : 0);
+      if (score >= 7 && !a.connections.includes(b)) {
+        a._suggested = a._suggested || [];
+        b._suggested = b._suggested || [];
+        a._suggested.push(b);
+        b._suggested.push(a);
+      }
+    }
+  }
+});
+
+
 
   // Draw connections last (under other neurons if you prefer)
   this.connections.forEach(other => {
