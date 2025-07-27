@@ -1,4 +1,4 @@
-// neuralInteractive.js — Fully Functional with Supabase Auth and Live Connections
+// neuralInteractive.js — Fully Functional with Supabase Auth, Live Connections, and Suggested Links
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -35,6 +35,7 @@ class Neuron {
     this.x = x;
     this.y = y;
     this.connections = [];
+    this._suggested = [];
     this.meta = {};
   }
 
@@ -48,56 +49,46 @@ class Neuron {
     return Math.hypot(this.x - x, this.y - y) < 10;
   }
 
-// Inside Neuron class
-draw() {
-  const pulse = 1 + Math.sin(Date.now() * 0.005 + this.x + this.y) * 0.3;
+  draw() {
+    const pulse = 1 + Math.sin(Date.now() * 0.005 + this.x + this.y) * 0.3;
 
-  const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 15);
-  glow.addColorStop(0, 'rgba(0,255,255,0.9)');
-  glow.addColorStop(1, 'rgba(0,255,255,0)');
+    const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 15);
+    glow.addColorStop(0, 'rgba(0,255,255,0.9)');
+    glow.addColorStop(1, 'rgba(0,255,255,0)');
 
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, 5 * pulse, 0, Math.PI * 2);
-  ctx.fillStyle = glow;
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, 2.
-
-          // Suggested connections logic (basic AI)
-neurons.forEach((a, i) => {
-  for (let j = i + 1; j < neurons.length; j++) {
-    const b = neurons[j];
-
-    if (a.meta.id === CURRENT_USER_ID || b.meta.id === CURRENT_USER_ID) {
-      const shared = a.meta.interests?.filter(tag => b.meta.interests?.includes(tag)) || [];
-      const complement = (a.meta.role !== b.meta.role);
-      const available = a.meta.availability === 'Yes' || b.meta.availability === 'Yes';
-
-      const score = shared.length * 5 + (complement ? 3 : 0) + (available ? 2 : 0);
-      if (score >= 7 && !a.connections.includes(b)) {
-        a._suggested = a._suggested || [];
-        b._suggested = b._suggested || [];
-        a._suggested.push(b);
-        b._suggested.push(a);
-      }
-    }
-  }
-});
-
-
-
-  // Draw connections last (under other neurons if you prefer)
-  this.connections.forEach(other => {
     ctx.beginPath();
-    ctx.moveTo(this.x, this.y);
-    ctx.lineTo(other.x, other.y);
-    ctx.strokeStyle = 'rgba(0,255,255,0.15)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  });
-}
+    ctx.arc(this.x, this.y, 5 * pulse, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
 
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#0ff';
+    ctx.fill();
+
+    if (this._suggested?.length) {
+      this._suggested.forEach(other => {
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(other.x, other.y);
+        ctx.strokeStyle = 'rgba(255, 255, 0, 0.3)';
+        ctx.setLineDash([4, 2]);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+    }
+
+    this.connections.forEach(other => {
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(other.x, other.y);
+      ctx.strokeStyle = 'rgba(0,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+  }
+}
 
 function resizeCanvas() {
   width = canvas.width = window.innerWidth;
@@ -113,6 +104,7 @@ function drawNetwork() {
 function showTooltip(neuron, x, y) {
   const { id, name, role, interests, email, image_url, availability } = neuron.meta;
   const alreadyConnected = neuron.connections.some(n => n.meta?.id === CURRENT_USER_ID);
+  const isSuggested = neuron._suggested?.some(n => n.meta?.id === CURRENT_USER_ID);
   tooltip.innerHTML = `
     ${image_url ? `<img src="${image_url}" alt="${name}" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 8px;" />` : ''}
     <strong>${name}</strong><br/>
@@ -120,6 +112,7 @@ function showTooltip(neuron, x, y) {
     <small>Interests: ${interests?.join(', ')}</small><br/>
     ${email ? `<a href="mailto:${email}" style="color:#0ff;">${email}</a><br/>` : ''}
     <small>Availability: ${availability}</small><br/>
+    ${isSuggested ? `<small style="color:yellow;">✨ Suggested for you</small><br/>` : ''}
     ${id !== CURRENT_USER_ID && !alreadyConnected ? `<button data-connect="${id}">Connect</button>` : alreadyConnected ? '<small>✔ Connected</small>' : '<small>(You)</small>'}
   `;
   tooltip.style.left = x + 10 + 'px';
@@ -143,6 +136,24 @@ function createNeuronsFromCommunity(data) {
     idToNeuron.set(user.id, neuron);
   });
   return idToNeuron;
+}
+
+function generateSuggestedConnections() {
+  neurons.forEach((a, i) => {
+    for (let j = i + 1; j < neurons.length; j++) {
+      const b = neurons[j];
+      if (a.meta.id === CURRENT_USER_ID || b.meta.id === CURRENT_USER_ID) {
+        const shared = a.meta.interests?.filter(tag => b.meta.interests?.includes(tag)) || [];
+        const complement = a.meta.role !== b.meta.role;
+        const available = a.meta.availability === 'Yes' || b.meta.availability === 'Yes';
+        const score = shared.length * 5 + (complement ? 3 : 0) + (available ? 2 : 0);
+        if (score >= 7 && !a.connections.includes(b)) {
+          a._suggested.push(b);
+          b._suggested.push(a);
+        }
+      }
+    }
+  });
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -199,6 +210,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  generateSuggestedConnections();
   drawNetwork();
 
   tooltip.addEventListener('click', async e => {
