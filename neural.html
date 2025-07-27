@@ -19,6 +19,8 @@
       display: block;
       width: 100vw;
       height: 100vh;
+      position: relative;
+      z-index: 1;
     }
 
     a.back-link {
@@ -48,11 +50,24 @@
       backdrop-filter: blur(4px);
       max-width: 200px;
       transition: opacity 0.2s ease;
+      opacity: 0;
+    }
+
+    #auth-box {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #0ff;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 10;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <!-- AUTH & FILTER UI -->
+  <!-- AUTH UI -->
   <div id="auth-box">
     <div id="auth-status"></div>
     <form id="auth-form">
@@ -62,25 +77,11 @@
     <button id="logout-btn" style="display: none; margin-top: 5px;">Log Out</button>
   </div>
 
-  <div id="filter-bar">
-    <label for="roleFilter">Filter by Role:</label><br />
-    <select id="roleFilter">
-      <option value="">All</option>
-      <option value="Organizer">Organizer</option>
-      <option value="Developer">Developer</option>
-      <option value="Designer">Designer</option>
-      <option value="Mentor">Mentor</option>
-    </select>
-  </div>
-
   <a href="index.html" class="back-link">← Home</a>
   <canvas id="neural-interactive" aria-label="Community Neural Map"></canvas>
-  <div id="neuron-tooltip" role="tooltip" style="display: none;"></div>
+  <div id="neuron-tooltip" role="tooltip"></div>
 
-  <!-- Supabase if used -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-
-  <!-- Your interactive animation code -->
+  <!-- Main interactive script (includes Supabase ESM inside) -->
   <script type="module" src="assets/js/neuralInteractive.js"></script>
 </body>
 </html>
