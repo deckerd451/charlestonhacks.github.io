@@ -1,11 +1,9 @@
-// neuralInteractive.js — Drag-enabled, Click-to-Connect with Visual Feedback, Stable, Optimized, Clustered by Role, Tooltip-Fixed, Toggleable Name Display, Fully Clickable
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let sessionHandled = false;
 let neurons = [], connections = [], canvas, ctx, tooltip;
 let selectedNeuron = null, CURRENT_USER_ID = null;
 let animationId = null;
@@ -23,11 +21,13 @@ function clusteredLayout(users, canvasW, canvasH) {
     if (!groups[key]) groups[key] = [];
     groups[key].push(user);
   }
+
   const keys = Object.keys(groups);
-  const clusterRadius = 150;
+  const clusterRadius = 600;
   const centerX = canvasW / 2;
   const centerY = canvasH / 2;
   let result = [];
+
   keys.forEach((key, i) => {
     const angle = (2 * Math.PI * i) / keys.length;
     const cx = centerX + clusterRadius * Math.cos(angle);
@@ -35,39 +35,37 @@ function clusteredLayout(users, canvasW, canvasH) {
     const group = groups[key];
     group.forEach((user, j) => {
       const offsetAngle = (2 * Math.PI * j) / group.length;
-      const spread = 30 + Math.floor(j / 3) * 10;
+      const spread = 50 + Math.floor(j / 3) * 20;
       const x = cx + spread * Math.cos(offsetAngle);
       const y = cy + spread * Math.sin(offsetAngle);
-      result.push({ x, y, meta: user });
+      result.push({ x, y, radius: 8, meta: user });
     });
   });
   return result;
 }
 
-function resizeCanvas() {
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
-  canvas.style.width = window.innerWidth + 'px';
-  canvas.style.height = window.innerHeight + 'px';
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
+function drawNeuron(neuron, time) {
+  const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
+  const radius = neuron.radius * pulse;
+  const color = (neuron === selectedNeuron) ? '#fff' : '#0ff';
+  const glow = ctx.createRadialGradient(neuron.x, neuron.y, 0, neuron.x, neuron.y, radius);
+  glow.addColorStop(0, color);
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.arc(neuron.x, neuron.y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = glow;
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(neuron.x, neuron.y, 3, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
 
-function handleCanvasClick(e) {
-  const rect = canvas.getBoundingClientRect();
-  const scale = canvas.width / rect.width;
-  const x = (e.clientX - rect.left) * scale;
-  const y = (e.clientY - rect.top) * scale;
-  for (const neuron of neurons) {
-    if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
-      selectedNeuron = neuron;
-      console.log('🟢 Selected neuron:', neuron.meta.name);
-      drawNetwork();
-      return;
-    }
+  if (showAllNames) {
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#0ff';
+    ctx.textAlign = 'center';
+    ctx.fillText(neuron.meta.name, neuron.x, neuron.y - 14);
   }
-  selectedNeuron = null;
-  drawNetwork();
 }
 
 function drawConnections() {
@@ -81,29 +79,6 @@ function drawConnections() {
       ctx.stroke();
     }
   });
-}
-
-function drawNeuron(neuron, time) {
-  const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
-  const radius = 8 * pulse;
-  const color = (neuron === selectedNeuron) ? '#fff' : '#0ff';
-  const glow = ctx.createRadialGradient(neuron.x, neuron.y, 0, neuron.x, neuron.y, radius);
-  glow.addColorStop(0, color);
-  glow.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.beginPath();
-  ctx.arc(neuron.x, neuron.y, radius, 0, Math.PI * 2);
-  ctx.fillStyle = glow;
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(neuron.x, neuron.y, 3, 0, Math.PI * 2);
-  ctx.fillStyle = color;
-  ctx.fill();
-  if (showAllNames) {
-    ctx.font = '12px sans-serif';
-    ctx.fillStyle = '#0ff';
-    ctx.textAlign = 'center';
-    ctx.fillText(neuron.meta.name, neuron.x, neuron.y - 14);
-  }
 }
 
 function drawNetwork(time = 0) {
@@ -124,7 +99,43 @@ function animate(time) {
   }
 }
 
+function handleCanvasClick(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scale = canvas.width / rect.width;
+  const x = (e.clientX - rect.left) * scale;
+  const y = (e.clientY - rect.top) * scale;
+  for (const neuron of neurons) {
+    if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
+      selectedNeuron = neuron;
+      console.log('🟢 Selected neuron:', neuron.meta.name);
+      drawNetwork();
+      return;
+    }
+  }
+  selectedNeuron = null;
+  drawNetwork();
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
+  // Get canvas and context
+  canvas = document.getElementById('neural-canvas');
+  ctx = canvas?.getContext('2d');
+  tooltip = document.getElementById('neuron-tooltip');
+
+  if (!canvas || !ctx) return console.error('❌ Missing canvas');
+
+  // Set large canvas dimensions
+  canvas.width = 3000;
+  canvas.height = 2000;
+
+  // Center the scroll position
+  const wrapper = document.getElementById('canvas-wrapper');
+  if (wrapper) {
+    wrapper.scrollLeft = (canvas.width - window.innerWidth) / 2;
+    wrapper.scrollTop = (canvas.height - window.innerHeight) / 2;
+  }
+
+  // Toggle names button
   const toggle = document.createElement('button');
   toggle.textContent = 'Show All Names';
   toggle.style.cssText = 'position:fixed;bottom:20px;left:20px;padding:8px;background:#000;color:#0ff;border:1px solid #0ff;border-radius:6px;z-index:9999;';
@@ -134,35 +145,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
   document.body.appendChild(toggle);
 
-  canvas = document.getElementById('neural-interactive');
-  ctx = canvas?.getContext('2d');
-  tooltip = document.getElementById('neuron-tooltip');
-  if (!canvas || !ctx || !tooltip) return console.error('❌ Missing canvas or tooltip in DOM');
-
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  if (!sessionHandled) {
-    sessionHandled = true;
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) console.log('🔁 Session active');
-    } catch (err) {
-      console.error('⚠️ Session restore failed:', err);
-    }
-  }
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (!sessionData?.session) console.warn('No session found');
 
   const { data: communityData, error: communityError } = await supabase.from('community').select('*');
   if (communityError) return console.error('❌ Failed to load community:', communityError);
 
-  const canvasW = window.innerWidth;
-  const canvasH = window.innerHeight;
-  neurons = clusteredLayout(communityData, canvasW, canvasH);
-  console.log('✅ Loaded neurons:', neurons);
-
+  neurons = clusteredLayout(communityData, canvas.width, canvas.height);
   window.neurons = neurons;
-  window.canvas = canvas;
-  window.handleCanvasClick = handleCanvasClick;
 
   const neuronMap = {};
   for (const neuron of neurons) neuronMap[String(neuron.meta.id).trim()] = neuron;
@@ -171,9 +161,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   const authStatusEl = document.getElementById('auth-status');
   if (userData?.user?.id) {
     CURRENT_USER_ID = userData.user.id;
-    authStatusEl.textContent = '🟢 Connected as: ' + userData.user.email;
-    authStatusEl.style.color = '#0f0';
-  } else {
+    if (authStatusEl) {
+      authStatusEl.textContent = '🟢 Connected as: ' + userData.user.email;
+      authStatusEl.style.color = '#0f0';
+    }
+  } else if (authStatusEl) {
     authStatusEl.textContent = '🔴 Not Logged In';
     authStatusEl.style.color = '#f00';
   }
@@ -218,6 +210,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     draggingNeuron = null;
   });
 
+  // Touch drag
   canvas.addEventListener('touchstart', e => {
     wasDragging = false;
     const touch = e.touches[0];
