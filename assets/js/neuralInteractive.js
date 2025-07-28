@@ -1,4 +1,4 @@
-// neuralInteractive.js — Drag-enabled, Click-to-Connect with Visual Feedback, Stable, Optimized, Clustered by Role, Tooltip-Fixed, Toggleable Name Display
+// neuralInteractive.js — Drag-enabled, Click-to-Connect with Visual Feedback, Stable, Optimized, Clustered by Role, Tooltip-Fixed, Toggleable Name Display, Fully Clickable
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
@@ -132,6 +132,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
   document.body.appendChild(toggle);
 
+  canvas = document.getElementById('neural-interactive');
+  ctx = canvas?.getContext('2d');
+  tooltip = document.getElementById('neuron-tooltip');
+  if (!canvas || !ctx || !tooltip) return console.error('❌ Missing canvas or tooltip in DOM');
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
   if (!sessionHandled) {
     sessionHandled = true;
     try {
@@ -141,14 +149,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       console.error('⚠️ Session restore failed:', err);
     }
   }
-
-  canvas = document.getElementById('neural-interactive');
-  ctx = canvas?.getContext('2d');
-  tooltip = document.getElementById('neuron-tooltip');
-  if (!canvas || !ctx || !tooltip) return console.error('❌ Missing canvas or tooltip in DOM');
-
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
 
   const { data: communityData, error: communityError } = await supabase.from('community').select('*');
   if (communityError) return console.error('❌ Failed to load community:', communityError);
@@ -161,7 +161,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Expose globals for console debugging
   window.neurons = neurons;
   window.canvas = canvas;
-  window.selectedNeuron = selectedNeuron;
   window.handleCanvasClick = handleCanvasClick;
 
   const neuronMap = {};
