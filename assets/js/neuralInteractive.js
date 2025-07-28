@@ -59,14 +59,18 @@ function handleCanvasClick(e) {
   const x = (e.clientX - rect.left) * scale;
   const y = (e.clientY - rect.top) * scale;
   for (const neuron of neurons) {
-    if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
+    if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
       selectedNeuron = neuron;
       console.log('🟢 Selected neuron:', neuron.meta.name);
+      drawNetwork(); // <--- ✅ added to force redraw
       return;
     }
   }
   selectedNeuron = null;
+  drawNetwork(); // <--- ✅ refresh on deselection too
 }
+
+
 
 function drawConnections() {
   ctx.lineWidth = 1.5;
