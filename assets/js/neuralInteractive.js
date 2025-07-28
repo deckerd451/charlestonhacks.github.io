@@ -154,6 +154,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   neurons = clusteredLayout(communityData, canvas.width, canvas.height);
   window.neurons = neurons;
 
+  const wrapper = document.getElementById('canvas-wrapper');
+if (wrapper && canvas) {
+  wrapper.scrollLeft = (canvas.width - wrapper.clientWidth) / 2;
+  wrapper.scrollTop = (canvas.height - wrapper.clientHeight) / 2;
+}
+
+
   const neuronMap = {};
   for (const neuron of neurons) neuronMap[String(neuron.meta.id).trim()] = neuron;
 
