@@ -62,15 +62,13 @@ function handleCanvasClick(e) {
     if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
       selectedNeuron = neuron;
       console.log('🟢 Selected neuron:', neuron.meta.name);
-      drawNetwork(); // <--- ✅ added to force redraw
+      drawNetwork();
       return;
     }
   }
   selectedNeuron = null;
-  drawNetwork(); // <--- ✅ refresh on deselection too
+  drawNetwork();
 }
-
-
 
 function drawConnections() {
   ctx.lineWidth = 1.5;
@@ -162,7 +160,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   neurons = clusteredLayout(communityData, canvasW, canvasH);
   console.log('✅ Loaded neurons:', neurons);
 
-  // Expose globals for console debugging
   window.neurons = neurons;
   window.canvas = canvas;
   window.handleCanvasClick = handleCanvasClick;
