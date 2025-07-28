@@ -10,17 +10,8 @@
       margin: 0;
       padding: 0;
       background: black;
-      overflow: hidden;
       height: 100%;
       font-family: sans-serif;
-    }
-
-    #neural-interactive {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      position: relative;
-      z-index: 1;
     }
 
     a.back-link {
@@ -77,24 +68,24 @@
     <button id="logout-btn" style="display: none; margin-top: 5px;">Log Out</button>
   </div>
 
+  <!-- Back to home -->
   <a href="index.html" class="back-link">← Home</a>
-  <canvas id="neural-interactive" aria-label="Community Neural Map"></canvas>
+
+  <!-- Tooltip -->
   <div id="neuron-tooltip" role="tooltip"></div>
 
-  <!-- Main interactive script (includes Supabase ESM inside) -->
-  <script type="module" src="assets/js/neuralInteractive.js"></script>
-  <body>
+  <!-- Fixed UI overlay -->
   <div id="ui-fixed">
     <button id="toggleNames">Toggle Names</button>
     <div id="loginStatus">👤 Logged in as ...</div>
   </div>
 
+  <!-- Scrollable canvas wrapper -->
   <div id="canvas-wrapper">
-    <canvas id="neural-canvas"></canvas>
+    <canvas id="neural-canvas" aria-label="Community Neural Map"></canvas>
   </div>
 
+  <!-- Main script -->
   <script type="module" src="assets/js/neuralInteractive.js"></script>
-</body>
-
 </body>
 </html>
