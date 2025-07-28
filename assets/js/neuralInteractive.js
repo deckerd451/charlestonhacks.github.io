@@ -44,6 +44,30 @@ function clusteredLayout(users, canvasW, canvasH) {
   return result;
 }
 
+function resizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function handleCanvasClick(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scale = canvas.width / rect.width;
+  const x = (e.clientX - rect.left) * scale;
+  const y = (e.clientY - rect.top) * scale;
+  for (const neuron of neurons) {
+    if (Math.hypot(neuron.x - x, neuron.y - y) < 10) {
+      selectedNeuron = neuron;
+      console.log('🟢 Selected neuron:', neuron.meta.name);
+      return;
+    }
+  }
+  selectedNeuron = null;
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   const toggle = document.createElement('button');
   toggle.textContent = 'Show All Names';
@@ -175,5 +199,3 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   animationId = requestAnimationFrame(animate);
 });
-
-// (Rest of code unchanged...)
