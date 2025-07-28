@@ -68,6 +68,60 @@ function handleCanvasClick(e) {
   selectedNeuron = null;
 }
 
+function drawConnections() {
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(0,255,255,0.2)';
+  connections.forEach(({ from, to }) => {
+    if (from && to) {
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+    }
+  });
+}
+
+function drawNeuron(neuron, time) {
+  const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
+  const radius = 8 * pulse;
+  const color = (neuron === selectedNeuron) ? '#fff' : '#0ff';
+  const glow = ctx.createRadialGradient(neuron.x, neuron.y, 0, neuron.x, neuron.y, radius);
+  glow.addColorStop(0, color);
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.arc(neuron.x, neuron.y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = glow;
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(neuron.x, neuron.y, 3, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  if (showAllNames) {
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#0ff';
+    ctx.textAlign = 'center';
+    ctx.fillText(neuron.meta.name, neuron.x, neuron.y - 14);
+  }
+}
+
+function drawNetwork(time = 0) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawConnections();
+  neurons.forEach(neuron => drawNeuron(neuron, time));
+}
+
+function animate(time) {
+  try {
+    if (!document.hidden && time - lastFrame >= FRAME_INTERVAL) {
+      drawNetwork(time);
+      lastFrame = time;
+    }
+    animationId = requestAnimationFrame(animate);
+  } catch (err) {
+    console.error('🧨 Animation error:', err);
+  }
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   const toggle = document.createElement('button');
   toggle.textContent = 'Show All Names';
