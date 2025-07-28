@@ -120,7 +120,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-canvas');
   ctx = canvas?.getContext('2d');
   tooltip = document.getElementById('neuron-tooltip');
-
   if (!canvas || !ctx) return console.error('❌ Missing canvas');
 
   canvas.width = 3000;
@@ -149,11 +148,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   neurons = clusteredLayout(communityData, canvas.width, canvas.height);
   window.neurons = neurons;
-
-  if (wrapper && canvas) {
-    wrapper.scrollLeft = (canvas.width - wrapper.clientWidth) / 2;
-    wrapper.scrollTop = (canvas.height - wrapper.clientHeight) / 2;
-  }
 
   const neuronMap = {};
   for (const neuron of neurons) neuronMap[String(neuron.meta.id).trim()] = neuron;
@@ -196,19 +190,50 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   canvas.addEventListener('mousemove', e => {
-    if (!draggingNeuron) return;
-    wasDragging = true;
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
     const x = (e.clientX - rect.left) * scale;
     const y = (e.clientY - rect.top) * scale;
-    draggingNeuron.x = x;
-    draggingNeuron.y = y;
+
+    if (draggingNeuron) {
+      wasDragging = true;
+      draggingNeuron.x = x;
+      draggingNeuron.y = y;
+
+      const { name, role, interests } = draggingNeuron.meta;
+      tooltip.style.display = 'block';
+      tooltip.innerHTML = `
+        <strong>${name}</strong><br>
+        <em>${role || 'No role'}</em><br>
+        ${Array.isArray(interests) ? interests.slice(0, 3).join(', ') : ''}
+      `;
+      tooltip.style.left = e.clientX + 12 + 'px';
+      tooltip.style.top = e.clientY + 12 + 'px';
+      return;
+    }
+
+    let found = false;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
+        const { name, role, interests } = neuron.meta;
+        tooltip.style.display = 'block';
+        tooltip.innerHTML = `
+          <strong>${name}</strong><br>
+          <em>${role || 'No role'}</em><br>
+          ${Array.isArray(interests) ? interests.slice(0, 3).join(', ') : ''}
+        `;
+        tooltip.style.left = e.clientX + 12 + 'px';
+        tooltip.style.top = e.clientY + 12 + 'px';
+        found = true;
+        break;
+      }
+    }
+    if (!found) tooltip.style.display = 'none';
   });
 
-  canvas.addEventListener('mouseup', e => {
-    if (!wasDragging) handleCanvasClick(e);
+  canvas.addEventListener('mouseup', () => {
     draggingNeuron = null;
+    tooltip.style.display = 'none';
   });
 
   canvas.addEventListener('touchstart', e => {
@@ -236,12 +261,22 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (draggingNeuron) {
       draggingNeuron.x = x;
       draggingNeuron.y = y;
+
+      const { name, role, interests } = draggingNeuron.meta;
+      tooltip.style.display = 'block';
+      tooltip.innerHTML = `
+        <strong>${name}</strong><br>
+        <em>${role || 'No role'}</em><br>
+        ${Array.isArray(interests) ? interests.slice(0, 3).join(', ') : ''}
+      `;
+      tooltip.style.left = touch.clientX + 12 + 'px';
+      tooltip.style.top = touch.clientY + 12 + 'px';
     }
   });
 
-  canvas.addEventListener('touchend', e => {
-    if (!wasDragging) handleCanvasClick(e.changedTouches[0]);
+  canvas.addEventListener('touchend', () => {
     draggingNeuron = null;
+    tooltip.style.display = 'none';
   });
 
   animationId = requestAnimationFrame(animate);
