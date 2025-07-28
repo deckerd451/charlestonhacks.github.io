@@ -201,7 +201,9 @@ window.addEventListener('DOMContentLoaded', async () => {
       draggingNeuron.y = y;
 
       const { name, role, interests } = draggingNeuron.meta;
-      tooltip.style.display = 'block';
+     tooltip.style.opacity = '1';
+tooltip.style.display = 'block';
+
       tooltip.innerHTML = `
         <strong>${name}</strong><br>
         <em>${role || 'No role'}</em><br>
@@ -216,7 +218,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     for (const neuron of neurons) {
       if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
         const { name, role, interests } = neuron.meta;
-        tooltip.style.display = 'block';
+          tooltip.style.opacity = '1';
+tooltip.style.display = 'block';
         tooltip.innerHTML = `
           <strong>${name}</strong><br>
           <em>${role || 'No role'}</em><br>
@@ -263,7 +266,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       draggingNeuron.y = y;
 
       const { name, role, interests } = draggingNeuron.meta;
-      tooltip.style.display = 'block';
+       tooltip.style.opacity = '1';
+tooltip.style.display = 'block';
       tooltip.innerHTML = `
         <strong>${name}</strong><br>
         <em>${role || 'No role'}</em><br>
@@ -276,7 +280,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   canvas.addEventListener('touchend', () => {
     draggingNeuron = null;
-    tooltip.style.display = 'none';
+    tooltip.style.display = '0';
   });
 
   animationId = requestAnimationFrame(animate);
