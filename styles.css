@@ -1385,6 +1385,15 @@ main, .main-wrapper, .media-container {
   flex-direction: column;
   gap: 8px;
 }
+@media (max-width: 600px) {
+  #toggle-names {
+    bottom: 70px;
+    left: 10px;
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+
 
 /* ==========================================================================
    SPLASH SCREEN STYLES
