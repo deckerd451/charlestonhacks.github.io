@@ -117,25 +117,21 @@ function handleCanvasClick(e) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-  // Get canvas and context
   canvas = document.getElementById('neural-canvas');
   ctx = canvas?.getContext('2d');
   tooltip = document.getElementById('neuron-tooltip');
 
   if (!canvas || !ctx) return console.error('❌ Missing canvas');
 
-  // Set large canvas dimensions
   canvas.width = 3000;
   canvas.height = 2000;
 
-  // Center the scroll position
   const wrapper = document.getElementById('canvas-wrapper');
   if (wrapper) {
     wrapper.scrollLeft = (canvas.width - window.innerWidth) / 2;
     wrapper.scrollTop = (canvas.height - window.innerHeight) / 2;
   }
 
-  // Toggle names button
   const toggle = document.createElement('button');
   toggle.textContent = 'Show All Names';
   toggle.style.cssText = 'position:fixed;bottom:20px;left:20px;padding:8px;background:#000;color:#0ff;border:1px solid #0ff;border-radius:6px;z-index:9999;';
@@ -154,12 +150,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   neurons = clusteredLayout(communityData, canvas.width, canvas.height);
   window.neurons = neurons;
 
-  const wrapper = document.getElementById('canvas-wrapper');
-if (wrapper && canvas) {
-  wrapper.scrollLeft = (canvas.width - wrapper.clientWidth) / 2;
-  wrapper.scrollTop = (canvas.height - wrapper.clientHeight) / 2;
-}
-
+  if (wrapper && canvas) {
+    wrapper.scrollLeft = (canvas.width - wrapper.clientWidth) / 2;
+    wrapper.scrollTop = (canvas.height - wrapper.clientHeight) / 2;
+  }
 
   const neuronMap = {};
   for (const neuron of neurons) neuronMap[String(neuron.meta.id).trim()] = neuron;
@@ -217,7 +211,6 @@ if (wrapper && canvas) {
     draggingNeuron = null;
   });
 
-  // Touch drag
   canvas.addEventListener('touchstart', e => {
     wasDragging = false;
     const touch = e.touches[0];
