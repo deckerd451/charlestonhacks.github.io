@@ -1353,6 +1353,25 @@ main, .main-wrapper, .media-container {
   border: 1px solid #0ff;
   border-radius: 8px;
 }
+#auth-status {
+  margin-top: 10px;
+  min-height: 20px;
+  font-size: 15px;
+  color: #fff;
+  background: #0ff;
+  border-radius: 7px;
+  padding: 7px 12px;
+  display:inline-block;
+  transition: background 0.2s, color 0.2s;
+}
+#auth-status.error {
+  background: #f22;
+  color: #fff;
+}
+#auth-status.success {
+  background: #0ff;
+  color: #222;
+}
 
 /* Canvas wrapper: scrollable in both directions */
 #canvas-wrapper {
