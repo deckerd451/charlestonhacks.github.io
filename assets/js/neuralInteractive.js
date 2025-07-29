@@ -1,4 +1,7 @@
-// Cleaned up version of neuralInteractive.js with drag-and-save support and mobile dragging
+// neuralInteractive.js
+// Interactive neural network visualization with persistent draggable neurons (Supabase backend)
+// Supports desktop and mobile, tooltips, clustering, and debugging via window.neurons
+
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
@@ -8,12 +11,13 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 let neurons = [], connections = [], canvas, ctx, tooltip;
 let draggingNeuronDesktop = null;
 let draggingNeuronTouch = null;
-let selectedNeuron = null, CURRENT_USER_ID = null;
+let selectedNeuron = null;
 let animationId = null;
 let lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = false;
 
+// Tooltip display for neuron meta info
 function showTooltip(event, neuron) {
   const { name, role, interests, availability, endorsements } = neuron.meta;
   tooltip.innerHTML = `
@@ -29,6 +33,7 @@ function showTooltip(event, neuron) {
   tooltip.style.top = `${event.pageY + 20}px`;
 }
 
+// Arrange neurons in clusters by role or interests; use saved x/y if present
 function clusteredLayout(users, canvasW, canvasH) {
   const groupBy = user => user.role || (user.interests?.[0] || 'unknown');
   const groups = {};
@@ -52,7 +57,7 @@ function clusteredLayout(users, canvasW, canvasH) {
     group.forEach((user, j) => {
       const offsetAngle = (2 * Math.PI * j) / group.length;
       const spread = 50 + Math.floor(j / 3) * 20;
-      // Fix: accept numbers or numeric strings
+      // Accept numbers or numeric strings from Supabase
       const hasX = user.x != null && !isNaN(Number(user.x));
       const hasY = user.y != null && !isNaN(Number(user.y));
       const x = hasX ? Number(user.x) : cx + spread * Math.cos(offsetAngle);
@@ -63,6 +68,7 @@ function clusteredLayout(users, canvasW, canvasH) {
   return result;
 }
 
+// Draw a neuron (with optional pulse and label)
 function drawNeuron(neuron, time) {
   const pulse = 1 + Math.sin(time / 400 + neuron.x + neuron.y) * 0.4;
   const radius = neuron.radius * pulse;
@@ -78,7 +84,6 @@ function drawNeuron(neuron, time) {
   ctx.arc(neuron.x, neuron.y, 3, 0, Math.PI * 2);
   ctx.fillStyle = color;
   ctx.fill();
-
   if (showAllNames) {
     ctx.font = '12px sans-serif';
     ctx.fillStyle = '#0ff';
@@ -87,7 +92,7 @@ function drawNeuron(neuron, time) {
   }
 }
 
-
+// Draw all neuron-to-neuron connections
 function drawConnections() {
   ctx.lineWidth = 1.5;
   ctx.strokeStyle = 'rgba(0,255,255,0.2)';
@@ -101,12 +106,14 @@ function drawConnections() {
   });
 }
 
+// Draw the full network (neurons and connections)
 function drawNetwork(time = 0) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawConnections();
   neurons.forEach(neuron => drawNeuron(neuron, time));
 }
 
+// Animation loop
 function animate(time) {
   try {
     if (!document.hidden && time - lastFrame >= FRAME_INTERVAL) {
@@ -119,6 +126,7 @@ function animate(time) {
   }
 }
 
+// Show a toast message at the bottom of the screen
 function showToast(message) {
   let toast = document.getElementById('toast-message');
   if (!toast) {
@@ -135,7 +143,7 @@ function showToast(message) {
   }, 1500);
 }
 
-// Dragging: desktop
+// Desktop drag start (mouse down)
 function handleMouseDown(e) {
   const rect = canvas.getBoundingClientRect();
   const scale = canvas.width / rect.width;
@@ -149,6 +157,7 @@ function handleMouseDown(e) {
   }
 }
 
+// Desktop drag move (mouse move)
 function handleMouseMove(e) {
   if (!draggingNeuronDesktop) return;
   const rect = canvas.getBoundingClientRect();
@@ -158,51 +167,26 @@ function handleMouseMove(e) {
   draggingNeuronDesktop.x = x;
   draggingNeuronDesktop.y = y;
   drawNetwork();
-
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const scale = canvas.width / rect.width;
-    const x = (e.clientX - rect.left) * scale;
-    const y = (e.clientY - rect.top) * scale;
-    const hoveredNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
-    if (hoveredNeuron) {
-      showTooltip(e, hoveredNeuron);
-    } else {
-      tooltip.classList.add('hidden');
-    }
-  });
-
-  canvas.addEventListener('mouseleave', () => tooltip.classList.add('hidden'));
-
-  canvas.addEventListener('click', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const scale = canvas.width / rect.width;
-    const x = (e.clientX - rect.left) * scale;
-    const y = (e.clientY - rect.top) * scale;
-    const clickedNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
-    selectedNeuron = clickedNeuron || null;
-    drawNetwork();
-  });
 }
 
+// Desktop drag end (mouse up) & persist to Supabase
 async function handleMouseUp() {
   if (!draggingNeuronDesktop) return;
   const id = draggingNeuronDesktop.meta.id;
   const x = draggingNeuronDesktop.x;
   const y = draggingNeuronDesktop.y;
-  // Save to DB
   const { error } = await supabase.from('community').update({ x, y }).eq('id', id);
   if (!error) {
     showToast('💾 Position saved');
-    // Update meta for *future* reload (optional, for consistency)
     draggingNeuronDesktop.meta.x = x;
     draggingNeuronDesktop.meta.y = y;
+  } else {
+    console.error('❌ Failed to save position:', error.message);
   }
-  else console.error('❌ Failed to save position:', error.message);
   draggingNeuronDesktop = null;
 }
 
-// Dragging: mobile touch
+// Mobile touch drag start
 function handleTouchStart(e) {
   const touch = e.touches[0];
   const rect = canvas.getBoundingClientRect();
@@ -212,6 +196,7 @@ function handleTouchStart(e) {
   draggingNeuronTouch = neurons.find(n => Math.hypot(n.x - x, n.y - y) < 14);
 }
 
+// Mobile touch move
 function handleTouchMove(e) {
   if (!draggingNeuronTouch) return;
   const touch = e.touches[0];
@@ -224,18 +209,52 @@ function handleTouchMove(e) {
   drawNetwork();
 }
 
+// Mobile touch drag end & persist to Supabase
 async function handleTouchEnd() {
   if (!draggingNeuronTouch) return;
- const id = draggingNeuronTouch.meta.id;
-const x = draggingNeuronTouch.x;
-const y = draggingNeuronTouch.y;
-draggingNeuronTouch = null;
-
+  const id = draggingNeuronTouch.meta.id;
+  const x = draggingNeuronTouch.x;
+  const y = draggingNeuronTouch.y;
   const { error } = await supabase.from('community').update({ x, y }).eq('id', id);
-  if (!error) showToast('💾 Position saved');
-  else console.error('❌ Failed to save position:', error.message);
+  if (!error) {
+    showToast('💾 Position saved');
+    draggingNeuronTouch.meta.x = x;
+    draggingNeuronTouch.meta.y = y;
+  } else {
+    console.error('❌ Failed to save position:', error.message);
+  }
+  draggingNeuronTouch = null;
 }
 
+// Tooltip & selection handlers (register ONCE)
+function handleCanvasMouseMoveTooltip(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scale = canvas.width / rect.width;
+  const x = (e.clientX - rect.left) * scale;
+  const y = (e.clientY - rect.top) * scale;
+  const hoveredNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
+  if (hoveredNeuron) {
+    showTooltip(e, hoveredNeuron);
+  } else {
+    tooltip.classList.add('hidden');
+  }
+}
+
+function handleCanvasMouseLeaveTooltip() {
+  tooltip.classList.add('hidden');
+}
+
+function handleCanvasClickSelect(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scale = canvas.width / rect.width;
+  const x = (e.clientX - rect.left) * scale;
+  const y = (e.clientY - rect.top) * scale;
+  const clickedNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
+  selectedNeuron = clickedNeuron || null;
+  drawNetwork();
+}
+
+// Main setup
 window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-canvas');
   ctx = canvas.getContext('2d');
@@ -244,7 +263,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   canvas.height = 2000;
   animate();
 
-  // 🔄 Fetch and render neurons from Supabase
+  // Fetch and process community data from Supabase
   const { data: communityDataRaw, error: communityError } = await supabase.from('community').select('*');
   if (communityError) {
     console.error('❌ Failed to load community:', communityError);
@@ -253,31 +272,39 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   const communityData = communityDataRaw.map(user => {
     const formatted = { ...user };
-
     if (typeof formatted.interests === 'string') {
       formatted.interests = formatted.interests.split(',').map(tag => tag.trim()).filter(Boolean);
     }
-
     if (typeof formatted.endorsements === 'string') {
       const num = parseInt(formatted.endorsements, 10);
       formatted.endorsements = isNaN(num) ? 0 : num;
     }
-
     if (typeof formatted.availability === 'string') {
       formatted.availability = formatted.availability.trim();
     }
-
     return formatted;
   });
 
   neurons = clusteredLayout(communityData, canvas.width, canvas.height);
+
+  // For debugging: expose neurons and communityData globally
+  window.neurons = neurons;
+  window.communityData = communityData;
+
   drawNetwork();
 
+  // Register drag & drop handlers (desktop)
   canvas.addEventListener('mousedown', handleMouseDown);
   canvas.addEventListener('mousemove', handleMouseMove);
   canvas.addEventListener('mouseup', handleMouseUp);
 
+  // Register drag & drop handlers (mobile)
   canvas.addEventListener('touchstart', handleTouchStart);
   canvas.addEventListener('touchmove', handleTouchMove);
   canvas.addEventListener('touchend', handleTouchEnd);
+
+  // Register tooltip & selection handlers ONCE (fixes redundant listeners)
+  canvas.addEventListener('mousemove', handleCanvasMouseMoveTooltip);
+  canvas.addEventListener('mouseleave', handleCanvasMouseLeaveTooltip);
+  canvas.addEventListener('click', handleCanvasClickSelect);
 });
