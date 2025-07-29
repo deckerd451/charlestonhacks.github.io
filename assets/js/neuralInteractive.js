@@ -94,8 +94,7 @@ function animate(time) {
       drawNetwork(time);
       lastFrame = time;
     }
-    animationId = requestAnimationFrame(animate);
-  } catch (err) {
+    animationId = requestAnimationFrame(animate);catch (err) {
     console.error('🧨 Animation error:', err);
   }
 }
