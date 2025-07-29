@@ -93,6 +93,66 @@ function animate(time) {
       lastFrame = time;
     }
     animationId = requestAnimationFrame(animate);
+
+  // === DESKTOP DRAGGING SUPPORT ===
+  let draggingNeuronDesktop = null;
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
+        draggingNeuronDesktop = neuron;
+        break;
+      }
+    }
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (draggingNeuronDesktop) {
+      const rect = canvas.getBoundingClientRect();
+      const scale = canvas.width / rect.width;
+      const x = (e.clientX - rect.left) * scale;
+      const y = (e.clientY - rect.top) * scale;
+      draggingNeuronDesktop.x = x;
+      draggingNeuronDesktop.y = y;
+      drawNetwork();
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    draggingNeuronDesktop = null;
+  });
+
+  // === TOUCH DRAGGING SUPPORT ===
+  let draggingNeuronMobile = null;
+  canvas.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (touch.clientX - rect.left) * scale;
+    const y = (touch.clientY - rect.top) * scale;
+    draggingNeuronMobile = neurons.find(n => Math.hypot(n.x - x, n.y - y) < 14) || null;
+  });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (draggingNeuronMobile) {
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      const scale = canvas.width / rect.width;
+      const x = (touch.clientX - rect.left) * scale;
+      const y = (touch.clientY - rect.top) * scale;
+      draggingNeuronMobile.x = x;
+      draggingNeuronMobile.y = y;
+      drawNetwork();
+      e.preventDefault();
+    }
+  });
+
+  canvas.addEventListener('touchend', () => {
+    draggingNeuronMobile = null;
+  });
   } catch (err) {
     console.error('🧨 Animation error:', err);
   }
@@ -127,7 +187,7 @@ function getNeuronUnderCursor(event) {
   return neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
 }
 
-// DOMContentLoaded with iOS fix
+// DOMContentLoaded with iOS fix and dragging support
 window.addEventListener('DOMContentLoaded', async () => {
   function disableTouchMenu(el) {
     if (!el) return;
