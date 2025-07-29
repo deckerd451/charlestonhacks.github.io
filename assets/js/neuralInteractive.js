@@ -246,7 +246,15 @@ window.addEventListener('DOMContentLoaded', async () => {
     return formatted;
   });
 
-  neurons = clusteredLayout(communityData, canvas.width, canvas.height);
+  neurons = communityData.map(user => {
+    const hasCoords = typeof user.x === 'number' && typeof user.y === 'number';
+    if (hasCoords) {
+      return { x: user.x, y: user.y, radius: 8, meta: user };
+    } else {
+      const fallback = clusteredLayout([user], canvas.width, canvas.height)[0];
+      return { ...fallback, meta: user };
+    }
+  });
   window.neurons = neurons;
 
   const neuronMap = {};
