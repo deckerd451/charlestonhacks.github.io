@@ -83,7 +83,7 @@ function drawNeuron(neuron, time) {
     ctx.fillText(neuron.meta.name, neuron.x, neuron.y - 14);
   }
 }
-}
+
 
 function drawConnections() {
   ctx.lineWidth = 1.5;
