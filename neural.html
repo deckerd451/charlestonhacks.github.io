@@ -9,8 +9,8 @@
       margin: 0;
       padding: 0;
       font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-      background: #f8fafc;
-      color: #222;
+      background: #111;
+      color: #eee;
       min-height: 100vh;
     }
     #container {
@@ -28,19 +28,19 @@
     }
     #desc {
       text-align: center;
-      color: #666;
+      color: #aaa;
       font-size: 1.02em;
       margin-bottom: 28px;
     }
     #auth-pane {
       max-width: 360px;
       margin: 32px auto 18px auto;
-      background: #fff;
-      border: 1px solid #e2e8f0;
+      background: #181818;
+      border: 1px solid #24292f;
       border-radius: 10px;
       padding: 24px 22px 12px 22px;
       text-align: center;
-      box-shadow: 0 2px 12px #0001;
+      box-shadow: 0 2px 12px #000a;
       font-size: 1em;
     }
     #auth-pane input[type="email"] {
@@ -51,11 +51,14 @@
       width: 84%;
       margin-bottom: 8px;
       transition: border 0.2s;
-      background: #f8fafc;
+      background: #222;
+      color: #eee;
     }
     #auth-pane input[type="email"]:focus {
       border: 1.5px solid #0bb;
       outline: none;
+      background: #222;
+      color: #fff;
     }
     #auth-pane button {
       font-size: 1em;
@@ -73,7 +76,7 @@
       background: #099;
     }
     #logout-btn {
-      background: #fff;
+      background: #181818;
       color: #0bb;
       border: 1px solid #0bb;
       margin-top: 14px;
@@ -98,14 +101,13 @@
       color: #d33;
     }
     #auth-status.success {
-      color: #080;
+      color: #0f8b43;
     }
     #neural-canvas {
-      display: none;
-      background: #fff;
-      border: 1.5px solid #e2e8f0;
+      background: #181818;
+      border: 1.5px solid #24292f;
       border-radius: 12px;
-      box-shadow: 0 2px 12px #0001;
+      box-shadow: 0 2px 12px #000a;
       margin: 24px auto 0 auto;
       display: block;
       max-width: 100%;
@@ -114,13 +116,13 @@
     #tooltip {
       position: absolute;
       pointer-events: none;
-      background: #f8fafc;
+      background: #181818;
       color: #0bb;
       border-radius: 7px;
       border: 1px solid #0bb3;
       padding: 9px 15px 7px 15px;
       font-size: 1em;
-      box-shadow: 0 6px 18px #0001;
+      box-shadow: 0 6px 18px #000a;
       opacity: 0.98;
       z-index: 1000;
       min-width: 160px;
