@@ -1,104 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neural Network Map</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <title>Personal Neuron Map</title>
+  <meta name="viewport" content="width=1000,initial-scale=1">
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      height: 100%;
-      font-family: sans-serif;
+    html, body { margin: 0; padding: 0; background: #181c20; color: #0ff; }
+    #neural-canvas { background: #111; border: 2px solid #222; display: block; margin: 32px auto; }
+    #tooltip {
+      position: absolute; pointer-events: none;
+      background: #222; color: #0ff; border-radius: 8px; padding: 8px 14px; font-size: 15px;
+      box-shadow: 0 6px 24px #000; opacity: 0.98;
+      z-index: 1000; min-width: 160px;
+      transition: opacity 0.2s;
     }
-
-    #canvas-wrapper {
-      width: 100vw;
-      height: 100vh;
-      overflow: scroll;
+    #tooltip.hidden { display: none; }
+    #tooltip.visible { display: block; }
+    #auth-pane {
+      max-width: 400px; margin: 40px auto 0 auto; background: #20232a; border-radius: 12px; padding: 26px 24px;
+      text-align: center; font-size: 18px;
     }
-
-    canvas {
-      display: block;
-      background: black;
-    }
-
-    a.back-link {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      color: #0ff;
-      font-size: 1.2rem;
-      text-decoration: none;
-      z-index: 10;
-    }
-
-    a.back-link:hover {
-      text-decoration: underline;
-    }
-
-    .tooltip {
-      position: fixed;
-      padding: 10px 14px;
-      background: rgba(0, 255, 255, 0.1);
-      border: 1px solid #0ff;
-      color: #0ff;
-      font-size: 14px;
-      border-radius: 8px;
-      pointer-events: none;
-      z-index: 1000;
-      backdrop-filter: blur(4px);
-      max-width: 220px;
-      transition: opacity 0.2s ease;
-      opacity: 0;
-    }
-
-    .tooltip.visible {
-      opacity: 1;
-    }
-
-    .tooltip.hidden {
-      opacity: 0;
-    }
-
-    #auth-box {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid #0ff;
-      padding: 10px;
-      border-radius: 10px;
-      z-index: 10;
-      color: white;
-    }
+    #auth-pane input { font-size: 16px; padding: 8px; border-radius: 5px; border: none; margin-bottom: 6px; width: 80%; }
+    #auth-pane button { font-size: 16px; padding: 8px 16px; border-radius: 5px; border: none; background: #0ff; color: #222; margin-top: 4px; cursor: pointer; }
+    #auth-status { margin-top: 10px; min-height: 20px; font-size: 15px; }
+    #logout-btn { margin-top: 18px; background: #f22; color: #fff; }
+    #title { text-align: center; margin-top: 20px; font-size: 2.2em; letter-spacing: 3px; }
+    #desc { text-align: center; color: #aaa; margin-bottom: 8px; }
   </style>
 </head>
 <body>
-  <!-- AUTH UI -->
-  <div id="auth-box">
+  <div id="title">🧠 My Personal Neuron Map</div>
+  <div id="desc">Drag and arrange your network. Only you can see and save your layout.</div>
+  <div id="auth-pane">
+    <div id="auth-controls">
+      <input id="email" type="email" placeholder="Your email" autocomplete="username" required />
+      <button id="login-btn">Sign In / Sign Up (Magic Link)</button>
+    </div>
     <div id="auth-status"></div>
-    <form id="auth-form">
-      <input type="email" id="email-input" placeholder="you@example.com" required />
-      <button type="submit">Send Magic Link</button>
-    </form>
-    <button id="logout-btn" style="display: none; margin-top: 5px;">Log Out</button>
   </div>
-
-  <!-- Back to home -->
-  <a href="index.html" class="back-link">← Home</a>
-
-  <!-- Tooltip -->
-  <div id="tooltip" class="tooltip hidden"></div>
-
-  <!-- Scrollable canvas wrapper -->
-  <div id="canvas-wrapper">
-    <canvas id="neural-canvas" aria-label="Community Neural Map"></canvas>
-  </div>
-
-  <!-- Main script -->
-  <script type="module" src="assets/js/neuralInteractive.js"></script>
+  <canvas id="neural-canvas" width="1400" height="800" style="display:none"></canvas>
+  <div id="tooltip" class="hidden"></div>
+  <script type="module" src="neuralInteractive.js"></script>
 </body>
 </html>
