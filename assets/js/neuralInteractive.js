@@ -176,8 +176,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (!sessionData?.session) console.warn('No session found');
 
   const { data: communityDataRaw, error: communityError } = await supabase.from('community').select('*');
-  if (communityError) return console.error('❌ Failed to load community:', communityError);
-
+  
   // Format interests from comma-separated string to array, parse endorsements as number, and trim availability
   const communityData = communityDataRaw.map(user => {
     const formatted = { ...user };
