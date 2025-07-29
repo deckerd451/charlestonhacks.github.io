@@ -84,7 +84,6 @@ function drawNeuron(neuron, time) {
   }
 }
 }
-}
 
 function drawConnections() {
   ctx.lineWidth = 1.5;
