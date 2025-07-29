@@ -174,16 +174,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   const { data: sessionData } = await supabase.auth.getSession();
   const authStatusEl = document.getElementById('auth-status');
-    const authBox = document.getElementById('auth-box');
+  const authBox = document.getElementById('auth-box');
+  if (sessionData?.session?.user) {
+    CURRENT_USER_ID = sessionData.session.user.id;
     if (authStatusEl) {
       authStatusEl.textContent = '🟢 Connected as: ' + sessionData.session.user.email;
       authStatusEl.style.color = '#0f0';
     }
     if (authBox) authBox.style.display = 'none';
-    const authForm = document.getElementById('auth-form');
-    const logoutBtn = document.getElementById('logout-btn');
-    if (authForm) authForm.style.display = 'none';
-    if (logoutBtn) logoutBtn.style.display = 'block';
   }
   } else {
     const { data: userData } = await supabase.auth.getUser();
