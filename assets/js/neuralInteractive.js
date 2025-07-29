@@ -182,7 +182,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       authStatusEl.style.color = '#0f0';
     }
     if (authBox) authBox.style.display = 'none';
-  }
   } else {
     const { data: userData } = await supabase.auth.getUser();
     if (userData?.user?.id) {
