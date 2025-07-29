@@ -133,6 +133,22 @@ function getNeuronUnderCursor(event) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  function handleCanvasClick(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
+        selectedNeuron = neuron;
+        console.log('🟢 Selected neuron:', neuron.meta.name);
+        drawNetwork();
+        return;
+      }
+    }
+    selectedNeuron = null;
+    drawNetwork();
+  }
   canvas = document.getElementById('neural-canvas');
   ctx = canvas?.getContext('2d');
   tooltip = document.getElementById('tooltip');
@@ -225,6 +241,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   canvas.addEventListener('mouseleave', hideTooltip);
+  canvas.addEventListener('click', handleCanvasClick);
 
   // Touch support for tooltips
   canvas.addEventListener('touchstart', (e) => {
@@ -243,7 +260,24 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // tooltip remains until next tap — no auto hide on touchend
+  // Tap-to-select support for mobile
+  canvas.addEventListener('touchend', (e) => {
+    const touch = e.changedTouches[0];
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (touch.clientX - rect.left) * scale;
+    const y = (touch.clientY - rect.top) * scale;
+
+    const touchedNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
+    if (touchedNeuron) {
+      selectedNeuron = touchedNeuron;
+      console.log('🟢 Selected neuron (mobile):', touchedNeuron.meta.name);
+      drawNetwork();
+    } else {
+      selectedNeuron = null;
+      drawNetwork();
+    }
+  });
 
   animationId = requestAnimationFrame(animate);
 });
