@@ -194,6 +194,35 @@ window.addEventListener('DOMContentLoaded', () => {
   canvas.height = 2000;
   animate();
 
+  // 🔄 Fetch and render neurons from Supabase
+  const { data: communityDataRaw, error: communityError } = await supabase.from('community').select('*');
+  if (communityError) {
+    console.error('❌ Failed to load community:', communityError);
+    return;
+  }
+
+  const communityData = communityDataRaw.map(user => {
+    const formatted = { ...user };
+
+    if (typeof formatted.interests === 'string') {
+      formatted.interests = formatted.interests.split(',').map(tag => tag.trim()).filter(Boolean);
+    }
+
+    if (typeof formatted.endorsements === 'string') {
+      const num = parseInt(formatted.endorsements, 10);
+      formatted.endorsements = isNaN(num) ? 0 : num;
+    }
+
+    if (typeof formatted.availability === 'string') {
+      formatted.availability = formatted.availability.trim();
+    }
+
+    return formatted;
+  });
+
+  neurons = clusteredLayout(communityData, canvas.width, canvas.height);
+  drawNetwork();
+
   canvas.addEventListener('mousedown', handleMouseDown);
   canvas.addEventListener('mousemove', handleMouseMove);
   canvas.addEventListener('mouseup', handleMouseUp);
