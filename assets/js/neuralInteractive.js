@@ -189,8 +189,8 @@ const x = draggingNeuronDesktop.x;
 const y = draggingNeuronDesktop.y;
  draggingNeuronDesktop = null;
 
-  const { error } = await supabase.from('community').update({ x: updatedX, y: updatedY }).eq('id', id);
-  if (!error) showToast('💾 Position saved');
+const { error } = await supabase.from('community').update({ x, y }).eq('id', id);
+if (!error) showToast('💾 Position saved');
   else console.error('❌ Failed to save position:', error.message);
 }
 
