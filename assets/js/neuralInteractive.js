@@ -95,6 +95,10 @@ function animate(time) {
       lastFrame = time;
     }
     animationId = requestAnimationFrame(animate);
+  } catch (err) {
+    console.error('🧨 Animation error:', err);
+  }
+}
 
   // === DESKTOP DRAGGING SUPPORT ===
   canvas.addEventListener('mouseup', async () => {
@@ -104,12 +108,16 @@ function animate(time) {
     const newX = draggingNeuronDesktop.x;
     const newY = draggingNeuronDesktop.y;
     if (oldX !== newX || oldY !== newY) {
-            await supabase.from('community')
+      await supabase.from('community')
         .update({ x: newX, y: newY })
         .eq('id', draggingNeuronDesktop.meta.id);
       draggingNeuronDesktop.meta.x = newX;
       draggingNeuronDesktop.meta.y = newY;
-      draggingNeuronDesktop = null;
+      showToast('💾 Position saved!');
+    }
+    draggingNeuronDesktop = null;
+  }
+});
     }
   });
   canvas.addEventListener('mousedown', (e) => {
@@ -137,9 +145,7 @@ function animate(time) {
     }
   });
 
-  canvas.addEventListener('mouseup', () => {
-    draggingNeuronDesktop = null;
-  });
+  
 
   // === TOUCH DRAGGING SUPPORT ===
   canvas.addEventListener('touchend', async () => {
@@ -149,12 +155,16 @@ function animate(time) {
     const newX = draggingNeuronMobile.x;
     const newY = draggingNeuronMobile.y;
     if (oldX !== newX || oldY !== newY) {
-            await supabase.from('community')
+      await supabase.from('community')
         .update({ x: newX, y: newY })
         .eq('id', draggingNeuronMobile.meta.id);
       draggingNeuronMobile.meta.x = newX;
       draggingNeuronMobile.meta.y = newY;
-      draggingNeuronMobile = null;
+      showToast('💾 Position saved!');
+    }
+    draggingNeuronMobile = null;
+  }
+});
     }
   });
   canvas.addEventListener('touchstart', (e) => {
@@ -180,9 +190,7 @@ function animate(time) {
     }
   });
 
-  canvas.addEventListener('touchend', () => {
-    draggingNeuronMobile = null;
-  });
+  
   } catch (err) {
     console.error('🧨 Animation error:', err);
   }
@@ -348,4 +356,20 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   animationId = requestAnimationFrame(animate);
+}
+
+function showToast(message) {
+  let toast = document.getElementById('toast-message');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast-message';
+    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#222;color:#0ff;padding:8px 14px;border-radius:8px;font-size:14px;z-index:9999;transition:opacity 0.3s ease;opacity:0;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.opacity = '1';
+  clearTimeout(toast._hideTimeout);
+  toast._hideTimeout = setTimeout(() => {
+    toast.style.opacity = '0';
+  }, 1500);
 });
