@@ -14,6 +14,21 @@ let lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = false;
 
+function showTooltip(event, neuron) {
+  const { name, role, interests, availability, endorsements } = neuron.meta;
+  tooltip.innerHTML = `
+    <strong>${name}</strong><br>
+    ${role || ''}<br>
+    ${interests ? interests.join(' • ') : ''}<br>
+    ${availability ? `✅ ${availability}` : ''}<br>
+    ${endorsements ? `🧠 ${endorsements} connections` : ''}
+  `;
+  tooltip.classList.remove('hidden');
+  tooltip.classList.add('visible');
+  tooltip.style.left = `${event.pageX + 20}px`;
+  tooltip.style.top = `${event.pageY + 20}px`;
+}
+
 function clusteredLayout(users, canvasW, canvasH) {
   const groupBy = user => user.role || (user.interests?.[0] || 'unknown');
   const groups = {};
@@ -67,6 +82,7 @@ function drawNeuron(neuron, time) {
     ctx.textAlign = 'center';
     ctx.fillText(neuron.meta.name, neuron.x, neuron.y - 14);
   }
+}
 }
 
 function drawConnections() {
@@ -139,6 +155,31 @@ function handleMouseMove(e) {
   draggingNeuronDesktop.x = x;
   draggingNeuronDesktop.y = y;
   drawNetwork();
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    const hoveredNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
+    if (hoveredNeuron) {
+      showTooltip(e, hoveredNeuron);
+    } else {
+      tooltip.classList.add('hidden');
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => tooltip.classList.add('hidden'));
+
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    const clickedNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
+    selectedNeuron = clickedNeuron || null;
+    drawNetwork();
+  });
 }
 
 async function handleMouseUp() {
@@ -186,7 +227,7 @@ async function handleTouchEnd() {
   else console.error('❌ Failed to save position:', error.message);
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-canvas');
   ctx = canvas.getContext('2d');
   tooltip = document.getElementById('tooltip');
