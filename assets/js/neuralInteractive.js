@@ -218,9 +218,10 @@ function handleTouchMove(e) {
 
 async function handleTouchEnd() {
   if (!draggingNeuronTouch) return;
-  const { id } = draggingNeuronTouch.meta;
-  const { x, y } = draggingNeuronTouch;
-  draggingNeuronTouch = null;
+ const id = draggingNeuronTouch.meta.id;
+const x = draggingNeuronTouch.x;
+const y = draggingNeuronTouch.y;
+draggingNeuronTouch = null;
 
   const { error } = await supabase.from('community').update({ x, y }).eq('id', id);
   if (!error) showToast('💾 Position saved');
