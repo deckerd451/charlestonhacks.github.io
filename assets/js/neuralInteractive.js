@@ -95,42 +95,41 @@ function animate(time) {
   let longPressTimer = null;
   let draggingNeuron = null;
 
-  canvas.addEventListener('touchstart', (e) => {
-    const touch = e.touches[0];
+  // Mobile long-press dragging moved to DOMContentLoaded to avoid reattachment
+
+    draggingNeuron = null;
+  });
+
+  // Desktop dragging support
+  let draggingNeuronDesktop = null;
+  canvas.addEventListener('mousedown', (e) => {
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
-    const x = (touch.clientX - rect.left) * scale;
-    const y = (touch.clientY - rect.top) * scale;
-
-    const touchedNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
-
-    if (touchedNeuron) {
-      longPressTimer = setTimeout(() => {
-        draggingNeuron = touchedNeuron;
-        selectedNeuron = touchedNeuron;
-        if (navigator.vibrate) navigator.vibrate(30);
-      }, 400);
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
+        draggingNeuronDesktop = neuron;
+        selectedNeuron = neuron;
+        break;
+      }
     }
   });
 
-  canvas.addEventListener('touchmove', (e) => {
-    if (draggingNeuron) {
-      const touch = e.touches[0];
+  canvas.addEventListener('mousemove', (e) => {
+    if (draggingNeuronDesktop) {
       const rect = canvas.getBoundingClientRect();
       const scale = canvas.width / rect.width;
-      const x = (touch.clientX - rect.left) * scale;
-      const y = (touch.clientY - rect.top) * scale;
-      draggingNeuron.x = x;
-      draggingNeuron.y = y;
-      selectedNeuron = draggingNeuron;
-    } else {
-      clearTimeout(longPressTimer);
+      const x = (e.clientX - rect.left) * scale;
+      const y = (e.clientY - rect.top) * scale;
+      draggingNeuronDesktop.x = x;
+      draggingNeuronDesktop.y = y;
+      drawNetwork();
     }
   });
 
-  canvas.addEventListener('touchend', () => {
-    clearTimeout(longPressTimer);
-    draggingNeuron = null;
+  canvas.addEventListener('mouseup', () => {
+    draggingNeuronDesktop = null;
   });
 
   animationId = requestAnimationFrame(animate);
