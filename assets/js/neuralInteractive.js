@@ -184,10 +184,10 @@ function handleMouseMove(e) {
 
 async function handleMouseUp() {
   if (!draggingNeuronDesktop) return;
-  const { id, x, y } = draggingNeuronDesktop.meta;
-  const updatedX = draggingNeuronDesktop.x;
-  const updatedY = draggingNeuronDesktop.y;
-  draggingNeuronDesktop = null;
+  const id = draggingNeuronDesktop.meta.id;
+const x = draggingNeuronDesktop.x;
+const y = draggingNeuronDesktop.y;
+ draggingNeuronDesktop = null;
 
   const { error } = await supabase.from('community').update({ x: updatedX, y: updatedY }).eq('id', id);
   if (!error) showToast('💾 Position saved');
