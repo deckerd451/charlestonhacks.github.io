@@ -91,48 +91,11 @@ function animate(time) {
       drawNetwork(time);
       lastFrame = time;
     }
-    // Long-press-to-drag support for mobile
-  let longPressTimer = null;
-  let draggingNeuron = null;
-
-  // Mobile long-press dragging moved to DOMContentLoaded to avoid reattachment
-
-    draggingNeuron = null;
-  });
-
-  // Desktop dragging support
-  let draggingNeuronDesktop = null;
-  canvas.addEventListener('mousedown', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const scale = canvas.width / rect.width;
-    const x = (e.clientX - rect.left) * scale;
-    const y = (e.clientY - rect.top) * scale;
-    for (const neuron of neurons) {
-      if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
-        draggingNeuronDesktop = neuron;
-        selectedNeuron = neuron;
-        break;
-      }
-    }
-  });
-
-  canvas.addEventListener('mousemove', (e) => {
-    if (draggingNeuronDesktop) {
-      const rect = canvas.getBoundingClientRect();
-      const scale = canvas.width / rect.width;
-      const x = (e.clientX - rect.left) * scale;
-      const y = (e.clientY - rect.top) * scale;
-      draggingNeuronDesktop.x = x;
-      draggingNeuronDesktop.y = y;
-      drawNetwork();
-    }
-  });
-
-  canvas.addEventListener('mouseup', () => {
-    draggingNeuronDesktop = null;
-  });
-
-  animationId = requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
+  } catch (err) {
+    console.error('🧨 Animation error:', err);
+  }
+}
   } catch (err) {
     console.error('🧨 Animation error:', err);
   }
@@ -283,6 +246,38 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   canvas.addEventListener('mouseleave', hideTooltip);
   canvas.addEventListener('click', handleCanvasClick);
+
+  // Desktop dragging support
+  let draggingNeuronDesktop = null;
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
+        draggingNeuronDesktop = neuron;
+        selectedNeuron = neuron;
+        break;
+      }
+    }
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (draggingNeuronDesktop) {
+      const rect = canvas.getBoundingClientRect();
+      const scale = canvas.width / rect.width;
+      const x = (e.clientX - rect.left) * scale;
+      const y = (e.clientY - rect.top) * scale;
+      draggingNeuronDesktop.x = x;
+      draggingNeuronDesktop.y = y;
+      drawNetwork();
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    draggingNeuronDesktop = null;
+  });
 
   // Touch support for tooltips
   canvas.addEventListener('touchstart', (e) => {
