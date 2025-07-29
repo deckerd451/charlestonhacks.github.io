@@ -118,8 +118,6 @@ function animate(time) {
     draggingNeuronDesktop = null;
   }
 });
-    }
-  });
   canvas.addEventListener('mousedown', (e) => {
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
@@ -165,8 +163,6 @@ function animate(time) {
     draggingNeuronMobile = null;
   }
 });
-    }
-  });
   canvas.addEventListener('touchstart', (e) => {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
@@ -372,4 +368,4 @@ function showToast(message) {
   toast._hideTimeout = setTimeout(() => {
     toast.style.opacity = '0';
   }, 1500);
-});
+}
