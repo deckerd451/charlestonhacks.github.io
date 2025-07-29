@@ -96,10 +96,6 @@ function animate(time) {
     console.error('🧨 Animation error:', err);
   }
 }
-  } catch (err) {
-    console.error('🧨 Animation error:', err);
-  }
-}
 
 function showTooltip(event, neuron) {
   const { name, role, interests, availability, endorsements } = neuron.meta;
@@ -207,6 +203,51 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (communityError) return console.error('❌ Failed to load community:', communityError);
 
   neurons = clusteredLayout(communityData, canvas.width, canvas.height);
+  if (!neurons.length) {
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#0ff';
+    ctx.font = '24px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('⚠️ No community data to display.', canvas.width / 2, canvas.height / 2);
+
+    // Add retry button
+    const retryBtn = document.createElement('button');
+    retryBtn.textContent = '🔄 Retry';
+    retryBtn.style.cssText = 'position:fixed;top:60%;left:50%;transform:translateX(-50%);padding:10px 20px;background:#000;color:#0ff;border:1px solid #0ff;border-radius:8px;font-size:16px;z-index:1001;cursor:pointer;';
+    retryBtn.onclick = async () => {
+      retryBtn.disabled = true;
+      retryBtn.textContent = '🔄 Loading...';
+      const { data: refreshedData, error: retryError } = await supabase.from('community').select('*');
+      if (retryError) return alert('Failed to reload community data');
+
+      const formattedData = refreshedData.map(user => {
+        const formatted = { ...user };
+        if (typeof formatted.interests === 'string') {
+          formatted.interests = formatted.interests.split(',').map(tag => tag.trim()).filter(Boolean);
+        }
+        if (typeof formatted.endorsements === 'string') {
+          const num = parseInt(formatted.endorsements, 10);
+          formatted.endorsements = isNaN(num) ? 0 : num;
+        }
+        if (typeof formatted.availability === 'string') {
+          formatted.availability = formatted.availability.trim();
+        }
+        return formatted;
+      });
+
+      neurons = clusteredLayout(formattedData, canvas.width, canvas.height);
+      if (neurons.length) {
+        document.body.removeChild(retryBtn);
+        drawNetwork();
+        animationId = requestAnimationFrame(animate);
+      } else {
+        retryBtn.disabled = false;
+        retryBtn.textContent = '🔄 Retry';
+      }
+    };
+    document.body.appendChild(retryBtn);
+    return;
+  }
   window.neurons = neurons;
 
   const neuronMap = {};
