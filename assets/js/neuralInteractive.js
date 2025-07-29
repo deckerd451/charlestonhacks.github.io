@@ -174,12 +174,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   const { data: sessionData } = await supabase.auth.getSession();
   const authStatusEl = document.getElementById('auth-status');
-  if (sessionData?.session?.user) {
-    CURRENT_USER_ID = sessionData.session.user.id;
+    const authBox = document.getElementById('auth-box');
     if (authStatusEl) {
       authStatusEl.textContent = '🟢 Connected as: ' + sessionData.session.user.email;
       authStatusEl.style.color = '#0f0';
     }
+    if (authBox) authBox.style.display = 'none';
     const authForm = document.getElementById('auth-form');
     const logoutBtn = document.getElementById('logout-btn');
     if (authForm) authForm.style.display = 'none';
@@ -189,14 +189,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     const { data: userData } = await supabase.auth.getUser();
     if (userData?.user?.id) {
       CURRENT_USER_ID = userData.user.id;
+      const authBox = document.getElementById('auth-box');
       if (authStatusEl) {
         authStatusEl.textContent = '🟢 Connected as: ' + userData.user.email;
         authStatusEl.style.color = '#0f0';
       }
-      const authForm = document.getElementById('auth-form');
-      const logoutBtn = document.getElementById('logout-btn');
-      if (authForm) authForm.style.display = 'none';
-      if (logoutBtn) logoutBtn.style.display = 'block';
+      if (authBox) authBox.style.display = 'none';
       }
     } else if (authStatusEl) {
       authStatusEl.textContent = '🔴 Not Logged In';
