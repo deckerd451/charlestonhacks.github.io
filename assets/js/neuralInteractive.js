@@ -336,7 +336,10 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     const touchedNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
     if (touchedNeuron) {
+      selectedNeuron = touchedNeuron;
       showTooltip(eventStub, touchedNeuron);
+      e.preventDefault();
+      canvas.style.touchAction = 'none';
     } else {
       hideTooltip();
     }
@@ -354,11 +357,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (touchedNeuron) {
       selectedNeuron = touchedNeuron;
       console.log('🟢 Selected neuron (mobile):', touchedNeuron.meta.name);
-      drawNetwork();
     } else {
       selectedNeuron = null;
-      drawNetwork();
     }
+    drawNetwork();
+    canvas.style.touchAction = 'auto';
   });
 
   animationId = requestAnimationFrame(animate);
