@@ -92,6 +92,19 @@ function animate(time) {
       lastFrame = time;
     }
     animationId = requestAnimationFrame(animate);
+
+  // Optional: track pinch movement to scale canvas
+  canvas.addEventListener('touchmove', (e) => {
+    if (isPinching && e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const newDistance = Math.hypot(dx, dy);
+      pinchScale *= newDistance / lastDistance;
+      lastDistance = newDistance;
+      // Optional: Apply zoom transform to canvas wrapper if desired
+      // wrapper.style.transform = `scale(${pinchScale})`;
+    }
+  });
   } catch (err) {
     console.error('🧨 Animation error:', err);
   }
@@ -133,6 +146,9 @@ function getNeuronUnderCursor(event) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  let isPinching = false;
+  let lastDistance = 0;
+  let pinchScale = 1;
   function handleCanvasClick(e) {
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
@@ -327,6 +343,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Touch support for tooltips
   canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      isPinching = true;
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      lastDistance = Math.hypot(dx, dy);
+      return;
+    }
+
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
@@ -347,6 +371,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Tap-to-select support for mobile
   canvas.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2) {
+      isPinching = false;
+    }
     const touch = e.changedTouches[0];
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
