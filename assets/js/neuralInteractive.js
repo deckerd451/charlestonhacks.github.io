@@ -173,18 +173,18 @@ function animate(time) {
   });
 
   canvas.addEventListener('touchmove', (e) => {
-    if (draggingNeuronMobile) {
-      const touch = e.touches[0];
-      const rect = canvas.getBoundingClientRect();
-      const scale = canvas.width / rect.width;
-      const x = (touch.clientX - rect.left) * scale;
-      const y = (touch.clientY - rect.top) * scale;
-      draggingNeuronMobile.x = x;
-      draggingNeuronMobile.y = y;
-      drawNetwork();
-      e.preventDefault();
-    }
-  });
+  if (draggingNeuronMobile) {
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (touch.clientX - rect.left) * scale;
+    const y = (touch.clientY - rect.top) * scale;
+    draggingNeuronMobile.x = x;
+    draggingNeuronMobile.y = y;
+    drawNetwork();
+    e.preventDefault();
+  }
+});
 
   
   } catch (err) {
