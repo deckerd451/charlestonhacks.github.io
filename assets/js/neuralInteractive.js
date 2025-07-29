@@ -52,9 +52,12 @@ function clusteredLayout(users, canvasW, canvasH) {
     group.forEach((user, j) => {
       const offsetAngle = (2 * Math.PI * j) / group.length;
       const spread = 50 + Math.floor(j / 3) * 20;
-     const x = typeof user.x === 'number' ? user.x : cx + spread * Math.cos(offsetAngle);
-const y = typeof user.y === 'number' ? user.y : cy + spread * Math.sin(offsetAngle);
-result.push({ x, y, radius: 8, meta: user });
+      // Fix: accept numbers or numeric strings
+      const hasX = user.x != null && !isNaN(Number(user.x));
+      const hasY = user.y != null && !isNaN(Number(user.y));
+      const x = hasX ? Number(user.x) : cx + spread * Math.cos(offsetAngle);
+      const y = hasY ? Number(user.y) : cy + spread * Math.sin(offsetAngle);
+      result.push({ x, y, radius: 8, meta: user });
     });
   });
   return result;
@@ -185,13 +188,18 @@ function handleMouseMove(e) {
 async function handleMouseUp() {
   if (!draggingNeuronDesktop) return;
   const id = draggingNeuronDesktop.meta.id;
-const x = draggingNeuronDesktop.x;
-const y = draggingNeuronDesktop.y;
- draggingNeuronDesktop = null;
-
-const { error } = await supabase.from('community').update({ x, y }).eq('id', id);
-if (!error) showToast('💾 Position saved');
+  const x = draggingNeuronDesktop.x;
+  const y = draggingNeuronDesktop.y;
+  // Save to DB
+  const { error } = await supabase.from('community').update({ x, y }).eq('id', id);
+  if (!error) {
+    showToast('💾 Position saved');
+    // Update meta for *future* reload (optional, for consistency)
+    draggingNeuronDesktop.meta.x = x;
+    draggingNeuronDesktop.meta.y = y;
+  }
   else console.error('❌ Failed to save position:', error.message);
+  draggingNeuronDesktop = null;
 }
 
 // Dragging: mobile touch
