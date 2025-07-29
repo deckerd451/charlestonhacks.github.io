@@ -98,10 +98,17 @@ function animate(time) {
 
   // === DESKTOP DRAGGING SUPPORT ===
   canvas.addEventListener('mouseup', async () => {
-    if (draggingNeuronDesktop) {
-      await supabase.from('community')
-        .update({ x: draggingNeuronDesktop.x, y: draggingNeuronDesktop.y })
+  if (draggingNeuronDesktop) {
+    const oldX = draggingNeuronDesktop.meta.x;
+    const oldY = draggingNeuronDesktop.meta.y;
+    const newX = draggingNeuronDesktop.x;
+    const newY = draggingNeuronDesktop.y;
+    if (oldX !== newX || oldY !== newY) {
+            await supabase.from('community')
+        .update({ x: newX, y: newY })
         .eq('id', draggingNeuronDesktop.meta.id);
+      draggingNeuronDesktop.meta.x = newX;
+      draggingNeuronDesktop.meta.y = newY;
       draggingNeuronDesktop = null;
     }
   });
@@ -136,10 +143,17 @@ function animate(time) {
 
   // === TOUCH DRAGGING SUPPORT ===
   canvas.addEventListener('touchend', async () => {
-    if (draggingNeuronMobile) {
-      await supabase.from('community')
-        .update({ x: draggingNeuronMobile.x, y: draggingNeuronMobile.y })
+  if (draggingNeuronMobile) {
+    const oldX = draggingNeuronMobile.meta.x;
+    const oldY = draggingNeuronMobile.meta.y;
+    const newX = draggingNeuronMobile.x;
+    const newY = draggingNeuronMobile.y;
+    if (oldX !== newX || oldY !== newY) {
+            await supabase.from('community')
+        .update({ x: newX, y: newY })
         .eq('id', draggingNeuronMobile.meta.id);
+      draggingNeuronMobile.meta.x = newX;
+      draggingNeuronMobile.meta.y = newY;
       draggingNeuronMobile = null;
     }
   });
