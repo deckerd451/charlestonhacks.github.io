@@ -159,7 +159,31 @@ window.addEventListener('DOMContentLoaded', async () => {
   const { data: sessionData } = await supabase.auth.getSession();
   if (!sessionData?.session) console.warn('No session found');
 
-  const { data: communityData, error: communityError } = await supabase.from('community').select('*');
+  const { data: communityDataRaw, error: communityError } = await supabase.from('community').select('*');
+  if (communityError) return console.error('❌ Failed to load community:', communityError);
+
+  // Format interests from comma-separated string to array, parse endorsements as number, and trim availability
+  const communityData = communityDataRaw.map(user => {
+    const formatted = { ...user };
+
+    if (typeof formatted.interests === 'string') {
+      formatted.interests = formatted.interests
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(Boolean);
+    }
+
+    if (typeof formatted.endorsements === 'string') {
+      const num = parseInt(formatted.endorsements, 10);
+      formatted.endorsements = isNaN(num) ? 0 : num;
+    }
+
+    if (typeof formatted.availability === 'string') {
+      formatted.availability = formatted.availability.trim();
+    }
+
+    return formatted;
+  });
   if (communityError) return console.error('❌ Failed to load community:', communityError);
 
   neurons = clusteredLayout(communityData, canvas.width, canvas.height);
