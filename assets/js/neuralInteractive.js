@@ -5,6 +5,8 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let neurons = [], connections = [], canvas, ctx, tooltip;
+let draggingNeuronDesktop = null;
+let draggingNeuronMobile = null;
 let selectedNeuron = null, CURRENT_USER_ID = null;
 let animationId = null;
 let lastFrame = 0;
