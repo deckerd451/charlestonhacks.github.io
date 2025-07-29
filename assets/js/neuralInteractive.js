@@ -52,9 +52,9 @@ function clusteredLayout(users, canvasW, canvasH) {
     group.forEach((user, j) => {
       const offsetAngle = (2 * Math.PI * j) / group.length;
       const spread = 50 + Math.floor(j / 3) * 20;
-      const x = user.x ?? cx + spread * Math.cos(offsetAngle);
-      const y = user.y ?? cy + spread * Math.sin(offsetAngle);
-      result.push({ x, y, radius: 8, meta: user });
+     const x = typeof user.x === 'number' ? user.x : cx + spread * Math.cos(offsetAngle);
+const y = typeof user.y === 'number' ? user.y : cy + spread * Math.sin(offsetAngle);
+result.push({ x, y, radius: 8, meta: user });
     });
   });
   return result;
