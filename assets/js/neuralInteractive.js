@@ -173,11 +173,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.body.appendChild(toggle);
 
   const { data: sessionData } = await supabase.auth.getSession();
-  const authStatusEl = document.getElementById('auth-status');
-  if (sessionData?.session?.user) {
-    CURRENT_USER_ID = sessionData.session.user.id;
-    if (authStatusEl) {
-      authStatusEl.textContent = '�
+  if (!sessionData?.session) console.warn('No session found');
 
   const { data: communityDataRaw, error: communityError } = await supabase.from('community').select('*');
   
