@@ -95,8 +95,14 @@ function animate(time) {
     animationId = requestAnimationFrame(animate);
 
   // === DESKTOP DRAGGING SUPPORT ===
-  let await supabase.from('community').update({ x: draggingNeuronDesktop.x, y: draggingNeuronDesktop.y }).eq('id', draggingNeuronDesktop.meta.id);
-    draggingNeuronDesktop = null;
+  canvas.addEventListener('mouseup', async () => {
+    if (draggingNeuronDesktop) {
+      await supabase.from('community')
+        .update({ x: draggingNeuronDesktop.x, y: draggingNeuronDesktop.y })
+        .eq('id', draggingNeuronDesktop.meta.id);
+      draggingNeuronDesktop = null;
+    }
+  });
   canvas.addEventListener('mousedown', (e) => {
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
@@ -127,10 +133,14 @@ function animate(time) {
   });
 
   // === TOUCH DRAGGING SUPPORT ===
-  let if (draggingNeuronMobile) {
-    await supabase.from('community').update({ x: draggingNeuronMobile.x, y: draggingNeuronMobile.y }).eq('id', draggingNeuronMobile.meta.id);
-  }
-  draggingNeuronMobile = null;
+  canvas.addEventListener('touchend', async () => {
+    if (draggingNeuronMobile) {
+      await supabase.from('community')
+        .update({ x: draggingNeuronMobile.x, y: draggingNeuronMobile.y })
+        .eq('id', draggingNeuronMobile.meta.id);
+      draggingNeuronMobile = null;
+    }
+  });
   canvas.addEventListener('touchstart', (e) => {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
