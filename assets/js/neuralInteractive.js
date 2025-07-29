@@ -10,8 +10,6 @@ let animationId = null;
 let lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = false;
-let isPinching = false, lastDistance = 0, pinchScale = 1;
-let draggingNeuronTouch = null, startTouchTime = 0;
 
 function clusteredLayout(users, canvasW, canvasH) {
   const groupBy = user => user.role || (user.interests?.[0] || 'unknown');
@@ -99,49 +97,267 @@ function animate(time) {
   }
 }
 
-function getNeuronAt(x, y) {
+function showTooltip(event, neuron) {
+  const { name, role, interests, availability, endorsements } = neuron.meta;
+
+  tooltip.innerHTML = `
+    <strong>${name}</strong><br>
+    ${role || ''}<br>
+    ${interests ? interests.join(' • ') : ''}<br>
+    ${availability ? `✅ ${availability}` : ''}<br>
+    ${endorsements ? `🧠 ${endorsements} connections` : ''}
+  `;
+
+  tooltip.classList.remove('hidden');
+  tooltip.classList.add('visible');
+
+  const offsetX = 20;
+  const offsetY = 20;
+
+  tooltip.style.left = `${event.pageX + offsetX}px`;
+  tooltip.style.top = `${event.pageY + offsetY}px`;
+}
+
+function hideTooltip() {
+  tooltip.classList.remove('visible');
+  tooltip.classList.add('hidden');
+}
+
+function getNeuronUnderCursor(event) {
+  const rect = canvas.getBoundingClientRect();
+  const scale = canvas.width / rect.width;
+  const x = (event.clientX - rect.left) * scale;
+  const y = (event.clientY - rect.top) * scale;
+
   return neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
 }
 
-function disableScrollTemporarily() {
-  document.body.style.overflow = 'hidden';
-}
+window.addEventListener('DOMContentLoaded', async () => {
+  function handleCanvasClick(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
+        selectedNeuron = neuron;
+        console.log('🟢 Selected neuron:', neuron.meta.name);
+        drawNetwork();
+        return;
+      }
+    }
+    selectedNeuron = null;
+    drawNetwork();
+  }
+  canvas = document.getElementById('neural-canvas');
+  ctx = canvas?.getContext('2d');
+  tooltip = document.getElementById('tooltip');
+  if (!canvas || !ctx) return console.error('❌ Missing canvas');
 
-function enableScroll() {
-  document.body.style.overflow = '';
-}
+  canvas.width = 3000;
+  canvas.height = 2000;
 
-window.addEventListener('touchmove', (e) => {
-  if (isPinching && e.touches.length === 2) {
-    const dx = e.touches[0].clientX - e.touches[1].clientX;
-    const dy = e.touches[0].clientY - e.touches[1].clientY;
-    const newDistance = Math.hypot(dx, dy);
-    pinchScale *= newDistance / lastDistance;
-    lastDistance = newDistance;
-  } else if (draggingNeuronTouch) {
+  const wrapper = document.getElementById('canvas-wrapper');
+  if (wrapper) {
+    wrapper.scrollLeft = (canvas.width - window.innerWidth) / 2;
+    wrapper.scrollTop = (canvas.height - window.innerHeight) / 2;
+  }
+
+  const toggle = document.createElement('button');
+  toggle.textContent = 'Show All Names';
+  toggle.style.cssText = 'position:fixed;bottom:20px;left:20px;padding:8px;background:#000;color:#0ff;border:1px solid #0ff;border-radius:6px;z-index:9999;';
+  toggle.onclick = () => {
+    showAllNames = !showAllNames;
+    toggle.textContent = showAllNames ? 'Hide Names' : 'Show All Names';
+  };
+  document.body.appendChild(toggle);
+
+  const { data: sessionData } = await supabase.auth.getSession();
+  const authStatusEl = document.getElementById('auth-status');
+  if (sessionData?.session?.user) {
+    CURRENT_USER_ID = sessionData.session.user.id;
+    if (authStatusEl) {
+      authStatusEl.textContent = '�
+
+  const { data: communityDataRaw, error: communityError } = await supabase.from('community').select('*');
+  
+  // Format interests from comma-separated string to array, parse endorsements as number, and trim availability
+  const communityData = communityDataRaw.map(user => {
+    const formatted = { ...user };
+
+    if (typeof formatted.interests === 'string') {
+      formatted.interests = formatted.interests
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(Boolean);
+    }
+
+    if (typeof formatted.endorsements === 'string') {
+      const num = parseInt(formatted.endorsements, 10);
+      formatted.endorsements = isNaN(num) ? 0 : num;
+    }
+
+    if (typeof formatted.availability === 'string') {
+      formatted.availability = formatted.availability.trim();
+    }
+
+    return formatted;
+  });
+  if (communityError) return console.error('❌ Failed to load community:', communityError);
+
+  neurons = clusteredLayout(communityData, canvas.width, canvas.height);
+  if (!neurons.length) {
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#0ff';
+    ctx.font = '24px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('⚠️ No community data to display.', canvas.width / 2, canvas.height / 2);
+
+    // Add retry button
+    const retryBtn = document.createElement('button');
+    retryBtn.textContent = '🔄 Retry';
+    retryBtn.style.cssText = 'position:fixed;top:60%;left:50%;transform:translateX(-50%);padding:10px 20px;background:#000;color:#0ff;border:1px solid #0ff;border-radius:8px;font-size:16px;z-index:1001;cursor:pointer;';
+    retryBtn.onclick = async () => {
+      retryBtn.disabled = true;
+      retryBtn.textContent = '🔄 Loading...';
+      const { data: refreshedData, error: retryError } = await supabase.from('community').select('*');
+      if (retryError) return alert('Failed to reload community data');
+
+      const formattedData = refreshedData.map(user => {
+        const formatted = { ...user };
+        if (typeof formatted.interests === 'string') {
+          formatted.interests = formatted.interests.split(',').map(tag => tag.trim()).filter(Boolean);
+        }
+        if (typeof formatted.endorsements === 'string') {
+          const num = parseInt(formatted.endorsements, 10);
+          formatted.endorsements = isNaN(num) ? 0 : num;
+        }
+        if (typeof formatted.availability === 'string') {
+          formatted.availability = formatted.availability.trim();
+        }
+        return formatted;
+      });
+
+      neurons = clusteredLayout(formattedData, canvas.width, canvas.height);
+      if (neurons.length) {
+        document.body.removeChild(retryBtn);
+        drawNetwork();
+        animationId = requestAnimationFrame(animate);
+      } else {
+        retryBtn.disabled = false;
+        retryBtn.textContent = '🔄 Retry';
+      }
+    };
+    document.body.appendChild(retryBtn);
+    return;
+  }
+  window.neurons = neurons;
+
+  const neuronMap = {};
+  for (const neuron of neurons) neuronMap[String(neuron.meta.id).trim()] = neuron;
+
+  const { data: userData } = await supabase.auth.getUser();
+  const authStatusEl = document.getElementById('auth-status');
+  if (userData?.user?.id) {
+    CURRENT_USER_ID = userData.user.id;
+    if (authStatusEl) {
+      authStatusEl.textContent = '🟢 Connected as: ' + userData.user.email;
+      authStatusEl.style.color = '#0f0';
+    }
+  } else if (authStatusEl) {
+    authStatusEl.textContent = '🔴 Not Logged In';
+    authStatusEl.style.color = '#f00';
+  }
+
+  const { data: connData, error: connError } = await supabase.from('connections').select('*');
+  if (connError) return console.error('❌ Failed to load connections:', connError);
+
+  connections = connData.map(conn => {
+    const from = neuronMap[String(conn.from_id).trim()];
+    const to = neuronMap[String(conn.to_id).trim()];
+    return from && to ? { from, to } : null;
+  }).filter(Boolean);
+  window.connections = connections;
+
+  canvas.addEventListener('mousemove', (e) => {
+    const hoveredNeuron = getNeuronUnderCursor(e);
+    if (hoveredNeuron) {
+      showTooltip(e, hoveredNeuron);
+    } else {
+      hideTooltip();
+    }
+  });
+
+  canvas.addEventListener('mouseleave', hideTooltip);
+  canvas.addEventListener('click', handleCanvasClick);
+
+  // Desktop dragging support
+  let draggingNeuronDesktop = null;
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const y = (e.clientY - rect.top) * scale;
+    for (const neuron of neurons) {
+      if (Math.hypot(neuron.x - x, neuron.y - y) < 14) {
+        draggingNeuronDesktop = neuron;
+        selectedNeuron = neuron;
+        break;
+      }
+    }
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (draggingNeuronDesktop) {
+      const rect = canvas.getBoundingClientRect();
+      const scale = canvas.width / rect.width;
+      const x = (e.clientX - rect.left) * scale;
+      const y = (e.clientY - rect.top) * scale;
+      draggingNeuronDesktop.x = x;
+      draggingNeuronDesktop.y = y;
+      drawNetwork();
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    draggingNeuronDesktop = null;
+  });
+
+  // Touch support for tooltips
+  canvas.addEventListener('touchstart', (e) => {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     const scale = canvas.width / rect.width;
-    draggingNeuronTouch.x = (touch.clientX - rect.left) * scale;
-    draggingNeuronTouch.y = (touch.clientY - rect.top) * scale;
-    drawNetwork();
-    e.preventDefault();
-  }
-}, { passive: false });
+    const x = (touch.clientX - rect.left) * scale;
+    const y = (touch.clientY - rect.top) * scale;
+    const eventStub = { pageX: touch.clientX, pageY: touch.clientY };
 
-window.addEventListener('touchend', () => {
-  draggingNeuronTouch = null;
-  isPinching = false;
-  enableScroll();
+    const touchedNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
+    if (touchedNeuron) {
+      showTooltip(eventStub, touchedNeuron);
+    } else {
+      hideTooltip();
+    }
+  });
+
+  // Tap-to-select support for mobile
+  canvas.addEventListener('touchend', (e) => {
+    const touch = e.changedTouches[0];
+    const rect = canvas.getBoundingClientRect();
+    const scale = canvas.width / rect.width;
+    const x = (touch.clientX - rect.left) * scale;
+    const y = (touch.clientY - rect.top) * scale;
+
+    const touchedNeuron = neurons.find(neuron => Math.hypot(neuron.x - x, neuron.y - y) < 14);
+    if (touchedNeuron) {
+      selectedNeuron = touchedNeuron;
+      console.log('🟢 Selected neuron (mobile):', touchedNeuron.meta.name);
+      drawNetwork();
+    } else {
+      selectedNeuron = null;
+      drawNetwork();
+    }
+  });
+
+  animationId = requestAnimationFrame(animate);
 });
-
-export {
-  animate,
-  clusteredLayout,
-  drawConnections,
-  drawNeuron,
-  drawNetwork,
-  getNeuronAt,
-  disableScrollTemporarily,
-  enableScroll
-};
