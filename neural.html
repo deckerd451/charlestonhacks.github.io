@@ -156,12 +156,17 @@
 
 <!-- Add magic link login logic -->
 <script type="module">
-  import { supabaseClient as supabase } from './assets/js/supabaseClient.js'; // ✅ Use shared instance
+  import { supabaseClient as supabase } from './assets/js/supabaseClient.js'; // ✅ Shared instance
 
+  const emailInput = document.getElementById('email');
+  const loginBtn = document.getElementById('login-btn');
+  const statusEl = document.getElementById('auth-status');
+  const authPane = document.getElementById('auth-pane');
+  const desc = document.getElementById('desc');
 
-  document.getElementById('login-btn').addEventListener('click', async () => {
-    const email = document.getElementById('email').value.trim();
-    const statusEl = document.getElementById('auth-status');
+  // 🎯 Magic link login
+  loginBtn.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
 
     if (!email) {
       statusEl.textContent = 'Please enter your email.';
@@ -173,9 +178,7 @@
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        emailRedirectTo: redirectTo
-      }
+      options: { emailRedirectTo: redirectTo }
     });
 
     if (error) {
@@ -186,6 +189,28 @@
       statusEl.className = 'success';
     }
   });
+
+  // ✅ On page load: check if user is already logged in
+  const checkUserLogin = async () => {
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    // Clean up magic link hash
+    if (window.location.hash.includes('access_token')) {
+      history.replaceState({}, document.title, window.location.pathname + window.location.search);
+    }
+
+    if (user) {
+      authPane.style.display = 'none';
+      desc.textContent = `Welcome, ${user.email}`;
+
+      // ✅ Optional: call neural map initializer if defined
+      if (window.loadNeuralMap) {
+        window.loadNeuralMap(user);
+      }
+    }
+  };
+
+  checkUserLogin();
 </script>
 </body>
 </html>
