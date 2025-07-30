@@ -384,9 +384,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 // neuralInteractive.js
 // Personalized neuron network with per-user persistent positions using Supabase Auth
 
-// ---- CONFIG ----
-import { supabaseClient as supabase } from './supabaseClient.js';
-
 window.supabase = supabase; // Add this line to expose supabase for debugging
 
 // ---- NEURON "TEMPLATE" ----
