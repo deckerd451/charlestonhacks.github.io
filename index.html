@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
+   <script>
+    // ⏩ If redirected here by mistake, forward to neural.html
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('source') === 'neuron') {
+      window.location.href = '/neural.html?' + params.toString();
+    }
+  </script>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
   <script>
