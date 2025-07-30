@@ -151,6 +151,45 @@
     <canvas id="neural-canvas" width="1200" height="700"></canvas>
     <div id="tooltip"></div>
   </div>
-  <script type="module" src="assets/js/neuralInteractive.js"></script>
+ <!-- Load neuron interaction logic -->
+<script type="module" src="assets/js/neuralInteractive.js"></script>
+
+<!-- Add magic link login logic -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://hvmotpzhliufzomewzfl.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'
+  );
+
+  document.getElementById('login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value.trim();
+    const statusEl = document.getElementById('auth-status');
+
+    if (!email) {
+      statusEl.textContent = 'Please enter your email.';
+      statusEl.className = 'error';
+      return;
+    }
+
+    const redirectTo = window.location.origin + '/neural.html?source=neuron';
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: redirectTo
+      }
+    });
+
+    if (error) {
+      statusEl.textContent = `❌ ${error.message}`;
+      statusEl.className = 'error';
+    } else {
+      statusEl.textContent = '✅ Magic link sent! Check your inbox.';
+      statusEl.className = 'success';
+    }
+  });
+</script>
 </body>
 </html>
