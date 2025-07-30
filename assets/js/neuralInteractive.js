@@ -3,7 +3,8 @@
 
 import { supabaseClient as supabase } from './supabaseClient.js';
 
-window.supabase = supabase; // expose globally for debugging
+// ✅ Do NOT expose supabase globally unless debugging in console
+// window.supabase = supabase; // ⛔️ Commented to prevent multiple auth triggers
 
 const DEFAULT_NEURONS = [
   { id: 'n1', name: "You", role: "Explorer", interests: ["AI", "Networks"], availability: "online", endorsements: 3 },
