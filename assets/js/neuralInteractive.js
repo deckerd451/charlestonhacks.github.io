@@ -30,7 +30,11 @@ function setAuthStatus(msg, isError = false) {
 
 function showAuthUI(show) {
   document.getElementById('auth-pane').style.display = show ? '' : 'none';
-  document.getElementById('neural-canvas').style.display = show ? 'none' : 'block';
+  const canvas = document.getElementById('neural-canvas');
+canvas.style.display = show ? 'none' : 'block';
+canvas.style.width = '100%';
+canvas.style.height = '800px';
+
 }
 
 async function logout() {
