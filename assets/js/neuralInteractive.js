@@ -77,6 +77,8 @@ async function loadOrCreatePersonalNeurons() {
 
   neurons = clusteredLayout(personalData, canvas.width, canvas.height);
   window.neurons = neurons;
+  window.loadOrCreatePersonalNeurons = loadOrCreatePersonalNeurons;
+
 
   const connData = await fetchConnections();
   connections = connData.map(({ from_id, to_id }) => {
