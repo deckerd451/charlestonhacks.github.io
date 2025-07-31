@@ -29,7 +29,7 @@ function setAuthStatus(msg, isError = false) {
 
 function showAuthUI(show) {
   document.getElementById('auth-pane').style.display = show ? '' : 'none';
-  document.getElementById('neural-canvas').style.display = show ? 'none' : '';
+ document.getElementById('neural-canvas').style.display = show ? 'none' : 'block';
 }
 
 async function logout() {
