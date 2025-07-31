@@ -99,6 +99,8 @@ async function loadOrCreatePersonalNeurons() {
 
   drawNetwork();
   window.drawNetwork = drawNetwork;
+  animationId = requestAnimationFrame(animate);
+
 
 }
 
