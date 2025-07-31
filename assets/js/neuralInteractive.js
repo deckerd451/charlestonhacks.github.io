@@ -21,6 +21,7 @@ const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = true;
 let initialized = false;
 let animationStarted = false;
+let hoverNeuron = null;
 
 function setAuthStatus(msg, isError = false) {
   const statusEl = document.getElementById('auth-status');
@@ -31,10 +32,9 @@ function setAuthStatus(msg, isError = false) {
 function showAuthUI(show) {
   document.getElementById('auth-pane').style.display = show ? '' : 'none';
   const canvas = document.getElementById('neural-canvas');
-canvas.style.display = show ? 'none' : 'block';
-canvas.style.width = '100%';
-canvas.style.height = '800px';
-
+  canvas.style.display = show ? 'none' : 'block';
+  canvas.style.width = '100%';
+  canvas.style.height = '800px';
 }
 
 async function logout() {
@@ -90,7 +90,13 @@ async function loadOrCreatePersonalNeurons() {
     personalData = reFetched;
   }
 
-  neurons = clusteredLayout(personalData, canvas.width, canvas.height);
+  // ⚡ Use saved x/y positions first, fallback to clustered layout
+  neurons = personalData.map(u => ({
+    x: u.x ?? 0,
+    y: u.y ?? 0,
+    radius: 18,
+    meta: u
+  }));
   window.neurons = neurons;
   window.loadOrCreatePersonalNeurons = loadOrCreatePersonalNeurons;
 
@@ -169,6 +175,25 @@ function drawNetwork(time = 0) {
   neurons.forEach(n => drawNeuron(n, time));
 }
 
+function updateTooltip(event) {
+  if (!hoverNeuron) {
+    tooltip.style.display = 'none';
+    return;
+  }
+
+  const { name, skills, availability, endorsements } = hoverNeuron.meta;
+  tooltip.innerHTML = `
+    <strong>${name}</strong><br>
+    Skills: ${skills?.join(', ') || 'n/a'}<br>
+    Availability: ${availability}<br>
+    Endorsements: ${endorsements}
+  `;
+
+  tooltip.style.left = event.pageX + 12 + 'px';
+  tooltip.style.top = event.pageY + 12 + 'px';
+  tooltip.style.display = 'block';
+}
+
 function animate(time) {
   if (!document.hidden && time - lastFrame >= FRAME_INTERVAL) {
     drawNetwork(time);
@@ -178,6 +203,64 @@ function animate(time) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  let dragging = null;
+  let offsetX = 0, offsetY = 0;
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    if (dragging) {
+      dragging.x = x - offsetX;
+      dragging.y = y - offsetY;
+      drawNetwork(performance.now());
+      return;
+    }
+    if (!neurons.length) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    hoverNeuron = neurons.find(n => {
+      const dx = x - n.x;
+      const dy = y - n.y;
+      return dx * dx + dy * dy < n.radius * n.radius;
+    });
+    updateTooltip(e);
+  });
+
+  canvas.addEventListener('mouseup', async () => {
+    if (dragging && dragging.meta?.id) {
+      const { id } = dragging.meta;
+      const { x, y } = dragging;
+      const { error } = await supabase.from('community')
+        .update({ x: Math.round(x), y: Math.round(y) })
+        .eq('id', id);
+      if (error) console.error('❌ Position save error:', error.message);
+      else console.log('💾 Position saved for', id);
+    }
+    dragging = null;
+  });
+
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const target = neurons.find(n => {
+      const dx = x - n.x;
+      const dy = y - n.y;
+      return dx * dx + dy * dy < n.radius * n.radius;
+    });
+    if (target) {
+      dragging = target;
+      offsetX = x - target.x;
+      offsetY = y - target.y;
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    hoverNeuron = null;
+    tooltip.style.display = 'none';
+  });
   canvas = document.getElementById('neural-canvas');
   ctx = canvas.getContext('2d');
   tooltip = document.getElementById('tooltip');
@@ -219,21 +302,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await supabase.auth.getSession();
 
-if (session?.user) {
-  user = session.user;
-  userId = user.id;
+  if (session?.user) {
+    user = session.user;
+    userId = user.id;
 
-  if (!initialized) {
-    initialized = true;
-    showAuthUI(false);
-    document.getElementById('logout-btn').style.display = '';
+    if (!initialized) {
+      initialized = true;
+      showAuthUI(false);
+      document.getElementById('logout-btn').style.display = '';
+    }
+
+    await loadOrCreatePersonalNeurons();
+  } else {
+    showAuthUI(true);
   }
-
-  await loadOrCreatePersonalNeurons(); // ✅ This runs no matter what
-} else {
-  showAuthUI(true);
-}
-
 });
