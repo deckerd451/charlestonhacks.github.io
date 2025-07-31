@@ -222,15 +222,18 @@ window.addEventListener('DOMContentLoaded', async () => {
 const { data: { session } } = await supabase.auth.getSession();
 
 if (session?.user) {
+  user = session.user;
+  userId = user.id;
+
   if (!initialized) {
     initialized = true;
-    user = session.user;
-    userId = user.id;
     showAuthUI(false);
-    logoutBtn.style.display = '';
+    document.getElementById('logout-btn').style.display = '';
   }
-  await loadOrCreatePersonalNeurons();
+
+  await loadOrCreatePersonalNeurons(); // ✅ This runs no matter what
 } else {
   showAuthUI(true);
 }
+
 });
