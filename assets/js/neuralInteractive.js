@@ -20,6 +20,7 @@ let animationId = null, lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = true;
 let initialized = false;
+let animationStarted = false;
 
 function setAuthStatus(msg, isError = false) {
   const statusEl = document.getElementById('auth-status');
@@ -29,7 +30,7 @@ function setAuthStatus(msg, isError = false) {
 
 function showAuthUI(show) {
   document.getElementById('auth-pane').style.display = show ? '' : 'none';
- document.getElementById('neural-canvas').style.display = show ? 'none' : 'block';
+  document.getElementById('neural-canvas').style.display = show ? 'none' : 'block';
 }
 
 async function logout() {
@@ -73,7 +74,6 @@ async function loadOrCreatePersonalNeurons() {
 
     console.log("✅ Default neurons inserted");
 
-    // 🔁 Re-fetch the newly inserted neurons so they include UUIDs
     const { data: reFetched, error: refetchError } = await supabase
       .from('community')
       .select('id, name, skills, interests, availability, endorsements, user_id, x, y')
@@ -99,11 +99,12 @@ async function loadOrCreatePersonalNeurons() {
 
   drawNetwork();
   window.drawNetwork = drawNetwork;
-  animationId = requestAnimationFrame(animate);
 
-
+  if (!animationStarted) {
+    animationId = requestAnimationFrame(animate);
+    animationStarted = true;
+  }
 }
-
 
 function clusteredLayout(users, canvasW, canvasH) {
   const groupBy = u => u.skills?.[0] || u.availability || 'misc';
@@ -179,9 +180,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   canvas.width = 1400;
   canvas.height = 800;
   window.canvas = canvas;
-window.ctx = ctx;
-
-  animate();
+  window.ctx = ctx;
 
   const logoutBtn = document.createElement('button');
   logoutBtn.id = 'logout-btn';
