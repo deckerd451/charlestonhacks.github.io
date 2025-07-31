@@ -39,7 +39,8 @@ async function logout() {
 }
 
 async function loadOrCreatePersonalNeurons() {
-  if (!userId) {
+  window.loadOrCreatePersonalNeurons = loadOrCreatePersonalNeurons;
+if (!userId) {
     console.error("❌ Cannot load neurons — userId is undefined");
     return setAuthStatus("User not authenticated properly.", true);
   }
