@@ -27,7 +27,10 @@ async function checkAuthAndInit() {
   const { data: { user: currentUser } } = await supabase.auth.getUser();
   user = currentUser;
   userId = user?.id;
-  if (!user) return showAuthUI(true);
+  if (!userId) {
+    console.error("❌ checkAuthAndInit: userId is undefined");
+    return showAuthUI(true);
+  }
   showAuthUI(false);
   await loadOrCreatePersonalNeurons();
 }
@@ -57,6 +60,11 @@ async function logout() {
 }
 
 async function loadOrCreatePersonalNeurons() {
+  if (!userId) {
+    console.error("❌ Cannot load neurons — userId is undefined");
+    return setAuthStatus("User not authenticated properly.");
+  }
+
   const { data, error } = await supabase.from('community').select('*').eq('user_id', userId);
   if (error) return setAuthStatus("Failed to fetch your neuron data.");
 
@@ -160,6 +168,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   supabase.auth.onAuthStateChange(async (_event, session) => {
     if (session?.user) {
+      user = session.user;
+      userId = user.id;
       showAuthUI(false);
       logoutBtn.style.display = '';
       await loadOrCreatePersonalNeurons();
