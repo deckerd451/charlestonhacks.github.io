@@ -176,6 +176,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   tooltip = document.getElementById('tooltip');
   canvas.width = 1400;
   canvas.height = 800;
+  window.canvas = canvas;
+window.ctx = ctx;
+
   animate();
 
   const logoutBtn = document.createElement('button');
