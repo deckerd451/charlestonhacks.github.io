@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Personal Neuron Map</title>
-  <meta name="viewport" content="width=1200,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     html, body {
       margin: 0;
@@ -13,127 +13,96 @@
       color: #eee;
       min-height: 100vh;
     }
+
     #container {
+      max-width: 1200px;
       margin: 0 auto;
-      max-width: 900px;
       padding: 28px 16px 0 16px;
+      text-align: center;
     }
+
     #title {
       font-size: 2.1em;
       font-weight: 600;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
       color: #0bb;
-      text-align: center;
     }
+
     #desc {
-      text-align: center;
+      font-size: 1.1em;
       color: #aaa;
-      font-size: 1.02em;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
+
     #auth-pane {
-      max-width: 360px;
-      margin: 32px auto 18px auto;
+      max-width: 400px;
+      margin: 0 auto 18px auto;
+      padding: 20px;
       background: #181818;
-      border: 1px solid #24292f;
+      border: 1px solid #2a2a2a;
       border-radius: 10px;
-      padding: 24px 22px 12px 22px;
-      text-align: center;
       box-shadow: 0 2px 12px #000a;
-      font-size: 1em;
     }
+
     #auth-pane input[type="email"] {
-      font-size: 1em;
-      padding: 8px;
+      padding: 10px;
+      width: 85%;
+      border: 1px solid #0bb5;
       border-radius: 5px;
-      border: 1px solid #0bb2;
-      width: 84%;
-      margin-bottom: 8px;
-      transition: border 0.2s;
       background: #222;
       color: #eee;
-    }
-    #auth-pane input[type="email"]:focus {
-      border: 1.5px solid #0bb;
-      outline: none;
-      background: #222;
-      color: #fff;
-    }
-    #auth-pane button {
       font-size: 1em;
-      padding: 8px 18px;
-      border-radius: 5px;
-      border: none;
-      background: #0bb;
-      color: #fff;
-      font-weight: 500;
-      margin-top: 5px;
-      cursor: pointer;
-      transition: background 0.18s;
+      margin-bottom: 10px;
     }
+
+    #auth-pane input[type="email"]:focus {
+      outline: none;
+      border-color: #0bb;
+    }
+
+    #auth-pane button {
+      padding: 10px 18px;
+      background: #0bb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 500;
+    }
+
     #auth-pane button:hover {
       background: #099;
     }
-    #logout-btn {
-      background: #181818;
-      color: #0bb;
-      border: 1px solid #0bb;
-      margin-top: 14px;
-      margin-bottom: 6px;
-      transition: background 0.18s, color 0.18s;
-    }
-    #logout-btn:hover {
-      background: #0bb;
-      color: #fff;
-    }
+
     #auth-status {
-      margin-top: 10px;
-      min-height: 18px;
-      font-size: 0.96em;
+      margin-top: 12px;
       color: #0bb;
-      background: none;
-      border-radius: 6px;
-      padding: 3px 7px;
-      display: inline-block;
+      font-size: 0.95em;
     }
-    #auth-status.error {
-      color: #d33;
-    }
-    #auth-status.success {
-      color: #0f8b43;
-    }
+
     #neural-canvas {
-      background: #181818;
-      border: 1.5px solid #24292f;
+      display: none;
+      width: 100%;
+      max-width: 100%;
+      border: 1px solid #2a2a2a;
       border-radius: 12px;
+      background: #181818;
       box-shadow: 0 2px 12px #000a;
       margin: 24px auto 0 auto;
-      display: block;
-      max-width: 100%;
-      height: auto;
     }
+
     #tooltip {
       position: absolute;
+      background: #111;
+      color: #0ff;
+      padding: 8px 14px;
+      font-size: 0.95em;
+      border-radius: 8px;
+      border: 1px solid #0bb;
       pointer-events: none;
-      background: #181818;
-      color: #0bb;
-      border-radius: 7px;
-      border: 1px solid #0bb3;
-      padding: 9px 15px 7px 15px;
-      font-size: 1em;
-      box-shadow: 0 6px 18px #000a;
-      opacity: 0.98;
-      z-index: 1000;
-      min-width: 160px;
-      transition: opacity 0.16s;
+      opacity: 0.95;
       display: none;
-    }
-    #tooltip.visible { display: block; }
-    @media (max-width: 900px) {
-      #container { max-width: 99vw; }
-      #neural-canvas { width: 98vw !important; min-width: 200px; min-height: 120px; }
-      #auth-pane { width: 97vw;}
+      z-index: 1000;
     }
   </style>
 </head>
@@ -142,75 +111,15 @@
     <div id="title">Personal Neuron Map</div>
     <div id="desc">Visualize and arrange your connections.<br>Sign in to save your layout privately.</div>
     <div id="auth-pane">
-      <div id="auth-controls">
-        <input id="email" type="email" placeholder="Your email" autocomplete="username" required />
-        <button id="login-btn">Sign In / Sign Up (Magic Link)</button>
-      </div>
+      <input id="email" type="email" placeholder="Enter your email" />
+      <button id="login-btn">Sign In / Sign Up (Magic Link)</button>
       <div id="auth-status"></div>
     </div>
-    <canvas id="neural-canvas" width="1200" height="700"></canvas>
+    <canvas id="neural-canvas" width="1400" height="800"></canvas>
     <div id="tooltip"></div>
   </div>
- <!-- Load neuron interaction logic -->
-<script type="module" src="assets/js/neuralInteractive.js"></script>
 
-<!-- Add magic link login logic -->
-<script type="module">
-  import { supabaseClient as supabase } from './assets/js/supabaseClient.js'; // ✅ Shared instance
-
-  const emailInput = document.getElementById('email');
-  const loginBtn = document.getElementById('login-btn');
-  const statusEl = document.getElementById('auth-status');
-  const authPane = document.getElementById('auth-pane');
-  const desc = document.getElementById('desc');
-
-  // 🎯 Magic link login
-  loginBtn.addEventListener('click', async () => {
-    const email = emailInput.value.trim();
-
-    if (!email) {
-      statusEl.textContent = 'Please enter your email.';
-      statusEl.className = 'error';
-      return;
-    }
-
-    const redirectTo = window.location.origin + '/neural.html?source=neuron';
-
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectTo }
-    });
-
-    if (error) {
-      statusEl.textContent = `❌ ${error.message}`;
-      statusEl.className = 'error';
-    } else {
-      statusEl.textContent = '✅ Magic link sent! Check your inbox.';
-      statusEl.className = 'success';
-    }
-  });
-
-  // ✅ On page load: check if user is already logged in
-  const checkUserLogin = async () => {
-    const { data: { user }, error } = await supabase.auth.getUser();
-
-    // Clean up magic link hash
-    if (window.location.hash.includes('access_token')) {
-      history.replaceState({}, document.title, window.location.pathname + window.location.search);
-    }
-
-    if (user) {
-      authPane.style.display = 'none';
-      desc.textContent = `Welcome, ${user.email}`;
-
-      // ✅ Optional: call neural map initializer if defined
-      if (window.loadNeuralMap) {
-        window.loadNeuralMap(user);
-      }
-    }
-  };
-
-  checkUserLogin();
-</script>
+  <!-- Main logic: auth + visualization -->
+  <script type="module" src="assets/js/neuralInteractive.js"></script>
 </body>
 </html>
