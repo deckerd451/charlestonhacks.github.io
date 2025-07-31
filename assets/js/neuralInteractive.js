@@ -46,8 +46,8 @@ async function loadOrCreatePersonalNeurons() {
 
   const { data, error } = await supabase
     .from('community')
-    .select('id, name, skills, interests, availability, endorsements, user_id, x, y')
-    .eq('user_id', userId);
+   .select('name, skills, interests, availability, endorsements, user_id, x, y')
+  .eq('user_id', userId);
 
   if (error) {
     console.error("❌ Supabase fetch error:", error.message);
@@ -61,8 +61,9 @@ async function loadOrCreatePersonalNeurons() {
     const defaults = DEFAULT_NEURONS.map((n, i) => ({
       ...n,
       user_id: userId,
-      x: 350 + 320 * Math.cos(2 * Math.PI * i / DEFAULT_NEURONS.length),
-      y: 350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length),
+      x: Math.round(350 + 320 * Math.cos(2 * Math.PI * i / DEFAULT_NEURONS.length)),
+y: Math.round(350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length)),
+
     }));
 
     const { error: insError } = await supabase.from('community').insert(defaults);
