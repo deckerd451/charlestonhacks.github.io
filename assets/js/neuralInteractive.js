@@ -46,8 +46,8 @@ async function loadOrCreatePersonalNeurons() {
 
   const { data, error } = await supabase
     .from('community')
-   .select('name, skills, interests, availability, endorsements, user_id, x, y')
-  .eq('user_id', userId);
+    .select('id, name, skills, interests, availability, endorsements, user_id, x, y')
+    .eq('user_id', userId);
 
   if (error) {
     console.error("❌ Supabase fetch error:", error.message);
@@ -62,8 +62,7 @@ async function loadOrCreatePersonalNeurons() {
       ...n,
       user_id: userId,
       x: Math.round(350 + 320 * Math.cos(2 * Math.PI * i / DEFAULT_NEURONS.length)),
-y: Math.round(350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length)),
-
+      y: Math.round(350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length)),
     }));
 
     const { error: insError } = await supabase.from('community').insert(defaults);
@@ -73,7 +72,18 @@ y: Math.round(350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length)),
     }
 
     console.log("✅ Default neurons inserted");
-    personalData = defaults;
+
+    // 🔁 Re-fetch the newly inserted neurons so they include UUIDs
+    const { data: reFetched, error: refetchError } = await supabase
+      .from('community')
+      .select('id, name, skills, interests, availability, endorsements, user_id, x, y')
+      .eq('user_id', userId);
+
+    if (refetchError || !reFetched.length) {
+      return setAuthStatus("Failed to load inserted neurons.", true);
+    }
+
+    personalData = reFetched;
   }
 
   neurons = clusteredLayout(personalData, canvas.width, canvas.height);
@@ -89,6 +99,7 @@ y: Math.round(350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length)),
 
   drawNetwork();
 }
+
 
 function clusteredLayout(users, canvasW, canvasH) {
   const groupBy = u => u.skills?.[0] || u.availability || 'misc';
