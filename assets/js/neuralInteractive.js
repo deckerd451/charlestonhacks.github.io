@@ -1,8 +1,10 @@
 // neuralInteractive.js
-// Personalized neuron network with Supabase Auth + Skills-Based Clustering
+// Personalized neuron network with Supabase auth and skill-based clustering
 
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { fetchConnections } from './loadConnections.js';
+
+window.supabase = supabase; // ✅ expose globally for console access
 
 const DEFAULT_NEURONS = [
   { id: 'n1', name: "You", skills: ["Explorer"], interests: ["AI", "Networks"], availability: "online", endorsements: 3 },
@@ -25,7 +27,7 @@ function setAuthStatus(msg, isError = false) {
   statusEl.className = isError ? 'error' : 'success';
 }
 
-async function showAuthUI(show) {
+function showAuthUI(show) {
   document.getElementById('auth-pane').style.display = show ? '' : 'none';
   document.getElementById('neural-canvas').style.display = show ? 'none' : '';
 }
@@ -48,7 +50,7 @@ async function loadOrCreatePersonalNeurons() {
     .eq('user_id', userId);
 
   if (error) {
-    console.error("❌ Supabase fetch error:", error.message, error.details);
+    console.error("❌ Supabase fetch error:", error.message);
     return setAuthStatus("Supabase error: " + error.message, true);
   }
 
@@ -62,11 +64,13 @@ async function loadOrCreatePersonalNeurons() {
       x: 350 + 320 * Math.cos(2 * Math.PI * i / DEFAULT_NEURONS.length),
       y: 350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length),
     }));
+
     const { error: insError } = await supabase.from('community').insert(defaults);
     if (insError) {
       console.error("❌ Supabase insert error:", insError.message);
       return setAuthStatus("Insert failed: " + insError.message, true);
     }
+
     console.log("✅ Default neurons inserted");
     personalData = defaults;
   }
@@ -103,6 +107,7 @@ function clusteredLayout(users, canvasW, canvasH) {
       result.push({ x: +x, y: +y, radius: 18, meta: u });
     });
   });
+
   return result;
 }
 
@@ -191,13 +196,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  // ✅ Trigger check manually on load
   const { data: { session } } = await supabase.auth.getSession();
   if (session?.user) {
-    user = session.user;
-    userId = user.id;
-    showAuthUI(false);
-    logoutBtn.style.display = '';
-    await loadOrCreatePersonalNeurons();
+    supabase.auth.onAuthStateChange('SIGNED_IN', session);
   } else {
     showAuthUI(true);
   }
