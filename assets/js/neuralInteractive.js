@@ -181,5 +181,5 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  //await checkAuthAndInit();
+  await checkAuthAndInit();
 });
