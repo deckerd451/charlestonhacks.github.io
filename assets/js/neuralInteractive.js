@@ -44,6 +44,8 @@ if (!userId) {
     console.error("❌ Cannot load neurons — userId is undefined");
     return setAuthStatus("User not authenticated properly.", true);
   }
+  window.loadOrCreatePersonalNeurons = loadOrCreatePersonalNeurons;
+
 
   const { data, error } = await supabase
     .from('community')
