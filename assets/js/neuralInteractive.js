@@ -1,34 +1,33 @@
 // neuralInteractive.js
-// Personalized neuron network with per-user persistent positions using Supabase Auth
+// Personalized neuron network with Supabase Auth + Skills-Based Clustering
 
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { fetchConnections } from './loadConnections.js';
 
 const DEFAULT_NEURONS = [
-  { id: 'n1', name: "You", role: "Explorer", interests: ["AI", "Networks"], availability: "online", endorsements: 3 },
-  { id: 'n2', name: "Ada", role: "Mentor", interests: ["Math", "Logic"], availability: "offline", endorsements: 11 },
-  { id: 'n3', name: "Grace", role: "Peer", interests: ["Coding", "Music"], availability: "online", endorsements: 7 },
-  { id: 'n4', name: "Alan", role: "Partner", interests: ["AI", "Art"], availability: "online", endorsements: 5 },
-  { id: 'n5', name: "Linus", role: "Peer", interests: ["Open Source"], availability: "offline", endorsements: 2 }
+  { id: 'n1', name: "You", skills: ["Explorer"], interests: ["AI", "Networks"], availability: "online", endorsements: 3 },
+  { id: 'n2', name: "Ada", skills: ["Mentor"], interests: ["Math", "Logic"], availability: "offline", endorsements: 11 },
+  { id: 'n3', name: "Grace", skills: ["Peer"], interests: ["Coding", "Music"], availability: "online", endorsements: 7 },
+  { id: 'n4', name: "Alan", skills: ["Partner"], interests: ["AI", "Art"], availability: "online", endorsements: 5 },
+  { id: 'n5', name: "Linus", skills: ["Peer"], interests: ["Open Source"], availability: "offline", endorsements: 2 }
 ];
 
 let neurons = [], connections = [];
 let canvas, ctx, tooltip, user, userId;
-let draggingNeuronDesktop = null, draggingNeuronTouch = null, selectedNeuron = null;
 let animationId = null, lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = true;
 let initialized = false;
 
-async function showAuthUI(show) {
-  document.getElementById('auth-pane').style.display = show ? '' : 'none';
-  document.getElementById('neural-canvas').style.display = show ? 'none' : '';
-}
-
 function setAuthStatus(msg, isError = false) {
   const statusEl = document.getElementById('auth-status');
   statusEl.textContent = msg;
   statusEl.className = isError ? 'error' : 'success';
+}
+
+async function showAuthUI(show) {
+  document.getElementById('auth-pane').style.display = show ? '' : 'none';
+  document.getElementById('neural-canvas').style.display = show ? 'none' : '';
 }
 
 async function logout() {
@@ -37,30 +36,25 @@ async function logout() {
   window.location.reload();
 }
 
-async function checkAuthAndInit() {
-  const { data: { session } } = await supabase.auth.getSession();
-  user = session?.user;
-  userId = user?.id;
-
-  if (!userId) {
-    console.warn("❌ No active session — showing login UI");
-    return showAuthUI(true);
-  }
-
-  showAuthUI(false);
-  await loadOrCreatePersonalNeurons();
-}
-
 async function loadOrCreatePersonalNeurons() {
   if (!userId) {
     console.error("❌ Cannot load neurons — userId is undefined");
     return setAuthStatus("User not authenticated properly.", true);
   }
 
-  const { data, error } = await supabase.from('community').select('*').eq('user_id', userId);
-  if (error) return setAuthStatus("Failed to fetch your neuron data.", true);
+  const { data, error } = await supabase
+    .from('community')
+    .select('id, name, skills, interests, availability, endorsements, user_id, x, y')
+    .eq('user_id', userId);
 
+  if (error) {
+    console.error("❌ Supabase fetch error:", error.message, error.details);
+    return setAuthStatus("Supabase error: " + error.message, true);
+  }
+
+  console.log("🧠 Neuron fetch result:", data);
   let personalData = data;
+
   if (data.length === 0) {
     const defaults = DEFAULT_NEURONS.map((n, i) => ({
       ...n,
@@ -69,7 +63,11 @@ async function loadOrCreatePersonalNeurons() {
       y: 350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length),
     }));
     const { error: insError } = await supabase.from('community').insert(defaults);
-    if (insError) return setAuthStatus("Failed to create your neuron data.", true);
+    if (insError) {
+      console.error("❌ Supabase insert error:", insError.message);
+      return setAuthStatus("Insert failed: " + insError.message, true);
+    }
+    console.log("✅ Default neurons inserted");
     personalData = defaults;
   }
 
@@ -87,7 +85,7 @@ async function loadOrCreatePersonalNeurons() {
 }
 
 function clusteredLayout(users, canvasW, canvasH) {
-  const groupBy = u => u.role || (u.interests?.[0] || 'unknown');
+  const groupBy = u => u.skills?.[0] || u.availability || 'misc';
   const groups = {};
   users.forEach(u => (groups[groupBy(u)] = groups[groupBy(u)] || []).push(u));
   const keys = Object.keys(groups), result = [];
@@ -112,7 +110,7 @@ function drawNeuron(n, t) {
   const pulse = 1 + Math.sin(t / 400 + n.x + n.y) * 0.3;
   const radius = n.radius * pulse;
   const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius);
-  const color = n === selectedNeuron ? '#fff' : '#0ff';
+  const color = '#0ff';
   glow.addColorStop(0, color);
   glow.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = glow;
@@ -193,5 +191,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  await checkAuthAndInit();
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.user) {
+    user = session.user;
+    userId = user.id;
+    showAuthUI(false);
+    logoutBtn.style.display = '';
+    await loadOrCreatePersonalNeurons();
+  } else {
+    showAuthUI(true);
+  }
 });
