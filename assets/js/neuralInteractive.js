@@ -219,15 +219,18 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session?.user && !initialized) {
+const { data: { session } } = await supabase.auth.getSession();
+
+if (session?.user) {
+  if (!initialized) {
     initialized = true;
     user = session.user;
     userId = user.id;
     showAuthUI(false);
     logoutBtn.style.display = '';
-    await loadOrCreatePersonalNeurons();
-  } else {
-    showAuthUI(true);
   }
+  await loadOrCreatePersonalNeurons();
+} else {
+  showAuthUI(true);
+}
 });
