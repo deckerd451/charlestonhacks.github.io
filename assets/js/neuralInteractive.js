@@ -24,13 +24,15 @@ async function showAuthUI(show) {
 }
 
 async function checkAuthAndInit() {
-  const { data: { user: currentUser } } = await supabase.auth.getUser();
-  user = currentUser;
+  const { data: { session } } = await supabase.auth.getSession();
+  user = session?.user;
   userId = user?.id;
+
   if (!userId) {
-    console.error("❌ checkAuthAndInit: userId is undefined");
+    console.warn("❌ No active session — showing login UI");
     return showAuthUI(true);
   }
+
   showAuthUI(false);
   await loadOrCreatePersonalNeurons();
 }
