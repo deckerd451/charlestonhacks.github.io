@@ -2,6 +2,7 @@
 // Personalized neuron network with per-user persistent positions using Supabase Auth
 
 import { supabaseClient as supabase } from './supabaseClient.js';
+import { fetchConnections } from './loadConnections.js';
 
 const DEFAULT_NEURONS = [
   { id: 'n1', name: "You", role: "Explorer", interests: ["AI", "Networks"], availability: "online", endorsements: 3 },
@@ -17,10 +18,23 @@ let draggingNeuronDesktop = null, draggingNeuronTouch = null, selectedNeuron = n
 let animationId = null, lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 let showAllNames = true;
+let initialized = false;
 
 async function showAuthUI(show) {
   document.getElementById('auth-pane').style.display = show ? '' : 'none';
   document.getElementById('neural-canvas').style.display = show ? 'none' : '';
+}
+
+function setAuthStatus(msg, isError = false) {
+  const statusEl = document.getElementById('auth-status');
+  statusEl.textContent = msg;
+  statusEl.className = isError ? 'error' : 'success';
+}
+
+async function logout() {
+  await supabase.auth.signOut();
+  showAuthUI(true);
+  window.location.reload();
 }
 
 async function checkAuthAndInit() {
@@ -37,38 +51,14 @@ async function checkAuthAndInit() {
   await loadOrCreatePersonalNeurons();
 }
 
-document.getElementById('login-btn').onclick = async () => {
-  const email = document.getElementById('email').value.trim();
-  if (!email) return setAuthStatus("Please enter your email.");
-  setAuthStatus("Sending magic link...");
-
-  const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: redirectTo }
-  });
-
-  setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!");
-};
-
-function setAuthStatus(msg) {
-  document.getElementById('auth-status').textContent = msg;
-}
-
-async function logout() {
-  await supabase.auth.signOut();
-  showAuthUI(true);
-  window.location.reload();
-}
-
 async function loadOrCreatePersonalNeurons() {
   if (!userId) {
     console.error("❌ Cannot load neurons — userId is undefined");
-    return setAuthStatus("User not authenticated properly.");
+    return setAuthStatus("User not authenticated properly.", true);
   }
 
   const { data, error } = await supabase.from('community').select('*').eq('user_id', userId);
-  if (error) return setAuthStatus("Failed to fetch your neuron data.");
+  if (error) return setAuthStatus("Failed to fetch your neuron data.", true);
 
   let personalData = data;
   if (data.length === 0) {
@@ -79,12 +69,20 @@ async function loadOrCreatePersonalNeurons() {
       y: 350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length),
     }));
     const { error: insError } = await supabase.from('community').insert(defaults);
-    if (insError) return setAuthStatus("Failed to create your neuron data.");
+    if (insError) return setAuthStatus("Failed to create your neuron data.", true);
     personalData = defaults;
   }
 
   neurons = clusteredLayout(personalData, canvas.width, canvas.height);
   window.neurons = neurons;
+
+  const connData = await fetchConnections();
+  connections = connData.map(({ from_id, to_id }) => {
+    const from = neurons.find(n => n.meta.id === from_id);
+    const to = neurons.find(n => n.meta.id === to_id);
+    return { from, to };
+  });
+
   drawNetwork();
 }
 
@@ -140,6 +138,7 @@ function drawConnections() {
 }
 
 function drawNetwork(time = 0) {
+  if (!neurons.length) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawConnections();
   neurons.forEach(n => drawNeuron(n, time));
@@ -168,14 +167,27 @@ window.addEventListener('DOMContentLoaded', async () => {
   logoutBtn.style.display = 'none';
   document.getElementById('auth-pane').appendChild(logoutBtn);
 
+  document.getElementById('login-btn').onclick = async () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email) return setAuthStatus("Please enter your email.", true);
+    setAuthStatus("Sending magic link...");
+    const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo }
+    });
+    setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!", !!error);
+  };
+
   supabase.auth.onAuthStateChange(async (_event, session) => {
-    if (session?.user) {
+    if (session?.user && !initialized) {
+      initialized = true;
       user = session.user;
       userId = user.id;
       showAuthUI(false);
       logoutBtn.style.display = '';
       await loadOrCreatePersonalNeurons();
-    } else {
+    } else if (!session?.user) {
       showAuthUI(true);
       logoutBtn.style.display = 'none';
     }
