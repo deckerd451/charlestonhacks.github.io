@@ -98,6 +98,8 @@ async function loadOrCreatePersonalNeurons() {
   });
 
   drawNetwork();
+  window.drawNetwork = drawNetwork;
+
 }
 
 
