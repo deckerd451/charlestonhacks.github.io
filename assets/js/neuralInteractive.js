@@ -3,9 +3,6 @@
 
 import { supabaseClient as supabase } from './supabaseClient.js';
 
-// ✅ Do NOT expose supabase globally unless debugging in console
-// window.supabase = supabase; // ⛔️ Commented to prevent multiple auth triggers
-
 const DEFAULT_NEURONS = [
   { id: 'n1', name: "You", role: "Explorer", interests: ["AI", "Networks"], availability: "online", endorsements: 3 },
   { id: 'n2', name: "Ada", role: "Mentor", interests: ["Math", "Logic"], availability: "offline", endorsements: 11 },
@@ -39,7 +36,13 @@ document.getElementById('login-btn').onclick = async () => {
   const email = document.getElementById('email').value.trim();
   if (!email) return setAuthStatus("Please enter your email.");
   setAuthStatus("Sending magic link...");
-  const { error } = await supabase.auth.signInWithOtp({ email });
+
+  const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: redirectTo }
+  });
+
   setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!");
 };
 
