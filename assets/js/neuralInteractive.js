@@ -47,6 +47,55 @@ async function logout() {
   window.location.reload();
 }
 
+async function loadOrCreatePersonalNeurons() {
+  const { data, error } = await supabase
+    .from('community')
+    .select('*');
+
+  if (error) {
+    console.error("❌ Supabase fetch error:", error.message);
+    return setAuthStatus("Supabase error: " + error.message, true);
+  }
+
+  const myNeurons = data.filter(n => n.user_id === userId);
+  const otherNeurons = data.filter(n => n.user_id !== userId);
+
+  if (myNeurons.length === 0) {
+    const defaults = DEFAULT_NEURONS.map((n, i) => ({
+      ...n,
+      user_id: userId,
+      x: Math.round(350 + 320 * Math.cos(2 * Math.PI * i / DEFAULT_NEURONS.length)),
+      y: Math.round(350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length))
+    }));
+    const { error: insertError } = await supabase.from('community').insert(defaults);
+    if (insertError) {
+      console.error("❌ Supabase insert error:", insertError.message);
+      return setAuthStatus("Insert failed: " + insertError.message, true);
+    }
+    return loadOrCreatePersonalNeurons();
+  }
+
+  const combined = [...myNeurons.map(n => ({ ...n, owned: true })), ...otherNeurons.map(n => ({ ...n, owned: false }))];
+  neurons = clusteredLayout(combined, canvas.width, canvas.height);
+  window.neurons = neurons;
+  window.loadOrCreatePersonalNeurons = loadOrCreatePersonalNeurons;
+
+  const connData = await fetchConnections();
+  connections = connData.map(({ from_id, to_id }) => {
+    const from = neurons.find(n => n.meta.id === from_id);
+    const to = neurons.find(n => n.meta.id === to_id);
+    return { from, to };
+  });
+
+  drawNetwork();
+  window.drawNetwork = drawNetwork;
+
+  if (!animationStarted) {
+    animationId = requestAnimationFrame(animate);
+    animationStarted = true;
+  }
+}
+
 // CLICK TO CONNECT HANDLER
 canvas?.addEventListener('click', async (e) => {
   const rect = canvas.getBoundingClientRect();
@@ -71,6 +120,73 @@ canvas?.addEventListener('click', async (e) => {
     }
   }
 });
+
+function clusteredLayout(users, canvasW, canvasH) {
+  const groupBy = u => u.skills?.[0] || u.availability || 'misc';
+  const groups = {};
+  users.forEach(u => (groups[groupBy(u)] = groups[groupBy(u)] || []).push(u));
+  const keys = Object.keys(groups), result = [];
+  const centerX = canvasW / 2, centerY = canvasH / 2, clusterRadius = 220;
+
+  keys.forEach((key, i) => {
+    const angle = (2 * Math.PI * i) / keys.length;
+    const cx = centerX + clusterRadius * Math.cos(angle);
+    const cy = centerY + clusterRadius * Math.sin(angle);
+    groups[key].forEach((u, j) => {
+      const offset = (2 * Math.PI * j) / groups[key].length;
+      const spread = 50 + Math.floor(j / 3) * 20;
+      const x = u.x ?? cx + spread * Math.cos(offset);
+      const y = u.y ?? cy + spread * Math.sin(offset);
+      result.push({ x: +x, y: +y, radius: 18, meta: u, owned: u.owned });
+    });
+  });
+
+  return result;
+}
+
+function drawNeuron(n, t) {
+  const pulse = 1 + Math.sin(t / 400 + n.x + n.y) * 0.3;
+  const radius = n.radius * pulse;
+  const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius);
+  const color = n.owned ? '#0ff' : 'rgba(255,255,255,0.3)';
+  glow.addColorStop(0, color);
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = glow;
+  ctx.beginPath(); ctx.arc(n.x, n.y, radius, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.arc(n.x, n.y, 5, 0, Math.PI * 2); ctx.fill();
+  if (showAllNames) {
+    ctx.font = '15px sans-serif';
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.fillText(n.meta.name, n.x, n.y - radius - 10);
+  }
+}
+
+function drawConnections() {
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(0,255,255,0.16)';
+  connections.forEach(({ from, to }) => {
+    if (from && to) {
+      ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
+    }
+  });
+}
+
+function drawNetwork(time = 0) {
+  if (!neurons.length) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawConnections();
+  neurons.forEach(n => drawNeuron(n, time));
+}
+
+function animate(time) {
+  if (!document.hidden && time - lastFrame >= FRAME_INTERVAL) {
+    drawNetwork(time);
+    lastFrame = time;
+  }
+  animationId = requestAnimationFrame(animate);
+}
 
 // DOMContentLoaded + login handling restored
 window.addEventListener('DOMContentLoaded', async () => {
