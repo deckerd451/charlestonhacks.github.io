@@ -99,17 +99,22 @@ window.addEventListener('DOMContentLoaded', async () => {
   logoutBtn.style.display = 'none';
   document.getElementById('auth-pane').appendChild(logoutBtn);
 
-  document.getElementById('login-btn').onclick = async () => {
-    const email = document.getElementById('email').value.trim();
-    if (!email) return setAuthStatus("Please enter your email.", true);
-    setAuthStatus("Sending magic link...");
-    const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectTo }
-    });
-    setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!", !!error);
-  };
+  const loginBtn = document.getElementById('login-btn');
+  if (loginBtn) {
+    loginBtn.onclick = async () => {
+      const email = document.getElementById('email').value.trim();
+      if (!email) return setAuthStatus("Please enter your email.", true);
+      setAuthStatus("Sending magic link...");
+      const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: redirectTo }
+      });
+      setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!", !!error);
+    };
+  } else {
+    console.warn("⚠️ Login button not found in DOM.");
+  }
 
   supabase.auth.onAuthStateChange(async (_event, session) => {
     if (session?.user && !initialized) {
