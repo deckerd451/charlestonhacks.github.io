@@ -76,7 +76,8 @@ async function loadOrCreatePersonalNeurons() {
   }
 
   const combined = [...myNeurons.map(n => ({ ...n, owned: true })), ...otherNeurons.map(n => ({ ...n, owned: false }))];
-  neurons = clusteredLayout(combined, canvas.width, canvas.height);
+  neurons = gridLayout(personalData, canvas.width, canvas.height);
+
   window.neurons = neurons;
   window.loadOrCreatePersonalNeurons = loadOrCreatePersonalNeurons;
 
