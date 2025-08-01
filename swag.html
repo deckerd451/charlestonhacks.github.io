@@ -103,17 +103,19 @@
         }, immediate ? 0 : 700);
       }
 
+      // Enter shows the community content by hiding splash
       enterBtn.addEventListener('click', () => {
         savePref();
-        window.location.href = '/';
+        hideSplash();
       });
       enterBtn.addEventListener('keyup', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           savePref();
-          window.location.href = '/';
+          hideSplash();
         }
       });
 
+      // Learn More navigates externally
       learnMoreBtn.addEventListener('click', () => {
         savePref();
         window.location.href = 'https://charlestonhacks.mailchimpsites.com/';
@@ -146,7 +148,7 @@
         const delay = isReturning ? 3000 : 5000;
         setTimeout(() => {
           savePref();
-          window.location.href = '/';
+          hideSplash();
         }, delay);
       });
     })();
