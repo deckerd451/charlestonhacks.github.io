@@ -48,9 +48,7 @@ async function logout() {
 }
 
 async function loadOrCreatePersonalNeurons() {
-  const { data, error } = await supabase
-    .from('community')
-    .select('*');
+  const { data, error } = await supabase.from('community').select('*');
 
   if (error) {
     console.error("❌ Supabase fetch error:", error.message);
@@ -174,6 +172,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   loginStatus = document.getElementById('login-status');
 
+  const logoutBtn = document.createElement('button');
+  logoutBtn.id = 'logout-btn';
+  logoutBtn.textContent = 'Sign Out';
+  logoutBtn.onclick = logout;
+  logoutBtn.style.display = 'none';
+  document.getElementById('auth-pane').appendChild(logoutBtn);
+
   document.getElementById('login-btn').onclick = async () => {
     const email = document.getElementById('email').value.trim();
     if (!email) return setAuthStatus("Please enter your email.", true);
@@ -217,7 +222,12 @@ window.addEventListener('DOMContentLoaded', async () => {
       userId = user.id;
       if (loginStatus) loginStatus.textContent = `Welcome back, ${user.email}`;
       showAuthUI(false);
+      document.getElementById('logout-btn').style.display = '';
       await loadOrCreatePersonalNeurons();
+    } else if (!session?.user) {
+      showAuthUI(true);
+      document.getElementById('logout-btn').style.display = 'none';
+      if (loginStatus) loginStatus.textContent = '';
     }
   });
 
@@ -228,6 +238,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     userId = user.id;
     if (loginStatus) loginStatus.textContent = `Welcome back, ${user.email}`;
     showAuthUI(false);
+    document.getElementById('logout-btn').style.display = '';
     await loadOrCreatePersonalNeurons();
   } else {
     showAuthUI(true);
