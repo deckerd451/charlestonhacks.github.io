@@ -217,9 +217,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     if (!neurons.length) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
     hoverNeuron = neurons.find(n => {
       const dx = x - n.x;
       const dy = y - n.y;
