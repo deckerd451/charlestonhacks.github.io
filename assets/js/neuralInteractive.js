@@ -22,6 +22,7 @@ let showAllNames = true;
 let initialized = false;
 let animationStarted = false;
 let hoverNeuron = null;
+let loginStatus = null;
 
 function setAuthStatus(msg, isError = false) {
   const statusEl = document.getElementById('auth-status');
@@ -39,8 +40,8 @@ function showAuthUI(show) {
 
 async function logout() {
   await supabase.auth.signOut();
-  loginStatus.textContent = '';
-      showAuthUI(true);
+  if (loginStatus) loginStatus.textContent = '';
+  showAuthUI(true);
   window.location.reload();
 }
 
@@ -91,7 +92,6 @@ async function loadOrCreatePersonalNeurons() {
     personalData = reFetched;
   }
 
-  // ⚡ Use saved x/y positions first, fallback to clustered layout
   neurons = personalData.map(u => ({
     x: u.x ?? 0,
     y: u.y ?? 0,
@@ -115,29 +115,6 @@ async function loadOrCreatePersonalNeurons() {
     animationId = requestAnimationFrame(animate);
     animationStarted = true;
   }
-}
-
-function clusteredLayout(users, canvasW, canvasH) {
-  const groupBy = u => u.skills?.[0] || u.availability || 'misc';
-  const groups = {};
-  users.forEach(u => (groups[groupBy(u)] = groups[groupBy(u)] || []).push(u));
-  const keys = Object.keys(groups), result = [];
-  const centerX = canvasW / 2, centerY = canvasH / 2, clusterRadius = 220;
-
-  keys.forEach((key, i) => {
-    const angle = (2 * Math.PI * i) / keys.length;
-    const cx = centerX + clusterRadius * Math.cos(angle);
-    const cy = centerY + clusterRadius * Math.sin(angle);
-    groups[key].forEach((u, j) => {
-      const offset = (2 * Math.PI * j) / groups[key].length;
-      const spread = 50 + Math.floor(j / 3) * 20;
-      const x = u.x ?? cx + spread * Math.cos(offset);
-      const y = u.y ?? cy + spread * Math.sin(offset);
-      result.push({ x: +x, y: +y, radius: 18, meta: u });
-    });
-  });
-
-  return result;
 }
 
 function drawNeuron(n, t) {
@@ -215,75 +192,15 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.canvas = canvas;
   window.ctx = ctx;
 
-  let dragging = null;
-  let offsetX = 0, offsetY = 0;
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    if (dragging) {
-      dragging.x = x - offsetX;
-      dragging.y = y - offsetY;
-      drawNetwork(performance.now());
-      return;
-    }
-    if (!neurons.length) return;
-    hoverNeuron = neurons.find(n => {
-      const dx = x - n.x;
-      const dy = y - n.y;
-      return dx * dx + dy * dy < n.radius * n.radius;
-    });
-    updateTooltip(e);
-  });
-
-  canvas.addEventListener('mouseup', async () => {
-    if (dragging && dragging.meta?.id) {
-      const { id } = dragging.meta;
-      const { x, y } = dragging;
-      const { error } = await supabase.from('community')
-        .update({ x: Math.round(x), y: Math.round(y) })
-        .eq('id', id);
-      if (error) console.error('❌ Position save error:', error.message);
-      else console.log('💾 Position saved for', id);
-    }
-    dragging = null;
-  });
-
-  canvas.addEventListener('mousedown', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const target = neurons.find(n => {
-      const dx = x - n.x;
-      const dy = y - n.y;
-      return dx * dx + dy * dy < n.radius * n.radius;
-    });
-    if (target) {
-      dragging = target;
-      offsetX = x - target.x;
-      offsetY = y - target.y;
-    }
-  });
-
-  canvas.addEventListener('mouseleave', () => {
-    hoverNeuron = null;
-    tooltip.style.display = 'none';
-  });
-  canvas = document.getElementById('neural-canvas');
-  ctx = canvas.getContext('2d');
-  tooltip = document.getElementById('tooltip');
-  canvas.width = 1400;
-  canvas.height = 800;
-  window.canvas = canvas;
-  window.ctx = ctx;
-
-  const loginStatus = document.createElement('div');
-  loginStatus.id = 'login-status';
-  loginStatus.style.color = '#0ff';
-  loginStatus.style.textAlign = 'center';
-  loginStatus.style.marginBottom = '10px';
-  document.getElementById('auth-pane').prepend(loginStatus);
+  const loginStatusDiv = document.createElement('div');
+  loginStatusDiv.id = 'login-status';
+  loginStatusDiv.style.color = '#0ff';
+  loginStatusDiv.style.textAlign = 'center';
+  loginStatusDiv.style.margin = '10px auto';
+  loginStatusDiv.style.fontWeight = 'bold';
+  loginStatusDiv.style.fontSize = '16px';
+  document.body.insertBefore(loginStatusDiv, document.body.firstChild);
+  loginStatus = loginStatusDiv;
 
   const logoutBtn = document.createElement('button');
   logoutBtn.id = 'logout-btn';
@@ -309,17 +226,18 @@ window.addEventListener('DOMContentLoaded', async () => {
       initialized = true;
       user = session.user;
       userId = user.id;
+      loginStatus.textContent = `Welcome back, ${user.email}`;
       showAuthUI(false);
       logoutBtn.style.display = '';
       await loadOrCreatePersonalNeurons();
     } else if (!session?.user) {
       showAuthUI(true);
       logoutBtn.style.display = 'none';
+      loginStatus.textContent = '';
     }
   });
 
   const { data: { session } } = await supabase.auth.getSession();
-
   if (session?.user) {
     user = session.user;
     userId = user.id;
@@ -330,7 +248,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       showAuthUI(false);
       document.getElementById('logout-btn').style.display = '';
     }
-
     await loadOrCreatePersonalNeurons();
   } else {
     showAuthUI(true);
