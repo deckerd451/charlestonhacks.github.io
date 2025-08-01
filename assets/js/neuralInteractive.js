@@ -96,31 +96,6 @@ async function loadOrCreatePersonalNeurons() {
   }
 }
 
-// CLICK TO CONNECT HANDLER
-canvas?.addEventListener('click', async (e) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  const clicked = neurons.find(n => Math.hypot(n.x - x, n.y - y) < n.radius);
-  if (!clicked) return selectedNeuron = null;
-
-  if (!selectedNeuron) {
-    if (!clicked.owned) return;
-    selectedNeuron = clicked;
-    console.log('🎯 Select source neuron:', clicked.meta.name);
-  } else if (clicked !== selectedNeuron) {
-    const { error } = await supabase.from('connections').insert({
-      from_id: selectedNeuron.meta.id,
-      to_id: clicked.meta.id
-    });
-    if (!error) {
-      console.log(`🔗 Connection made: ${selectedNeuron.meta.name} → ${clicked.meta.name}`);
-      connections.push({ from: selectedNeuron, to: clicked });
-      selectedNeuron = null;
-    }
-  }
-});
-
 function clusteredLayout(users, canvasW, canvasH) {
   const groupBy = u => u.skills?.[0] || u.availability || 'misc';
   const groups = {};
@@ -231,6 +206,30 @@ window.addEventListener('DOMContentLoaded', async () => {
   } else {
     console.warn("⚠️ Login button not found in DOM.");
   }
+
+  canvas.addEventListener('click', async (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const clicked = neurons.find(n => Math.hypot(n.x - x, n.y - y) < n.radius);
+    if (!clicked) return selectedNeuron = null;
+
+    if (!selectedNeuron) {
+      if (!clicked.owned) return;
+      selectedNeuron = clicked;
+      console.log('🎯 Select source neuron:', clicked.meta.name);
+    } else if (clicked !== selectedNeuron) {
+      const { error } = await supabase.from('connections').insert({
+        from_id: selectedNeuron.meta.id,
+        to_id: clicked.meta.id
+      });
+      if (!error) {
+        console.log(`🔗 Connection made: ${selectedNeuron.meta.name} → ${clicked.meta.name}`);
+        connections.push({ from: selectedNeuron, to: clicked });
+        selectedNeuron = null;
+      }
+    }
+  });
 
   supabase.auth.onAuthStateChange(async (_event, session) => {
     if (session?.user && !initialized) {
