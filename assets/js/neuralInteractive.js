@@ -203,6 +203,14 @@ function animate(time) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  canvas = document.getElementById('neural-canvas');
+  ctx = canvas.getContext('2d');
+  tooltip = document.getElementById('tooltip');
+  canvas.width = 1400;
+  canvas.height = 800;
+  window.canvas = canvas;
+  window.ctx = ctx;
+
   let dragging = null;
   let offsetX = 0, offsetY = 0;
   canvas.addEventListener('mousemove', (e) => {
