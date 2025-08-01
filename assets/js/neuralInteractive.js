@@ -14,7 +14,7 @@ const DEFAULT_NEURONS = [
   { name: "Linus", skills: ["Peer"], interests: ["Open Source"], availability: "offline", endorsements: 2 }
 ];
 
-let neurons = [], connections = [];
+let neurons = [], connections = [], selectedNeuron = null;
 let canvas, ctx, tooltip, user, userId;
 let animationId = null, lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
@@ -53,20 +53,19 @@ async function loadOrCreatePersonalNeurons() {
     return setAuthStatus("User not authenticated properly.", true);
   }
 
-  const { data, error } = await supabase
+  const { data: allNeurons, error } = await supabase
     .from('community')
-    .select('id, name, skills, interests, availability, endorsements, user_id, x, y')
-    .eq('user_id', userId);
+    .select('id, name, skills, interests, availability, endorsements, user_id, x, y');
 
   if (error) {
     console.error("❌ Supabase fetch error:", error.message);
     return setAuthStatus("Supabase error: " + error.message, true);
   }
 
-  console.log("🧠 Neuron fetch result:", data);
-  let personalData = data;
+  const personalNeurons = allNeurons.filter(n => n.user_id === userId);
+  const externalNeurons = allNeurons.filter(n => n.user_id !== userId);
 
-  if (data.length === 0) {
+  if (personalNeurons.length === 0) {
     const defaults = DEFAULT_NEURONS.map((n, i) => ({
       ...n,
       user_id: userId,
@@ -91,15 +90,14 @@ async function loadOrCreatePersonalNeurons() {
       return setAuthStatus("Failed to load inserted neurons.", true);
     }
 
-    personalData = reFetched;
+    personalNeurons.push(...reFetched);
   }
 
-  neurons = personalData.map(u => ({
-    x: u.x ?? 0,
-    y: u.y ?? 0,
-    radius: 18,
-    meta: u
-  }));
+  neurons = [
+    ...personalNeurons.map(u => ({ x: u.x ?? 0, y: u.y ?? 0, radius: 18, meta: u, owned: true })),
+    ...externalNeurons.map(u => ({ x: u.x ?? 0, y: u.y ?? 0, radius: 18, meta: u, owned: false }))
+  ];
+
   window.neurons = neurons;
   window.loadOrCreatePersonalNeurons = loadOrCreatePersonalNeurons;
 
@@ -123,7 +121,7 @@ function drawNeuron(n, t) {
   const pulse = 1 + Math.sin(t / 400 + n.x + n.y) * 0.3;
   const radius = n.radius * pulse;
   const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius);
-  const color = '#0ff';
+  const color = n.owned ? '#0ff' : 'rgba(0,255,255,0.2)';
   glow.addColorStop(0, color);
   glow.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = glow;
@@ -132,7 +130,7 @@ function drawNeuron(n, t) {
   ctx.beginPath(); ctx.arc(n.x, n.y, 5, 0, Math.PI * 2); ctx.fill();
   if (showAllNames) {
     ctx.font = '15px sans-serif';
-    ctx.fillStyle = '#0ff';
+    ctx.fillStyle = color;
     ctx.textAlign = 'center';
     ctx.fillText(n.meta.name, n.x, n.y - radius - 10);
   }
@@ -148,110 +146,26 @@ function drawConnections() {
   });
 }
 
-function drawNetwork(time = 0) {
-  if (!neurons.length) return;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawConnections();
-  neurons.forEach(n => drawNeuron(n, time));
-}
-
-function updateTooltip(event) {
-  if (!hoverNeuron) {
-    tooltip.style.display = 'none';
-    return;
-  }
-
-  const { name, skills, availability, endorsements } = hoverNeuron.meta;
-  tooltip.innerHTML = `
-    <strong>${name}</strong><br>
-    Skills: ${skills?.join(', ') || 'n/a'}<br>
-    Availability: ${availability}<br>
-    Endorsements: ${endorsements}
-  `;
-
+canvas?.addEventListener('click', async (e) => {
   const rect = canvas.getBoundingClientRect();
-  tooltip.style.left = (event.clientX - rect.left + 12) + 'px';
-  tooltip.style.top = (event.clientY - rect.top + 12) + 'px';
-  tooltip.style.display = 'block';
-}
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const clicked = neurons.find(n => Math.hypot(n.x - x, n.y - y) < n.radius);
+  if (!clicked) return selectedNeuron = null;
 
-function animate(time) {
-  if (!document.hidden && time - lastFrame >= FRAME_INTERVAL) {
-    drawNetwork(time);
-    lastFrame = time;
-  }
-  animationId = requestAnimationFrame(animate);
-}
-
-window.addEventListener('DOMContentLoaded', async () => {
-  const sessionData = await supabase.auth.getSession();
-  console.log('🔁 Session after refresh:', sessionData);
-  canvas = document.getElementById('neural-canvas');
-  ctx = canvas.getContext('2d');
-  tooltip = document.getElementById('tooltip');
-  canvas.width = 1400;
-  canvas.height = 800;
-  window.canvas = canvas;
-  window.ctx = ctx;
-
-  const loginStatusDiv = document.createElement('div');
-  loginStatusDiv.id = 'login-status';
-  loginStatusDiv.style.color = '#0ff';
-  loginStatusDiv.style.textAlign = 'center';
-  loginStatusDiv.style.margin = '10px auto';
-  loginStatusDiv.style.fontWeight = 'bold';
-  loginStatusDiv.style.fontSize = '16px';
-  document.body.insertBefore(loginStatusDiv, document.body.firstChild);
-  loginStatus = loginStatusDiv;
-
-  const logoutBtn = document.createElement('button');
-  logoutBtn.id = 'logout-btn';
-  logoutBtn.textContent = 'Sign Out';
-  logoutBtn.onclick = logout;
-  logoutBtn.style.display = 'none';
-  document.getElementById('auth-pane').appendChild(logoutBtn);
-
-  document.getElementById('login-btn').onclick = async () => {
-    const email = document.getElementById('email').value.trim();
-    if (!email) return setAuthStatus("Please enter your email.", true);
-    setAuthStatus("Sending magic link...");
-    const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectTo }
+  if (!selectedNeuron) {
+    if (!clicked.owned) return;
+    selectedNeuron = clicked;
+    console.log('🎯 Select source neuron:', clicked.meta.name);
+  } else if (clicked !== selectedNeuron) {
+    const { error } = await supabase.from('connections').insert({
+      from_id: selectedNeuron.meta.id,
+      to_id: clicked.meta.id
     });
-    setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!", !!error);
-  };
-
-  supabase.auth.onAuthStateChange(async (_event, session) => {
-    if (session?.user && !initialized) {
-      initialized = true;
-      user = session.user;
-      userId = user.id;
-      loginStatus.textContent = `Welcome back, ${user.email}`;
-      showAuthUI(false);
-      logoutBtn.style.display = '';
-      await loadOrCreatePersonalNeurons();
-    } else if (!session?.user) {
-      showAuthUI(true);
-      logoutBtn.style.display = 'none';
-      loginStatus.textContent = '';
+    if (!error) {
+      console.log(`🔗 Connection made: ${selectedNeuron.meta.name} → ${clicked.meta.name}`);
+      connections.push({ from: selectedNeuron, to: clicked });
+      selectedNeuron = null;
     }
-  });
-
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session?.user) {
-    user = session.user;
-    userId = user.id;
-
-    if (!initialized) {
-      initialized = true;
-      loginStatus.textContent = `Welcome back, ${user.email}`;
-      showAuthUI(false);
-      document.getElementById('logout-btn').style.display = '';
-    }
-    await loadOrCreatePersonalNeurons();
-  } else {
-    showAuthUI(true);
   }
 });
