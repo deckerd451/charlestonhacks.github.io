@@ -189,8 +189,9 @@ function updateTooltip(event) {
     Endorsements: ${endorsements}
   `;
 
-  tooltip.style.left = event.pageX + 12 + 'px';
-  tooltip.style.top = event.pageY + 12 + 'px';
+  const rect = canvas.getBoundingClientRect();
+  tooltip.style.left = (event.clientX - rect.left + 12) + 'px';
+  tooltip.style.top = (event.clientY - rect.top + 12) + 'px';
   tooltip.style.display = 'block';
 }
 
