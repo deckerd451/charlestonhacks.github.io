@@ -162,6 +162,27 @@ function animate(time) {
   }
   animationId = requestAnimationFrame(animate);
 }
+function gridLayout(users, canvasW, canvasH) {
+  const n = users.length;
+  const cols = Math.ceil(Math.sqrt(n));
+  const rows = Math.ceil(n / cols);
+  const cellW = canvasW  / (cols + 1);
+  const cellH = canvasH  / (rows + 1);
+
+  return users.map((u, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const x   = cellW * (col + 1);
+    const y   = cellH * (row + 1);
+    return {
+      x: +x,
+      y: +y,
+      radius: 18,
+      meta: u
+    };
+  });
+}
+
 
 // DOMContentLoaded + login handling restored
 window.addEventListener('DOMContentLoaded', async () => {
