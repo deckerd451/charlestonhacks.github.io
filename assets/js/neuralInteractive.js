@@ -163,7 +163,6 @@ function animate(time) {
   animationId = requestAnimationFrame(animate);
 }
 
-// DOMContentLoaded + login handling restored
 window.addEventListener('DOMContentLoaded', async () => {
   canvas = document.getElementById('neural-canvas');
   ctx = canvas.getContext('2d');
@@ -173,39 +172,19 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.canvas = canvas;
   window.ctx = ctx;
 
-  const loginStatusDiv = document.createElement('div');
-  loginStatusDiv.id = 'login-status';
-  loginStatusDiv.style.color = '#0ff';
-  loginStatusDiv.style.textAlign = 'center';
-  loginStatusDiv.style.margin = '10px auto';
-  loginStatusDiv.style.fontWeight = 'bold';
-  loginStatusDiv.style.fontSize = '16px';
-  document.body.insertBefore(loginStatusDiv, document.body.firstChild);
-  loginStatus = loginStatusDiv;
+  loginStatus = document.getElementById('login-status');
 
-  const logoutBtn = document.createElement('button');
-  logoutBtn.id = 'logout-btn';
-  logoutBtn.textContent = 'Sign Out';
-  logoutBtn.onclick = logout;
-  logoutBtn.style.display = 'none';
-  document.getElementById('auth-pane').appendChild(logoutBtn);
-
-  const loginBtn = document.getElementById('login-btn');
-  if (loginBtn) {
-    loginBtn.onclick = async () => {
-      const email = document.getElementById('email').value.trim();
-      if (!email) return setAuthStatus("Please enter your email.", true);
-      setAuthStatus("Sending magic link...");
-      const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: redirectTo }
-      });
-      setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!", !!error);
-    };
-  } else {
-    console.warn("⚠️ Login button not found in DOM.");
-  }
+  document.getElementById('login-btn').onclick = async () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email) return setAuthStatus("Please enter your email.", true);
+    setAuthStatus("Sending magic link...");
+    const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo }
+    });
+    setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!", !!error);
+  };
 
   canvas.addEventListener('click', async (e) => {
     const rect = canvas.getBoundingClientRect();
@@ -236,28 +215,19 @@ window.addEventListener('DOMContentLoaded', async () => {
       initialized = true;
       user = session.user;
       userId = user.id;
-      loginStatus.textContent = `Welcome back, ${user.email}`;
+      if (loginStatus) loginStatus.textContent = `Welcome back, ${user.email}`;
       showAuthUI(false);
-      logoutBtn.style.display = '';
       await loadOrCreatePersonalNeurons();
-    } else if (!session?.user) {
-      showAuthUI(true);
-      logoutBtn.style.display = 'none';
-      loginStatus.textContent = '';
     }
   });
 
   const { data: { session } } = await supabase.auth.getSession();
-  if (session?.user) {
+  if (session?.user && !initialized) {
+    initialized = true;
     user = session.user;
     userId = user.id;
-
-    if (!initialized) {
-      initialized = true;
-      loginStatus.textContent = `Welcome back, ${user.email}`;
-      showAuthUI(false);
-      document.getElementById('logout-btn').style.display = '';
-    }
+    if (loginStatus) loginStatus.textContent = `Welcome back, ${user.email}`;
+    showAuthUI(false);
     await loadOrCreatePersonalNeurons();
   } else {
     showAuthUI(true);
