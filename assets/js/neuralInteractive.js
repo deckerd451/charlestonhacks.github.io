@@ -164,4 +164,26 @@ function animate(time) {
   animationId = requestAnimationFrame(animate);
 }
 
-// DOMContentLoaded + login handling preserved as-is...
+window.addEventListener('DOMContentLoaded', async () => {
+  canvas = document.getElementById('neural-canvas');
+  ctx = canvas.getContext('2d');
+  tooltip = document.getElementById('tooltip');
+  canvas.width = 1400;
+  canvas.height = 800;
+  window.canvas = canvas;
+  window.ctx = ctx;
+
+  loginStatus = document.getElementById('login-status');
+
+  document.getElementById('login-btn').onclick = async () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email) return setAuthStatus("Please enter your email.", true);
+    setAuthStatus("Sending magic link...");
+    const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo }
+    });
+    setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!", !!error);
+  };
+});
