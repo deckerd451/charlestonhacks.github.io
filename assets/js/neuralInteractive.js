@@ -36,6 +36,8 @@ function showAuthUI(show) {
   canvas.style.display = show ? 'none' : 'block';
   canvas.style.width = '100%';
   canvas.style.height = '800px';
+  const tagline = document.getElementById('tagline');
+  if (tagline) tagline.style.display = show ? '' : 'none';
 }
 
 async function logout() {
