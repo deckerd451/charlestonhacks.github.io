@@ -39,7 +39,8 @@ function showAuthUI(show) {
 
 async function logout() {
   await supabase.auth.signOut();
-  showAuthUI(true);
+  loginStatus.textContent = '';
+      showAuthUI(true);
   window.location.reload();
 }
 
@@ -204,6 +205,8 @@ function animate(time) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  const sessionData = await supabase.auth.getSession();
+  console.log('🔁 Session after refresh:', sessionData);
   canvas = document.getElementById('neural-canvas');
   ctx = canvas.getContext('2d');
   tooltip = document.getElementById('tooltip');
@@ -275,6 +278,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.canvas = canvas;
   window.ctx = ctx;
 
+  const loginStatus = document.createElement('div');
+  loginStatus.id = 'login-status';
+  loginStatus.style.color = '#0ff';
+  loginStatus.style.textAlign = 'center';
+  loginStatus.style.marginBottom = '10px';
+  document.getElementById('auth-pane').prepend(loginStatus);
+
   const logoutBtn = document.createElement('button');
   logoutBtn.id = 'logout-btn';
   logoutBtn.textContent = 'Sign Out';
@@ -316,6 +326,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     if (!initialized) {
       initialized = true;
+      loginStatus.textContent = `Welcome back, ${user.email}`;
       showAuthUI(false);
       document.getElementById('logout-btn').style.display = '';
     }
