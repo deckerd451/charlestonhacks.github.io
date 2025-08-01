@@ -47,105 +47,7 @@ async function logout() {
   window.location.reload();
 }
 
-async function loadOrCreatePersonalNeurons() {
-  if (!userId) {
-    console.error("❌ Cannot load neurons — userId is undefined");
-    return setAuthStatus("User not authenticated properly.", true);
-  }
-
-  const { data: allNeurons, error } = await supabase
-    .from('community')
-    .select('id, name, skills, interests, availability, endorsements, user_id, x, y');
-
-  if (error) {
-    console.error("❌ Supabase fetch error:", error.message);
-    return setAuthStatus("Supabase error: " + error.message, true);
-  }
-
-  const personalNeurons = allNeurons.filter(n => n.user_id === userId);
-  const externalNeurons = allNeurons.filter(n => n.user_id !== userId);
-
-  if (personalNeurons.length === 0) {
-    const defaults = DEFAULT_NEURONS.map((n, i) => ({
-      ...n,
-      user_id: userId,
-      x: Math.round(350 + 320 * Math.cos(2 * Math.PI * i / DEFAULT_NEURONS.length)),
-      y: Math.round(350 + 220 * Math.sin(2 * Math.PI * i / DEFAULT_NEURONS.length)),
-    }));
-
-    const { error: insError } = await supabase.from('community').insert(defaults);
-    if (insError) {
-      console.error("❌ Supabase insert error:", insError.message);
-      return setAuthStatus("Insert failed: " + insError.message, true);
-    }
-
-    console.log("✅ Default neurons inserted");
-
-    const { data: reFetched, error: refetchError } = await supabase
-      .from('community')
-      .select('id, name, skills, interests, availability, endorsements, user_id, x, y')
-      .eq('user_id', userId);
-
-    if (refetchError || !reFetched.length) {
-      return setAuthStatus("Failed to load inserted neurons.", true);
-    }
-
-    personalNeurons.push(...reFetched);
-  }
-
-  neurons = [
-    ...personalNeurons.map(u => ({ x: u.x ?? 0, y: u.y ?? 0, radius: 18, meta: u, owned: true })),
-    ...externalNeurons.map(u => ({ x: u.x ?? 0, y: u.y ?? 0, radius: 18, meta: u, owned: false }))
-  ];
-
-  window.neurons = neurons;
-  window.loadOrCreatePersonalNeurons = loadOrCreatePersonalNeurons;
-
-  const connData = await fetchConnections();
-  connections = connData.map(({ from_id, to_id }) => {
-    const from = neurons.find(n => n.meta.id === from_id);
-    const to = neurons.find(n => n.meta.id === to_id);
-    return { from, to };
-  });
-
-  drawNetwork();
-  window.drawNetwork = drawNetwork;
-
-  if (!animationStarted) {
-    animationId = requestAnimationFrame(animate);
-    animationStarted = true;
-  }
-}
-
-function drawNeuron(n, t) {
-  const pulse = 1 + Math.sin(t / 400 + n.x + n.y) * 0.3;
-  const radius = n.radius * pulse;
-  const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius);
-  const color = n.owned ? '#0ff' : 'rgba(0,255,255,0.2)';
-  glow.addColorStop(0, color);
-  glow.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = glow;
-  ctx.beginPath(); ctx.arc(n.x, n.y, radius, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = color;
-  ctx.beginPath(); ctx.arc(n.x, n.y, 5, 0, Math.PI * 2); ctx.fill();
-  if (showAllNames) {
-    ctx.font = '15px sans-serif';
-    ctx.fillStyle = color;
-    ctx.textAlign = 'center';
-    ctx.fillText(n.meta.name, n.x, n.y - radius - 10);
-  }
-}
-
-function drawConnections() {
-  ctx.lineWidth = 1.5;
-  ctx.strokeStyle = 'rgba(0,255,255,0.16)';
-  connections.forEach(({ from, to }) => {
-    if (from && to) {
-      ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
-    }
-  });
-}
-
+// CLICK TO CONNECT HANDLER
 canvas?.addEventListener('click', async (e) => {
   const rect = canvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
@@ -167,5 +69,77 @@ canvas?.addEventListener('click', async (e) => {
       connections.push({ from: selectedNeuron, to: clicked });
       selectedNeuron = null;
     }
+  }
+});
+
+// DOMContentLoaded + login handling restored
+window.addEventListener('DOMContentLoaded', async () => {
+  canvas = document.getElementById('neural-canvas');
+  ctx = canvas.getContext('2d');
+  tooltip = document.getElementById('tooltip');
+  canvas.width = 1400;
+  canvas.height = 800;
+  window.canvas = canvas;
+  window.ctx = ctx;
+
+  const loginStatusDiv = document.createElement('div');
+  loginStatusDiv.id = 'login-status';
+  loginStatusDiv.style.color = '#0ff';
+  loginStatusDiv.style.textAlign = 'center';
+  loginStatusDiv.style.margin = '10px auto';
+  loginStatusDiv.style.fontWeight = 'bold';
+  loginStatusDiv.style.fontSize = '16px';
+  document.body.insertBefore(loginStatusDiv, document.body.firstChild);
+  loginStatus = loginStatusDiv;
+
+  const logoutBtn = document.createElement('button');
+  logoutBtn.id = 'logout-btn';
+  logoutBtn.textContent = 'Sign Out';
+  logoutBtn.onclick = logout;
+  logoutBtn.style.display = 'none';
+  document.getElementById('auth-pane').appendChild(logoutBtn);
+
+  document.getElementById('login-btn').onclick = async () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email) return setAuthStatus("Please enter your email.", true);
+    setAuthStatus("Sending magic link...");
+    const redirectTo = `${window.location.origin}/neural.html?source=neuron`;
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo }
+    });
+    setAuthStatus(error ? "Error: " + error.message : "Check your email for the login link!", !!error);
+  };
+
+  supabase.auth.onAuthStateChange(async (_event, session) => {
+    if (session?.user && !initialized) {
+      initialized = true;
+      user = session.user;
+      userId = user.id;
+      loginStatus.textContent = `Welcome back, ${user.email}`;
+      showAuthUI(false);
+      logoutBtn.style.display = '';
+      await loadOrCreatePersonalNeurons();
+    } else if (!session?.user) {
+      showAuthUI(true);
+      logoutBtn.style.display = 'none';
+      loginStatus.textContent = '';
+    }
+  });
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.user) {
+    user = session.user;
+    userId = user.id;
+
+    if (!initialized) {
+      initialized = true;
+      loginStatus.textContent = `Welcome back, ${user.email}`;
+      showAuthUI(false);
+      document.getElementById('logout-btn').style.display = '';
+    }
+    await loadOrCreatePersonalNeurons();
+  } else {
+    showAuthUI(true);
   }
 });
