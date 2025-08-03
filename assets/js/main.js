@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadLeaderboard();
   updateProfileProgress();
 
-  // Load the draggable Discord chat bubble
-  initCardFlip();
+ 
 
 });
+
