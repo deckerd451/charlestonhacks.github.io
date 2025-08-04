@@ -62,39 +62,6 @@
       transform: scale(1.2);
     }
 
-    /* buttons */
-    .button-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      margin: 2rem 0;
-    }
-
-    .collapsible {
-      flex: 1 1 30%;
-      background: #ff0000;
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: background 0.3s ease;
-    }
-
-    .collapsible:hover {
-      background: #cc0000;
-    }
-
-    /* countdown */
-    .countdown {
-      text-align: center;
-      font-size: 2rem;
-      margin-top: 2rem;
-      font-weight: bold;
-    }
-
     /* headings and strong tags */
     h3, strong {
       color: #fff;
@@ -161,39 +128,11 @@
       </p>
 
       <!-- film buttons -->
-      <div class="button-container">
-        <a class="collapsible" href="https://youtu.be/x4Yqf4iGZrc" target="_blank">FILM 1</a>
-        <a class="collapsible" href="https://youtu.be/ZqfAhiZOMao" target="_blank">FILM 2</a>
-        <a class="collapsible" href="https://youtu.be/GBzS9xmxiTA" target="_blank">FILM 3</a>
-      </div>
-
-      <!-- countdown -->
-      <div id="countdown" class="countdown"></div>
-    </article>
+       <div class="button-container">
+    <a class="btn" href="https://youtu.be/x4Yqf4iGZrc" target="_blank">Film 1</a>
+    <a class="btn" href="https://youtu.be/ZqfAhiZOMao" target="_blank">Film 2</a>
+    <a class="btn" href="https://youtu.be/GBzS9xmxiTA" target="_blank">Film 3</a>
   </div>
-
-  <!-- —— Countdown script —— -->
-  <script>
-    const target = new Date("May 1, 2025 18:00:00").getTime();
-    const tick   = () => {
-      const now = Date.now();
-      let diff = target - now;
-      if (diff < 0) {
-        document.getElementById("countdown").textContent = "EVENT COMPLETE";
-        clearInterval(interval);
-        return;
-      }
-      const d = Math.floor(diff / 1e3 / 60 / 60 / 24);
-      diff %= 24 * 3600 * 1e3;
-      const h = Math.floor(diff / 1e3 / 60 / 60);
-      diff %= 3600 * 1e3;
-      const m = Math.floor(diff / 1e3 / 60);
-      const s = Math.floor((diff % (60 * 1e3)) / 1e3);
-      document.getElementById("countdown").textContent = `${d}d ${h}h ${m}m ${s}s`;
-    };
-    const interval = setInterval(tick, 1000);
-    tick();
-  </script>
 
   <!-- —— Neural background module —— -->
   <script type="module" src="assets/js/neuralBackground.js"></script>
