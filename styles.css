@@ -1327,28 +1327,6 @@ main, .main-wrapper, .media-container {
   animation-delay: 0.6s;
   line-height: 1.5;
 }
-
-/* Skip button styling */
-#skip-splash-btn {
-  margin-top: 1.8rem;
-  background: var(--primary-color);
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-#skip-splash-btn:hover {
-  background: #ff3333;
-  transform: scale(1.05);
-}
-#skip-splash-btn:focus {
-  outline: 2px solid white;
-}
 #splash-content {
   display: flex;
   flex-direction: column;
