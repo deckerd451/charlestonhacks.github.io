@@ -8,16 +8,20 @@
     html, body {
       margin: 0;
       padding: 0;
-      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      font-family: 'Inter','Segoe UI',Arial,sans-serif;
       background: #111;
       color: #eee;
       min-height: 100vh;
+      overflow: hidden; /* prevent scrollbars behind the canvas */
     }
 
+    /* Keep your UI container above the canvas */
     #container {
+      position: relative;
+      z-index: 1;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 28px 16px 0 16px;
+      padding: 28px 16px 0;
       text-align: center;
     }
 
@@ -35,7 +39,7 @@
 
     #auth-pane {
       max-width: 400px;
-      margin: 0 auto 18px auto;
+      margin: 0 auto 18px;
       padding: 20px;
       background: #181818;
       border: 1px solid #2a2a2a;
@@ -53,12 +57,10 @@
       font-size: 1em;
       margin-bottom: 10px;
     }
-
     #auth-pane input[type="email"]:focus {
       outline: none;
       border-color: #0bb;
     }
-
     #auth-pane button {
       padding: 10px 18px;
       background: #0bb;
@@ -69,26 +71,29 @@
       font-size: 1em;
       font-weight: 500;
     }
-
     #auth-pane button:hover {
       background: #099;
     }
-
     #auth-status {
       margin-top: 12px;
       color: #0bb;
       font-size: 0.95em;
     }
 
+    /* —— RESPONSIVE FULL-SCREEN CANVAS —— */
     #neural-canvas {
-      display: none;
-      width: 100%;
-      max-width: 100%;
-      border: 1px solid #2a2a2a;
-      border-radius: 12px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;        /* will show after login */
+      border: none;
+      border-radius: 0;
+      margin: 0;
       background: #181818;
-      box-shadow: 0 2px 12px #000a;
-      margin: 24px auto 0 auto;
+      box-shadow: none;
+      z-index: 0;           /* behind your #container */
     }
 
     #tooltip {
@@ -102,24 +107,32 @@
       pointer-events: none;
       opacity: 0.95;
       display: none;
-      z-index: 1000;
+      z-index: 2;           /* on top of everything */
     }
   </style>
 </head>
 <body>
   <div id="container">
     <div id="title">Dex AGI Neural Network</div>
-    <div id="desc">Visualize and arrange your connections.<br>Sign in to save your layout privately.</div>
+    <div id="desc">
+      Visualize and arrange your connections.<br />
+      Sign in to save your layout privately.
+    </div>
     <div id="auth-pane">
       <input id="email" type="email" placeholder="Enter your email" />
       <button id="login-btn">Sign In / Sign Up (Magic Link)</button>
       <div id="auth-status"></div>
+      <button id="logout-btn" style="display:none; margin-top:10px;">
+        Sign Out
+      </button>
     </div>
-    <canvas id="neural-canvas" width="1400" height="800"></canvas>
-    <div id="tooltip"></div>
   </div>
 
-  <!-- Main logic: auth + visualization -->
+  <!-- responsive, full-screen canvas -->
+  <canvas id="neural-canvas"></canvas>
+  <div id="tooltip"></div>
+
+  <!-- your existing logic lives here -->
   <script type="module" src="assets/js/neuralInteractive.js"></script>
 </body>
 </html>
