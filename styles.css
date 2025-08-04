@@ -1112,6 +1112,103 @@ main, .main-wrapper, .media-container {
   z-index: 10;
 }
 /* ==========================================================================
+   SPLASH SCREEN STYLES
+   ========================================================================== */
+
+/* Splash base style */
+#splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--background-color, black);
+  color: var(--text-color, white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: opacity 0.7s ease;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fade-out class (already in your CSS, retained here for clarity) */
+#splash-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Splash logo animation */
+#splash-logo {
+  width: clamp(180px, 30vw, 300px);
+  margin-bottom: 1rem;
+  animation: bounce-in 1s ease;
+}
+
+/* Title and description fade-in */
+#splash-title,
+#splash-desc {
+  opacity: 0;
+  animation: fadeInUp 0.9s ease forwards;
+}
+#splash-title {
+  font-size: 2rem;
+  animation-delay: 0.3s;
+}
+#splash-desc {
+  font-size: 1.1rem;
+  max-width: 85%;
+  animation-delay: 0.6s;
+  line-height: 1.5;
+}
+#splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  gap: 1.2rem; /* <- add this for nice vertical spacing between elements */
+}
+#splash-desc {
+  font-size: 1.1rem;
+  max-width: 600px;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Optional: splash background image overlay for depth */
+#splash-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg-url) no-repeat center center;
+  background-size: cover;
+   height: 100vh; /* Add this */
+  opacity: 0.2;
+  z-index: -1;
+  filter: blur(3px);
+}
+
+/* Bounce-in keyframe */
+@keyframes bounce-in {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Accessibility: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* ==========================================================================
    NEURAL NETWORK (EXPERIMENTAL) this will be updated a lot!!!!!!!!!!!!!!!!!!
    ========================================================================== */
 #neural-bg {
@@ -1275,104 +1372,6 @@ main, .main-wrapper, .media-container {
     padding: 6px 10px;
   }
 }
-
-
-/* ==========================================================================
-   SPLASH SCREEN STYLES
-   ========================================================================== */
-
-/* Splash base style */
-#splash-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: var(--background-color, black);
-  color: var(--text-color, white);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  transition: opacity 0.7s ease;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Fade-out class (already in your CSS, retained here for clarity) */
-#splash-overlay.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Splash logo animation */
-#splash-logo {
-  width: clamp(180px, 30vw, 300px);
-  margin-bottom: 1rem;
-  animation: bounce-in 1s ease;
-}
-
-/* Title and description fade-in */
-#splash-title,
-#splash-desc {
-  opacity: 0;
-  animation: fadeInUp 0.9s ease forwards;
-}
-#splash-title {
-  font-size: 2rem;
-  animation-delay: 0.3s;
-}
-#splash-desc {
-  font-size: 1.1rem;
-  max-width: 85%;
-  animation-delay: 0.6s;
-  line-height: 1.5;
-}
-#splash-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 90%;
-  margin: 0 auto;
-  text-align: center;
-  gap: 1.2rem; /* <- add this for nice vertical spacing between elements */
-}
-#splash-desc {
-  font-size: 1.1rem;
-  max-width: 600px;
-  line-height: 1.5;
-  text-align: center;
-  margin: 0 auto;
-}
-
-/* Optional: splash background image overlay for depth */
-#splash-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--bg-url) no-repeat center center;
-  background-size: cover;
-   height: 100vh; /* Add this */
-  opacity: 0.2;
-  z-index: -1;
-  filter: blur(3px);
-}
-
-/* Bounce-in keyframe */
-@keyframes bounce-in {
-  0% { transform: scale(0.5); opacity: 0; }
-  60% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(1); }
-}
-
-/* Accessibility: prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
 
 
 /* ==========================================================================
