@@ -1349,7 +1349,9 @@ main, .main-wrapper, .media-container {
 }
 
 
-/* Fixed UI (button + login info) */
+/* ==========================================================================
+  NEW TEXT FORMATTING!!!!!
+   ========================================================================== */
 #ui-fixed {
   position: fixed;
   top: 10px;
@@ -1371,6 +1373,44 @@ main, .main-wrapper, .media-container {
     font-size: 12px;
     padding: 6px 10px;
   }
+   /* Make all your main content left-aligned and nicely spaced */
+#main {
+  text-align: left;          /* override the global centering */
+  line-height: 1.6;          /* more breathing room between lines */
+}
+
+/* Give paragraphs some bottom margin */
+#main p {
+  margin-bottom: 1rem;
+}
+
+/* Style your lists for better readability */
+#main ul {
+  margin: 1rem 0;
+  padding-left: 1.2rem;      /* indent bullets */
+}
+#main ul li {
+  margin-bottom: .5rem;
+}
+
+/* Headings should have space above & below */
+#main h3 {
+  margin: 1.5rem 0 .75rem;
+  font-size: 1.4rem;         /* feel free to tweak */
+  line-height: 1.3;
+}
+
+/* Strong tags inside paragraphs */
+#main p strong {
+  color: #ffd700;            /* or whatever accent color you like */
+}
+
+/* And if you want all text in your box to stay at a comfortable width: */
+#main {
+  max-width: 760px;          /* never let lines go super-wide */
+  margin: 2rem auto;         /* center the box horizontally */
+}
+
 }
 
 
