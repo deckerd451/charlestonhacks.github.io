@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CharlestonHacks Swag Voting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Britannic+Bold:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #FF0000;
+      --secondary-color: #FFD700;
+      --text-color: white;
+      --background-color: black;
+      --border-radius: 8px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      font-family: 'Britannic Bold', Arial, sans-serif;
+      position: relative;
+      text-align: center;
+      margin: 0;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: url('images/background.webp') no-repeat center center;
+      background-size: cover;
+      z-index: -1;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 12px 60px 12px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background: transparent;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 18px auto;
+      width: min(100%, 360px);
+      max-width: 90vw;
+      height: auto;
+      filter: drop-shadow(0 2px 16px #222);
+      transition: width 0.3s;
+    }
+    .section-title {
+      color: var(--secondary-color);
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 12px #000;
+      background: linear-gradient(135deg, #ffd700, #ff6b35);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      color: var(--text-color);
+      font-size: 1.2rem;
+      opacity: 0.85;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .swag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 24px;
+      margin: 24px 0;
+      width: 100%;
+      justify-items: center;
+    }
+    .swag-item {
+      background: #232323;
+      border-radius: var(--border-radius);
+      padding: 18px 12px 12px 12px;
+      text-align: center;
+      box-shadow: 0 2px 12px #0008;
+      transition: box-shadow 0.25s, transform 0.15s;
+      position: relative;
+    }
+    .swag-item img {
+      width: 92px;
+      height: 92px;
+      object-fit: contain;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px #ffd70080;
+      cursor: zoom-in;
+      background: #1a1a1a;
+      transition: transform 0.21s, box-shadow 0.2s;
+      border: 2.5px solid #ffd70033;
+    }
+    .swag-item img:hover {
+      transform: scale(1.13) rotate(-2deg);
+      box-shadow: 0 0 24px #ffd700cc;
+      z-index: 2;
+    }
+    .swag-item label {
+      color: var(--secondary-color);
+      font-size: 1.1em;
+      margin-top: 4px;
+      display: block;
+      cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 0.02em;
+    }
+    .vote-btn {
+      margin-top: 8px;
+      padding: 8px 22px;
+      font-size: 1.08em;
+      background: linear-gradient(135deg,#ffd700,#ff6b35);
+      color: #1a1a1a;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 12px #ffd70066;
+      transition: background 0.3s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .vote-btn:hover { background: #FFC000; }
+    .success-message {
+      color: #00FF87;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 18px;
+      font-size: 1.15em;
+      animation: fadeIn 0.5s;
+    }
+    .leaderboard {
+      margin: 32px auto 0 auto;
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 10px rgba(255,215,0,0.25);
+    }
+    .leaderboard h2 { color: #ffd700; font-size: 1.3em; margin-bottom: 12px; }
+    .leaderboard-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 6px 0;
+      font-size: 1.09em;
+      color: #ffd700;
+    }
+    .leaderboard-rank { font-weight: bold; color: #ffd700; width: 24px; }
+    .leaderboard-swag { flex: 1; text-align: left; }
+    .leaderboard-count { color: #ffd700; }
+    @media (max-width: 800px) {
+      .swag-grid { grid-template-columns: 1fr 1fr;}
+    }
+    @media (max-width: 480px) {
+      .swag-grid { grid-template-columns: 1fr;}
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <img src="icons/header swag.webp" alt="CharlestonHacks Logo" class="logo" />
+    <span class="section-title"><i class="fas fa-gift"></i> Swag Voting</span>
+    <div class="subtitle">
+      Vote for your favorite swag! See what's trending below.<br>
+      <span style="color:#FFD700; font-weight:bold;">Leaderboard shows top-voted swag.</span>
+    </div>
+    <div class="swag-grid" id="swagGrid"></div>
+    <div class="success-message" id="successMsg" style="display:none;"></div>
+    <div class="leaderboard" id="leaderboard-section">
+      <h2>Most Popular Swag</h2>
+      <div id="leaderboard-rows"></div>
+    </div>
+  </div>
+  <script>
+    // --- Swag Items List ---
+    const swagItems = [
+      { name: "T-Shirt", img: "icons/tshirt.webp" },
+      { name: "Sticker", img: "icons/sticker.webp" },
+      { name: "Hat", img: "images/hat.png" },
+      { name: "Hoodie", img: "images/hoodie.png" },
+      { name: "Mug", img: "images/mug.png" },
+      { name: "Gauntlet", img: "icons/gauntlet.webp" }
+    ];
+
+    // --- DOM Elements ---
+    const swagGrid = document.getElementById('swagGrid');
+    const successMsg = document.getElementById('successMsg');
+    const leaderboardRows = document.getElementById('leaderboard-rows');
+
+    // --- Supabase Setup ---
+    // You must have your Supabase client setup
+    // Example: const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // --- Render Swag Items with Vote Buttons ---
+    function renderSwagItems() {
+      swagGrid.innerHTML = '';
+      swagItems.forEach(item => {
+        const swagDiv = document.createElement('div');
+        swagDiv.className = 'swag-item';
+        swagDiv.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" data-large="${item.img}" data-caption="${item.name}">
+          <label>${item.name}</label>
+          <button class="vote-btn" data-swag="${item.name}"><i class="fa fa-thumbs-up"></i> Vote</button>
+        `;
+        swagGrid.appendChild(swagDiv);
+      });
+    }
+
+    // --- Voting Handler ---
+    swagGrid.addEventListener('click', async function(e) {
+      const voteBtn = e.target.closest('.vote-btn');
+      if(!voteBtn) return;
+      const swagName = voteBtn.getAttribute('data-swag');
+      voteBtn.disabled = true;
+
+      try {
+        // Fetch current swag votes from Supabase
+        let { data, error } = await supabaseClient.from('swag_votes').select('*').eq('swag', swagName).single();
+        let currentVotes = data && data.votes ? data.votes : 0;
+        // Update votes
+        if(data) {
+          const { error: updateError } = await supabaseClient.from('swag_votes').update({ votes: currentVotes + 1 }).eq('swag', swagName);
+          if(updateError) throw updateError;
+        } else {
+          // If swag doesn't exist, insert it
+          const { error: insertError } = await supabaseClient.from('swag_votes').insert([{ swag: swagName, votes: 1 }]);
+          if(insertError) throw insertError;
+        }
+        successMsg.textContent = `You voted for "${swagName}"!`;
+        successMsg.style.display = "block";
+        setTimeout(() => { successMsg.style.display = "none"; }, 1800);
+        loadLeaderboard();
+      } catch (err) {
+        console.error("Voting error:", err);
+        successMsg.textContent = `Vote failed: ${err.message}`;
+        successMsg.style.display = "block";
+        setTimeout(() => { successMsg.style.display = "none"; }, 2500);
+      } finally {
+        voteBtn.disabled = false;
+      }
+    });
+
+    // --- Leaderboard Loader ---
+    async function loadLeaderboard() {
+      try {
+        const { data, error } = await supabaseClient.from('swag_votes').select('*');
+        if (error) throw error;
+        const swagCounts = {};
+        swagItems.forEach(item => swagCounts[item.name] = 0);
+        data.forEach(row => {
+          swagCounts[row.swag] = row.votes;
+        });
+        const sortedSwag = Object.entries(swagCounts).sort(([, countA], [, countB]) => countB - countA);
+        leaderboardRows.innerHTML = '';
+        if (sortedSwag.length === 0) {
+          leaderboardRows.innerHTML = '<p>No votes yet. Be the first!</p>';
+          return;
+        }
+        sortedSwag.forEach(([swag, count], idx) => {
+          const row = document.createElement('div');
+          row.className = 'leaderboard-row';
+          row.innerHTML = `
+            <span class="leaderboard-rank">${idx + 1}.</span>
+            <span class="leaderboard-swag">${swag}</span>
+            <span class="leaderboard-count">${count} <i class="fa fa-thumbs-up"></i></span>
+          `;
+          leaderboardRows.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Error loading leaderboard:", error.message);
+        leaderboardRows.innerHTML = '<p style="color:red;">Failed to load leaderboard.</p>';
+      }
+    }
+
+    // --- INIT ---
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSwagItems();
+      loadLeaderboard();
+    });
+  </script>
+</body>
+</html>
