@@ -1,279 +1,202 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta name="description" content="30 Second AI Film Fest and Charleston Tech Week" />
-    <title>30 Second AIFF</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="description" content="30 Second AI Film Fest and Charleston Tech Week" />
+  <title>30 Second AIFF</title>
 
-    <!-- SEO and Social Media Tags -->
-    <meta property="og:title" content="30 Second AI Film Fest and Charleston Tech Week" />
-    <meta property="og:description" content="Join us for the 30 Second AI Film Fest during Charleston Tech Week. Create innovative, AI-powered short films in just 3 hours!" />
-    <meta property="og:image" content="images/banner.png" />
-    <meta property="og:url" content="https://charlestonhacks.github.io/techweek.html" />
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="30 Second AI Film Fest and Charleston Tech Week" />
+  <meta property="og:description" content="Join us for the 30 Second AI Film Fest during Charleston Tech Week. Create innovative, AI-powered short films in just 3 hours!" />
+  <meta property="og:image" content="images/banner.png" />
+  <meta property="og:url" content="https://charlestonhacks.github.io/techweek.html" />
 
-    <!-- Preload the main image -->
-    <link rel="preload" as="image" href="images/banner.png">
-    <!-- Where the background image is referenced -->
-    <link rel="stylesheet" href="styles.css">
-    
-    <!-- Main Stylesheets -->
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript>
-        <link rel="stylesheet" href="assets/css/noscript.css" />
-    </noscript>
+  <!-- Preload main banner -->
+  <link rel="preload" as="image" href="images/banner.png">
 
-    <!-- FontAwesome for social media icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Core styles -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript>
+    <link rel="stylesheet" href="assets/css/noscript.css" />
+  </noscript>
 
-    <!-- Background Image Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
+  <!-- FontAwesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-r4IvMG6jLMbCwN9No0uqPAjq2eKL6PHflfOrh5PlhqlI2eNZwUOgxIHspAE55a9YMHhjwvDfg2EXeaXsIGVvzg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 
-    <style>
-        /* General body background */
-        body {
-           background-size: cover; 
-            background-position: center center; 
-            background-attachment: fixed; 
-            color: #ffffff; /* Text color */
-            font-family: Arial, sans-serif;
-        }
+  <style>
+    /* ————————— BODY & BACKDROP ————————— */
+    body {
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      background: transparent;
+    }
 
-        /* Styling for main content container */
-        #main {
-            background-color: rgba(0, 0, 0, 0.5); 
-            padding: 20px;
-            border-radius: 10px;
-            color: #ffffff; /* Text color */
-        }
+    /* main content wrapper */
+    #main {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 8px;
+    }
 
-        /* Button container */
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            color: #ffffff; /* Text color */
-        }
+    /* responsive images */
+    .zoom-image {
+      max-width: 100%;
+      display: block;
+      margin: 0 auto 2rem;
+      transition: transform 0.3s ease;
+    }
 
-        /* Collapsible button */
-        .collapsible {
-            background-color: #ff0000;
-            color: #ffffff; /* Text color */
-            padding: 15px;
-            width: 48%;
-            border: none;
-            text-align: center;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+    .zoom-image:hover {
+      transform: scale(1.2);
+    }
 
-        .collapsible:hover {
-            background-color: #cc0000;
-        }
+    /* buttons */
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin: 2rem 0;
+    }
 
-        /* Image zoom effect */
-        .zoom-image {
-            max-width: 100%;
-            display: block;
-            margin: 0 auto 40px auto;
-        }
+    .collapsible {
+      flex: 1 1 30%;
+      background: #ff0000;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
 
-        .zoom-image:hover {
-            transform: scale(1.2);
-            transition: transform 0.3s ease;
-        }
+    .collapsible:hover {
+      background: #cc0000;
+    }
 
-        /* Countdown Timer Styles */
-        .countdown {
-            font-size: 42px;
-            text-align: center;
-            margin: 20px 0;
-            padding: 10px;
-            border-radius: 5px;
-            color: #ffffff; /* Text color */
-            font-weight: bold;
-        }
+    /* countdown */
+    .countdown {
+      text-align: center;
+      font-size: 2rem;
+      margin-top: 2rem;
+      font-weight: bold;
+    }
 
-        /* Footer styling */
-        footer#footer {
-            text-align: center;
-            padding: 20px;
-            box-shadow: none;
-            color: #ffffff; /* Text color */
-        }
+    /* headings and strong tags */
+    h3, strong {
+      color: #fff;
+    }
 
-        footer#footer .icons {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            color: #ffffff; /* Text color */
-        }
-
-        footer#footer .icons li {
-            display: inline-block;
-            margin: 10px;
-            color: #ffffff; /* Text color */
-        }
-
-        footer#footer .icons li a {
-            color: #ffffff; /* Text color */
-            font-size: 24px;
-            text-decoration: none;
-        }
-
-        footer#footer .icons li a:hover {
-            color: #cc0000;
-        }
-
-        /* Ensure h3 titles are white */
-        h3 {
-            color: #ffffff; /* Set the color to white */
-        }
-
-        /* Ensure strong elements are white */
-        strong {
-            color: #ffffff; /* Set the color to white */
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .zoom-image {
-                width: 90%;
-                margin: 20px auto;
-            }
-
-            div#main {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                padding: 10px;
-            }
-
-            .button-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .collapsible {
-                width: 90%;
-                margin-bottom: 10px;
-            }
-
-            .video-container video {
-                width: 90%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .video-container video {
-                width: 95%;
-            }
-        }
-    </style>
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .button-container {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6NDKG07DY6');
-</script>
 
 <body class="is-preload">
-    <!-- Main Content -->
-    <div id="main">
-        <article class="post featured">
-            <header class="major">
-                <a class="image main" href="index.html">
-                    <img src="assets/chbackbuttonred.png" alt="Back Button" style="width: 300px;" />
-                </a>
-            </header>
-            <div>
-                <!-- Lightbox Trigger for Hackathon Poster (Now Smaller Initially) -->
-                <a class="image main" onclick="openVideo()">
-                    <img src="images/squarebanner.jpg" alt="Hackathon Poster" class="zoom-image" />
-                </a>
-            </div>
+  <!-- —— Neural background canvas —— -->
+  <canvas id="neural-bg"></canvas>
 
-            <h3>Lights, Camera-AI! CharlestonHacks presents the 30 Second AI Film Fest.</h3>
-            <p>The 30 Second AI Film Fest is a 3-hour AI-generated video hackathon where participants will create
-                innovative, AI-powered 30-second short films. Hosted by CharlestonHacks as part of Dig South and
-                Charleston Tech Week, this event encourages creativity, experimentation, and storytelling through
-                AI-generated content.</p>
+  <!-- —— Main content —— -->
+  <div id="main">
+    <article class="post featured">
+      <header class="major">
+        <a href="index.html"><img src="assets/chbackbuttonred.png" alt="Back" style="width:200px;"></a>
+      </header>
 
-            <h3>30-Second Impact – Our Theme</h3>
-            <p>A great film isn’t just action, it’s a feeling. In just 30 seconds, craft a cinematic moment that captivates, moves, 
-                or surprises us and makes us feel something unforgettable. Whether it’s awe, joy, or suspense, 
-                every frame must count. Use AI tools to push creative boundaries and craft a cinematic moment.</p>
-            
-            <strong>Date & Time:</strong> May 1st, 6-9 PM<br>
-            <strong>Location:</strong> Simmons Center, College of Charleston, Room 180
-            <hr>
+      <img src="images/squarebanner.jpg" alt="Hackathon Poster" class="zoom-image" />
 
-            <h3>Rules, Terms and Event Overview</h3>
-            <p><strong>Team Formation:</strong> Participants competed solo and in teams of up to 5 people.</p>
-            <p><strong>AI Usage & Tools:</strong> Films were be created entirely within the 3-hour event window. Teams
-                used at least one AI-powered tool like OpenArt, our featured AI film sponsor.</p>
-            <p><strong>Film Requirements:</strong> Each film was 30 seconds long and content must
-                be PG-level and told a cohesive story or conveyed a clear concept.</p>
-            <p><strong>Submission & Presentation:</strong>Films were presented live to the audience and judges.</p>
-            <p>It was an unforgettable night of creativity, tech, and innovation!</p>
-            <hr>
-            <p>Congratulations to all the competitors of the 30-Second AI Film Fest! A big thanks to all of our sponsors, 
-                especially our AI Film sponsor OpenArt, who provided the platform we used during the event.</p>
+      <h3>Lights, Camera-AI! CharlestonHacks presents the 30 Second AI Film Fest.</h3>
+      <p>
+        The 30 Second AI Film Fest is a 3-hour AI-generated video hackathon where participants will create
+        innovative, AI-powered 30-second short films. Hosted by CharlestonHacks as part of Dig South and
+        Charleston Tech Week.
+      </p>
 
-<p>And now the Winners!</p>
+      <h3>30-Second Impact – Our Theme</h3>
+      <p>
+        In just 30 seconds, craft a cinematic moment that captivates or surprises us and makes us feel something
+        unforgettable. Use AI tools to push creative boundaries.
+      </p>
 
-<P>Audience Favorite
- “What?” by Max Krause and Mike Astle</P>
+      <p><strong>Date &amp; Time:</strong> May 1, 2025 | 6–9 PM<br>
+      <strong>Location:</strong> Simmons Center, College of Charleston, Room 180</p>
 
-<P>Best Film
- “Six Words” by John Doyle</P>
+      <hr>
 
-<P>Most Creative Use of AI
- “Final Arc” by Imran Mujawar</p>
-            <!-- Button Container -->
-            <div class="button-container">
-                <!-- Event Page Button -->
-                <a class="collapsible" href="https://www.youtube.com/watch?v=x4Yqf4iGZrc" target="_blank" style="font-weight: bold;">FILM 1</a>
-                <a class="collapsible" href="https://www.youtube.com/watch?v=ZqfAhiZOMao" target="_blank" style="font-weight: bold;">FILM 2</a>
-                <!-- Playlist Button as Link -->
-                <a class="collapsible" href="https://www.youtube.com/watch?v=GBzS9xmxiTA" target="_blank" style="font-weight: bold;">FILM 3</a>
-            </div>
+      <h3>Rules &amp; Overview</h3>
+      <ul>
+        <li><strong>Team Formation:</strong> Solo or teams up to 5</li>
+        <li><strong>AI Usage:</strong> Must use at least one AI tool within 3-hour window</li>
+        <li><strong>Film:</strong> 30-sec, PG-level, cohesive story</li>
+        <li><strong>Presentation:</strong> Live to audience &amp; judges</li>
+      </ul>
 
-            <!-- Countdown Timer -->
-            <div id="countdown" class="countdown"></div>
-        </article>
-    </div>
+      <hr>
 
-    <script>
-        // Set the date we're counting down to
-        var countDownDate = new Date("May 1, 2025 18:00:00").getTime();
+      <p>
+        Congrats to all participants! Special thanks to our AI film sponsor, OpenArt.
+      </p>
 
-        // Update the count down every 1 second
-        var x = setInterval(function() {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countdown").innerHTML = "EVENT COMPLETE";
-            }
-        }, 1000);
-    </script>
+      <h3>Winners</h3>
+      <p>Audience Favorite: “What?” by Max Krause &amp; Mike Astle<br>
+         Best Film: “Six Words” by John Doyle<br>
+         Most Creative Use of AI: “Final Arc” by Imran Mujawar
+      </p>
 
+      <!-- film buttons -->
+      <div class="button-container">
+        <a class="collapsible" href="https://youtu.be/x4Yqf4iGZrc" target="_blank">FILM 1</a>
+        <a class="collapsible" href="https://youtu.be/ZqfAhiZOMao" target="_blank">FILM 2</a>
+        <a class="collapsible" href="https://youtu.be/GBzS9xmxiTA" target="_blank">FILM 3</a>
+      </div>
+
+      <!-- countdown -->
+      <div id="countdown" class="countdown"></div>
+    </article>
+  </div>
+
+  <!-- —— Countdown script —— -->
+  <script>
+    const target = new Date("May 1, 2025 18:00:00").getTime();
+    const tick   = () => {
+      const now = Date.now();
+      let diff = target - now;
+      if (diff < 0) {
+        document.getElementById("countdown").textContent = "EVENT COMPLETE";
+        clearInterval(interval);
+        return;
+      }
+      const d = Math.floor(diff / 1e3 / 60 / 60 / 24);
+      diff %= 24 * 3600 * 1e3;
+      const h = Math.floor(diff / 1e3 / 60 / 60);
+      diff %= 3600 * 1e3;
+      const m = Math.floor(diff / 1e3 / 60);
+      const s = Math.floor((diff % (60 * 1e3)) / 1e3);
+      document.getElementById("countdown").textContent = `${d}d ${h}h ${m}m ${s}s`;
+    };
+    const interval = setInterval(tick, 1000);
+    tick();
+  </script>
+
+  <!-- —— Neural background module —— -->
+  <script type="module" src="assets/js/neuralBackground.js"></script>
 </body>
 </html>
