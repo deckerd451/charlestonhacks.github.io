@@ -35,3 +35,10 @@ export async function searchUserByName() {
     DOMElements.cardContainer.innerHTML = '<span style="color:red;">Error fetching data.</span>';
   }
 }
+
+/ 
+export function setupSearchHandlers() {
+  DOMElements.findTeamBtn.addEventListener('click', findMatchingUsers);
+  DOMElements.searchNameBtn.addEventListener('click', searchUserByName);
+}
+
