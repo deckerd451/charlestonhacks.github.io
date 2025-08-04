@@ -1347,11 +1347,57 @@ main, .main-wrapper, .media-container {
   opacity: 1;
   visibility: visible;
 }
+/* ──────────────────────────────────────────────────── */
+/* 30-Second AIFF page overrides & helpers             */
+/* ──────────────────────────────────────────────────── */
 
+/* Main content wrapper */
+#main {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: left;
+  line-height: 1.6;
+}
 
-/* ==========================================================================
-  NEW TEXT FORMATTING!!!!!
-   ========================================================================== */
+/* Paragraph spacing */
+#main p {
+  margin-bottom: 1rem;
+}
+
+/* Lists readability */
+#main ul {
+  margin: 1rem 0;
+  padding-left: 1.2rem;
+}
+#main ul li {
+  margin-bottom: .5rem;
+}
+
+/* Zoom-on-hover images */
+.zoom-image {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto 2rem;
+  transition: transform 0.3s ease;
+}
+.zoom-image:hover {
+  transform: scale(1.2);
+}
+
+/* Small-screen button stacking */
+@media (max-width: 600px) {
+  .button-container {
+    flex-direction: column;
+    gap: .5rem;
+  }
+}
+
+/* ──────────────────────────────────────────────────── */
+/* If you have a “#ui-fixed” overlay or a “#toggle-names” button, tack these on; otherwise remove them */
+/* ──────────────────────────────────────────────────── */
 #ui-fixed {
   position: fixed;
   top: 10px;
@@ -1366,6 +1412,7 @@ main, .main-wrapper, .media-container {
   flex-direction: column;
   gap: 8px;
 }
+
 @media (max-width: 600px) {
   #toggle-names {
     bottom: 70px;
@@ -1373,44 +1420,6 @@ main, .main-wrapper, .media-container {
     font-size: 12px;
     padding: 6px 10px;
   }
-   /* Make all your main content left-aligned and nicely spaced */
-#main {
-  text-align: left;          /* override the global centering */
-  line-height: 1.6;          /* more breathing room between lines */
-}
-
-/* Give paragraphs some bottom margin */
-#main p {
-  margin-bottom: 1rem;
-}
-
-/* Style your lists for better readability */
-#main ul {
-  margin: 1rem 0;
-  padding-left: 1.2rem;      /* indent bullets */
-}
-#main ul li {
-  margin-bottom: .5rem;
-}
-
-/* Headings should have space above & below */
-#main h3 {
-  margin: 1.5rem 0 .75rem;
-  font-size: 1.4rem;         /* feel free to tweak */
-  line-height: 1.3;
-}
-
-/* Strong tags inside paragraphs */
-#main p strong {
-  color: #ffd700;            /* or whatever accent color you like */
-}
-
-/* And if you want all text in your box to stay at a comfortable width: */
-#main {
-  max-width: 760px;          /* never let lines go super-wide */
-  margin: 2rem auto;         /* center the box horizontally */
-}
-
 }
 
 
