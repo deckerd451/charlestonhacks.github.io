@@ -1382,12 +1382,23 @@ main, .main-wrapper, .media-container {
   background: black; /* Optional */
 }
 
-/* Canvas element spans large area */
+/* Make the neural canvas cover the entire window */
 #neural-canvas {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  border: none;
+  background-color: #111; /* or whatever your background is */
 }
+
+/* Hide auth UI when signed in */
+#auth-pane.hidden {
+  display: none;
+}
+
 .tooltip {
   position: absolute;
   background: rgba(0, 0, 0, 0.85);
