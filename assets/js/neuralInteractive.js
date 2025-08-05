@@ -28,15 +28,14 @@ function setAuthStatus(msg, isError = false) {
   statusEl.textContent = msg;
   statusEl.className = isError ? 'error' : 'success';
 }
+function showAuthUI(show) {
+  // hide or show the entire UI container above the canvas
+  document.getElementById('container').style.display = show ? '' : 'none';
 
- function showAuthUI(show) {
--  document.getElementById('auth-pane').style.display = show ? '' : 'none';
-+  // hide or show everything that sits above the canvas
-+  document.getElementById('container').style.display = show ? '' : 'none';
+  const canvasEl = document.getElementById('neural-canvas');
+  canvasEl.style.display = show ? 'none' : 'block';
+}
 
-   const canvasEl = document.getElementById('neural-canvas');
-   canvasEl.style.display = show ? 'none' : 'block';
- }
 
 
 async function logout() {
