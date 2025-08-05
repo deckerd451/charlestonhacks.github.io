@@ -8,10 +8,6 @@ window.supabase = supabase; // expose globally for console access
 
 const DEFAULT_NEURONS = [
   { name: "You",   skills: ["Explorer"], interests: ["AI", "Networks"], availability: "online",  endorsements: 3 },
-  { name: "Ada",   skills: ["Mentor"],   interests: ["Math", "Logic"],   availability: "offline", endorsements: 11 },
-  { name: "Grace", skills: ["Peer"],     interests: ["Coding", "Music"], availability: "online",  endorsements: 7 },
-  { name: "Alan",  skills: ["Partner"],  interests: ["AI", "Art"],      availability: "online",  endorsements: 5 },
-  { name: "Linus", skills: ["Peer"],     interests: ["Open Source"],    availability: "offline", endorsements: 2 }
 ];
 
 let neurons = [], connections = [], selectedNeuron = null;
