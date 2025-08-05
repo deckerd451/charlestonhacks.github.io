@@ -76,7 +76,9 @@ async function loadOrCreatePersonalNeurons() {
   ];
 
   // ** GRID LAYOUT **
-  neurons = arrangeNeuronsInGrid(combined);
+ neurons = clusteredLayout(combined, canvas.width, canvas.height);;
+ console.log('🧠 Loaded neurons:', neurons);
+
   window.neurons = neurons;
 
   const connData = await fetchConnections();
@@ -95,22 +97,47 @@ async function loadOrCreatePersonalNeurons() {
   }
 }
 
-// ** GRID ARRANGEMENT HELPER **
-function arrangeNeuronsInGrid(users) {
-  const count = users.length;
-  const cols  = Math.ceil(Math.sqrt(count));
-  const rows  = Math.ceil(count / cols);
-  const spacingX = canvas.width  / (cols + 1);
-  const spacingY = canvas.height / (rows + 1);
-
-  return users.map((u, i) => {
-    const col = i % cols;
-    const row = Math.floor(i / cols);
-    const x = spacingX * (col + 1);
-    const y = spacingY * (row + 1);
-    return { x, y, radius: 18, meta: u, owned: u.owned };
+/**
+ * Group neurons by primary skill (or availability if no skill),
+ * place each group around a circle, then spread each node
+ * slightly within its group.
+ */
+function clusteredLayout(users, canvasW, canvasH) {
+  // 1. bucket by “group”
+  const groupBy = u => u.meta.skills?.[0] || u.meta.availability || 'misc';
+  const groups  = {};
+  users.forEach(u => {
+    const key = groupBy(u);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(u);
   });
+
+  // 2. one wedge per group
+  const keys        = Object.keys(groups);
+  const centerX     = canvasW / 2;
+  const centerY     = canvasH / 2;
+  const clusterRad  = Math.min(canvasW, canvasH) * 0.35;
+  const result      = [];
+
+  keys.forEach((key, i) => {
+    const angle    = (2 * Math.PI * i) / keys.length;
+    const groupX   = centerX + Math.cos(angle) * clusterRad;
+    const groupY   = centerY + Math.sin(angle) * clusterRad;
+    const bucket   = groups[key];
+
+    // 3. spread nodes around group center
+    bucket.forEach((u, j) => {
+      const offset   = (2 * Math.PI * j) / bucket.length;
+      const spread   = 40 + (j * 5);
+      const x        = (u.meta.x || groupX) + Math.cos(offset) * spread;
+      const y        = (u.meta.y || groupY) + Math.sin(offset) * spread;
+      result.push({ x, y, radius: 18, meta: u.meta, owned: u.owned });
+    });
+  });
+
+  return result;
 }
+
 
 function drawNeuron(n, t) {
   // — glow pulse and body of neuron —
