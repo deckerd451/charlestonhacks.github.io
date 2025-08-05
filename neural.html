@@ -117,21 +117,24 @@
       Visualize and arrange your connections.<br />
       Sign in to save your layout privately.
     </div>
+
     <div id="auth-pane">
       <input id="email" type="email" placeholder="Enter your email" />
       <button id="login-btn">Sign In / Sign Up (Magic Link)</button>
       <div id="auth-status"></div>
-      <button id="logout-btn" style="display:none; margin-top:10px;">
-        Sign Out
-      </button>
+      <!-- keep logout here, JS will show/hide it -->
+      <button id="logout-btn" style="display:none; margin-top:10px;">Sign Out</button>
     </div>
+
+    <!-- layout toggle sits alongside auth-pane -->
+    <button id="toggle-layout">Use Grid</button>
   </div>
 
   <!-- responsive, full-screen canvas -->
   <canvas id="neural-canvas"></canvas>
   <div id="tooltip"></div>
 
-  <!-- your existing logic lives here -->
   <script type="module" src="assets/js/neuralInteractive.js"></script>
 </body>
+
 </html>
