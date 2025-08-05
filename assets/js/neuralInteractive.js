@@ -29,12 +29,15 @@ function setAuthStatus(msg, isError = false) {
   statusEl.className = isError ? 'error' : 'success';
 }
 
-function showAuthUI(show) {
-  document.getElementById('auth-pane').style.display = show ? '' : 'none';
-  const canvasEl = document.getElementById('neural-canvas');
-  canvasEl.style.display = show ? 'none' : 'block';
-  // we no longer hardcode height here
-}
+ function showAuthUI(show) {
+-  document.getElementById('auth-pane').style.display = show ? '' : 'none';
++  // hide or show everything that sits above the canvas
++  document.getElementById('container').style.display = show ? '' : 'none';
+
+   const canvasEl = document.getElementById('neural-canvas');
+   canvasEl.style.display = show ? 'none' : 'block';
+ }
+
 
 async function logout() {
   await supabase.auth.signOut();
