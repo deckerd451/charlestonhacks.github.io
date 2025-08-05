@@ -205,10 +205,42 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
   // ← End tooltip code
 
-  // right after you set up tooltip…
-
+// right after your tooltip listeners, still inside DOMContentLoaded:
 let draggingNeuron = null;
 let dragOffset = { x: 0, y: 0 };
+
+// helper functions:
+function onDrag(e) {
+  if (!draggingNeuron) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  draggingNeuron.x = x - dragOffset.x;
+  draggingNeuron.y = y - dragOffset.y;
+  console.log('   dragging to', draggingNeuron.x.toFixed(0), draggingNeuron.y.toFixed(0));
+  drawNetwork();
+}
+
+function onDragEnd(e) {
+  if (!draggingNeuron) return;
+  console.log('🛑 end drag for', draggingNeuron.meta.name, 'at',
+              draggingNeuron.x.toFixed(0), draggingNeuron.y.toFixed(0));
+  canvas.style.cursor = 'default';
+
+  supabase
+    .from('community')
+    .update({ x: draggingNeuron.x, y: draggingNeuron.y })
+    .eq('id', draggingNeuron.meta.id)
+    .then(({ error }) => {
+      if (error) console.error('Failed to save position:', error.message);
+      else console.log('   position saved');
+    });
+
+  // clean up
+  window.removeEventListener('mousemove', onDrag);
+  window.removeEventListener('mouseup',   onDragEnd);
+  draggingNeuron = null;
+}
 
 // start drag on mousedown
 canvas.addEventListener('mousedown', e => {
@@ -226,45 +258,14 @@ canvas.addEventListener('mousedown', e => {
     dragOffset.y = y - hit.y;
     canvas.style.cursor = 'grabbing';
     console.log('   start dragging', hit.meta.name);
+
+    // now track on window
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('mouseup',   onDragEnd);
   }
 });
 
-// continue drag on mousemove
-canvas.addEventListener('mousemove', e => {
-  if (draggingNeuron) {
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    draggingNeuron.x = x - dragOffset.x;
-    draggingNeuron.y = y - dragOffset.y;
-    console.log('   dragging to', draggingNeuron.x.toFixed(0), draggingNeuron.y.toFixed(0));
-    drawNetwork();
-  }
-});
-
-// end drag on mouseup / leave
-function endDrag() {
-  if (!draggingNeuron) return;
-  console.log('🛑 end drag for', draggingNeuron.meta.name, 'at', draggingNeuron.x.toFixed(0), draggingNeuron.y.toFixed(0));
-  canvas.style.cursor = 'default';
-
-  // persist new coords to Supabase
-  const { id, x, y } = draggingNeuron.meta;
-  supabase
-    .from('community')
-    .update({ x: draggingNeuron.x, y: draggingNeuron.y })
-    .eq('id', id)
-    .then(({ error }) => {
-      if (error) console.error('Failed to save position:', error.message);
-      else console.log('   position saved');
-    });
-
-  draggingNeuron = null;
-}
-canvas.addEventListener('mouseup',   endDrag);
-canvas.addEventListener('mouseleave', endDrag);
-
-
+ // ← End neuron drag code
 
   // ** LOGIN STATUS NODE **
   const loginStatusDiv = document.createElement('div');
