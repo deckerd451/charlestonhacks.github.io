@@ -179,6 +179,32 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.canvas = canvas;
   window.ctx    = ctx;
 
+  // ← Insert tooltip code here:
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const hit = neurons.find(n => Math.hypot(n.x - x, n.y - y) < n.radius);
+    if (hit) {
+      tooltip.style.display = 'block';
+      tooltip.style.left    = `${e.clientX + 10}px`;
+      tooltip.style.top     = `${e.clientY + 10}px`;
+      tooltip.textContent   =
+        `${hit.meta.name}\n` +
+        `Skills: ${hit.meta.skills.join(', ')}\n` +
+        `Endorsements: ${hit.meta.endorsements}\n` +
+        `Status: ${hit.meta.availability}`;
+    } else {
+      tooltip.style.display = 'none';
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+  });
+  // ← End tooltip code
+
   // ** LOGIN STATUS NODE **
   const loginStatusDiv = document.createElement('div');
   loginStatusDiv.id             = 'login-status';
