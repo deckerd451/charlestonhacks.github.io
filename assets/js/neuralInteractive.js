@@ -205,6 +205,67 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
   // ← End tooltip code
 
+  // right after you set up tooltip…
+
+let draggingNeuron = null;
+let dragOffset = { x: 0, y: 0 };
+
+// start drag on mousedown
+canvas.addEventListener('mousedown', e => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  console.log('⏺ mousedown at', x.toFixed(0), y.toFixed(0));
+
+  const hit = neurons.find(n => Math.hypot(n.x - x, n.y - y) < n.radius);
+  console.log('   hit test →', hit ? hit.meta.name : 'none');
+
+  if (hit && hit.owned) {
+    draggingNeuron = hit;
+    dragOffset.x = x - hit.x;
+    dragOffset.y = y - hit.y;
+    canvas.style.cursor = 'grabbing';
+    console.log('   start dragging', hit.meta.name);
+  }
+});
+
+// continue drag on mousemove
+canvas.addEventListener('mousemove', e => {
+  if (draggingNeuron) {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    draggingNeuron.x = x - dragOffset.x;
+    draggingNeuron.y = y - dragOffset.y;
+    console.log('   dragging to', draggingNeuron.x.toFixed(0), draggingNeuron.y.toFixed(0));
+    drawNetwork();
+  }
+});
+
+// end drag on mouseup / leave
+function endDrag() {
+  if (!draggingNeuron) return;
+  console.log('🛑 end drag for', draggingNeuron.meta.name, 'at', draggingNeuron.x.toFixed(0), draggingNeuron.y.toFixed(0));
+  canvas.style.cursor = 'default';
+
+  // persist new coords to Supabase
+  const { id, x, y } = draggingNeuron.meta;
+  supabase
+    .from('community')
+    .update({ x: draggingNeuron.x, y: draggingNeuron.y })
+    .eq('id', id)
+    .then(({ error }) => {
+      if (error) console.error('Failed to save position:', error.message);
+      else console.log('   position saved');
+    });
+
+  draggingNeuron = null;
+}
+canvas.addEventListener('mouseup',   endDrag);
+canvas.addEventListener('mouseleave', endDrag);
+
+
+
   // ** LOGIN STATUS NODE **
   const loginStatusDiv = document.createElement('div');
   loginStatusDiv.id             = 'login-status';
