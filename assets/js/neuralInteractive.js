@@ -4,23 +4,24 @@
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { fetchConnections }        from './loadConnections.js';
 
-window.supabase = supabase; // for console
+window.supabase = supabase; // for console debugging
 
 // ───── DEFAULTS & GLOBAL STATE ──────────────────────────────────────────────
 const DEFAULT_NEURONS = [
   { name: "You", skills: ["Explorer"], interests: ["AI","Networks"], availability: "online", endorsements: 3 }
 ];
 
-let combined       = [];     // all nodes (mine + others)
-let useGrid        = false;  // toggle flag
-let neurons        = [];     // positioned nodes
-let connections    = [];     // links
-let selectedNeuron = null;   // for making new connections
+let combined       = [];     // all raw rows (mine + others)
+let useGrid        = false;  // toggle between grid / cluster
+let neurons        = [];     // positioned node objects
+let connections    = [];     // link objects
+let selectedNeuron = null;   // for drawing new connections
 
 let canvas, ctx, tooltip, user, userId;
 let animationId, lastFrame = 0;
 const FRAME_INTERVAL = 1000 / 30;
 
+let showAllNames     = true;  // toggles name labels
 let initialized      = false;
 let animationStarted = false;
 let loginStatus      = null;
@@ -33,18 +34,17 @@ function setAuthStatus(msg, isError = false) {
 }
 
 function showAuthUI(needsLogin) {
-  // needsLogin = true → show login pane; hide canvas, toggle, logout
-  document.getElementById('auth-pane').style.display     = needsLogin ? 'block' : 'none';
-  document.getElementById('toggle-layout').style.display = needsLogin ? 'none'  : 'inline-block';
-  document.getElementById('logout-btn').style.display    = needsLogin ? 'none'  : 'inline-block';
-  document.getElementById('neural-canvas').style.display = needsLogin ? 'none'  : 'block';
+  document.getElementById('auth-pane').style.display     = needsLogin ? 'block'       : 'none';
+  document.getElementById('toggle-layout').style.display = needsLogin ? 'none'        : 'inline-block';
+  document.getElementById('logout-btn').style.display    = needsLogin ? 'none'        : 'inline-block';
+  document.getElementById('neural-canvas').style.display = needsLogin ? 'none'        : 'block';
 }
 
 // ───── AUTH & DATA LOADING ─────────────────────────────────────────────────
 async function logout() {
   await supabase.auth.signOut();
-  showAuthUI(true);
   loginStatus.textContent = '';
+  showAuthUI(true);
 }
 
 async function loadOrCreatePersonalNeurons() {
@@ -54,13 +54,13 @@ async function loadOrCreatePersonalNeurons() {
     return setAuthStatus("Error loading neurons", true);
   }
 
-  const mine  = data.filter(n => n.user_id === userId);
-  const others= data.filter(n => n.user_id !== userId);
+  const mine   = data.filter(n => n.user_id === userId);
+  const others = data.filter(n => n.user_id !== userId);
 
-  // seed on first login
+  // seed defaults on first login
   if (!mine.length) {
-    const toIns = DEFAULT_NEURONS.map(n => ({ ...n, user_id:userId, x:0, y:0 }));
-    const { error: insErr } = await supabase.from('community').insert(toIns);
+    const toInsert = DEFAULT_NEURONS.map(n => ({ ...n, user_id:userId, x:0, y:0 }));
+    const { error: insErr } = await supabase.from('community').insert(toInsert);
     if (insErr) {
       console.error("Seed error:", insErr.message);
       return setAuthStatus("Could not seed defaults", true);
@@ -68,22 +68,22 @@ async function loadOrCreatePersonalNeurons() {
     return loadOrCreatePersonalNeurons();
   }
 
-  // build combined global
+  // build global combined array
   combined = [
     ...mine .map(n => ({ ...n, owned:true  })),
     ...others.map(n => ({ ...n, owned:false }))
   ];
 
-  // choose layout
+  // pick layout
   neurons = useGrid
     ? arrangeNeuronsInGrid(combined)
     : clusteredLayout(combined, canvas.width, canvas.height);
 
-  // fetch connections
+  // fetch and map connections
   const connData = await fetchConnections();
   connections = connData.map(({ from_id, to_id }) => ({
-    from: neurons.find(n => n.meta.id===from_id),
-    to:   neurons.find(n => n.meta.id===to_id)
+    from: neurons.find(n => n.meta.id === from_id),
+    to:   neurons.find(n => n.meta.id === to_id)
   }));
 
   drawNetwork();
@@ -101,32 +101,40 @@ function arrangeNeuronsInGrid(users) {
   const sx    = canvas.width  / (cols+1);
   const sy    = canvas.height / (rows+1);
 
-  return users.map((u,i) => {
-    const col = i%cols, row = Math.floor(i/cols);
-    return { x:sx*(col+1), y:sy*(row+1), radius:18, meta:u, owned:u.owned };
-  });
+  return users.map((u,i) => ({
+    x:      sx*( (i%cols)+1 ),
+    y:      sy*( (Math.floor(i/cols))+1 ),
+    radius: 18,
+    meta:   u,
+    owned:  u.owned
+  }));
 }
 
-function clusteredLayout(users,w,h) {
-  const groupBy = u=>u.meta.skills?.[0]||u.meta.availability||'misc';
+function clusteredLayout(users, w, h) {
+  // bucket by first skill or availability
+  const groupBy = u=>u.skills?.[0]||u.availability||'misc';
   const groups  = {};
-  users.forEach(u=>{ const k=groupBy(u); (groups[k]||(groups[k]=[])).push(u); });
+  users.forEach(u=>{
+    const key = groupBy(u);
+    (groups[key] = groups[key]||[]).push(u);
+  });
 
   const keys = Object.keys(groups);
-  const cx   = w/2, cy=h/2, R=Math.min(w,h)*0.35;
+  const cx   = w/2, cy = h/2, R = Math.min(w,h)*0.35;
   const out  = [];
 
   keys.forEach((k,i)=>{
     const ang = 2*Math.PI*i/keys.length;
     const gx  = cx + Math.cos(ang)*R;
     const gy  = cy + Math.sin(ang)*R;
-    const bucket=groups[k];
+    const bucket = groups[k];
+
     bucket.forEach((u,j)=>{
       const off = 2*Math.PI*j/bucket.length;
       const sp  = 40 + j*5;
-      const x   = (u.meta.x||gx)+Math.cos(off)*sp;
-      const y   = (u.meta.y||gy)+Math.sin(off)*sp;
-      out.push({ x,y,radius:18,meta:u.meta,owned:u.owned });
+      const x   = (u.x||gx) + Math.cos(off)*sp;
+      const y   = (u.y||gy) + Math.sin(off)*sp;
+      out.push({ x,y, radius:18, meta:u, owned:u.owned });
     });
   });
 
@@ -134,40 +142,40 @@ function clusteredLayout(users,w,h) {
 }
 
 // ───── RENDERING ───────────────────────────────────────────────────────────
-function drawNeuron(n,t) {
-  const pulse  = 1 + Math.sin(t/400 + n.x + n.y)*0.3;
-  const r      = n.radius*pulse;
-  const glow   = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r);
-  const col    = n.owned ? '#0ff':'rgba(255,255,255,0.3)';
+function drawNeuron(n, t) {
+  const pulse = 1 + Math.sin(t/400 + n.x + n.y)*0.3;
+  const r     = n.radius * pulse;
+  const glow  = ctx.createRadialGradient(n.x,n.y,0, n.x,n.y,r);
+  const col   = n.owned ? '#0ff' : 'rgba(255,255,255,0.3)';
   glow.addColorStop(0,col); glow.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=glow;
+  ctx.fillStyle = glow;
   ctx.beginPath(); ctx.arc(n.x,n.y,r,0,2*Math.PI); ctx.fill();
 
   // inner dot
-  ctx.fillStyle=col;
+  ctx.fillStyle = col;
   ctx.beginPath(); ctx.arc(n.x,n.y,5,0,2*Math.PI); ctx.fill();
 
   // name label
   if (showAllNames) {
-    ctx.font='15px sans-serif';
-    ctx.fillStyle=col;
-    ctx.textAlign='center';
-    ctx.fillText(n.meta.name,n.x,n.y-r-10);
+    ctx.font       = '15px sans-serif';
+    ctx.fillStyle  = col;
+    ctx.textAlign  = 'center';
+    ctx.fillText(n.meta.name, n.x, n.y - r - 10);
   }
 
   // selection halo
-  if (n===selectedNeuron) {
-    ctx.strokeStyle='#ff0';
-    ctx.lineWidth=4;
+  if (n === selectedNeuron) {
+    ctx.strokeStyle = '#ff0';
+    ctx.lineWidth   = 4;
     ctx.beginPath(); ctx.arc(n.x,n.y,r+6,0,2*Math.PI); ctx.stroke();
   }
 }
 
 function drawConnections() {
-  ctx.lineWidth=1.5;
-  ctx.strokeStyle='rgba(0,255,255,0.16)';
+  ctx.lineWidth   = 1.5;
+  ctx.strokeStyle = 'rgba(0,255,255,0.16)';
   connections.forEach(({from,to})=>{
-    if (from&&to) {
+    if (from && to) {
       ctx.beginPath();
       ctx.moveTo(from.x,from.y);
       ctx.lineTo(to.x,to.y);
@@ -184,35 +192,38 @@ function drawNetwork(time=0) {
 }
 
 function animate(time) {
-  if (!document.hidden && time-lastFrame>=FRAME_INTERVAL) {
+  if (!document.hidden && time - lastFrame >= FRAME_INTERVAL) {
     drawNetwork(time);
-    lastFrame=time;
+    lastFrame = time;
   }
-  animationId=requestAnimationFrame(animate);
+  animationId = requestAnimationFrame(animate);
 }
 
 // ───── BOOTSTRAP ───────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded',async()=>{
-  // grab elements
+window.addEventListener('DOMContentLoaded', async () => {
+  // grab DOM nodes
   canvas  = document.getElementById('neural-canvas');
   ctx     = canvas.getContext('2d');
   tooltip = document.getElementById('tooltip');
 
-  // resize logic
-  const resize=()=>{ canvas.width=innerWidth; canvas.height=innerHeight; };
-  window.addEventListener('resize',resize);
+  // resize handler
+  const resize = () => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+  window.addEventListener('resize', resize);
   resize();
 
-  // status banner
-  loginStatus=document.createElement('div');
-  loginStatus.id='login-status';
-  loginStatus.style.cssText='color:#0ff;text-align:center;margin:8px;font-weight:bold;';
+  // login status banner
+  loginStatus       = document.createElement('div');
+  loginStatus.id    = 'login-status';
+  loginStatus.style = 'color:#0ff;text-align:center;margin:8px;font-weight:bold;';
   document.body.prepend(loginStatus);
 
-  // layout toggle
-  const toggleBtn=document.getElementById('toggle-layout');
-  toggleBtn.addEventListener('click',()=>{
-    useGrid=!useGrid;
+  // toggle‐layout button
+  const toggleBtn = document.getElementById('toggle-layout');
+  toggleBtn.addEventListener('click', () => {
+    useGrid = !useGrid;
     toggleBtn.textContent = useGrid ? 'Use Cluster' : 'Use Grid';
     neurons = useGrid
       ? arrangeNeuronsInGrid(combined)
@@ -220,105 +231,110 @@ window.addEventListener('DOMContentLoaded',async()=>{
     drawNetwork();
   });
 
-  // logout handler
+  // logout hookup
   document.getElementById('logout-btn').onclick = logout;
 
-  // tooltip
-  canvas.addEventListener('mousemove',e=>{
-    const {left,top}=canvas.getBoundingClientRect();
-    const x=e.clientX-left, y=e.clientY-top;
-    const hit=neurons.find(n=>Math.hypot(n.x-x,n.y-y)<n.radius);
-    if(hit){
-      tooltip.style.display='block';
-      tooltip.style.left=`${e.clientX+12}px`;
-      tooltip.style.top =`${e.clientY+12}px`;
-      tooltip.textContent=
+  // tooltip logic
+  canvas.addEventListener('mousemove', e => {
+    const { left, top } = canvas.getBoundingClientRect();
+    const x = e.clientX - left, y = e.clientY - top;
+    const hit = neurons.find(n => Math.hypot(n.x-x,n.y-y) < n.radius);
+    if (hit) {
+      tooltip.style.display = 'block';
+      tooltip.style.left    = `${e.clientX+12}px`;
+      tooltip.style.top     = `${e.clientY+12}px`;
+      tooltip.textContent   =
         `${hit.meta.name}\nSkills: ${hit.meta.skills.join(', ')}\n`+
         `Endorsements: ${hit.meta.endorsements}\nStatus: ${hit.meta.availability}`;
     } else {
-      tooltip.style.display='none';
+      tooltip.style.display = 'none';
     }
   });
-  canvas.addEventListener('mouseleave',()=>tooltip.style.display='none');
+  canvas.addEventListener('mouseleave', () => tooltip.style.display = 'none');
 
-  // dragging
-  let dragging=null, offs={x:0,y:0};
-  const onMove=e=>{ if(!dragging)return;
-    const{left,top}=canvas.getBoundingClientRect();
-    const x=e.clientX-left, y=e.clientY-top;
-    dragging.x=x-offs.x; dragging.y=y-offs.y;
+  // draggable nodes
+  let dragging = null, offset = {x:0,y:0};
+  const onMove = e => {
+    if (!dragging) return;
+    const { left, top } = canvas.getBoundingClientRect();
+    const x = e.clientX - left, y = e.clientY - top;
+    dragging.x = x - offset.x;
+    dragging.y = y - offset.y;
     drawNetwork();
   };
-  const onUp=()=>{
-    if(!dragging)return;
-    canvas.style.cursor='';
+  const onUp = () => {
+    if (!dragging) return;
+    canvas.style.cursor = '';
     supabase.from('community')
-      .update({x:dragging.x,y:dragging.y})
-      .eq('id',dragging.meta.id);
-    window.removeEventListener('mousemove',onMove);
-    window.removeEventListener('mouseup',onUp);
-    dragging=null;
+      .update({ x:dragging.x, y:dragging.y })
+      .eq('id', dragging.meta.id);
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseup', onUp);
+    dragging = null;
   };
-  canvas.addEventListener('mousedown',e=>{
-    const{left,top}=canvas.getBoundingClientRect();
-    const x=e.clientX-left,y=e.clientY-top;
-    const hit=neurons.find(n=>Math.hypot(n.x-x,n.y-y)<n.radius && n.owned);
-    if(hit){
-      dragging=hit;
-      offs.x=x-hit.x; offs.y=y-hit.y;
-      canvas.style.cursor='grabbing';
-      window.addEventListener('mousemove',onMove);
-      window.addEventListener('mouseup',onUp);
+  canvas.addEventListener('mousedown', e => {
+    const { left, top } = canvas.getBoundingClientRect();
+    const x = e.clientX-left, y = e.clientY-top;
+    const hit = neurons.find(n=>Math.hypot(n.x-x,n.y-y)<n.radius && n.owned);
+    if (hit) {
+      dragging = hit;
+      offset.x  = x - hit.x;
+      offset.y  = y - hit.y;
+      canvas.style.cursor = 'grabbing';
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup',   onUp);
     }
   });
 
-  // click → connect
-  canvas.addEventListener('click',async e=>{
-    const{left,top}=canvas.getBoundingClientRect();
-    const x=e.clientX-left,y=e.clientY-top;
-    const hit=neurons.find(n=>Math.hypot(n.x-x,n.y-y)<n.radius);
-    if(!hit){ selectedNeuron=null; return; }
-    if(!selectedNeuron){
-      if(hit.owned) selectedNeuron=hit;
-    } else if(hit!==selectedNeuron){
+  // click → connect logic
+  canvas.addEventListener('click', async e => {
+    const { left, top } = canvas.getBoundingClientRect();
+    const x = e.clientX-left, y = e.clientY-top;
+    const hit = neurons.find(n=>Math.hypot(n.x-x,n.y-y)<n.radius);
+    if (!hit) { selectedNeuron = null; return; }
+    if (!selectedNeuron) {
+      if (hit.owned) selectedNeuron = hit;
+    } else if (hit !== selectedNeuron) {
       await supabase.from('connections')
         .insert({ from_id:selectedNeuron.meta.id, to_id:hit.meta.id });
-      connections.push({from:selectedNeuron,to:hit});
-      selectedNeuron=null;
+      connections.push({ from:selectedNeuron, to:hit });
+      selectedNeuron = null;
       drawNetwork();
     }
   });
 
   // login button
-  document.getElementById('login-btn').onclick = async ()=>{
-    const email=document.getElementById('email').value.trim();
-    if(!email) return setAuthStatus("Enter email",true);
+  document.getElementById('login-btn').onclick = async () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email) return setAuthStatus("Enter email", true);
     setAuthStatus("Sending link…");
     const { error } = await supabase.auth.signInWithOtp({
-      email, options:{emailRedirectTo:location.href}
+      email, options:{ emailRedirectTo: location.href }
     });
-    setAuthStatus(error?error.message:"Check your inbox", !!error);
+    setAuthStatus(error ? error.message : "Check your inbox", !!error);
   };
 
-  // auth observer + restore
-  supabase.auth.onAuthStateChange(async(_,session)=>{
-    if(session?.user && !initialized){
-      initialized=true;
-      user=session.user; userId=user.id;
-      loginStatus.textContent=`Welcome ${user.email}`;
+  // auth observer + session restore
+  supabase.auth.onAuthStateChange(async (_, session) => {
+    if (session?.user && !initialized) {
+      initialized    = true;
+      user           = session.user;
+      userId         = user.id;
+      loginStatus.textContent = `Welcome ${user.email}`;
       showAuthUI(false);
       await loadOrCreatePersonalNeurons();
-    } else if(!session?.user){
-      initialized=false;
-      loginStatus.textContent='';
+    } else if (!session?.user) {
+      initialized = false;
+      loginStatus.textContent = '';
       showAuthUI(true);
     }
   });
   const { data:{session} } = await supabase.auth.getSession();
-  if(session?.user){
-    user=session.user; userId=user.id;
-    initialized=true;
-    loginStatus.textContent=`Welcome ${user.email}`;
+  if (session?.user) {
+    initialized    = true;
+    user           = session.user;
+    userId         = user.id;
+    loginStatus.textContent = `Welcome ${user.email}`;
     showAuthUI(false);
     await loadOrCreatePersonalNeurons();
   } else {
