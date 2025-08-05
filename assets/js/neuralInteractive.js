@@ -38,10 +38,10 @@ function setAuthStatus(msg, isError = false) {
 }
 
 function showAuthUI(needsLogin) {
-  document.getElementById('auth-pane').style.display     = needsLogin ? 'block' : 'none';
-  document.getElementById('toggle-layout').style.display = needsLogin ? 'none'  : 'inline-block';
-  document.getElementById('logout-btn').style.display    = needsLogin ? 'none'  : 'inline-block';
-  document.getElementById('neural-canvas').style.display = needsLogin ? 'none'  : 'block';
+  document.getElementById('auth-pane').style.display     = needsLogin ? 'block'       : 'none';
+  document.getElementById('toggle-layout').style.display = needsLogin ? 'none'        : 'inline-block';
+  document.getElementById('logout-btn').style.display    = needsLogin ? 'none'        : 'inline-block';
+  document.getElementById('neural-canvas').style.display = needsLogin ? 'none'        : 'block';
 }
 
 // ───── AUTH & DATA LOADING ─────────────────────────────────────────────────
@@ -61,7 +61,7 @@ async function loadOrCreatePersonalNeurons() {
   const mine   = data.filter(n => n.user_id === userId);
   const others = data.filter(n => n.user_id !== userId);
 
-  // seed defaults first‐time
+  // seed defaults first-time
   if (!mine.length) {
     const toInsert = DEFAULT_NEURONS.map(n => ({ ...n, user_id:userId, x:0, y:0 }));
     const { error: insErr } = await supabase.from('community').insert(toInsert);
@@ -83,7 +83,7 @@ async function loadOrCreatePersonalNeurons() {
     ? arrangeNeuronsInGrid(combined)
     : clusteredLayout(combined, canvas.width, canvas.height);
 
-  // if we had a selection, remap it to new node object
+  // preserve selection
   if (selectedNeuron) {
     const id = selectedNeuron.meta.id;
     selectedNeuron = neurons.find(n => n.meta.id === id) || null;
@@ -139,10 +139,10 @@ function clusteredLayout(users, w, h) {
     const bucket = groups[k];
 
     bucket.forEach((u,j) => {
-      const off  = 2*Math.PI*j/bucket.length;
-      const sp   = 40 + j*5;
-      const baseX = u.x != null ? u.x : center.x;
-      const baseY = u.y != null ? u.y : center.y;
+      const off   = 2*Math.PI*j/bucket.length;
+      const sp    = 40 + j*5;
+      const baseX = (u.x != null ? u.x : center.x);
+      const baseY = (u.y != null ? u.y : center.y);
       out.push({
         x:      baseX + Math.cos(off)*sp,
         y:      baseY + Math.sin(off)*sp,
@@ -215,6 +215,9 @@ function animate(time) {
 
 // ───── BOOTSTRAP ───────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
+  // start in login mode → hides canvas/toggle/logout immediately
+  showAuthUI(true);
+
   // grab DOM nodes
   canvas  = document.getElementById('neural-canvas');
   ctx     = canvas.getContext('2d');
@@ -239,11 +242,12 @@ window.addEventListener('DOMContentLoaded', async () => {
   toggleBtn.addEventListener('click', () => {
     useGrid = !useGrid;
     toggleBtn.textContent = useGrid ? 'Use Cluster' : 'Use Grid';
-    // re‐compute layout & remap selection
+
     neurons = useGrid
       ? arrangeNeuronsInGrid(combined)
       : clusteredLayout(combined, canvas.width, canvas.height);
 
+    // preserve selection
     if (selectedNeuron) {
       const id = selectedNeuron.meta.id;
       selectedNeuron = neurons.find(n => n.meta.id === id) || null;
@@ -256,7 +260,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // tooltip
   canvas.addEventListener('mousemove', e => {
-    const {left,top} = canvas.getBoundingClientRect();
+    const { left, top } = canvas.getBoundingClientRect();
     const x = e.clientX - left, y = e.clientY - top;
     const hit = neurons.find(n => Math.hypot(n.x-x,n.y-y) < n.radius);
     if (hit) {
@@ -274,11 +278,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
   canvas.addEventListener('mouseleave', () => tooltip.style.display = 'none');
 
-  // dragging
+  // draggable nodes
   let dragging = null, offset = {x:0,y:0};
   const onMove = e => {
     if (!dragging) return;
-    const {left,top} = canvas.getBoundingClientRect();
+    const { left, top } = canvas.getBoundingClientRect();
     const x = e.clientX - left, y = e.clientY - top;
     dragging.x = x - offset.x;
     dragging.y = y - offset.y;
@@ -287,21 +291,20 @@ window.addEventListener('DOMContentLoaded', async () => {
   const onUp = () => {
     if (!dragging) return;
     canvas.style.cursor = '';
-    // persist & bake into meta
+    // persist & bake into meta so connections follow
     supabase.from('community')
       .update({ x: dragging.x, y: dragging.y })
       .eq('id', dragging.meta.id);
     dragging.meta.x = dragging.x;
     dragging.meta.y = dragging.y;
-
     window.removeEventListener('mousemove', onMove);
     window.removeEventListener('mouseup',   onUp);
     dragging = null;
   };
   canvas.addEventListener('mousedown', e => {
-    const {left,top} = canvas.getBoundingClientRect();
-    const x = e.clientX-left, y = e.clientY-top;
-    const hit = neurons.find(n=>Math.hypot(n.x-x,n.y-y)<n.radius && n.owned);
+    const { left, top } = canvas.getBoundingClientRect();
+    const x = e.clientX - left, y = e.clientY - top;
+    const hit = neurons.find(n => Math.hypot(n.x-x,n.y-y) < n.radius && n.owned);
     if (!hit) return;
     dragging = hit;
     offset.x  = x - hit.x;
@@ -311,11 +314,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     window.addEventListener('mouseup',   onUp);
   });
 
-  // click→connect
+  // click → connect
   canvas.addEventListener('click', async e => {
-    const {left,top} = canvas.getBoundingClientRect();
-    const x = e.clientX-left, y = e.clientY-top;
-    const hit = neurons.find(n=>Math.hypot(n.x-x,n.y-y)<n.radius);
+    const { left, top } = canvas.getBoundingClientRect();
+    const x = e.clientX - left, y = e.clientY - top;
+    const hit = neurons.find(n => Math.hypot(n.x-x,n.y-y) < n.radius);
     if (!hit) { selectedNeuron = null; return; }
     if (!selectedNeuron) {
       if (hit.owned) selectedNeuron = hit;
@@ -328,15 +331,19 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // login button
-  document.getElementById('login-btn').onclick = async () => {
+  // login button with 60s cooldown
+  const loginBtn = document.getElementById('login-btn');
+  loginBtn.onclick = async () => {
     const email = document.getElementById('email').value.trim();
     if (!email) return setAuthStatus("Enter email", true);
+    // disable to prevent 429s
+    loginBtn.disabled = true;
     setAuthStatus("Sending link…");
     const { error } = await supabase.auth.signInWithOtp({
-      email, options:{ emailRedirectTo: location.href }
+      email, options: { emailRedirectTo: location.href }
     });
-    setAuthStatus(error?error.message:"Check your inbox", !!error);
+    setAuthStatus(error ? error.message : "Check your inbox", !!error);
+    setTimeout(() => { loginBtn.disabled = false }, 60_000);
   };
 
   // auth observer + session restore
