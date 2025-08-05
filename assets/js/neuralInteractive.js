@@ -1,5 +1,6 @@
 // neuralInteractive.js
-// Personalized neuron network with Supabase auth, grid & cluster layouts, toggling, tooltips, and draggable nodes.
+// Personalized neuron network with Supabase auth, grid & cluster layouts,
+// toggling, tooltips, and draggable nodes.
 
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { fetchConnections }         from './loadConnections.js';
@@ -8,18 +9,20 @@ window.supabase = supabase; // for console debugging
 
 // ───── DEFAULTS & GLOBAL STATE ──────────────────────────────────────────────
 const DEFAULT_NEURONS = [
-  { name: "You",
+  {
+    name: "You",
     skills: ["Explorer"],
-    interests: ["AI","Networks"],
+    interests: ["AI", "Networks"],
     availability: "online",
     endorsements: 3
   }
 ];
 
 let combined       = [];    // raw DB rows + owned flag
+let rawConnections = [];    // raw from/to pairs from Supabase
 let useGrid        = false; // layout toggle
 let neurons        = [];    // positioned {x,y,radius,meta,owned}
-let connections    = [];    // drawn links
+let connections    = [];    // mapped from rawConnections → actual node refs
 let selectedNeuron = null;  // for new connections
 
 let canvas, ctx, tooltip, user, userId;
@@ -58,12 +61,13 @@ async function loadOrCreatePersonalNeurons() {
     return setAuthStatus("Error loading neurons", true);
   }
 
+  // split your rows into mine vs others
   const mine   = data.filter(n => n.user_id === userId);
   const others = data.filter(n => n.user_id !== userId);
 
-  // seed defaults first-time
+  // seed defaults on first login
   if (!mine.length) {
-    const toInsert = DEFAULT_NEURONS.map(n => ({ ...n, user_id:userId, x:0, y:0 }));
+    const toInsert = DEFAULT_NEURONS.map(n => ({ ...n, user_id: userId, x: 0, y: 0 }));
     const { error: insErr } = await supabase.from('community').insert(toInsert);
     if (insErr) {
       console.error("Seed error:", insErr.message);
@@ -72,26 +76,26 @@ async function loadOrCreatePersonalNeurons() {
     return loadOrCreatePersonalNeurons();
   }
 
-  // build global combined
+  // build combined array
   combined = [
-    ...mine .map(n => ({ ...n, owned:true  })),
-    ...others.map(n => ({ ...n, owned:false }))
+    ...mine .map(n => ({ ...n, owned: true  })),
+    ...others.map(n => ({ ...n, owned: false }))
   ];
 
-  // choose layout
+  // recompute the node positions
   neurons = useGrid
     ? arrangeNeuronsInGrid(combined)
     : clusteredLayout(combined, canvas.width, canvas.height);
 
-  // preserve selection
+  // if the user had already clicked one neuron, carry that selection over
   if (selectedNeuron) {
-    const id = selectedNeuron.meta.id;
-    selectedNeuron = neurons.find(n => n.meta.id === id) || null;
+    const selId = selectedNeuron.meta.id;
+    selectedNeuron = neurons.find(n => n.meta.id === selId) || null;
   }
 
-  // load connections
-  const connData = await fetchConnections();
-  connections = connData.map(({ from_id, to_id }) => ({
+  // fetch+cache raw connections, then map to the new node objects
+  rawConnections = await fetchConnections();
+  connections = rawConnections.map(({ from_id, to_id }) => ({
     from: neurons.find(n => n.meta.id === from_id),
     to:   neurons.find(n => n.meta.id === to_id)
   }));
@@ -158,6 +162,7 @@ function clusteredLayout(users, w, h) {
 
 // ───── RENDERING ───────────────────────────────────────────────────────────
 function drawNeuron(n, t) {
+  // pulsating glow
   const pulse = 1 + Math.sin(t/400 + n.x + n.y) * 0.3;
   const r     = n.radius * pulse;
   const glow  = ctx.createRadialGradient(n.x,n.y,0, n.x,n.y,r);
@@ -165,23 +170,29 @@ function drawNeuron(n, t) {
   glow.addColorStop(0, col);
   glow.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = glow;
-  ctx.beginPath(); ctx.arc(n.x,n.y,r,0,2*Math.PI); ctx.fill();
+  ctx.beginPath();
+    ctx.arc(n.x,n.y,r,0,2*Math.PI);
+  ctx.fill();
 
   // inner dot
   ctx.fillStyle = col;
-  ctx.beginPath(); ctx.arc(n.x,n.y,5,0,2*Math.PI); ctx.fill();
+  ctx.beginPath();
+    ctx.arc(n.x,n.y,5,0,2*Math.PI);
+  ctx.fill();
 
-  // name
+  // name label
   ctx.font      = '15px sans-serif';
   ctx.fillStyle = col;
   ctx.textAlign = 'center';
   ctx.fillText(n.meta.name, n.x, n.y - r - 10);
 
-  // selection halo
+  // yellow halo if selected
   if (n === selectedNeuron) {
     ctx.strokeStyle = '#ff0';
     ctx.lineWidth   = 4;
-    ctx.beginPath(); ctx.arc(n.x,n.y,r+6,0,2*Math.PI); ctx.stroke();
+    ctx.beginPath();
+      ctx.arc(n.x,n.y,r+6,0,2*Math.PI);
+    ctx.stroke();
   }
 }
 
@@ -191,8 +202,8 @@ function drawConnections() {
   connections.forEach(({from,to}) => {
     if (from && to) {
       ctx.beginPath();
-      ctx.moveTo(from.x,from.y);
-      ctx.lineTo(to.x,to.y);
+        ctx.moveTo(from.x,from.y);
+        ctx.lineTo(to.x,to.y);
       ctx.stroke();
     }
   });
@@ -215,7 +226,7 @@ function animate(time) {
 
 // ───── BOOTSTRAP ───────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
-  // start in login mode → hides canvas/toggle/logout immediately
+  // start hidden (login mode)
   showAuthUI(true);
 
   // grab DOM nodes
@@ -223,7 +234,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   ctx     = canvas.getContext('2d');
   tooltip = document.getElementById('tooltip');
 
-  // handle resize
+  // resize handler
   const resize = () => {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -231,27 +242,35 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.addEventListener('resize', resize);
   resize();
 
-  // login status banner
-  loginStatus          = document.createElement('div');
-  loginStatus.id       = 'login-status';
+  // status banner
+  loginStatus             = document.createElement('div');
+  loginStatus.id          = 'login-status';
   loginStatus.style.cssText = 'color:#0ff;text-align:center;margin:8px;font-weight:bold;';
   document.body.prepend(loginStatus);
 
-  // layout toggle
+  // layout toggle wiring
   const toggleBtn = document.getElementById('toggle-layout');
   toggleBtn.addEventListener('click', () => {
     useGrid = !useGrid;
     toggleBtn.textContent = useGrid ? 'Use Cluster' : 'Use Grid';
 
+    // re-compute layout
     neurons = useGrid
       ? arrangeNeuronsInGrid(combined)
       : clusteredLayout(combined, canvas.width, canvas.height);
 
     // preserve selection
     if (selectedNeuron) {
-      const id = selectedNeuron.meta.id;
-      selectedNeuron = neurons.find(n => n.meta.id === id) || null;
+      const selId = selectedNeuron.meta.id;
+      selectedNeuron = neurons.find(n => n.meta.id === selId) || null;
     }
+
+    // remap connections
+    connections = rawConnections.map(({ from_id, to_id }) => ({
+      from: neurons.find(n => n.meta.id === from_id),
+      to:   neurons.find(n => n.meta.id === to_id)
+    }));
+
     drawNetwork();
   });
 
@@ -269,9 +288,9 @@ window.addEventListener('DOMContentLoaded', async () => {
       tooltip.style.top     = `${e.clientY+12}px`;
       tooltip.textContent   =
         `${hit.meta.name}\n`+
-        `Skills: ${hit.meta.skills.join(', ')}\n`+
+        `Skills:      ${hit.meta.skills.join(', ')}\n`+
         `Endorsements: ${hit.meta.endorsements}\n`+
-        `Status: ${hit.meta.availability}`;
+        `Status:      ${hit.meta.availability}`;
     } else {
       tooltip.style.display = 'none';
     }
@@ -291,10 +310,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   const onUp = () => {
     if (!dragging) return;
     canvas.style.cursor = '';
-    // persist & bake into meta so connections follow
+    // persist
     supabase.from('community')
       .update({ x: dragging.x, y: dragging.y })
       .eq('id', dragging.meta.id);
+    // bake into meta so lines follow immediately
     dragging.meta.x = dragging.x;
     dragging.meta.y = dragging.y;
     window.removeEventListener('mousemove', onMove);
@@ -331,12 +351,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // login button with 60s cooldown
+  // login button with 60s cooldown to avoid 429
   const loginBtn = document.getElementById('login-btn');
   loginBtn.onclick = async () => {
     const email = document.getElementById('email').value.trim();
     if (!email) return setAuthStatus("Enter email", true);
-    // disable to prevent 429s
     loginBtn.disabled = true;
     setAuthStatus("Sending link…");
     const { error } = await supabase.auth.signInWithOtp({
@@ -346,12 +365,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => { loginBtn.disabled = false }, 60_000);
   };
 
-  // auth observer + session restore
+  // auth observer + initial session check
   supabase.auth.onAuthStateChange(async (_, session) => {
     if (session?.user && !initialized) {
-      initialized       = true;
-      user              = session.user;
-      userId            = user.id;
+      initialized = true;
+      user        = session.user;
+      userId      = user.id;
       loginStatus.textContent = `Welcome ${user.email}`;
       showAuthUI(false);
       await loadOrCreatePersonalNeurons();
@@ -361,11 +380,12 @@ window.addEventListener('DOMContentLoaded', async () => {
       showAuthUI(true);
     }
   });
-  const { data:{session} } = await supabase.auth.getSession();
+
+  const { data: { session } } = await supabase.auth.getSession();
   if (session?.user) {
-    initialized       = true;
-    user              = session.user;
-    userId            = user.id;
+    initialized = true;
+    user        = session.user;
+    userId      = user.id;
     loginStatus.textContent = `Welcome ${user.email}`;
     showAuthUI(false);
     await loadOrCreatePersonalNeurons();
