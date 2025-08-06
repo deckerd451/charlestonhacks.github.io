@@ -99,15 +99,30 @@ async function loadOrCreatePersonalNeurons() {
 function arrangeNeuronsInGrid(users) {
   const total = users.length;
   const cols  = Math.ceil(Math.sqrt(total));
-  const sx    = canvas.width  / (cols+1);
-  const sy    = canvas.height / (Math.ceil(total/cols)+1);
+  const rows  = Math.ceil(total / cols);
+  const sx    = canvas.width  / (cols + 1);
+  const sy    = canvas.height / (rows + 1);
 
-  return users.map((u,i) => ({
-    x:      sx*((i%cols)+1),
-    y:      sy*(Math.floor(i/cols)+1),
-    radius: 18, meta:u, owned:u.owned
-  }));
+  return users.map((u, i) => {
+    // compute the “ideal” grid spot
+    const defaultX = sx * ((i % cols) + 1);
+    const defaultY = sy * (Math.floor(i / cols) + 1);
+
+    // if the user has manually dragged this node before,
+    // u.x/u.y will be set on the meta; honor that
+    const x = u.x != null ? u.x : defaultX;
+    const y = u.y != null ? u.y : defaultY;
+
+    return {
+      x,
+      y,
+      radius: 18,
+      meta: u,
+      owned: u.owned
+    };
+  });
 }
+
 
 function clusteredLayout(users,w,h) {
   const groupBy = u=>u.skills?.[0]||u.availability||'misc';
