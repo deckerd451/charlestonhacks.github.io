@@ -1,50 +1,51 @@
 // neuralInteractive.js
 import { supabaseClient as supabase } from './supabaseClient.js';
-import { fetchConnections }         from './loadConnections.js';
+import { fetchConnections } from './loadConnections.js';
 
-window.supabase = supabase;
+window.supabase = supabase; // handy for console
 
 // ───── GLOBAL STATE ─────────────────────────────────────────────────────────
 const DEFAULT_NEURONS = [
   { name: "You", skills: ["Explorer"], interests: ["AI","Networks"], availability: "online", endorsements: 3 }
 ];
 
-let combined       = [];
+let combined = [];
 let rawConnections = [];
-let useGrid        = false;
-let neurons        = [];
-let connections    = [];
+let useGrid = false;
+let neurons = [];
+let connections = [];
 let selectedNeuron = null;
 
 let canvas, ctx, tooltip, user, userId;
-let animationId, lastFrame = 0;
+let animationId = null, lastFrame = 0;
 const FRAME_INTERVAL = 1000/30;
 
-let initialized      = false;
+let initialized = false;
 let animationStarted = false;
-let loginStatus      = null;
 
-// ───── UI HELPERS ───────────────────────────────────────────────────────────
 function setAuthStatus(msg, isError=false) {
   const el = document.getElementById('auth-status');
+  if (!el) return;
   el.textContent = msg;
   el.className   = isError ? 'error':'success';
 }
 
+// Show/hide UI chunks that belong to the page (auth panes remain in dex.html)
 function showAuthUI(needsLogin) {
-  // always show the outer container (title, toggle, logout)
-  document.getElementById('container').style.display = '';
-  // only hide/show the auth form itself
-  document.getElementById('auth-pane'   ).style.display = needsLogin ? 'block':'none';
-  document.getElementById('toggle-layout').style.display = needsLogin ? 'none' :'inline-block';
-  document.getElementById('logout-btn'   ).style.display = needsLogin ? 'none' :'inline-block';
-  document.getElementById('neural-canvas').style.display = needsLogin ? 'none' :'block';
+  const container = document.getElementById('container');
+  if (container) container.style.display = '';
+  const authPane   = document.getElementById('auth-pane');
+  const topActions = document.getElementById('top-actions');
+  const canvasEl   = document.getElementById('neural-canvas');
+
+  if (authPane)   authPane.style.display   = needsLogin ? 'block':'none';
+  if (topActions) topActions.style.display = needsLogin ? 'none' :'flex';
+  if (canvasEl)   canvasEl.style.display   = needsLogin ? 'none' :'block';
 }
 
 // ───── AUTH & DATA LOADING ─────────────────────────────────────────────────
 async function logout() {
   await supabase.auth.signOut();
-  loginStatus.textContent = '';
   showAuthUI(true);
 }
 
@@ -193,16 +194,11 @@ function animate(time) {
 
 // ───── BOOTSTRAP ───────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async()=>{
-  // show login form first
-  showAuthUI(true);
-
   canvas   = document.getElementById('neural-canvas');
   ctx      = canvas.getContext('2d');
   tooltip  = document.getElementById('tooltip');
 
   const toggleBtn = document.getElementById('toggle-layout');
-  const loginBtn  = document.getElementById('login-btn');
-  const logoutBtn = document.getElementById('logout-btn');
 
   window.addEventListener('resize',()=>{
     canvas.width  = innerWidth;
@@ -211,12 +207,8 @@ window.addEventListener('DOMContentLoaded', async()=>{
   canvas.width  = innerWidth;
   canvas.height = innerHeight;
 
-  loginStatus = document.createElement('div');
-  loginStatus.id = 'login-status';
-  loginStatus.style.cssText = 'color:#0ff;text-align:center;margin:8px;font-weight:bold;';
-  document.body.prepend(loginStatus);
-
-  toggleBtn.addEventListener('click', ()=>{
+  // Toggle between layouts
+  toggleBtn?.addEventListener('click', ()=>{
     useGrid = !useGrid;
     toggleBtn.textContent = useGrid ? 'Use Cluster':'Use Grid';
 
@@ -237,8 +229,7 @@ window.addEventListener('DOMContentLoaded', async()=>{
     drawNetwork();
   });
 
-  logoutBtn.addEventListener('click', logout);
-
+  // Hover tooltip
   canvas.addEventListener('mousemove',e=>{
     const {left,top}=canvas.getBoundingClientRect();
     const x=e.clientX-left, y=e.clientY-top;
@@ -248,12 +239,13 @@ window.addEventListener('DOMContentLoaded', async()=>{
       tooltip.style.left=`${e.clientX+12}px`;
       tooltip.style.top =`${e.clientY+12}px`;
       tooltip.textContent=
-        `${hit.meta.name}\nSkills: ${hit.meta.skills.join(', ')}\n`+
-        `Endorsements: ${hit.meta.endorsements}\nStatus: ${hit.meta.availability}`;
+        `${hit.meta.name}\nSkills: ${(hit.meta.skills||[]).join(', ')}\n`+
+        `Endorsements: ${hit.meta.endorsements ?? 0}\nStatus: ${hit.meta.availability ?? ''}`;
     } else tooltip.style.display='none';
   });
   canvas.addEventListener('mouseleave', ()=>tooltip.style.display='none');
 
+  // Drag owned nodes to save x/y
   let dragging=null, offs={x:0,y:0};
   const onMove=e=>{
     if(!dragging) return;
@@ -286,6 +278,7 @@ window.addEventListener('DOMContentLoaded', async()=>{
     window.addEventListener('mouseup',  onUp);
   });
 
+  // Click-to-connect
   canvas.addEventListener('click',async e=>{
     const {left,top}=canvas.getBoundingClientRect();
     const x=e.clientX-left,y=e.clientY-top;
@@ -302,37 +295,42 @@ window.addEventListener('DOMContentLoaded', async()=>{
     }
   });
 
-  loginBtn.addEventListener('click',async()=>{
-    const email = document.getElementById('email').value.trim();
-    if(!email) return setAuthStatus("Enter email",true);
-    loginBtn.disabled = true;
-    setAuthStatus("Sending link…");
-    const { error } = await supabase.auth.signInWithOtp({
-      email, options:{ emailRedirectTo: location.href }
-    });
-    setAuthStatus(error?error.message:"Check your inbox",!!error);
-    setTimeout(()=> loginBtn.disabled=false,60000);
+  // Tab changes from dex.html control canvas visibility and animation
+  document.addEventListener('dex:tab-changed', (e) => {
+    const isNetwork  = e.detail?.tab === 'network';
+    const canvasEl   = document.getElementById('neural-canvas');
+    const topActions = document.getElementById('top-actions');
+
+    if (canvasEl) canvasEl.style.display = isNetwork ? 'block' : 'none';
+    if (topActions) topActions.style.display = isNetwork ? 'flex' : 'none';
+
+    if (!isNetwork && animationId) {
+      cancelAnimationFrame(animationId); animationId = null;
+    } else if (isNetwork && !animationId) {
+      animationId = requestAnimationFrame(animate);
+    }
   });
 
+  // Auth state: load data when logged in
   supabase.auth.onAuthStateChange(async(_,sess)=>{
     if(sess?.user && !initialized){
       initialized=true;
       user=sess.user; userId=user.id;
-      loginStatus.textContent=`Welcome ${user.email}`;
       showAuthUI(false);
       await loadOrCreatePersonalNeurons();
     } else if(!sess?.user){
       initialized=false;
-      loginStatus.textContent='';
       showAuthUI(true);
+      // stop animation if running
+      if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
     }
   });
 
+  // First run: pick up existing session
   const { data:{session} } = await supabase.auth.getSession();
   if(session?.user){
     initialized=true;
     user=session.user; userId=user.id;
-    loginStatus.textContent=`Welcome ${user.email}`;
     showAuthUI(false);
     await loadOrCreatePersonalNeurons();
   } else {
