@@ -6,100 +6,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter','Segoe UI',Arial,sans-serif;
-      color: #eee;
-      min-height: 100vh;
-      background: #101010;
+      margin: 0; padding: 0; font-family: 'Inter','Segoe UI',Arial,sans-serif;
+      color: #eee; min-height: 100vh; background: #101010;
     }
-
     #container {
-      position: relative;
-      z-index: 1;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 28px 16px 0;
-      text-align: center;
+      position: relative; z-index: 1; max-width: 1200px;
+      margin: 0 auto; padding: 28px 16px 0; text-align: center;
     }
-
     #title { font-size: 2.1em; font-weight: 600; color: #0bb; }
-    #desc  { font-size: 1.1em; color: #aaa; margin-bottom: 16px; }
+    #desc  { font-size: 1.1em; color: #aaa; margin-bottom: 12px; }
 
     .card {
-      max-width: 520px;
-      margin: 0 auto 18px;
-      padding: 20px;
-      background: #181818;
-      border: 1px solid #2a2a2a;
-      border-radius: 10px;
-      box-shadow: 0 2px 12px #000a;
-      text-align: left;
+      max-width: 520px; margin: 0 auto 18px; padding: 20px;
+      background: #181818; border: 1px solid #2a2a2a; border-radius: 10px;
+      box-shadow: 0 2px 12px #000a; text-align: left;
     }
-
     .row { display: flex; gap: 10px; }
-
-    label { display: block; font-size: 0.92em; color: #bbb; margin: 10px 0 6px; }
-
+    label { display: block; font-size: .92em; color: #bbb; margin: 10px 0 6px; }
     input[type="text"], input[type="email"], select {
       padding: 10px; width: 100%; border: 1px solid #0bb5; border-radius: 6px;
       background: #222; color: #eee; font-size: 1em;
     }
-    input[type="text"]:focus, input[type="email"]:focus, select:focus {
-      outline: none; border-color: #0bb;
-    }
-
-    button {
-      padding: 10px 18px; background: #0bb; color: white; border: none;
-      border-radius: 6px; cursor: pointer; font-size: 1em; font-weight: 600;
-    }
+    input:focus, select:focus { outline: none; border-color: #0bb; }
+    button { padding: 10px 18px; background: #0bb; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
     button:hover { background: #099; }
 
-    #auth-status { margin-top: 10px; font-size: 0.95em; }
-    #auth-status.success { color: #0bb; }
-    #auth-status.error   { color: #ff7a7a; }
+    #auth-status { margin-top: 10px; font-size: .95em; }
+    #auth-status.success { color: #0bb; } #auth-status.error { color: #ff7a7a; }
 
-    /* —— Tabs —— */
+    /* Tabs */
     .tab-nav {
-      display: none;            /* hidden until login */
-      gap: 10px;
-      justify-content: center;
-      border-bottom: 2px solid #333;
-      padding-bottom: 6px;
-      margin: 12px auto 16px;
-      max-width: 900px;
+      display: none; gap: 10px; justify-content: center;
+      border-bottom: 2px solid #333; padding-bottom: 6px;
+      margin: 12px auto 8px; max-width: 980px;
     }
-    .tab-button {
-      background: #2a2a3a; color: #eee; border: none; padding: 10px 14px;
-      cursor: pointer; border-radius: 6px 6px 0 0; font-size: 0.95em;
-    }
+    .tab-button { background: #2a2a3a; color: #eee; border: 0; padding: 10px 14px; cursor: pointer; border-radius: 6px 6px 0 0; font-size: .95em; }
     .tab-button.active { background: #ffd700; color: #222; font-weight: 700; }
-
     .tab-pane { display: none; padding: 6px 0 0; }
     .tab-pane.active { display: block; }
 
-    /* —— Canvas —— */
+    /* Session bar (logout) */
+    #session-bar { display: none; max-width: 1200px; margin: 0 auto 8px; text-align: right; }
+    #whoami { opacity: .7; margin-right: 10px; }
+
+    /* Canvas (handled by neuralInteractive) */
     #neural-canvas {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      display: none; /* will show after login and on Network tab */
-      border: none; border-radius: 0; margin: 0; background: #181818; box-shadow: none; z-index: 0;
+      position: fixed; top:0; left:0; width:100vw; height:100vh; display:none;
+      border:0; border-radius:0; margin:0; background:#181818; box-shadow:none; z-index:0;
     }
-
     #tooltip {
-      position: absolute; background: #111; color: #0ff; padding: 8px 14px; font-size: 0.95em;
-      border-radius: 8px; border: 1px solid #0bb; pointer-events: none; opacity: 0.95; display: none; z-index: 2;
+      position:absolute; background:#111; color:#0ff; padding:8px 14px; font-size:.95em;
+      border-radius:8px; border:1px solid #0bb; pointer-events:none; opacity:.95; display:none; z-index:2;
     }
-
-    .top-actions { display: none; gap: 10px; justify-content: center; margin-bottom: 10px; }
+    .top-actions { display:none; gap:10px; justify-content:center; margin-bottom:10px; }
+    .card-container { display:grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap:10px; }
+    .mini-card { background:#1d1d1d; border:1px solid #2a2a2a; border-radius:8px; padding:12px; }
+    .mini-card h4 { margin:0 0 6px; color:#ffd700; font-size:1.05em; }
+    .muted { opacity:.7; font-size:.9em; }
   </style>
 </head>
 <body>
   <div id="container">
     <div id="title">Dex AGI Neural Interactive</div>
-    <div id="desc">
-      Visualize and arrange your connections.<br />
-      Sign in, create your profile, and your node will appear in the network.
-    </div>
+    <div id="desc">Visualize and arrange your connections. Sign in, create your profile, and your node will appear in the network.</div>
 
     <!-- Auth -->
     <div id="auth-pane" class="card">
@@ -107,7 +76,6 @@
       <input id="email" type="email" placeholder="Enter your email" />
       <button id="login-btn" style="margin-top:10px;">Sign In / Sign Up (Magic Link)</button>
       <div id="auth-status"></div>
-      <button id="logout-btn" style="display:none; margin-top:10px;">Sign Out</button>
     </div>
 
     <!-- Profile (if no community row) -->
@@ -144,10 +112,7 @@
         <!-- Newsletter opt-in -->
         <label style="display:flex; align-items:flex-start; gap:10px; margin-top:10px;">
           <input type="checkbox" id="newsletter-optin" />
-          <span>
-            Subscribe me to the CharlestonHacks newsletter.<br />
-            <small style="opacity:.7;">You can unsubscribe anytime via the email footer.</small>
-          </span>
+          <span>Subscribe me to the CharlestonHacks newsletter.<br><small class="muted">You can unsubscribe anytime via the email footer.</small></span>
         </label>
 
         <div style="display:flex; gap:10px; margin-top:12px;">
@@ -166,18 +131,22 @@
       <button class="tab-button" data-tab="leaderboard" role="tab" aria-selected="false">Leaderboard</button>
     </div>
 
+    <!-- Session bar (logout) -->
+    <div id="session-bar">
+      <span id="whoami"></span>
+      <button id="logout-btn">Sign Out</button>
+    </div>
+
     <!-- Top actions (layout toggle) -->
     <div id="top-actions" class="top-actions">
       <button id="toggle-layout">Use Grid</button>
     </div>
 
     <!-- Tab panes -->
-    <div id="pane-network" class="tab-pane active" role="tabpanel" aria-labelledby="network">
-      <!-- nothing inside; canvas sits behind, this pane just marks active state -->
-    </div>
+    <div id="pane-network" class="tab-pane active" role="tabpanel" aria-labelledby="network"></div>
 
     <div id="pane-search" class="tab-pane" role="tabpanel" aria-labelledby="search">
-      <div class="card" style="max-width:900px;">
+      <div class="card" style="max-width:980px;">
         <h3 style="margin-top:0;">Individual Search</h3>
         <div class="row" style="gap:8px; flex-wrap:wrap;">
           <div style="flex:1; min-width:240px;">
@@ -200,7 +169,7 @@
     </div>
 
     <div id="pane-team" class="tab-pane" role="tabpanel" aria-labelledby="team">
-      <div class="card" style="max-width:900px;">
+      <div class="card" style="max-width:980px;">
         <h3 style="margin-top:0;">Team Builder</h3>
         <div class="row" style="gap:8px; flex-wrap:wrap;">
           <div style="flex:1; min-width:240px;">
@@ -218,7 +187,7 @@
     </div>
 
     <div id="pane-leaderboard" class="tab-pane" role="tabpanel" aria-labelledby="leaderboard">
-      <div class="card" style="max-width:900px;">
+      <div class="card" style="max-width:980px;">
         <h3 style="margin-top:0;">Top Endorsed Skills</h3>
         <div id="leaderboard-rows"></div>
       </div>
@@ -232,9 +201,9 @@
   <!-- Page logic -->
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
-    import './assets/js/neuralInteractive.js';
+    import './assets/js/neuralInteractive.js'; // draws canvas, listens for tab events
 
-    const PROJECT_REF = 'hvmotpzhliufzomewzfl'; // used to clear the correct localStorage key
+    const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
     const authPane     = document.getElementById('auth-pane');
     const profilePane  = document.getElementById('profile-pane');
@@ -244,7 +213,8 @@
     const authStatusEl = document.getElementById('auth-status');
     const tabNav       = document.getElementById('tab-nav');
     const topActions   = document.getElementById('top-actions');
-    const canvas       = document.getElementById('neural-canvas');
+    const sessionBar   = document.getElementById('session-bar');
+    const whoami       = document.getElementById('whoami');
 
     function setAuthStatus(msg, isError=false) {
       authStatusEl.textContent = msg || '';
@@ -253,11 +223,7 @@
 
     async function fetchMyProfile(userId) {
       const { data, error } = await supabase
-        .from('community')
-        .select('*')
-        .eq('user_id', userId)
-        .limit(1)
-        .maybeSingle();
+        .from('community').select('*').eq('user_id', userId).limit(1).maybeSingle();
       if (error && error.code !== 'PGRST116') console.error('fetchMyProfile error:', error);
       return data || null;
     }
@@ -269,7 +235,7 @@
     }
     function hideProfileForm() { profilePane.style.display = 'none'; }
 
-    // —— Tabs
+    // Tabs (canvas visibility delegated to neuralInteractive via custom event)
     function setActiveTab(key) {
       document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === key);
@@ -278,25 +244,20 @@
       document.querySelectorAll('.tab-pane').forEach(p => {
         p.classList.toggle('active', p.id === `pane-${key}`);
       });
-      const isNetwork = key === 'network';
-      canvas.style.display = isNetwork ? 'block' : 'none';
-      topActions.style.display = isNetwork ? 'flex' : 'none';
+      document.dispatchEvent(new CustomEvent('dex:tab-changed', { detail: { tab: key } }));
     }
-
     document.querySelectorAll('.tab-button').forEach(btn => {
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
     });
 
-    // —— Auth actions
+    // Auth
     loginBtn.addEventListener('click', async () => {
       const email = document.getElementById('email').value.trim();
       if (!email) return setAuthStatus('Enter email', true);
-
       loginBtn.disabled = true;
       setAuthStatus('Sending link…');
       const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: window.location.href }
+        email, options: { emailRedirectTo: window.location.href }
       });
       setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
       setTimeout(() => (loginBtn.disabled = false), 60000);
@@ -305,23 +266,16 @@
     logoutBtn.addEventListener('click', async () => {
       try {
         await supabase.auth.signOut();
-
-        // Clear stored sessions (current + legacy keys)
-        // Primary (Supabase v2): sb-<projectRef>-auth-token
         localStorage.removeItem(`sb-${PROJECT_REF}-auth-token`);
-        // Older/other possible keys:
         localStorage.removeItem('supabase.auth.token');
-
-        // Reset UI
+        sessionBar.style.display  = 'none';
+        whoami.textContent = '';
         authPane.style.display    = 'block';
         tabNav.style.display      = 'none';
-        document.getElementById('toggle-layout').style.display = 'none';
         topActions.style.display  = 'none';
-        setActiveTab('network');
         hideProfileForm();
+        setActiveTab('network');
         setAuthStatus('');
-
-        // Hard reload to ensure modules reset cleanly
         window.location.reload();
       } catch (err) {
         console.error('Logout failed:', err);
@@ -329,7 +283,7 @@
       }
     });
 
-    // —— Profile submit (with newsletter opt-in + Mailchimp)
+    // Profile submit (with newsletter opt-in + Mailchimp)
     profileForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const { data: { session } } = await supabase.auth.getSession();
@@ -350,45 +304,29 @@
       const newsletterOptIn = document.getElementById('newsletter-optin').checked;
 
       const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
-
       const row = {
-        user_id: user.id,
-        name: `${fname} ${lname}`.trim(),
-        email,
-        skills,
-        interests: [],
-        availability,
-        endorsements: 0,
-        bio,
-        x: 0, y: 0,
+        user_id: user.id, name: `${fname} ${lname}`.trim(), email,
+        skills, interests: [], availability, endorsements: 0, bio, x:0, y:0,
         newsletter_opt_in: !!newsletterOptIn,
         newsletter_opt_in_at: newsletterOptIn ? new Date().toISOString() : null
       };
 
       setProfileStatus('Saving…');
       const { error } = await supabase.from('community').insert(row);
-      if (error) {
-        console.error('Insert community error:', error);
-        return setProfileStatus(error.message || 'Could not save profile', true);
-      }
+      if (error) return setProfileStatus(error.message || 'Could not save profile', true);
 
       if (newsletterOptIn) {
         try {
           const mcForm = document.createElement('form');
           mcForm.action = 'https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a';
-          mcForm.method = 'POST';
-          mcForm.target = '_blank';
+          mcForm.method = 'POST'; mcForm.target = '_blank';
           mcForm.innerHTML = `
             <input type="hidden" name="FNAME" value="${fname}">
             <input type="hidden" name="LNAME" value="${lname}">
             <input type="hidden" name="EMAIL" value="${email}">
           `;
-          document.body.appendChild(mcForm);
-          mcForm.submit();
-          document.body.removeChild(mcForm);
-        } catch (e2) {
-          console.warn('Mailchimp subscribe failed (non-blocking):', e2);
-        }
+          document.body.appendChild(mcForm); mcForm.submit(); document.body.removeChild(mcForm);
+        } catch (e2) { console.warn('Mailchimp subscribe failed (non-blocking):', e2); }
       }
 
       setProfileStatus('Saved! Loading your network…');
@@ -398,45 +336,100 @@
     });
 
     document.getElementById('skip-to-network').addEventListener('click', () => {
-      hideProfileForm();
-      setActiveTab('network');
+      hideProfileForm(); setActiveTab('network');
     });
 
-    // —— Auth state listener
+    // Auth state
     supabase.auth.onAuthStateChange(async (_event, session) => {
       const user = session?.user || null;
       if (user) {
-        document.getElementById('logout-btn').style.display = 'inline-block';
-        document.getElementById('toggle-layout').style.display = 'inline-block';
+        whoami.textContent = user.email || '';
+        sessionBar.style.display = 'block';
         tabNav.style.display = 'flex';
+        topActions.style.display = 'flex';
         const existing = await fetchMyProfile(user.id);
         if (!existing) showProfileForm(user.email || ''); else hideProfileForm();
-        setActiveTab('network'); // default to Network when logged in
+        setActiveTab('network');
       } else {
-        document.getElementById('logout-btn').style.display = 'none';
-        document.getElementById('toggle-layout').style.display = 'none';
+        whoami.textContent = '';
+        sessionBar.style.display = 'none';
         tabNav.style.display = 'none';
+        topActions.style.display = 'none';
         hideProfileForm();
-        setActiveTab('network'); // reset
+        setActiveTab('network');
       }
     });
 
-    // —— If already logged in on first load:
+    // On load, if already logged in
     (async () => {
       const { data: { session } } = await supabase.auth.getSession();
       const user = session?.user || null;
       if (user) {
-        document.getElementById('logout-btn').style.display = 'inline-block';
-        document.getElementById('toggle-layout').style.display = 'inline-block';
+        whoami.textContent = user.email || '';
+        sessionBar.style.display = 'block';
         tabNav.style.display = 'flex';
+        topActions.style.display = 'flex';
         const existing = await fetchMyProfile(user.id);
         if (!existing) showProfileForm(user.email || ''); else hideProfileForm();
         setActiveTab('network');
       }
     })();
+
+    // ======= BASIC SEARCH WIRING (skills + name) =======
+    const cardContainer = document.getElementById('cardContainer');
+    const matchNote     = document.getElementById('matchNotification');
+    const noResults     = document.getElementById('noResults');
+
+    function renderPeople(list) {
+      cardContainer.innerHTML = '';
+      if (!list?.length) {
+        noResults.style.display = 'block'; matchNote.style.display = 'none';
+        return;
+      }
+      noResults.style.display = 'none';
+      matchNote.style.display = 'block';
+      matchNote.textContent = `Found ${list.length} result${list.length>1?'s':''}.`;
+      list.forEach(p => {
+        const el = document.createElement('div');
+        el.className = 'mini-card';
+        el.innerHTML = `
+          <h4>${p.name ?? '(no name)'}</h4>
+          <div class="muted">${(p.skills||[]).join(', ') || 'No skills listed'}</div>
+          <div class="muted">${p.availability || ''}</div>
+          <div class="muted">${p.bio || ''}</div>
+        `;
+        cardContainer.appendChild(el);
+      });
+    }
+
+    document.getElementById('find-team-btn').addEventListener('click', async () => {
+      const skillsRaw = document.getElementById('teamSkillsInput').value.trim();
+      if (!skillsRaw) return renderPeople([]);
+      const terms = skillsRaw.split(',').map(s=>s.trim()).filter(Boolean);
+      // Simple strategy: union of people matching any skill term (ilike on JSON/text)
+      // If "skills" is JSON/text[] use 'cs' (contains) or ilike on textified skills
+      // Here: ilike on name and skills::text for portability
+      const { data, error } = await supabase
+        .from('community')
+        .select('*')
+        .ilike('skills::text', `%${terms.join('%')}%`);
+      if (error) { console.error(error); return renderPeople([]); }
+      renderPeople(data);
+    });
+
+    document.getElementById('search-name-btn').addEventListener('click', async () => {
+      const q = document.getElementById('nameInput').value.trim();
+      if (!q) return renderPeople([]);
+      const { data, error } = await supabase
+        .from('community')
+        .select('*')
+        .ilike('name', `%${q}%`);
+      if (error) { console.error(error); return renderPeople([]); }
+      renderPeople(data);
+    });
   </script>
 
-  <!-- neural interactive logic (draws canvas, uses the same DOM IDs) -->
+  <!-- neural interactive logic (draws canvas; listens for 'dex:tab-changed') -->
   <script type="module" src="./assets/js/neuralInteractive.js"></script>
 </body>
 </html>
