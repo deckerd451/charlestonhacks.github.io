@@ -396,3 +396,36 @@ window.addEventListener('DOMContentLoaded', async () => {
     showAuthUI(true);
   }
 });
+// file: neuralInteractive.js, at end of DOMContentLoaded
+document.getElementById('edit-profile')
+  .addEventListener('submit', async e => {
+    e.preventDefault();
+    const name  = document.getElementById('profile-name').value.trim();
+    const skills    = document.getElementById('profile-skills').value.split(',')
+                         .map(s=>s.trim()).filter(Boolean);
+    const interests = document.getElementById('profile-interests').value.split(',')
+                         .map(s=>s.trim()).filter(Boolean);
+    const availability = document.getElementById('profile-availability').value;
+    const endorsements = parseInt(document.getElementById('profile-endorsements').value,10) || 0;
+
+    const meNode = combined.find(n=>n.owned);
+    if (!meNode) return alert("Your neuron not found!");
+
+    const { error } = await supabase.from('community')
+      .update({ name, skills, interests, availability, endorsements })
+      .eq('id', meNode.id);
+
+    if (error) {
+      console.error(error);
+      return alert("Save failed: "+error.message);
+    }
+
+    // update in-memory and redraw
+    Object.assign(meNode, { name, skills, interests, availability, endorsements });
+    neurons = useGrid
+      ? arrangeNeuronsInGrid(combined)
+      : clusteredLayout(combined, canvas.width, canvas.height);
+    drawNetwork();
+    alert("Profile saved!");
+  });
+
