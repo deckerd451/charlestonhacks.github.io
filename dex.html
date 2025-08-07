@@ -47,10 +47,7 @@
       text-align: left;
     }
 
-    .row {
-      display: flex;
-      gap: 10px;
-    }
+    .row { display: flex; gap: 10px; }
 
     label {
       display: block;
@@ -126,7 +123,6 @@
       z-index: 2;           /* on top of everything */
     }
 
-    /* layout toggle + logout grouped */
     .top-actions {
       display: flex;
       gap: 10px;
@@ -152,7 +148,7 @@
       <button id="logout-btn" style="display:none; margin-top:10px;">Sign Out</button>
     </div>
 
-    <!-- Create Profile (shown only after login if no row in community) -->
+    <!-- Create Profile (shown after login if no row in community) -->
     <div id="profile-pane" class="card" style="display:none;">
       <h3 style="margin-top:0;">Create Your Profile</h3>
       <form id="profile-form">
@@ -183,6 +179,15 @@
           <option value="Not Looking">Not Looking</option>
         </select>
 
+        <!-- Newsletter opt-in -->
+        <label style="display:flex; align-items:flex-start; gap:10px; margin-top:10px;">
+          <input type="checkbox" id="newsletter-optin" />
+          <span>
+            Subscribe me to the CharlestonHacks newsletter.<br />
+            <small style="opacity:.7;">You can unsubscribe anytime via the email footer.</small>
+          </span>
+        </label>
+
         <div style="display:flex; gap:10px; margin-top:12px;">
           <button type="submit">Save Profile</button>
           <button type="button" id="skip-to-network" style="background:#333;border:1px solid #555;">Skip for now</button>
@@ -200,10 +205,10 @@
   <canvas id="neural-canvas"></canvas>
   <div id="tooltip"></div>
 
-  <!-- Scripts -->
+  <!-- Page logic -->
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
-    import './assets/js/neuralInteractive.js'; // attaches itself on DOMContentLoaded
+    import './assets/js/neuralInteractive.js'; // boots itself on DOMContentLoaded
 
     const authPane     = document.getElementById('auth-pane');
     const profilePane  = document.getElementById('profile-pane');
@@ -212,7 +217,6 @@
     const logoutBtn    = document.getElementById('logout-btn');
     const authStatusEl = document.getElementById('auth-status');
 
-    // Helpers
     function setAuthStatus(msg, isError=false) {
       authStatusEl.textContent = msg || '';
       authStatusEl.className   = isError ? 'error' : 'success';
@@ -225,8 +229,7 @@
         .eq('user_id', userId)
         .limit(1)
         .maybeSingle();
-
-      if (error && error.code !== 'PGRST116') { // ignore row-not-found
+      if (error && error.code !== 'PGRST116') {
         console.error('fetchMyProfile error:', error);
       }
       return data || null;
@@ -237,10 +240,7 @@
       authPane.style.display    = 'none';
       profilePane.style.display = 'block';
     }
-
-    function hideProfileForm() {
-      profilePane.style.display = 'none';
-    }
+    function hideProfileForm() { profilePane.style.display = 'none'; }
 
     // Auth actions
     loginBtn.addEventListener('click', async () => {
@@ -259,7 +259,6 @@
 
     logoutBtn.addEventListener('click', async () => {
       await supabase.auth.signOut();
-      // Show the auth pane again; neuralInteractive also reacts to this and hides canvas
       authPane.style.display    = 'block';
       document.getElementById('toggle-layout').style.display = 'none';
       hideProfileForm();
@@ -271,9 +270,13 @@
       e.preventDefault();
       const { data: { session } } = await supabase.auth.getSession();
       const user = session?.user;
-      if (!user) {
-        return setProfileStatus('Not authenticated. Please sign in again.', true);
-      }
+      const statusEl = document.getElementById('profile-status');
+      const setProfileStatus = (msg, isError=false) => {
+        statusEl.textContent = msg || '';
+        statusEl.style.color = isError ? '#ff7a7a' : '#0bb';
+      };
+
+      if (!user) return setProfileStatus('Not authenticated. Please sign in again.', true);
 
       const fname = document.getElementById('first-name').value.trim();
       const lname = document.getElementById('last-name').value.trim();
@@ -281,29 +284,26 @@
       const skillsRaw = document.getElementById('skills-input').value.trim();
       const bio  = document.getElementById('bio-input').value.trim();
       const availability = document.getElementById('availability-input').value;
+      const newsletterOptIn = document.getElementById('newsletter-optin').checked;
 
       const skills = skillsRaw
         ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean)
         : [];
 
-      // Build row for your `community` table
       const row = {
         user_id: user.id,
         name: `${fname} ${lname}`.trim(),
         email,
         skills,
-        interests: [],             // optional now; we can add later
+        interests: [],
         availability,
         endorsements: 0,
         bio,
-        x: 0, y: 0
+        x: 0, y: 0,
+        // Include if you add these columns in Supabase (recommended)
+        newsletter_opt_in: !!newsletterOptIn,
+        newsletter_opt_in_at: newsletterOptIn ? new Date().toISOString() : null
       };
-
-      const statusEl = document.getElementById('profile-status');
-      function setProfileStatus(msg, isError=false) {
-        statusEl.textContent = msg || '';
-        statusEl.style.color = isError ? '#ff7a7a' : '#0bb';
-      }
 
       setProfileStatus('Saving…');
       const { error } = await supabase.from('community').insert(row);
@@ -312,52 +312,52 @@
         return setProfileStatus(error.message || 'Could not save profile', true);
       }
 
-      setProfileStatus('Saved! Loading your network…');
-      // Hide form; neuralInteractive will detect the session and load neurons,
-      // including the newly created row.
-      hideProfileForm();
+      // Subscribe to Mailchimp if opted-in (non-blocking, CORS-safe)
+      if (newsletterOptIn) {
+        try {
+          const mcForm = document.createElement('form');
+          mcForm.action = 'https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a';
+          mcForm.method = 'POST';
+          mcForm.target = '_blank';
+          mcForm.innerHTML = `
+            <input type="hidden" name="FNAME" value="${fname}">
+            <input type="hidden" name="LNAME" value="${lname}">
+            <input type="hidden" name="EMAIL" value="${email}">
+          `;
+          document.body.appendChild(mcForm);
+          mcForm.submit();
+          document.body.removeChild(mcForm);
+        } catch (e2) {
+          console.warn('Mailchimp subscribe failed (non-blocking):', e2);
+        }
+      }
 
-      // Force-refresh the interactive view now that the user has a profile:
-      // window.neuralInteractive bootstraps on auth state automatically,
-      // but we can also reload to be explicit.
-      setTimeout(() => {
-        // If your neuralInteractive is already running, it will call loadOrCreatePersonalNeurons();
-        // Otherwise, a full reload guarantees the new profile is in the initial query.
-        window.location.reload();
-      }, 600);
+      setProfileStatus('Saved! Loading your network…');
+      hideProfileForm();
+      setTimeout(() => window.location.reload(), 600);
     });
 
-    // Optional "Skip" button: let them explore first; we’ll still show network
+    // Optional "Skip" button: explore network without creating a profile (yet)
     document.getElementById('skip-to-network').addEventListener('click', () => {
       hideProfileForm();
-      // neuralInteractive shows canvas when logged in; no insert is done.
-      // They can still drag around and create connections.
     });
 
-    // React to auth state:
+    // Auth state listener
     supabase.auth.onAuthStateChange(async (_event, session) => {
       const user = session?.user || null;
       if (user) {
-        // Show logout button + toggle (neuralInteractive also toggles these)
         document.getElementById('logout-btn').style.display = 'inline-block';
         document.getElementById('toggle-layout').style.display = 'inline-block';
-
-        // Check if profile exists
         const existing = await fetchMyProfile(user.id);
-        if (!existing) {
-          showProfileForm(user.email || '');
-        } else {
-          hideProfileForm();
-        }
+        if (!existing) showProfileForm(user.email || ''); else hideProfileForm();
       } else {
-        // Logged out
         document.getElementById('logout-btn').style.display = 'none';
         document.getElementById('toggle-layout').style.display = 'none';
         hideProfileForm();
       }
     });
 
-    // On first load, if already logged in, run the same logic:
+    // If already logged in on first load:
     (async () => {
       const { data: { session } } = await supabase.auth.getSession();
       const user = session?.user || null;
@@ -365,16 +365,12 @@
         document.getElementById('logout-btn').style.display = 'inline-block';
         document.getElementById('toggle-layout').style.display = 'inline-block';
         const existing = await fetchMyProfile(user.id);
-        if (!existing) {
-          showProfileForm(user.email || '');
-        } else {
-          hideProfileForm();
-        }
+        if (!existing) showProfileForm(user.email || ''); else hideProfileForm();
       }
     })();
   </script>
 
-  <!-- neural interactive logic (draws canvas, toggles UI it needs) -->
+  <!-- neural interactive logic (draws canvas, uses the same DOM IDs) -->
   <script type="module" src="./assets/js/neuralInteractive.js"></script>
 </body>
 </html>
