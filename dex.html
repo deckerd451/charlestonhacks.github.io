@@ -234,6 +234,8 @@
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
     import './assets/js/neuralInteractive.js';
 
+    const PROJECT_REF = 'hvmotpzhliufzomewzfl'; // used to clear the correct localStorage key
+
     const authPane     = document.getElementById('auth-pane');
     const profilePane  = document.getElementById('profile-pane');
     const profileForm  = document.getElementById('profile-form');
@@ -269,16 +271,13 @@
 
     // —— Tabs
     function setActiveTab(key) {
-      // buttons
       document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === key);
         btn.setAttribute('aria-selected', btn.dataset.tab === key ? 'true' : 'false');
       });
-      // panes
       document.querySelectorAll('.tab-pane').forEach(p => {
         p.classList.toggle('active', p.id === `pane-${key}`);
       });
-      // canvas & top actions
       const isNetwork = key === 'network';
       canvas.style.display = isNetwork ? 'block' : 'none';
       topActions.style.display = isNetwork ? 'flex' : 'none';
@@ -304,14 +303,30 @@
     });
 
     logoutBtn.addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      authPane.style.display    = 'block';
-      tabNav.style.display      = 'none';
-      document.getElementById('toggle-layout').style.display = 'none';
-      topActions.style.display  = 'none';
-      setActiveTab('network'); // reset
-      hideProfileForm();
-      setAuthStatus('');
+      try {
+        await supabase.auth.signOut();
+
+        // Clear stored sessions (current + legacy keys)
+        // Primary (Supabase v2): sb-<projectRef>-auth-token
+        localStorage.removeItem(`sb-${PROJECT_REF}-auth-token`);
+        // Older/other possible keys:
+        localStorage.removeItem('supabase.auth.token');
+
+        // Reset UI
+        authPane.style.display    = 'block';
+        tabNav.style.display      = 'none';
+        document.getElementById('toggle-layout').style.display = 'none';
+        topActions.style.display  = 'none';
+        setActiveTab('network');
+        hideProfileForm();
+        setAuthStatus('');
+
+        // Hard reload to ensure modules reset cleanly
+        window.location.reload();
+      } catch (err) {
+        console.error('Logout failed:', err);
+        setAuthStatus('Logout failed. Try hard refresh (Cmd/Ctrl+Shift+R).', true);
+      }
     });
 
     // —— Profile submit (with newsletter opt-in + Mailchimp)
