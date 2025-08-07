@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dex AGI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter','Segoe UI',Arial,sans-serif;
+      color: #eee;
+      min-height: 100vh;
+      background: #101010;
+    }
+
+    /* Keep your UI container above the canvas */
+    #container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 16px 0;
+      text-align: center;
+    }
+
+    #title {
+      font-size: 2.1em;
+      font-weight: 600;
+      color: #0bb;
+    }
+
+    #desc {
+      font-size: 1.1em;
+      color: #aaa;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      max-width: 520px;
+      margin: 0 auto 18px;
+      padding: 20px;
+      background: #181818;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #000a;
+      text-align: left;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.92em;
+      color: #bbb;
+      margin: 10px 0 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select {
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #0bb5;
+      border-radius: 6px;
+      background: #222;
+      color: #eee;
+      font-size: 1em;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #0bb;
+    }
+
+    button {
+      padding: 10px 18px;
+      background: #0bb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+    }
+    button:hover { background: #099; }
+
+    #auth-status {
+      margin-top: 10px;
+      font-size: 0.95em;
+    }
+    #auth-status.success { color: #0bb; }
+    #auth-status.error { color: #ff7a7a; }
+
+    /* —— RESPONSIVE FULL-SCREEN CANVAS —— */
+    #neural-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;        /* will show after login */
+      border: none;
+      border-radius: 0;
+      margin: 0;
+      background: #181818;
+      box-shadow: none;
+      z-index: 0;           /* behind your #container */
+    }
+
+    #tooltip {
+      position: absolute;
+      background: #111;
+      color: #0ff;
+      padding: 8px 14px;
+      font-size: 0.95em;
+      border-radius: 8px;
+      border: 1px solid #0bb;
+      pointer-events: none;
+      opacity: 0.95;
+      display: none;
+      z-index: 2;           /* on top of everything */
+    }
+
+    /* layout toggle + logout grouped */
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="title">Dex AGI Neural Interactive</div>
+    <div id="desc">
+      Visualize and arrange your connections.<br />
+      Sign in, create your profile, and your node will appear in the network.
+    </div>
+
+    <!-- Auth -->
+    <div id="auth-pane" class="card">
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="Enter your email" />
+      <button id="login-btn" style="margin-top:10px;">Sign In / Sign Up (Magic Link)</button>
+      <div id="auth-status"></div>
+      <button id="logout-btn" style="display:none; margin-top:10px;">Sign Out</button>
+    </div>
+
+    <!-- Create Profile (shown only after login if no row in community) -->
+    <div id="profile-pane" class="card" style="display:none;">
+      <h3 style="margin-top:0;">Create Your Profile</h3>
+      <form id="profile-form">
+        <div class="row">
+          <div style="flex:1;">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" required />
+          </div>
+          <div style="flex:1;">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" required />
+          </div>
+        </div>
+
+        <label for="profile-email">Email</label>
+        <input type="email" id="profile-email" required />
+
+        <label for="skills-input">Professional Skills (comma separated)</label>
+        <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required />
+
+        <label for="bio-input">Short Bio <span style="opacity:.6">(Optional)</span></label>
+        <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" />
+
+        <label for="availability-input">Current Availability</label>
+        <select id="availability-input">
+          <option value="Available">Available</option>
+          <option value="Busy">Busy</option>
+          <option value="Not Looking">Not Looking</option>
+        </select>
+
+        <div style="display:flex; gap:10px; margin-top:12px;">
+          <button type="submit">Save Profile</button>
+          <button type="button" id="skip-to-network" style="background:#333;border:1px solid #555;">Skip for now</button>
+        </div>
+        <div id="profile-status" style="margin-top:10px;"></div>
+      </form>
+    </div>
+
+    <div class="top-actions">
+      <button id="toggle-layout" style="display:none;">Use Grid</button>
+    </div>
+  </div>
+
+  <!-- responsive, full-screen canvas -->
+  <canvas id="neural-canvas"></canvas>
+  <div id="tooltip"></div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
+    import './assets/js/neuralInteractive.js'; // attaches itself on DOMContentLoaded
+
+    const authPane     = document.getElementById('auth-pane');
+    const profilePane  = document.getElementById('profile-pane');
+    const profileForm  = document.getElementById('profile-form');
+    const loginBtn     = document.getElementById('login-btn');
+    const logoutBtn    = document.getElementById('logout-btn');
+    const authStatusEl = document.getElementById('auth-status');
+
+    // Helpers
+    function setAuthStatus(msg, isError=false) {
+      authStatusEl.textContent = msg || '';
+      authStatusEl.className   = isError ? 'error' : 'success';
+    }
+
+    async function fetchMyProfile(userId) {
+      const { data, error } = await supabase
+        .from('community')
+        .select('*')
+        .eq('user_id', userId)
+        .limit(1)
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') { // ignore row-not-found
+        console.error('fetchMyProfile error:', error);
+      }
+      return data || null;
+    }
+
+    function showProfileForm(prefillEmail) {
+      document.getElementById('profile-email').value = prefillEmail || '';
+      authPane.style.display    = 'none';
+      profilePane.style.display = 'block';
+    }
+
+    function hideProfileForm() {
+      profilePane.style.display = 'none';
+    }
+
+    // Auth actions
+    loginBtn.addEventListener('click', async () => {
+      const email = document.getElementById('email').value.trim();
+      if (!email) return setAuthStatus('Enter email', true);
+
+      loginBtn.disabled = true;
+      setAuthStatus('Sending link…');
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.href }
+      });
+      setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
+      setTimeout(() => (loginBtn.disabled = false), 60000);
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      // Show the auth pane again; neuralInteractive also reacts to this and hides canvas
+      authPane.style.display    = 'block';
+      document.getElementById('toggle-layout').style.display = 'none';
+      hideProfileForm();
+      setAuthStatus('');
+    });
+
+    // Profile submit
+    profileForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const { data: { session } } = await supabase.auth.getSession();
+      const user = session?.user;
+      if (!user) {
+        return setProfileStatus('Not authenticated. Please sign in again.', true);
+      }
+
+      const fname = document.getElementById('first-name').value.trim();
+      const lname = document.getElementById('last-name').value.trim();
+      const email = document.getElementById('profile-email').value.trim();
+      const skillsRaw = document.getElementById('skills-input').value.trim();
+      const bio  = document.getElementById('bio-input').value.trim();
+      const availability = document.getElementById('availability-input').value;
+
+      const skills = skillsRaw
+        ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean)
+        : [];
+
+      // Build row for your `community` table
+      const row = {
+        user_id: user.id,
+        name: `${fname} ${lname}`.trim(),
+        email,
+        skills,
+        interests: [],             // optional now; we can add later
+        availability,
+        endorsements: 0,
+        bio,
+        x: 0, y: 0
+      };
+
+      const statusEl = document.getElementById('profile-status');
+      function setProfileStatus(msg, isError=false) {
+        statusEl.textContent = msg || '';
+        statusEl.style.color = isError ? '#ff7a7a' : '#0bb';
+      }
+
+      setProfileStatus('Saving…');
+      const { error } = await supabase.from('community').insert(row);
+      if (error) {
+        console.error('Insert community error:', error);
+        return setProfileStatus(error.message || 'Could not save profile', true);
+      }
+
+      setProfileStatus('Saved! Loading your network…');
+      // Hide form; neuralInteractive will detect the session and load neurons,
+      // including the newly created row.
+      hideProfileForm();
+
+      // Force-refresh the interactive view now that the user has a profile:
+      // window.neuralInteractive bootstraps on auth state automatically,
+      // but we can also reload to be explicit.
+      setTimeout(() => {
+        // If your neuralInteractive is already running, it will call loadOrCreatePersonalNeurons();
+        // Otherwise, a full reload guarantees the new profile is in the initial query.
+        window.location.reload();
+      }, 600);
+    });
+
+    // Optional "Skip" button: let them explore first; we’ll still show network
+    document.getElementById('skip-to-network').addEventListener('click', () => {
+      hideProfileForm();
+      // neuralInteractive shows canvas when logged in; no insert is done.
+      // They can still drag around and create connections.
+    });
+
+    // React to auth state:
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      const user = session?.user || null;
+      if (user) {
+        // Show logout button + toggle (neuralInteractive also toggles these)
+        document.getElementById('logout-btn').style.display = 'inline-block';
+        document.getElementById('toggle-layout').style.display = 'inline-block';
+
+        // Check if profile exists
+        const existing = await fetchMyProfile(user.id);
+        if (!existing) {
+          showProfileForm(user.email || '');
+        } else {
+          hideProfileForm();
+        }
+      } else {
+        // Logged out
+        document.getElementById('logout-btn').style.display = 'none';
+        document.getElementById('toggle-layout').style.display = 'none';
+        hideProfileForm();
+      }
+    });
+
+    // On first load, if already logged in, run the same logic:
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      const user = session?.user || null;
+      if (user) {
+        document.getElementById('logout-btn').style.display = 'inline-block';
+        document.getElementById('toggle-layout').style.display = 'inline-block';
+        const existing = await fetchMyProfile(user.id);
+        if (!existing) {
+          showProfileForm(user.email || '');
+        } else {
+          hideProfileForm();
+        }
+      }
+    })();
+  </script>
+
+  <!-- neural interactive logic (draws canvas, toggles UI it needs) -->
+  <script type="module" src="./assets/js/neuralInteractive.js"></script>
+</body>
+</html>
