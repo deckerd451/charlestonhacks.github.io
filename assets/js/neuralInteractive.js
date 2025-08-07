@@ -80,8 +80,16 @@ async function loadOrCreatePersonalNeurons() {
     ...mine .map(n => ({ ...n, owned:true  })),
     ...others.map(n => ({ ...n, owned:false }))
   ];
-
-  // position into either grid or cluster
+  // file: neuralInteractive.js, inside loadOrCreatePersonalNeurons()
+const me = combined.find(n => n.owned);
+if (me) {
+  document.getElementById('profile-name').value         = me.name || me.meta.name;
+  document.getElementById('profile-skills').value       = (me.skills||me.meta.skills).join(', ');
+  document.getElementById('profile-interests').value    = (me.interests||me.meta.interests).join(', ');
+  document.getElementById('profile-availability').value = me.availability  || me.meta.availability;
+  document.getElementById('profile-endorsements').value = me.endorsements  || me.meta.endorsements;
+}
+ // position into either grid or cluster
   neurons = useGrid
     ? arrangeNeuronsInGrid(combined)
     : clusteredLayout(combined, canvas.width, canvas.height);
