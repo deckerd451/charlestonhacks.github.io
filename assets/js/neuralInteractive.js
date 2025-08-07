@@ -32,8 +32,6 @@ function setAuthStatus(msg, isError=false) {
 
 // Show/hide UI chunks that belong to the page (auth panes remain in dex.html)
 function showAuthUI(needsLogin) {
-  const container = document.getElementById('container');
-  if (container) container.style.display = '';
   const authPane   = document.getElementById('auth-pane');
   const topActions = document.getElementById('top-actions');
   const canvasEl   = document.getElementById('neural-canvas');
@@ -44,11 +42,6 @@ function showAuthUI(needsLogin) {
 }
 
 // ───── AUTH & DATA LOADING ─────────────────────────────────────────────────
-async function logout() {
-  await supabase.auth.signOut();
-  showAuthUI(true);
-}
-
 async function loadOrCreatePersonalNeurons() {
   const { data, error } = await supabase.from('community').select('*');
   if (error) {
@@ -321,7 +314,6 @@ window.addEventListener('DOMContentLoaded', async()=>{
     } else if(!sess?.user){
       initialized=false;
       showAuthUI(true);
-      // stop animation if running
       if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
     }
   });
