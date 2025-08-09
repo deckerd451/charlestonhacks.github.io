@@ -194,12 +194,12 @@
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
 
-    // 0) If someone opens the GitHub Pages copy, bounce them to production
+    // If someone opens the GitHub Pages copy, bounce them to production
     if (location.hostname.includes('github.io')) {
       location.replace('https://charlestonhacks.com/dex.html');
     }
 
-    // 1) Production redirect target
+    // Production redirect target
     const DEX_URL = 'https://charlestonhacks.com/dex.html';
     const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
@@ -248,7 +248,6 @@
       });
       document.dispatchEvent(new CustomEvent('dex:tab-changed', { detail: { tab: key } }));
     }
-
     document.querySelectorAll('.tab-button').forEach(btn => {
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
     });
@@ -366,12 +365,24 @@
         hashParams.get('refresh_token')
       ) {
         console.log('[DEX] hash tokens detected');
-        const { data, error } = await supabase.auth.setSession({
-          access_token: hashParams.get('access_token'),
-          refresh_token: hashParams.get('refresh_token')
-        });
-        console.log('[DEX] setSession from hash ->', { hasUser: !!data?.user, error });
-        history.replaceState({}, '', DEX_URL);
+        try {
+          const { data, error } = await supabase.auth.setSession({
+            access_token: hashParams.get('access_token'),
+            refresh_token: hashParams.get('refresh_token')
+          });
+          console.log('[DEX] setSession -> user?', !!data?.user, 'error:', error);
+          if (error) {
+            setAuthStatus(`Auth failed: ${error.message}`, true);
+            history.replaceState({}, '', DEX_URL);
+            return;
+          }
+          history.replaceState({}, '', DEX_URL);
+        } catch (e) {
+          console.error('[DEX] setSession threw:', e);
+          setAuthStatus(`Auth failed: ${e.message || e}`, true);
+          history.replaceState({}, '', DEX_URL);
+          return;
+        }
       }
 
       // C) PKCE (?code=...) only if present
