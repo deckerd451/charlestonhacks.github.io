@@ -203,14 +203,11 @@
   <canvas id="neural-canvas"></canvas>
   <div id="tooltip"></div>
 
-  <!-- Page logic -->
+  <!-- Page logic with hotfix for login loop -->
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
-   
 
-    // 🔒 Force magic-link to come back to THIS page
-   const DEX_URL = new URL('dex.html', window.location.href).href;
- // Project ref for clearing localStorage session
+    const DEX_URL = new URL('dex.html', window.location.href).href;
     const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
     const authPane     = document.getElementById('auth-pane');
@@ -271,7 +268,7 @@
       loginBtn.disabled = true;
       setAuthStatus('Sending link…');
       const { error } = await supabase.auth.signInWithOtp({
-        email, options: { emailRedirectTo: DEX_URL } // 👈 force it here
+        email, options: { emailRedirectTo: DEX_URL }
       });
       setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
       setTimeout(() => (loginBtn.disabled = false), 60000);
@@ -375,20 +372,39 @@
       }
     });
 
-    // On load, if already logged in
-   (async () => {
-  // NEW: finalize magic-link after redirect (no-op if no code present)
-await supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {});
-const { data: { session } } = await supabase.auth.getSession();
+    // ------- HOTFIX: Robust session handling on page load -------
+    async function ensureSession() {
+      // Only exchange the code if the URL has code params
+      if (window.location.href.includes('access_token') || window.location.href.includes('code=')) {
+        showDebug('Exchanging magic link code...');
+        try {
+          await supabase.auth.exchangeCodeForSession(window.location.href);
+          showDebug('Code exchanged, checking session...');
+        } catch (e) {
+          showDebug('Exchange failed: ' + (e.message || e));
+          alert('Failed to exchange login code. Try logging in again or contact support.');
+          return null;
+        }
+      }
+      // Always check session after exchange attempt
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        showDebug('Session check error: ' + error.message);
+        alert('Login session error: ' + error.message);
+        return null;
+      }
+      showDebug('Session ' + (session?.user ? 'present' : 'absent'));
+      return session;
+    }
 
-// Clean URL only AFTER a session exists (prevents stripping token too early)
-if (session) {
-  const clean = new URL('dex.html', window.location.href).href;
-  history.replaceState({}, '', clean);
-}
+    (async () => {
+      const session = await ensureSession();
 
-      showDebug(session?.user ? 'logged in' : 'logged out', session?.user?.email || '');
+      // Only clean up the URL after confirming session exists!
       if (session?.user) {
+        const clean = new URL('dex.html', window.location.href).href;
+        history.replaceState({}, '', clean);
+        showDebug('Logged in as ' + (session.user.email || session.user.id));
         whoami.textContent = session.user.email || '';
         sessionBar.style.display = 'block';
         tabNav.style.display = 'flex';
@@ -396,6 +412,9 @@ if (session) {
         const existing = await fetchMyProfile(session.user.id);
         if (!existing) showProfileForm(session.user.email || ''); else hideProfileForm();
         setActiveTab('network');
+      } else {
+        showDebug('Not logged in.');
+        // ... show login UI, etc ...
       }
     })();
 
