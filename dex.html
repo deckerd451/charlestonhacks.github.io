@@ -376,8 +376,11 @@
     });
 
     // On load, if already logged in
-    (async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+   (async () => {
+  // NEW: finalize magic-link after redirect (no-op if no code present)
+  await supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {});
+  const { data: { session } } = await supabase.auth.getSession();
+
       showDebug(session?.user ? 'logged in' : 'logged out', session?.user?.email || '');
       if (session?.user) {
         whoami.textContent = session.user.email || '';
