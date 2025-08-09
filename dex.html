@@ -378,14 +378,14 @@
     // On load, if already logged in
    (async () => {
   // NEW: finalize magic-link after redirect (no-op if no code present)
-  await supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {});
-     // Clean up auth params from URL so extensions don't re-trigger on the hash
-const after = new URL(window.location.href);
-if (after.hash.includes('access_token') || after.searchParams.has('code')) {
-  history.replaceState({}, '', new URL('dex.html', window.location.href).href);
-}
+await supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {});
+const { data: { session } } = await supabase.auth.getSession();
 
-  const { data: { session } } = await supabase.auth.getSession();
+// Clean URL only AFTER a session exists (prevents stripping token too early)
+if (session) {
+  const clean = new URL('dex.html', window.location.href).href;
+  history.replaceState({}, '', clean);
+}
 
       showDebug(session?.user ? 'logged in' : 'logged out', session?.user?.email || '');
       if (session?.user) {
