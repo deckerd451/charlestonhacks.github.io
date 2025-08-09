@@ -34,7 +34,6 @@
     #auth-status { margin-top: 10px; font-size: .95em; }
     #auth-status.success { color: #0bb; } #auth-status.error { color: #ff7a7a; }
 
-    /* Tabs */
     .tab-nav {
       display: none; gap: 10px; justify-content: center;
       border-bottom: 2px solid #333; padding-bottom: 6px;
@@ -45,11 +44,9 @@
     .tab-pane { display: none; padding: 6px 0 0; }
     .tab-pane.active { display: block; }
 
-    /* Session bar (logout) */
     #session-bar { display: none; max-width: 1200px; margin: 0 auto 8px; text-align: right; }
     #whoami { opacity: .7; margin-right: 10px; }
 
-    /* Canvas (handled by neuralInteractive) */
     #neural-canvas {
       position: fixed; top:0; left:0; width:100vw; height:100vh; display:none;
       border:0; border-radius:0; margin:0; background:#181818; box-shadow:none; z-index:0;
@@ -70,12 +67,10 @@
     <div id="title">Dex AGI Neural Interactive</div>
     <div id="desc">Visualize and arrange your connections. Sign in, create your profile, and your node will appear in the network.</div>
 
-    <!-- 🔎 Session debug badge -->
     <div id="debug-session" style="margin:6px auto 10px;max-width:1200px;text-align:center;opacity:.85;font-size:.92em;">
       Session: <span id="debug-session-state">checking…</span>
     </div>
 
-    <!-- Auth -->
     <div id="auth-pane" class="card">
       <label for="email">Email</label>
       <input id="email" type="email" placeholder="Enter your email" />
@@ -83,7 +78,6 @@
       <div id="auth-status"></div>
     </div>
 
-    <!-- Profile (if no community row) -->
     <div id="profile-pane" class="card" style="display:none;">
       <h3 style="margin-top:0;">Create Your Profile</h3>
       <form id="profile-form">
@@ -114,7 +108,6 @@
           <option value="Not Looking">Not Looking</option>
         </select>
 
-        <!-- Newsletter opt-in -->
         <label style="display:flex; align-items:flex-start; gap:10px; margin-top:10px;">
           <input type="checkbox" id="newsletter-optin" />
           <span>Subscribe me to the CharlestonHacks newsletter.<br><small class="muted">You can unsubscribe anytime via the email footer.</small></span>
@@ -128,7 +121,6 @@
       </form>
     </div>
 
-    <!-- Tabs (visible after login) -->
     <div id="tab-nav" class="tab-nav" role="tablist" aria-label="Dex sections">
       <button class="tab-button active" data-tab="network" role="tab" aria-selected="true">Network</button>
       <button class="tab-button" data-tab="search" role="tab" aria-selected="false">Search</button>
@@ -136,18 +128,15 @@
       <button class="tab-button" data-tab="leaderboard" role="tab" aria-selected="false">Leaderboard</button>
     </div>
 
-    <!-- Session bar (logout) -->
     <div id="session-bar">
       <span id="whoami"></span>
       <button id="logout-btn">Sign Out</button>
     </div>
 
-    <!-- Top actions (layout toggle) -->
     <div id="top-actions" class="top-actions">
       <button id="toggle-layout">Use Grid</button>
     </div>
 
-    <!-- Tab panes -->
     <div id="pane-network" class="tab-pane active" role="tabpanel" aria-labelledby="network"></div>
 
     <div id="pane-search" class="tab-pane" role="tabpanel" aria-labelledby="search">
@@ -199,15 +188,12 @@
     </div>
   </div>
 
-  <!-- Full-screen canvas -->
   <canvas id="neural-canvas"></canvas>
   <div id="tooltip"></div>
 
-  <!-- Page logic -->
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
 
-    // Always redirect magic link back here
     const DEX_URL = new URL('dex.html', window.location.href).href;
     const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
@@ -261,7 +247,6 @@
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
     });
 
-    // Send magic link
     loginBtn.addEventListener('click', async () => {
       const email = document.getElementById('email').value.trim();
       if (!email) return setAuthStatus('Enter email', true);
@@ -274,7 +259,6 @@
       setTimeout(() => (loginBtn.disabled = false), 60000);
     });
 
-    // Logout
     logoutBtn.addEventListener('click', async () => {
       try {
         await supabase.auth.signOut();
@@ -295,7 +279,6 @@
       }
     });
 
-    // Profile submit
     profileForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const { data: { session } } = await supabase.auth.getSession();
@@ -347,49 +330,35 @@
       setTimeout(() => window.location.reload(), 600);
     });
 
-    // Auth state reacts to changes
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user) {
-        showDebug('logged in', session.user.email || session.user.id);
-        whoami.textContent = session.user.email || '';
-        sessionBar.style.display = 'block';
-        tabNav.style.display = 'flex';
-        topActions.style.display = 'flex';
-        const existing = await fetchMyProfile(session.user.id);
-        if (!existing) showProfileForm(session.user.email || ''); else hideProfileForm();
-        setActiveTab('network');
-      } else {
-        showDebug('logged out');
-        whoami.textContent = '';
-        sessionBar.style.display = 'none';
-        tabNav.style.display = 'none';
-        topActions.style.display = 'none';
-        hideProfileForm();
-        setActiveTab('network');
-      }
-    });
-
-    // On load: finalize magic link, then clean URL, then show UI if logged in
+    // === On load: handle hash tokens (magiclink) OR PKCE code, then force UI ===
     (async () => {
       console.log('[DEX] starting auth exchange:', window.location.href);
-      try {
-        await supabase.auth.exchangeCodeForSession(window.location.href);
-        console.log('[DEX] exchangeCodeForSession: success');
-      } catch (e) {
-        console.log('[DEX] exchangeCodeForSession: no code or failed', e?.message);
+
+      // 0) Hash-style magic link: #access_token=...&refresh_token=...&type=magiclink
+      const hp = new URLSearchParams(window.location.hash.slice(1));
+      if (hp.get('access_token') && hp.get('type') === 'magiclink') {
+        console.log('[DEX] hash tokens detected');
+        const { data, error } = await supabase.auth.setSession({
+          access_token: hp.get('access_token'),
+          refresh_token: hp.get('refresh_token') || ''
+        });
+        console.log('[DEX] setSession from hash ->', { hasUser: !!data?.user, error });
+        // Clean the URL after using tokens
+        history.replaceState({}, '', new URL('dex.html', window.location.href).href);
       }
 
+      // 1) PKCE-style magic link (?code=...) — no-op if not present
+      try {
+        await supabase.auth.exchangeCodeForSession(window.location.href);
+        console.log('[DEX] exchangeCodeForSession: attempted');
+      } catch (e) {
+        console.log('[DEX] exchangeCodeForSession error:', e?.message);
+      }
+
+      // 2) Read session and FORCE the UI to logged-in state if present
       const { data: { session } } = await supabase.auth.getSession();
       console.log('[DEX] getSession -> hasSession:', !!session, 'email:', session?.user?.email);
 
-      if (session) {
-        const clean = new URL('dex.html', window.location.href);
-        clean.search = '';
-        clean.hash = '';
-        history.replaceState({}, '', clean.href);
-      }
-
-      showDebug(session?.user ? 'logged in' : 'logged out', session?.user?.email || '');
       if (session?.user) {
         whoami.textContent = session.user.email || '';
         sessionBar.style.display = 'block';
@@ -398,6 +367,9 @@
         const existing = await fetchMyProfile(session.user.id);
         if (!existing) showProfileForm(session.user.email || ''); else hideProfileForm();
         setActiveTab('network');
+        showDebug('logged in', session.user.email || session.user.id);
+      } else {
+        showDebug('logged out');
       }
     })();
 
@@ -452,7 +424,6 @@
     });
   </script>
 
-  <!-- neural interactive logic (draws canvas; listens for 'dex:tab-changed') -->
   <script type="module" src="./assets/js/neuralInteractive.js"></script>
 </body>
 </html>
