@@ -34,6 +34,7 @@
     #auth-status { margin-top: 10px; font-size: .95em; }
     #auth-status.success { color: #0bb; } #auth-status.error { color: #ff7a7a; }
 
+    /* Tabs */
     .tab-nav {
       display: none; gap: 10px; justify-content: center;
       border-bottom: 2px solid #333; padding-bottom: 6px;
@@ -44,9 +45,11 @@
     .tab-pane { display: none; padding: 6px 0 0; }
     .tab-pane.active { display: block; }
 
+    /* Session bar (logout) */
     #session-bar { display: none; max-width: 1200px; margin: 0 auto 8px; text-align: right; }
     #whoami { opacity: .7; margin-right: 10px; }
 
+    /* Canvas (handled by neuralInteractive) */
     #neural-canvas {
       position: fixed; top:0; left:0; width:100vw; height:100vh; display:none;
       border:0; border-radius:0; margin:0; background:#181818; box-shadow:none; z-index:0;
@@ -67,10 +70,12 @@
     <div id="title">Dex AGI Neural Interactive</div>
     <div id="desc">Visualize and arrange your connections. Sign in, create your profile, and your node will appear in the network.</div>
 
+    <!-- 🔎 Session debug badge -->
     <div id="debug-session" style="margin:6px auto 10px;max-width:1200px;text-align:center;opacity:.85;font-size:.92em;">
       Session: <span id="debug-session-state">checking…</span>
     </div>
 
+    <!-- Auth -->
     <div id="auth-pane" class="card">
       <label for="email">Email</label>
       <input id="email" type="email" placeholder="Enter your email" />
@@ -78,6 +83,7 @@
       <div id="auth-status"></div>
     </div>
 
+    <!-- Profile (if no community row) -->
     <div id="profile-pane" class="card" style="display:none;">
       <h3 style="margin-top:0;">Create Your Profile</h3>
       <form id="profile-form">
@@ -98,7 +104,7 @@
         <label for="skills-input">Professional Skills (comma separated)</label>
         <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required />
 
-        <label for="bio-input">Short Bio <span class="muted">(Optional)</span></label>
+        <label for="bio-input">Short Bio <span style="opacity:.6">(Optional)</span></label>
         <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" />
 
         <label for="availability-input">Current Availability</label>
@@ -108,6 +114,7 @@
           <option value="Not Looking">Not Looking</option>
         </select>
 
+        <!-- Newsletter opt-in -->
         <label style="display:flex; align-items:flex-start; gap:10px; margin-top:10px;">
           <input type="checkbox" id="newsletter-optin" />
           <span>Subscribe me to the CharlestonHacks newsletter.<br><small class="muted">You can unsubscribe anytime via the email footer.</small></span>
@@ -121,6 +128,7 @@
       </form>
     </div>
 
+    <!-- Tabs (visible after login) -->
     <div id="tab-nav" class="tab-nav" role="tablist" aria-label="Dex sections">
       <button class="tab-button active" data-tab="network" role="tab" aria-selected="true">Network</button>
       <button class="tab-button" data-tab="search" role="tab" aria-selected="false">Search</button>
@@ -128,15 +136,18 @@
       <button class="tab-button" data-tab="leaderboard" role="tab" aria-selected="false">Leaderboard</button>
     </div>
 
+    <!-- Session bar (logout) -->
     <div id="session-bar">
       <span id="whoami"></span>
       <button id="logout-btn">Sign Out</button>
     </div>
 
+    <!-- Top actions (layout toggle) -->
     <div id="top-actions" class="top-actions">
       <button id="toggle-layout">Use Grid</button>
     </div>
 
+    <!-- Tab panes -->
     <div id="pane-network" class="tab-pane active" role="tabpanel" aria-labelledby="network"></div>
 
     <div id="pane-search" class="tab-pane" role="tabpanel" aria-labelledby="search">
@@ -188,22 +199,20 @@
     </div>
   </div>
 
+  <!-- Full-screen canvas -->
   <canvas id="neural-canvas"></canvas>
   <div id="tooltip"></div>
 
+  <!-- Page logic -->
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
+   
 
-    // If someone opens the GitHub Pages copy, bounce them to production
-    if (location.hostname.includes('github.io')) {
-      location.replace('https://charlestonhacks.com/dex.html');
-    }
-
-    // Production redirect target
-    const DEX_URL = 'https://charlestonhacks.com/dex.html';
+    // 🔒 Force magic-link to come back to THIS page
+   const DEX_URL = new URL('dex.html', window.location.href).href;
+ // Project ref for clearing localStorage session
     const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
-    // ===== DOM =====
     const authPane     = document.getElementById('auth-pane');
     const profilePane  = document.getElementById('profile-pane');
     const profileForm  = document.getElementById('profile-form');
@@ -216,7 +225,6 @@
     const whoami       = document.getElementById('whoami');
     const debugStateEl = document.getElementById('debug-session-state');
 
-    // ===== Helpers =====
     function setAuthStatus(msg, isError=false) {
       authStatusEl.textContent = msg || '';
       authStatusEl.className   = isError ? 'error' : 'success';
@@ -226,18 +234,22 @@
       debugStateEl.textContent = `${state}${extra ? ' — ' + extra : ''}`;
       console.log('[DEX DEBUG]', state, extra);
     }
+
     async function fetchMyProfile(userId) {
       const { data, error } = await supabase
         .from('community').select('*').eq('user_id', userId).limit(1).maybeSingle();
       if (error && error.code !== 'PGRST116') console.error('fetchMyProfile error:', error);
       return data || null;
     }
+
     function showProfileForm(prefillEmail) {
       document.getElementById('profile-email').value = prefillEmail || '';
       authPane.style.display    = 'none';
       profilePane.style.display = 'block';
     }
     function hideProfileForm() { profilePane.style.display = 'none'; }
+
+    // Tabs (canvas visibility delegated to neuralInteractive via custom event)
     function setActiveTab(key) {
       document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === key);
@@ -251,24 +263,20 @@
     document.querySelectorAll('.tab-button').forEach(btn => {
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
     });
-    document.getElementById('skip-to-network').addEventListener('click', () => {
-      hideProfileForm(); setActiveTab('network');
-    });
 
-    // ===== Auth: send magic link =====
+    // Auth
     loginBtn.addEventListener('click', async () => {
       const email = document.getElementById('email').value.trim();
       if (!email) return setAuthStatus('Enter email', true);
       loginBtn.disabled = true;
       setAuthStatus('Sending link…');
       const { error } = await supabase.auth.signInWithOtp({
-        email, options: { emailRedirectTo: DEX_URL }
+        email, options: { emailRedirectTo: DEX_URL } // 👈 force it here
       });
       setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
       setTimeout(() => (loginBtn.disabled = false), 60000);
     });
 
-    // ===== Auth: logout =====
     logoutBtn.addEventListener('click', async () => {
       try {
         await supabase.auth.signOut();
@@ -289,7 +297,7 @@
       }
     });
 
-    // ===== Profile save =====
+    // Profile submit (with newsletter opt-in + Mailchimp)
     profileForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const { data: { session } } = await supabase.auth.getSession();
@@ -341,66 +349,45 @@
       setTimeout(() => window.location.reload(), 600);
     });
 
-    // ===== On load: handle errors → tokens → PKCE → UI =====
-    (async () => {
-      console.log('[DEX] starting auth exchange:', window.location.href);
+    document.getElementById('skip-to-network').addEventListener('click', () => {
+      hideProfileForm(); setActiveTab('network');
+    });
 
-      const hashParams = new URLSearchParams(window.location.hash.slice(1));
-
-      // A) If Supabase put an error in the hash (e.g., otp_expired), show it and stop.
-      const hasError = hashParams.get('error') || hashParams.get('error_code');
-      if (hasError) {
-        const code = hashParams.get('error_code') || hashParams.get('error');
-        const desc = decodeURIComponent(hashParams.get('error_description') || '');
-        console.warn('[DEX] Auth callback error:', code, desc);
-        setAuthStatus(desc || code || 'Authentication failed.', true);
-        history.replaceState({}, '', DEX_URL);
-        return;
+    // Auth state
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        showDebug('logged in', session.user.email || session.user.id);
+        whoami.textContent = session.user.email || '';
+        sessionBar.style.display = 'block';
+        tabNav.style.display = 'flex';
+        topActions.style.display = 'flex';
+        const existing = await fetchMyProfile(session.user.id);
+        if (!existing) showProfileForm(session.user.email || ''); else hideProfileForm();
+        setActiveTab('network');
+      } else {
+        showDebug('logged out');
+        whoami.textContent = '';
+        sessionBar.style.display = 'none';
+        tabNav.style.display = 'none';
+        topActions.style.display = 'none';
+        hideProfileForm();
+        setActiveTab('network');
       }
+    });
 
-      // B) Hash tokens flow (#access_token & #refresh_token & type=magiclink)
-      if (
-        hashParams.get('type') === 'magiclink' &&
-        hashParams.get('access_token') &&
-        hashParams.get('refresh_token')
-      ) {
-        console.log('[DEX] hash tokens detected');
-        try {
-          const { data, error } = await supabase.auth.setSession({
-            access_token: hashParams.get('access_token'),
-            refresh_token: hashParams.get('refresh_token')
-          });
-          console.log('[DEX] setSession -> user?', !!data?.user, 'error:', error);
-          if (error) {
-            setAuthStatus(`Auth failed: ${error.message}`, true);
-            history.replaceState({}, '', DEX_URL);
-            return;
-          }
-          history.replaceState({}, '', DEX_URL);
-        } catch (e) {
-          console.error('[DEX] setSession threw:', e);
-          setAuthStatus(`Auth failed: ${e.message || e}`, true);
-          history.replaceState({}, '', DEX_URL);
-          return;
-        }
-      }
+    // On load, if already logged in
+   (async () => {
+  // NEW: finalize magic-link after redirect (no-op if no code present)
+await supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {});
+const { data: { session } } = await supabase.auth.getSession();
 
-      // C) PKCE (?code=...) only if present
-      const urlObj = new URL(window.location.href);
-      if (urlObj.searchParams.get('code')) {
-        try {
-          await supabase.auth.exchangeCodeForSession(window.location.href);
-          console.log('[DEX] exchangeCodeForSession: success');
-          history.replaceState({}, '', DEX_URL);
-        } catch (e) {
-          console.log('[DEX] exchangeCodeForSession error:', e?.message);
-        }
-      }
+// Clean URL only AFTER a session exists (prevents stripping token too early)
+if (session) {
+  const clean = new URL('dex.html', window.location.href).href;
+  history.replaceState({}, '', clean);
+}
 
-      // D) Update UI based on session
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log('[DEX] getSession -> hasSession:', !!session, 'email:', session?.user?.email);
-
+      showDebug(session?.user ? 'logged in' : 'logged out', session?.user?.email || '');
       if (session?.user) {
         whoami.textContent = session.user.email || '';
         sessionBar.style.display = 'block';
@@ -409,12 +396,6 @@
         const existing = await fetchMyProfile(session.user.id);
         if (!existing) showProfileForm(session.user.email || ''); else hideProfileForm();
         setActiveTab('network');
-        showDebug('logged in', session.user.email || session.user.id);
-      } else {
-        authPane.style.display = 'block';
-        tabNav.style.display = 'none';
-        topActions.style.display = 'none';
-        showDebug('logged out');
       }
     })();
 
@@ -469,6 +450,7 @@
     });
   </script>
 
+  <!-- neural interactive logic (draws canvas; listens for 'dex:tab-changed') -->
   <script type="module" src="./assets/js/neuralInteractive.js"></script>
 </body>
 </html>
