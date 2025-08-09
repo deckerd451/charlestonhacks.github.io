@@ -209,8 +209,8 @@
     import './assets/js/neuralInteractive.js'; // draws canvas, listens for tab events
 
     // 🔒 Force magic-link to come back to THIS page
-    const DEX_URL = `${window.location.origin}/dex.html`;
-    // Project ref for clearing localStorage session
+   const DEX_URL = new URL('dex.html', window.location.href).href;
+ // Project ref for clearing localStorage session
     const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
     const authPane     = document.getElementById('auth-pane');
