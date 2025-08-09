@@ -98,7 +98,7 @@
         <label for="skills-input">Professional Skills (comma separated)</label>
         <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required />
 
-        <label for="bio-input">Short Bio <span style="opacity:.6">(Optional)</span></label>
+        <label for="bio-input">Short Bio <span class="muted">(Optional)</span></label>
         <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" />
 
         <label for="availability-input">Current Availability</label>
@@ -194,11 +194,16 @@
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
 
-   // was: const DEX_URL = new URL('dex.html', window.location.href).href;
-const DEX_URL = 'https://charlestonhacks.com/dex.html';
+    // 0) If someone opens the GitHub Pages copy, bounce them to production
+    if (location.hostname.includes('github.io')) {
+      location.replace('https://charlestonhacks.com/dex.html');
+    }
 
+    // 1) Production redirect target
+    const DEX_URL = 'https://charlestonhacks.com/dex.html';
     const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
+    // ===== DOM =====
     const authPane     = document.getElementById('auth-pane');
     const profilePane  = document.getElementById('profile-pane');
     const profileForm  = document.getElementById('profile-form');
@@ -211,6 +216,7 @@ const DEX_URL = 'https://charlestonhacks.com/dex.html';
     const whoami       = document.getElementById('whoami');
     const debugStateEl = document.getElementById('debug-session-state');
 
+    // ===== Helpers =====
     function setAuthStatus(msg, isError=false) {
       authStatusEl.textContent = msg || '';
       authStatusEl.className   = isError ? 'error' : 'success';
@@ -220,21 +226,18 @@ const DEX_URL = 'https://charlestonhacks.com/dex.html';
       debugStateEl.textContent = `${state}${extra ? ' — ' + extra : ''}`;
       console.log('[DEX DEBUG]', state, extra);
     }
-
     async function fetchMyProfile(userId) {
       const { data, error } = await supabase
         .from('community').select('*').eq('user_id', userId).limit(1).maybeSingle();
       if (error && error.code !== 'PGRST116') console.error('fetchMyProfile error:', error);
       return data || null;
     }
-
     function showProfileForm(prefillEmail) {
       document.getElementById('profile-email').value = prefillEmail || '';
       authPane.style.display    = 'none';
       profilePane.style.display = 'block';
     }
     function hideProfileForm() { profilePane.style.display = 'none'; }
-
     function setActiveTab(key) {
       document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === key);
@@ -245,10 +248,15 @@ const DEX_URL = 'https://charlestonhacks.com/dex.html';
       });
       document.dispatchEvent(new CustomEvent('dex:tab-changed', { detail: { tab: key } }));
     }
+
     document.querySelectorAll('.tab-button').forEach(btn => {
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
     });
+    document.getElementById('skip-to-network').addEventListener('click', () => {
+      hideProfileForm(); setActiveTab('network');
+    });
 
+    // ===== Auth: send magic link =====
     loginBtn.addEventListener('click', async () => {
       const email = document.getElementById('email').value.trim();
       if (!email) return setAuthStatus('Enter email', true);
@@ -261,6 +269,7 @@ const DEX_URL = 'https://charlestonhacks.com/dex.html';
       setTimeout(() => (loginBtn.disabled = false), 60000);
     });
 
+    // ===== Auth: logout =====
     logoutBtn.addEventListener('click', async () => {
       try {
         await supabase.auth.signOut();
@@ -281,6 +290,7 @@ const DEX_URL = 'https://charlestonhacks.com/dex.html';
       }
     });
 
+    // ===== Profile save =====
     profileForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const { data: { session } } = await supabase.auth.getSession();
@@ -332,32 +342,51 @@ const DEX_URL = 'https://charlestonhacks.com/dex.html';
       setTimeout(() => window.location.reload(), 600);
     });
 
-    // === On load: handle hash tokens (magiclink) OR PKCE code, then force UI ===
+    // ===== On load: handle errors → tokens → PKCE → UI =====
     (async () => {
       console.log('[DEX] starting auth exchange:', window.location.href);
 
-      // 0) Hash-style magic link: #access_token=...&refresh_token=...&type=magiclink
-      const hp = new URLSearchParams(window.location.hash.slice(1));
-      if (hp.get('access_token') && hp.get('type') === 'magiclink') {
+      const hashParams = new URLSearchParams(window.location.hash.slice(1));
+
+      // A) If Supabase put an error in the hash (e.g., otp_expired), show it and stop.
+      const hasError = hashParams.get('error') || hashParams.get('error_code');
+      if (hasError) {
+        const code = hashParams.get('error_code') || hashParams.get('error');
+        const desc = decodeURIComponent(hashParams.get('error_description') || '');
+        console.warn('[DEX] Auth callback error:', code, desc);
+        setAuthStatus(desc || code || 'Authentication failed.', true);
+        history.replaceState({}, '', DEX_URL);
+        return;
+      }
+
+      // B) Hash tokens flow (#access_token & #refresh_token & type=magiclink)
+      if (
+        hashParams.get('type') === 'magiclink' &&
+        hashParams.get('access_token') &&
+        hashParams.get('refresh_token')
+      ) {
         console.log('[DEX] hash tokens detected');
         const { data, error } = await supabase.auth.setSession({
-          access_token: hp.get('access_token'),
-          refresh_token: hp.get('refresh_token') || ''
+          access_token: hashParams.get('access_token'),
+          refresh_token: hashParams.get('refresh_token')
         });
         console.log('[DEX] setSession from hash ->', { hasUser: !!data?.user, error });
-        // Clean the URL after using tokens
-        history.replaceState({}, '', new URL('dex.html', window.location.href).href);
+        history.replaceState({}, '', DEX_URL);
       }
 
-      // 1) PKCE-style magic link (?code=...) — no-op if not present
-      try {
-        await supabase.auth.exchangeCodeForSession(window.location.href);
-        console.log('[DEX] exchangeCodeForSession: attempted');
-      } catch (e) {
-        console.log('[DEX] exchangeCodeForSession error:', e?.message);
+      // C) PKCE (?code=...) only if present
+      const urlObj = new URL(window.location.href);
+      if (urlObj.searchParams.get('code')) {
+        try {
+          await supabase.auth.exchangeCodeForSession(window.location.href);
+          console.log('[DEX] exchangeCodeForSession: success');
+          history.replaceState({}, '', DEX_URL);
+        } catch (e) {
+          console.log('[DEX] exchangeCodeForSession error:', e?.message);
+        }
       }
 
-      // 2) Read session and FORCE the UI to logged-in state if present
+      // D) Update UI based on session
       const { data: { session } } = await supabase.auth.getSession();
       console.log('[DEX] getSession -> hasSession:', !!session, 'email:', session?.user?.email);
 
@@ -371,6 +400,9 @@ const DEX_URL = 'https://charlestonhacks.com/dex.html';
         setActiveTab('network');
         showDebug('logged in', session.user.email || session.user.id);
       } else {
+        authPane.style.display = 'block';
+        tabNav.style.display = 'none';
+        topActions.style.display = 'none';
         showDebug('logged out');
       }
     })();
