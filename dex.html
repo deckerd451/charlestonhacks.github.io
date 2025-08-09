@@ -194,7 +194,9 @@
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
 
-    const DEX_URL = new URL('dex.html', window.location.href).href;
+   // was: const DEX_URL = new URL('dex.html', window.location.href).href;
+const DEX_URL = 'https://charlestonhacks.com/dex.html';
+
     const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
     const authPane     = document.getElementById('auth-pane');
