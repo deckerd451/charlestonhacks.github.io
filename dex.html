@@ -206,11 +206,9 @@
   <!-- Page logic -->
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
-   
 
-    // 🔒 Force magic-link to come back to THIS page
-   const DEX_URL = new URL('dex.html', window.location.href).href;
- // Project ref for clearing localStorage session
+    // Always redirect magic link back here
+    const DEX_URL = new URL('dex.html', window.location.href).href;
     const PROJECT_REF = 'hvmotpzhliufzomewzfl';
 
     const authPane     = document.getElementById('auth-pane');
@@ -249,7 +247,6 @@
     }
     function hideProfileForm() { profilePane.style.display = 'none'; }
 
-    // Tabs (canvas visibility delegated to neuralInteractive via custom event)
     function setActiveTab(key) {
       document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === key);
@@ -264,19 +261,20 @@
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
     });
 
-    // Auth
+    // Send magic link
     loginBtn.addEventListener('click', async () => {
       const email = document.getElementById('email').value.trim();
       if (!email) return setAuthStatus('Enter email', true);
       loginBtn.disabled = true;
       setAuthStatus('Sending link…');
       const { error } = await supabase.auth.signInWithOtp({
-        email, options: { emailRedirectTo: DEX_URL } // 👈 force it here
+        email, options: { emailRedirectTo: DEX_URL }
       });
       setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
       setTimeout(() => (loginBtn.disabled = false), 60000);
     });
 
+    // Logout
     logoutBtn.addEventListener('click', async () => {
       try {
         await supabase.auth.signOut();
@@ -297,7 +295,7 @@
       }
     });
 
-    // Profile submit (with newsletter opt-in + Mailchimp)
+    // Profile submit
     profileForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const { data: { session } } = await supabase.auth.getSession();
@@ -349,11 +347,7 @@
       setTimeout(() => window.location.reload(), 600);
     });
 
-    document.getElementById('skip-to-network').addEventListener('click', () => {
-      hideProfileForm(); setActiveTab('network');
-    });
-
-    // Auth state
+    // Auth state reacts to changes
     supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         showDebug('logged in', session.user.email || session.user.id);
@@ -375,17 +369,25 @@
       }
     });
 
-    // On load, if already logged in
-   (async () => {
-  // NEW: finalize magic-link after redirect (no-op if no code present)
-await supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {});
-const { data: { session } } = await supabase.auth.getSession();
+    // On load: finalize magic link, then clean URL, then show UI if logged in
+    (async () => {
+      console.log('[DEX] starting auth exchange:', window.location.href);
+      try {
+        await supabase.auth.exchangeCodeForSession(window.location.href);
+        console.log('[DEX] exchangeCodeForSession: success');
+      } catch (e) {
+        console.log('[DEX] exchangeCodeForSession: no code or failed', e?.message);
+      }
 
-// Clean URL only AFTER a session exists (prevents stripping token too early)
-if (session) {
-  const clean = new URL('dex.html', window.location.href).href;
-  history.replaceState({}, '', clean);
-}
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('[DEX] getSession -> hasSession:', !!session, 'email:', session?.user?.email);
+
+      if (session) {
+        const clean = new URL('dex.html', window.location.href);
+        clean.search = '';
+        clean.hash = '';
+        history.replaceState({}, '', clean.href);
+      }
 
       showDebug(session?.user ? 'logged in' : 'logged out', session?.user?.email || '');
       if (session?.user) {
