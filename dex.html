@@ -447,24 +447,33 @@
       return data || [];
     }
 
-    document.getElementById('find-team-btn').addEventListener('click', async () => {
-      const skillsRaw = document.getElementById('teamSkillsInput').value.trim();
-      if (!skillsRaw) return renderPeople([]);
-      const terms = skillsRaw.split(',').map(s=>s.trim()).filter(Boolean);
-      matchNote.style.display = 'none'; noResults.style.display = 'none';
-      try {
-        const rows = await queryBySkills(terms);
-        console.log('[SEARCH] skills terms:', terms, 'rows:', rows);
-        renderPeople(rows);
-      } catch (err) {
-        console.error('[SEARCH] skills error:', err);
-        renderPeople([]);
-      }
-    });
+document.getElementById('find-team-btn').addEventListener('click', async () => {
+  const skillsRaw = document.getElementById('teamSkillsInput').value.trim();
+  if (!skillsRaw) return renderPeople([]);
 
-    document.getElementById('search-name-btn').addEventListener('click', async () => {
-      const q = document.getElementById('nameInput').value.trim();
-      if (!q) return renderPeople([]);
+  // 🔹 Lowercase all terms for consistent match
+  const terms = skillsRaw
+    .split(',')
+    .map(s => s.trim().toLowerCase())
+    .filter(Boolean);
+
+  matchNote.style.display = 'none'; 
+  noResults.style.display = 'none';
+
+  try {
+    const rows = await queryBySkills(terms);
+    console.log('[SEARCH] skills terms:', terms, 'rows:', rows);
+    renderPeople(rows);
+  } catch (err) {
+    console.error('[SEARCH] skills error:', err);
+    renderPeople([]);
+  }
+});
+
+
+   document.getElementById('search-name-btn').addEventListener('click', async () => {
+  const q = document.getElementById('nameInput').value.trim().toLowerCase();
+if (!q) return renderPeople([]);
       matchNote.style.display = 'none'; noResults.style.display = 'none';
       try {
         const rows = await queryByName(q);
