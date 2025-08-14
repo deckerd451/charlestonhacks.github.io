@@ -315,7 +315,11 @@
       const availability = document.getElementById('availability-input').value;
       const newsletterOptIn = document.getElementById('newsletter-optin').checked;
 
-      const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+    // Lowercase skills before saving to DB
+const skills = skillsRaw
+  ? skillsRaw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+  : [];
+
       const row = {
         user_id: user.id, name: `${fname} ${lname}`.trim(), email,
         skills, interests: [], availability, endorsements: 0, bio, x:0, y:0,
