@@ -395,99 +395,131 @@ const skills = skillsRaw
         authPane.style.display = 'block';
       }
     })();
+// ======= SEARCH (skills + name) — robust wiring + logs =======
+(function setupDexSearch() {
+  // Helper: render mini cards
+  function renderPeople(list) {
+    const cards     = document.getElementById('cardContainer');
+    const matchNote = document.getElementById('matchNotification');
+    const noResults = document.getElementById('noResults');
 
-    // ======= SEARCH (skills + name) — robust contains + ilike fallback =======
-    const cardContainer = document.getElementById('cardContainer');
-    const matchNote     = document.getElementById('matchNotification');
-    const noResults     = document.getElementById('noResults');
-
-    function renderPeople(list) {
-      cardContainer.innerHTML = '';
-      if (!list?.length) {
-        noResults.style.display = 'block';
-        noResults.textContent = 'No results.';
-        matchNote.style.display = 'none';
-        return;
-      }
-      noResults.style.display = 'none';
-      matchNote.style.display = 'block';
-      matchNote.textContent = `Found ${list.length} result${list.length>1?'s':''}.`;
-      list.forEach(p => {
-        const el = document.createElement('div');
-        el.className = 'mini-card';
-        el.innerHTML = `
-          <h4>${p.name ?? '(no name)'}</h4>
-          <div class="muted">${Array.isArray(p.skills) ? p.skills.join(', ') : (p.skills || 'No skills listed')}</div>
-          <div class="muted">${p.availability || p.Availability || ''}</div>
-          <div class="muted">${p.bio || p.Bio || ''}</div>
-        `;
-        cardContainer.appendChild(el);
-      });
+    if (!cards || !matchNote || !noResults) {
+      console.error('[SEARCH] Missing one or more containers');
+      return;
     }
 
-    async function queryBySkills(terms) {
-      try {
-        const { data, error } = await supabase
-          .from('community').select('*')
-          .contains('skills', terms);
-        if (error) throw error;
-        if (Array.isArray(data) && data.length) return data;
-      } catch (e) {
-        console.warn('[SEARCH] .contains fallback to ilike due to:', e?.message || e);
-      }
-      const like = `%${terms.join('%')}%`;
-      const { data: data2, error: err2 } = await supabase
-        .from('community').select('*')
-        .ilike('skills::text', like);
-      if (err2) { console.error('[SEARCH] ilike failed:', err2); return []; }
-      return data2 || [];
+    cards.innerHTML = '';
+    if (!list || !list.length) {
+      noResults.style.display = 'block';
+      noResults.textContent = 'No results.';
+      matchNote.style.display = 'none';
+      return;
     }
 
-    async function queryByName(q) {
+    noResults.style.display = 'none';
+    matchNote.style.display = 'block';
+    matchNote.textContent = `Found ${list.length} result${list.length > 1 ? 's' : ''}.`;
+
+    list.forEach(p => {
+      const el = document.createElement('div');
+      el.className = 'mini-card';
+      el.innerHTML = `
+        <h4>${p.name ?? '(no name)'}</h4>
+        <div class="muted">${Array.isArray(p.skills) ? p.skills.join(', ') : (p.skills || 'No skills listed')}</div>
+        <div class="muted">${p.availability || p.Availability || ''}</div>
+        <div class="muted">${p.bio || p.Bio || ''}</div>
+      `;
+      cards.appendChild(el);
+    });
+  }
+
+  // Prefer array/text[] contains; fallback to ilike on serialized text
+  async function queryBySkills(terms) {
+    console.log('[SEARCH] queryBySkills terms:', terms);
+    try {
       const { data, error } = await supabase
         .from('community').select('*')
-        .or(`name.ilike.%${q}%,first_name.ilike.%${q}%,last_name.ilike.%${q}%`);
-      if (error) { console.error('[SEARCH] name search failed:', error); return []; }
-      return data || [];
+        .contains('skills', terms); // text[] @> ARRAY[...]
+      if (error) throw error;
+      if (Array.isArray(data) && data.length) return data;
+    } catch (e) {
+      console.warn('[SEARCH] contains failed; falling back to ilike:', e?.message || e);
     }
-
-document.getElementById('find-team-btn').addEventListener('click', async () => {
-  const skillsRaw = document.getElementById('teamSkillsInput').value.trim();
-  if (!skillsRaw) return renderPeople([]);
-
-  // 🔹 Lowercase all terms for consistent match
-  const terms = skillsRaw
-    .split(',')
-    .map(s => s.trim().toLowerCase())
-    .filter(Boolean);
-
-  matchNote.style.display = 'none'; 
-  noResults.style.display = 'none';
-
-  try {
-    const rows = await queryBySkills(terms);
-    console.log('[SEARCH] skills terms:', terms, 'rows:', rows);
-    renderPeople(rows);
-  } catch (err) {
-    console.error('[SEARCH] skills error:', err);
-    renderPeople([]);
+    const like = `%${terms.join('%')}%`;
+    const { data: data2, error: err2 } = await supabase
+      .from('community').select('*')
+      .ilike('skills::text', like);
+    if (err2) { console.error('[SEARCH] ilike failed:', err2); return []; }
+    return data2 || [];
   }
-});
 
+  async function queryByName(q) {
+    console.log('[SEARCH] queryByName q:', q);
+    const { data, error } = await supabase
+      .from('community').select('*')
+      .or(`name.ilike.%${q}%,first_name.ilike.%${q}%,last_name.ilike.%${q}%`);
+    if (error) { console.error('[SEARCH] name search failed:', error); return []; }
+    return data || [];
+  }
 
-   document.getElementById('search-name-btn').addEventListener('click', async () => {
-  const q = document.getElementById('nameInput').value.trim().toLowerCase();
-if (!q) return renderPeople([]);
-      matchNote.style.display = 'none'; noResults.style.display = 'none';
+  // Ensure DOM is ready before wiring listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    const findBtn = document.getElementById('find-team-btn');
+    const nameBtn = document.getElementById('search-name-btn');
+    if (!findBtn || !nameBtn) {
+      console.error('[SEARCH] Buttons not found:', { findBtn, nameBtn });
+      return;
+    }
+    console.log('[SEARCH] Wiring click handlers…');
+
+    findBtn.addEventListener('click', async () => {
+      console.log('[SEARCH] find-team-btn clicked');
+      const raw = document.getElementById('teamSkillsInput')?.value?.trim() || '';
+      if (!raw) { renderPeople([]); return; }
+      const terms = raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+
+      // reset UI notes
+      const note = document.getElementById('matchNotification');
+      const none = document.getElementById('noResults');
+      if (note) note.style.display = 'none';
+      if (none) none.style.display = 'none';
+
       try {
-        const rows = await queryByName(q);
-        console.log('[SEARCH] name q:', q, 'rows:', rows);
+        const rows = await queryBySkills(terms);
+        console.log('[SEARCH] skills results:', rows?.length);
         renderPeople(rows);
       } catch (err) {
-        console.error('[SEARCH] name error:', err);
+        console.error('[SEARCH] skills handler error:', err);
         renderPeople([]);
       }
     });
+
+    nameBtn.addEventListener('click', async () => {
+      console.log('[SEARCH] search-name-btn clicked');
+      const q = (document.getElementById('nameInput')?.value || '').trim();
+      if (!q) { renderPeople([]); return; }
+
+      const note = document.getElementById('matchNotification');
+      const none = document.getElementById('noResults');
+      if (note) note.style.display = 'none';
+      if (none) none.style.display = 'none';
+
+      try {
+        const rows = await queryByName(q); // ILIKE is case-insensitive
+        console.log('[SEARCH] name results:', rows?.length);
+        renderPeople(rows);
+      } catch (err) {
+        console.error('[SEARCH] name handler error:', err);
+        renderPeople([]);
+      }
+    });
+
+    console.log('[SEARCH] Handlers wired.');
+  });
+
+  // expose for quick debugging from console if needed
+  window.__dexRenderPeople = renderPeople;
+})();
   </script>
 
   <!-- neural interactive logic (draws canvas; listens for 'dex:tab-changed') -->
