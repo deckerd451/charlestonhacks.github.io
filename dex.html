@@ -168,6 +168,7 @@
   <canvas id="neural-canvas"></canvas>
   <div id="tooltip"></div>
 
+  <!-- SINGLE MODULE SCRIPT FOR ALL PAGE LOGIC -->
   <script type="module">
     import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
     import { initDexAuth } from './assets/js/dexAuth.js';
@@ -209,6 +210,7 @@
     }
     document.querySelectorAll('.tab-button').forEach(btn => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
 
+    // --- Auth actions ---
     loginBtn.addEventListener('click', async () => {
       const email = document.getElementById('email').value.trim();
       if (!email) return setAuthStatus('Enter email', true);
@@ -229,6 +231,7 @@
       } catch (err) { console.error('Logout failed:', err); setAuthStatus('Logout failed. Try hard refresh (Cmd/Ctrl+Shift+R).', true); }
     });
 
+    // --- Profile submit ---
     profileForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const { data:{ session } } = await supabase.auth.getSession();
@@ -274,6 +277,7 @@
 
     document.getElementById('skip-to-network').addEventListener('click', () => { hideProfileForm(); setActiveTab('network'); });
 
+    // --- Auth state wiring ---
     supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         showDebug('logged in', session.user.email || session.user.id);
@@ -289,6 +293,7 @@
       }
     });
 
+    // --- Initial bootstrap (handles magic-link hash etc.) ---
     (async () => {
       const session = await initDexAuth();
       showDebug(session?.user ? 'Session present' : 'No session');
@@ -304,85 +309,98 @@
       }
     })();
 
-    // ======= SEARCH (skills + name) — robust wiring + logs =======
-    (function setupDexSearch(){
-      function renderPeople(list){
-        const cards = document.getElementById('cardContainer');
-        const matchNote = document.getElementById('matchNotification');
-        const noResults = document.getElementById('noResults');
-        if (!cards || !matchNote || !noResults){ console.error('[SEARCH] Missing containers'); return; }
-        cards.innerHTML = '';
-        if (!list || !list.length){
-          noResults.style.display='block'; noResults.textContent='No results.'; matchNote.style.display='none'; return;
-        }
-        noResults.style.display='none'; matchNote.style.display='block';
-        matchNote.textContent = `Found ${list.length} result${list.length>1?'s':''}.`;
-        list.forEach(p=>{
-          const el=document.createElement('div'); el.className='mini-card';
-          el.innerHTML = `<h4>${p.name ?? '(no name)'}</h4>
-            <div class="muted">${Array.isArray(p.skills)?p.skills.join(', '):(p.skills||'No skills listed')}</div>
-            <div class="muted">${p.availability || p.Availability || ''}</div>
-            <div class="muted">${p.bio || p.Bio || ''}</div>`;
-          cards.appendChild(el);
-        });
+    /* =========================
+       SEARCH (skills + name)
+       ========================= */
+
+    // Require a session before running any search
+    async function requireSessionOrWarn() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { alert('Please sign in first to search.'); return false; }
+      return true;
+    }
+
+    // Render helper
+    function renderPeople(list){
+      const cards = document.getElementById('cardContainer');
+      const matchNote = document.getElementById('matchNotification');
+      const noResults = document.getElementById('noResults');
+      if (!cards || !matchNote || !noResults){ console.error('[SEARCH] Missing containers'); return; }
+      cards.innerHTML = '';
+      if (!list || !list.length){
+        noResults.style.display='block'; noResults.textContent='No results.'; matchNote.style.display='none'; return;
       }
+      noResults.style.display='none'; matchNote.style.display='block';
+      matchNote.textContent = `Found ${list.length} result${list.length>1?'s':''}.`;
+      list.forEach(p=>{
+        const el=document.createElement('div'); el.className='mini-card';
+        el.innerHTML = `<h4>${p.name ?? '(no name)'}</h4>
+          <div class="muted">${Array.isArray(p.skills)?p.skills.join(', '):(p.skills||'No skills listed')}</div>
+          <div class="muted">${p.availability || p.Availability || ''}</div>
+          <div class="muted">${p.bio || p.Bio || ''}</div>`;
+        cards.appendChild(el);
+      });
+    }
 
-      // Primary: text[] contains; Fallback: PostgREST cs.{...}
-      async function queryBySkills(terms){
-        console.log('[SEARCH] queryBySkills terms:', terms);
-        try{
-          const { data, error } = await supabase.from('community').select('*').contains('skills', terms);
-          if (error) throw error;
-          if (Array.isArray(data) && data.length) return data;
-        }catch(e){ console.warn('[SEARCH] .contains failed:', e?.message || e); }
-        try{
-          const csParam = `{${terms.join(',')}}`; // {aws,python}
-          const { data, error } = await supabase.from('community').select('*').filter('skills','cs', csParam);
-          if (error) throw error;
-          if (Array.isArray(data) && data.length) return data;
-        }catch(e){ console.error('[SEARCH] cs fallback failed:', e?.message || e); }
-        return [];
-      }
+    // Primary: text[] contains; Fallback: PostgREST cs.{...}
+    async function queryBySkills(terms){
+      console.log('[SEARCH] queryBySkills terms:', terms);
+      try{
+        const { data, error } = await supabase.from('community').select('*').contains('skills', terms);
+        if (error) throw error;
+        if (Array.isArray(data) && data.length) return data;
+      }catch(e){ console.warn('[SEARCH] .contains failed:', e?.message || e); }
+      try{
+        const csParam = `{${terms.join(',')}}`; // {aws,python}
+        const { data, error } = await supabase.from('community').select('*').filter('skills','cs', csParam);
+        if (error) throw error;
+        if (Array.isArray(data) && data.length) return data;
+      }catch(e){ console.error('[SEARCH] cs fallback failed:', e?.message || e); }
+      return [];
+    }
 
-      async function queryByName(q){
-        console.log('[SEARCH] queryByName q:', q);
-        const { data, error } = await supabase.from('community').select('*').ilike('name', `%${q}%`);
-        if (error){ console.error('[SEARCH] name search failed:', error); return []; }
-        return data || [];
-      }
+    async function queryByName(q){
+      console.log('[SEARCH] queryByName q:', q);
+      const { data, error } = await supabase.from('community').select('*').ilike('name', `%${q}%`);
+      if (error){ console.error('[SEARCH] name search failed:', error); return []; }
+      return data || [];
+    }
 
-      document.addEventListener('DOMContentLoaded', ()=>{
-        const findBtn = document.getElementById('find-team-btn');
-        const nameBtn = document.getElementById('search-name-btn');
-        if(!findBtn || !nameBtn){ console.error('[SEARCH] Buttons not found'); return; }
-        console.log('[SEARCH] Wiring click handlers…');
+    // Wire buttons
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const findBtn = document.getElementById('find-team-btn');
+      const nameBtn = document.getElementById('search-name-btn');
+      if(!findBtn || !nameBtn){ console.error('[SEARCH] Buttons not found'); return; }
+      console.log('[SEARCH] Wiring click handlers…');
 
-        findBtn.addEventListener('click', async ()=>{
-          console.log('[SEARCH] find-team-btn clicked');
-          const raw = document.getElementById('teamSkillsInput')?.value?.trim() || '';
-          if (!raw){ renderPeople([]); return; }
-          const terms = raw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
-          document.getElementById('matchNotification').style.display='none';
-          document.getElementById('noResults').style.display='none';
-          try{ const rows = await queryBySkills(terms); console.log('[SEARCH] skills results:', rows?.length); renderPeople(rows); }
-          catch(err){ console.error('[SEARCH] skills handler error:', err); renderPeople([]); }
-        });
-
-        nameBtn.addEventListener('click', async ()=>{
-          console.log('[SEARCH] search-name-btn clicked');
-          const q = (document.getElementById('nameInput')?.value || '').trim();
-          if (!q){ renderPeople([]); return; }
-          document.getElementById('matchNotification').style.display='none';
-          document.getElementById('noResults').style.display='none';
-          try{ const rows = await queryByName(q); console.log('[SEARCH] name results:', rows?.length); renderPeople(rows); }
-          catch(err){ console.error('[SEARCH] name handler error:', err); renderPeople([]); }
-        });
-
-        console.log('[SEARCH] Handlers wired.');
+      findBtn.addEventListener('click', async ()=>{
+        if (!(await requireSessionOrWarn())) return;
+        console.log('[SEARCH] find-team-btn clicked');
+        const raw = document.getElementById('teamSkillsInput')?.value?.trim() || '';
+        if (!raw){ renderPeople([]); return; }
+        const terms = raw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+        document.getElementById('matchNotification').style.display='none';
+        document.getElementById('noResults').style.display='none';
+        try{ const rows = await queryBySkills(terms); console.log('[SEARCH] skills results:', rows?.length); renderPeople(rows); }
+        catch(err){ console.error('[SEARCH] skills handler error:', err); renderPeople([]); }
       });
 
-      window.__dexRenderPeople = renderPeople;
-    })();
+      nameBtn.addEventListener('click', async ()=>{
+        if (!(await requireSessionOrWarn())) return;
+        console.log('[SEARCH] search-name-btn clicked');
+        const q = (document.getElementById('nameInput')?.value || '').trim();
+        if (!q){ renderPeople([]); return; }
+        document.getElementById('matchNotification').style.display='none';
+        document.getElementById('noResults').style.display='none';
+        try{ const rows = await queryByName(q); console.log('[SEARCH] name results:', rows?.length); renderPeople(rows); }
+        catch(err){ console.error('[SEARCH] name handler error:', err); renderPeople([]); }
+      });
+
+      console.log('[SEARCH] Handlers wired.');
+    });
+
+    // Optional: expose for quick console testing
+    window.__dexRenderPeople = renderPeople;
   </script>
 
   <!-- neural interactive logic (draws canvas; listens for 'dex:tab-changed') -->
