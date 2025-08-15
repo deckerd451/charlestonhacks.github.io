@@ -340,13 +340,19 @@
     }
   }
 
-  async function queryByName(q) {
-    console.log('[SEARCH] queryByName q:', q);
-    const { data, error } = await supabase.from('community').select('*')
-      .or(`name.ilike.%${q}%,first_name.ilike.%${q}%,last_name.ilike.%${q}%`);
-    if (error) { console.error('[SEARCH] name search failed:', error); return []; }
-    return data || [];
+  aasync function queryByName(q) {
+  console.log('[SEARCH] queryByName q:', q);
+  const { data, error } = await supabase
+    .from('community')
+    .select('*')
+    .ilike('name', `%${q}%`); // case-insensitive match on the single "name" column
+  if (error) {
+    console.error('[SEARCH] name search failed:', error);
+    return [];
   }
+  return data || [];
+}
+
 
   function wireSearchButtons() {
     const findBtn = document.getElementById('find-team-btn');
