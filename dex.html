@@ -168,97 +168,77 @@
   <canvas id="neural-canvas"></canvas>
   <div id="tooltip"></div>
 
- <script type="module">
+<script type="module">
   import { supabaseClient as supabase } from './assets/js/supabaseClient.js';
   import { initDexAuth } from './assets/js/dexAuth.js';
 
-  // ------- elements
   const DEX_URL = new URL('dex.html', window.location.href).href;
-  const authPane   = document.getElementById('auth-pane');
-  const profilePane= document.getElementById('profile-pane');
-  const profileForm= document.getElementById('profile-form');
-  const loginBtn   = document.getElementById('login-btn');
-  const logoutBtn  = document.getElementById('logout-btn');
-  const tabNav     = document.getElementById('tab-nav');
-  const topActions = document.getElementById('top-actions');
-  const sessionBar = document.getElementById('session-bar');
-  const whoami     = document.getElementById('whoami');
+  const PROJECT_REF = 'hvmotpzhliufzomewzfl';
+
+  const authPane     = document.getElementById('auth-pane');
+  const profilePane  = document.getElementById('profile-pane');
+  const profileForm  = document.getElementById('profile-form');
+  const loginBtn     = document.getElementById('login-btn');
+  const logoutBtn    = document.getElementById('logout-btn');
   const authStatusEl = document.getElementById('auth-status');
+  const tabNav       = document.getElementById('tab-nav');
+  const topActions   = document.getElementById('top-actions');
+  const sessionBar   = document.getElementById('session-bar');
+  const whoami       = document.getElementById('whoami');
   const debugStateEl = document.getElementById('debug-session-state');
 
-  // ------- small helpers
-  const setAuthStatus = (msg, isError=false) => {
-    if (!authStatusEl) return;
-    authStatusEl.textContent = msg || '';
-    authStatusEl.className = isError ? 'error' : 'success';
-  };
-  const showDebug = (state, extra='') => {
-    if (debugStateEl) debugStateEl.textContent = `${state}${extra ? ' — ' + extra : ''}`;
-    console.log('[DEX DEBUG]', state, extra);
-  };
-  const setActiveTab = (key) => {
+  function setAuthStatus(msg, isError=false){ authStatusEl.textContent = msg || ''; authStatusEl.className = isError ? 'error' : 'success'; }
+  function showDebug(state, extra=''){ if(!debugStateEl) return; debugStateEl.textContent = `${state}${extra ? ' — ' + extra : ''}`; console.log('[DEX DEBUG]', state, extra); }
+
+  async function fetchMyProfile(userId){
+    const { data, error } = await supabase.from('community').select('*').eq('user_id', userId).limit(1).maybeSingle();
+    if (error && error.code !== 'PGRST116') console.error('fetchMyProfile error:', error);
+    return data || null;
+  }
+
+  function showProfileForm(prefillEmail){ document.getElementById('profile-email').value = prefillEmail || ''; authPane.style.display='none'; profilePane.style.display='block'; }
+  function hideProfileForm(){ profilePane.style.display='none'; }
+
+  function setActiveTab(key){
     document.querySelectorAll('.tab-button').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tab === key);
       btn.setAttribute('aria-selected', btn.dataset.tab === key ? 'true' : 'false');
     });
-    document.querySelectorAll('.tab-pane').forEach(p => {
-      p.classList.toggle('active', p.id === `pane-${key}`);
-    });
-  };
-  const showProfileForm = (email='') => {
-    document.getElementById('profile-email').value = email;
-    authPane.style.display = 'none';
-    profilePane.style.display = 'block';
-  };
-  const hideProfileForm = () => profilePane.style.display = 'none';
-
-  // ------- session guard for searches
-  async function requireSessionOrWarn() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) { alert('Please sign in first to search.'); return false; }
-    return true;
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === `pane-${key}`));
+    document.dispatchEvent(new CustomEvent('dex:tab-changed', { detail: { tab:key } }));
   }
+  document.querySelectorAll('.tab-button').forEach(btn => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
 
-  // ------- auth wiring
+  // --- Auth ---
   loginBtn.addEventListener('click', async () => {
     const email = document.getElementById('email').value.trim();
     if (!email) return setAuthStatus('Enter email', true);
-    try {
-      loginBtn.disabled = true;
-      setAuthStatus('Sending link…');
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: DEX_URL }
-      });
-      setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
-    } finally {
-      setTimeout(() => (loginBtn.disabled = false), 60000);
-    }
+    loginBtn.disabled = true; setAuthStatus('Sending link…');
+    const { error } = await supabase.auth.signInWithOtp({ email, options:{ emailRedirectTo: DEX_URL }});
+    setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
+    setTimeout(() => (loginBtn.disabled = false), 60000);
   });
 
   logoutBtn.addEventListener('click', async () => {
     try {
       await supabase.auth.signOut();
-    } catch (e) {
-      console.error('Logout failed:', e);
-    } finally {
-      // Simple reset
-      location.replace('dex.html');
-    }
+      localStorage.removeItem(`sb-${PROJECT_REF}-auth-token`);
+      localStorage.removeItem('supabase.auth.token');
+      sessionBar.style.display='none'; whoami.textContent='';
+      authPane.style.display='block'; tabNav.style.display='none'; topActions.style.display='none';
+      hideProfileForm(); setActiveTab('network'); setAuthStatus(''); window.location.reload();
+    } catch (err) { console.error('Logout failed:', err); setAuthStatus('Logout failed. Try hard refresh (Cmd/Ctrl+Shift+R).', true); }
   });
 
-  // ------- profile save
+  // Profile submit
   profileForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const statusEl = document.getElementById('profile-status');
-    const setProfileStatus = (msg, isError=false) => {
-      statusEl.textContent = msg || '';
-      statusEl.style.color = isError ? '#ff7a7a' : '#0bb';
-    };
     const { data:{ session } } = await supabase.auth.getSession();
-    if (!session?.user) return setProfileStatus('Not authenticated. Please sign in again.', true);
+    const user = session?.user;
+    const statusEl = document.getElementById('profile-status');
+    const setProfileStatus = (msg, isError=false) => { statusEl.textContent = msg || ''; statusEl.style.color = isError ? '#ff7a7a' : '#0bb'; };
+    if (!user) return setProfileStatus('Not authenticated. Please sign in again.', true);
 
-    const user = session.user;
     const fname = document.getElementById('first-name').value.trim();
     const lname = document.getElementById('last-name').value.trim();
     const email = document.getElementById('profile-email').value.trim();
@@ -267,13 +247,11 @@
     const availability = document.getElementById('availability-input').value;
     const newsletterOptIn = document.getElementById('newsletter-optin').checked;
 
-    const skills = skillsRaw
-      ? skillsRaw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
-      : [];
+    const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean) : [];
 
     const row = {
-      user_id: user.id, name: `${fname} ${lname}`.trim(), email,
-      skills, interests: [], availability, endorsements: 0, bio, x:0, y:0,
+      user_id:user.id, name:`${fname} ${lname}`.trim(), email,
+      skills, interests:[], availability, endorsements:0, bio, x:0, y:0,
       newsletter_opt_in: !!newsletterOptIn,
       newsletter_opt_in_at: newsletterOptIn ? new Date().toISOString() : null
     };
@@ -282,140 +260,153 @@
     const { error } = await supabase.from('community').insert(row);
     if (error) return setProfileStatus(error.message || 'Could not save profile', true);
 
+    if (newsletterOptIn) {
+      try {
+        const mcForm = document.createElement('form');
+        mcForm.action = 'https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a';
+        mcForm.method = 'POST'; mcForm.target = '_blank';
+        mcForm.innerHTML = `<input type="hidden" name="FNAME" value="${fname}"><input type="hidden" name="LNAME" value="${lname}"><input type="hidden" name="EMAIL" value="${email}">`;
+        document.body.appendChild(mcForm); mcForm.submit(); document.body.removeChild(mcForm);
+      } catch (e2) { console.warn('Mailchimp subscribe failed (non-blocking):', e2); }
+    }
+
     setProfileStatus('Saved! Loading your network…');
-    hideProfileForm();
-    setActiveTab('network');
-    setTimeout(() => location.replace('dex.html'), 500);
+    hideProfileForm(); setActiveTab('network'); setTimeout(() => window.location.reload(), 600);
   });
 
-  // ------- search UI + queries
-  function renderPeople(list) {
-    const cards     = document.getElementById('cardContainer');
+  supabase.auth.onAuthStateChange(async (_event, session) => {
+    if (session?.user) {
+      showDebug('logged in', session.user.email || session.user.id);
+      whoami.textContent = session.user.email || '';
+      sessionBar.style.display='block'; tabNav.style.display='flex'; topActions.style.display='flex';
+      const existing = await fetchMyProfile(session.user.id);
+      if (!existing) showProfileForm(session.user.email || ''); else hideProfileForm();
+      setActiveTab('network');
+    } else {
+      showDebug('logged out');
+      whoami.textContent=''; sessionBar.style.display='none'; tabNav.style.display='none'; topActions.style.display='none';
+      hideProfileForm(); setActiveTab('network');
+    }
+  });
+
+  (async () => {
+    const session = await initDexAuth();
+    showDebug(session?.user ? 'Session present' : 'No session');
+    if (session?.user) {
+      history.replaceState({}, '', new URL('dex.html', window.location.href).href);
+      whoami.textContent = session.user.email || '';
+      sessionBar.style.display='block'; tabNav.style.display='flex'; topActions.style.display='flex';
+      const existing = await fetchMyProfile(session.user.id);
+      if (!existing) showProfileForm(session.user.email || ''); else hideProfileForm();
+      setActiveTab('network');
+    } else {
+      authPane.style.display='block';
+    }
+  })();
+
+  // ---------- SEARCH ----------
+  async function requireSessionOrWarn() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { alert('Please sign in first to search.'); return false; }
+    return true;
+  }
+
+  function renderPeople(list){
+    const cards = document.getElementById('cardContainer');
     const matchNote = document.getElementById('matchNotification');
     const noResults = document.getElementById('noResults');
-    if (!cards || !matchNote || !noResults) return;
-
+    if (!cards || !matchNote || !noResults){ console.error('[SEARCH] Missing containers'); return; }
     cards.innerHTML = '';
-    if (!list?.length) {
-      noResults.style.display = 'block';
-      noResults.textContent = 'No results.';
-      matchNote.style.display = 'none';
-      return;
+    if (!list || !list.length){
+      noResults.style.display='block'; noResults.textContent='No results.'; matchNote.style.display='none'; return;
     }
-    noResults.style.display = 'none';
-    matchNote.style.display = 'block';
+    noResults.style.display='none'; matchNote.style.display='block';
     matchNote.textContent = `Found ${list.length} result${list.length>1?'s':''}.`;
-
-    list.forEach(p => {
-      const el = document.createElement('div');
-      el.className = 'mini-card';
-      el.innerHTML = `
-        <h4>${p.name ?? '(no name)'}</h4>
-        <div class="muted">${Array.isArray(p.skills) ? p.skills.join(', ') : (p.skills || 'No skills listed')}</div>
+    list.forEach(p=>{
+      const el=document.createElement('div'); el.className='mini-card';
+      el.innerHTML = `<h4>${p.name ?? '(no name)'}</h4>
+        <div class="muted">${Array.isArray(p.skills)?p.skills.join(', '):(p.skills||'No skills listed')}</div>
         <div class="muted">${p.availability || p.Availability || ''}</div>
-        <div class="muted">${p.bio || p.Bio || ''}</div>
-      `;
+        <div class="muted">${p.bio || p.Bio || ''}</div>`;
       cards.appendChild(el);
     });
   }
 
-  async function queryBySkills(terms) {
+  // text[] contains; then PostgREST cs.{...} fallback
+  async function queryBySkills(terms){
     console.log('[SEARCH] queryBySkills terms:', terms);
-    try {
+    try{
       const { data, error } = await supabase.from('community').select('*').contains('skills', terms);
       if (error) throw error;
-      if (data?.length) return data;
-    } catch (e) {
-      console.warn('[SEARCH] .contains failed; trying cs fallback:', e?.message || e);
-    }
-    // PostgREST cs.{…} fallback
-    try {
-      const csParam = `{${terms.join(',')}}`;
-      const { data, error } = await supabase.from('community').select('*').filter('skills', 'cs', csParam);
+      if (Array.isArray(data) && data.length) return data;
+    }catch(e){ console.warn('[SEARCH] .contains failed:', e?.message || e); }
+    try{
+      const csParam = `{${terms.join(',')}}`; // {aws,python}
+      const { data, error } = await supabase.from('community').select('*').filter('skills','cs', csParam);
       if (error) throw error;
-      return data || [];
-    } catch (e) {
-      console.error('[SEARCH] cs fallback failed:', e?.message || e);
-      return [];
-    }
-  }
-
-  aasync function queryByName(q) {
-  console.log('[SEARCH] queryByName q:', q);
-  const { data, error } = await supabase
-    .from('community')
-    .select('*')
-    .ilike('name', `%${q}%`); // case-insensitive match on the single "name" column
-  if (error) {
-    console.error('[SEARCH] name search failed:', error);
+      if (Array.isArray(data) && data.length) return data;
+    }catch(e){ console.error('[SEARCH] cs fallback failed:', e?.message || e); }
     return [];
   }
-  return data || [];
+
+  // ONLY query the "name" column (your table has no first_name/last_name)
+  async function queryByName(q){
+    console.log('[SEARCH] queryByName q:', q);
+    const { data, error } = await supabase.from('community').select('*').ilike('name', `%${q}%`);
+    if (error){ console.error('[SEARCH] name search failed:', error); return []; }
+    return data || [];
+  }
+
+ function wireSearchHandlers(){
+  const findBtn = document.getElementById('find-team-btn');
+  const nameBtn = document.getElementById('search-name-btn');
+  if(!findBtn || !nameBtn){ console.error('[SEARCH] Buttons not found'); return; }
+  console.log('[SEARCH] Handlers wired.');
+
+  findBtn.addEventListener('click', async ()=>{
+    if (!(await requireSessionOrWarn())) return;
+    console.log('[SEARCH] find-team-btn clicked');
+    const raw = document.getElementById('teamSkillsInput')?.value?.trim() || '';
+    if (!raw){ renderPeople([]); return; }
+    const terms = raw.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+    document.getElementById('matchNotification').style.display='none';
+    document.getElementById('noResults').style.display='none';
+    try{
+      const rows = await queryBySkills(terms);
+      console.log('[SEARCH] skills results:', rows?.length);
+      renderPeople(rows);
+    }catch(err){ console.error('[SEARCH] skills handler error:', err); renderPeople([]); }
+  });
+
+  nameBtn.addEventListener('click', async ()=>{
+    if (!(await requireSessionOrWarn())) return;
+    console.log('[SEARCH] search-name-btn clicked');
+    const q = (document.getElementById('nameInput')?.value || '').trim();
+    if (!q){ renderPeople([]); return; }
+    document.getElementById('matchNotification').style.display='none';
+    document.getElementById('noResults').style.display='none';
+    try{
+      const rows = await queryByName(q);
+      console.log('[SEARCH] name results:', rows?.length);
+      renderPeople(rows);
+    }catch(err){ console.error('[SEARCH] name handler error:', err); renderPeople([]); }
+  });
 }
 
+// Run now if DOM is ready; otherwise wait.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', wireSearchHandlers);
+} else {
+  wireSearchHandlers();
+}
 
-  function wireSearchButtons() {
-    const findBtn = document.getElementById('find-team-btn');
-    const nameBtn = document.getElementById('search-name-btn');
-    if (!findBtn || !nameBtn) { console.error('[SEARCH] Buttons not found'); return; }
-
-    findBtn.addEventListener('click', async () => {
-      if (!(await requireSessionOrWarn())) return;
-      console.log('[SEARCH] find-team-btn clicked');
-      const raw = document.getElementById('teamSkillsInput')?.value?.trim() || '';
-      if (!raw) return renderPeople([]);
-      const terms = raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-      document.getElementById('matchNotification').style.display = 'none';
-      document.getElementById('noResults').style.display = 'none';
-      try { renderPeople(await queryBySkills(terms)); }
-      catch (e) { console.error(e); renderPeople([]); }
-    });
-
-    nameBtn.addEventListener('click', async () => {
-      if (!(await requireSessionOrWarn())) return;
-      console.log('[SEARCH] search-name-btn clicked');
-      const q = (document.getElementById('nameInput')?.value || '').trim();
-      if (!q) return renderPeople([]);
-      document.getElementById('matchNotification').style.display = 'none';
-      document.getElementById('noResults').style.display = 'none';
-      try { renderPeople(await queryByName(q)); }
-      catch (e) { console.error(e); renderPeople([]); }
-    });
-
-    console.log('[SEARCH] Handlers wired.');
-  }
-
-  // ------- bootstrap
-  async function bootstrap() {
-    // Tabs
-    document.querySelectorAll('.tab-button').forEach(btn => {
-      btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
-    });
-
-    // Restore / init session
-    const session = await initDexAuth();
-    if (session?.user) {
-      showDebug('logged in', session.user.email || session.user.id);
-      whoami.textContent = session.user.email || '';
-      sessionBar.style.display = 'block';
-      tabNav.style.display = 'flex';
-      topActions.style.display = 'flex';
-      authPane.style.display = 'none';
-
-      // If you require profile creation, you could check for an existing row here and show the form if missing
-
-    } else {
-      showDebug('No session');
-      whoami.textContent = '';
-      sessionBar.style.display = 'none';
-      tabNav.style.display = 'none';
-      topActions.style.display = 'none';
-      authPane.style.display = 'block';
-    }
-
-    wireSearchButtons();
-  }
-
-  // Module scripts run after the DOM is parsed, but we still wait for load to be safe
-  window.addEventListener('load', bootstrap);
+  // For quick manual testing
+  window.__dexRenderPeople = renderPeople;
+ 
 </script>
+
+<script type="module" src="./assets/js/neuralInteractive.js"></script>
+</body>
+</html>
+
+
