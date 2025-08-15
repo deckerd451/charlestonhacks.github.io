@@ -1,16 +1,32 @@
 // /assets/js/globals.js
-import { appState as stateFromStateJs } from './state.js';
+// Backward-compatible globals + ES module exports
 
-export const appState = stateFromStateJs;
+// Reuse existing window-level objects if present, otherwise create them.
+export const appState = (globalThis.appState && typeof globalThis.appState === 'object')
+  ? globalThis.appState
+  : (globalThis.appState = { session: null });
 
-export const DOMElements = {
-  // Add refs you actually use on dex.html (leave others out or add later)
-  cardContainer: document.getElementById('cardContainer'),
-  bestTeamContainer: document.getElementById('bestTeamContainer'),
-  leaderboardRows: document.getElementById('leaderboard-rows'),
-};
+// Keep DOMElements if you already rely on it elsewhere.
+export const DOMElements = (globalThis.DOMElements && typeof globalThis.DOMElements === 'object')
+  ? globalThis.DOMElements
+  : (globalThis.DOMElements = {});
 
-export function showNotification(message, { type = 'info' } = {}) {
-  console.log(`[notify:${type}]`, message);
-  // Replace later with an on-page toast if you want
+// Minimal notification; replace with your toast/snackbar later.
+// Also mirror to window for any legacy code that calls window.showNotification.
+export function showNotification(msg) {
+  try {
+    // If you have a custom UI notifier, call it here:
+    // return YourToast.show(msg);
+    console.log('[DEX]', msg);
+  } catch (e) {
+    console.log('[DEX]', msg);
+  }
 }
+globalThis.showNotification = showNotification;
+
+// Optional: tiny helper to register frequently-used DOM nodes (legacy support)
+export function registerDomElement(key, el) {
+  DOMElements[key] = el;
+  return el;
+}
+globalThis.registerDomElement = registerDomElement;
