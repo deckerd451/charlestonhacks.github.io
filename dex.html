@@ -211,13 +211,14 @@
 
   // --- Auth ---
   loginBtn.addEventListener('click', async () => {
-    const email = document.getElementById('email').value.trim();
-    if (!email) return setAuthStatus('Enter email', true);
-    loginBtn.disabled = true; setAuthStatus('Sending link…');
-    const { error } = await supabase.auth.signInWithOtp({ email, options:{ emailRedirectTo: DEX_URL }});
-    setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
-    setTimeout(() => (loginBtn.disabled = false), 60000);
-  });
+  const email = document.getElementById('email').value.trim();
+  if (!email) return setAuthStatus('Enter email', true);
+  loginBtn.disabled = true; setAuthStatus('Sending link…');
+  const { error } = await supabase.auth.signInWithOtp({ email, options:{ emailRedirectTo: DEX_URL }});
+  setAuthStatus(error ? error.message : 'Check your inbox for the magic link', !!error);
+  setTimeout(() => (loginBtn.disabled = false), 60000);
+});
+
 
   logoutBtn.addEventListener('click', async () => {
     try {
