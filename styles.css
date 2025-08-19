@@ -620,45 +620,7 @@ main, .main-wrapper, .media-container {
     bottom: 19%;
   }
 }
-/* ==========================================================================
-   TEAM BUILDER/2card CARD STYLES
-   ========================================================================== */
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin: 20px 0;
-}
 
-.team-member-card {
-    width: 200px;
-    background: var(--card-bg);
-    border-radius: 8px;
-    padding: 12px 8px 10px;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
-
-.team-member-card img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 2px solid #ffd700;
-    margin-bottom: 8px;
-}
-
-.image-preview {
-    display: none;
-    max-width: 120px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 2px solid #ffd700;
-}
 /* ==========================================================================
    NAME, STATUS & BADGE STYLES
    ========================================================================== */
