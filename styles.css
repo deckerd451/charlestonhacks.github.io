@@ -1422,6 +1422,66 @@ main, .main-wrapper, .media-container {
   }
 }
 /* ==========================================================================
+  Innovation engine styline (2card)
+   ========================================================================== */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+  padding: 1rem;
+  justify-items: center;
+}
+
+.card {
+  background: var(--card-bg, #2a2a3a);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  max-width: 320px;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  color: var(--text-color, #eee);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.avatar-small {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 0.5rem;
+}
+
+.card-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.card-subtitle { font-size: 0.9rem; color: #bbb; }
+
+@media (max-width: 600px) {
+  .card { max-width: 100%; }
+  .avatar { width: 48px; height: 48px; }
+}
+
+/* ==========================================================================
    DEX STYLING
    ========================================================================== */
 .dex-tabs { display: flex; gap: .5rem; margin-bottom: .75rem; flex-wrap: wrap; }
