@@ -1,37 +1,35 @@
-// main.js (CharlestonHacks Innovation Engine)
+// /assets/js/main.js  — Vanilla (no jQuery), safe guards, shared Supabase client
 // Tailored to your "community" table schema
 
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+// 0) Use your shared client to avoid multiple GoTrue instances
+import { supabaseClient as supabase } from './supabaseClient.js';
 
-// --- 0) Supabase client ---
-const SUPABASE_URL = 'https://hvmotpzhliufzomewzfl.supabase.co';
-const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s';
-
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// --- 1) Helpers ---
-const $ = (sel) => document.querySelector(sel);
+// 1) Small DOM helpers
+const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
+// 2) Card renderer (null-safe)
 function renderCards(container, rows) {
-  container.innerHTML = rows
+  if (!container) return;
+  container.innerHTML = (rows || [])
     .map((r) => {
-      const avatar = r.image_url || 'images/default-avatar.png';
+      const avatar = r.image_url || 'https://placehold.co/64x64';
       const skills = Array.isArray(r.skills) ? r.skills.join(', ') : '';
       const interests = Array.isArray(r.interests) ? r.interests.join(', ') : '';
-
       return `
-        <div class="card" role="listitem">
-          <div class="card-header">
-            <img src="${avatar}" alt="${r.name}" class="avatar" />
+        <div class="card" role="listitem" style="
+          border:1px solid rgba(0,0,0,.12);
+          border-radius:12px; padding:.75rem .9rem; background:var(--card-bg, rgba(0,0,0,.03));
+        ">
+          <div class="card-header" style="display:flex;gap:.65rem;align-items:center;">
+            <img src="${avatar}" alt="${r.name || 'Member'}" class="avatar" width="48" height="48" style="border-radius:50%;object-fit:cover;" />
             <div>
-              <div class="card-title">${r.name || 'Unnamed'}</div>
-              <div class="card-subtitle">${r.role || ''}</div>
+              <div class="card-title" style="font-weight:600">${r.name || 'Unnamed'}</div>
+              <div class="card-subtitle" style="opacity:.8;font-size:.9rem">${r.role || ''}</div>
             </div>
           </div>
-          <div class="card-body">
-            ${r.bio ? `<p>${r.bio}</p>` : ''}
+          <div class="card-body" style="margin-top:.5rem;font-size:.95rem;line-height:1.35;">
+            ${r.bio ? `<p style="margin:.25rem 0 .5rem">${r.bio}</p>` : ''}
             ${skills ? `<div><strong>Skills:</strong> ${skills}</div>` : ''}
             ${interests ? `<div><strong>Interests:</strong> ${interests}</div>` : ''}
             ${r.availability ? `<div><strong>Availability:</strong> ${r.availability}</div>` : ''}
@@ -43,7 +41,7 @@ function renderCards(container, rows) {
     .join('');
 }
 
-// --- 2) Data loaders ---
+// 3) Data loaders (with guards)
 let leaderboardLoaded = false;
 
 async function loadLeaderboard() {
@@ -65,10 +63,12 @@ async function loadLeaderboard() {
   target.innerHTML = (data || [])
     .map(
       (r, i) => `
-      <div class="row">
-        <span>${i + 1}.</span>
-        <img src="${r.image_url || 'images/default-avatar.png'}" alt="${r.name}" class="avatar-small" />
-        <strong>${r.name || 'Unnamed'}</strong> — ${r.endorsements ?? 0}
+      <div class="row" style="display:flex;align-items:center;gap:.5rem;padding:.25rem 0;">
+        <span style="width:1.5rem;text-align:right;">${i + 1}.</span>
+        <img src="${r.image_url || 'https://placehold.co/32x32'}" alt="${r.name || 'Member'}"
+             class="avatar-small" width="24" height="24" style="border-radius:50%;object-fit:cover;" />
+        <strong style="flex:1 1 auto;">${r.name || 'Unnamed'}</strong>
+        <span>${r.endorsements ?? 0}</span>
       </div>`
     )
     .join('');
@@ -78,6 +78,7 @@ async function searchByName(name) {
   const out = $('#cardContainer');
   const noRes = $('#noResults');
   const matchNote = $('#matchNotification');
+  if (!out || !noRes || !matchNote) return;
 
   out.innerHTML = '';
   noRes.style.display = 'none';
@@ -85,7 +86,7 @@ async function searchByName(name) {
 
   const { data, error } = await supabase
     .from('community')
-    .select('id,name,skills,interests,availability,image_url,endorsements,bio')
+    .select('id,name,skills,interests,availability,image_url,endorsements,bio,role')
     .ilike('name', `%${name}%`)
     .limit(50);
 
@@ -110,18 +111,26 @@ async function searchBySkills(skillsInput) {
   const out = $('#cardContainer');
   const noRes = $('#noResults');
   const matchNote = $('#matchNotification');
+  if (!out || !noRes || !matchNote) return;
 
   out.innerHTML = '';
   noRes.style.display = 'none';
   matchNote.style.display = 'none';
 
-  const skills = skillsInput.split(',').map((s) => s.trim()).filter(Boolean);
+  const skills = (skillsInput || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
   if (skills.length === 0) return;
 
+  // AND behavior (row must contain all listed skills):
   const { data, error } = await supabase
     .from('community')
-    .select('id,name,skills,interests,availability,image_url,endorsements,bio')
-    .contains('skills', skills); // ARRAY search
+    .select('id,name,skills,interests,availability,image_url,endorsements,bio,role')
+    .contains('skills', skills);
+
+  // If you want OR behavior instead, ask me—I’ll drop that version in.
 
   if (error) {
     console.error('[Search by skills error]', error);
@@ -140,7 +149,7 @@ async function searchBySkills(skillsInput) {
   matchNote.style.display = 'block';
 }
 
-// --- 3) Tabs wiring ---
+// 4) Tabs wiring (with guards)
 function showTab(tabId) {
   $$('.tab-content-pane').forEach((p) => p.classList.remove('active-tab-pane'));
   $$('.tab-button').forEach((b) => b.classList.remove('active'));
@@ -156,21 +165,28 @@ function showTab(tabId) {
   }
 }
 
-// --- 4) Initialize ---
+// 5) Boot
 window.addEventListener('DOMContentLoaded', () => {
   // Tab buttons
   $$('.tab-button').forEach((b) => {
     b.addEventListener('click', () => showTab(b.getAttribute('data-tab')));
   });
 
-  // Default tab
-  showTab('profile');
+  // Default tab if present
+  if (document.getElementById('profile')) showTab('profile');
 
   // Search actions
   $('#search-name-btn')?.addEventListener('click', () =>
-    searchByName($('#nameInput').value.trim())
+    searchByName($('#nameInput')?.value?.trim() || '')
   );
   $('#find-team-btn')?.addEventListener('click', () =>
-    searchBySkills($('#teamSkillsInput').value.trim())
+    searchBySkills($('#teamSkillsInput')?.value?.trim() || '')
   );
+});
+
+// 6) (Optional) Mount the Step-2 suggestions UI
+//    Requires you to have created /assets/js/matchEngine.js from the previous step.
+import { attachSuggestionsUI } from './matchEngine.js';
+document.addEventListener('DOMContentLoaded', () => {
+  attachSuggestionsUI(); // will mount into #dex-suggestions-host or #app
 });
