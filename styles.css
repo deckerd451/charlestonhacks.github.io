@@ -1442,6 +1442,48 @@ main, .main-wrapper, .media-container {
   .card { max-width: 100%; }
   .avatar { width: 48px; height: 48px; }
 }
+/* 1) Generic safety for any images inside cards */
+.card img {
+  max-width: 100%;
+  height: auto;          /* prevents distortion for inline images */
+  display: block;
+  border-radius: 8px;
+}
+
+/* 2) Avatar (square crop) — you already have this, add object-position if needed */
+.avatar,
+.avatar-small {
+  object-fit: cover;
+  object-position: center; /* or center top if heads get cropped too low */
+}
+
+/* 3) Main profile photo on a person card (consistent portrait crop) */
+.person-photo {
+  width: 100%;
+  max-width: 220px;      /* tune per design */
+  aspect-ratio: 3 / 4;   /* portrait crop */
+  object-fit: cover;     /* fills the box, crops overflow */
+  object-position: center;
+  border-radius: 10px;
+  border: 2px solid #ffd700;
+}
+
+/* 4) If you show a wide banner inside a card (consistent landscape crop) */
+.card .media-16x9 {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.card .media-16x9 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 5) Prevent any oversized image from causing scrollbars */
+.card { overflow: hidden; }
+
 
 /* ==========================================================================
    DEX STYLING
