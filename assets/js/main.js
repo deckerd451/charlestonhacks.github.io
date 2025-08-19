@@ -1,21 +1,19 @@
-// /assets/js/main.js - Vanilla rewrite
+// /assets/js/main.js — Vanilla rewrite + suggestions hook (no jQuery)
+import { attachSuggestionsUI } from './matchEngine.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  const body = document.body;
+  const body    = document.body;
   const wrapper = document.getElementById("wrapper");
-  const header = document.getElementById("header");
-  const nav = document.getElementById("nav");
-  const main = document.getElementById("main");
-  const intro = document.getElementById("intro");
+  const nav     = document.getElementById("nav");
+  const mainEl  = document.getElementById("main");  // rename to avoid confusion with <main>
+  const intro   = document.getElementById("intro");
 
-  // --- Play initial animations on page load
+  // Initial page animation
   window.addEventListener("load", () => {
-    setTimeout(() => {
-      body.classList.remove("is-preload");
-    }, 100);
+    setTimeout(() => body.classList.remove("is-preload"), 100);
   });
 
-  // --- Smooth scroll for links with .scrolly
+  // Smooth scroll for .scrolly links
   document.querySelectorAll(".scrolly").forEach(link => {
     link.addEventListener("click", e => {
       const href = link.getAttribute("href");
@@ -29,8 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // --- Simple parallax background for wrapper
+  // Simple parallax
   function applyParallax(el, intensity = 0.25) {
+    if (!el) return;
     const bg = document.createElement("div");
     bg.className = "bg";
     el.appendChild(bg);
@@ -42,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   if (wrapper) applyParallax(wrapper, 0.925);
 
-  // --- Nav Panel toggle
+  // Nav panel toggle (only if wrapper+nav exist)
   if (wrapper && nav) {
     const navPanel = document.createElement("div");
     navPanel.id = "navPanel";
@@ -59,35 +58,26 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       body.classList.toggle("is-navPanel-visible");
     });
-
     navPanel.querySelector(".close").addEventListener("click", e => {
       e.preventDefault();
       body.classList.remove("is-navPanel-visible");
     });
   }
 
-  // --- Hide intro on scroll
-  if (intro && main) {
+  // Hide intro on scroll
+  if (intro && mainEl) {
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            intro.classList.add("hidden");
-          } else {
-            intro.classList.remove("hidden");
-          }
+          if (entry.isIntersecting) intro.classList.add("hidden");
+          else                       intro.classList.remove("hidden");
         });
       },
       { root: null, threshold: 0.2 }
     );
-    observer.observe(main);
+    observer.observe(mainEl);
   }
-  import { attachSuggestionsUI } from './matchEngine.js';
 
-// Render suggestions once the DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+  // Mount "People you should meet" suggestions (from matchEngine.js)
   attachSuggestionsUI();
 });
-
-
-
