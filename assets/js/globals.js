@@ -4,7 +4,15 @@
 // Reuse existing window-level objects if present, otherwise create them.
 export const appState = (globalThis.appState && typeof globalThis.appState === 'object')
   ? globalThis.appState
-  : (globalThis.appState = { session: null });
+  : (globalThis.appState = { 
+      session: null,
+      // add feature flags safely if not present
+      features: {
+        connectionEngine: false,
+        eventMode: false,
+        aiGlia: false
+      }
+    });
 
 // Keep DOMElements if you already rely on it elsewhere.
 export const DOMElements = (globalThis.DOMElements && typeof globalThis.DOMElements === 'object')
@@ -30,3 +38,19 @@ export function registerDomElement(key, el) {
   return el;
 }
 globalThis.registerDomElement = registerDomElement;
+
+// -------------------
+// NEW: Event bus utils
+// -------------------
+export const Events = globalThis.Events || new EventTarget();
+globalThis.Events = Events;
+
+export function emit(name, detail = {}) {
+  Events.dispatchEvent(new CustomEvent(name, { detail }));
+}
+export function on(name, cb) {
+  Events.addEventListener(name, (e) => cb(e.detail));
+}
+
+// Quick debug check
+on("debug:pong", (d) => console.log("[globals] got pong:", d));
