@@ -82,4 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     observer.observe(main);
   }
+  import { attachSuggestionsUI } from './matchEngine.js';
+
+// Render suggestions once the DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  attachSuggestionsUI();
 });
+
+
+
