@@ -15,6 +15,19 @@
 
   <main id="app" style="min-height:60vh;padding:1rem;"></main>
 
-  <script type="module" src="/assets/js/main.js"></script>
+  <!-- Use a RELATIVE path so it works on subpaths (e.g., GitHub Pages) -->
+  <script type="module" src="./assets/js/main.js"></script>
+
+  <!-- Inline test for globals -->
+  <script type="module">
+    import { appState, emit, on, showNotification } from './assets/js/globals.js';
+
+    console.log("[Dex] globals loaded:", appState);
+    showNotification("Globals extended!");
+
+    on("hello", (d) => console.log("heard hello:", d));
+    emit("hello", { from: "dex.html" });
+    emit("debug:pong", { time: Date.now() });
+  </script>
 </body>
 </html>
