@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    /* Tab + layout helpers */
+    /* (kept your tab + layout helper styles) */
     .tab-content-pane{display:none;padding:20px 0}
     .tab-content-pane.active-tab-pane{display:block}
     .tab-nav{display:flex;justify-content:center;margin-bottom:20px;border-bottom:2px solid #333;padding-bottom:5px;gap:10px}
@@ -60,10 +60,10 @@
     <main class="panels-wrapper">
       <div class="panel large">
         <div class="tab-nav">
-          <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
-          <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
-          <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
-          <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
+          <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus" aria-hidden="true"></i> Create Profile</button>
+          <button class="tab-button" data-tab="search"><i class="fas fa-search" aria-hidden="true"></i> Individual Search</button>
+          <button class="tab-button" data-tab="team-builder"><i class="fas fa-users" aria-hidden="true"></i> Team Builder</button>
+          <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy" aria-hidden="true"></i> Leaderboard</button>
         </div>
 
         <!-- Profile -->
@@ -104,10 +104,17 @@
             </form>
 
             <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
+
+            <!-- 🔽 Test button for Docs Modal -->
+            <div class="docs-test">
+              <button class="tab-button" data-docs-url="https://example.com/docs/sample.pdf">
+                <i class="fas fa-book-open"></i> View Docs (Test)
+              </button>
+            </div>
           </section>
         </div>
 
-        <!-- Search -->
+        <!-- Individual Search -->
         <div id="search" class="tab-content-pane">
           <h2 class="section-title">Individual Search</h2>
           <div class="input-container">
@@ -148,28 +155,43 @@
             <div id="leaderboard-rows"></div>
           </div>
         </div>
+
       </div>
     </main>
   </div>
 
+  <!-- Formspree + Mailchimp -->
+  <script>
+    document.getElementById("skills-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const form = this;
+      const fname = document.getElementById("first-name").value;
+      const lname = document.getElementById("last-name").value;
+      const email = document.getElementById("email").value;
+
+      fetch(form.action, { method: form.method, body: new FormData(form), headers: { "Accept": "application/json" } })
+        .then(r => { if (r.ok) document.getElementById("success-message").style.display = "block"; })
+        .catch(err => console.error("Formspree error:", err));
+
+      const m = document.createElement("form");
+      m.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+      m.method = "POST"; m.target = "_blank";
+      m.innerHTML = `<input type="hidden" name="FNAME" value="${fname}">
+                     <input type="hidden" name="LNAME" value="${lname}">
+                     <input type="hidden" name="EMAIL" value="${email}">`;
+      document.body.appendChild(m); m.submit(); document.body.removeChild(m);
+    });
+  </script>
+
   <!-- Docs Modal -->
   <div id="docsModal" class="docs-modal hidden">
     <div class="docs-modal-content">
-      <span class="docs-close-btn" aria-label="Close">&times;</span>
-      <iframe id="docsFrame" src="" frameborder="0" allowfullscreen></iframe>
+      <span class="close-btn">&times;</span>
+      <iframe src="" frameborder="0"></iframe>
     </div>
   </div>
 
-  <!-- Endorsement Modal -->
-  <div id="endorseSkillModal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h3>Endorse User for...</h3>
-      <div id="endorse-skill-list" class="skill-endorse-list"></div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
+  <!-- Your app entrypoint -->
   <script type="module" src="./assets/js/main.js"></script>
   <script type="module" src="./assets/js/docsModal.js"></script>
 </body>
