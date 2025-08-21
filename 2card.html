@@ -22,15 +22,17 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    /* (kept your tab + layout helper styles) */
+    /* tabs + layout helpers */
     .tab-content-pane{display:none;padding:20px 0}
     .tab-content-pane.active-tab-pane{display:block}
     .tab-nav{display:flex;justify-content:center;margin-bottom:20px;border-bottom:2px solid #333;padding-bottom:5px;gap:10px}
-    .tab-button{background:#2a2a3a;color:#eee;border:0;padding:10px 15px;cursor:pointer;font-size:1em;border-radius:5px 5px 0 0;transition:.3s;background-color,color;white-space:nowrap}
+    .tab-button{background:#2a2a3a;color:#eee;border:0;padding:10px 15px;cursor:pointer;font-size:1em;border-radius:5px 5px 0 0;transition:.3s background-color,.3s color;white-space:nowrap}
     .tab-button:hover{background:#3a3a4a;color:#ffd700}
     .tab-button.active{background:#ffd700;color:#222;font-weight:bold;border-bottom:2px solid #ffd700}
     .panel{position:relative;padding-top:0;box-sizing:border-box}
     .tab-content-pane .section-title{margin-top:0}
+    /* keep endorsement modal hidden until opened */
+    .modal.hidden{display:none !important;}
     @media (max-width:768px){
       .tab-nav{flex-wrap:wrap;justify-content:flex-start}
       .tab-button{flex-grow:1;text-align:center}
@@ -60,10 +62,10 @@
     <main class="panels-wrapper">
       <div class="panel large">
         <div class="tab-nav">
-          <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus" aria-hidden="true"></i> Create Profile</button>
-          <button class="tab-button" data-tab="search"><i class="fas fa-search" aria-hidden="true"></i> Individual Search</button>
-          <button class="tab-button" data-tab="team-builder"><i class="fas fa-users" aria-hidden="true"></i> Team Builder</button>
-          <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy" aria-hidden="true"></i> Leaderboard</button>
+          <button type="button" class="tab-button active" data-tab="profile"><i class="fas fa-user-plus" aria-hidden="true"></i> Create Profile</button>
+          <button type="button" class="tab-button" data-tab="search"><i class="fas fa-search" aria-hidden="true"></i> Individual Search</button>
+          <button type="button" class="tab-button" data-tab="team-builder"><i class="fas fa-users" aria-hidden="true"></i> Team Builder</button>
+          <button type="button" class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy" aria-hidden="true"></i> Leaderboard</button>
         </div>
 
         <!-- Profile -->
@@ -73,9 +75,9 @@
 
             <form id="skills-form">
               <div class="input-container">
-                <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name">
-                <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name">
-                <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email">
+                <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name" autocomplete="given-name">
+                <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name" autocomplete="family-name">
+                <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email" autocomplete="email">
 
                 <label for="skills-input">Professional Skills (comma separated)</label>
                 <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
@@ -83,14 +85,14 @@
                 <div id="autocomplete-skills-input" class="autocomplete-box"></div>
 
                 <label for="photo-input">Upload Your Photo</label>
-                <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
+                <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo" autocomplete="off">
                 <img id="preview" src="#" alt="Image Preview" class="image-preview" />
 
                 <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
-                <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
+                <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio" autocomplete="off">
 
                 <label for="availability-input">Current Availability</label>
-                <select id="availability-input" aria-label="Current Availability">
+                <select id="availability-input" aria-label="Current Availability" autocomplete="off">
                   <option value="Available">Available</option>
                   <option value="Busy">Busy</option>
                   <option value="Not Looking">Not Looking</option>
@@ -135,7 +137,7 @@
             <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
             <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
             <label for="teamSize">Team Size</label>
-            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
+            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size" autocomplete="off"/>
             <button onclick="buildBestTeam()">Build Team</button>
           </div>
           <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
@@ -153,7 +155,7 @@
     </main>
   </div>
 
-  <!-- Formspree + Mailchimp (kept) -->
+  <!-- Formspree + Mailchimp -->
   <script>
     document.getElementById("skills-form").addEventListener("submit", function(event) {
       event.preventDefault();
@@ -176,7 +178,7 @@
     });
   </script>
 
-  <!-- Modal -->
+  <!-- Endorsement Modal (hidden by default) -->
   <div id="endorseSkillModal" class="modal hidden">
     <div class="modal-content">
       <span class="close-button">&times;</span>
@@ -185,7 +187,25 @@
     </div>
   </div>
 
-  <!-- Your app entrypoint (Option A): load the module from /assets/js/ -->
+  <!-- Tiny tab controller -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      function showTab(id) {
+        document.querySelectorAll('.tab-content-pane').forEach(p => p.classList.remove('active-tab-pane'));
+        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+        const pane = document.getElementById(id);
+        const btn  = document.querySelector(`.tab-button[data-tab="${id}"]`);
+        if (pane) pane.classList.add('active-tab-pane');
+        if (btn)  btn.classList.add('active');
+      }
+      document.querySelectorAll('.tab-button').forEach(b => {
+        b.addEventListener('click', () => showTab(b.dataset.tab));
+      });
+      showTab('profile'); // default tab
+    });
+  </script>
+
+  <!-- App entrypoint: modules live in /assets/js/ -->
   <script type="module" src="./assets/js/main.js"></script>
 </body>
 </html>
