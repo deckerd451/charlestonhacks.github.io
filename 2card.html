@@ -34,16 +34,10 @@
       .tab-nav{flex-wrap:wrap;justify-content:flex-start}
       .tab-button{flex-grow:1;text-align:center}
     }
+    .magic-link-box {margin-bottom:20px;padding:15px;border:1px solid #444;border-radius:8px;background:#1e1e2f;}
+    .magic-link-box h3 {margin-top:0;color:#ffd700;}
   </style>
 </head>
-
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date()); gtag('config', 'G-6NDKG07DY6');
-</script>
 
 <body class="two-card-page">
   <a href="index.html" title="Back to Home"><i class="fas fa-home home-icon"></i></a>
@@ -71,6 +65,17 @@
           <section id="matchmaking-section">
             <h2 class="section-title">Create Your Profile</h2>
 
+            <!-- 🔑 Magic Link Login -->
+            <div class="magic-link-box">
+              <h3>Login with Magic Link</h3>
+              <form id="magic-link-form">
+                <input type="email" id="magic-email" placeholder="Enter your email" required autocomplete="email">
+                <button type="submit">Send Magic Link</button>
+              </form>
+              <p id="magic-link-msg" style="display:none;"></p>
+            </div>
+
+            <!-- Profile Form -->
             <form id="skills-form">
               <div class="input-container">
                 <input type="text" id="first-name" placeholder="First Name" required autocomplete="given-name">
