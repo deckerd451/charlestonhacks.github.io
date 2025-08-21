@@ -1,32 +1,26 @@
-// /assets/js/leaderboard.js
+// leaderboard.js
 import { supabaseClient } from './supabaseClient.js';
 import { DOMElements } from './globals.js';
 
-/**
- * Load leaderboard of most endorsed skills
- */
 export async function loadLeaderboard() {
   try {
-    // Query endorsements grouped by skill
+    // Get aggregated counts per skill
     const { data, error } = await supabaseClient
       .from('endorsements')
       .select('skill, count:skill', { count: 'exact' });
 
     if (error) throw error;
 
-    // Supabase doesn't automatically return grouped counts, so we use RPC or JS aggregation
-    // Alternative approach: use a Postgres function or raw SQL. For now, aggregate manually:
+    // Transform results into skill -> count map
     const skillCounts = {};
     data.forEach(row => {
-      const skill = row.skill;
-      if (!skill) return;
-      skillCounts[skill] = (skillCounts[skill] || 0) + 1;
+      skillCounts[row.skill] = (skillCounts[row.skill] || 0) + 1;
     });
 
-    // Sort skills by endorsement count
-    const sortedSkills = Object.entries(skillCounts).sort(([, a], [, b]) => b - a);
+    // Sort by most endorsed
+    const sortedSkills = Object.entries(skillCounts).sort(([,a],[,b]) => b - a);
 
-    // Render leaderboard
+    // Clear and render
     DOMElements.leaderboardRows.innerHTML = '';
     sortedSkills.forEach(([skill, count], index) => {
       const row = document.createElement('div');
@@ -39,11 +33,8 @@ export async function loadLeaderboard() {
       DOMElements.leaderboardRows.appendChild(row);
     });
 
-    if (sortedSkills.length === 0) {
-      DOMElements.leaderboardRows.innerHTML = '<p>No endorsements yet.</p>';
-    }
   } catch (err) {
-    console.error('[Dex] leaderboard error', err);
+    console.error('[Leaderboard Error]', err);
     DOMElements.leaderboardRows.innerHTML = '<p>Failed to load leaderboard.</p>';
   }
 }
