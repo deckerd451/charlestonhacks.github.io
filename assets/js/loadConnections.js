@@ -1,16 +1,46 @@
 // loadConnections.js
-import { supabaseClient as supabase } from './supabaseClient.js'; // ✅ use shared instance
+import { supabaseClient } from './supabaseClient.js';
+import { generateUserCardHTML, attachEndorseButtons } from './cardRenderer.js';
+import { DOMElements } from './globals.js';
 
-export async function fetchConnections() {
-  const { data, error } = await supabase
-    .from('connections')
-    .select('from_id, to_id');
+export async function searchBySkills(requiredSkills) {
+  try {
+    const { data, error } = await supabaseClient
+      .from('community')
+      .select('*')
+      .contains('skills', requiredSkills);
 
-  if (error) {
-    console.error('❌ Error loading connections:', error.message);
-    return [];
+    if (error) throw error;
+
+    DOMElements.cardContainer.innerHTML = '';
+    for (const user of data) {
+      const cardHTML = await generateUserCardHTML(user);
+      DOMElements.cardContainer.insertAdjacentHTML('beforeend', cardHTML);
+    }
+    attachEndorseButtons();
+  } catch (err) {
+    console.error('[SearchBySkills]', err);
+    DOMElements.cardContainer.innerHTML = '<p>Error loading users.</p>';
   }
+}
 
-  console.log('✅ Loaded connections:', data);
-  return data;
+export async function searchByName(name) {
+  try {
+    const { data, error } = await supabaseClient
+      .from('community')
+      .select('*')
+      .ilike('name', `%${name}%`);
+
+    if (error) throw error;
+
+    DOMElements.cardContainer.innerHTML = '';
+    for (const user of data) {
+      const cardHTML = await generateUserCardHTML(user);
+      DOMElements.cardContainer.insertAdjacentHTML('beforeend', cardHTML);
+    }
+    attachEndorseButtons();
+  } catch (err) {
+    console.error('[SearchByName]', err);
+    DOMElements.cardContainer.innerHTML = '<p>Error loading users.</p>';
+  }
 }
