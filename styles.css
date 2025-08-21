@@ -1484,6 +1484,53 @@ main, .main-wrapper, .media-container {
 /* 5) Prevent any oversized image from causing scrollbars */
 .card { overflow: hidden; }
 
+/* === Leaderboard Styles === */
+.leaderboard {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #1e1e2f; /* Dark panel background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.leaderboard h2 {
+  color: #ffd700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 60px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #333;
+  color: #eee;
+  font-size: 1rem;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-rank {
+  font-weight: bold;
+  color: #ffd700;
+  text-align: left;
+}
+
+.leaderboard-skill {
+  text-align: left;
+  padding-left: 10px;
+}
+
+.leaderboard-count {
+  font-weight: bold;
+  text-align: right;
+  color: #4cafef;
+}
+
+
 
 /* ==========================================================================
    DEX STYLING
