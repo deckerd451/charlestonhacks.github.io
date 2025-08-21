@@ -1,117 +1,92 @@
-// src/profile.js
+// /assets/js/profile.js
+import { supabaseClient as supabase } from './supabaseClient.js';
+import { showNotification } from './utils.js';
 
-import { DOMElements, appState, supabaseClient } from './state.js';
-import { showNotification, updateProfileProgress } from './utils.js';
-import { fetchUniqueSkills, loadLeaderboard } from './data.js';
+export async function handleProfileFormSubmit(event) {
+  event.preventDefault();
 
-export function handleSkillsInput() {
-  const skills = this.value.split(',').map(s => s.trim()).filter(Boolean);
-  DOMElements.skillsProficiencyContainer.innerHTML = '';
+  // 🔑 Ensure logged in via magic link
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    showNotification("Please log in first (magic link required).", "error");
+    return;
+  }
 
-  skills.forEach(skill => {
-    if (!skill) return;
-    if (!(skill in appState.skillProficiencies)) {
-      appState.skillProficiencies[skill] = "Intermediate";
+  const userId = user.id;
+
+  // 📥 Gather form data
+  const fname = document.getElementById("first-name").value.trim();
+  const lname = document.getElementById("last-name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const skills = document.getElementById("skills-input").value.split(",").map(s => s.trim());
+  const bio = document.getElementById("bio-input").value.trim();
+  const availability = document.getElementById("availability-input").value;
+
+  // 📸 Handle photo upload (optional)
+  let photoUrl = null;
+  const fileInput = document.getElementById("photo-input");
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${userId}.${fileExt}`;
+    const filePath = `profile-photos/${fileName}`;
+
+    // Upload to Supabase Storage
+    const { error: uploadError } = await supabase.storage
+      .from('profile-photos')
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) {
+      showNotification("Photo upload failed.", "error");
+    } else {
+      // Public URL
+      const { data } = supabase.storage.from('profile-photos').getPublicUrl(filePath);
+      photoUrl = data.publicUrl;
     }
-    DOMElements.skillsProficiencyContainer.insertAdjacentHTML('beforeend', `
-      <div style="margin-bottom: 7px;">
-        <span style="color:var(--primary-color);">${skill}</span>
-        <select class="proficiency-select" data-skill="${skill}" aria-label="Proficiency for ${skill}">
-          <option value="Beginner" ${appState.skillProficiencies[skill] === "Beginner" ? "selected" : ""}>Beginner</option>
-          <option value="Intermediate" ${appState.skillProficiencies[skill] === "Intermediate" ? "selected" : ""}>Intermediate</option>
-          <option value="Expert" ${appState.skillProficiencies[skill] === "Expert" ? "selected" : ""}>Expert</option>
-        </select>
-      </div>
-    `);
-  });
-
-  DOMElements.skillsProficiencyContainer.querySelectorAll('.proficiency-select').forEach(sel => {
-    sel.addEventListener('change', function() {
-      appState.skillProficiencies[this.dataset.skill] = this.value;
-    });
-  });
-}
-
-export function handlePhotoInputChange() {
-  const file = this.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      DOMElements.previewImage.src = e.target.result;
-      DOMElements.previewImage.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  } else {
-    DOMElements.previewImage.style.display = 'none';
-    DOMElements.previewImage.src = '#';
-  }
-}
-
-export async function handleProfileSubmit(e) {
-  e.preventDefault();
-
-  const firstName = DOMElements.firstNameInput.value.trim();
-  const lastName = DOMElements.lastNameInput.value.trim();
-  const email = DOMElements.emailInput.value.trim();
-  const rawSkills = DOMElements.skillsInput.value.trim().replace(/,\s*$/, '');
-  const skillsArr = rawSkills.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-  const profs = skillsArr.map(skill => appState.skillProficiencies[skill] || "Intermediate");
-  const skillsWithProfs = skillsArr.map((skill, i) => `${skill}(${profs[i]})`).join(',');
-  const bio = DOMElements.bioInput.value.trim();
-  const availability = DOMElements.availabilityInput.value;
-  const photoFile = DOMElements.photoInput.files[0];
-
-  if (!photoFile) {
-    showNotification("Please select a profile image.", 'error');
-    return;
   }
 
-  if (!firstName || !lastName || !email || !skillsArr.length) {
-    showNotification("Please fill in all required fields.", 'error');
-    return;
-  }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    showNotification("Please enter a valid email address.", 'error');
-    return;
-  }
-
-  try {
-    const fileExt = photoFile.name.split('.').pop();
-    const fileName = `${Date.now()}-${firstName.toLowerCase()}-${lastName.toLowerCase()}.${fileExt}`;
-    const { error: uploadError } = await supabaseClient.storage.from('hacksbucket').upload(fileName, photoFile);
-
-    if (uploadError) throw new Error('Failed to upload image.');
-
-    const imageUrl = `${supabaseClient.storageUrl}/object/public/hacksbucket/${fileName}`;
-
-    const { error: insertError } = await supabaseClient.from('skills').insert({
-      first_name: firstName,
-      last_name: lastName,
+  // 📝 Upsert into community
+  const { error: upsertError } = await supabase
+    .from('community')
+    .upsert({
+      user_id: userId,
+      name: `${fname} ${lname}`,
       email,
-      skills: skillsWithProfs,
-      image_url: imageUrl,
-      Bio: bio,
-      Availability: availability,
-      endorsements: "{}",
-      created_at: new Date().toISOString()
-    });
+      skills,
+      bio,
+      availability,
+      image_url: photoUrl,
+    }, { onConflict: 'user_id' });
 
-    if (insertError) {
-      if (insertError.code === '23505') throw new Error('This email is already registered.');
-      throw new Error('Failed to register profile.');
-    }
+  if (upsertError) {
+    showNotification("Failed to save profile: " + upsertError.message, "error");
+    return;
+  }
 
-    showNotification('Registration successful!', 'success');
-    DOMElements.skillsForm.reset();
-    DOMElements.previewImage.style.display = 'none';
-    DOMElements.previewImage.src = '#';
-    appState.skillProficiencies = {};
-    DOMElements.skillsProficiencyContainer.innerHTML = '';
-    updateProfileProgress();
-    await fetchUniqueSkills();
-    loadLeaderboard();
-  } catch (error) {
-    showNotification(`Error: ${error.message}`, 'error');
+  showNotification("Profile saved successfully!", "success");
+
+  // 📧 Newsletter opt-in (Mailchimp) if checkbox is ticked
+  const newsletterOptIn = document.getElementById("newsletter-opt-in").checked;
+  if (newsletterOptIn) {
+    const mailchimpForm = document.createElement("form");
+    mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+    mailchimpForm.method = "POST";
+    mailchimpForm.target = "_blank";
+    mailchimpForm.innerHTML = `
+      <input type="hidden" name="FNAME" value="${fname}">
+      <input type="hidden" name="LNAME" value="${lname}">
+      <input type="hidden" name="EMAIL" value="${email}">
+    `;
+    document.body.appendChild(mailchimpForm);
+    mailchimpForm.submit();
+    document.body.removeChild(mailchimpForm);
   }
 }
+
+// 🔗 Attach handler on DOM load
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("skills-form");
+  if (form) {
+    form.addEventListener("submit", handleProfileFormSubmit);
+  }
+});
