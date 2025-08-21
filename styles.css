@@ -1026,15 +1026,11 @@ main, .main-wrapper, .media-container {
   transition: opacity 0.7s ease;
 }
 /* ==========================================================================
-  DOCS MODAL STYLING 
+   DOCS MODAL (renamed from .modal to .docs-modal)
    ========================================================================== */
-
-.modal {
+.docs-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.85);
   display: flex;
   justify-content: center;
@@ -1043,11 +1039,11 @@ main, .main-wrapper, .media-container {
   transition: opacity 0.3s ease;
 }
 
-.modal.hidden {
+.docs-modal.hidden {
   display: none;
 }
 
-.modal-content {
+.docs-modal-content {
   position: relative;
   width: 90%;
   max-width: 800px;
@@ -1058,13 +1054,13 @@ main, .main-wrapper, .media-container {
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
-.modal-content iframe {
+.docs-modal-content iframe {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.close-btn {
+.docs-close-btn {
   position: absolute;
   top: 8px;
   right: 12px;
@@ -1073,6 +1069,98 @@ main, .main-wrapper, .media-container {
   cursor: pointer;
   z-index: 10;
 }
+
+/* ==========================================================================
+   ENDORSEMENT BUTTONS & COUNTS
+   ========================================================================== */
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #2a2a3a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #eee;
+  border: 1px solid #444;
+}
+
+.endorsement-count {
+  color: #4cafef;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.endorse-btn {
+  background-color: #ffd700;
+  color: #222;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.endorse-btn:hover {
+  background-color: #e0b800;
+}
+
+/* ==========================================================================
+   LEADERBOARD
+   ========================================================================== */
+.leaderboard {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #1e1e2f; /* Dark panel */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.leaderboard h2 {
+  color: #ffd700;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 60px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #333;
+  color: #eee;
+  font-size: 1rem;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-rank {
+  font-weight: bold;
+  color: #ffd700;
+  text-align: left;
+}
+
+.leaderboard-skill {
+  text-align: left;
+  padding-left: 10px;
+  font-size: 1rem;
+  color: #eee;
+}
+
+.leaderboard-count {
+  font-weight: bold;
+  text-align: right;
+  color: #4cafef;
+}
+
 /* ==========================================================================
    SPLASH SCREEN STYLES
    ========================================================================== */
