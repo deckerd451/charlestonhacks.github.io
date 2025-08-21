@@ -2,30 +2,44 @@
 import { supabaseClient } from './supabaseClient.js';
 import { showNotification } from './utils.js';
 import { loadLeaderboard } from './leaderboard.js';
-import { appState } from './globals.js';
+import { generateUserCardHTML, attachEndorseButtons } from './cardRenderer.js';
+import { DOMElements } from './globals.js';
 
-// Handle a user endorsing another user's skill
-export async function handleEndorsementSelection(endorseeId, skill) {
+export async function handleEndorsementSelection(endorseeId, skillToEndorse) {
+  // Hide modal
+  DOMElements.endorseModal.style.display = 'none';
+
   try {
-    const endorserId = appState.session?.user?.id;
-    if (!endorserId) {
-      showNotification("You must be logged in to endorse.", "error");
-      return;
+    // Insert new endorsement row
+    const { error: insertError } = await supabaseClient
+      .from('endorsements')
+      .insert([{ endorsee_id: endorseeId, skill: skillToEndorse }]);
+
+    if (insertError) throw insertError;
+
+    showNotification(`Skill "${skillToEndorse}" endorsed successfully!`, "success");
+
+    // 🔄 Refresh leaderboard
+    loadLeaderboard();
+
+    // 🔄 Refresh the endorsed user's card in-place
+    const { data: userData, error: userError } = await supabaseClient
+      .from('community')
+      .select('*')
+      .eq('id', endorseeId)
+      .single();
+
+    if (!userError && userData) {
+      const oldCard = document.querySelector(`.endorse-btn[data-user-id="${endorseeId}"]`)?.closest('.user-card');
+      if (oldCard) {
+        const newCardHTML = await generateUserCardHTML(userData);
+        oldCard.outerHTML = newCardHTML; // Replace with updated card
+        attachEndorseButtons(); // Reattach listeners
+      }
     }
 
-    // Insert new endorsement row
-    const { error } = await supabaseClient
-      .from('endorsements')
-      .insert([{ endorser_id: endorserId, endorsee_id: endorseeId, skill }]);
-
-    if (error) throw error;
-
-    showNotification(`Endorsed ${skill} successfully!`, 'success');
-
-    // Refresh leaderboard
-    loadLeaderboard();
-  } catch (err) {
-    console.error('[Endorsement Error]', err);
-    showNotification(`Failed to endorse: ${err.message}`, 'error');
+  } catch (error) {
+    console.error('[Endorsement Error]', error);
+    showNotification(`Failed to endorse: ${error.message}`, 'error');
   }
 }
