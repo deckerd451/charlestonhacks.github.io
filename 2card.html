@@ -22,7 +22,6 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    /* (kept your tab + layout helper styles) */
     .tab-content-pane{display:none;padding:20px 0}
     .tab-content-pane.active-tab-pane{display:block}
     .tab-nav{display:flex;justify-content:center;margin-bottom:20px;border-bottom:2px solid #333;padding-bottom:5px;gap:10px}
@@ -60,10 +59,10 @@
     <main class="panels-wrapper">
       <div class="panel large">
         <div class="tab-nav">
-          <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus" aria-hidden="true"></i> Create Profile</button>
-          <button class="tab-button" data-tab="search"><i class="fas fa-search" aria-hidden="true"></i> Individual Search</button>
-          <button class="tab-button" data-tab="team-builder"><i class="fas fa-users" aria-hidden="true"></i> Team Builder</button>
-          <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy" aria-hidden="true"></i> Leaderboard</button>
+          <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
+          <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
+          <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
+          <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
         </div>
 
         <!-- Profile -->
@@ -71,7 +70,7 @@
           <section id="matchmaking-section">
             <h2 class="section-title">Create Your Profile</h2>
 
-            <form id="skills-form">
+            <form id="skills-form" method="POST">
               <div class="input-container">
                 <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name" autocomplete="given-name">
                 <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name" autocomplete="family-name">
@@ -96,6 +95,11 @@
                   <option value="Not Looking">Not Looking</option>
                 </select>
 
+                <label>
+                  <input type="checkbox" id="newsletter-opt-in" />
+                  Subscribe to CharlestonHacks Newsletter
+                </label>
+
                 <button type="submit">Register & Subscribe</button>
               </div>
 
@@ -105,7 +109,7 @@
 
             <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
 
-            <!-- 🔽 Test button for Docs Modal -->
+            <!-- Test Docs Modal button -->
             <div class="docs-test">
               <button class="tab-button" data-docs-url="https://example.com/docs/sample.pdf">
                 <i class="fas fa-book-open"></i> View Docs (Test)
@@ -164,22 +168,26 @@
   <script>
     document.getElementById("skills-form").addEventListener("submit", function(event) {
       event.preventDefault();
-      const form = this;
       const fname = document.getElementById("first-name").value;
       const lname = document.getElementById("last-name").value;
       const email = document.getElementById("email").value;
+      const newsletterOptIn = document.getElementById("newsletter-opt-in").checked;
 
-      fetch(form.action, { method: form.method, body: new FormData(form), headers: { "Accept": "application/json" } })
+      // Formspree fallback
+      fetch(this.action, { method: this.method, body: new FormData(this), headers: { "Accept": "application/json" } })
         .then(r => { if (r.ok) document.getElementById("success-message").style.display = "block"; })
         .catch(err => console.error("Formspree error:", err));
 
-      const m = document.createElement("form");
-      m.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
-      m.method = "POST"; m.target = "_blank";
-      m.innerHTML = `<input type="hidden" name="FNAME" value="${fname}">
-                     <input type="hidden" name="LNAME" value="${lname}">
-                     <input type="hidden" name="EMAIL" value="${email}">`;
-      document.body.appendChild(m); m.submit(); document.body.removeChild(m);
+      // Mailchimp only if opted in
+      if (newsletterOptIn) {
+        const m = document.createElement("form");
+        m.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+        m.method = "POST"; m.target = "_blank";
+        m.innerHTML = `<input type="hidden" name="FNAME" value="${fname}">
+                       <input type="hidden" name="LNAME" value="${lname}">
+                       <input type="hidden" name="EMAIL" value="${email}">`;
+        document.body.appendChild(m); m.submit(); document.body.removeChild(m);
+      }
     });
   </script>
 
@@ -191,7 +199,7 @@
     </div>
   </div>
 
-  <!-- Your app entrypoint -->
+  <!-- App entrypoints -->
   <script type="module" src="./assets/js/main.js"></script>
   <script type="module" src="./assets/js/docsModal.js"></script>
 </body>
