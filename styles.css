@@ -1529,6 +1529,99 @@ main, .main-wrapper, .media-container {
   text-align: right;
   color: #4cafef;
 }
+/* === User Cards === */
+.user-card {
+  background-color: #1e1e2f;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 12px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+  border: 2px solid #ffd700;
+}
+
+.user-card h3 {
+  margin: 8px 0 4px;
+  font-size: 1.2rem;
+  color: #ffd700;
+}
+
+.user-card p {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin: 4px 0;
+}
+
+/* Availability badge */
+.user-card .availability {
+  margin-top: 8px;
+  font-weight: bold;
+  color: #4cafef;
+}
+
+/* Skills section */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.skill-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #2a2a3a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #eee;
+  border: 1px solid #444;
+}
+
+.endorsement-count {
+  color: #4cafef;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Endorse button */
+.endorse-btn {
+  background-color: #ffd700;
+  color: #222;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.endorse-btn:hover {
+  background-color: #e0b800;
+}
+
 
 
 
