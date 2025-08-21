@@ -31,8 +31,8 @@
     .tab-button.active{background:#ffd700;color:#222;font-weight:bold;border-bottom:2px solid #ffd700}
     .panel{position:relative;padding-top:0;box-sizing:border-box}
     .tab-content-pane .section-title{margin-top:0}
-    /* keep endorsement modal hidden until opened */
     .modal.hidden{display:none !important;}
+    .docs-modal.hidden{display:none !important;}
     @media (max-width:768px){
       .tab-nav{flex-wrap:wrap;justify-content:flex-start}
       .tab-button{flex-grow:1;text-align:center}
@@ -62,24 +62,23 @@
     <main class="panels-wrapper">
       <div class="panel large">
         <div class="tab-nav">
-          <button type="button" class="tab-button active" data-tab="profile"><i class="fas fa-user-plus" aria-hidden="true"></i> Create Profile</button>
-          <button type="button" class="tab-button" data-tab="search"><i class="fas fa-search" aria-hidden="true"></i> Individual Search</button>
-          <button type="button" class="tab-button" data-tab="team-builder"><i class="fas fa-users" aria-hidden="true"></i> Team Builder</button>
-          <button type="button" class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy" aria-hidden="true"></i> Leaderboard</button>
+          <button type="button" class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
+          <button type="button" class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
+          <button type="button" class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
+          <button type="button" class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
         </div>
 
         <!-- Profile -->
         <div id="profile" class="tab-content-pane active-tab-pane">
           <section id="matchmaking-section">
             <h2 class="section-title">Create Your Profile</h2>
-
             <form id="skills-form">
               <div class="input-container">
                 <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name" autocomplete="given-name">
                 <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name" autocomplete="family-name">
                 <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email" autocomplete="email">
 
-                <label for="skills-input">Professional Skills (comma separated)</label>
+                <label for="skills-input">Professional Skills</label>
                 <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
                 <div id="skills-proficiency-container"></div>
                 <div id="autocomplete-skills-input" class="autocomplete-box"></div>
@@ -100,47 +99,43 @@
 
                 <button type="submit">Register & Subscribe</button>
               </div>
-
               <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
               <div id="profile-progress-msg" class="profile-incomplete"></div>
             </form>
-
             <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
           </section>
         </div>
 
-        <!-- Individual Search -->
+        <!-- Search -->
         <div id="search" class="tab-content-pane">
           <h2 class="section-title">Individual Search</h2>
           <div class="input-container">
             <label for="teamSkillsInput">Required Skills</label>
-            <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
+            <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
             <div id="autocomplete-team-skills" class="autocomplete-box"></div>
             <button id="find-team-btn" type="button">Get People</button><br><br>
-
-            <label for="nameInput">Search by First/Last Name</label>
+            <label for="nameInput">Search by Name</label>
             <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
             <button id="search-name-btn" type="button">Find by Name</button>
           </div>
-
           <div id="matchNotification" class="notification match-notification" style="display:none;"></div>
           <div id="noResults" class="notification no-results-notification" style="display:none;"></div>
-          <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+          <div id="cardContainer" class="card-container" role="list"></div>
         </div>
 
         <!-- Team Builder -->
         <div id="team-builder" class="tab-content-pane">
           <h2 class="section-title">Team Builder</h2>
           <div class="input-container">
-            <p class="instructions">Let’s build your team. Enter required skills and number of people needed.</p>
+            <p class="instructions">Enter required skills and team size.</p>
             <label for="team-skills-input">Required Skills</label>
-            <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
+            <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java" autocomplete="off"/>
             <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
             <label for="teamSize">Team Size</label>
-            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size" autocomplete="off"/>
+            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" autocomplete="off"/>
             <button onclick="buildBestTeam()">Build Team</button>
           </div>
-          <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+          <div id="bestTeamContainer" class="card-container" role="list"></div>
         </div>
 
         <!-- Leaderboard -->
@@ -150,7 +145,6 @@
             <div id="leaderboard-rows"></div>
           </div>
         </div>
-
       </div>
     </main>
   </div>
@@ -178,7 +172,7 @@
     });
   </script>
 
-  <!-- Endorsement Modal (hidden by default) -->
+  <!-- Endorsement Modal -->
   <div id="endorseSkillModal" class="modal hidden">
     <div class="modal-content">
       <span class="close-button">&times;</span>
@@ -187,7 +181,15 @@
     </div>
   </div>
 
-  <!-- Tiny tab controller -->
+  <!-- Docs Modal -->
+  <div id="docsModal" class="docs-modal hidden">
+    <div class="docs-modal-content">
+      <span class="docs-close-btn" aria-label="Close">&times;</span>
+      <iframe id="docsFrame" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- Tabs Controller -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       function showTab(id) {
@@ -201,11 +203,11 @@
       document.querySelectorAll('.tab-button').forEach(b => {
         b.addEventListener('click', () => showTab(b.dataset.tab));
       });
-      showTab('profile'); // default tab
+      showTab('profile');
     });
   </script>
 
-  <!-- App entrypoint: modules live in /assets/js/ -->
+  <!-- Entrypoint -->
   <script type="module" src="./assets/js/main.js"></script>
 </body>
 </html>
