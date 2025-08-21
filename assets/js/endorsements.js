@@ -1,39 +1,61 @@
-// endorsements.js
+// /assets/js/endorsements.js
 import { supabaseClient } from './supabaseClient.js';
 import { showNotification } from './utils.js';
 import { loadLeaderboard } from './leaderboard.js';
-import { generateUserCardHTML } from './utils.js';
 import { DOMElements, appState } from './globals.js';
 
-export async function handleEndorsementSelection(emailToEndorse, skillToEndorse) {
+/**
+ * Endorse a user for a specific skill
+ * @param {string} endorsedUserId - community.id of the user being endorsed
+ * @param {string} skillToEndorse - the skill name
+ */
+export async function handleEndorsementSelection(endorsedUserId, skillToEndorse) {
   DOMElements.endorseModal.style.display = 'none';
+
   try {
-    const { data, error } = await supabaseClient
-      .from('skills')
-      .select('endorsements')
-      .eq('email', emailToEndorse)
-      .single();
-
-    if (error || !data) throw new Error("User not found or database error.");
-
-    let endorsements = {};
-    try {
-      endorsements = data.endorsements ? JSON.parse(data.endorsements) : {};
-    } catch {
-      endorsements = {};
+    // Make sure we have the current logged in user
+    const currentUser = appState.session?.user;
+    if (!currentUser) {
+      showNotification("You must be signed in to endorse skills.", "error");
+      return;
     }
 
-    endorsements[skillToEndorse] = (endorsements[skillToEndorse] || 0) + 1;
+    // Look up this user's community row
+    const { data: endorserCommunity, error: endorserError } = await supabaseClient
+      .from('community')
+      .select('id')
+      .eq('user_id', currentUser.id)
+      .single();
 
-    const { error: updateError } = await supabaseClient
-      .from('skills')
-      .update({ endorsements: JSON.stringify(endorsements) })
-      .eq('email', emailToEndorse);
-    if (updateError) throw updateError;
+    if (endorserError || !endorserCommunity) {
+      throw new Error("Could not resolve your community profile. Please complete your profile first.");
+    }
 
-    showNotification(\`Skill "\${skillToEndorse}" endorsed successfully!\`, "success");
-    loadLeaderboard();
+    const endorsedByUserId = endorserCommunity.id;
+
+    // Insert a new endorsement row
+    const { error: insertError } = await supabaseClient
+      .from('endorsements')
+      .insert([{
+        endorsed_user_id: endorsedUserId,
+        endorsed_by_user_id: endorsedByUserId,
+        skill: skillToEndorse
+      }]);
+
+    if (insertError) {
+      if (insertError.code === "23505") { 
+        // unique violation
+        showNotification(`You have already endorsed this user for "${skillToEndorse}".`, "warning");
+      } else {
+        throw insertError;
+      }
+    } else {
+      showNotification(`Skill "${skillToEndorse}" endorsed successfully!`, "success");
+      loadLeaderboard();
+    }
+
   } catch (error) {
-    showNotification(\`Failed to endorse: \${error.message}\`, 'error');
+    console.error("[Dex] endorsement error", error);
+    showNotification(`Failed to endorse: ${error.message}`, "error");
   }
 }
