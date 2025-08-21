@@ -2,92 +2,51 @@
 import { supabaseClient } from './supabaseClient.js';
 import { showNotification } from './utils.js';
 import { loadLeaderboard } from './leaderboard.js';
-import { attachEndorseButtons } from './endorsements.js';
-import { DOMElements } from './globals.js';
+import { DOMElements, appState } from './globals.js';
 
-/**
- * Attach click handlers to all endorsement (+) buttons on user cards.
- * Must be re-run after cards are rendered.
- */
-export function attachEndorseButtons() {
-  document.querySelectorAll('.endorse-btn').forEach(btn => {
-    btn.removeEventListener('click', handleClick); // prevent duplicate binding
-    btn.addEventListener('click', handleClick);
-  });
-}
+export async function handleEndorsementSelection(emailToEndorse, skillToEndorse) {
+  DOMElements.endorseModal.style.display = 'none';
 
-/**
- * Handle endorsement button click → open modal and populate.
- */
-function handleClick(e) {
-  const btn = e.currentTarget;
-  const endorseeId = btn.getAttribute('data-user-id');
-  const skill = btn.getAttribute('data-skill');
-
-  const modal = document.getElementById('endorseSkillModal');
-  const list = document.getElementById('endorse-skill-list');
-
-  // Fill modal with the one skill being endorsed
-  list.innerHTML = `
-    <div class="skill-endorse-item">
-      <span>${skill}</span>
-      <button class="endorse-specific-skill-btn" 
-              data-user-id="${endorseeId}" 
-              data-skill="${skill}">
-        Confirm Endorse
-      </button>
-    </div>
-  `;
-
-  modal.style.display = 'block';
-
-  // Close button
-  modal.querySelector('.close-button').onclick = () => {
-    modal.style.display = 'none';
-  };
-
-  // Confirm endorsement
-  list.querySelector('.endorse-specific-skill-btn').onclick = async () => {
-    await handleEndorsementSelection(endorseeId, skill);
-    modal.style.display = 'none';
-  };
-}
-
-/**
- * Insert/update endorsement count in normalized endorsements table.
- */
-export async function handleEndorsementSelection(endorseeId, skill) {
   try {
-    // Check if record exists
-    const { data, error } = await supabaseClient
+    // 1. Look up the user being endorsed
+    const { data: userRow, error: userError } = await supabaseClient
+      .from('community')
+      .select('id')
+      .eq('email', emailToEndorse)
+      .single();
+
+    if (userError || !userRow) throw new Error("User not found.");
+
+    const endorsedUserId = userRow.id;
+
+    // 2. The endorser is the logged-in user
+    const endorsedByUserId = appState?.session?.user?.id;
+
+    if (!endorsedByUserId) throw new Error("You must be signed in to endorse.");
+
+    // 3. Insert or update the endorsement
+    const { error: upsertError } = await supabaseClient
       .from('endorsements')
-      .select('count')
-      .eq('endorsee_id', endorseeId)
-      .eq('skill', skill)
-      .maybeSingle();
+      .upsert(
+        {
+          endorsed_user_id: endorsedUserId,
+          endorsed_by_user_id: endorsedByUserId,
+          skill: skillToEndorse,
+          count: 1
+        },
+        {
+          onConflict: 'endorsed_user_id, endorsed_by_user_id, skill'
+        }
+      );
 
-    if (error) throw error;
+    if (upsertError) throw upsertError;
 
-    if (data) {
-      // Update existing endorsement count
-      await supabaseClient
-        .from('endorsements')
-        .update({ count: data.count + 1 })
-        .eq('endorsee_id', endorseeId)
-        .eq('skill', skill);
-    } else {
-      // Insert new row
-      await supabaseClient
-        .from('endorsements')
-        .insert({ endorsee_id: endorseeId, skill, count: 1 });
-    }
+    showNotification(`Skill "${skillToEndorse}" endorsed successfully!`, "success");
 
-    showNotification(`Endorsed ${skill}!`, 'success');
-
-    // Refresh leaderboard
+    // 4. Refresh leaderboard
     loadLeaderboard();
-  } catch (err) {
-    console.error('[Dex] Endorsement failed', err);
-    showNotification('Endorsement failed.', 'error');
+  } catch (error) {
+    console.error(error);
+    showNotification(`Failed to endorse: ${error.message}`, 'error');
   }
 }
