@@ -37,7 +37,7 @@
   </style>
 </head>
 
-<!-- Google tag (gtag.js) -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -58,6 +58,7 @@
 
     <main class="panels-wrapper">
       <div class="panel large">
+        <!-- Navigation Tabs -->
         <div class="tab-nav">
           <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
           <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
@@ -70,86 +71,69 @@
           <section id="matchmaking-section">
             <h2 class="section-title">Create Your Profile</h2>
 
-            <form id="skills-form" method="POST">
+            <form id="skills-form">
               <div class="input-container">
-                <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name" autocomplete="given-name">
-                <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name" autocomplete="family-name">
-                <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email" autocomplete="email">
+                <input type="text" id="first-name" placeholder="First Name" required autocomplete="given-name">
+                <input type="text" id="last-name" placeholder="Last Name" required autocomplete="family-name">
+                <input type="email" id="email" placeholder="Email" required autocomplete="email">
 
                 <label for="skills-input">Professional Skills (comma separated)</label>
-                <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
-                <div id="skills-proficiency-container"></div>
-                <div id="autocomplete-skills-input" class="autocomplete-box"></div>
+                <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off">
 
                 <label for="photo-input">Upload Your Photo</label>
-                <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
+                <input type="file" id="photo-input" accept="image/*" required>
                 <img id="preview" src="#" alt="Image Preview" class="image-preview" />
 
                 <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
-                <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
+                <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120">
 
                 <label for="availability-input">Current Availability</label>
-                <select id="availability-input" aria-label="Current Availability">
+                <select id="availability-input">
                   <option value="Available">Available</option>
                   <option value="Busy">Busy</option>
                   <option value="Not Looking">Not Looking</option>
                 </select>
 
-                <label>
-                  <input type="checkbox" id="newsletter-opt-in" />
-                  Subscribe to CharlestonHacks Newsletter
-                </label>
+                <label><input type="checkbox" id="newsletter-opt-in" /> Subscribe to CharlestonHacks Newsletter</label>
 
-                <button type="submit">Register & Subscribe</button>
+                <button type="submit">Register & Save</button>
               </div>
 
               <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
               <div id="profile-progress-msg" class="profile-incomplete"></div>
             </form>
 
-            <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
-
-            <!-- Test Docs Modal button -->
-            <div class="docs-test">
-              <button class="tab-button" data-docs-url="https://example.com/docs/sample.pdf">
-                <i class="fas fa-book-open"></i> View Docs (Test)
-              </button>
-            </div>
+            <p id="success-message" class="success-message" role="status" style="display:none;">Profile saved successfully!</p>
           </section>
         </div>
 
-        <!-- Individual Search -->
+        <!-- Search -->
         <div id="search" class="tab-content-pane">
           <h2 class="section-title">Individual Search</h2>
           <div class="input-container">
             <label for="teamSkillsInput">Required Skills</label>
-            <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
-            <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+            <input type="text" id="teamSkillsInput" placeholder="e.g. aws, java, python" autocomplete="off">
             <button id="find-team-btn" type="button">Get People</button><br><br>
 
             <label for="nameInput">Search by First/Last Name</label>
             <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
             <button id="search-name-btn" type="button">Find by Name</button>
           </div>
-
           <div id="matchNotification" class="notification match-notification" style="display:none;"></div>
           <div id="noResults" class="notification no-results-notification" style="display:none;"></div>
-          <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+          <div id="cardContainer" class="card-container" role="list"></div>
         </div>
 
         <!-- Team Builder -->
         <div id="team-builder" class="tab-content-pane">
           <h2 class="section-title">Team Builder</h2>
           <div class="input-container">
-            <p class="instructions">Let’s build your team. Enter required skills and number of people needed.</p>
-            <label for="team-skills-input">Required Skills</label>
-            <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
-            <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
-            <label for="teamSize">Team Size</label>
-            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
+            <p class="instructions">Enter required skills and team size:</p>
+            <input type="text" id="team-skills-input" placeholder="e.g. fullstack, design" autocomplete="off"/>
+            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6"/>
             <button onclick="buildBestTeam()">Build Team</button>
           </div>
-          <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+          <div class="card-container" id="bestTeamContainer"></div>
         </div>
 
         <!-- Leaderboard -->
@@ -159,37 +143,9 @@
             <div id="leaderboard-rows"></div>
           </div>
         </div>
-
       </div>
     </main>
   </div>
-
-  <!-- Formspree + Mailchimp -->
-  <script>
-    document.getElementById("skills-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const fname = document.getElementById("first-name").value;
-      const lname = document.getElementById("last-name").value;
-      const email = document.getElementById("email").value;
-      const newsletterOptIn = document.getElementById("newsletter-opt-in").checked;
-
-      // Formspree fallback
-      fetch(this.action, { method: this.method, body: new FormData(this), headers: { "Accept": "application/json" } })
-        .then(r => { if (r.ok) document.getElementById("success-message").style.display = "block"; })
-        .catch(err => console.error("Formspree error:", err));
-
-      // Mailchimp only if opted in
-      if (newsletterOptIn) {
-        const m = document.createElement("form");
-        m.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
-        m.method = "POST"; m.target = "_blank";
-        m.innerHTML = `<input type="hidden" name="FNAME" value="${fname}">
-                       <input type="hidden" name="LNAME" value="${lname}">
-                       <input type="hidden" name="EMAIL" value="${email}">`;
-        document.body.appendChild(m); m.submit(); document.body.removeChild(m);
-      }
-    });
-  </script>
 
   <!-- Docs Modal -->
   <div id="docsModal" class="docs-modal hidden">
@@ -199,8 +155,9 @@
     </div>
   </div>
 
-  <!-- App entrypoints -->
+  <!-- Entrypoints -->
   <script type="module" src="./assets/js/main.js"></script>
+  <script type="module" src="./assets/js/profile.js"></script>
   <script type="module" src="./assets/js/docsModal.js"></script>
 </body>
 </html>
