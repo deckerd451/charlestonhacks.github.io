@@ -1,51 +1,65 @@
-// src/cardRenderer.js
+// cardRenderer.js
+import { supabaseClient } from './supabaseClient.js';
+import { handleEndorsementSelection } from './endorsements.js';
+import { appState } from './globals.js';
 
-import { DOMElements, appState, showNotification } from './globals.js';
+export async function generateUserCardHTML(user) {
+  // Get endorsements for this user
+  const { data: endorsements, error } = await supabaseClient
+    .from('endorsements')
+    .select('skill')
+    .eq('endorsee_id', user.id);
 
-export function generateUserCardHTML(user) {
-  const cleanAvailability = (value) => {
-    if (value === null || value === undefined) return 'Unavailable';
-    if (typeof value !== 'string') return 'Unavailable';
-    const trimmed = value.trim();
-    if (trimmed === '' || trimmed.toLowerCase() === 'null') return 'Unavailable';
-    return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
-  };
-
-  const skillBadges = user.skills.split(',').map(skill => {
-    const match = skill.match(/(.*?)\((.*?)\)/);
-    const label = match ? match[1] : skill;
-    const prof = match ? match[2] : "Intermediate";
-    return `<span class="skill-tag">${label} <span style="font-size:0.8em;opacity:.7;">[${prof}]</span></span>`;
-  }).join(' ');
-
-  let endorsements = {};
-  try {
-    endorsements = user.endorsements ? JSON.parse(user.endorsements) : {};
-  } catch (e) {
-    console.warn(`Error parsing endorsements for user ${user.email}:`, e);
-    endorsements = {};
+  if (error) {
+    console.error('[CardRenderer] Failed to fetch endorsements', error);
   }
 
-  const endorsementDisplay = Object.keys(endorsements).length ?
-    Object.entries(endorsements).map(([skill, count]) =>
-      `<span style="color:var(--primary-color);">${skill}: <span class="endorsements">${count} <i class="fa fa-thumbs-up" aria-hidden="true"></i></span>`
-    ).join(' | ') :
-    '<span style="color:#888;">No endorsements yet</span>';
+  // Count endorsements per skill
+  const skillCounts = {};
+  if (endorsements) {
+    endorsements.forEach(e => {
+      skillCounts[e.skill] = (skillCounts[e.skill] || 0) + 1;
+    });
+  }
 
-  const isCurrentUser = user.email === appState.currentUserEmail;
+  // Build skills section
+  const skillsHTML = (user.skills || [])
+    .map(skill => {
+      const count = skillCounts[skill] || 0;
+      return `
+        <div class="skill-chip">
+          <span>${skill}</span>
+          <span class="endorsement-count">(${count})</span>
+          <button 
+            class="endorse-btn" 
+            data-user-id="${user.id}" 
+            data-skill="${skill}"
+          >
+            + Endorse
+          </button>
+        </div>
+      `;
+    })
+    .join('');
 
   return `
-    <div class="team-member-card" role="listitem">
-      ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name} ${user.last_name}" loading="lazy" />` : ''}
-      <div class="member-name">${user.first_name} ${user.last_name}</div>
-      <div class="member-email" style="color:##FFC107; font-size:0.9em; margin:3px 0;">${user.email}</div>
-      ${user.Bio ? `<div style="color:var(--primary-color);font-size:.96em;margin:3px 0;">${user.Bio}</div>` : ''}
-      <div class="user-status">Status: ${cleanAvailability(user.Availability)}</div>
-      <div class="profile-section skill-tags">${skillBadges}</div>
-      <div class="profile-section">${endorsementDisplay}</div>
-      <button class="endorse-btn" data-email="${user.email}" ${isCurrentUser ? 'disabled' : ''} aria-label="Endorse ${user.first_name} ${user.last_name}">
-        + Endorse
-      </button>
+    <div class="user-card">
+      <img src="${user.image_url || 'images/default-avatar.png'}" alt="${user.name}" class="user-avatar">
+      <h3>${user.name}</h3>
+      <p>${user.bio || ''}</p>
+      <div class="skills-list">${skillsHTML}</div>
+      <p class="availability">${user.availability || 'Unknown'}</p>
     </div>
   `;
+}
+
+// Attach endorse button behavior after cards render
+export function attachEndorseButtons() {
+  document.querySelectorAll('.endorse-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const skill = e.target.dataset.skill;
+      const userId = e.target.dataset.userId;
+      handleEndorsementSelection(userId, skill);
+    });
+  });
 }
