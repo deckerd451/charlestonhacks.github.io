@@ -59,38 +59,35 @@
 
     <main class="panels-wrapper">
       <div class="panel large">
+
+        <!-- Tabs -->
         <div class="tab-nav">
           <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
           <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
           <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
           <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
         </div>
-        <!-- 🔹 Magic Link Login Section -->
-<div id="login-section">
-  <h3>Log in with your email</h3>
-  <form id="login-form">
-    <input type="email" id="login-email" placeholder="Enter your email" required autocomplete="email" />
-    <button type="submit">Send Magic Link</button>
-  </form>
-  <p id="login-message" style="display:none; color: var(--primary-color);"></p>
-</div>
 
-<!-- 🔹 Profile Creation Form (unchanged, but below login) -->
-<form id="skills-form" style="margin-top:20px; display:none;">
-  <!-- existing profile fields -->
-</form>
-
-
-        <!-- Profile -->
+        <!-- 🔹 Profile (Magic Link + Form) -->
         <div id="profile" class="tab-content-pane active-tab-pane">
           <section id="matchmaking-section">
             <h2 class="section-title">Create Your Profile</h2>
 
-            <form id="skills-form">
+            <!-- Login first -->
+            <div id="login-section">
+              <h3>Sign in to continue</h3>
+              <form id="login-form">
+                <input type="email" id="login-email" placeholder="Enter your email" required autocomplete="email" />
+                <button type="submit">Send Magic Link</button>
+              </form>
+              <p id="login-message" style="display:none;"></p>
+            </div>
+
+            <!-- Profile Form (shown after login) -->
+            <form id="skills-form" style="display:none; margin-top:20px;">
               <div class="input-container">
                 <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name" autocomplete="given-name">
                 <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name" autocomplete="family-name">
-                <input type="email" id="email" placeholder="Email" required aria-label="Email" autocomplete="email">
 
                 <label for="skills-input">Professional Skills (comma separated)</label>
                 <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off">
@@ -113,7 +110,7 @@
                   <input type="checkbox" id="newsletter-opt-in" /> Subscribe to CharlestonHacks Newsletter
                 </label>
 
-                <button type="submit">Register</button>
+                <button type="submit">Save Profile</button>
               </div>
               <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
               <div id="profile-progress-msg" class="profile-incomplete"></div>
@@ -145,7 +142,7 @@
         <div id="team-builder" class="tab-content-pane">
           <h2 class="section-title">Team Builder</h2>
           <div class="input-container">
-            <p class="instructions">Let’s build your team. Enter required skills and number of people needed.</p>
+            <p class="instructions">Enter required skills and team size.</p>
             <label for="team-skills-input">Required Skills</label>
             <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off"/>
             <label for="teamSize">Team Size</label>
@@ -180,7 +177,5 @@
   <script type="module" src="./assets/js/profile.js"></script>
   <script type="module" src="./assets/js/docsModal.js"></script>
   <script type="module" src="./assets/js/login.js"></script>
-
-
 </body>
 </html>
