@@ -1,40 +1,67 @@
-// leaderboard.js
-import { supabaseClient } from './supabaseClient.js';
-import { DOMElements } from './globals.js';
+// assets/js/leaderboard.js
+import { supabaseClient as supabase } from './supabaseClient.js';
 
 export async function loadLeaderboard() {
   try {
-    // 1. Aggregate skills + total counts
-    const { data, error } = await supabaseClient
-      .from('endorsements')
-      .select('skill, count');
+    const leaderboardContainer = document.getElementById("leaderboard-rows");
+    if (!leaderboardContainer) {
+      console.warn("[Leaderboard] No container found in DOM.");
+      return;
+    }
 
-    if (error) throw error;
+    // 🔎 Get endorsements from normalized table
+    const { data, error } = await supabase
+      .from("endorsements")
+      .select("skill, endorsement_count")
+      .order("endorsement_count", { ascending: false })
+      .limit(50);
 
-    // 2. Sum counts per skill
-    const skillCounts = {};
+    if (error) {
+      console.error("[Leaderboard] Supabase error:", error.message);
+      leaderboardContainer.innerHTML =
+        `<p class="error">Error loading leaderboard.</p>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      leaderboardContainer.innerHTML =
+        `<p class="empty">No endorsements yet. Be the first to endorse!</p>`;
+      return;
+    }
+
+    // 📊 Group by skill
+    const skillMap = {};
     data.forEach(row => {
-      skillCounts[row.skill] = (skillCounts[row.skill] || 0) + (row.count || 1);
+      if (!row.skill) return;
+      if (!skillMap[row.skill]) skillMap[row.skill] = 0;
+      skillMap[row.skill] += row.endorsement_count || 0;
     });
 
-    // 3. Sort by total count
-    const sortedSkills = Object.entries(skillCounts).sort(([, a], [, b]) => b - a);
+    // Sort by count (desc)
+    const sorted = Object.entries(skillMap).sort((a, b) => b[1] - a[1]);
 
-    // 4. Render leaderboard
-    DOMElements.leaderboardRows.innerHTML = '';
-    sortedSkills.forEach(([skill, total], index) => {
-      const row = document.createElement('div');
-      row.className = 'leaderboard-row';
-      row.innerHTML = `
-        <span class="leaderboard-rank">${index + 1}.</span>
-        <span class="leaderboard-skill">${skill}</span>
-        <span class="leaderboard-count">${total}</span>
-      `;
-      DOMElements.leaderboardRows.appendChild(row);
-    });
+    // 🏆 Render top skills
+    leaderboardContainer.innerHTML = sorted
+      .map(([skill, count], idx) => `
+        <div class="leaderboard-row">
+          <span class="rank">#${idx + 1}</span>
+          <span class="skill">${skill}</span>
+          <span class="count">${count}</span>
+        </div>
+      `)
+      .join("");
 
   } catch (err) {
-    console.error('[Leaderboard error]', err);
-    DOMElements.leaderboardRows.innerHTML = '<p>Failed to load leaderboard.</p>';
+    console.error("[Leaderboard error]", err);
+    const leaderboardContainer = document.getElementById("leaderboard-rows");
+    if (leaderboardContainer) {
+      leaderboardContainer.innerHTML =
+        `<p class="error">Unexpected error loading leaderboard.</p>`;
+    }
   }
 }
+
+// Ensure leaderboard loads only when DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  loadLeaderboard();
+});
