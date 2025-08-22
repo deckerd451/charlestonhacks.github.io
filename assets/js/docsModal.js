@@ -1,44 +1,45 @@
-// /assets/js/docsModal.js
-// Handles the Docs Modal separately from the endorsement modal
+// docsModal.js
 
 export function initDocsModal() {
-  const docsModal = document.getElementById("docsModal");
-  const docsFrame = document.getElementById("docsFrame");
-  const docsCloseBtn = document.querySelector(".docs-close-btn");
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("docsModal");
+    const iframe = modal?.querySelector("iframe");
+    const closeBtn = modal?.querySelector(".close-btn");
+    const testButtons = document.querySelectorAll("[data-docs-url]");
 
-  if (!docsModal || !docsFrame || !docsCloseBtn) {
-    console.warn("[DocsModal] Elements not found in DOM.");
-    return;
-  }
-
-  // --- Open modal ---
-  document.querySelectorAll("[data-docs-url]").forEach(btn => {
-    btn.addEventListener("click", e => {
-      e.preventDefault();
-      const url = btn.getAttribute("data-docs-url");
-      if (!url) return;
-
-      docsFrame.src = url;
-      docsModal.classList.remove("hidden");
-    });
-  });
-
-  // --- Close modal ---
-  docsCloseBtn.addEventListener("click", () => {
-    docsModal.classList.add("hidden");
-    docsFrame.src = ""; // reset iframe
-  });
-
-  // Close if clicking outside content
-  docsModal.addEventListener("click", e => {
-    if (e.target === docsModal) {
-      docsModal.classList.add("hidden");
-      docsFrame.src = "";
+    if (!modal || !iframe || !closeBtn) {
+      console.warn("[DocsModal] Elements not found in DOM.");
+      return;
     }
-  });
 
-  console.log("[DocsModal] Initialized");
+    // Open modal
+    testButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const url = btn.getAttribute("data-docs-url");
+        if (url) {
+          iframe.src = url;
+          modal.classList.remove("hidden");
+        }
+      });
+    });
+
+    // Close modal
+    closeBtn.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      iframe.src = "";
+    });
+
+    // Background click to close
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.add("hidden");
+        iframe.src = "";
+      }
+    });
+
+    console.log("[DocsModal] Initialized");
+  });
 }
 
-// Auto-run when DOM is ready
-document.addEventListener("DOMContentLoaded", initDocsModal);
+// Auto-init when loaded
+initDocsModal();
