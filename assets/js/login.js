@@ -1,41 +1,54 @@
-// /assets/js/login.js
+// assets/js/login.js
 import { supabaseClient as supabase } from './supabaseClient.js';
+import { showNotification } from './globals.js';
+import { initProfileForm } from './profile.js';
 
-const loginForm = document.getElementById('login-form');
-const loginEmailInput = document.getElementById('login-email');
-const loginMessage = document.getElementById('login-message');
-const profileForm = document.getElementById('skills-form');
+export async function initLogin() {
+  const loginSection = document.getElementById('login-section');
+  const loginForm = document.getElementById('login-form');
+  const emailInput = document.getElementById('login-email');
 
-loginForm?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = loginEmailInput.value.trim();
-  loginMessage.style.display = "none";
+  // Handle Magic Link email submission
+  loginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    if (!email) return;
 
-  if (!email) return;
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.href } // redirect back here
+      });
 
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: window.location.origin + '/2card.html' }
+      if (error) throw error;
+
+      showNotification(`Magic link sent to ${email}`, "success");
+    } catch (err) {
+      console.error("Login error:", err);
+      showNotification("Failed to send magic link", "error");
+    }
   });
 
-  if (error) {
-    loginMessage.textContent = "Error: " + error.message;
-    loginMessage.style.color = "red";
-    loginMessage.style.display = "block";
-  } else {
-    loginMessage.textContent = "Magic link sent! Check your email.";
-    loginMessage.style.color = "green";
-    loginMessage.style.display = "block";
-  }
-});
+  // After returning via magic link, Supabase stores session
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN') {
+      console.log("Signed in via Magic Link:", session.user.email);
 
-// 🔹 Check session on load
-(async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    // already logged in → hide login form, show profile form
-    loginForm.style.display = "none";
-    loginMessage.style.display = "none";
-    profileForm.style.display = "block";
+      if (loginSection) loginSection.style.display = 'none';
+      await initProfileForm(); // now show profile form
+    }
+  });
+
+  // Auto-init profile if already logged in
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    console.log("Already logged in:", user.email);
+    if (loginSection) loginSection.style.display = 'none';
+    await initProfileForm();
   }
-})();
+}
+
+// Start login flow on page load
+document.addEventListener('DOMContentLoaded', () => {
+  initLogin();
+});
