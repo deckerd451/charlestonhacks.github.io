@@ -1,77 +1,70 @@
-// /assets/js/profile.js
+// assets/js/profile.js
 import { supabaseClient as supabase } from './supabaseClient.js';
-import { showNotification } from './globals.js';
+import { appState, DOMElements, showNotification } from './globals.js';
 
-const form = document.getElementById('skills-form');
-const successMsg = document.getElementById('success-message');
-const errorMsg = document.getElementById('error-message');
+// Load the session and current user
+async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    console.error("Error fetching current user:", error);
+    return null;
+  }
+  return data.user;
+}
 
-form?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  successMsg.style.display = "none";
-  errorMsg.style.display = "none";
+// Show profile form only after login
+export async function initProfileForm() {
+  const user = await getCurrentUser();
 
-  try {
-    // ✅ Ensure user is logged in with Magic Link
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      showNotification("Please log in with the magic link before creating your profile.", "error");
-      errorMsg.textContent = "You must be logged in.";
-      errorMsg.style.display = "block";
-      return;
-    }
+  if (!user) {
+    console.log("No user logged in yet — waiting for magic link.");
+    return;
+  }
 
-    const user = session.user;
+  // Save user in appState
+  appState.currentUser = user;
+  console.log("Logged in as:", user.email);
 
-    // Collect form values
+  // Hide login, show profile form
+  document.getElementById('login-section').style.display = 'none';
+  document.getElementById('skills-form').style.display = 'block';
+
+  // Pre-fill email
+  document.getElementById('email').value = user.email;
+
+  // Attach form listener
+  const form = document.getElementById('skills-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
     const firstName = document.getElementById('first-name').value.trim();
     const lastName = document.getElementById('last-name').value.trim();
     const email = document.getElementById('email').value.trim();
-    const skills = document.getElementById('skills-input').value.trim();
     const bio = document.getElementById('bio-input').value.trim();
     const availability = document.getElementById('availability-input').value;
-    const newsletter = document.getElementById('newsletter-opt-in').checked;
+    const skills = document.getElementById('skills-input').value
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
 
-    // Handle photo upload if provided
-    const photoFile = document.getElementById('photo-input').files[0];
-    let photoUrl = null;
-    if (photoFile) {
-      const filePath = `profiles/${user.id}/${photoFile.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from('profile-photos')
-        .upload(filePath, photoFile, { upsert: true });
-
-      if (uploadError) throw uploadError;
-
-      const { data: publicUrl } = supabase.storage
-        .from('profile-photos')
-        .getPublicUrl(filePath);
-
-      photoUrl = publicUrl.publicUrl;
-    }
-
-    // Save to community table
-    const { error } = await supabase
-      .from('community')
-      .upsert({
-        id: user.id,
+    try {
+      const { error } = await supabase.from('community').upsert({
+        id: user.id,               // user UUID from Supabase
         name: `${firstName} ${lastName}`,
-        email,
-        skills,
-        bio,
-        availability,
-        image_url: photoUrl,
-        newsletter_opt_in: newsletter
+        email: email,
+        bio: bio,
+        availability: availability,
+        interests: skills,
+        image_url: null // placeholder until we wire photo upload
       });
 
-    if (error) throw error;
+      if (error) throw error;
 
-    successMsg.textContent = "Profile created successfully!";
-    successMsg.style.display = "block";
-    form.reset(); // clear the form
-  } catch (err) {
-    console.error("[Profile] Error:", err.message);
-    errorMsg.textContent = "There was a problem saving your profile.";
-    errorMsg.style.display = "block";
-  }
-});
+      document.getElementById('success-message').style.display = 'block';
+      showNotification("Profile saved successfully!", "success");
+    } catch (err) {
+      console.error("Error saving profile:", err);
+      showNotification("Failed to save profile", "error");
+    }
+  });
+}
