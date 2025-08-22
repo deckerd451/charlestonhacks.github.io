@@ -1,100 +1,78 @@
-// /assets/js/profile.js
-import { supabaseClient as supabase } from './supabaseClient.js';
-import { showNotification } from './globals.js';
+// profile.js
+import { supabaseClient as supabase } from "./supabaseClient.js";
+import { showNotification, isValidEmail } from "./utils.js";
 
-const loginForm = document.getElementById("login-form");
-const loginEmailInput = document.getElementById("login-email");
-const loginMessage = document.getElementById("login-message");
-
-const skillsForm = document.getElementById("skills-form");
-const successMessage = document.getElementById("success-message");
-const errorMessage = document.getElementById("error-message");
-
-// Utility: toggle UI between login and profile form
-function toggleAuthUI(isLoggedIn) {
-  if (isLoggedIn) {
-    document.getElementById("login-section").style.display = "none";
-    skillsForm.style.display = "block";
-  } else {
-    document.getElementById("login-section").style.display = "block";
-    skillsForm.style.display = "none";
+/**
+ * Initialize the profile form logic
+ */
+export function initProfileForm() {
+  const form = document.getElementById("skills-form");
+  if (!form) {
+    console.warn("[Profile] Form not found in DOM.");
+    return;
   }
-}
 
-// ---- Handle Magic Link login ----
-if (loginForm) {
-  loginForm.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const email = loginEmailInput.value.trim();
-    if (!email) return;
 
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${location.origin}/2card.html`
-        }
-      });
-
-      if (error) throw error;
-      loginMessage.style.display = "block";
-      loginMessage.textContent = "Check your email for a sign-in link!";
-    } catch (err) {
-      console.error("[Profile] Login error:", err);
-      loginMessage.style.display = "block";
-      loginMessage.textContent = "Could not send magic link.";
+    const user = (await supabase.auth.getUser()).data.user;
+    if (!user) {
+      showNotification("You must log in via Magic Link before creating a profile.", "error");
+      return;
     }
-  });
-}
 
-// ---- Check auth state on load ----
-supabase.auth.getSession().then(({ data }) => {
-  toggleAuthUI(!!data.session);
-});
-
-supabase.auth.onAuthStateChange((_event, session) => {
-  toggleAuthUI(!!session);
-});
-
-// ---- Handle profile submission ----
-if (skillsForm) {
-  skillsForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    successMessage.style.display = "none";
-    errorMessage.style.display = "none";
-
+    // Collect form fields
     const firstName = document.getElementById("first-name").value.trim();
     const lastName = document.getElementById("last-name").value.trim();
-    const skills = document.getElementById("skills-input").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const skillsInput = document.getElementById("skills-input").value.trim();
     const bio = document.getElementById("bio-input").value.trim();
     const availability = document.getElementById("availability-input").value;
-    const newsletterOptIn = document.getElementById("newsletter-opt-in").checked;
+    const photoFile = document.getElementById("photo-input").files[0];
 
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not logged in");
-
-      // Insert/update profile in Supabase
-      const { error } = await supabase.from("community").upsert({
-        id: user.id,
-        name: `${firstName} ${lastName}`,
-        email: user.email,
-        skills,
-        bio,
-        availability,
-        newsletter: newsletterOptIn,
-        updated_at: new Date().toISOString()
-      });
-
-      if (error) throw error;
-
-      successMessage.style.display = "block";
-      showNotification("Profile saved successfully!", "success");
-    } catch (err) {
-      console.error("[Profile] Save error:", err);
-      errorMessage.style.display = "block";
-      errorMessage.textContent = "Could not save profile.";
-      showNotification("Could not save profile.", "error");
+    if (!isValidEmail(email)) {
+      showNotification("Please provide a valid email address.", "error");
+      return;
     }
+
+    // Upload photo if provided
+    let imageUrl = null;
+    if (photoFile) {
+      const { data, error } = await supabase.storage
+        .from("profile-photos")
+        .upload(`${user.id}/${photoFile.name}`, photoFile, { upsert: true });
+
+      if (error) {
+        showNotification("Photo upload failed: " + error.message, "error");
+        return;
+      }
+      const { data: publicUrl } = supabase.storage.from("profile-photos").getPublicUrl(`${user.id}/${photoFile.name}`);
+      imageUrl = publicUrl.publicUrl;
+    }
+
+    // Insert or update profile in community table
+    const { error: upsertError } = await supabase.from("community").upsert({
+      id: user.id, // use Supabase auth UID
+      user_id: user.id,
+      name: `${firstName} ${lastName}`,
+      email,
+      skills: skillsInput ? skillsInput.split(",").map(s => s.trim()) : [],
+      bio,
+      availability,
+      image_url: imageUrl,
+      newsletter_opt_in: document.getElementById("newsletter-opt-in").checked,
+      newsletter_opt_in_at: new Date().toISOString()
+    });
+
+    if (upsertError) {
+      console.error(upsertError);
+      showNotification("Error saving profile: " + upsertError.message, "error");
+      return;
+    }
+
+    showNotification("Profile saved successfully!", "success");
+    form.reset();
+    const preview = document.getElementById("preview");
+    if (preview) preview.style.display = "none";
   });
 }
