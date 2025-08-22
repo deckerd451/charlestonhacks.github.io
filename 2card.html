@@ -65,6 +65,21 @@
           <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
           <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
         </div>
+        <!-- 🔹 Magic Link Login Section -->
+<div id="login-section">
+  <h3>Log in with your email</h3>
+  <form id="login-form">
+    <input type="email" id="login-email" placeholder="Enter your email" required autocomplete="email" />
+    <button type="submit">Send Magic Link</button>
+  </form>
+  <p id="login-message" style="display:none; color: var(--primary-color);"></p>
+</div>
+
+<!-- 🔹 Profile Creation Form (unchanged, but below login) -->
+<form id="skills-form" style="margin-top:20px; display:none;">
+  <!-- existing profile fields -->
+</form>
+
 
         <!-- Profile -->
         <div id="profile" class="tab-content-pane active-tab-pane">
