@@ -263,67 +263,90 @@ function openEndorseModal(person) {
 }
 
 // 6. Create or update an endorsement record
-async function endorseSkill(endorseeId, skill) {
+async function endorseSkill(endorsedUserId, skill) {
   try {
-    // Check if an endorsement already exists
+    // Get the current logged-in user to use as the endorser
+    const { data: { user: currentUser }, error: userError } =
+      await supabase.auth.getUser();
+    if (!currentUser || userError) {
+      showNotification('You must be logged in to endorse.', 'error');
+      return;
+    }
+    const endorserId = currentUser.id;
+
+    // Check if an endorsement from this endorser already exists
     const { data: existing, error: selectError } = await supabase
-      .from("endorsements")
-      .select("count")
-      .eq("endorsee_id", endorseeId)
-      .eq("skill", skill)
+      .from('endorsements')
+      .select('count')
+      .eq('endorsed_user_id', endorsedUserId)
+      .eq('endorsed_by_user_id', endorserId)
+      .eq('skill', skill)
       .maybeSingle();
 
-    if (selectError && selectError.code && selectError.code !== "PGRST116") {
-      console.warn("[Endorse] select error:", selectError);
+    if (selectError && selectError.code && selectError.code !== 'PGRST116') {
+      console.warn('[Endorse] select error:', selectError);
     }
 
     if (existing) {
+      // Increment the existing count
       const newCount = (existing.count || 0) + 1;
       const { error: updateError } = await supabase
-        .from("endorsements")
+        .from('endorsements')
         .update({ count: newCount })
-        .eq("endorsee_id", endorseeId)
-        .eq("skill", skill);
+        .eq('endorsed_user_id', endorsedUserId)
+        .eq('endorsed_by_user_id', endorserId)
+        .eq('skill', skill);
       if (updateError) throw updateError;
     } else {
+      // Insert a new endorsement record
       const { error: insertError } = await supabase
-        .from("endorsements")
-        .insert({ endorsee_id: endorseeId, skill: skill, count: 1 });
+        .from('endorsements')
+        .insert({
+          endorsed_user_id: endorsedUserId,
+          endorsed_by_user_id: endorserId,
+          skill: skill,
+          count: 1,
+        });
       if (insertError) throw insertError;
     }
 
-    // Fetch updated count and update UI
-    const { data: updated } = await supabase
-      .from("endorsements")
-      .select("count")
-      .eq("endorsee_id", endorseeId)
-      .eq("skill", skill)
-      .single();
+    // Re-fetch all endorsement counts for this skill to calculate the new total
+    const { data: records } = await supabase
+      .from('endorsements')
+      .select('count')
+      .eq('endorsed_user_id', endorsedUserId)
+      .eq('skill', skill);
+    const totalCount = (records || []).reduce(
+      (acc, r) => acc + (r.count || 0),
+      0
+    );
 
-    updateCardCount(endorseeId, skill, updated?.count || 1);
-
-    // Refresh leaderboard
+    // Update UI
+    updateCardCount(endorsedUserId, skill, totalCount);
     await loadLeaderboard();
-    showNotification(`Endorsed ${skill}!`, "success");
+    showNotification(`Endorsed ${skill}!`, 'success');
   } catch (err) {
-    console.error("[Endorse] Error:", err);
-    showNotification("Failed to endorse.", "error");
+    console.error('[Endorse] Error:', err);
+    showNotification('Failed to endorse.', 'error');
   }
 }
 
 // Update endorsement count on all visible cards for a user and skill
-function updateCardCount(endorseeId, skill, newCount) {
+function updateCardCount(endorsedUserId, skill, newCount) {
   document
     .querySelectorAll(
-      `.endorse-btn[data-user-id="${endorseeId}"][data-skill="${skill}"]`
+      `.endorse-btn[data-user-id="${endorsedUserId}"][data-skill="${skill}"]`
     )
     .forEach((btn) => {
-      const countSpan = btn.parentElement.querySelector(".endorsement-count");
+      const countSpan = btn.parentElement.querySelector(
+        '.endorsement-count'
+      );
       if (countSpan) {
         countSpan.textContent = newCount;
       }
     });
 }
+
 
 // 7. Team builder – build a best‑match team
 async function buildBestTeam() {
@@ -423,3 +446,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadLeaderboard();
   initSearch();
 });
+
