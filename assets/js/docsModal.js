@@ -1,8 +1,10 @@
 // docsModal.js
-
 export function initDocsModal() {
   document.addEventListener("DOMContentLoaded", () => {
-    const modal = document.getElementById("docsModal");
+    // support both camelCase and kebab-case IDs
+    const modal =
+      document.getElementById("docsModal") ||
+      document.getElementById("docs-modal");
     const iframe = modal?.querySelector("iframe");
     const closeBtn = modal?.querySelector(".close-btn");
     const testButtons = document.querySelectorAll("[data-docs-url]");
@@ -41,5 +43,5 @@ export function initDocsModal() {
   });
 }
 
-// Auto-init when loaded
+// Auto‑init when loaded
 initDocsModal();
