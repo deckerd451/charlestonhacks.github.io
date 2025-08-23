@@ -1,165 +1,1036 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-  <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
-  <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
-  <meta property="og:image" content="images/reactiveh.png" />
-  <meta property="og:url" content="https://charlestonhacks.com" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <title>CharlestonHacks - Innovation Engine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Innovation Engine - Team Builder</title>
+    <meta name="description" content="Build your perfect team by selecting required skills">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Innovation Engine - Team Builder</title>
+    <meta name="description" content="Build your perfect team by selecting required skills">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Include Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Where the background image is referenced -->
+    <link rel="stylesheet" href="styles.css">
 
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="manifest" href="manifest.json" />
+    <style>
+        /* Reset and General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+       
 
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  <link rel="preconnect" href="https://hvmotpzhliufzomewzfl.supabase.co">
+        body {
+           position: relative;
+        background-color: #121212;
+        color: #ffffff;
+        font-family: 'Inter', Arial, sans-serif; /* Use Inter font */
+        overflow-x: hidden;
+        text-align: center;
+        line-height: 1.6;
+        }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
+        .panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-  <style>
-    .tab-content-pane { display:none; padding:20px 0; }
-    .tab-content-pane.active-tab-pane { display:block; }
-    .tab-nav { display:flex; justify-content:center; margin-bottom:20px; border-bottom:2px solid #333; padding-bottom:5px; gap:10px; }
-    .tab-button, .logout-btn {
-      background:#2a2a3a; color:#eee; border:0; padding:10px 15px; cursor:pointer;
-      font-size:1em; border-radius:5px 5px 0 0; transition:.3s; white-space:nowrap;
-    }
-    .tab-button:hover, .logout-btn:hover { background:#3a3a4a; color:#ffd700; }
-    .tab-button.active { background:#ffd700; color:#222; font-weight:bold; border-bottom:2px solid #ffd700; }
-    .logout-btn { margin-left:auto; border-radius:5px; font-weight:bold; background:#444; }
-    .panel { position:relative; padding-top:0; box-sizing:border-box; }
-    .tab-content-pane .section-title { margin-top:0; }
-    .auth-controls { display:flex; align-items:center; gap:10px; margin-left:auto; }
-    .user-badge { background:#2a2a3a; color:#ffd700; padding:6px 12px; border-radius:5px; font-size:0.9em; font-weight:bold; }
-    .hidden { display:none !important; }
+        .panel img {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
 
-    /* Modal styling */
-    .modal { display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); }
-    .modal-content { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:#2a2a3a; padding:25px; width:80%; max-width:500px; border-radius:8px; }
-    .close-button { position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer; color:#aaa; }
-    .close-button:hover { color:#ffd700; }
-  </style>
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+        }
+
+        .instructions {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .team-member-card {
+            position: relative;
+            width: 150px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .team-member-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-member-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 3px solid #FFD700;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .member-name {
+            margin-top: 8px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .skill-tag {
+            background-color: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+        }
+
+        .match-notification {
+            display: none;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00FF00;
+            border-radius: 8px;
+            color: #00FF00;
+        }
+
+        .match-notification a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #00FF00;
+            color: #121212;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .match-notification a:hover {
+            background-color: #00CC00;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .input-container label {
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+            color: #FFD700;
+        }
+
+        .input-container input {
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #FFD700;
+            background-color: #2c2c2c;
+            color: #ffffff;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .input-container button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #FFD700;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-container button:hover {
+            background-color: #FFC000;
+        }
+
+        .no-results {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid #FF0000;
+            border-radius: 8px;
+            color: #FF0000;
+            display: none;
+        }
+
+        .selected-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .selected-skill {
+            background-color: rgba(255, 215, 0, 0.3);
+            color: #FFD700;
+            padding: 5px 10px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .selected-skill span {
+            margin-right: 5px;
+        }
+
+        .remove-skill {
+            cursor: pointer;
+            color: #FF6B6B;
+            margin-left: 5px;
+        }
+
+        footer {
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #FFD700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #FFC000;
+        }
+
+        @media (max-width: 768px) {
+            .panel {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .instructions {
+                font-size: 1rem;
+            }
+            
+            .team-member-card {
+                width: 120px;
+            }
+            
+            .team-member-card img {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* Focus states for accessibility */
+        input:focus, button:focus, a:focus {
+            outline: 2px solid #00BFFF;
+            outline-offset: 2px;
+        }
+    </style>
+
+
 </head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-<body class="two-card-page">
-  <a href="index.html" title="Back to Home"><i class="fas fa-home home-icon"></i></a>
-  <div id="achievements" class="achievements" aria-live="polite"></div>
+  gtag('config', 'G-6NDKG07DY6');
+</script>
+    
 
-  <div class="container">
-    <header class="header">
-      <h1>Innovation Engine</h1>
-      <p>Connect, Build, and Innovate Together</p>
+<body>
+    <body class="two-card-page">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
+    <div id="main">
+        <article class="post featured">
+            <header class="major">
+                <div class="panel">
 
-      <!-- 🔐 Auth Controls -->
-      <div class="auth-controls">
-        <span id="user-badge" class="user-badge hidden"></span>
-        <button id="logout-btn" class="logout-btn hidden"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                      <!-- Matchmaking Form -->
+    <section id="matchmaking-section">
+         <br>
+        <h1>Create Your Profile</h1>
+
+        <form id="skills-form" >
+          <input type="text" id="first-name" placeholder="First Name" required
+                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
+                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
+                        background-color: #2c2c2c; color: #ffffff;">
+          
+          <input type="text" id="last-name" placeholder="Last Name" required
+                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
+                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
+                        background-color: #2c2c2c; color: #ffffff;">
+          
+          <input type="email" name="_replyto" id="email" placeholder="Email" required
+                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
+                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
+                        background-color: #2c2c2c; color: #ffffff;">
+            
+          <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Professional Skills <br> (Add comma after each skill)</label>
+          <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required
+                 autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
+                                          padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
+                                          margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff;">
+          <div id="autocomplete-skills-input" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; border:1px solid #ccc;"></div>
+          
+          <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Upload Your Photo</label>
+<input type="file" id="photo-input" accept="image/*" required
+       style="width:100%; max-width:250px; margin-bottom:10px;
+              border:2px solid #FFD700; padding:10px; border-radius:5px;
+              background-color: #2c2c2c; color: #ffffff;">
+
+<!-- Image Preview Element -->
+<img id="preview" src="#" alt="Image Preview" style="display: none; max-width: 120px; margin-top: 10px; border-radius: 5px; border: 2px solid #FFD700;" />
+
+<script>
+  const input = document.getElementById('photo-input');
+  const preview = document.getElementById('preview');
+
+  input.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        preview.setAttribute('src', e.target.result);
+        preview.style.display = 'block';
+      };
+
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
+          
+          <br>
+          <button type="submit" style="width: 160px; height: 40px; font-size: 16px;
+                             background-color: #FFD700; color: black; border: none;
+                             border-radius: 5px; cursor: pointer;">
+  Register & Subscribe to Mailing List
+</button>
+      </form>
+
+<p id="success-message" style="display:none; color: green;">Added Successfully!</p>
+<script>
+  document.getElementById("skills-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+  
+      var formData = new FormData(this);
+  
+      fetch("/register", {
+          method: "POST",
+          body: formData
+      }).then(response => response.text())
+        .then(data => {
+            document.getElementById("message").innerText = data;
+        }).catch(error => {
+            document.getElementById("message").innerText = "Error: " + error;
+        });
+  });
+  </script>
+
+<script>
+  const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'; // keep this secure in production!
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+  document.getElementById("skills-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    let form = this;
+
+    // Capture form field values
+    const fname = document.getElementById("first-name").value;
+    const lname = document.getElementById("last-name").value;
+    const email = document.getElementById("email").value;
+
+    // ✅ 1. Submit to Formspree
+    fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),
+      headers: { "Accept": "application/json" }
+    })
+    .then(response => {
+      if (response.ok) {
+        document.getElementById("success-message").style.display = "block";
+        form.reset();
+      } else {
+        alert("Something went wrong with Formspree. Please try again.");
+      }
+    })
+    .catch(error => alert("Error: " + error));
+
+    // ✅ 2. Submit to Mailchimp in a new tab
+    const mailchimpForm = document.createElement("form");
+    mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+    mailchimpForm.method = "POST";
+    mailchimpForm.target = "_blank";
+
+    mailchimpForm.innerHTML = `
+      <input type="hidden" name="FNAME" value="${fname}">
+      <input type="hidden" name="LNAME" value="${lname}">
+      <input type="hidden" name="EMAIL" value="${email}">
+    `;
+
+    document.body.appendChild(mailchimpForm);
+    mailchimpForm.submit();
+    document.body.removeChild(mailchimpForm); // cleanup
+  });
+</script>
+
+    <br>
+    
+
+<div id="user-list" style="margin-top: 20px;">
+    
+    <ul id="skills-entries"></ul>
+</div>
+
+<script>
+    // Helper: Generate combinations of users of size k
+function getCombinations(arr, k) {
+  const results = [];
+  function combine(start, combo) {
+    if (combo.length === k) {
+      results.push([...combo]);
+      return;
+    }
+    for (let i = start; i < arr.length; i++) {
+      combine(i + 1, [...combo, arr[i]]);
+    }
+  }
+  combine(0, []);
+  return results;
+}
+
+
+
+
+  document.addEventListener('DOMContentLoaded', async () => {
+  
+  let dynamicSkills = [];
+
+  async function fetchUniqueSkills() {
+    try {
+      const { data, error } = await supabaseClient.from('skills').select('skills');
+      if (error) throw error;
+
+      dynamicSkills = [...new Set(
+        data.flatMap(item =>
+          item.skills.split(',').map(skill => skill.trim().toLowerCase())
+        )
+      )];
+
+      console.log("Skills fetched:", dynamicSkills);
+    } catch (error) {
+      console.error('Error fetching skills:', error);
+      dynamicSkills = []; // fail-safe fallback
+    }
+  }
+
+  function setupAutocomplete(inputId, boxId) {
+    const input = document.getElementById(inputId);
+    const box = document.getElementById(boxId);
+
+input.addEventListener('input', () => {
+  const userInput = input.value.toLowerCase().trim();
+  const lastWord = userInput.split(',').pop().trim().toLowerCase();  // ✅ extract last typed skill
+
+  box.innerHTML = '';
+
+  if (!lastWord || dynamicSkills.length === 0) {
+    box.style.display = 'none';
+    return;
+  }
+
+  const matches = dynamicSkills
+    .filter(skill => skill.includes(lastWord))  // ✅ filter using only the lastWord
+    .slice(0, 10);
+
+  if (matches.length === 0) {
+    box.style.display = 'none';
+    return;
+  }
+
+  matches.forEach(skill => {
+    const item = document.createElement('div');
+    item.textContent = skill;
+    item.style.padding = '5px';
+    item.style.cursor = 'pointer';
+
+    item.onclick = () => {
+  const parts = input.value.split(',');
+  parts.pop(); // remove partial word
+  parts.push(skill);
+  input.value = parts.map(p => p.trim()).join(', ');
+  box.innerHTML = '';
+  box.style.display = 'none';
+};
+
+    box.appendChild(item);
+  });
+
+  const rect = input.getBoundingClientRect();
+  box.style.left = `${rect.left + window.scrollX}px`;
+  box.style.top = `${rect.bottom + window.scrollY}px`;
+  box.style.width = `${rect.width}px`;
+  box.style.display = 'block';
+});
+
+      
+
+    document.addEventListener('click', (e) => {
+      if (!box.contains(e.target) && e.target !== input) {
+        box.style.display = 'none';
+      }
+    });
+  }
+
+  // Run setup
+  await fetchUniqueSkills();
+  setupAutocomplete('skills-input', 'autocomplete-skills-input');
+  setupAutocomplete('teamSkillsInput', 'autocomplete-team-skills');
+  setupAutocomplete('team-skills-input', 'autocomplete-teams-skills');
+});
+
+
+
+    function getCombinations(arr, k) {
+  const results = [];
+  function combine(start, combo) {
+    if (combo.length === k) {
+      results.push([...combo]);
+      return;
+    }
+    for (let i = start; i < arr.length; i++) {
+      combine(i + 1, [...combo, arr[i]]);
+    }
+  }
+  combine(0, []);
+  return results;
+}
+
+async function buildBestTeam() {
+  const skillInputRaw = document.getElementById('team-skills-input').value;
+  const teamSize = parseInt(document.getElementById('teamSize').value, 10);
+  const container = document.getElementById('bestTeamContainer');
+
+  container.innerHTML = '';
+
+  const skillInput = skillInputRaw
+    .toLowerCase()
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if (skillInput.length === 0 || isNaN(teamSize) || teamSize < 1) {
+    alert('Please enter valid skills and a valid team size.');
+    return;
+  }
+
+  const { data: users, error } = await supabaseClient.from('skills').select('*');
+
+  if (error || !users) {
+    console.error('Error fetching users:', error);
+    container.innerHTML = '<p style="color:white;">Error loading users.</p>';
+    return;
+  }
+
+  // DEBUG: Log all users pulled
+  console.log('Fetched users:', users);
+
+  // Normalize user skills and match
+  const matchedUsers = users
+    .map(user => {
+      if (!user.skills) return null;
+
+      const userSkills = user.skills
+        .toLowerCase()
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const matchingSkills = skillInput.filter(skill =>
+        userSkills.some(userSkill =>
+          userSkill.includes(skill) || skill.includes(userSkill)  // fuzzy-ish
+        )
+      );
+
+      if (matchingSkills.length === 0) return null;
+
+      return {
+        ...user,
+        matchingSkills,
+        matchCount: matchingSkills.length
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.matchCount - a.matchCount)
+    .slice(0, teamSize);
+
+  if (matchedUsers.length === 0) {
+    container.innerHTML = '<p style="color:white;">No matching team members found.</p>';
+    return;
+  }
+
+  // Render team cards
+  matchedUsers.forEach(user => {
+    const allSkills = user.skills
+      .split(',')
+      .map(skill => `<span class="skill-tag">${skill.trim()}</span>`)
+      .join(' ');
+
+    container.innerHTML += `
+      <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:15px;">
+        ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
+        <div class="member-name">${user.first_name} ${user.last_name}</div>
+        <div class="member-email" style="margin-top:5px;">
+          <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none;">${user.email}</a>
+        </div>
+        <div class="skill-tags" style="margin-top:5px;">
+          <strong>Skills:</strong> ${allSkills}
+        </div>
+        <div class="matching-skills" style="margin-top:5px;">
+          <strong>Matching:</strong> ${user.matchingSkills.join(', ')}
+        </div>
       </div>
-    </header>
+    `;
+  });
 
-    <main class="panels-wrapper">
-      <div class="panel large">
+  console.log('✅ Matching users displayed:', matchedUsers);
+}
 
-        <!-- 🔄 Tabs -->
-        <div class="tab-nav">
-          <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
-          <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
-          <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
-          <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
+// Make function globally available
+window.buildBestTeam = buildBestTeam;
+
+       
+        // Handle registration form submission
+        document.getElementById('skills-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+    
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const email = document.getElementById('email').value;
+            const skillsInputField = document.getElementById('skills-input');
+            skillsInputField.value = skillsInputField.value.replace(/,\s*$/, '');
+                        
+            const rawSkills = skillsInputField.value;
+            const skillsText = rawSkills
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+    .join(',')
+    .replace(/,+$/, '');
+            const photoInput = document.getElementById('photo-input').files[0];
+    
+            if (!photoInput) {
+                alert('Please select an image.');
+                return;
+            }
+    
+            const fileExt = photoInput.name.split('.').pop();
+            const fileName = `${Date.now()}.${fileExt}`;
+    
+            // Correct bucket name
+            const { error: uploadError } = await supabaseClient.storage
+                .from('hacksbucket')
+                .upload(fileName, photoInput);
+    
+            if (uploadError) {
+                alert('Upload error: ' + uploadError.message);
+                return;
+            }
+    
+            // Correct URL referencing the proper bucket (hacksbucket)
+            const imageUrl = `${supabaseUrl}/storage/v1/object/public/hacksbucket/${fileName}`;
+            console.log("Skills to be saved:", `"${skillsText}"`);
+            const { error } = await supabaseClient.from('skills').insert({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                skills: skillsText,
+                image_url: imageUrl
+            });
+    
+            if (error) {
+                alert('Error inserting data: ' + error.message);
+            } else {
+                alert('Registration successful!');
+                
+                document.getElementById('skills-form').reset();
+            }
+        });
+    
+        // Skill search input handler
+        document.getElementById('skills-input').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                findMatchingUsers();
+            }
+        });
+    
+        async function searchUserByName() {
+    const nameInput = document.getElementById('nameInput').value.trim().toLowerCase();
+    const noResults = document.getElementById('noResults');
+    const cardContainer = document.getElementById('cardContainer');
+    const matchNotification = document.getElementById('matchNotification');
+
+    // Reset display
+    cardContainer.innerHTML = '';
+    noResults.style.display = 'none';
+    matchNotification.style.display = 'none';
+
+    if (!nameInput) {
+        alert('Please enter a name.');
+        return;
+    }
+
+    const { data, error } = await supabaseClient.from('skills').select('*');
+
+    if (error) {
+        noResults.style.display = 'block';
+        noResults.innerText = 'Error fetching user data.';
+        return;
+    }
+
+    // Filter based on first_name or last_name (case-insensitive)
+    const matchedUsers = data.filter(user => {
+        const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
+        return fullName.includes(nameInput) ||
+               (user.first_name && user.first_name.toLowerCase().includes(nameInput)) ||
+               (user.last_name && user.last_name.toLowerCase().includes(nameInput));
+    });
+
+    if (matchedUsers.length === 0) {
+        noResults.style.display = 'block';
+        noResults.innerText = 'No matching users found.';
+        return;
+    }
+
+    matchNotification.style.display = 'block';
+    //matchNotification.innerText = `${matchedUsers.length} user(s) found`;
+
+    // Render result cards in styled format
+    cardContainer.innerHTML = matchedUsers.map(user => `
+        <div class="team-member-card" style="
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            
+            
+        ">
+            ${user.image_url ? `
+                <img src="${user.image_url}" alt="${user.first_name}" style="
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 8px;
+                    object-fit: cover;
+                    margin-bottom: 8px;
+                "/>` : ''}
+
+            <div class="member-name" style="margin-bottom: 5px; font-weight: bold;">
+                ${user.first_name} ${user.last_name}
+            </div>
+
+            <div class="member-email" style="margin: 5px 0;">
+                <a href="mailto:${user.email}" style="color:#FFD700; text-decoration: none; word-break: break-word;">
+                    ${user.email}
+                </a>
+            </div>
+
+            <div class="skill-tags" style="font-size: 14px;">
+                <strong>Skills:</strong> 
+                ${user.skills?.split(',').map(skill => `<span class="skill-tag" style="
+                    display: inline-block;
+                    background: #FFD700;
+                    color: black;
+                    padding: 2px 6px;
+                    margin: 2px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                ">${skill.trim()}</span>`).join('') || 'N/A'}
+            </div>
         </div>
+    `).join('');
+}
 
-        <!-- 🔑 Login Section -->
-        <section id="login-section">
-          <h2 class="section-title">Sign in to continue</h2>
-          <form id="login-form">
-            <input type="email" id="login-email" placeholder="Enter your email" required autocomplete="email">
-            <button type="submit">Send Magic Link</button>
-          </form>
-        </section>
+        // Click button handler (fixing onclick issue)
+        document.getElementById('find-team-btn').addEventListener('click', findMatchingUsers);
+    
+    async function findMatchingUsers() {
+    const skillsInput = document.getElementById('teamSkillsInput').value.trim();
+    const noResults = document.getElementById('noResults');
+    const cardContainer = document.getElementById('cardContainer');
+    const matchNotification = document.getElementById('matchNotification');
 
-        <!-- 👤 Profile Section -->
-        <section id="profile-section" class="hidden">
-          <div id="profile" class="tab-content-pane active-tab-pane">
-            <h2 class="section-title">Create Your Profile</h2>
-            <form id="skills-form" action="https://formspree.io/f/YOUR_FORMSPREE_HASH" method="POST">
-              <input type="text" id="first-name" name="first-name" placeholder="First Name" required>
-              <input type="text" id="last-name" name="last-name" placeholder="Last Name" required>
-              <input type="email" id="email" name="_replyto" placeholder="Email" required>
-              <label for="skills-input">Professional Skills</label>
-              <input type="text" id="skills-input" name="skills" placeholder="e.g. aws, python, design" required autocomplete="off">
-              <div id="skills-proficiency-container"></div>
-              <div id="autocomplete-skills-input" class="autocomplete-box"></div>
-              <label for="bio-input">Short Bio</label>
-              <input type="text" id="bio-input" name="bio" placeholder="Tell us about yourself" maxlength="120">
-              <label for="availability-input">Availability</label>
-              <select id="availability-input" name="availability">
-                <option value="Available">Available</option>
-                <option value="Busy">Busy</option>
-                <option value="Not Looking">Not Looking</option>
-              </select>
-              <label for="photo-input">Upload Your Photo</label>
-              <input type="file" id="photo-input" accept="image/*" name="photo">
-              <img id="preview" src="#" alt="Image Preview" class="image-preview" />
-              <button type="submit">Save Profile</button>
-            </form>
-            <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
-            <div id="profile-progress-msg" class="profile-incomplete"></div>
-            <p id="success-message" class="success-message" style="display:none;">Profile saved successfully!</p>
-          </div>
-        </section>
+    cardContainer.innerHTML = '';
+    noResults.style.display = 'none';
+    matchNotification.style.display = 'none';
 
-        <!-- 🔍 Search -->
-        <div id="search" class="tab-content-pane">
-          <h2 class="section-title">Individual Search</h2>
-          <input type="text" id="teamSkillsInput" placeholder="Required Skills">
-          <button id="find-team-btn" type="button">Get People</button>
-          <input type="text" id="nameInput" placeholder="Search by Name">
-          <button id="search-name-btn" type="button">Find by Name</button>
-          <div id="cardContainer" class="card-container"></div>
+    if (!skillsInput) {
+        alert('Please enter at least one skill.');
+        return;
+    }
+
+    const requiredSkills = skillsInput.toLowerCase().split(',').map(skill => skill.trim());
+
+    const { data, error } = await supabaseClient.from('skills').select('*');
+
+    if (error) {
+        noResults.style.display = 'block';
+        noResults.innerText = 'Error fetching data.';
+        return;
+    }
+
+    // Function to check if a word is similar (fuzzy match)
+    function isFuzzyMatch(userSkill, requiredSkill) {
+        userSkill = userSkill.toLowerCase();
+        requiredSkill = requiredSkill.toLowerCase();
+        
+        return userSkill.includes(requiredSkill) || requiredSkill.includes(userSkill) || 
+               userSkill.localeCompare(requiredSkill, undefined, { sensitivity: 'base' }) === 0;
+    }
+
+    // Ensure user has ALL required skills (using fuzzy matching)
+    const matchedUsers = data.filter(user => {
+        const userSkills = user.skills.toLowerCase().split(',').map(s => s.trim());
+        return requiredSkills.every(skill => 
+            userSkills.some(userSkill => isFuzzyMatch(userSkill, skill))
+        ); // Must match all required skills using fuzzy logic
+    });
+
+    if (matchedUsers.length === 0) {
+        noResults.style.display = 'block';
+    } else {
+        matchNotification.style.display = 'block';
+
+        cardContainer.innerHTML = matchedUsers.map(user => `
+            <div class="team-member-card" style="
+                color:#ffffff; 
+                text-align:center; 
+                margin-bottom:20px; 
+                display:flex; 
+                flex-direction:column; 
+                align-items:center; 
+                width: 200px;">
+                
+                ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
+                
+                <div class="member-name" style="margin-bottom:5px;">${user.first_name} ${user.last_name}</div>
+                
+                <div class="member-email" style="margin: 5px 0;">
+                    <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none; display: inline-block; word-break: break-word;">
+                        ${user.email}
+                    </a>
+                </div>
+                
+                <div class="skill-tags">
+                    <strong>Skills:</strong> 
+                    ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+    
+        async function loadAllSkills() {
+    const { data, error } = await supabaseClient.from('skills').select('*');
+
+    const skillsList = document.getElementById('skills-entries');
+    skillsList.innerHTML = data.map(entry => `
+        <li style="color:#ffffff; list-style:none; margin-bottom:10px;">
+            ${entry.image_url ? `<img src="${entry.image_url}" width="50" height="50" style="border-radius:5px;object-fit:cover; vertical-align: middle; margin-right: 5px;">` : ''}
+            <strong>${entry.first_name} ${entry.last_name}</strong> - 
+            <a href="mailto:${entry.email}" style="color:#ffffff; text-decoration:none;">${entry.email}</a> - 
+            <strong>Skills:</strong> ${entry.skills}
+        </li>
+    `).join('');
+
+    const cardContainer = document.getElementById('cardContainer');
+cardContainer.innerHTML = data.map(user => `
+    <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:15px;">
+        ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
+        <div class="member-name">${user.first_name} ${user.last_name}</div>
+        <div class="member-email" style="display:block; margin-top:5px;">
+            <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none;">${user.email}</a>
         </div>
-
-        <!-- 👥 Team Builder -->
-        <div id="team-builder" class="tab-content-pane">
-          <h2 class="section-title">Team Builder</h2>
-          <input type="text" id="team-skills-input" placeholder="Required Skills">
-          <input type="number" id="teamSize" placeholder="Team Size" min="1" max="6">
-          <button onclick="buildBestTeam()">Build Team</button>
-          <div id="bestTeamContainer" class="card-container"></div>
+        <div class="skill-tags" style="text-align:center; margin-top:5px;">
+            <strong>Skills:</strong> 
+            ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
         </div>
-
-        <!-- 🏆 Leaderboard -->
-        <div id="leaderboard" class="tab-content-pane">
-          <h2>Top Endorsed Skills</h2>
-          <div id="leaderboard-rows"></div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- Endorse Modal -->
-  <div id="endorseSkillModal" class="modal">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h3>Endorse User for...</h3>
-      <div id="endorse-skill-list" class="skill-endorse-list"></div>
     </div>
-  </div>
+`).join('');
+}
+    
+    </script>
+  
 
-  <!-- Docs Modal -->
-  <div id="docsModal" class="docs-modal hidden">
-    <div class="docs-modal-content">
-      <span class="close-btn">&times;</span>
-      <iframe src="" frameborder="0"></iframe>
-    </div>
-  </div>
+        <!-- Display Matches Here -->
+        <ul id="results-list"></ul>
+    </section>
+<br>
+                    <h1>Individual Search</h1>
+<p class="instructions">Enter the key skills you're looking for in an individual. 
+    Separate multiple skills with commas to narrow the search</p>
 
-  <!-- 📜 Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" src="./assets/js/main.js"></script>
-</body>
-</html>
+    <div class="input-container" style="display: flex; flex-direction: column; align-items: center;">
+      
+     
+
+
+    
+
+<!-- Label and Input -->
+<label for="skills-input" style="font-size: 16px; margin-bottom: 5px; display: block; color: #FFD700;">Required Skills</label>
+<input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" required
+       autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
+                                  padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
+                                  margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff; display: block;">
+
+<!-- Suggestion Box -->
+<div id="autocomplete-team-skills" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; 
+     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
+
+
+
+
+
+
+      <button id="find-team-btn" onclick="findMatchingUsers()"
+              style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; 
+                     border-radius: 5px; cursor: pointer; margin-top: 10px; display: block;">
+         Get People
+      </button>
+     
+      <br>
+      <label for="skills-input" style="font-size: 16px; margin-bottom: 5px; display: block; color: #FFD700;">Search simply by First or Last name</label>
+
+<input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" required
+       autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
+                                 padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
+                                 margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff; display: block;">
+
+<!-- Suggestion Box -->
+<div id="autocomplete-name" style="position:absolute; z-index:1000; background:hsl(0, 0%, 100%); color:#000000; 
+     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
+
+<!-- Button -->
+<button id="search-name-btn" onclick="searchUserByName()"
+        style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; 
+               border-radius: 5px; cursor: pointer; margin-top: 10px; display: block;">
+  Find by Name
+</button>
+
+ <!-- 🔽 RESULTS SECTION (single instance of each) -->
+<div id="matchNotification" style="margin-bottom: 6px; color: gold; display: none;"></div>
+<div id="noResults" style="margin-bottom: 6px; color: red; display: none;"></div>
+
+<div id="cardContainer" style="
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 10px;
+" role="list" aria-label="Matching team members">
+</div>
+
+<!-- ✅ Optional: Selected Skills Summary -->
+<div class="selected-skills" id="selectedSkillsContainer" style="margin-bottom: 10px;"></div>
+
+<!-- ✅ Next Section Header -->
+<h1 style="margin-top: 10px;">Team Builder</h1>
+
+<!-- Team Builder Instructions -->
+<div class="input-container" style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 5px;
+">
+  <p class="instructions" style="max-width: 400px; margin-bottom: 10px;">
+    Let’s build your team. Enter the main skill required for each team member and the total number of people needed.
+  </p>
+</div>
+  
+  <label for="teamSkills" style="font-size: 16px; margin-bottom: 5px;">Required Skills</label>
+  <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python"
+     style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
+            border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
+            background-color: #2c2c2c; color: #ffffff;" 
+     autocomplete="off" />
+<!-- Suggestion Box -->
+<div id="autocomplete-teams-skills" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; 
+     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
+
+  <label for="teamSize" style="font-size: 16px; margin-bottom: 5px;">Team Size</label>
+  <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6"
+     style="width: 80px; height: 35px; font-size: 16px; padding: 5px;
+            border: 2px solid #FFD700; border-radius: 5px;
+            background-color: #2c2c2c; color: #ffffff; margin-bottom: 10px;" />
+
+  
+
+  <button onclick="buildBestTeam()" 
+          style="width: 160px; height: 40px; margin-top: 10px; font-size: 16px; 
+                 background-color: #FFD700; color: black; border: none; 
+                 border-radius: 5px; cursor: pointer;">
+      Build Team
+  </button>
+  </div>
+  
+  <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+
