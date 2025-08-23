@@ -144,29 +144,29 @@ function initSearch() {
   const findTeamBtn = document.getElementById("find-team-btn");
   const searchNameBtn = document.getElementById("search-name-btn");
 
-  // Multi-skill AND search across skills + interests
-  if (findTeamBtn) {
-    findTeamBtn.addEventListener("click", async () => {
-      const rawInput = document.getElementById("teamSkillsInput").value.trim();
-      if (!rawInput) return;
+// Multi-skill AND search across skills[] + interests[]
+if (findTeamBtn) {
+  findTeamBtn.addEventListener("click", async () => {
+    const rawInput = document.getElementById("teamSkillsInput").value.trim();
+    if (!rawInput) return;
 
-      const skillsArray = rawInput.split(",").map(s => s.trim()).filter(Boolean);
+    const skillsArray = rawInput.split(",").map(s => s.trim()).filter(Boolean);
 
-      let query = supabase.from("community").select("*");
+    // Query: require all skills to exist in either skills[] OR interests[]
+    const { data, error } = await supabase
+      .from("community")
+      .select("*")
+      .or(`skills.cs.{${skillsArray.join(",")}},interests.cs.{${skillsArray.join(",")}}`);
 
-      skillsArray.forEach(skill => {
-        query = query.or(`skills.ilike.%${skill}%,interests.ilike.%${skill}%`);
-      });
+    if (error) {
+      console.error("Supabase multi-skill search error:", error);
+      return;
+    }
 
-      const { data, error } = await query;
+    renderResults(data);
+  });
+}
 
-      if (error) {
-        console.error("Supabase multi-skill search error:", error);
-        return;
-      }
-      renderResults(data);
-    });
-  }
 
   // Name search
   if (searchNameBtn) {
@@ -246,3 +246,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadLeaderboard();
   initSearch(); // ✅ attach search listeners
 });
+
