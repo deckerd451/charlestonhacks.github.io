@@ -4,12 +4,13 @@ import { showNotification } from './utils.js';
 import { initDocsModal } from './docsModal.js';
 import { loadLeaderboard } from './leaderboard.js';
 
-// 🔑 Initialize Magic Link login
+// 🔑 Initialize Magic Link login & auth state
 async function initAuth() {
   const loginForm = document.getElementById("login-form");
   const loginSection = document.getElementById("login-section");
   const profileSection = document.getElementById("profile-section");
   const logoutBtn = document.getElementById("logout-btn");
+  const userBadge = document.getElementById("user-badge");
 
   // Handle login form
   if (loginForm) {
@@ -35,29 +36,46 @@ async function initAuth() {
     });
   }
 
+  // Helper to update UI for logged-in state
+  function setLoggedInUI(user) {
+    loginSection?.classList.add("hidden");
+    profileSection?.classList.remove("hidden");
+    logoutBtn?.classList.remove("hidden");
+    if (userBadge) {
+      userBadge.textContent = `Signed in as ${user.email}`;
+      userBadge.classList.remove("hidden");
+    }
+  }
+
+  // Helper to reset UI for logged-out state
+  function setLoggedOutUI() {
+    loginSection?.classList.remove("hidden");
+    profileSection?.classList.add("hidden");
+    logoutBtn?.classList.add("hidden");
+    if (userBadge) {
+      userBadge.textContent = "";
+      userBadge.classList.add("hidden");
+    }
+  }
+
   // Check current session
   const { data: { user }, error } = await supabase.auth.getUser();
   if (user) {
     console.log("[Auth] Logged in as:", user.email);
-    loginSection?.classList.add("hidden");
-    profileSection?.classList.remove("hidden");
-    logoutBtn?.classList.remove("hidden");
+    setLoggedInUI(user);
   } else if (error) {
     console.warn("[Auth] No active session:", error.message);
+    setLoggedOutUI();
   }
 
   // Listen for auth changes
   supabase.auth.onAuthStateChange((_event, session) => {
     if (session?.user) {
       console.log("[Auth] Signed in:", session.user.email);
-      loginSection?.classList.add("hidden");
-      profileSection?.classList.remove("hidden");
-      logoutBtn?.classList.remove("hidden");
+      setLoggedInUI(session.user);
     } else {
       console.log("[Auth] Signed out");
-      loginSection?.classList.remove("hidden");
-      profileSection?.classList.add("hidden");
-      logoutBtn?.classList.add("hidden");
+      setLoggedOutUI();
     }
   });
 
@@ -66,9 +84,7 @@ async function initAuth() {
     logoutBtn.addEventListener("click", async () => {
       await supabase.auth.signOut();
       showNotification("Signed out.", "success");
-      loginSection?.classList.remove("hidden");
-      profileSection?.classList.add("hidden");
-      logoutBtn?.classList.add("hidden");
+      setLoggedOutUI();
     });
   }
 }
