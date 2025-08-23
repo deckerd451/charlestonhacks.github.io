@@ -469,4 +469,67 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Load leaderboard and attach search listeners
   loadLeaderboard();
   initSearch();
+
+  // Initialize the profile form submission using magic link authentication
+  initProfileForm();
 });
+
+// 9. Handle profile form submission with magic link
+function initProfileForm() {
+  const form = document.getElementById("skills-form");
+  if (!form) return;
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    // Grab values from the form
+    const firstName = document.getElementById("first-name").value.trim();
+    const lastName = document.getElementById("last-name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const skills = document.getElementById("skills-input").value.trim();
+    const bio = document.getElementById("bio-input").value.trim();
+    const availability = document.getElementById("availability-input").value;
+
+    if (!email) {
+      showNotification("Please enter a valid email.", "error");
+      return;
+    }
+
+    try {
+      // Send a magic link to the user's email. This will create the user if they don't exist.
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: window.location.href,
+        },
+      });
+      if (error) {
+        console.error("[Profile] Magic link error:", error);
+        showNotification("Failed to send magic link.", "error");
+        return;
+      }
+
+      showNotification("Magic link sent! Check your inbox.", "success");
+
+      // Optionally subscribe the user to Mailchimp here using a hidden form as before.
+      // (This step requires no response back to this page.)
+      const mailchimpForm = document.createElement("form");
+      mailchimpForm.action =
+        "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+      mailchimpForm.method = "POST";
+      mailchimpForm.target = "_blank";
+      mailchimpForm.innerHTML = `
+        <input type="hidden" name="FNAME" value="${firstName}">
+        <input type="hidden" name="LNAME" value="${lastName}">
+        <input type="hidden" name="EMAIL" value="${email}">
+      `;
+      document.body.appendChild(mailchimpForm);
+      mailchimpForm.submit();
+      document.body.removeChild(mailchimpForm);
+
+      // Reset form after sending magic link
+      form.reset();
+    } catch (err) {
+      console.error("[Profile] Magic link exception:", err);
+      showNotification("An unexpected error occurred.", "error");
+    }
+  });
+}
