@@ -1709,6 +1709,74 @@ main, .main-wrapper, .media-container {
 .endorse-btn:hover {
   background-color: #e0b800;
 }
+/* ============================================================
+   AUTH CONTROLS (User Badge + Logout Button)
+   ============================================================ */
+.auth-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  flex-wrap: wrap; /* allows stacking on small screens */
+}
+
+.user-badge {
+  background: #2a2a3a;
+  color: #ffd700;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: bold;
+  white-space: nowrap;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+.logout-btn {
+  background: #444;
+  color: #eee;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logout-btn:hover {
+  background: #3a3a4a;
+  color: #ffd700;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+}
+
+.logout-btn i {
+  font-size: 0.9em;
+}
+
+/* Hide elements when .hidden is applied */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 600px) {
+  .auth-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .user-badge,
+  .logout-btn {
+    font-size: 0.85em;
+    padding: 6px 10px;
+  }
+}
+
 
 
 
