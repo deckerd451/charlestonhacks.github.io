@@ -26,89 +26,45 @@
     .tab-content-pane.active-tab-pane { display:block; }
     .tab-nav { display:flex; justify-content:center; margin-bottom:20px; border-bottom:2px solid #333; padding-bottom:5px; gap:10px; }
     .tab-button, .logout-btn {
-      background:#2a2a3a;
-      color:#eee;
-      border:0;
-      padding:10px 15px;
-      cursor:pointer;
-      font-size:1em;
-      border-radius:5px 5px 0 0;
-      transition:.3s;
-      white-space:nowrap;
+      background:#2a2a3a; color:#eee; border:0; padding:10px 15px; cursor:pointer;
+      font-size:1em; border-radius:5px 5px 0 0; transition:.3s; white-space:nowrap;
     }
     .tab-button:hover, .logout-btn:hover { background:#3a3a4a; color:#ffd700; }
     .tab-button.active { background:#ffd700; color:#222; font-weight:bold; border-bottom:2px solid #ffd700; }
-    .logout-btn {
-      margin-left:auto;
-      border-radius:5px;
-      font-weight:bold;
-      background:#444;
-    }
+    .logout-btn { margin-left:auto; border-radius:5px; font-weight:bold; background:#444; }
     .panel { position:relative; padding-top:0; box-sizing:border-box; }
     .tab-content-pane .section-title { margin-top:0; }
+    .auth-controls { display:flex; align-items:center; gap:10px; margin-left:auto; }
+    .user-badge { background:#2a2a3a; color:#ffd700; padding:6px 12px; border-radius:5px; font-size:0.9em; font-weight:bold; }
     .hidden { display:none !important; }
-    .auth-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: auto;
-}
 
-.user-badge {
-  background: #2a2a3a;
-  color: #ffd700;
-  padding: 6px 12px;
-  border-radius: 5px;
-  font-size: 0.9em;
-  font-weight: bold;
-}
-
-.logout-btn {
-  background: #444;
-  color: #eee;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.logout-btn:hover {
-  background: #3a3a4a;
-  color: #ffd700;
-}
-
-.hidden {
-  display: none !important;
-}
-
+    /* Modal styling */
+    .modal { display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); }
+    .modal-content { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:#2a2a3a; padding:25px; width:80%; max-width:500px; border-radius:8px; }
+    .close-button { position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer; color:#aaa; }
+    .close-button:hover { color:#ffd700; }
   </style>
 </head>
 
 <body class="two-card-page">
   <a href="index.html" title="Back to Home"><i class="fas fa-home home-icon"></i></a>
-
   <div id="achievements" class="achievements" aria-live="polite"></div>
 
   <div class="container">
     <header class="header">
-  <h1>Innovation Engine</h1>
-  <p>Connect, Build, and Innovate Together</p>
+      <h1>Innovation Engine</h1>
+      <p>Connect, Build, and Innovate Together</p>
 
-  <!-- 🔐 Auth Controls -->
-  <div class="auth-controls">
-    <span id="user-badge" class="user-badge hidden"></span>
-    <button id="logout-btn" class="logout-btn hidden">
-      <i class="fas fa-sign-out-alt"></i> Logout
-    </button>
-  </div>
-</header>
-
-
+      <!-- 🔐 Auth Controls -->
+      <div class="auth-controls">
+        <span id="user-badge" class="user-badge hidden"></span>
+        <button id="logout-btn" class="logout-btn hidden"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </header>
 
     <main class="panels-wrapper">
       <div class="panel large">
+
         <!-- 🔄 Tabs -->
         <div class="tab-nav">
           <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
@@ -126,29 +82,33 @@
           </form>
         </section>
 
-        <!-- 👤 Profile Section (hidden until login) -->
+        <!-- 👤 Profile Section -->
         <section id="profile-section" class="hidden">
           <div id="profile" class="tab-content-pane active-tab-pane">
             <h2 class="section-title">Create Your Profile</h2>
-            <form id="skills-form">
-              <input type="text" id="first-name" placeholder="First Name" required autocomplete="given-name">
-              <input type="text" id="last-name" placeholder="Last Name" required autocomplete="family-name">
-              <input type="email" id="email" placeholder="Email" required autocomplete="email">
+            <form id="skills-form" action="https://formspree.io/f/YOUR_FORMSPREE_HASH" method="POST">
+              <input type="text" id="first-name" name="first-name" placeholder="First Name" required>
+              <input type="text" id="last-name" name="last-name" placeholder="Last Name" required>
+              <input type="email" id="email" name="_replyto" placeholder="Email" required>
               <label for="skills-input">Professional Skills</label>
-              <input type="text" id="skills-input" placeholder="e.g. aws, python, design" required autocomplete="off">
+              <input type="text" id="skills-input" name="skills" placeholder="e.g. aws, python, design" required autocomplete="off">
+              <div id="skills-proficiency-container"></div>
+              <div id="autocomplete-skills-input" class="autocomplete-box"></div>
               <label for="bio-input">Short Bio</label>
-              <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120">
+              <input type="text" id="bio-input" name="bio" placeholder="Tell us about yourself" maxlength="120">
               <label for="availability-input">Availability</label>
-              <select id="availability-input">
+              <select id="availability-input" name="availability">
                 <option value="Available">Available</option>
                 <option value="Busy">Busy</option>
                 <option value="Not Looking">Not Looking</option>
               </select>
               <label for="photo-input">Upload Your Photo</label>
-              <input type="file" id="photo-input" accept="image/*">
-              <label><input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter</label>
+              <input type="file" id="photo-input" accept="image/*" name="photo">
+              <img id="preview" src="#" alt="Image Preview" class="image-preview" />
               <button type="submit">Save Profile</button>
             </form>
+            <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
+            <div id="profile-progress-msg" class="profile-incomplete"></div>
             <p id="success-message" class="success-message" style="display:none;">Profile saved successfully!</p>
           </div>
         </section>
@@ -181,7 +141,16 @@
     </main>
   </div>
 
-  <!-- 📑 Docs Modal -->
+  <!-- Endorse Modal -->
+  <div id="endorseSkillModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h3>Endorse User for...</h3>
+      <div id="endorse-skill-list" class="skill-endorse-list"></div>
+    </div>
+  </div>
+
+  <!-- Docs Modal -->
   <div id="docsModal" class="docs-modal hidden">
     <div class="docs-modal-content">
       <span class="close-btn">&times;</span>
@@ -189,7 +158,8 @@
     </div>
   </div>
 
-  <!-- JS Modules -->
+  <!-- 📜 Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="module" src="./assets/js/main.js"></script>
 </body>
 </html>
