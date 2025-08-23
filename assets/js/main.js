@@ -55,7 +55,10 @@ async function initAuth() {
     }
   }
 
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
   if (user) {
     console.log("[Auth] Logged in as:", user.email);
     setLoggedInUI(user);
@@ -212,8 +215,7 @@ function openEndorseModal(person) {
   // Helper to normalise skill strings or arrays
   const toArray = (value) => {
     if (!value) return [];
-    if (Array.isArray(value))
-      return value.filter(Boolean).map((s) => s.toString().trim());
+    if (Array.isArray(value)) return value.filter(Boolean).map((s) => s.toString().trim());
     return value
       .toString()
       .split(",")
@@ -266,41 +268,64 @@ function openEndorseModal(person) {
 async function endorseSkill(endorsedUserId, skill) {
   try {
     // Get the current logged-in user to use as the endorser
-    const { data: { user: currentUser }, error: userError } =
-      await supabase.auth.getUser();
+    const {
+      data: { user: currentUser },
+      error: userError,
+    } = await supabase.auth.getUser();
     if (!currentUser || userError) {
-      showNotification('You must be logged in to endorse.', 'error');
+      showNotification("You must be logged in to endorse.", "error");
       return;
     }
-    const endorserId = currentUser.id;
+
+    // Look up the endorser's community profile by email
+    const { data: profile, error: profileError } = await supabase
+      .from("community")
+      .select("id")
+      .eq("email", currentUser.email)
+      .single();
+
+    if (profileError || !profile) {
+      console.warn("[Endorse] Profile lookup failed:", profileError);
+      showNotification(
+        "Please create your profile before endorsing others.",
+        "error"
+      );
+      return;
+    }
+
+    const endorserId = profile.id;
 
     // Check if an endorsement from this endorser already exists
     const { data: existing, error: selectError } = await supabase
-      .from('endorsements')
-      .select('count')
-      .eq('endorsed_user_id', endorsedUserId)
-      .eq('endorsed_by_user_id', endorserId)
-      .eq('skill', skill)
+      .from("endorsements")
+      .select("count")
+      .eq("endorsed_user_id", endorsedUserId)
+      .eq("endorsed_by_user_id", endorserId)
+      .eq("skill", skill)
       .maybeSingle();
 
-    if (selectError && selectError.code && selectError.code !== 'PGRST116') {
-      console.warn('[Endorse] select error:', selectError);
+    if (
+      selectError &&
+      selectError.code &&
+      selectError.code !== "PGRST116"
+    ) {
+      console.warn("[Endorse] select error:", selectError);
     }
 
     if (existing) {
       // Increment the existing count
       const newCount = (existing.count || 0) + 1;
       const { error: updateError } = await supabase
-        .from('endorsements')
+        .from("endorsements")
         .update({ count: newCount })
-        .eq('endorsed_user_id', endorsedUserId)
-        .eq('endorsed_by_user_id', endorserId)
-        .eq('skill', skill);
+        .eq("endorsed_user_id", endorsedUserId)
+        .eq("endorsed_by_user_id", endorserId)
+        .eq("skill", skill);
       if (updateError) throw updateError;
     } else {
       // Insert a new endorsement record
       const { error: insertError } = await supabase
-        .from('endorsements')
+        .from("endorsements")
         .insert({
           endorsed_user_id: endorsedUserId,
           endorsed_by_user_id: endorserId,
@@ -312,10 +337,10 @@ async function endorseSkill(endorsedUserId, skill) {
 
     // Re-fetch all endorsement counts for this skill to calculate the new total
     const { data: records } = await supabase
-      .from('endorsements')
-      .select('count')
-      .eq('endorsed_user_id', endorsedUserId)
-      .eq('skill', skill);
+      .from("endorsements")
+      .select("count")
+      .eq("endorsed_user_id", endorsedUserId)
+      .eq("skill", skill);
     const totalCount = (records || []).reduce(
       (acc, r) => acc + (r.count || 0),
       0
@@ -324,10 +349,10 @@ async function endorseSkill(endorsedUserId, skill) {
     // Update UI
     updateCardCount(endorsedUserId, skill, totalCount);
     await loadLeaderboard();
-    showNotification(`Endorsed ${skill}!`, 'success');
+    showNotification(`Endorsed ${skill}!`, "success");
   } catch (err) {
-    console.error('[Endorse] Error:', err);
-    showNotification('Failed to endorse.', 'error');
+    console.error("[Endorse] Error:", err);
+    showNotification("Failed to endorse.", "error");
   }
 }
 
@@ -339,14 +364,13 @@ function updateCardCount(endorsedUserId, skill, newCount) {
     )
     .forEach((btn) => {
       const countSpan = btn.parentElement.querySelector(
-        '.endorsement-count'
+        ".endorsement-count"
       );
       if (countSpan) {
         countSpan.textContent = newCount;
       }
     });
 }
-
 
 // 7. Team builder – build a best‑match team
 async function buildBestTeam() {
@@ -375,9 +399,9 @@ async function buildBestTeam() {
       .from("community")
       .select("*")
       .or(
-        `skills.cs.{${skillsArray.join(
+        `skills.cs.{${skillsArray.join(",")}},interests.cs.{${skillsArray.join(
           ","
-        )}},interests.cs.{${skillsArray.join(",")}}`
+        )}}`
       );
 
     if (error) {
@@ -416,7 +440,7 @@ async function buildBestTeam() {
 
         container.appendChild(cardEl);
       } catch (err) {
-      console.error("[TeamBuilder] Error rendering team card:", err);
+        console.error("[TeamBuilder] Error rendering team card:", err);
       }
     }
   } catch (err) {
@@ -446,4 +470,3 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadLeaderboard();
   initSearch();
 });
-
