@@ -136,8 +136,12 @@
           <div id="profile" class="tab-content-pane active-tab-pane">
             <section id="matchmaking-section">
               <h2 class="section-title">Create Your Profile</h2>
-              <!-- Note: method="POST" prevents GET-with-body errors -->
-              <form id="skills-form" method="POST">
+              <!-- Note: method="POST" and action attribute direct submissions to Formspree or other backend; using POST prevents GET-with-body errors. Replace YOUR_FORMSPREE_HASH with your actual Formspree ID if using Formspree. -->
+              <form
+                id="skills-form"
+                action="https://formspree.io/f/YOUR_FORMSPREE_HASH"
+                method="POST"
+              >
                 <div class="input-container">
                   <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name" />
                   <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name" />
@@ -310,11 +314,11 @@
 
           // 1. Submit to Formspree (or your primary backend endpoint)
           // Ensure your form's action attribute is set correctly for Formspree if you intend to use it.
-          // For example: <form id="skills-form" action="https://formspree.io/f/YOUR_FORMSPREE_HASH" method="POST">
-          // If no action is specified, this fetch will go to the current page's URL.
-          const action = form.action || window.location.href;
+          // The form element defines action="https://formspree.io/f/YOUR_FORMSPREE_HASH" and method="POST" to prevent
+          // posting back to the current page, which would result in a 405 error on static sites.
+          const action = form.action; // Use the defined action endpoint; do not fall back to the current page
           fetch(action, {
-            method: form.method, // now guaranteed to be "POST"
+            method: form.method, // guaranteed to be "POST"
             body: new FormData(form),
             headers: { Accept: "application/json" },
           })
