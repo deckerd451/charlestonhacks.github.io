@@ -9,7 +9,7 @@
   <meta property="og:image" content="images/reactiveh.png" />
   <meta property="og:url" content="https://charlestonhacks.com" />
   <meta name="twitter:card" content="summary_large_image" />
-  <title>CharlestonHacks - Home</title>
+  <title>CharlestonHacks - Innovation Engine</title>
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -22,29 +22,16 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    .tab-content-pane { display:none; padding:20px 0 }
-    .tab-content-pane.active-tab-pane { display:block }
-    .tab-nav { display:flex; justify-content:center; margin-bottom:20px; border-bottom:2px solid #333; padding-bottom:5px; gap:10px }
-    .tab-button { background:#2a2a3a; color:#eee; border:0; padding:10px 15px; cursor:pointer; font-size:1em; border-radius:5px 5px 0 0; transition:.3s; white-space:nowrap }
-    .tab-button:hover { background:#3a3a4a; color:#ffd700 }
-    .tab-button.active { background:#ffd700; color:#222; font-weight:bold; border-bottom:2px solid #ffd700 }
-    .panel { position:relative; padding-top:0; box-sizing:border-box }
-    .tab-content-pane .section-title { margin-top:0 }
-    @media (max-width:768px){
-      .tab-nav { flex-wrap:wrap; justify-content:flex-start }
-      .tab-button { flex-grow:1; text-align:center }
-    }
+    .tab-content-pane { display:none; padding:20px 0; }
+    .tab-content-pane.active-tab-pane { display:block; }
+    .tab-nav { display:flex; justify-content:center; margin-bottom:20px; border-bottom:2px solid #333; padding-bottom:5px; gap:10px; }
+    .tab-button { background:#2a2a3a; color:#eee; border:0; padding:10px 15px; cursor:pointer; font-size:1em; border-radius:5px 5px 0 0; transition:.3s; white-space:nowrap; }
+    .tab-button:hover { background:#3a3a4a; color:#ffd700; }
+    .tab-button.active { background:#ffd700; color:#222; font-weight:bold; border-bottom:2px solid #ffd700; }
+    .panel { position:relative; padding-top:0; box-sizing:border-box; }
+    .tab-content-pane .section-title { margin-top:0; }
   </style>
 </head>
-
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-6NDKG07DY6');
-</script>
 
 <body class="two-card-page">
   <a href="index.html" title="Back to Home"><i class="fas fa-home home-icon"></i></a>
@@ -59,8 +46,7 @@
 
     <main class="panels-wrapper">
       <div class="panel large">
-
-        <!-- Tabs -->
+        <!-- 🔄 Tabs -->
         <div class="tab-nav">
           <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
           <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
@@ -68,103 +54,71 @@
           <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
         </div>
 
-        <!-- 🔹 Profile (Magic Link + Form) -->
-        <div id="profile" class="tab-content-pane active-tab-pane">
-          <section id="matchmaking-section">
+        <!-- 🔑 Login Section -->
+        <section id="login-section">
+          <h2 class="section-title">Sign in to continue</h2>
+          <form id="login-form">
+            <input type="email" id="login-email" placeholder="Enter your email" required autocomplete="email">
+            <button type="submit">Send Magic Link</button>
+          </form>
+        </section>
+
+        <!-- 👤 Profile Section (hidden until login) -->
+        <section id="profile-section" class="hidden">
+          <div id="profile" class="tab-content-pane active-tab-pane">
             <h2 class="section-title">Create Your Profile</h2>
-
-            <!-- Login first -->
-            <div id="login-section">
-              <h3>Sign in to continue</h3>
-              <form id="login-form">
-                <input type="email" id="login-email" placeholder="Enter your email" required autocomplete="email" />
-                <button type="submit">Send Magic Link</button>
-              </form>
-              <p id="login-message" style="display:none;"></p>
-            </div>
-
-            <!-- Profile Form (shown after login) -->
-            <form id="skills-form" style="display:none; margin-top:20px;">
-              <div class="input-container">
-                <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name" autocomplete="given-name">
-                <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name" autocomplete="family-name">
-
-                <label for="skills-input">Professional Skills (comma separated)</label>
-                <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off">
-
-                <label for="photo-input">Upload Your Photo</label>
-                <input type="file" id="photo-input" accept="image/*" aria-label="Upload Photo">
-                <img id="preview" src="#" alt="Image Preview" class="image-preview" />
-
-                <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
-                <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
-
-                <label for="availability-input">Current Availability</label>
-                <select id="availability-input" aria-label="Current Availability">
-                  <option value="Available">Available</option>
-                  <option value="Busy">Busy</option>
-                  <option value="Not Looking">Not Looking</option>
-                </select>
-
-                <label>
-                  <input type="checkbox" id="newsletter-opt-in" /> Subscribe to CharlestonHacks Newsletter
-                </label>
-
-                <button type="submit">Save Profile</button>
-              </div>
-              <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
-              <div id="profile-progress-msg" class="profile-incomplete"></div>
+            <form id="skills-form">
+              <input type="text" id="first-name" placeholder="First Name" required autocomplete="given-name">
+              <input type="text" id="last-name" placeholder="Last Name" required autocomplete="family-name">
+              <input type="email" id="email" placeholder="Email" required autocomplete="email">
+              <label for="skills-input">Professional Skills</label>
+              <input type="text" id="skills-input" placeholder="e.g. aws, python, design" required autocomplete="off">
+              <label for="bio-input">Short Bio</label>
+              <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120">
+              <label for="availability-input">Availability</label>
+              <select id="availability-input">
+                <option value="Available">Available</option>
+                <option value="Busy">Busy</option>
+                <option value="Not Looking">Not Looking</option>
+              </select>
+              <label for="photo-input">Upload Your Photo</label>
+              <input type="file" id="photo-input" accept="image/*">
+              <label><input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter</label>
+              <button type="submit">Save Profile</button>
             </form>
+            <p id="success-message" class="success-message" style="display:none;">Profile saved successfully!</p>
+          </div>
+        </section>
 
-            <p id="success-message" class="success-message" role="status" style="display:none;">Profile created successfully!</p>
-            <p id="error-message" class="error-message" role="alert" style="display:none;">There was a problem saving your profile.</p>
-          </section>
-        </div>
-
-        <!-- Search -->
+        <!-- 🔍 Search -->
         <div id="search" class="tab-content-pane">
           <h2 class="section-title">Individual Search</h2>
-          <div class="input-container">
-            <label for="teamSkillsInput">Required Skills</label>
-            <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
-            <button id="find-team-btn" type="button">Get People</button><br><br>
-
-            <label for="nameInput">Search by First/Last Name</label>
-            <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
-            <button id="search-name-btn" type="button">Find by Name</button>
-          </div>
-          <div id="matchNotification" class="notification match-notification" style="display:none;"></div>
-          <div id="noResults" class="notification no-results-notification" style="display:none;"></div>
-          <div id="cardContainer" class="card-container" role="list"></div>
+          <input type="text" id="teamSkillsInput" placeholder="Required Skills">
+          <button id="find-team-btn" type="button">Get People</button>
+          <input type="text" id="nameInput" placeholder="Search by Name">
+          <button id="search-name-btn" type="button">Find by Name</button>
+          <div id="cardContainer" class="card-container"></div>
         </div>
 
-        <!-- Team Builder -->
+        <!-- 👥 Team Builder -->
         <div id="team-builder" class="tab-content-pane">
           <h2 class="section-title">Team Builder</h2>
-          <div class="input-container">
-            <p class="instructions">Enter required skills and team size.</p>
-            <label for="team-skills-input">Required Skills</label>
-            <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off"/>
-            <label for="teamSize">Team Size</label>
-            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
-            <button onclick="buildBestTeam()">Build Team</button>
-          </div>
-          <div class="card-container" id="bestTeamContainer" role="list"></div>
+          <input type="text" id="team-skills-input" placeholder="Required Skills">
+          <input type="number" id="teamSize" placeholder="Team Size" min="1" max="6">
+          <button onclick="buildBestTeam()">Build Team</button>
+          <div id="bestTeamContainer" class="card-container"></div>
         </div>
 
-        <!-- Leaderboard -->
+        <!-- 🏆 Leaderboard -->
         <div id="leaderboard" class="tab-content-pane">
-          <div class="leaderboard" id="leaderboard-section">
-            <h2>Top Endorsed Skills</h2>
-            <div id="leaderboard-rows"></div>
-          </div>
+          <h2>Top Endorsed Skills</h2>
+          <div id="leaderboard-rows"></div>
         </div>
-
       </div>
     </main>
   </div>
 
-  <!-- Docs Modal -->
+  <!-- 📑 Docs Modal -->
   <div id="docsModal" class="docs-modal hidden">
     <div class="docs-modal-content">
       <span class="close-btn">&times;</span>
@@ -172,10 +126,7 @@
     </div>
   </div>
 
-  <!-- Entry scripts -->
+  <!-- JS Modules -->
   <script type="module" src="./assets/js/main.js"></script>
-  <script type="module" src="./assets/js/profile.js"></script>
-  <script type="module" src="./assets/js/docsModal.js"></script>
-  <script type="module" src="./assets/js/login.js"></script>
 </body>
 </html>
