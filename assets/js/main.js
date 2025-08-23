@@ -144,7 +144,7 @@ function initSearch() {
   const findTeamBtn = document.getElementById("find-team-btn");
   const searchNameBtn = document.getElementById("search-name-btn");
 
-// Multi-skill AND search across skills[] + interests[]
+// Multi-skill AND search across skills[] OR interests[]
 if (findTeamBtn) {
   findTeamBtn.addEventListener("click", async () => {
     const rawInput = document.getElementById("teamSkillsInput").value.trim();
@@ -152,11 +152,12 @@ if (findTeamBtn) {
 
     const skillsArray = rawInput.split(",").map(s => s.trim()).filter(Boolean);
 
-    // Query: require all skills to exist in either skills[] OR interests[]
     const { data, error } = await supabase
       .from("community")
       .select("*")
-      .or(`skills.cs.{${skillsArray.join(",")}},interests.cs.{${skillsArray.join(",")}}`);
+      .or(
+        `skills.cs.{${skillsArray.join(",")}},interests.cs.{${skillsArray.join(",")}}`
+      );
 
     if (error) {
       console.error("Supabase multi-skill search error:", error);
@@ -166,9 +167,7 @@ if (findTeamBtn) {
     renderResults(data);
   });
 }
-
-
-  // Name search
+ // Name search
   if (searchNameBtn) {
     searchNameBtn.addEventListener("click", async () => {
       const name = document.getElementById("nameInput").value.trim();
@@ -246,4 +245,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadLeaderboard();
   initSearch(); // ✅ attach search listeners
 });
+
 
