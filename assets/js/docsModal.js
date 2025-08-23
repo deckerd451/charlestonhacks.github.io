@@ -1,4 +1,5 @@
 // docsModal.js
+
 export function initDocsModal() {
   document.addEventListener("DOMContentLoaded", () => {
     // support both camelCase and kebab-case IDs
@@ -31,7 +32,7 @@ export function initDocsModal() {
       iframe.src = "";
     });
 
-    // Background click to close
+    // Click backdrop to close
     modal.addEventListener("click", (e) => {
       if (e.target === modal) {
         modal.classList.add("hidden");
@@ -43,5 +44,5 @@ export function initDocsModal() {
   });
 }
 
-// Auto‑init when loaded
+// Auto‑init
 initDocsModal();
