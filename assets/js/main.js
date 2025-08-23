@@ -187,19 +187,24 @@ if (findTeamBtn) {
   }
 }
 
-// ⭐ Endorse modal logic
+// ...imports and other functions above...
 function openEndorseModal(person) {
   const modal = document.getElementById("endorseSkillModal");
   const list = document.getElementById("endorse-skill-list");
-
   if (!modal || !list) return;
 
   list.innerHTML = "";
 
-  const skills = [
-    ...(person.skills ? person.skills.split(",").map(s => s.trim()) : []),
-    ...(person.interests ? person.interests.split(",").map(i => i.trim()) : [])
-  ].filter(Boolean);
+  // Coerce skills & interests into arrays (handles strings, arrays or null)
+  const toArray = (value) => {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      return value.filter(Boolean).map(s => s.toString().trim());
+    }
+    return value.toString().split(",").map(s => s.trim()).filter(Boolean);
+  };
+
+  const skills = [...toArray(person.skills), ...toArray(person.interests)];
 
   if (skills.length === 0) {
     list.innerHTML = `<p>No skills/interests listed for ${person.name}.</p>`;
@@ -216,34 +221,78 @@ function openEndorseModal(person) {
   }
 
   modal.style.display = "block";
-
   const closeBtn = modal.querySelector(".close-button");
-  if (closeBtn) {
-    closeBtn.onclick = () => {
-      modal.style.display = "none";
-    };
-  }
-
+  if (closeBtn) closeBtn.onclick = () => (modal.style.display = "none");
   window.onclick = (event) => {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
+    if (event.target === modal) modal.style.display = "none";
   };
 }
 
-// 🚀 App bootstrap
-document.addEventListener("DOMContentLoaded", async () => {
-  console.log("[Main] App Initialized");
+async function buildBestTeam() {
+  const skillsInput = document.getElementById("team-skills-input");
+  const teamSizeInput = document.getElementById("teamSize");
+  const container = document.getElementById("bestTeamContainer");
+  if (!skillsInput || !container) {
+    console.warn("[TeamBuilder] Required elements not found.");
+    return;
+  }
 
+  const raw = skillsInput.value.trim();
+  if (!raw) {
+    showNotification("Please enter required team skills.", "error");
+    return;
+  }
+
+  const skillsArray = raw.split(",").map(s => s.trim()).filter(Boolean);
+  const teamSize = teamSizeInput ? parseInt(teamSizeInput.value, 10) || 3 : 3;
+
+  const { data, error } = await supabase
+    .from("community")
+    .select("*")
+    .or(`skills.cs.{${skillsArray.join(",")}},interests.cs.{${skillsArray.join(",")}}`);
+
+  if (error) {
+    console.error("[TeamBuilder] Supabase error:", error);
+    showNotification("Error fetching team members.", "error");
+    return;
+  }
+
+  const results = (data || []).slice(0, teamSize);
+  container.innerHTML = "";
+  if (results.length === 0) {
+    container.innerHTML = "<p>No matching team members found.</p>";
+    return;
+  }
+
+  results.forEach(person => {
+    const card = document.createElement("div");
+    card.className = "profile-card";
+    card.innerHTML = `
+      <img src="${person.image_url || 'images/default-avatar.png'}"
+           alt="${person.name || ''}"
+           class="profile-avatar"/>
+      <h3>${person.name || 'Unnamed User'}</h3>
+      <p><strong>Skills:</strong> ${person.skills || 'Not specified'}</p>
+      <p><strong>Interests:</strong> ${person.interests || 'Not specified'}</p>
+      <p><strong>Availability:</strong> ${person.availability || 'Unknown'}</p>
+      <p><strong>Bio:</strong> ${person.bio || ''}</p>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// Make buildBestTeam globally available for inline HTML handlers
+globalThis.buildBestTeam = buildBestTeam;
+
+document.addEventListener("DOMContentLoaded", async () => {
   await initAuth();
   initTabs();
 
-  if (document.getElementById("docs-modal")) {
+  // Initialise docs modal if either ID exists
+  if (document.getElementById("docsModal") || document.getElementById("docs-modal")) {
     initDocsModal();
   }
 
   loadLeaderboard();
-  initSearch(); // ✅ attach search listeners
+  initSearch();
 });
-
-
