@@ -15,7 +15,7 @@
     --footer-spacing: 20px;
 
     /* Images & Media */
-    --bg-url: url('images/background.webp');
+    --bg-url: url('images/background.jpg');
 
     /* Effects */
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -64,11 +64,6 @@ body::before {
     z-index: -1;
     pointer-events: none;
     transition: background 0.5s;
-}
-
-/* Alternate background image for certain pages */
-body.two-card-page::before {
-    background-image: url('images/backgroundie.jpg');
 }
 
 /* Ensure background transparency for other containers */
@@ -396,162 +391,7 @@ main, .main-wrapper, .media-container {
     max-height: 100px;
   }
 }
-/* Core Chat Button */
-#chat-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #ff6600;
-  color: #fff;
-  padding: 12px 14px;
-  border-radius: 50%;
-  font-size: 1.5em;
-  cursor: pointer;
-  z-index: 10000;
-  box-shadow: 0 0 12px rgba(255, 102, 0, 0.6);
-  transition: background 0.2s, transform 0.2s, opacity 0.4s ease-in;
-  opacity: 0;
-  animation: fadeInChat 1.2s ease-out forwards;
-  animation-delay: 0.6s;
-}
-@keyframes fadeInChat {
-  to { opacity: 1; }
-}
-#chat-toggle:hover,
-#chat-toggle:focus {
-  background: #ff8800;
-  transform: scale(1.08);
-  outline: none;
-}
 
-/* Tooltip */
-#chat-tooltip {
-  position: absolute;
-  bottom: 140%;
-  right: -20px;
-  background: #222;
-  color: #ffb700;
-  font-size: 0.85em;
-  padding: 6px 10px;
-  border-radius: 10px;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-#chat-toggle:hover #chat-tooltip {
-  opacity: 1;
-}
-
-/* Badge */
-#chat-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #ffb700;
-  color: #1e1f22;
-  font-size: 0.7em;
-  font-weight: bold;
-  padding: 3px 6px;
-  border-radius: 999px;
-  box-shadow: 0 0 3px #000;
-  animation: ping-bounce 1.3s ease-in-out infinite alternate;
-}
-@keyframes ping-bounce {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.15); }
-}
-
-/* Modal styles */
-#chat-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(4px);
-  animation: slideInModal 0.3s ease-out;
-}
-@keyframes slideInModal {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-#chat-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-}
-#chat-dialog {
-  position: relative;
-  width: 90%;
-  max-width: 700px;
-  height: 80%;
-  background: #1e1f22;
-  border: 2px solid #ffb700;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-  overflow: hidden;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Close and Minimize */
-#chat-close,
-#chat-minimize {
-  position: absolute;
-  top: 8px;
-  font-size: 1.8em;
-  background: none;
-  border: none;
-  color: #ffb700;
-  cursor: pointer;
-  z-index: 10;
-}
-#chat-close { right: 12px; }
-#chat-minimize { left: 12px; }
-#chat-close:hover,
-#chat-minimize:hover { color: white; }
-
-/* Bubble */
-#chat-bubble {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #5865f2;
-  color: white;
-  width: 52px;
-  height: 52px;
-  font-size: 1.5em;
-  border-radius: 50%;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  cursor: grab;
-  box-shadow: 0 0 12px rgba(0,0,0,0.25);
-}
-#chat-bubble:hover {
-  background: #4752c4;
-}
-
-@media (max-width: 600px) {
-  #chat-dialog {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-  }
-  #chat-close, #chat-minimize {
-    font-size: 2em;
-  }
-}
-
-.sr-only {
-  position: absolute;
-  left: -9999px;
-}
 /* ==========================================================================
    DESKTOP-SPECIFIC TEXT SIZE OVERRIDES
    ========================================================================== */
@@ -780,45 +620,7 @@ main, .main-wrapper, .media-container {
     bottom: 19%;
   }
 }
-/* ==========================================================================
-   TEAM BUILDER/2card CARD STYLES
-   ========================================================================== */
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin: 20px 0;
-}
 
-.team-member-card {
-    width: 200px;
-    background: var(--card-bg);
-    border-radius: 8px;
-    padding: 12px 8px 10px;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
-
-.team-member-card img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 2px solid #ffd700;
-    margin-bottom: 8px;
-}
-
-.image-preview {
-    display: none;
-    max-width: 120px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 2px solid #ffd700;
-}
 /* ==========================================================================
    NAME, STATUS & BADGE STYLES
    ========================================================================== */
@@ -1224,15 +1026,11 @@ main, .main-wrapper, .media-container {
   transition: opacity 0.7s ease;
 }
 /* ==========================================================================
-  DOCS MODAL STYLING 
+   DOCS MODAL (renamed from .modal to .docs-modal)
    ========================================================================== */
-
-.modal {
+.docs-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.85);
   display: flex;
   justify-content: center;
@@ -1241,11 +1039,11 @@ main, .main-wrapper, .media-container {
   transition: opacity 0.3s ease;
 }
 
-.modal.hidden {
+.docs-modal.hidden {
   display: none;
 }
 
-.modal-content {
+.docs-modal-content {
   position: relative;
   width: 90%;
   max-width: 800px;
@@ -1256,13 +1054,13 @@ main, .main-wrapper, .media-container {
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
-.modal-content iframe {
+.docs-modal-content iframe {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.close-btn {
+.docs-close-btn {
   position: absolute;
   top: 8px;
   right: 12px;
@@ -1271,8 +1069,197 @@ main, .main-wrapper, .media-container {
   cursor: pointer;
   z-index: 10;
 }
+
 /* ==========================================================================
-   NEURAL NETWORK (EXPERIMENTAL)
+   ENDORSEMENT BUTTONS & COUNTS
+   ========================================================================== */
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #2a2a3a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #eee;
+  border: 1px solid #444;
+}
+
+.endorsement-count {
+  color: #4cafef;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.endorse-btn {
+  background-color: #ffd700;
+  color: #222;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.endorse-btn:hover {
+  background-color: #e0b800;
+}
+
+/* ==========================================================================
+   LEADERBOARD
+   ========================================================================== */
+.leaderboard {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #1e1e2f; /* Dark panel */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.leaderboard h2 {
+  color: #ffd700;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 60px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #333;
+  color: #eee;
+  font-size: 1rem;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-rank {
+  font-weight: bold;
+  color: #ffd700;
+  text-align: left;
+}
+
+.leaderboard-skill {
+  text-align: left;
+  padding-left: 10px;
+  font-size: 1rem;
+  color: #eee;
+}
+
+.leaderboard-count {
+  font-weight: bold;
+  text-align: right;
+  color: #4cafef;
+}
+
+/* ==========================================================================
+   SPLASH SCREEN STYLES
+   ========================================================================== */
+
+/* Splash base style */
+#splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--background-color, black);
+  color: var(--text-color, white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: opacity 0.7s ease;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fade-out class (already in your CSS, retained here for clarity) */
+#splash-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Splash logo animation */
+#splash-logo {
+  width: clamp(180px, 30vw, 300px);
+  margin-bottom: 1rem;
+  animation: bounce-in 1s ease;
+}
+
+/* Title and description fade-in */
+#splash-title,
+#splash-desc {
+  opacity: 0;
+  animation: fadeInUp 0.9s ease forwards;
+}
+#splash-title {
+  font-size: 2rem;
+  animation-delay: 0.3s;
+}
+#splash-desc {
+  font-size: 1.1rem;
+  max-width: 85%;
+  animation-delay: 0.6s;
+  line-height: 1.5;
+}
+#splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  gap: 1.2rem; /* <- add this for nice vertical spacing between elements */
+}
+#splash-desc {
+  font-size: 1.1rem;
+  max-width: 600px;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Optional: splash background image overlay for depth */
+#splash-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg-url) no-repeat center center;
+  background-size: cover;
+   height: 100vh; /* Add this */
+  opacity: 0.2;
+  z-index: -1;
+  filter: blur(3px);
+}
+
+/* Bounce-in keyframe */
+@keyframes bounce-in {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Accessibility: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   NEURAL NETWORK (EXPERIMENTAL) this will be updated a lot!!!!!!!!!!!!!!!!!!
    ========================================================================== */
 #neural-bg {
   position: fixed;
@@ -1358,123 +1345,461 @@ main, .main-wrapper, .media-container {
   border: 1px solid #0ff;
   border-radius: 8px;
 }
-/* ==========================================================================
-   SPLASH SCREEN STYLES
-   ========================================================================== */
-
-/* Splash base style */
-#splash-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: var(--background-color, black);
-  color: var(--text-color, white);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  transition: opacity 0.7s ease;
-  opacity: 1;
-  pointer-events: auto;
+#auth-status {
+  margin-top: 10px;
+  min-height: 20px;
+  font-size: 15px;
+  color: #fff;
+  background: #0ff;
+  border-radius: 7px;
+  padding: 7px 12px;
+  display:inline-block;
+  transition: background 0.2s, color 0.2s;
+}
+#auth-status.error {
+  background: #f22;
+  color: #fff;
+}
+#auth-status.success {
+  background: #0ff;
+  color: #222;
 }
 
-/* Fade-out class (already in your CSS, retained here for clarity) */
-#splash-overlay.fade-out {
-  opacity: 0;
-  pointer-events: none;
+/* Canvas wrapper: scrollable in both directions */
+#canvas-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
+  position: relative;
+  background: black; /* Optional */
 }
 
-/* Splash logo animation */
-#splash-logo {
-  width: clamp(180px, 30vw, 300px);
-  margin-bottom: 1rem;
-  animation: bounce-in 1s ease;
-}
-
-/* Title and description fade-in */
-#splash-title,
-#splash-desc {
-  opacity: 0;
-  animation: fadeInUp 0.9s ease forwards;
-}
-#splash-title {
-  font-size: 2rem;
-  animation-delay: 0.3s;
-}
-#splash-desc {
-  font-size: 1.1rem;
-  max-width: 85%;
-  animation-delay: 0.6s;
-  line-height: 1.5;
-}
-
-/* Skip button styling */
-#skip-splash-btn {
-  margin-top: 1.8rem;
-  background: var(--primary-color);
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-#skip-splash-btn:hover {
-  background: #ff3333;
-  transform: scale(1.05);
-}
-#skip-splash-btn:focus {
-  outline: 2px solid white;
-}
-#splash-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 90%;
-  margin: 0 auto;
-  text-align: center;
-  gap: 1.2rem; /* <- add this for nice vertical spacing between elements */
-}
-#splash-desc {
-  font-size: 1.1rem;
-  max-width: 600px;
-  line-height: 1.5;
-  text-align: center;
-  margin: 0 auto;
-}
-
-/* Optional: splash background image overlay for depth */
-#splash-overlay::before {
-  content: "";
+.tooltip {
   position: absolute;
-  inset: 0;
-  background: var(--bg-url) no-repeat center center;
-  background-size: cover;
-   height: 100vh; /* Add this */
-  opacity: 0.2;
-  z-index: -1;
-  filter: blur(3px);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  max-width: 220px;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 
-/* Bounce-in keyframe */
-@keyframes bounce-in {
-  0% { transform: scale(0.5); opacity: 0; }
-  60% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(1); }
+.tooltip.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
-/* Accessibility: prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
+.tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+/* ──────────────────────────────────────────────────── */
+/* 30-Second AIFF page overrides & helpers             */
+/* ──────────────────────────────────────────────────── */
+
+/* Main content wrapper */
+#main {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: left;
+  line-height: 1.6;
+}
+
+/* Paragraph spacing */
+#main p {
+  margin-bottom: 1rem;
+}
+
+/* Lists readability */
+#main ul {
+  margin: 1rem 0;
+  padding-left: 1.2rem;
+}
+#main ul li {
+  margin-bottom: .5rem;
+}
+
+/* Zoom-on-hover images */
+.zoom-image {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto 2rem;
+  transition: transform 0.3s ease;
+}
+.zoom-image:hover {
+  transform: scale(1.2);
+}
+
+/* Small-screen button stacking */
+@media (max-width: 600px) {
+  .button-container {
+    flex-direction: column;
+    gap: .5rem;
   }
 }
+
+/* ──────────────────────────────────────────────────── */
+/* If you have a “#ui-fixed” overlay or a “#toggle-names” button, tack these on; otherwise remove them */
+/* ──────────────────────────────────────────────────── */
+#ui-fixed {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (max-width: 600px) {
+  #toggle-names {
+    bottom: 70px;
+    left: 10px;
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+/* ==========================================================================
+  Innovation engine styline (2card)
+   ========================================================================== */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+  padding: 1rem;
+  justify-items: center;
+}
+
+.card {
+  background: var(--card-bg, #2a2a3a);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  max-width: 320px;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  color: var(--text-color, #eee);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.avatar-small {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 0.5rem;
+}
+
+.card-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.card-subtitle { font-size: 0.9rem; color: #bbb; }
+
+@media (max-width: 600px) {
+  .card { max-width: 100%; }
+  .avatar { width: 48px; height: 48px; }
+}
+/* 1) Generic safety for any images inside cards */
+.card img {
+  max-width: 100%;
+  height: auto;          /* prevents distortion for inline images */
+  display: block;
+  border-radius: 8px;
+}
+
+/* 2) Avatar (square crop) — you already have this, add object-position if needed */
+.avatar,
+.avatar-small {
+  object-fit: cover;
+  object-position: center; /* or center top if heads get cropped too low */
+}
+
+/* 3) Main profile photo on a person card (consistent portrait crop) */
+.person-photo {
+  width: 100%;
+  max-width: 220px;      /* tune per design */
+  aspect-ratio: 3 / 4;   /* portrait crop */
+  object-fit: cover;     /* fills the box, crops overflow */
+  object-position: center;
+  border-radius: 10px;
+  border: 2px solid #ffd700;
+}
+
+/* 4) If you show a wide banner inside a card (consistent landscape crop) */
+.card .media-16x9 {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.card .media-16x9 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 5) Prevent any oversized image from causing scrollbars */
+.card { overflow: hidden; }
+
+/* === Leaderboard Styles === */
+.leaderboard {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #1e1e2f; /* Dark panel background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.leaderboard h2 {
+  color: #ffd700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 60px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #333;
+  color: #eee;
+  font-size: 1rem;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-rank {
+  font-weight: bold;
+  color: #ffd700;
+  text-align: left;
+}
+
+.leaderboard-skill {
+  text-align: left;
+  padding-left: 10px;
+}
+
+.leaderboard-count {
+  font-weight: bold;
+  text-align: right;
+  color: #4cafef;
+}
+/* === User Cards === */
+.user-card {
+  background-color: #1e1e2f;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 12px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+  border: 2px solid #ffd700;
+}
+
+.user-card h3 {
+  margin: 8px 0 4px;
+  font-size: 1.2rem;
+  color: #ffd700;
+}
+
+.user-card p {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin: 4px 0;
+}
+
+/* Availability badge */
+.user-card .availability {
+  margin-top: 8px;
+  font-weight: bold;
+  color: #4cafef;
+}
+
+/* Skills section */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.skill-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #2a2a3a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #eee;
+  border: 1px solid #444;
+}
+
+.endorsement-count {
+  color: #4cafef;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Endorse button */
+.endorse-btn {
+  background-color: #ffd700;
+  color: #222;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.endorse-btn:hover {
+  background-color: #e0b800;
+}
+/* ============================================================
+   AUTH CONTROLS (User Badge + Logout Button)
+   ============================================================ */
+.auth-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  flex-wrap: wrap; /* allows stacking on small screens */
+}
+
+.user-badge {
+  background: #2a2a3a;
+  color: #ffd700;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: bold;
+  white-space: nowrap;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+.logout-btn {
+  background: #444;
+  color: #eee;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logout-btn:hover {
+  background: #3a3a4a;
+  color: #ffd700;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+}
+
+.logout-btn i {
+  font-size: 0.9em;
+}
+
+/* Hide elements when .hidden is applied */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 600px) {
+  .auth-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .user-badge,
+  .logout-btn {
+    font-size: 0.85em;
+    padding: 6px 10px;
+  }
+}
+
+
+
+
+
+/* ==========================================================================
+   DEX STYLING
+   ========================================================================== */
+.dex-tabs { display: flex; gap: .5rem; margin-bottom: .75rem; flex-wrap: wrap; }
+.dex-tab { padding: .4rem .7rem; border: 1px solid var(--line, #ccc); background: transparent; border-radius: .5rem; cursor: pointer; }
+.dex-tab.active { font-weight: 600; outline: 2px solid var(--accent, #888); }
+
+.dex-panel { display: block; }
+
+.dex-form { display: grid; gap: .75rem; max-width: 560px; }
+.dex-label { display: grid; gap: .25rem; }
+.dex-label-text { font-size: .9rem; opacity: .8; }
+
+.dex-actions { display: flex; gap: .5rem; }
+
+.dex-list { display: grid; gap: .25rem; }
+.dex-list-head, .dex-row { display: grid; grid-template-columns: 1.2fr .8fr 1.2fr; gap: .5rem; align-items: center; }
+.dex-list-head { font-weight: 600; opacity: .8; padding: .25rem 0; }
+.dex-row { padding: .35rem 0; border-bottom: 1px solid var(--line, #e5e5e5); }
 
 
 
