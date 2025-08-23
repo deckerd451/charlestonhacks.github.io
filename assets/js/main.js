@@ -2,8 +2,9 @@ import { supabaseClient as supabase } from './supabaseClient.js';
 import { showNotification } from './utils.js';
 import { initDocsModal } from './docsModal.js';
 import { loadLeaderboard } from './leaderboard.js';
+import { generateUserCardHTML } from './cardRenderer.js';
 
-// 🔑 Initialize Magic Link login & auth state
+// 1. Initialize Magic Link login & auth state
 async function initAuth() {
   const loginForm = document.getElementById("login-form");
   const loginSection = document.getElementById("login-section");
@@ -22,7 +23,7 @@ async function initAuth() {
 
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: window.location.href }
+        options: { emailRedirectTo: window.location.href },
       });
 
       if (error) {
@@ -82,15 +83,15 @@ async function initAuth() {
   }
 }
 
-// 📑 Initialize tab switching
+// 2. Initialize tab switching
 function initTabs() {
   const buttons = document.querySelectorAll(".tab-button");
   const panes = document.querySelectorAll(".tab-content-pane");
 
-  buttons.forEach(btn => {
+  buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      buttons.forEach(b => b.classList.remove("active"));
-      panes.forEach(p => p.classList.remove("active-tab-pane"));
+      buttons.forEach((b) => b.classList.remove("active"));
+      panes.forEach((p) => p.classList.remove("active-tab-pane"));
 
       btn.classList.add("active");
       const target = btn.dataset.tab;
@@ -100,8 +101,8 @@ function initTabs() {
   });
 }
 
-// 🔎 Render search results into cards
-function renderResults(data) {
+// 3. Render search or team results into cards
+async function renderResults(data) {
   const cardContainer = document.getElementById("cardContainer");
   const noResults = document.getElementById("noResults");
   const matchNotification = document.getElementById("matchNotification");
@@ -118,56 +119,68 @@ function renderResults(data) {
   matchNotification.textContent = `Found ${data.length} result(s).`;
   matchNotification.style.display = "block";
 
-  data.forEach(person => {
-    const card = document.createElement("div");
-    card.className = "profile-card";
-    card.innerHTML = `
-      <img src="${person.image_url || 'images/default-avatar.png'}" 
-           alt="${person.name}" 
-           class="profile-avatar"/>
-      <h3>${person.name || "Unnamed User"}</h3>
-      <p><strong>Skills:</strong> ${person.skills || "Not specified"}</p>
-      <p><strong>Interests:</strong> ${person.interests || "Not specified"}</p>
-      <p><strong>Availability:</strong> ${person.availability || "Unknown"}</p>
-      <p><strong>Bio:</strong> ${person.bio || ""}</p>
-    `;
+  for (const person of data) {
+    try {
+      const cardHTML = await generateUserCardHTML(person);
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = cardHTML.trim();
+      const cardEl = wrapper.firstElementChild;
 
-    // 👇 Clicking a card opens endorse modal
-    card.addEventListener("click", () => openEndorseModal(person));
+      // Open modal on card click (excluding clicks on endorse buttons)
+      cardEl.addEventListener("click", () => openEndorseModal(person));
 
-    cardContainer.appendChild(card);
-  });
+      // Attach endorse button handlers (direct endorse via plus button)
+      cardEl.querySelectorAll(".endorse-btn").forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const userId = btn.getAttribute("data-user-id");
+          const skill = btn.getAttribute("data-skill");
+          await endorseSkill(userId, skill);
+        });
+      });
+
+      cardContainer.appendChild(cardEl);
+    } catch (err) {
+      console.error("[RenderResults] Error rendering card:", err);
+    }
+  }
 }
 
-// 🔎 Search logic (skills + name)
+// 4. Search logic (multi‑skill search or name search)
 function initSearch() {
   const findTeamBtn = document.getElementById("find-team-btn");
   const searchNameBtn = document.getElementById("search-name-btn");
 
-// Multi-skill AND search across skills[] OR interests[]
-if (findTeamBtn) {
-  findTeamBtn.addEventListener("click", async () => {
-    const rawInput = document.getElementById("teamSkillsInput").value.trim();
-    if (!rawInput) return;
+  // Multi‑skill search across skills[] OR interests[]
+  if (findTeamBtn) {
+    findTeamBtn.addEventListener("click", async () => {
+      const rawInput = document.getElementById("teamSkillsInput").value.trim();
+      if (!rawInput) return;
 
-    const skillsArray = rawInput.split(",").map(s => s.trim()).filter(Boolean);
+      const skillsArray = rawInput
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
 
-    const { data, error } = await supabase
-      .from("community")
-      .select("*")
-      .or(
-        `skills.cs.{${skillsArray.join(",")}},interests.cs.{${skillsArray.join(",")}}`
-      );
+      const { data, error } = await supabase
+        .from("community")
+        .select("*")
+        .or(
+          `skills.cs.{${skillsArray.join(",")}},interests.cs.{${skillsArray.join(
+            ","
+          )}}`
+        );
 
-    if (error) {
-      console.error("Supabase multi-skill search error:", error);
-      return;
-    }
+      if (error) {
+        console.error("[Search] Supabase multi-skill search error:", error);
+        return;
+      }
 
-    renderResults(data);
-  });
-}
- // Name search
+      await renderResults(data);
+    });
+  }
+
+  // Name search
   if (searchNameBtn) {
     searchNameBtn.addEventListener("click", async () => {
       const name = document.getElementById("nameInput").value.trim();
@@ -179,29 +192,33 @@ if (findTeamBtn) {
         .ilike("name", `%${name}%`);
 
       if (error) {
-        console.error("Supabase name search error:", error);
+        console.error("[Search] Supabase name search error:", error);
         return;
       }
-      renderResults(data);
+      await renderResults(data);
     });
   }
 }
 
-// ...imports and other functions above...
+// 5. Endorsement modal logic
 function openEndorseModal(person) {
   const modal = document.getElementById("endorseSkillModal");
   const list = document.getElementById("endorse-skill-list");
+
   if (!modal || !list) return;
 
   list.innerHTML = "";
 
-  // Coerce skills & interests into arrays (handles strings, arrays or null)
+  // Helper to normalise skill strings or arrays
   const toArray = (value) => {
     if (!value) return [];
-    if (Array.isArray(value)) {
-      return value.filter(Boolean).map(s => s.toString().trim());
-    }
-    return value.toString().split(",").map(s => s.trim()).filter(Boolean);
+    if (Array.isArray(value))
+      return value.filter(Boolean).map((s) => s.toString().trim());
+    return value
+      .toString()
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
   };
 
   const skills = [...toArray(person.skills), ...toArray(person.interests)];
@@ -209,7 +226,7 @@ function openEndorseModal(person) {
   if (skills.length === 0) {
     list.innerHTML = `<p>No skills/interests listed for ${person.name}.</p>`;
   } else {
-    skills.forEach(skill => {
+    skills.forEach((skill) => {
       const item = document.createElement("div");
       item.className = "skill-endorse-item";
       item.innerHTML = `
@@ -220,18 +237,100 @@ function openEndorseModal(person) {
     });
   }
 
+  // Attach handlers to the modal’s buttons
+  list.querySelectorAll(".endorse-specific-skill-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const skill = btn.previousElementSibling.textContent.trim();
+      await endorseSkill(person.id, skill);
+      modal.style.display = "none";
+    });
+  });
+
   modal.style.display = "block";
+
   const closeBtn = modal.querySelector(".close-button");
-  if (closeBtn) closeBtn.onclick = () => (modal.style.display = "none");
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+    };
+  }
+
   window.onclick = (event) => {
-    if (event.target === modal) modal.style.display = "none";
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
   };
 }
 
+// 6. Create or update an endorsement record
+async function endorseSkill(endorseeId, skill) {
+  try {
+    // Check if an endorsement already exists
+    const { data: existing, error: selectError } = await supabase
+      .from("endorsements")
+      .select("count")
+      .eq("endorsee_id", endorseeId)
+      .eq("skill", skill)
+      .maybeSingle();
+
+    if (selectError && selectError.code && selectError.code !== "PGRST116") {
+      console.warn("[Endorse] select error:", selectError);
+    }
+
+    if (existing) {
+      const newCount = (existing.count || 0) + 1;
+      const { error: updateError } = await supabase
+        .from("endorsements")
+        .update({ count: newCount })
+        .eq("endorsee_id", endorseeId)
+        .eq("skill", skill);
+      if (updateError) throw updateError;
+    } else {
+      const { error: insertError } = await supabase
+        .from("endorsements")
+        .insert({ endorsee_id: endorseeId, skill: skill, count: 1 });
+      if (insertError) throw insertError;
+    }
+
+    // Fetch updated count and update UI
+    const { data: updated } = await supabase
+      .from("endorsements")
+      .select("count")
+      .eq("endorsee_id", endorseeId)
+      .eq("skill", skill)
+      .single();
+
+    updateCardCount(endorseeId, skill, updated?.count || 1);
+
+    // Refresh leaderboard
+    await loadLeaderboard();
+    showNotification(`Endorsed ${skill}!`, "success");
+  } catch (err) {
+    console.error("[Endorse] Error:", err);
+    showNotification("Failed to endorse.", "error");
+  }
+}
+
+// Update endorsement count on all visible cards for a user and skill
+function updateCardCount(endorseeId, skill, newCount) {
+  document
+    .querySelectorAll(
+      `.endorse-btn[data-user-id="${endorseeId}"][data-skill="${skill}"]`
+    )
+    .forEach((btn) => {
+      const countSpan = btn.parentElement.querySelector(".endorsement-count");
+      if (countSpan) {
+        countSpan.textContent = newCount;
+      }
+    });
+}
+
+// 7. Team builder – build a best‑match team
 async function buildBestTeam() {
   const skillsInput = document.getElementById("team-skills-input");
   const teamSizeInput = document.getElementById("teamSize");
   const container = document.getElementById("bestTeamContainer");
+
   if (!skillsInput || !container) {
     console.warn("[TeamBuilder] Required elements not found.");
     return;
@@ -243,56 +342,84 @@ async function buildBestTeam() {
     return;
   }
 
-  const skillsArray = raw.split(",").map(s => s.trim()).filter(Boolean);
-  const teamSize = teamSizeInput ? parseInt(teamSizeInput.value, 10) || 3 : 3;
+  const skillsArray = raw.split(",").map((s) => s.trim()).filter(Boolean);
+  const teamSize = teamSizeInput
+    ? parseInt(teamSizeInput.value, 10) || 3
+    : 3;
 
-  const { data, error } = await supabase
-    .from("community")
-    .select("*")
-    .or(`skills.cs.{${skillsArray.join(",")}},interests.cs.{${skillsArray.join(",")}}`);
+  try {
+    const { data, error } = await supabase
+      .from("community")
+      .select("*")
+      .or(
+        `skills.cs.{${skillsArray.join(
+          ","
+        )}},interests.cs.{${skillsArray.join(",")}}`
+      );
 
-  if (error) {
-    console.error("[TeamBuilder] Supabase error:", error);
-    showNotification("Error fetching team members.", "error");
-    return;
+    if (error) {
+      console.error("[TeamBuilder] Supabase error:", error);
+      showNotification("Error fetching team members.", "error");
+      return;
+    }
+
+    const results = (data || []).slice(0, teamSize);
+
+    container.innerHTML = "";
+    if (results.length === 0) {
+      container.innerHTML = "<p>No matching team members found.</p>";
+      return;
+    }
+
+    for (const person of results) {
+      try {
+        const cardHTML = await generateUserCardHTML(person);
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = cardHTML.trim();
+        const cardEl = wrapper.firstElementChild;
+
+        // Open endorse modal on card click
+        cardEl.addEventListener("click", () => openEndorseModal(person));
+
+        // Attach endorse button handlers
+        cardEl.querySelectorAll(".endorse-btn").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const userId = btn.getAttribute("data-user-id");
+            const skill = btn.getAttribute("data-skill");
+            await endorseSkill(userId, skill);
+          });
+        });
+
+        container.appendChild(cardEl);
+      } catch (err) {
+      console.error("[TeamBuilder] Error rendering team card:", err);
+      }
+    }
+  } catch (err) {
+    console.error("[TeamBuilder] Unexpected error:", err);
+    showNotification("Unexpected error building team.", "error");
   }
-
-  const results = (data || []).slice(0, teamSize);
-  container.innerHTML = "";
-  if (results.length === 0) {
-    container.innerHTML = "<p>No matching team members found.</p>";
-    return;
-  }
-
-  results.forEach(person => {
-    const card = document.createElement("div");
-    card.className = "profile-card";
-    card.innerHTML = `
-      <img src="${person.image_url || 'images/default-avatar.png'}"
-           alt="${person.name || ''}"
-           class="profile-avatar"/>
-      <h3>${person.name || 'Unnamed User'}</h3>
-      <p><strong>Skills:</strong> ${person.skills || 'Not specified'}</p>
-      <p><strong>Interests:</strong> ${person.interests || 'Not specified'}</p>
-      <p><strong>Availability:</strong> ${person.availability || 'Unknown'}</p>
-      <p><strong>Bio:</strong> ${person.bio || ''}</p>
-    `;
-    container.appendChild(card);
-  });
 }
 
-// Make buildBestTeam globally available for inline HTML handlers
+// Expose buildBestTeam globally so inline onclick works
 globalThis.buildBestTeam = buildBestTeam;
 
+// 8. App bootstrap
 document.addEventListener("DOMContentLoaded", async () => {
+  console.log("[Main] App Initialized");
   await initAuth();
   initTabs();
 
-  // Initialise docs modal if either ID exists
-  if (document.getElementById("docsModal") || document.getElementById("docs-modal")) {
+  // Initialize docs modal if present
+  if (
+    document.getElementById("docsModal") ||
+    document.getElementById("docs-modal")
+  ) {
     initDocsModal();
   }
 
+  // Load leaderboard and attach search listeners
   loadLeaderboard();
   initSearch();
 });
