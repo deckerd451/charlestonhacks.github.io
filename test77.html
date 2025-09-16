@@ -327,18 +327,16 @@
     }
 
     .modal-content {
-    position: absolute; /* or fixed */
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #2a2a3a;
-    padding: 25px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
+        background-color: #2a2a3a;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 25px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+        max-width: 500px; /* Max width for larger screens */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        position: relative;
+    }
 
     .modal-content h3 {
         color: var(--primary-color);
