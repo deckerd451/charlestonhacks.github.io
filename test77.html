@@ -5,43 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Innovation Engine - Team Builder</title>
     <meta name="description" content="Build your perfect team by selecting required skills">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Innovation Engine - Team Builder</title>
-    <meta name="description" content="Build your perfect team by selecting required skills">
     
-    <!-- Font Awesome for Icons -->
+    <!-- External Resources -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <!-- Include Inter font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    
-    
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <!-- Where the background image is referenced -->
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        /* Reset and General Styles */
+        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-       
 
         body {
-           position: relative;
-        background-color: #121212;
-        color: #ffffff;
-        font-family: 'Inter', Arial, sans-serif; /* Use Inter font */
-        overflow-x: hidden;
-        text-align: center;
-        line-height: 1.6;
+            position: relative;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Inter', Arial, sans-serif;
+            overflow-x: hidden;
+            text-align: center;
+            line-height: 1.6;
         }
 
+        /* Layout Components */
         .panel {
             display: flex;
             flex-direction: column;
@@ -51,13 +39,24 @@
             padding: 20px;
         }
 
-        .panel img {
-            max-width: 100%;
-            height: auto;
-            margin: 0 auto;
-            transition: transform 0.5s ease, opacity 0.5s ease;
+        .input-container {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        /* Typography */
         h1 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
@@ -70,19 +69,52 @@
             max-width: 600px;
         }
 
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
+        /* Form Elements */
+        .form-input {
+            width: 100%;
+            max-width: 250px;
+            height: 40px;
+            font-size: 16px;
+            padding: 10px;
+            border: 2px solid #FFD700;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #2c2c2c;
+            color: #ffffff;
         }
 
+        .form-button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #FFD700;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .form-button:hover {
+            background-color: #FFC000;
+        }
+
+        .form-label {
+            color: #FFD700;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 16px;
+        }
+
+        /* Team Member Cards */
         .team-member-card {
             position: relative;
             width: 150px;
             transition: transform 0.3s ease;
             cursor: pointer;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 15px;
         }
 
         .team-member-card:hover {
@@ -96,14 +128,22 @@
             border: 3px solid #FFD700;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 8px;
         }
 
         .member-name {
-            margin-top: 8px;
+            margin: 8px 0 5px 0;
             font-weight: bold;
             color: #ffffff;
         }
 
+        .member-email a {
+            color: #ffffff;
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        /* Skill Tags */
         .skill-tags {
             display: flex;
             flex-wrap: wrap;
@@ -120,108 +160,57 @@
             font-size: 0.7rem;
         }
 
-        .match-notification {
-            display: none;
+        /* Notifications */
+        .notification {
             margin: 20px 0;
             padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .success-notification {
             background-color: rgba(0, 255, 0, 0.1);
             border: 1px solid #00FF00;
-            border-radius: 8px;
             color: #00FF00;
         }
 
-        .match-notification a {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 8px 16px;
-            background-color: #00FF00;
-            color: #121212;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .match-notification a:hover {
-            background-color: #00CC00;
-        }
-
-        .input-container {
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .input-container label {
-            display: block;
-            margin-bottom: 8px;
-            text-align: left;
-            color: #FFD700;
-        }
-
-        .input-container input {
-            padding: 12px;
-            font-size: 16px;
-            border: 2px solid #FFD700;
-            background-color: #2c2c2c;
-            color: #ffffff;
-            border-radius: 5px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .input-container button {
-            padding: 12px 24px;
-            font-size: 16px;
-            background-color: #FFD700;
-            color: #121212;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .input-container button:hover {
-            background-color: #FFC000;
-        }
-
-        .no-results {
-            margin: 20px 0;
-            padding: 15px;
+        .error-notification {
             background-color: rgba(255, 0, 0, 0.1);
             border: 1px solid #FF0000;
-            border-radius: 8px;
             color: #FF0000;
+        }
+
+        /* Autocomplete */
+        .autocomplete-box {
+            position: absolute;
+            z-index: 1000;
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
             display: none;
         }
 
-        .selected-skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 15px 0;
-            justify-content: center;
-        }
-
-        .selected-skill {
-            background-color: rgba(255, 215, 0, 0.3);
-            color: #FFD700;
-            padding: 5px 10px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-        }
-
-        .selected-skill span {
-            margin-right: 5px;
-        }
-
-        .remove-skill {
+        .autocomplete-item {
+            padding: 5px;
             cursor: pointer;
-            color: #FF6B6B;
-            margin-left: 5px;
         }
 
+        .autocomplete-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Preview Image */
+        .image-preview {
+            display: none;
+            max-width: 120px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 2px solid #FFD700;
+        }
+
+        /* Footer */
         footer {
             padding: 20px;
             margin-top: 40px;
@@ -245,6 +234,7 @@
             color: #FFC000;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .panel {
                 padding: 15px;
@@ -268,769 +258,509 @@
             }
         }
 
-        /* Focus states for accessibility */
+        /* Accessibility */
         input:focus, button:focus, a:focus {
             outline: 2px solid #00BFFF;
             outline-offset: 2px;
         }
     </style>
-
-
 </head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6NDKG07DY6');
-</script>
-    
 
 <body>
-    <body class="two-card-page">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <div id="main">
         <article class="post featured">
             <header class="major">
                 <div class="panel">
+                    <!-- Registration Section -->
+                    <section id="registration-section">
+                        <br>
+                        <h1>Create Your Profile</h1>
 
-                      <!-- Matchmaking Form -->
-    <section id="matchmaking-section">
-         <br>
-        <h1>Create Your Profile</h1>
+                        <form id="skills-form">
+                            <input type="text" id="first-name" placeholder="First Name" required class="form-input">
+                            <input type="text" id="last-name" placeholder="Last Name" required class="form-input">
+                            <input type="email" name="_replyto" id="email" placeholder="Email" required class="form-input">
+                            
+                            <label for="skills-input" class="form-label">
+                                Professional Skills<br>(Add comma after each skill)
+                            </label>
+                            <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" 
+                                   required autocomplete="off" class="form-input">
+                            <div id="autocomplete-skills-input" class="autocomplete-box"></div>
+                            
+                            <label for="photo-input" class="form-label">Upload Your Photo</label>
+                            <input type="file" id="photo-input" accept="image/*" required class="form-input">
+                            <img id="preview" src="#" alt="Image Preview" class="image-preview">
+                            
+                            <br>
+                            <button type="submit" class="form-button">
+                                Register & Subscribe to Mailing List
+                            </button>
+                        </form>
 
-        <form id="skills-form" >
-          <input type="text" id="first-name" placeholder="First Name" required
-                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
-                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
-                        background-color: #2c2c2c; color: #ffffff;">
-          
-          <input type="text" id="last-name" placeholder="Last Name" required
-                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
-                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
-                        background-color: #2c2c2c; color: #ffffff;">
-          
-          <input type="email" name="_replyto" id="email" placeholder="Email" required
-                 style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
-                        border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
-                        background-color: #2c2c2c; color: #ffffff;">
+                        <p id="success-message" class="notification success-notification">
+                            Added Successfully!
+                        </p>
+                    </section>
+
+                    <br>
+
+                    <!-- Individual Search Section -->
+                    <section id="individual-search">
+                        <h1>Individual Search</h1>
+                        <p class="instructions">
+                            Enter the key skills you're looking for in an individual. 
+                            Separate multiple skills with commas to narrow the search
+                        </p>
+
+                        <div class="input-container">
+                            <label for="teamSkillsInput" class="form-label">Required Skills</label>
+                            <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" 
+                                   required autocomplete="off" class="form-input">
+                            <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+
+                            <button id="find-team-btn" class="form-button">Get People</button>
+                        </div>
+
+                        <div id="noResults" class="notification error-notification">
+                            No team members found with the selected skills. Try different skills or broader terms.
+                        </div>
+
+                        <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members">
+                        </div>
+
+                        <div id="matchNotification" class="notification success-notification">
+                            <p>You have found team members with matching skills!</p>
+                        </div>
+                    </section>
+
+                    <!-- Team Builder Section -->
+                    <section id="team-builder">
+                        <h1>Team Builder</h1>
+                        <div class="input-container">
+                            <p class="instructions">
+                                Let's build your team. Enter the main skill required for each team member and the total number of people needed
+                            </p>
+                            
+                            <label for="team-skills-input" class="form-label">Required Skills</label>
+                            <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python"
+                                   autocomplete="off" class="form-input">
+                            <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
+
+                            <label for="teamSize" class="form-label">Team Size</label>
+                            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" class="form-input" 
+                                   style="width: 80px; height: 35px;">
+
+                            <button onclick="buildBestTeam()" class="form-button">Build Team</button>
+                        </div>
+                        
+                        <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team">
+                        </div>
+                    </section>
+
+                    <!-- User List Display -->
+                    <div id="user-list" style="margin-top: 20px;">
+                        <ul id="skills-entries"></ul>
+                    </div>
+                </div>
+            </header>
+        </article>
+    </div>
+
+    <script>
+        // Configuration
+        const SUPABASE_CONFIG = {
+            url: 'https://hvmotpzhliufzomewzfl.supabase.co',
+            key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'
+        };
+
+        const supabaseClient = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+        let dynamicSkills = [];
+
+        // Utility Functions
+        function showNotification(elementId, show = true) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        function hideAllNotifications() {
+            ['noResults', 'matchNotification', 'success-message'].forEach(id => {
+                showNotification(id, false);
+            });
+        }
+
+        function getCombinations(arr, k) {
+            const results = [];
+            function combine(start, combo) {
+                if (combo.length === k) {
+                    results.push([...combo]);
+                    return;
+                }
+                for (let i = start; i < arr.length; i++) {
+                    combine(i + 1, [...combo, arr[i]]);
+                }
+            }
+            combine(0, []);
+            return results;
+        }
+
+        function isFuzzyMatch(userSkill, requiredSkill) {
+            userSkill = userSkill.toLowerCase();
+            requiredSkill = requiredSkill.toLowerCase();
+            return userSkill.includes(requiredSkill) || 
+                   requiredSkill.includes(userSkill) || 
+                   userSkill.localeCompare(requiredSkill, undefined, { sensitivity: 'base' }) === 0;
+        }
+
+        function renderUserCard(user, showMatching = false, matchingSkills = []) {
+            const skillsHtml = user.skills.split(',')
+                .map(skill => `<span class="skill-tag">${skill.trim()}</span>`)
+                .join(' ');
             
-          <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Professional Skills <br> (Add comma after each skill)</label>
-          <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required
-                 autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
-                                          padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
-                                          margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff;">
-          <div id="autocomplete-skills-input" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; border:1px solid #ccc;"></div>
-          
-          <label for="photo-input" style="color: #FFD700; margin-bottom: 8px; display: block;">Upload Your Photo</label>
-<input type="file" id="photo-input" accept="image/*" required
-       style="width:100%; max-width:250px; margin-bottom:10px;
-              border:2px solid #FFD700; padding:10px; border-radius:5px;
-              background-color: #2c2c2c; color: #ffffff;">
+            const matchingHtml = showMatching ? 
+                `<div class="matching-skills" style="margin-top:5px;">
+                    <strong>Matching:</strong> ${matchingSkills.join(', ')}
+                </div>` : '';
 
-<!-- Image Preview Element -->
-<img id="preview" src="#" alt="Image Preview" style="display: none; max-width: 120px; margin-top: 10px; border-radius: 5px; border: 2px solid #FFD700;" />
+            return `
+                <div class="team-member-card">
+                    ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}">` : ''}
+                    <div class="member-name">${user.first_name} ${user.last_name}</div>
+                    <div class="member-email" style="margin-top:5px;">
+                        <a href="mailto:${user.email}">${user.email}</a>
+                    </div>
+                    <div class="skill-tags" style="margin-top:5px;">
+                        <strong>Skills:</strong> ${skillsHtml}
+                    </div>
+                    ${matchingHtml}
+                </div>
+            `;
+        }
 
-<script>
-  const input = document.getElementById('photo-input');
-  const preview = document.getElementById('preview');
+        // Autocomplete System
+        async function fetchUniqueSkills() {
+            try {
+                const { data, error } = await supabaseClient.from('skills').select('skills');
+                if (error) throw error;
 
-  input.addEventListener('change', function () {
-    const file = this.files[0];
-    if (file) {
-      const reader = new FileReader();
+                dynamicSkills = [...new Set(
+                    data.flatMap(item =>
+                        item.skills.split(',').map(skill => skill.trim().toLowerCase())
+                    )
+                )];
+            } catch (error) {
+                console.error('Error fetching skills:', error);
+                dynamicSkills = [];
+            }
+        }
 
-      reader.onload = function (e) {
-        preview.setAttribute('src', e.target.result);
-        preview.style.display = 'block';
-      };
+        function setupAutocomplete(inputId, boxId) {
+            const input = document.getElementById(inputId);
+            const box = document.getElementById(boxId);
 
-      reader.readAsDataURL(file);
-    }
-  });
-</script>
-          
-          <br>
-          <button type="submit" style="width: 160px; height: 40px; font-size: 16px;
-                             background-color: #FFD700; color: black; border: none;
-                             border-radius: 5px; cursor: pointer;">
-  Register & Subscribe to Mailing List
-</button>
-      </form>
+            if (!input || !box) return;
 
-<p id="success-message" style="display:none; color: green;">Added Successfully!</p>
-<script>
-  document.getElementById("skills-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-  
-      var formData = new FormData(this);
-  
-      fetch("/register", {
-          method: "POST",
-          body: formData
-      }).then(response => response.text())
-        .then(data => {
-            document.getElementById("message").innerText = data;
-        }).catch(error => {
-            document.getElementById("message").innerText = "Error: " + error;
-        });
-  });
-  </script>
+            input.addEventListener('input', () => {
+                const userInput = input.value.toLowerCase().trim();
+                const lastWord = userInput.split(',').pop().trim().toLowerCase();
 
-<script>
-  const supabaseUrl = 'https://hvmotpzhliufzomewzfl.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'; // keep this secure in production!
-  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+                box.innerHTML = '';
 
-  document.getElementById("skills-form").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent default form submission
-    let form = this;
+                if (!lastWord || dynamicSkills.length === 0) {
+                    box.style.display = 'none';
+                    return;
+                }
 
-    // Capture form field values
-    const fname = document.getElementById("first-name").value;
-    const lname = document.getElementById("last-name").value;
-    const email = document.getElementById("email").value;
+                const matches = dynamicSkills
+                    .filter(skill => skill.includes(lastWord))
+                    .slice(0, 10);
 
-    // ✅ 1. Submit to Formspree
-    fetch(form.action, {
-      method: form.method,
-      body: new FormData(form),
-      headers: { "Accept": "application/json" }
-    })
-    .then(response => {
-      if (response.ok) {
-        document.getElementById("success-message").style.display = "block";
-        form.reset();
-      } else {
-        alert("Something went wrong with Formspree. Please try again.");
-      }
-    })
-    .catch(error => alert("Error: " + error));
+                if (matches.length === 0) {
+                    box.style.display = 'none';
+                    return;
+                }
 
-    // ✅ 2. Submit to Mailchimp in a new tab
-    const mailchimpForm = document.createElement("form");
-    mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
-    mailchimpForm.method = "POST";
-    mailchimpForm.target = "_blank";
+                matches.forEach(skill => {
+                    const item = document.createElement('div');
+                    item.textContent = skill;
+                    item.className = 'autocomplete-item';
 
-    mailchimpForm.innerHTML = `
-      <input type="hidden" name="FNAME" value="${fname}">
-      <input type="hidden" name="LNAME" value="${lname}">
-      <input type="hidden" name="EMAIL" value="${email}">
-    `;
+                    item.onclick = () => {
+                        const parts = input.value.split(',');
+                        parts.pop();
+                        parts.push(skill);
+                        input.value = parts.map(p => p.trim()).join(', ');
+                        box.innerHTML = '';
+                        box.style.display = 'none';
+                    };
 
-    document.body.appendChild(mailchimpForm);
-    mailchimpForm.submit();
-    document.body.removeChild(mailchimpForm); // cleanup
-  });
-</script>
+                    box.appendChild(item);
+                });
 
-    <br>
-    
+                const rect = input.getBoundingClientRect();
+                box.style.left = `${rect.left + window.scrollX}px`;
+                box.style.top = `${rect.bottom + window.scrollY}px`;
+                box.style.width = `${rect.width}px`;
+                box.style.display = 'block';
+            });
 
-<div id="user-list" style="margin-top: 20px;">
-    
-    <ul id="skills-entries"></ul>
-</div>
+            document.addEventListener('click', (e) => {
+                if (!box.contains(e.target) && e.target !== input) {
+                    box.style.display = 'none';
+                }
+            });
+        }
 
-<script>
-    // Helper: Generate combinations of users of size k
-function getCombinations(arr, k) {
-  const results = [];
-  function combine(start, combo) {
-    if (combo.length === k) {
-      results.push([...combo]);
-      return;
-    }
-    for (let i = start; i < arr.length; i++) {
-      combine(i + 1, [...combo, arr[i]]);
-    }
-  }
-  combine(0, []);
-  return results;
-}
+        // Main Functions
+        async function findMatchingUsers() {
+            const skillsInput = document.getElementById('teamSkillsInput').value.trim();
+            const cardContainer = document.getElementById('cardContainer');
+            
+            hideAllNotifications();
+            cardContainer.innerHTML = '';
 
+            if (!skillsInput) {
+                alert('Please enter at least one skill.');
+                return;
+            }
 
+            const requiredSkills = skillsInput.toLowerCase().split(',').map(skill => skill.trim());
 
+            try {
+                const { data, error } = await supabaseClient.from('skills').select('*');
 
-  document.addEventListener('DOMContentLoaded', async () => {
-  
-  let dynamicSkills = [];
+                if (error) {
+                    showNotification('noResults');
+                    return;
+                }
 
-  async function fetchUniqueSkills() {
-    try {
-      const { data, error } = await supabaseClient.from('skills').select('skills');
-      if (error) throw error;
+                const matchedUsers = data.filter(user => {
+                    const userSkills = user.skills.toLowerCase().split(',').map(s => s.trim());
+                    return requiredSkills.every(skill => 
+                        userSkills.some(userSkill => isFuzzyMatch(userSkill, skill))
+                    );
+                });
 
-      dynamicSkills = [...new Set(
-        data.flatMap(item =>
-          item.skills.split(',').map(skill => skill.trim().toLowerCase())
-        )
-      )];
+                if (matchedUsers.length === 0) {
+                    showNotification('noResults');
+                } else {
+                    showNotification('matchNotification');
+                    cardContainer.innerHTML = matchedUsers.map(user => renderUserCard(user)).join('');
+                }
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                showNotification('noResults');
+            }
+        }
 
-      console.log("Skills fetched:", dynamicSkills);
-    } catch (error) {
-      console.error('Error fetching skills:', error);
-      dynamicSkills = []; // fail-safe fallback
-    }
-  }
+        async function buildBestTeam() {
+            const skillInputRaw = document.getElementById('team-skills-input').value;
+            const teamSize = parseInt(document.getElementById('teamSize').value, 10);
+            const container = document.getElementById('bestTeamContainer');
 
-  function setupAutocomplete(inputId, boxId) {
-    const input = document.getElementById(inputId);
-    const box = document.getElementById(boxId);
+            container.innerHTML = '';
 
-input.addEventListener('input', () => {
-  const userInput = input.value.toLowerCase().trim();
-  const lastWord = userInput.split(',').pop().trim().toLowerCase();  // ✅ extract last typed skill
+            const skillInput = skillInputRaw
+                .toLowerCase()
+                .split(',')
+                .map(s => s.trim())
+                .filter(Boolean);
 
-  box.innerHTML = '';
+            if (skillInput.length === 0 || isNaN(teamSize) || teamSize < 1) {
+                alert('Please enter valid skills and a valid team size.');
+                return;
+            }
 
-  if (!lastWord || dynamicSkills.length === 0) {
-    box.style.display = 'none';
-    return;
-  }
+            try {
+                const { data: users, error } = await supabaseClient.from('skills').select('*');
 
-  const matches = dynamicSkills
-    .filter(skill => skill.includes(lastWord))  // ✅ filter using only the lastWord
-    .slice(0, 10);
+                if (error || !users) {
+                    container.innerHTML = '<p style="color:white;">Error loading users.</p>';
+                    return;
+                }
 
-  if (matches.length === 0) {
-    box.style.display = 'none';
-    return;
-  }
+                const matchedUsers = users
+                    .map(user => {
+                        if (!user.skills) return null;
 
-  matches.forEach(skill => {
-    const item = document.createElement('div');
-    item.textContent = skill;
-    item.style.padding = '5px';
-    item.style.cursor = 'pointer';
+                        const userSkills = user.skills
+                            .toLowerCase()
+                            .split(',')
+                            .map(s => s.trim())
+                            .filter(Boolean);
 
-    item.onclick = () => {
-  const parts = input.value.split(',');
-  parts.pop(); // remove partial word
-  parts.push(skill);
-  input.value = parts.map(p => p.trim()).join(', ');
-  box.innerHTML = '';
-  box.style.display = 'none';
-};
+                        const matchingSkills = skillInput.filter(skill =>
+                            userSkills.some(userSkill => isFuzzyMatch(userSkill, skill))
+                        );
 
-    box.appendChild(item);
-  });
+                        if (matchingSkills.length === 0) return null;
 
-  const rect = input.getBoundingClientRect();
-  box.style.left = `${rect.left + window.scrollX}px`;
-  box.style.top = `${rect.bottom + window.scrollY}px`;
-  box.style.width = `${rect.width}px`;
-  box.style.display = 'block';
-});
+                        return {
+                            ...user,
+                            matchingSkills,
+                            matchCount: matchingSkills.length
+                        };
+                    })
+                    .filter(Boolean)
+                    .sort((a, b) => b.matchCount - a.matchCount)
+                    .slice(0, teamSize);
 
-      
+                if (matchedUsers.length === 0) {
+                    container.innerHTML = '<p style="color:white;">No matching team members found.</p>';
+                    return;
+                }
 
-    document.addEventListener('click', (e) => {
-      if (!box.contains(e.target) && e.target !== input) {
-        box.style.display = 'none';
-      }
-    });
-  }
+                container.innerHTML = matchedUsers
+                    .map(user => renderUserCard(user, true, user.matchingSkills))
+                    .join('');
 
-  // Run setup
-  await fetchUniqueSkills();
-  setupAutocomplete('skills-input', 'autocomplete-skills-input');
-  setupAutocomplete('teamSkillsInput', 'autocomplete-team-skills');
-  setupAutocomplete('team-skills-input', 'autocomplete-teams-skills');
-});
+            } catch (error) {
+                console.error('Error building team:', error);
+                container.innerHTML = '<p style="color:white;">Error building team.</p>';
+            }
+        }
 
-
-
-    function getCombinations(arr, k) {
-  const results = [];
-  function combine(start, combo) {
-    if (combo.length === k) {
-      results.push([...combo]);
-      return;
-    }
-    for (let i = start; i < arr.length; i++) {
-      combine(i + 1, [...combo, arr[i]]);
-    }
-  }
-  combine(0, []);
-  return results;
-}
-
-async function buildBestTeam() {
-  const skillInputRaw = document.getElementById('team-skills-input').value;
-  const teamSize = parseInt(document.getElementById('teamSize').value, 10);
-  const container = document.getElementById('bestTeamContainer');
-
-  container.innerHTML = '';
-
-  const skillInput = skillInputRaw
-    .toLowerCase()
-    .split(',')
-    .map(s => s.trim())
-    .filter(Boolean);
-
-  if (skillInput.length === 0 || isNaN(teamSize) || teamSize < 1) {
-    alert('Please enter valid skills and a valid team size.');
-    return;
-  }
-
-  const { data: users, error } = await supabaseClient.from('skills').select('*');
-
-  if (error || !users) {
-    console.error('Error fetching users:', error);
-    container.innerHTML = '<p style="color:white;">Error loading users.</p>';
-    return;
-  }
-
-  // DEBUG: Log all users pulled
-  console.log('Fetched users:', users);
-
-  // Normalize user skills and match
-  const matchedUsers = users
-    .map(user => {
-      if (!user.skills) return null;
-
-      const userSkills = user.skills
-        .toLowerCase()
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean);
-
-      const matchingSkills = skillInput.filter(skill =>
-        userSkills.some(userSkill =>
-          userSkill.includes(skill) || skill.includes(userSkill)  // fuzzy-ish
-        )
-      );
-
-      if (matchingSkills.length === 0) return null;
-
-      return {
-        ...user,
-        matchingSkills,
-        matchCount: matchingSkills.length
-      };
-    })
-    .filter(Boolean)
-    .sort((a, b) => b.matchCount - a.matchCount)
-    .slice(0, teamSize);
-
-  if (matchedUsers.length === 0) {
-    container.innerHTML = '<p style="color:white;">No matching team members found.</p>';
-    return;
-  }
-
-  // Render team cards
-  matchedUsers.forEach(user => {
-    const allSkills = user.skills
-      .split(',')
-      .map(skill => `<span class="skill-tag">${skill.trim()}</span>`)
-      .join(' ');
-
-    container.innerHTML += `
-      <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:15px;">
-        ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
-        <div class="member-name">${user.first_name} ${user.last_name}</div>
-        <div class="member-email" style="margin-top:5px;">
-          <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none;">${user.email}</a>
-        </div>
-        <div class="skill-tags" style="margin-top:5px;">
-          <strong>Skills:</strong> ${allSkills}
-        </div>
-        <div class="matching-skills" style="margin-top:5px;">
-          <strong>Matching:</strong> ${user.matchingSkills.join(', ')}
-        </div>
-      </div>
-    `;
-  });
-
-  console.log('✅ Matching users displayed:', matchedUsers);
-}
-
-// Make function globally available
-window.buildBestTeam = buildBestTeam;
-
-       
-        // Handle registration form submission
-        document.getElementById('skills-form').addEventListener('submit', async (e) => {
+        // Form Handlers
+        async function handleRegistration(e) {
             e.preventDefault();
-    
+
             const firstName = document.getElementById('first-name').value;
             const lastName = document.getElementById('last-name').value;
             const email = document.getElementById('email').value;
             const skillsInputField = document.getElementById('skills-input');
-            skillsInputField.value = skillsInputField.value.replace(/,\s*$/, '');
-                        
-            const rawSkills = skillsInputField.value;
-            const skillsText = rawSkills
-    .split(',')
-    .map(s => s.trim())
-    .filter(Boolean)
-    .join(',')
-    .replace(/,+$/, '');
             const photoInput = document.getElementById('photo-input').files[0];
-    
+
+            // Clean up skills input
+            skillsInputField.value = skillsInputField.value.replace(/,\s*$/, '');
+            const skillsText = skillsInputField.value
+                .split(',')
+                .map(s => s.trim())
+                .filter(Boolean)
+                .join(',');
+
             if (!photoInput) {
                 alert('Please select an image.');
                 return;
             }
-    
-            const fileExt = photoInput.name.split('.').pop();
-            const fileName = `${Date.now()}.${fileExt}`;
-    
-            // Correct bucket name
-            const { error: uploadError } = await supabaseClient.storage
-                .from('hacksbucket')
-                .upload(fileName, photoInput);
-    
-            if (uploadError) {
-                alert('Upload error: ' + uploadError.message);
-                return;
+
+            try {
+                // Upload image
+                const fileExt = photoInput.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`;
+
+                const { error: uploadError } = await supabaseClient.storage
+                    .from('hacksbucket')
+                    .upload(fileName, photoInput);
+
+                if (uploadError) {
+                    alert('Upload error: ' + uploadError.message);
+                    return;
+                }
+
+                // Insert user data
+                const imageUrl = `${SUPABASE_CONFIG.url}/storage/v1/object/public/hacksbucket/${fileName}`;
+                const { error } = await supabaseClient.from('skills').insert({
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    skills: skillsText,
+                    image_url: imageUrl
+                });
+
+                if (error) {
+                    alert('Error inserting data: ' + error.message);
+                } else {
+                    showNotification('success-message');
+                    document.getElementById('skills-form').reset();
+                    document.getElementById('preview').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Registration failed. Please try again.');
             }
-    
-            // Correct URL referencing the proper bucket (hacksbucket)
-            const imageUrl = `${supabaseUrl}/storage/v1/object/public/hacksbucket/${fileName}`;
-            console.log("Skills to be saved:", `"${skillsText}"`);
-            const { error } = await supabaseClient.from('skills').insert({
-                first_name: firstName,
-                last_name: lastName,
-                email: email,
-                skills: skillsText,
-                image_url: imageUrl
+
+            // Handle external form submissions (Formspree, Mailchimp)
+            handleExternalSubmissions(firstName, lastName, email);
+        }
+
+        function handleExternalSubmissions(firstName, lastName, email) {
+            // Mailchimp submission
+            const mailchimpForm = document.createElement("form");
+            mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+            mailchimpForm.method = "POST";
+            mailchimpForm.target = "_blank";
+
+            mailchimpForm.innerHTML = `
+                <input type="hidden" name="FNAME" value="${firstName}">
+                <input type="hidden" name="LNAME" value="${lastName}">
+                <input type="hidden" name="EMAIL" value="${email}">
+            `;
+
+            document.body.appendChild(mailchimpForm);
+            mailchimpForm.submit();
+            document.body.removeChild(mailchimpForm);
+        }
+
+        function setupImagePreview() {
+            const input = document.getElementById('photo-input');
+            const preview = document.getElementById('preview');
+
+            if (!input || !preview) return;
+
+            input.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.setAttribute('src', e.target.result);
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
-    
-            if (error) {
-                alert('Error inserting data: ' + error.message);
-            } else {
-                alert('Registration successful!');
-                
-                document.getElementById('skills-form').reset();
-            }
-        });
-    
-        // Skill search input handler
-        document.getElementById('skills-input').addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                findMatchingUsers();
-            }
-        });
-    
-        async function searchUserByName() {
-    const nameInput = document.getElementById('nameInput').value.trim().toLowerCase();
-    const noResults = document.getElementById('noResults');
-    const cardContainer = document.getElementById('cardContainer');
-    const matchNotification = document.getElementById('matchNotification');
+        }
 
-    // Reset display
-    cardContainer.innerHTML = '';
-    noResults.style.display = 'none';
-    matchNotification.style.display = 'none';
-
-    if (!nameInput) {
-        alert('Please enter a name.');
-        return;
-    }
-
-    const { data, error } = await supabaseClient.from('skills').select('*');
-
-    if (error) {
-        noResults.style.display = 'block';
-        noResults.innerText = 'Error fetching user data.';
-        return;
-    }
-
-    // Filter based on first_name or last_name (case-insensitive)
-    const matchedUsers = data.filter(user => {
-        const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
-        return fullName.includes(nameInput) ||
-               (user.first_name && user.first_name.toLowerCase().includes(nameInput)) ||
-               (user.last_name && user.last_name.toLowerCase().includes(nameInput));
-    });
-
-    if (matchedUsers.length === 0) {
-        noResults.style.display = 'block';
-        noResults.innerText = 'No matching users found.';
-        return;
-    }
-
-    matchNotification.style.display = 'block';
-    //matchNotification.innerText = `${matchedUsers.length} user(s) found`;
-
-    // Render result cards in styled format
-    cardContainer.innerHTML = matchedUsers.map(user => `
-        <div class="team-member-card" style="
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 200px;
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchUniqueSkills();
             
+            // Setup autocomplete for all inputs
+            setupAutocomplete('skills-input', 'autocomplete-skills-input');
+            setupAutocomplete('teamSkillsInput', 'autocomplete-team-skills');
+            setupAutocomplete('team-skills-input', 'autocomplete-teams-skills');
             
-        ">
-            ${user.image_url ? `
-                <img src="${user.image_url}" alt="${user.first_name}" style="
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 8px;
-                    object-fit: cover;
-                    margin-bottom: 8px;
-                "/>` : ''}
+            // Setup form handlers
+            document.getElementById('skills-form').addEventListener('submit', handleRegistration);
+            document.getElementById('find-team-btn').addEventListener('click', findMatchingUsers);
+            
+            // Setup image preview
+            setupImagePreview();
+            
+            // Load initial data
+            loadAllSkills();
+        });
 
-            <div class="member-name" style="margin-bottom: 5px; font-weight: bold;">
-                ${user.first_name} ${user.last_name}
-            </div>
-
-            <div class="member-email" style="margin: 5px 0;">
-                <a href="mailto:${user.email}" style="color:#FFD700; text-decoration: none; word-break: break-word;">
-                    ${user.email}
-                </a>
-            </div>
-
-            <div class="skill-tags" style="font-size: 14px;">
-                <strong>Skills:</strong> 
-                ${user.skills?.split(',').map(skill => `<span class="skill-tag" style="
-                    display: inline-block;
-                    background: #FFD700;
-                    color: black;
-                    padding: 2px 6px;
-                    margin: 2px;
-                    border-radius: 4px;
-                    font-size: 12px;
-                ">${skill.trim()}</span>`).join('') || 'N/A'}
-            </div>
-        </div>
-    `).join('');
-}
-
-        // Click button handler (fixing onclick issue)
-        document.getElementById('find-team-btn').addEventListener('click', findMatchingUsers);
-    
-    async function findMatchingUsers() {
-    const skillsInput = document.getElementById('teamSkillsInput').value.trim();
-    const noResults = document.getElementById('noResults');
-    const cardContainer = document.getElementById('cardContainer');
-    const matchNotification = document.getElementById('matchNotification');
-
-    cardContainer.innerHTML = '';
-    noResults.style.display = 'none';
-    matchNotification.style.display = 'none';
-
-    if (!skillsInput) {
-        alert('Please enter at least one skill.');
-        return;
-    }
-
-    const requiredSkills = skillsInput.toLowerCase().split(',').map(skill => skill.trim());
-
-    const { data, error } = await supabaseClient.from('skills').select('*');
-
-    if (error) {
-        noResults.style.display = 'block';
-        noResults.innerText = 'Error fetching data.';
-        return;
-    }
-
-    // Function to check if a word is similar (fuzzy match)
-    function isFuzzyMatch(userSkill, requiredSkill) {
-        userSkill = userSkill.toLowerCase();
-        requiredSkill = requiredSkill.toLowerCase();
-        
-        return userSkill.includes(requiredSkill) || requiredSkill.includes(userSkill) || 
-               userSkill.localeCompare(requiredSkill, undefined, { sensitivity: 'base' }) === 0;
-    }
-
-    // Ensure user has ALL required skills (using fuzzy matching)
-    const matchedUsers = data.filter(user => {
-        const userSkills = user.skills.toLowerCase().split(',').map(s => s.trim());
-        return requiredSkills.every(skill => 
-            userSkills.some(userSkill => isFuzzyMatch(userSkill, skill))
-        ); // Must match all required skills using fuzzy logic
-    });
-
-    if (matchedUsers.length === 0) {
-        noResults.style.display = 'block';
-    } else {
-        matchNotification.style.display = 'block';
-
-        cardContainer.innerHTML = matchedUsers.map(user => `
-            <div class="team-member-card" style="
-                color:#ffffff; 
-                text-align:center; 
-                margin-bottom:20px; 
-                display:flex; 
-                flex-direction:column; 
-                align-items:center; 
-                width: 200px;">
-                
-                ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
-                
-                <div class="member-name" style="margin-bottom:5px;">${user.first_name} ${user.last_name}</div>
-                
-                <div class="member-email" style="margin: 5px 0;">
-                    <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none; display: inline-block; word-break: break-word;">
-                        ${user.email}
-                    </a>
-                </div>
-                
-                <div class="skill-tags">
-                    <strong>Skills:</strong> 
-                    ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
-                </div>
-            </div>
-        `).join('');
-    }
-}
-
-    
         async function loadAllSkills() {
-    const { data, error } = await supabaseClient.from('skills').select('*');
+            try {
+                const { data, error } = await supabaseClient.from('skills').select('*');
+                if (error) throw error;
 
-    const skillsList = document.getElementById('skills-entries');
-    skillsList.innerHTML = data.map(entry => `
-        <li style="color:#ffffff; list-style:none; margin-bottom:10px;">
-            ${entry.image_url ? `<img src="${entry.image_url}" width="50" height="50" style="border-radius:5px;object-fit:cover; vertical-align: middle; margin-right: 5px;">` : ''}
-            <strong>${entry.first_name} ${entry.last_name}</strong> - 
-            <a href="mailto:${entry.email}" style="color:#ffffff; text-decoration:none;">${entry.email}</a> - 
-            <strong>Skills:</strong> ${entry.skills}
-        </li>
-    `).join('');
+                const cardContainer = document.getElementById('cardContainer');
+                if (cardContainer && data) {
+                    cardContainer.innerHTML = data.map(user => renderUserCard(user)).join('');
+                }
+            } catch (error) {
+                console.error('Error loading skills:', error);
+            }
+        }
 
-    const cardContainer = document.getElementById('cardContainer');
-cardContainer.innerHTML = data.map(user => `
-    <div class="team-member-card" style="color:#ffffff; text-align:center; margin-bottom:15px;">
-        ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}" style="width:150px;height:150px;border-radius:8px;object-fit:cover;margin-bottom:8px;" />` : ''}
-        <div class="member-name">${user.first_name} ${user.last_name}</div>
-        <div class="member-email" style="display:block; margin-top:5px;">
-            <a href="mailto:${user.email}" style="color:#ffffff; text-decoration:none;">${user.email}</a>
-        </div>
-        <div class="skill-tags" style="text-align:center; margin-top:5px;">
-            <strong>Skills:</strong> 
-            ${user.skills.split(',').map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join(' ')}
-        </div>
-    </div>
-`).join('');
-}
-    
+        // Make functions globally available
+        window.buildBestTeam = buildBestTeam;
+        window.findMatchingUsers = findMatchingUsers;
     </script>
-  
-
-        <!-- Display Matches Here -->
-        <ul id="results-list"></ul>
-    </section>
-<br>
-                    <h1>Individual Search</h1>
-<p class="instructions">Enter the key skills you're looking for in an individual. 
-    Separate multiple skills with commas to narrow the search</p>
-
-    <div class="input-container" style="display: flex; flex-direction: column; align-items: center;">
-      
-     
-
-
-    
-
-<!-- Label and Input -->
-<label for="skills-input" style="font-size: 16px; margin-bottom: 5px; display: block; color: #FFD700;">Required Skills</label>
-<input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" required
-       autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
-                                  padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
-                                  margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff; display: block;">
-
-<!-- Suggestion Box -->
-<div id="autocomplete-team-skills" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; 
-     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
-
-
-
-
-
-
-      <button id="find-team-btn" onclick="findMatchingUsers()"
-              style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; 
-                     border-radius: 5px; cursor: pointer; margin-top: 10px; display: block;">
-         Get People
-      </button>
-     
-      <br>
-      <label for="skills-input" style="font-size: 16px; margin-bottom: 5px; display: block; color: #FFD700;">Search simply by First or Last name</label>
-
-<input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" required
-       autocomplete="off" style="width: 100%; max-width: 250px; height: 40px; font-size: 16px;
-                                 padding: 10px; border: 2px solid #FFD700; border-radius: 5px;
-                                 margin-bottom: 10px; background-color: #2c2c2c; color: #ffffff; display: block;">
-
-<!-- Suggestion Box -->
-<div id="autocomplete-name" style="position:absolute; z-index:1000; background:hsl(0, 0%, 100%); color:#000000; 
-     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
-
-<!-- Button -->
-<button id="search-name-btn" onclick="searchUserByName()"
-        style="width: 160px; height: 40px; font-size: 16px; background-color: #FFD700; color: black; border: none; 
-               border-radius: 5px; cursor: pointer; margin-top: 10px; display: block;">
-  Find by Name
-</button>
-
- <!-- 🔽 RESULTS SECTION (single instance of each) -->
-<div id="matchNotification" style="margin-bottom: 6px; color: gold; display: none;"></div>
-<div id="noResults" style="margin-bottom: 6px; color: red; display: none;"></div>
-
-<div id="cardContainer" style="
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 10px;
-" role="list" aria-label="Matching team members">
-</div>
-
-<!-- ✅ Optional: Selected Skills Summary -->
-<div class="selected-skills" id="selectedSkillsContainer" style="margin-bottom: 10px;"></div>
-
-<!-- ✅ Next Section Header -->
-<h1 style="margin-top: 10px;">Team Builder</h1>
-
-<!-- Team Builder Instructions -->
-<div class="input-container" style="
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: 5px;
-">
-  <p class="instructions" style="max-width: 400px; margin-bottom: 10px;">
-    Let’s build your team. Enter the main skill required for each team member and the total number of people needed.
-  </p>
-</div>
-  
-  <label for="teamSkills" style="font-size: 16px; margin-bottom: 5px;">Required Skills</label>
-  <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python"
-     style="width: 100%; max-width: 250px; height: 40px; font-size: 16px; padding: 10px;
-            border: 2px solid #FFD700; border-radius: 5px; margin-bottom: 10px;
-            background-color: #2c2c2c; color: #ffffff;" 
-     autocomplete="off" />
-<!-- Suggestion Box -->
-<div id="autocomplete-teams-skills" style="position:absolute; z-index:1000; background:#ffffff; color:#000000; 
-     border:1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
-
-  <label for="teamSize" style="font-size: 16px; margin-bottom: 5px;">Team Size</label>
-  <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6"
-     style="width: 80px; height: 35px; font-size: 16px; padding: 5px;
-            border: 2px solid #FFD700; border-radius: 5px;
-            background-color: #2c2c2c; color: #ffffff; margin-bottom: 10px;" />
-
-  
-
-  <button onclick="buildBestTeam()" 
-          style="width: 160px; height: 40px; margin-top: 10px; font-size: 16px; 
-                 background-color: #FFD700; color: black; border: none; 
-                 border-radius: 5px; cursor: pointer;">
-      Build Team
-  </button>
-  </div>
-  
-  <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
-
+</body>
+</html>
