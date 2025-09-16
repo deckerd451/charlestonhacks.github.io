@@ -1,766 +1,407 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Innovation Engine - Team Builder</title>
-    <meta name="description" content="Build your perfect team by selecting required skills">
-    
-    <!-- External Resources -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
+    <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
+    <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
+    <meta property="og:image" content="images/reactiveh.png" />
+    <meta property="og:url" content="https://charlestonhacks.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>CharlestonHacks - Home</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json" />
 
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://hvmotpzhliufzomewzfl.supabase.co">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
+        /* Base styles for the tab content panes */
+        .tab-content-pane {
+            display: none; /* All tab content panes are hidden by default */
+            padding: 20px 0; /* Add some padding to separate from tabs */
+        }
+        .tab-content-pane.active-tab-pane {
+            display: block; /* The active tab content pane is shown */
+        }
+
+        /* Styles for the tab buttons/navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center; /* Center the tabs */
+            margin-bottom: 20px; /* Space between tabs and content */
+            border-bottom: 2px solid #333; /* Underline for tabs */
+            padding-bottom: 5px;
+            gap: 10px; /* Space between tab buttons */
+        }
+        .tab-button {
+            background-color: #2a2a3a; /* Darker background for tabs */
+            color: #eee;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px 5px 0 0; /* Rounded top corners */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap; /* Prevent wrapping on smaller screens */
+        }
+        .tab-button:hover {
+            background-color: #3a3a4a;
+            color: #ffd700; /* Gold on hover */
+        }
+        .tab-button.active {
+            background-color: #ffd700; /* Gold for active tab */
+            color: #222; /* Dark text for active tab */
+            font-weight: bold;
+            border-bottom: 2px solid #ffd700; /* Match active border */
+        }
+
+        /* Adjustments for existing sections when they become tab panes */
+        .panel {
+            /* Ensure the panel can contain the tab content properly, e.g., for relative positioning */
+            position: relative; /* If you add absolute positioned elements later, this is crucial */
+            padding-top: 0; /* Remove top padding if tabs are directly inside, adjust as needed */
             box-sizing: border-box;
         }
 
-        body {
-            position: relative;
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Inter', Arial, sans-serif;
-            overflow-x: hidden;
-            text-align: center;
-            line-height: 1.6;
+        /* Ensure section titles within tabs still look good */
+        .tab-content-pane .section-title {
+            margin-top: 0; /* Remove top margin if needed when inside a tab */
         }
 
-        /* Layout Components */
-        .panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .input-container {
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        /* Typography */
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: #FFD700;
-        }
-
-        .instructions {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            max-width: 600px;
-        }
-
-        /* Form Elements */
-        .form-input {
-            width: 100%;
-            max-width: 250px;
-            height: 40px;
-            font-size: 16px;
-            padding: 10px;
-            border: 2px solid #FFD700;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            background-color: #2c2c2c;
-            color: #ffffff;
-        }
-
-        .form-button {
-            padding: 12px 24px;
-            font-size: 16px;
-            background-color: #FFD700;
-            color: #121212;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .form-button:hover {
-            background-color: #FFC000;
-        }
-
-        .form-label {
-            color: #FFD700;
-            margin-bottom: 8px;
-            display: block;
-            font-size: 16px;
-        }
-
-        /* Team Member Cards */
-        .team-member-card {
-            position: relative;
-            width: 150px;
-            transition: transform 0.3s ease;
-            cursor: pointer;
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .team-member-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .team-member-card img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border: 3px solid #FFD700;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            margin-bottom: 8px;
-        }
-
-        .member-name {
-            margin: 8px 0 5px 0;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .member-email a {
-            color: #ffffff;
-            text-decoration: none;
-            word-break: break-word;
-        }
-
-        /* Skill Tags */
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .skill-tag {
-            background-color: rgba(255, 215, 0, 0.2);
-            color: #FFD700;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-        }
-
-        /* Notifications */
-        .notification {
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 8px;
-            display: none;
-        }
-
-        .success-notification {
-            background-color: rgba(0, 255, 0, 0.1);
-            border: 1px solid #00FF00;
-            color: #00FF00;
-        }
-
-        .error-notification {
-            background-color: rgba(255, 0, 0, 0.1);
-            border: 1px solid #FF0000;
-            color: #FF0000;
-        }
-
-        /* Autocomplete */
-        .autocomplete-box {
-            position: absolute;
-            z-index: 1000;
-            background: #ffffff;
-            color: #000000;
-            border: 1px solid #ccc;
-            max-height: 150px;
-            overflow-y: auto;
-            display: none;
-        }
-
-        .autocomplete-item {
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        .autocomplete-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* Preview Image */
-        .image-preview {
-            display: none;
-            max-width: 120px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 2px solid #FFD700;
-        }
-
-        /* Footer */
-        footer {
-            padding: 20px;
-            margin-top: 40px;
-            border-top: 1px solid #333;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #FFD700;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #FFC000;
-        }
-
-        /* Responsive Design */
+        /* Media queries for tab buttons if they get too crowded */
         @media (max-width: 768px) {
-            .panel {
-                padding: 15px;
+            .tab-nav {
+                flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+                justify-content: flex-start; /* Align to start when wrapping */
             }
-            
-            h1 {
-                font-size: 1.5rem;
+            .tab-button {
+                flex-grow: 1; /* Allow buttons to grow to fill space */
+                text-align: center;
             }
-            
-            .instructions {
-                font-size: 1rem;
-            }
-            
-            .team-member-card {
-                width: 120px;
-            }
-            
-            .team-member-card img {
-                width: 120px;
-                height: 120px;
-            }
-        }
-
-        /* Accessibility */
-        input:focus, button:focus, a:focus {
-            outline: 2px solid #00BFFF;
-            outline-offset: 2px;
         }
     </style>
 </head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-6NDKG07DY6');
+</script>
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <div id="main">
-        <article class="post featured">
-            <header class="major">
-                <div class="panel">
-                    <!-- Registration Section -->
-                    <section id="registration-section">
-                        <br>
-                        <h1>Create Your Profile</h1>
+    <a href="index.html" title="Back to Home">
+  <i class="fas fa-home home-icon"></i>
+</a>
 
-                        <form id="skills-form">
-                            <input type="text" id="first-name" placeholder="First Name" required class="form-input">
-                            <input type="text" id="last-name" placeholder="Last Name" required class="form-input">
-                            <input type="email" name="_replyto" id="email" placeholder="Email" required class="form-input">
-                            
-                            <label for="skills-input" class="form-label">
-                                Professional Skills<br>(Add comma after each skill)
-                            </label>
-                            <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" 
-                                   required autocomplete="off" class="form-input">
+    <div id="achievements" class="achievements" aria-live="polite"></div>
+    <div class="container">
+        <header class="header">
+            <h1>Innovation Engine</h1>
+            <p>Connect, Build, and Innovate Together</p>
+        </header>
+        <main class="panel">
+            <div class="tab-nav">
+                <button class="tab-button active" data-tab="profile">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> Create Profile
+                </button>
+                <button class="tab-button" data-tab="search">
+                    <i class="fas fa-search" aria-hidden="true"></i> Individual Search
+                </button>
+                <button class="tab-button" data-tab="team-builder">
+                    <i class="fas fa-users" aria-hidden="true"></i> Team Builder
+                </button>
+                <button class="tab-button" data-tab="leaderboard">
+                    <i class="fas fa-trophy" aria-hidden="true"></i> Leaderboard
+                </button>
+            </div>
+
+            <div id="profile" class="tab-content-pane active-tab-pane">
+                <section id="matchmaking-section">
+                    <h2 class="section-title">
+                        Create Your Profile
+                    </h2>
+                    <form id="skills-form">
+                        <div class="input-container">
+                            <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name">
+                            <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name">
+                            <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email">
+                            <label for="skills-input">Professional Skills (comma separated)</label>
+                            <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
+                            <div id="skills-proficiency-container"></div>
                             <div id="autocomplete-skills-input" class="autocomplete-box"></div>
-                            
-                            <label for="photo-input" class="form-label">Upload Your Photo</label>
-                            <input type="file" id="photo-input" accept="image/*" required class="form-input">
-                            <img id="preview" src="#" alt="Image Preview" class="image-preview">
-                            
-                            <br>
-                            <button type="submit" class="form-button">
-                                Register & Subscribe to Mailing List
-                            </button>
-                        </form>
-
-                        <p id="success-message" class="notification success-notification">
-                            Added Successfully!
-                        </p>
-                    </section>
-
-                    <br>
-
-                    <!-- Individual Search Section -->
-                    <section id="individual-search">
-                        <h1>Individual Search</h1>
-                        <p class="instructions">
-                            Enter the key skills you're looking for in an individual. 
-                            Separate multiple skills with commas to narrow the search
-                        </p>
-
-                        <div class="input-container">
-                            <label for="teamSkillsInput" class="form-label">Required Skills</label>
-                            <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" 
-                                   required autocomplete="off" class="form-input">
-                            <div id="autocomplete-team-skills" class="autocomplete-box"></div>
-
-                            <button id="find-team-btn" class="form-button">Get People</button>
+                            <label for="photo-input">Upload Your Photo</label>
+                            <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
+                            <img id="preview" src="#" alt="Image Preview" class="image-preview" />
+                            <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
+                            <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
+                            <label for="availability-input">Current Availability</label>
+                            <select id="availability-input" aria-label="Current Availability">
+                                <option value="Available">Available</option>
+                                <option value="Busy">Busy</option>
+                                <option value="Not Looking">Not Looking</option>
+                            </select>
+                            <button type="submit">Register & Subscribe</button>
                         </div>
+                        <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
+                        <div id="profile-progress-msg" class="profile-incomplete"></div>
+                    </form>
+                    <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
+                </section>
+            </div>
 
-                        <div id="noResults" class="notification error-notification">
-                            No team members found with the selected skills. Try different skills or broader terms.
-                        </div>
-
-                        <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members">
-                        </div>
-
-                        <div id="matchNotification" class="notification success-notification">
-                            <p>You have found team members with matching skills!</p>
-                        </div>
-                    </section>
-
-                    <!-- Team Builder Section -->
-                    <section id="team-builder">
-                        <h1>Team Builder</h1>
-                        <div class="input-container">
-                            <p class="instructions">
-                                Let's build your team. Enter the main skill required for each team member and the total number of people needed
-                            </p>
-                            
-                            <label for="team-skills-input" class="form-label">Required Skills</label>
-                            <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python"
-                                   autocomplete="off" class="form-input">
-                            <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
-
-                            <label for="teamSize" class="form-label">Team Size</label>
-                            <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" class="form-input" 
-                                   style="width: 80px; height: 35px;">
-
-                            <button onclick="buildBestTeam()" class="form-button">Build Team</button>
-                        </div>
-                        
-                        <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team">
-                        </div>
-                    </section>
-
-                    <!-- User List Display -->
-                    <div id="user-list" style="margin-top: 20px;">
-                        <ul id="skills-entries"></ul>
-                    </div>
+            <div id="search" class="tab-content-pane">
+                <h2 class="section-title">
+                    Individual Search
+                </h2>
+                <div class="input-container">
+                    <label for="teamSkillsInput">Required Skills</label>
+                    <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
+                    <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+                    <button id="find-team-btn" type="button">Get People</button> <br> <br>
+                    <label for="nameInput">Search by First/Last Name</label>
+                    <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
+                    <button id="search-name-btn" type="button">Find by Name</button>
                 </div>
-            </header>
-        </article>
+                <div id="matchNotification" class="notification match-notification" style="display: none;"></div>
+                <div id="noResults" class="notification no-results-notification" style="display: none;"></div>
+                <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+            </div>
+
+            <div id="team-builder" class="tab-content-pane">
+                <h2 class="section-title">
+                    Team Builder
+                </h2>
+                <div class="input-container">
+                    <p class="instructions">
+                        Let’s build your team. Enter required skills and number of people needed.
+                    </p>
+                    <label for="team-skills-input">Required Skills</label>
+                    <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
+                    <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
+                    <label for="teamSize">Team Size</label>
+                    <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
+                    <button onclick="buildBestTeam()">Build Team</button>
+                </div>
+                <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+            </div>
+
+            <div id="leaderboard" class="tab-content-pane">
+                <div class="leaderboard" id="leaderboard-section">
+                    <h2>Top Endorsed Skills</h2>
+                    <div id="leaderboard-rows"></div>
+                </div>
+            </div>
+
+        </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="main.js" defer></script>
+
     <script>
-        // Configuration
-        const SUPABASE_CONFIG = {
-            url: 'https://hvmotpzhliufzomewzfl.supabase.co',
-            key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'
-        };
+      document.getElementById("skills-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        let form = this;
 
-        const supabaseClient = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
-        let dynamicSkills = [];
+        // Capture form field values
+        const fname = document.getElementById("first-name").value;
+        const lname = document.getElementById("last-name").value;
+        const email = document.getElementById("email").value;
 
-        // Utility Functions
-        function showNotification(elementId, show = true) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.style.display = show ? 'block' : 'none';
-            }
-        }
-
-        function hideAllNotifications() {
-            ['noResults', 'matchNotification', 'success-message'].forEach(id => {
-                showNotification(id, false);
-            });
-        }
-
-        function getCombinations(arr, k) {
-            const results = [];
-            function combine(start, combo) {
-                if (combo.length === k) {
-                    results.push([...combo]);
-                    return;
-                }
-                for (let i = start; i < arr.length; i++) {
-                    combine(i + 1, [...combo, arr[i]]);
-                }
-            }
-            combine(0, []);
-            return results;
-        }
-
-        function isFuzzyMatch(userSkill, requiredSkill) {
-            userSkill = userSkill.toLowerCase();
-            requiredSkill = requiredSkill.toLowerCase();
-            return userSkill.includes(requiredSkill) || 
-                   requiredSkill.includes(userSkill) || 
-                   userSkill.localeCompare(requiredSkill, undefined, { sensitivity: 'base' }) === 0;
-        }
-
-        function renderUserCard(user, showMatching = false, matchingSkills = []) {
-            const skillsHtml = user.skills.split(',')
-                .map(skill => `<span class="skill-tag">${skill.trim()}</span>`)
-                .join(' ');
-            
-            const matchingHtml = showMatching ? 
-                `<div class="matching-skills" style="margin-top:5px;">
-                    <strong>Matching:</strong> ${matchingSkills.join(', ')}
-                </div>` : '';
-
-            return `
-                <div class="team-member-card">
-                    ${user.image_url ? `<img src="${user.image_url}" alt="${user.first_name}">` : ''}
-                    <div class="member-name">${user.first_name} ${user.last_name}</div>
-                    <div class="member-email" style="margin-top:5px;">
-                        <a href="mailto:${user.email}">${user.email}</a>
-                    </div>
-                    <div class="skill-tags" style="margin-top:5px;">
-                        <strong>Skills:</strong> ${skillsHtml}
-                    </div>
-                    ${matchingHtml}
-                </div>
-            `;
-        }
-
-        // Autocomplete System
-        async function fetchUniqueSkills() {
-            try {
-                const { data, error } = await supabaseClient.from('skills').select('skills');
-                if (error) throw error;
-
-                dynamicSkills = [...new Set(
-                    data.flatMap(item =>
-                        item.skills.split(',').map(skill => skill.trim().toLowerCase())
-                    )
-                )];
-            } catch (error) {
-                console.error('Error fetching skills:', error);
-                dynamicSkills = [];
-            }
-        }
-
-        function setupAutocomplete(inputId, boxId) {
-            const input = document.getElementById(inputId);
-            const box = document.getElementById(boxId);
-
-            if (!input || !box) return;
-
-            input.addEventListener('input', () => {
-                const userInput = input.value.toLowerCase().trim();
-                const lastWord = userInput.split(',').pop().trim().toLowerCase();
-
-                box.innerHTML = '';
-
-                if (!lastWord || dynamicSkills.length === 0) {
-                    box.style.display = 'none';
-                    return;
-                }
-
-                const matches = dynamicSkills
-                    .filter(skill => skill.includes(lastWord))
-                    .slice(0, 10);
-
-                if (matches.length === 0) {
-                    box.style.display = 'none';
-                    return;
-                }
-
-                matches.forEach(skill => {
-                    const item = document.createElement('div');
-                    item.textContent = skill;
-                    item.className = 'autocomplete-item';
-
-                    item.onclick = () => {
-                        const parts = input.value.split(',');
-                        parts.pop();
-                        parts.push(skill);
-                        input.value = parts.map(p => p.trim()).join(', ');
-                        box.innerHTML = '';
-                        box.style.display = 'none';
-                    };
-
-                    box.appendChild(item);
-                });
-
-                const rect = input.getBoundingClientRect();
-                box.style.left = `${rect.left + window.scrollX}px`;
-                box.style.top = `${rect.bottom + window.scrollY}px`;
-                box.style.width = `${rect.width}px`;
-                box.style.display = 'block';
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!box.contains(e.target) && e.target !== input) {
-                    box.style.display = 'none';
-                }
-            });
-        }
-
-        // Main Functions
-        async function findMatchingUsers() {
-            const skillsInput = document.getElementById('teamSkillsInput').value.trim();
-            const cardContainer = document.getElementById('cardContainer');
-            
-            hideAllNotifications();
-            cardContainer.innerHTML = '';
-
-            if (!skillsInput) {
-                alert('Please enter at least one skill.');
-                return;
-            }
-
-            const requiredSkills = skillsInput.toLowerCase().split(',').map(skill => skill.trim());
-
-            try {
-                const { data, error } = await supabaseClient.from('skills').select('*');
-
-                if (error) {
-                    showNotification('noResults');
-                    return;
-                }
-
-                const matchedUsers = data.filter(user => {
-                    const userSkills = user.skills.toLowerCase().split(',').map(s => s.trim());
-                    return requiredSkills.every(skill => 
-                        userSkills.some(userSkill => isFuzzyMatch(userSkill, skill))
-                    );
-                });
-
-                if (matchedUsers.length === 0) {
-                    showNotification('noResults');
-                } else {
-                    showNotification('matchNotification');
-                    cardContainer.innerHTML = matchedUsers.map(user => renderUserCard(user)).join('');
-                }
-            } catch (error) {
-                console.error('Error fetching users:', error);
-                showNotification('noResults');
-            }
-        }
-
-        async function buildBestTeam() {
-            const skillInputRaw = document.getElementById('team-skills-input').value;
-            const teamSize = parseInt(document.getElementById('teamSize').value, 10);
-            const container = document.getElementById('bestTeamContainer');
-
-            container.innerHTML = '';
-
-            const skillInput = skillInputRaw
-                .toLowerCase()
-                .split(',')
-                .map(s => s.trim())
-                .filter(Boolean);
-
-            if (skillInput.length === 0 || isNaN(teamSize) || teamSize < 1) {
-                alert('Please enter valid skills and a valid team size.');
-                return;
-            }
-
-            try {
-                const { data: users, error } = await supabaseClient.from('skills').select('*');
-
-                if (error || !users) {
-                    container.innerHTML = '<p style="color:white;">Error loading users.</p>';
-                    return;
-                }
-
-                const matchedUsers = users
-                    .map(user => {
-                        if (!user.skills) return null;
-
-                        const userSkills = user.skills
-                            .toLowerCase()
-                            .split(',')
-                            .map(s => s.trim())
-                            .filter(Boolean);
-
-                        const matchingSkills = skillInput.filter(skill =>
-                            userSkills.some(userSkill => isFuzzyMatch(userSkill, skill))
-                        );
-
-                        if (matchingSkills.length === 0) return null;
-
-                        return {
-                            ...user,
-                            matchingSkills,
-                            matchCount: matchingSkills.length
-                        };
-                    })
-                    .filter(Boolean)
-                    .sort((a, b) => b.matchCount - a.matchCount)
-                    .slice(0, teamSize);
-
-                if (matchedUsers.length === 0) {
-                    container.innerHTML = '<p style="color:white;">No matching team members found.</p>';
-                    return;
-                }
-
-                container.innerHTML = matchedUsers
-                    .map(user => renderUserCard(user, true, user.matchingSkills))
-                    .join('');
-
-            } catch (error) {
-                console.error('Error building team:', error);
-                container.innerHTML = '<p style="color:white;">Error building team.</p>';
-            }
-        }
-
-        // Form Handlers
-        async function handleRegistration(e) {
-            e.preventDefault();
-
-            const firstName = document.getElementById('first-name').value;
-            const lastName = document.getElementById('last-name').value;
-            const email = document.getElementById('email').value;
-            const skillsInputField = document.getElementById('skills-input');
-            const photoInput = document.getElementById('photo-input').files[0];
-
-            // Clean up skills input
-            skillsInputField.value = skillsInputField.value.replace(/,\s*$/, '');
-            const skillsText = skillsInputField.value
-                .split(',')
-                .map(s => s.trim())
-                .filter(Boolean)
-                .join(',');
-
-            if (!photoInput) {
-                alert('Please select an image.');
-                return;
-            }
-
-            try {
-                // Upload image
-                const fileExt = photoInput.name.split('.').pop();
-                const fileName = `${Date.now()}.${fileExt}`;
-
-                const { error: uploadError } = await supabaseClient.storage
-                    .from('hacksbucket')
-                    .upload(fileName, photoInput);
-
-                if (uploadError) {
-                    alert('Upload error: ' + uploadError.message);
-                    return;
-                }
-
-                // Insert user data
-                const imageUrl = `${SUPABASE_CONFIG.url}/storage/v1/object/public/hacksbucket/${fileName}`;
-                const { error } = await supabaseClient.from('skills').insert({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    skills: skillsText,
-                    image_url: imageUrl
-                });
-
-                if (error) {
-                    alert('Error inserting data: ' + error.message);
-                } else {
-                    showNotification('success-message');
-                    document.getElementById('skills-form').reset();
-                    document.getElementById('preview').style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Registration error:', error);
-                alert('Registration failed. Please try again.');
-            }
-
-            // Handle external form submissions (Formspree, Mailchimp)
-            handleExternalSubmissions(firstName, lastName, email);
-        }
-
-        function handleExternalSubmissions(firstName, lastName, email) {
-            // Mailchimp submission
-            const mailchimpForm = document.createElement("form");
-            mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
-            mailchimpForm.method = "POST";
-            mailchimpForm.target = "_blank";
-
-            mailchimpForm.innerHTML = `
-                <input type="hidden" name="FNAME" value="${firstName}">
-                <input type="hidden" name="LNAME" value="${lastName}">
-                <input type="hidden" name="EMAIL" value="${email}">
-            `;
-
-            document.body.appendChild(mailchimpForm);
-            mailchimpForm.submit();
-            document.body.removeChild(mailchimpForm);
-        }
-
-        function setupImagePreview() {
-            const input = document.getElementById('photo-input');
-            const preview = document.getElementById('preview');
-
-            if (!input || !preview) return;
-
-            input.addEventListener('change', function () {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        preview.setAttribute('src', e.target.result);
-                        preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', async () => {
-            await fetchUniqueSkills();
-            
-            // Setup autocomplete for all inputs
-            setupAutocomplete('skills-input', 'autocomplete-skills-input');
-            setupAutocomplete('teamSkillsInput', 'autocomplete-team-skills');
-            setupAutocomplete('team-skills-input', 'autocomplete-teams-skills');
-            
-            // Setup form handlers
-            document.getElementById('skills-form').addEventListener('submit', handleRegistration);
-            document.getElementById('find-team-btn').addEventListener('click', findMatchingUsers);
-            
-            // Setup image preview
-            setupImagePreview();
-            
-            // Load initial data
-            loadAllSkills();
+        // 1. Submit to Formspree (or your primary backend endpoint)
+        // Ensure your form's action attribute is set correctly for Formspree if you intend to use it.
+        // For example: <form id="skills-form" action="https://formspree.io/f/YOUR_FORMSPREE_HASH" method="POST">
+        // If no action is specified, this fetch will go to the current page's URL.
+        fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+          headers: { "Accept": "application/json" }
+        })
+        .then(response => {
+          if (response.ok) {
+            document.getElementById("success-message").style.display = "block";
+            // Optionally reset the form after successful submission to Formspree,
+            // but be careful if you also need data for Supabase/Mailchimp.
+            // For this setup, the Supabase logic will handle the form reset.
+            // form.reset();
+          } else {
+            // alert("Something went wrong with Formspree. Please try again.");
+            console.error("Formspree submission failed.");
+          }
+        })
+        .catch(error => {
+          // alert("Error with Formspree submission: " + error);
+          console.error("Error with Formspree submission:", error);
         });
 
-        async function loadAllSkills() {
-            try {
-                const { data, error } = await supabaseClient.from('skills').select('*');
-                if (error) throw error;
+        // 2. Submit to Mailchimp in a new tab
+        const mailchimpForm = document.createElement("form");
+        mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+        mailchimpForm.method = "POST";
+        mailchimpForm.target = "_blank"; // Opens in a new tab/window
 
-                const cardContainer = document.getElementById('cardContainer');
-                if (cardContainer && data) {
-                    cardContainer.innerHTML = data.map(user => renderUserCard(user)).join('');
-                }
-            } catch (error) {
-                console.error('Error loading skills:', error);
-            }
-        }
+        mailchimpForm.innerHTML = `
+          <input type="hidden" name="FNAME" value="${fname}">
+          <input type="hidden" name="LNAME" value="${lname}">
+          <input type="hidden" name="EMAIL" value="${email}">
+        `;
 
-        // Make functions globally available
-        window.buildBestTeam = buildBestTeam;
-        window.findMatchingUsers = findMatchingUsers;
+        document.body.appendChild(mailchimpForm); // Temporarily add to the DOM
+        mailchimpForm.submit(); // Programmatically submit the form
+        document.body.removeChild(mailchimpForm); // Clean up: remove from the DOM
+      });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to show a specific tab and hide others
+            function showTab(tabId) {
+                // Hide all tab content panes
+                document.querySelectorAll('.tab-content-pane').forEach(pane => {
+                    pane.classList.remove('active-tab-pane');
+                });
+
+                // Deactivate all tab buttons
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Show the selected tab content pane
+                const activePane = document.getElementById(tabId);
+                if (activePane) {
+                    activePane.classList.add('active-tab-pane');
+                }
+
+                // Activate the corresponding tab button
+                const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+
+                // Scroll to the top of the panel to ensure content is visible
+                const panel = document.querySelector('.panel');
+                if (panel) {
+                    panel.scrollTop = 0;
+                }
+            }
+
+            // Add click event listeners to tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    showTab(tabId);
+                });
+            });
+
+            // Show the default tab (e.g., 'profile') when the page loads
+            showTab('profile'); // This makes the "Create Profile" tab active by default
+        });
+    </script>
+    <div id="endorseSkillModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Endorse User for...</h3>
+        <div id="endorse-skill-list" class="skill-endorse-list">
+            </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 100; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    }
+
+    .modal-content {
+    position: absolute; /* or fixed */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2a2a3a;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+    .modal-content h3 {
+        color: var(--primary-color);
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: #ffd700;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .skill-endorse-list {
+        max-height: 200px; /* Scrollable if many skills */
+        overflow-y: auto;
+        padding-right: 5px; /* For scrollbar */
+    }
+
+    .skill-endorse-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #444;
+    }
+
+    .skill-endorse-item:last-child {
+        border-bottom: none;
+    }
+
+    .skill-endorse-item span {
+        color: #eee;
+        font-size: 1.1em;
+    }
+
+    .endorse-specific-skill-btn {
+        background-color: #ffd700;
+        color: #222;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+    }
+
+    .endorse-specific-skill-btn:hover {
+        background-color: #e0b800;
+    }
+</style>
 </body>
 </html>
