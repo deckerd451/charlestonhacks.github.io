@@ -3,769 +3,405 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated.">
-    <meta property="og:title" content="CharlestonHacks - Home" />
+    <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
+    <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
     <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
     <meta property="og:image" content="images/reactiveh.png" />
     <meta property="og:url" content="https://charlestonhacks.com" />
     <meta name="twitter:card" content="summary_large_image" />
-    
     <title>CharlestonHacks - Home</title>
-    
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json" />
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://hvmotpzhliufzomewzfl.supabase.co">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    
     <style>
-        /* ==========================================================================
-           CSS VARIABLES & RESET
-           ========================================================================== */
-        :root {
-            --primary-color: #FF0000;
-            --secondary-color: #FFFF00;
-            --text-color: white;
-            --background-color: black;
-            --transition-speed: 0.3s;
-            --border-radius: 50%;
-            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-            --clickable-size: 14vw;
-            --clickable-max-size: 90px;
-            --center-clickable-size: 16.5vw;
-            --center-clickable-max-size: 110px;
+        /* Base styles for the tab content panes */
+        .tab-content-pane {
+            display: none; /* All tab content panes are hidden by default */
+            padding: 20px 0; /* Add some padding to separate from tabs */
+        }
+        .tab-content-pane.active-tab-pane {
+            display: block; /* The active tab content pane is shown */
         }
 
-        * {
-            margin: 0;
-            padding: 0;
+        /* Styles for the tab buttons/navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center; /* Center the tabs */
+            margin-bottom: 20px; /* Space between tabs and content */
+            border-bottom: 2px solid #333; /* Underline for tabs */
+            padding-bottom: 5px;
+            gap: 10px; /* Space between tab buttons */
+        }
+        .tab-button {
+            background-color: #2a2a3a; /* Darker background for tabs */
+            color: #eee;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px 5px 0 0; /* Rounded top corners */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap; /* Prevent wrapping on smaller screens */
+        }
+        .tab-button:hover {
+            background-color: #3a3a4a;
+            color: #ffd700; /* Gold on hover */
+        }
+        .tab-button.active {
+            background-color: #ffd700; /* Gold for active tab */
+            color: #222; /* Dark text for active tab */
+            font-weight: bold;
+            border-bottom: 2px solid #ffd700; /* Match active border */
+        }
+
+        /* Adjustments for existing sections when they become tab panes */
+        .panel {
+            /* Ensure the panel can contain the tab content properly, e.g., for relative positioning */
+            position: relative; /* If you add absolute positioned elements later, this is crucial */
+            padding-top: 0; /* Remove top padding if tabs are directly inside, adjust as needed */
             box-sizing: border-box;
         }
 
-        /* ==========================================================================
-           BASE STYLES
-           ========================================================================== */
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            font-family: 'Britannic Bold', Arial, sans-serif;
-            overflow-x: hidden;
-            position: relative;
-            text-align: center;
-            z-index: 1;
+        /* Ensure section titles within tabs still look good */
+        .tab-content-pane .section-title {
+            margin-top: 0; /* Remove top margin if needed when inside a tab */
         }
 
-        /* ==========================================================================
-           BACKGROUND VIDEO
-           ========================================================================== */
-        #background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        /* ==========================================================================
-           ANIMATIONS
-           ========================================================================== */
-        @keyframes fadeInScaleUp {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1.15);
-            }
-        }
-
-        @keyframes animateClickables {
-            from { 
-                opacity: 0; 
-                transform: translateY(20px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        @keyframes flipImageX {
-            0% { opacity: 1; }
-            50% { transform: rotateX(180deg); }
-            100% { transform: rotateX(360deg); opacity: 0; }
-        }
-
-        @keyframes flipImageY {
-            0% { opacity: 1; }
-            50% { transform: rotateY(180deg); }
-            100% { transform: rotateY(360deg); opacity: 0; }
-        }
-
-        /* ==========================================================================
-           PANEL & LAYOUT
-           ========================================================================== */
-        .panel {
-            width: 100%;
-            min-height: 90vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .media-container {
-            position: relative;
-            z-index: 3;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        .media-container img,
-        .media-container video {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: contain;
-        }
-
-        .media-container video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-
-        /* ==========================================================================
-           CLICKABLE AREAS
-           ========================================================================== */
-        .clickable-area {
-            border: none;
-            background: none;
-            padding: 0;
-            position: absolute;
-            z-index: 4;
-            cursor: pointer;
-            border-radius: var(--border-radius);
-            aspect-ratio: 1/1;
-            width: var(--clickable-size);
-            max-width: var(--clickable-max-size);
-            box-shadow: var(--box-shadow);
-            animation: fadeInScaleUp 1s ease-out forwards;
-            transition: transform var(--transition-speed) ease-in-out;
-            opacity: 0;
-        }
-
-        .clickable-area:hover {
-            transform: scale(1.2);
-        }
-
-        .clickable-area.loaded {
-            opacity: 1;
-        }
-
-        .clickable-area img {
-            padding: 0;
-            margin: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Position classes for clickable areas */
-        .top-left {
-            top: 2%;
-            left: 5%;
-        }
-
-        .top-right {
-            top: 2%;
-            right: 5%;
-        }
-
-        .bottom-left {
-            bottom: 2%;
-            left: 5%;
-        }
-
-        .bottom-right {
-            bottom: 2%;
-            right: 5%;
-        }
-
-        .center-top {
-            top: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: var(--center-clickable-size);
-            max-width: var(--center-clickable-max-size);
-        }
-
-        .center-bottom {
-            bottom: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: var(--center-clickable-size);
-            max-width: var(--center-clickable-max-size);
-        }
-
-        /* ==========================================================================
-           MISSION CONTENT
-           ========================================================================== */
-        #missionContent {
-            animation: fadeIn 0.9s ease forwards;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            text-align: center;
-            display: none;
-            z-index: 2;
-            opacity: 1;
-        }
-
-        #missionContent p, 
-        #missionContent a {
-            color: var(--text-color);
-        }
-
-        .body-text {
-            margin: 30px 0;
-        }
-
-        .body-text a {
-            color: var(--text-color);
-        }
-
-        .body-text p {
-            margin-bottom: 10px;
-        }
-
-        .logo {
-            display: block;
-            margin: 0 auto 5px auto;
-        }
-
-        .info {
-            color: var(--secondary-color);
-            font-size: 20px;
-        }
-
-        /* ==========================================================================
-           COUNTDOWN
-           ========================================================================== */
-        #countdownWrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #countdown {
-            font-size: 32px;
-            color: var(--primary-color);
-        }
-
-        /* ==========================================================================
-           UTILITY CLASSES
-           ========================================================================== */
-        .fade-out {
-            animation: fadeOut 2s ease forwards;
-        }
-
-        .flip-image-x {
-            animation: flipImageX 3s ease forwards;
-            z-index: 5;
-        }
-
-        .flip-image-y {
-            animation: flipImageY 3s ease forwards;
-            z-index: 5;
-        }
-
-        .loading-indicator {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3;
-        }
-
-        #cardFrame {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        #spinner {
-            display: none;
-            /* Add spinner styles here */
-        }
-
-        /* ==========================================================================
-           RESPONSIVE DESIGN
-           ========================================================================== */
+        /* Media queries for tab buttons if they get too crowded */
         @media (max-width: 768px) {
-            .media-container {
-                max-width: 90%;
+            .tab-nav {
+                flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+                justify-content: flex-start; /* Align to start when wrapping */
             }
-
-            #countdown {
-                font-size: 24px;
+            .tab-button {
+                flex-grow: 1; /* Allow buttons to grow to fill space */
+                text-align: center;
             }
-
-            .info {
-                font-size: 16px;
-            }
-
-            .center-top {
-                top: -30%;
-            }
-
-            .center-bottom {
-                bottom: 0%;
-            }
-
-            #countdownWrapper {
-                position: absolute;
-                top: 25%;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-            }
-
-            #missionContent {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding-bottom: 70px;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .media-container {
-                transform: scale(0.8);
-            }
-        }
-
-        /* ==========================================================================
-           FOOTER
-           ========================================================================== */
-        .icons-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            padding: 20px;
-        }
-
-        .icons-container a {
-            color: var(--text-color);
-            font-size: 24px;
-            transition: color var(--transition-speed) ease;
-        }
-
-        .icons-container a:hover {
-            color: var(--secondary-color);
         }
     </style>
 </head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-<body class="is-preload">
-    <main>
-        <div id="main">
-            <article class="post featured">
-                <header class="major">
-                    <div class="panel">
-                        <a class="media-container" onclick="toggleMissionContent()" aria-label="Toggle mission content">
-                            <img id="missionImage" src="images/hsoftest.png" alt="CharlestonHacks" style="z-index: 3;" />
-                            
-                            <div id="missionContent">
-                                <div class="body-text">
-                                    <p>
-                                        <img id="aiffBanner" 
-                                             src="images/iegold.svg" 
-                                             alt="Innovation Engine" 
-                                             style="cursor: pointer; width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto;" 
-                                             onclick="flipAndRedirect()">
-                                    </p>
-                                </div>
-                                <div id="countdownWrapper">
-                                    <div id="countdown"></div>
-                                </div>
-                            </div>
+  gtag('config', 'G-6NDKG07DY6');
+</script>
+<body>
+    <a href="index.html" title="Back to Home">
+  <i class="fas fa-home home-icon"></i>
+</a>
 
-                            <video id="missionVideo" 
-                                   muted 
-                                   playsinline 
-                                   controls>
-                                <source src="images/universe.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            
-                            <img id="cardFrame" src="images/cardframe2.svg" alt="Card Frame" />
-                            
-                            <div class="loading-indicator" id="loadingIndicator">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
+    <div id="achievements" class="achievements" aria-live="polite"></div>
+    <div class="container">
+        <header class="header">
+            <h1>Innovation Engine</h1>
+            <p>Connect, Build, and Innovate Together</p>
+        </header>
+        <main class="panel">
+            <div class="tab-nav">
+                <button class="tab-button active" data-tab="profile">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> Create Profile
+                </button>
+                <button class="tab-button" data-tab="search">
+                    <i class="fas fa-search" aria-hidden="true"></i> Individual Search
+                </button>
+                <button class="tab-button" data-tab="team-builder">
+                    <i class="fas fa-users" aria-hidden="true"></i> Team Builder
+                </button>
+                <button class="tab-button" data-tab="leaderboard">
+                    <i class="fas fa-trophy" aria-hidden="true"></i> Leaderboard
+                </button>
+            </div>
 
-                            <!-- Navigation buttons -->
-                            <button type="button" class="clickable-area top-left" 
-                                    data-sound="chime" 
-                                    data-image="images/yellowscullcard.png" 
-                                    data-url="Poster.html">
-                                <img src="images/infon.svg" alt="Info">
-                            </button>
-                            
-                            <button type="button" class="clickable-area top-right" 
-                                    data-sound="chime" 
-                                    data-image="images/redscullcard.png" 
-                                    data-url="2card.html">
-                                <img src="images/peoplen.svg" alt="People">
-                            </button>
-                            
-                            <button type="button" class="clickable-area bottom-left" 
-                                    data-sound="chime" 
-                                    data-image="images/Descartes.png" 
-                                    data-url="https://charlestoncitypaper.com/2024/07/04/locals-looking-to-ai-to-solve-present-future-problems/">
-                                <img src="images/newsn.svg" alt="News">
-                            </button>
-                            
-                            <button type="button" class="clickable-area bottom-right" 
-                                    data-sound="chime" 
-                                    data-image="images/Alexandor.png" 
-                                    data-url="subscribe.html">
-                                <img src="images/envelopen.svg" alt="Envelope">
-                            </button>
-                        </a>
-                    </div>
-                </header>
-            </article>
-        </div>
-    </main>
+            <div id="profile" class="tab-content-pane active-tab-pane">
+                <section id="matchmaking-section">
+                    <h2 class="section-title">
+                        Create Your Profile
+                    </h2>
+                    <form id="skills-form">
+                        <div class="input-container">
+                            <input type="text" id="first-name" placeholder="First Name" required aria-label="First Name">
+                            <input type="text" id="last-name" placeholder="Last Name" required aria-label="Last Name">
+                            <input type="email" name="_replyto" id="email" placeholder="Email" required aria-label="Email">
+                            <label for="skills-input">Professional Skills (comma separated)</label>
+                            <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off" aria-describedby="autocomplete-skills-input">
+                            <div id="skills-proficiency-container"></div>
+                            <div id="autocomplete-skills-input" class="autocomplete-box"></div>
+                            <label for="photo-input">Upload Your Photo</label>
+                            <input type="file" id="photo-input" accept="image/*" required aria-label="Upload Photo">
+                            <img id="preview" src="#" alt="Image Preview" class="image-preview" />
+                            <label for="bio-input">Short Bio <span class="optional-text">(Optional)</span></label>
+                            <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" aria-label="Short Bio">
+                            <label for="availability-input">Current Availability</label>
+                            <select id="availability-input" aria-label="Current Availability">
+                                <option value="Available">Available</option>
+                                <option value="Busy">Busy</option>
+                                <option value="Not Looking">Not Looking</option>
+                            </select>
+                            <button type="submit">Register & Subscribe</button>
+                        </div>
+                        <div class="profile-bar" id="profile-bar"><div class="profile-bar-inner"></div></div>
+                        <div id="profile-progress-msg" class="profile-incomplete"></div>
+                    </form>
+                    <p id="success-message" class="success-message" role="status" style="display:none;">Added Successfully!</p>
+                </section>
+            </div>
 
-    <div id="spinner" class="spinner"></div>
+            <div id="search" class="tab-content-pane">
+                <h2 class="section-title">
+                    Individual Search
+                </h2>
+                <div class="input-container">
+                    <label for="teamSkillsInput">Required Skills</label>
+                    <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-team-skills">
+                    <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+                    <button id="find-team-btn" type="button">Get People</button> <br> <br>
+                    <label for="nameInput">Search by First/Last Name</label>
+                    <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
+                    <button id="search-name-btn" type="button">Find by Name</button>
+                </div>
+                <div id="matchNotification" class="notification match-notification" style="display: none;"></div>
+                <div id="noResults" class="notification no-results-notification" style="display: none;"></div>
+                <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+            </div>
 
-    <footer>
-        <section class="icons-container">
-            <a href="cardmatchgame.html" target="_blank" aria-label="Play Card Match Game">
-                <i class="fas fa-info-circle"></i>
-            </a>
-            <a href="https://www.youtube.com/shorts/RXvlYF1jVuE" aria-label="YouTube Shorts">
-                <i class="fas fa-users"></i>
-            </a>
-            <a href="https://www.linkedin.com/company/charlestonhacks" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://www.instagram.com/charlestonhacks/" target="_blank" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="mailto:hello@charlestonhacks.com" aria-label="Email CharlestonHacks">
-                <i class="fas fa-envelope"></i>
-            </a>
-            <a href="https://twitter.com/Descart84114619" target="_blank" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://www.facebook.com/deckerdb26354" target="_blank" aria-label="Facebook">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </section>
-    </footer>
+            <div id="team-builder" class="tab-content-pane">
+                <h2 class="section-title">
+                    Team Builder
+                </h2>
+                <div class="input-container">
+                    <p class="instructions">
+                        Let’s build your team. Enter required skills and number of people needed.
+                    </p>
+                    <label for="team-skills-input">Required Skills</label>
+                    <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off" aria-describedby="autocomplete-teams-skills"/>
+                    <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
+                    <label for="teamSize">Team Size</label>
+                    <input type="number" id="teamSize" placeholder="e.g. 3" min="1" max="6" aria-label="Team Size"/>
+                    <button onclick="buildBestTeam()">Build Team</button>
+                </div>
+                <div class="card-container" id="bestTeamContainer" role="list" aria-label="Best matched team"></div>
+            </div>
 
-    <script src="ho-script.js"></script>
+            <div id="leaderboard" class="tab-content-pane">
+                <div class="leaderboard" id="leaderboard-section">
+                    <h2>Top Endorsed Skills</h2>
+                    <div id="leaderboard-rows"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="main.js" defer></script>
+
     <script>
-        // ==========================================================================
-        // CONFIGURATION
-        // ==========================================================================
-        const CONFIG = {
-            countdown: {
-                targetDate: "June 1, 2025 19:00:00",
-                completedMessage: "Innovation Engine is here!"
-            },
-            audio: {
-                cardflip: 'assets/atmospherel.m4a',
-                keys: 'assets/keys.m4a',
-                chime: 'assets/chime.mp3'
-            },
-            cardImages: [
-                "images/yellowscullcard.png",
-                "images/redscullcard.png",
-                "images/Descartes.png",
-                "images/Alexandor.png",
-                "images/Medusa.png",
-                "images/Elara.png",
-                "images/adventurercard.png",
-                "images/collaboratorcard.png",
-                "images/humanitariancard.png",
-                "images/nextcard.png",
-                "images/Aegis.png",
-                "images/resilientcard.png",
-                "images/Astrid.png",
-                "images/nicolecard.png"
-            ]
-        };
+      document.getElementById("skills-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        let form = this;
 
-        // ==========================================================================
-        // AUDIO CONTROLLER
-        // ==========================================================================
-        const AudioController = {
-            preloaded: false,
-            
-            preloadAudio() {
-                if (this.preloaded) return;
-                
-                Object.keys(CONFIG.audio).forEach(key => {
-                    const src = CONFIG.audio[key];
-                    if (src) new Audio(src);
-                });
-                
-                this.preloaded = true;
-            },
-            
-            playSound(soundKey) {
-                const soundSrc = CONFIG.audio[soundKey];
-                if (!soundSrc) return;
-                
-                const audio = new Audio(soundSrc);
-                audio.volume = 0.2;
-                audio.play().catch(error => {
-                    console.error('Audio playback failed:', error);
-                });
-            }
-        };
+        // Capture form field values
+        const fname = document.getElementById("first-name").value;
+        const lname = document.getElementById("last-name").value;
+        const email = document.getElementById("email").value;
 
-        // ==========================================================================
-        // VIDEO CONTROLLER
-        // ==========================================================================
-        const VideoController = {
-            showLoadingIndicator() {
-                document.getElementById('loadingIndicator').style.display = 'block';
-            },
-            
-            hideLoadingIndicator() {
-                document.getElementById('loadingIndicator').style.display = 'none';
-            },
-            
-            handleError() {
-                alert("Error loading video. Please try again later.");
-            },
-            
-            showCardFrame() {
-                document.getElementById('cardFrame').style.display = 'block';
-            }
-        };
+        // 1. Submit to Formspree (or your primary backend endpoint)
+        // Ensure your form's action attribute is set correctly for Formspree if you intend to use it.
+        // For example: <form id="skills-form" action="https://formspree.io/f/YOUR_FORMSPREE_HASH" method="POST">
+        // If no action is specified, this fetch will go to the current page's URL.
+        fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+          headers: { "Accept": "application/json" }
+        })
+        .then(response => {
+          if (response.ok) {
+            document.getElementById("success-message").style.display = "block";
+            // Optionally reset the form after successful submission to Formspree,
+            // but be careful if you also need data for Supabase/Mailchimp.
+            // For this setup, the Supabase logic will handle the form reset.
+            // form.reset();
+          } else {
+            // alert("Something went wrong with Formspree. Please try again.");
+            console.error("Formspree submission failed.");
+          }
+        })
+        .catch(error => {
+          // alert("Error with Formspree submission: " + error);
+          console.error("Error with Formspree submission:", error);
+        });
 
-        // ==========================================================================
-        // COUNTDOWN CONTROLLER
-        // ==========================================================================
-        const CountdownController = {
-            element: null,
-            interval: null,
-            
-            init() {
-                this.element = document.getElementById('countdown');
-                this.start();
-            },
-            
-            start() {
-                const countDownDate = new Date(CONFIG.countdown.targetDate).getTime();
-                
-                this.interval = setInterval(() => {
-                    const now = new Date().getTime();
-                    const distance = countDownDate - now;
-                    
-                    if (distance < 0) {
-                        this.stop();
-                        this.element.innerHTML = CONFIG.countdown.completedMessage;
-                        return;
-                    }
-                    
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
-                    this.element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-                }, 1000);
-            },
-            
-            stop() {
-                if (this.interval) {
-                    clearInterval(this.interval);
-                    this.interval = null;
-                }
-            }
-        };
+        // 2. Submit to Mailchimp in a new tab
+        const mailchimpForm = document.createElement("form");
+        mailchimpForm.action = "https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a";
+        mailchimpForm.method = "POST";
+        mailchimpForm.target = "_blank"; // Opens in a new tab/window
 
-        // ==========================================================================
-        // CARD CONTROLLER
-        // ==========================================================================
-        const CardController = {
-            clicked: false,
-            
-            getRandomImage() {
-                const randomIndex = Math.floor(Math.random() * CONFIG.cardImages.length);
-                return CONFIG.cardImages[randomIndex];
-            },
-            
-            getRandomFlip() {
-                return Math.random() > 0.5 ? 'flip-image-x' : 'flip-image-y';
-            },
-            
-            flipCard(imageSrc, url) {
-                const missionImage = document.getElementById('missionImage');
-                const randomFlip = this.getRandomFlip();
-                
-                missionImage.classList.add(randomFlip);
-                document.body.classList.add('fade-out-body');
-                document.getElementById('spinner').style.display = 'block';
-                
-                // Redirect immediately
-                window.location.href = url;
-                
-                setTimeout(() => {
-                    missionImage.src = imageSrc;
-                }, 2000);
-            }
-        };
+        mailchimpForm.innerHTML = `
+          <input type="hidden" name="FNAME" value="${fname}">
+          <input type="hidden" name="LNAME" value="${lname}">
+          <input type="hidden" name="EMAIL" value="${email}">
+        `;
 
-        // ==========================================================================
-        // MAIN APPLICATION
-        // ==========================================================================
-        const App = {
-            init() {
-                this.setupEventListeners();
-                this.setupClickableAreas();
-                this.setupVideoHandlers();
-                CountdownController.init();
-            },
-            
-            setupEventListeners() {
-                // Preload audio on first user interaction
-                window.addEventListener('pointerdown', () => {
-                    AudioController.preloadAudio();
-                }, { once: true });
-                
-                // Handle page navigation
-                window.addEventListener('beforeunload', () => {
-                    document.getElementById('spinner').style.display = 'none';
-                });
-                
-                window.addEventListener('pageshow', () => {
-                    document.body.classList.remove('fade-out-body');
-                });
-                
-                // Show clickable areas when DOM is loaded
-                document.addEventListener('DOMContentLoaded', () => {
-                    document.querySelectorAll('.clickable-area').forEach(element => {
-                        element.classList.add('loaded');
-                    });
-                });
-            },
-            
-            setupVideoHandlers() {
-                const video = document.getElementById('missionVideo');
-                if (video) {
-                    video.addEventListener('loadstart', VideoController.showLoadingIndicator);
-                    video.addEventListener('canplay', VideoController.hideLoadingIndicator);
-                    video.addEventListener('error', VideoController.handleError);
-                    video.addEventListener('ended', VideoController.showCardFrame);
-                }
-            },
-            
-            setupClickableAreas() {
-                document.querySelectorAll('.clickable-area').forEach(area => {
-                    area.addEventListener('click', function() {
-                        const sound = this.getAttribute('data-sound');
-                        const image = this.getAttribute('data-image');
-                        const url = this.getAttribute('data-url');
-                        
-                        AudioController.playSound(sound);
-                        CardController.flipCard(image, url);
-                    });
-                    
-                    area.addEventListener('keydown', function(e) {
-                        if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            this.click();
-                        }
-                    });
-                });
-            }
-        };
-
-        // ==========================================================================
-        // GLOBAL FUNCTIONS (for inline event handlers)
-        // ==========================================================================
-        function toggleMissionContent() {
-            if (CardController.clicked) return;
-            CardController.clicked = true;
-            
-            AudioController.playSound('cardflip');
-            
-            const image = document.getElementById('missionImage');
-            image.src = CardController.getRandomImage();
-            
-            const video = document.getElementById('missionVideo');
-            video.style.display = 'block';
-            video.style.opacity = 0;
-            
-            setTimeout(() => {
-                video.style.opacity = 1;
-            }, 100);
-            
-            video.play();
-            document.getElementById('missionContent').style.display = 'block';
-            
-            const randomFlip = CardController.getRandomFlip();
-            image.classList.add(randomFlip);
-        }
-        
-        function flipAndRedirect() {
-            const banner = document.getElementById('aiffBanner');
-            const randomFlip = CardController.getRandomFlip();
-            
-            banner.classList.add(randomFlip);
-            
-            setTimeout(() => {
-                window.location.href = 'https://innovation-engine.devpost.com/';
-            }, 2000);
-        }
-
-        // ==========================================================================
-        // INITIALIZE APPLICATION
-        // ==========================================================================
-        App.init();
+        document.body.appendChild(mailchimpForm); // Temporarily add to the DOM
+        mailchimpForm.submit(); // Programmatically submit the form
+        document.body.removeChild(mailchimpForm); // Clean up: remove from the DOM
+      });
     </script>
-    <script src="dist/bundle.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to show a specific tab and hide others
+            function showTab(tabId) {
+                // Hide all tab content panes
+                document.querySelectorAll('.tab-content-pane').forEach(pane => {
+                    pane.classList.remove('active-tab-pane');
+                });
+
+                // Deactivate all tab buttons
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Show the selected tab content pane
+                const activePane = document.getElementById(tabId);
+                if (activePane) {
+                    activePane.classList.add('active-tab-pane');
+                }
+
+                // Activate the corresponding tab button
+                const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+
+                // Scroll to the top of the panel to ensure content is visible
+                const panel = document.querySelector('.panel');
+                if (panel) {
+                    panel.scrollTop = 0;
+                }
+            }
+
+            // Add click event listeners to tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    showTab(tabId);
+                });
+            });
+
+            // Show the default tab (e.g., 'profile') when the page loads
+            showTab('profile'); // This makes the "Create Profile" tab active by default
+        });
+    </script>
+    <div id="endorseSkillModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Endorse User for...</h3>
+        <div id="endorse-skill-list" class="skill-endorse-list">
+            </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 100; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    }
+
+    .modal-content {
+    position: absolute; /* or fixed */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2a2a3a;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+    .modal-content h3 {
+        color: var(--primary-color);
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: #ffd700;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .skill-endorse-list {
+        max-height: 200px; /* Scrollable if many skills */
+        overflow-y: auto;
+        padding-right: 5px; /* For scrollbar */
+    }
+
+    .skill-endorse-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #444;
+    }
+
+    .skill-endorse-item:last-child {
+        border-bottom: none;
+    }
+
+    .skill-endorse-item span {
+        color: #eee;
+        font-size: 1.1em;
+    }
+
+    .endorse-specific-skill-btn {
+        background-color: #ffd700;
+        color: #222;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+    }
+
+    .endorse-specific-skill-btn:hover {
+        background-color: #e0b800;
+    }
+</style>
 </body>
 </html>
