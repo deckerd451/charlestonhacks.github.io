@@ -14,7 +14,7 @@ export function startCountdown(elementId, eventDateStr) {
     const pad = n => n.toString().padStart(2, '0');
 
     countdownEl.innerHTML = `
-      <span><b>TBD:</b></span>
+      <span><b>HH:</b></span>
       <span>${days}<small>d</small></span>
       <span>${pad(hours)}<small>h</small></span>
       <span>${pad(minutes)}<small>m</small></span>
