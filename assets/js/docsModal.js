@@ -1,48 +1,31 @@
-// docsModal.js
-
+// assets/js/docsModal.js
 export function initDocsModal() {
-  document.addEventListener("DOMContentLoaded", () => {
-    // support both camelCase and kebab-case IDs
-    const modal =
-      document.getElementById("docsModal") ||
-      document.getElementById("docs-modal");
-    const iframe = modal?.querySelector("iframe");
-    const closeBtn = modal?.querySelector(".close-btn");
-    const testButtons = document.querySelectorAll("[data-docs-url]");
+  const modal = document.getElementById("docsModal") || document.getElementById("docs-modal");
+  const openBtn = document.getElementById("openDocsBtn");
+  const closeBtn = modal ? modal.querySelector(".close-button") : null;
 
-    if (!modal || !iframe || !closeBtn) {
-      console.warn("[DocsModal] Elements not found in DOM.");
-      return;
-    }
+  // If there is no modal in this page, just skip quietly
+  if (!modal) {
+    console.log("[DocsModal] No modal found in DOM — skipping init.");
+    return;
+  }
 
-    // Open modal
-    testButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const url = btn.getAttribute("data-docs-url");
-        if (url) {
-          iframe.src = url;
-          modal.classList.remove("hidden");
-        }
-      });
+  if (openBtn) {
+    openBtn.addEventListener("click", () => {
+      modal.style.display = "block";
     });
+  }
 
-    // Close modal
+  if (closeBtn) {
     closeBtn.addEventListener("click", () => {
-      modal.classList.add("hidden");
-      iframe.src = "";
+      modal.style.display = "none";
     });
+  }
 
-    // Click backdrop to close
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        modal.classList.add("hidden");
-        iframe.src = "";
-      }
-    });
-
-    console.log("[DocsModal] Initialized");
+  // Close when clicking outside the modal content
+  window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
   });
 }
-
-// Auto‑init
-initDocsModal();
