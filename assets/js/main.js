@@ -413,7 +413,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await initAuth();
   initTabs();
 
-  // Docs modal (optional)
+  // Docs modal only if present
   if (document.getElementById("docsModal") || document.getElementById("docs-modal")) {
     initDocsModal();
   }
@@ -422,7 +422,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadLeaderboard();
   initSearch();
 
-  // Also wire the Team Builder button (avoids inline onclick)
+  // Wire the Team Builder button (no inline onclick)
   const teamBtn = document.getElementById("buildTeamBtn");
   if (teamBtn) teamBtn.addEventListener("click", () => buildBestTeam());
+
+  // Note: We DO NOT call initProfileForm() here to avoid double-binding.
+  // login.js will call initProfileForm() from profile.js when a session is present/signed in.
 });
