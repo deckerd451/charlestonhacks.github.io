@@ -4,6 +4,7 @@ import { showNotification } from './utils.js';
 import { initDocsModal } from './docsModal.js';
 import { loadLeaderboard } from './leaderboard.js';
 import { generateUserCardHTML } from './cardRenderer.js';
+import { initSynapseView } from './synapse.js';
 
 /* =========================================================
    0) Skill helpers + autocomplete (Search & Team Builder)
@@ -535,6 +536,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log('[Main] App Initialized');
   await initAuth();
   initTabs();
+   // Initialize synapse view after DOM ready
+initSynapseView();
+
 
   if (document.getElementById('docsModal') || document.getElementById('docs-modal')) {
     initDocsModal();
