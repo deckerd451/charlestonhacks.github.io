@@ -41,21 +41,36 @@ function filterAllOfRequired(candidates, requiredSkills) {
 
 async function loadSkillSuggestions() {
   try {
-    const { data, error } = await supabase.from('community').select('skills, interests');
+    const { data, error } = await supabase.from("community").select("skills, interests");
     if (error) {
-      console.warn('[Suggest] load error:', error.message);
+      console.warn("[Suggest] load error:", error.message);
       return;
     }
+
     const bag = new Set();
     (data || []).forEach(r => {
-      normaliseArray(r.skills).forEach(s => bag.add(s));
-      normaliseArray(r.interests).forEach(s => bag.add(s));
+      // Normalize both arrays and comma-joined strings
+      const allVals = []
+        .concat(r.skills || [])
+        .concat(r.interests || []);
+
+      allVals.forEach(val => {
+        if (!val) return;
+        // if it's a string like "leadership, additive manufacturing"
+        String(val)
+          .split(/[,;|]/) // split on commas/semicolons/pipes
+          .map(s => s.trim().toLowerCase())
+          .filter(Boolean)
+          .forEach(skill => bag.add(skill));
+      });
     });
+
     SKILL_SUGGESTIONS = Array.from(bag).sort();
   } catch (e) {
-    console.warn('[Suggest] unexpected:', e);
+    console.warn("[Suggest] unexpected:", e);
   }
 }
+
 
 /**
  * Scoped autocomplete under a given root so identical IDs in
