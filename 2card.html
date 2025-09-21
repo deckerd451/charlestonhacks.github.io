@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
   <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
   <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
   <meta property="og:description" content="CharlestonHacks promotes tech events including the AI Film Fest. Join us for exciting events and stay updated." />
@@ -122,9 +125,11 @@
             <div class="input-container">
               <p class="instructions">Enter required skills and team size.</p>
               <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
-              <div id="autocomplete-teams-skills" class="autocomplete-box"></div>
+              <!-- FIX: unified the ID name to match the search tab’s convention -->
+              <div id="autocomplete-team-skills" class="autocomplete-box"></div>
               <input type="number" id="teamSize" placeholder="Team size" min="1" max="6">
-              <button onclick="buildBestTeam()">Build Team</button>
+              <!-- FIX: removed inline onclick (module scope doesn’t expose globals) -->
+              <button id="buildTeamBtn" type="button">Build Team</button>
             </div>
             <div class="card-container" id="bestTeamContainer" role="list"></div>
           </div>
@@ -142,9 +147,32 @@
     </main>
   </div>
 
-  <!-- Scripts -->
-  <script type="module" src="./assets/js/main.js"></script>
-  <script type="module" src="./assets/js/login.js"></script>
-  <script type="module" src="./assets/js/profile.js"></script>
+  <!-- Your modules (fine to keep as modules) -->
+  <script type="module" src="/assets/js/main.js"></script>
+  <script type="module" src="/assets/js/login.js"></script>
+  <script type="module" src="/assets/js/profile.js"></script>
+
+  <!-- Small safety net so the page never crashes even if modules haven’t wired listeners yet -->
+  <script>
+    (function () {
+      // If some code still expects a global, provide a harmless fallback:
+      if (!('buildBestTeam' in window)) {
+        window.buildBestTeam = function () { /* no-op until your modules wire it */ };
+      }
+
+      // Attach click safely without assuming presence:
+      document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.getElementById('buildTeamBtn');
+        if (btn) {
+          btn.addEventListener('click', function () {
+            // call it if your app sets a real implementation later
+            if (typeof window.buildBestTeam === 'function') {
+              try { window.buildBestTeam(); } catch (e) { console.warn(e); }
+            }
+          });
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
