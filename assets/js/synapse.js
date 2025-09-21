@@ -4,7 +4,7 @@ import { supabaseClient as supabase } from './supabaseClient.js';
 let synapseInitialized = false;
 
 export async function initSynapseView() {
-  if (synapseInitialized) return; // prevent re-initializing
+  if (synapseInitialized) return; // only once
   synapseInitialized = true;
 
   const canvas = document.getElementById("synapseCanvas");
@@ -12,16 +12,16 @@ export async function initSynapseView() {
   const ctx = canvas.getContext("2d");
 
   // Fetch community members
-  const { data: members, error } = await supabase
+  const { data: members, error: memberError } = await supabase
     .from("community")
     .select("id, name, skills");
 
-  if (error || !members) {
-    console.error("[Synapse] Error fetching members:", error);
+  if (memberError || !members) {
+    console.error("[Synapse] Error fetching members:", memberError);
     return;
   }
 
-  // Create node objects
+  // Build node lookup
   const nodes = members.map((m, i) => ({
     id: m.id,
     label: m.name || `User ${i + 1}`,
@@ -30,22 +30,31 @@ export async function initSynapseView() {
     vx: 0,
     vy: 0,
   }));
+  const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
 
-  // Random demo edges (replace with real connections later)
-  const edges = [];
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      if (Math.random() < 0.05) {
-        edges.push({ source: nodes[i], target: nodes[j] });
-      }
-    }
+  // Fetch real connections
+  const { data: connections, error: connError } = await supabase
+    .from("connections")
+    .select("source_id, target_id");
+
+  if (connError) {
+    console.error("[Synapse] Error fetching connections:", connError);
+    return;
   }
+
+  // Build edges from real connections
+  const edges = [];
+  (connections || []).forEach(c => {
+    const src = nodeById[c.source_id];
+    const tgt = nodeById[c.target_id];
+    if (src && tgt) edges.push({ source: src, target: tgt });
+  });
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Edges
-    ctx.strokeStyle = "rgba(255,255,255,0.2)";
+    // Draw edges
+    ctx.strokeStyle = "rgba(0, 200, 255, 0.25)";
     ctx.lineWidth = 1;
     edges.forEach(e => {
       ctx.beginPath();
@@ -54,7 +63,7 @@ export async function initSynapseView() {
       ctx.stroke();
     });
 
-    // Nodes
+    // Draw nodes
     nodes.forEach(n => {
       ctx.beginPath();
       ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
@@ -76,12 +85,12 @@ export async function initSynapseView() {
   tick();
 }
 
-// Attach listener to Synapse tab button so it only runs once when opened
+// Initialize only when the Synapse tab is clicked
 document.addEventListener("DOMContentLoaded", () => {
   const synapseTabBtn = document.querySelector('[data-tab="synapse"]');
   if (synapseTabBtn) {
     synapseTabBtn.addEventListener("click", () => {
       initSynapseView();
-    }, { once: true }); // ensures init only runs once
+    }, { once: true });
   }
 });
