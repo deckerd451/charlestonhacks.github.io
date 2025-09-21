@@ -1,12 +1,17 @@
 // assets/js/synapse.js
 import { supabaseClient as supabase } from './supabaseClient.js';
 
+let synapseInitialized = false;
+
 export async function initSynapseView() {
+  if (synapseInitialized) return; // prevent re-initializing
+  synapseInitialized = true;
+
   const canvas = document.getElementById("synapseCanvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
 
-  // Get community members
+  // Fetch community members
   const { data: members, error } = await supabase
     .from("community")
     .select("id, name, skills");
@@ -16,7 +21,7 @@ export async function initSynapseView() {
     return;
   }
 
-  // Build node list
+  // Create node objects
   const nodes = members.map((m, i) => ({
     id: m.id,
     label: m.name || `User ${i + 1}`,
@@ -26,11 +31,11 @@ export async function initSynapseView() {
     vy: 0,
   }));
 
-  // For now: random edges between some nodes
+  // Random demo edges (replace with real connections later)
   const edges = [];
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      if (Math.random() < 0.05) { // ~5% chance
+      if (Math.random() < 0.05) {
         edges.push({ source: nodes[i], target: nodes[j] });
       }
     }
@@ -40,7 +45,7 @@ export async function initSynapseView() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Edges
-    ctx.strokeStyle = "rgba(255,255,255,0.25)";
+    ctx.strokeStyle = "rgba(255,255,255,0.2)";
     ctx.lineWidth = 1;
     edges.forEach(e => {
       ctx.beginPath();
@@ -56,7 +61,7 @@ export async function initSynapseView() {
       ctx.fillStyle = "#FFD700";
       ctx.fill();
 
-      // Labels (optional)
+      // Labels
       ctx.fillStyle = "white";
       ctx.font = "10px sans-serif";
       ctx.fillText(n.label, n.x + 8, n.y + 3);
@@ -70,3 +75,13 @@ export async function initSynapseView() {
 
   tick();
 }
+
+// Attach listener to Synapse tab button so it only runs once when opened
+document.addEventListener("DOMContentLoaded", () => {
+  const synapseTabBtn = document.querySelector('[data-tab="synapse"]');
+  if (synapseTabBtn) {
+    synapseTabBtn.addEventListener("click", () => {
+      initSynapseView();
+    }, { once: true }); // ensures init only runs once
+  }
+});
