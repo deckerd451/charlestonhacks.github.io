@@ -35,7 +35,6 @@
       <h1>DEX</h1>
       <p>Making Invisible Networks Visible</p>
       <div class="auth-controls">
-        <!-- IDs added to match main.js expectations -->
         <span class="user-badge hidden" id="user-badge"></span>
         <button class="logout-btn hidden" id="logout-btn">
           <i class="fas fa-sign-out-alt"></i> Logout
@@ -49,7 +48,6 @@
         <!-- LOGIN SECTION -->
         <div id="login-section">
           <h2 class="section-title">Login</h2>
-          <!-- Form + submit ID to match main.js -->
           <form id="login-form">
             <input type="email" id="login-email" placeholder="Enter your email" autocomplete="email" />
             <button id="login-button" type="submit">Send Magic Link</button>
@@ -58,11 +56,14 @@
 
         <!-- PROFILE SECTION (hidden until logged in) -->
         <div id="profile-section" class="hidden">
+
+          <!-- ✅ Single unified tab nav -->
           <div class="tab-nav">
             <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
             <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
             <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
             <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
+            <button class="tab-button" data-tab="synapse"><i class="fas fa-project-diagram"></i> Synapse View</button>
           </div>
 
           <!-- Profile Tab -->
@@ -137,23 +138,6 @@
             </div>
             <div class="card-container" id="bestTeamContainer" role="list"></div>
           </div>
-          <!-- Inside your tab nav -->
-<div class="tab-nav">
-  <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
-  <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
-  <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
-  <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
-  <!-- ✅ new tab -->
-  <button class="tab-button" data-tab="synapse"><i class="fas fa-project-diagram"></i> Synapse View</button>
-</div>
-
-<!-- New Synapse View pane -->
-<div id="synapse" class="tab-content-pane">
-  <h2 class="section-title">Synapse View</h2>
-  <canvas id="synapseCanvas" width="900" height="600"
-    style="width:100%; height:600px; background:black; border-radius:10px;"></canvas>
-</div>
-
 
           <!-- Leaderboard Tab -->
           <div id="leaderboard" class="tab-content-pane">
@@ -162,13 +146,21 @@
               <div id="leaderboard-rows"></div>
             </div>
           </div>
+
+          <!-- Synapse View Tab -->
+          <div id="synapse" class="tab-content-pane">
+            <h2 class="section-title">Synapse View</h2>
+            <canvas id="synapseCanvas" width="900" height="600"
+              style="width:100%; height:600px; background:black; border-radius:10px;"></canvas>
+          </div>
+
         </div><!-- /profile-section -->
 
       </div>
     </main>
   </div>
 
-  <!-- Scripts (module order OK) -->
+  <!-- Scripts -->
   <script type="module" src="/assets/js/main.js"></script>
   <script type="module" src="/assets/js/login.js"></script>
   <script type="module" src="/assets/js/profile.js"></script>
