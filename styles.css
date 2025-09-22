@@ -866,13 +866,11 @@ main, .main-wrapper, .media-container {
         --footer-spacing: 7px;
     }
 
-    body::before {
-        background: var(--bg-url, url('images/backgroundmobile.jpg')) no-repeat center center;
-        background-size: cover;
-    }
-
+    /* ✅ Use the same background as desktop */
+    body::before,
     body.two-card-page::before {
-        background-image: url('images/background for mobile ie.jpg');
+        background: var(--bg-url) no-repeat center center;
+        background-size: cover;
     }
 
     #missionContent {
@@ -891,6 +889,7 @@ main, .main-wrapper, .media-container {
         padding: 0 10px;
     }
 }
+
 /* ==========================================================================
    TABS & NAVIGATION
    ========================================================================== */
