@@ -4,7 +4,7 @@ import { supabaseClient as supabase } from './supabaseClient.js';
 let synapseInitialized = false;
 
 export async function initSynapseView() {
-  if (synapseInitialized) return; // only once
+  if (synapseInitialized) return; // only initialize once
   synapseInitialized = true;
 
   const canvas = document.getElementById("synapseCanvas");
@@ -32,10 +32,10 @@ export async function initSynapseView() {
   }));
   const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
 
-  // Fetch real connections
+  // ✅ Fetch real connections using correct column names
   const { data: connections, error: connError } = await supabase
     .from("connections")
-    .select("source_id, target_id");
+    .select("source, target, type, created_at");
 
   if (connError) {
     console.error("[Synapse] Error fetching connections:", connError);
@@ -45,21 +45,37 @@ export async function initSynapseView() {
   // Build edges from real connections
   const edges = [];
   (connections || []).forEach(c => {
-    const src = nodeById[c.source_id];
-    const tgt = nodeById[c.target_id];
-    if (src && tgt) edges.push({ source: src, target: tgt });
+    const src = nodeById[c.source];
+    const tgt = nodeById[c.target];
+    if (src && tgt) {
+      edges.push({
+        source: src,
+        target: tgt,
+        type: c.type || "generic",
+        created_at: c.created_at,
+      });
+    }
   });
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw edges
-    ctx.strokeStyle = "rgba(0, 200, 255, 0.25)";
-    ctx.lineWidth = 1;
     edges.forEach(e => {
       ctx.beginPath();
       ctx.moveTo(e.source.x, e.source.y);
       ctx.lineTo(e.target.x, e.target.y);
+
+      // Style edges based on type
+      if (e.type === "mentorship") {
+        ctx.strokeStyle = "rgba(0, 200, 255, 0.4)";
+      } else if (e.type === "collaboration") {
+        ctx.strokeStyle = "rgba(0, 255, 150, 0.4)";
+      } else {
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+      }
+
+      ctx.lineWidth = 1;
       ctx.stroke();
     });
 
@@ -67,7 +83,7 @@ export async function initSynapseView() {
     nodes.forEach(n => {
       ctx.beginPath();
       ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
-      ctx.fillStyle = "#FFD700";
+      ctx.fillStyle = "#FFD700"; // gold
       ctx.fill();
 
       // Labels
