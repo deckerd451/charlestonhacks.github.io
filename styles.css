@@ -1846,24 +1846,25 @@ main, .main-wrapper, .media-container {
   background: rgba(255,255,255,0.08);
 }
 /* ==========================================================================
-   SYNAPSE VIEW FULL WIDTH
+   Synapse View Fullscreen Override
    ========================================================================== */
 #synapse {
-  width: 100%;              /* full width */
-  max-width: 100%;          /* remove card-style max width */
-  margin: 0;                /* no side margins */
-  padding: 0;               /* optional: keep clean edges */
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
 }
 
 #synapseCanvas {
-  background: transparent !important;  /* remove black box */
-  border-radius: 0;                   /* remove rounded corners */
-  box-shadow: none;                   /* remove shadow */
-  width: 100%;                        /* stretch to full width */
-  height: 80vh;                       /* taller height */
+  width: 100% !important;
+  height: 85vh !important;  /* adjust height for desktop */
+  max-width: 100% !important;
   display: block;
   margin: 0 auto;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
+
 
 /* ==========================================================================
    REDUNDANT CONTAINERS (Optional Styling or Overrides)
