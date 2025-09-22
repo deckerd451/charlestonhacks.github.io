@@ -14,7 +14,7 @@ export async function initSynapseView() {
   const width = canvas.width;
   const height = canvas.height;
 
-  // Fetch community members
+  // === Fetch community members ===
   const { data: members, error: memberError } = await supabase
     .from("community")
     .select("id, name, skills");
@@ -35,10 +35,10 @@ export async function initSynapseView() {
   }));
   const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
 
-  // Fetch connections
+  // === Fetch connections with correct columns ===
   const { data: connections, error: connError } = await supabase
     .from("connections")
-    .select("source, target, type");
+    .select("from_id, to_id, created_at");
 
   if (connError) {
     console.error("[Synapse] Error fetching connections:", connError);
@@ -48,22 +48,22 @@ export async function initSynapseView() {
   // Build edges
   const edges = [];
   (connections || []).forEach(c => {
-    const src = nodeById[c.source];
-    const tgt = nodeById[c.target];
+    const src = nodeById[c.from_id];
+    const tgt = nodeById[c.to_id];
     if (src && tgt) {
       edges.push({
         source: src,
         target: tgt,
-        type: c.type || "generic",
+        created_at: c.created_at,
       });
     }
   });
 
   // === Force simulation parameters ===
-  const repulsion = 2000; // how strongly nodes repel each other
-  const springLength = 120; // preferred edge length
-  const springStrength = 0.02;
-  const damping = 0.85; // slows velocity over time
+  const repulsion = 2000;      // strength of node repulsion
+  const springLength = 120;    // preferred edge length
+  const springStrength = 0.02; // spring stiffness
+  const damping = 0.85;        // velocity damping
 
   function applyForces() {
     // Node repulsion
@@ -120,19 +120,12 @@ export async function initSynapseView() {
     ctx.clearRect(0, 0, width, height);
 
     // Draw edges
+    ctx.lineWidth = 1;
     edges.forEach(e => {
       ctx.beginPath();
       ctx.moveTo(e.source.x, e.source.y);
       ctx.lineTo(e.target.x, e.target.y);
-
-      if (e.type === "mentorship") {
-        ctx.strokeStyle = "rgba(0, 200, 255, 0.5)";
-      } else if (e.type === "collaboration") {
-        ctx.strokeStyle = "rgba(0, 255, 150, 0.5)";
-      } else {
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
-      }
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
       ctx.stroke();
     });
 
@@ -140,7 +133,7 @@ export async function initSynapseView() {
     nodes.forEach(n => {
       ctx.beginPath();
       ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
-      ctx.fillStyle = "#FFD700";
+      ctx.fillStyle = "#FFD700"; // gold
       ctx.fill();
 
       ctx.fillStyle = "white";
@@ -158,7 +151,7 @@ export async function initSynapseView() {
   tick();
 }
 
-// Initialize only when the Synapse tab is clicked
+// Initialize only when Synapse tab is clicked
 document.addEventListener("DOMContentLoaded", () => {
   const synapseTabBtn = document.querySelector('[data-tab="synapse"]');
   if (synapseTabBtn) {
