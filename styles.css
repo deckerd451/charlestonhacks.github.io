@@ -1846,32 +1846,29 @@ main, .main-wrapper, .media-container {
   background: rgba(255,255,255,0.08);
 }
 /* ==========================================================================
-   Synapse View Fullscreen Override
+   Synapse View Fullscreen Below Header
    ========================================================================== */
 #synapse {
   width: 100% !important;
   max-width: 100% !important;
-  margin: 0 auto !important;
+  margin: 0 !important;
   padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
 
+/* Synapse canvas takes full viewport height minus header+tabs */
 #synapseCanvas {
   width: 100% !important;
-  height: 85vh !important;  /* adjust height for desktop */
-  max-width: 100% !important;
+  height: calc(100vh - 140px) !important; /* adjust 140px if header+tabs taller/shorter */
   display: block;
   margin: 0 auto;
+  background: transparent !important;
   border-radius: 0 !important;
   box-shadow: none !important;
 }
 
-
-/* ==========================================================================
-   REDUNDANT CONTAINERS (Optional Styling or Overrides)
-   ========================================================================== */
-main, .main-wrapper {
-    /* Left for optional layout extensions */
-}
 
 /* ==========================================================================
    DUPLICATE CARD CONTAINER CLEANUP (if needed)
