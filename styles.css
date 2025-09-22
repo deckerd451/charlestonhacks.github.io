@@ -1846,19 +1846,24 @@ main, .main-wrapper, .media-container {
   background: rgba(255,255,255,0.08);
 }
 /* ==========================================================================
-   SYNAPSE VIEW
+   SYNAPSE VIEW FULL WIDTH
    ========================================================================== */
-
-#synapseCanvas {
-  background: radial-gradient(circle at center, #0a0a0a, #000);
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(255,255,255,0.15);
+#synapse {
+  width: 100%;              /* full width */
+  max-width: 100%;          /* remove card-style max width */
+  margin: 0;                /* no side margins */
+  padding: 0;               /* optional: keep clean edges */
 }
 
-
-
-
-
+#synapseCanvas {
+  background: transparent !important;  /* remove black box */
+  border-radius: 0;                   /* remove rounded corners */
+  box-shadow: none;                   /* remove shadow */
+  width: 100%;                        /* stretch to full width */
+  height: 80vh;                       /* taller height */
+  display: block;
+  margin: 0 auto;
+}
 
 /* ==========================================================================
    REDUNDANT CONTAINERS (Optional Styling or Overrides)
