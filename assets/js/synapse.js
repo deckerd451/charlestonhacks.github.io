@@ -10,29 +10,26 @@ export async function initSynapseView() {
     console.error("[Synapse] No #synapse container found.");
     return;
   }
-
-  // Clear any old SVG
   container.innerHTML = "";
 
   const width = container.clientWidth || window.innerWidth;
   const height = container.clientHeight || window.innerHeight;
 
-  // Create SVG
   const svg = d3.select(container)
     .append("svg")
     .attr("width", "100%")
     .attr("height", "100%")
     .call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", (event) => {
       g.attr("transform", event.transform);
-    }))
-    .append("g");
+    }));
 
   const g = svg.append("g");
 
   let nodes = [];
   let links = [];
 
-  // === Load data from Supabase ===
+  let selectedNode = null; // <-- for click-to-connect
+
   async function loadData() {
     try {
       const { data: members, error: memberError } = await supabase
@@ -40,7 +37,6 @@ export async function initSynapseView() {
         .select("id, name, role");
 
       if (memberError || !members || members.length === 0) {
-        console.warn("[Synapse] Supabase returned no members. Using fallback.");
         setStatus("Fallback Mode", "yellow");
         return fallbackNodes();
       }
@@ -50,7 +46,6 @@ export async function initSynapseView() {
         .select("from_id, to_id");
 
       if (connError) {
-        console.error("[Synapse] Error fetching connections:", connError);
         setStatus("Error loading connections", "red");
         return fallbackNodes();
       }
@@ -73,7 +68,6 @@ export async function initSynapseView() {
     }
   }
 
-  // === Fallback mode ===
   function fallbackNodes() {
     nodes = [];
     const cols = 5, rows = 3;
@@ -96,22 +90,18 @@ export async function initSynapseView() {
     });
   }
 
-  // === Status Badge ===
   function setStatus(text, color) {
-    if (!statusEl) {
-      console.warn("[Synapse] No #connection-status element in DOM.");
-      return;
-    }
+    if (!statusEl) return;
     statusEl.textContent = text;
-    statusEl.style.background = color === "green"
-      ? "rgba(0,255,0,0.7)"
-      : color === "red"
-      ? "rgba(255,0,0,0.7)"
-      : "rgba(255,215,0,0.7)";
+    statusEl.style.background =
+      color === "green"
+        ? "rgba(0,255,0,0.7)"
+        : color === "red"
+        ? "rgba(255,0,0,0.7)"
+        : "rgba(255,215,0,0.7)";
     statusEl.classList.remove("hidden");
   }
 
-  // === Build force simulation ===
   function runSimulation() {
     const link = g.append("g")
       .attr("stroke", "rgba(255,255,255,0.3)")
@@ -138,22 +128,57 @@ export async function initSynapseView() {
       .attr("fill", "white")
       .style("font-size", "12px");
 
-    // Tooltip
     const tooltip = d3.select("body").append("div")
       .attr("class", "tooltip hidden");
 
     node.on("mouseover", (event, d) => {
-      tooltip
-        .classed("hidden", false)
-        .classed("visible", true)
+      tooltip.classed("hidden", false).classed("visible", true)
         .html(`<strong>${d.label}</strong><br/>${d.role}`)
         .style("left", (event.pageX + 10) + "px")
         .style("top", (event.pageY - 20) + "px");
     }).on("mouseout", () => {
       tooltip.classed("hidden", true).classed("visible", false);
-    }).on("click", (event, d) => {
-      console.log("[Synapse] Clicked node:", d);
-      // TODO: implement click-to-connect (insert into Supabase.connections)
+    }).on("click", async (event, d) => {
+      if (!selectedNode) {
+        selectedNode = d;
+        d3.select(event.target).attr("fill", "orange"); // highlight selection
+      } else if (selectedNode.id !== d.id) {
+        const from_id = selectedNode.id;
+        const to_id = d.id;
+
+        // Reset selection color
+        d3.selectAll("circle").attr("fill", "#0ff");
+        selectedNode = null;
+
+        // Check if link exists
+        if (links.find(l => (l.source.id || l.source) === from_id && (l.target.id || l.target) === to_id)) {
+          console.warn("[Synapse] Connection already exists.");
+          return;
+        }
+
+        // Insert into Supabase
+        try {
+          const { error } = await supabase
+            .from("connections")
+            .insert([{ from_id, to_id }]);
+
+          if (error) {
+            console.error("[Synapse] Error inserting connection:", error);
+            setStatus("Error saving connection", "red");
+            return;
+          }
+
+          // Optimistic update
+          links.push({ source: from_id, target: to_id });
+          link.data(links).enter().append("line")
+            .attr("stroke", "rgba(255,255,255,0.3)")
+            .attr("stroke-width", 1);
+          setStatus("Connection added", "green");
+        } catch (err) {
+          console.error("[Synapse] Insert failed:", err);
+          setStatus("Supabase Error", "red");
+        }
+      }
     });
 
     const simulation = d3.forceSimulation(nodes)
@@ -178,7 +203,6 @@ export async function initSynapseView() {
     });
   }
 
-  // Drag behavior
   function drag(simulation) {
     return d3.drag()
       .on("start", (event, d) => {
@@ -197,8 +221,7 @@ export async function initSynapseView() {
       });
   }
 
-  // === Initialize ===
   await loadData();
   runSimulation();
-  console.log("%c[Synapse] View initialized ✅", "color: lime; font-weight: bold;");
+  console.log("%c[Synapse] View initialized with click-to-connect ✅", "color: lime; font-weight: bold;");
 }
