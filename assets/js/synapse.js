@@ -1,252 +1,154 @@
-import { supabaseClient as supabase } from './supabaseClient.js';
-
-let synapseInitialized = false;
-
-export async function initSynapseView() {
-  if (synapseInitialized) return;
-  synapseInitialized = true;
-
+// synapse.js — Synapse View with HTML tooltips + zoom/pan
+export function initSynapseView() {
   const canvas = document.getElementById("synapseCanvas");
-  const ctx = canvas?.getContext("2d");
-  if (!canvas || !ctx) return;
-
-  const statusEl = document.getElementById("connection-status");
+  const ctx = canvas.getContext("2d");
 
   let width = canvas.clientWidth;
   let height = canvas.clientHeight;
+  canvas.width = width;
+  canvas.height = height;
 
-  // ===== RESIZE HANDLER =====
-  function resizeCanvas() {
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-    width = canvas.width;
-    height = canvas.height;
-  }
-  window.addEventListener("resize", resizeCanvas);
-  resizeCanvas();
+  // Tooltip element (reuse CSS .tooltip from your styles.css)
+  const tooltip = document.createElement("div");
+  tooltip.className = "tooltip hidden";
+  document.body.appendChild(tooltip);
 
-  // ===== CAMERA (zoom/pan) =====
+  // Pan & Zoom
+  let offsetX = 0, offsetY = 0;
   let scale = 1;
-  let offsetX = 0;
-  let offsetY = 0;
+  let isDragging = false;
+  let dragStart = { x: 0, y: 0 };
 
-  function applyTransform() {
-    ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
+  // Graph Data
+  const nodes = [];
+  const edges = [];
+
+  function addNode(id, x, y, label, imageUrl) {
+    nodes.push({ id, x, y, label, imageUrl });
   }
-  function screenToWorld(x, y) {
+
+  function addEdge(source, target) {
+    edges.push({ source, target });
+  }
+
+  // Demo Data
+  addNode(1, 100, 100, "Alice", "images/avatar1.png");
+  addNode(2, 300, 200, "Bob", "images/avatar2.png");
+  addNode(3, 200, 400, "Carol", "images/avatar3.png");
+  addEdge(1, 2);
+  addEdge(2, 3);
+
+  // Drawing
+  function draw() {
+    ctx.save();
+    ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
+    ctx.clearRect(-offsetX / scale, -offsetY / scale, width / scale, height / scale);
+
+    // Draw edges
+    ctx.strokeStyle = "rgba(255,255,255,0.4)";
+    ctx.lineWidth = 2 / scale;
+    edges.forEach(e => {
+      const src = nodes.find(n => n.id === e.source);
+      const tgt = nodes.find(n => n.id === e.target);
+      if (src && tgt) {
+        ctx.beginPath();
+        ctx.moveTo(src.x, src.y);
+        ctx.lineTo(tgt.x, tgt.y);
+        ctx.stroke();
+      }
+    });
+
+    // Draw nodes
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.fillStyle = "#0ff";
+      ctx.arc(n.x, n.y, 20, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2 / scale;
+      ctx.stroke();
+
+      ctx.fillStyle = "white";
+      ctx.font = `${14 / scale}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.fillText(n.label, n.x, n.y + 35 / scale);
+    });
+
+    ctx.restore();
+    requestAnimationFrame(draw);
+  }
+
+  // Hit test
+  function getNodeAt(x, y) {
+    const radius = 20 / scale;
+    return nodes.find(
+      n => Math.hypot(x - n.x, y - n.y) < radius
+    );
+  }
+
+  // Screen ↔ World coords
+  function screenToWorld(sx, sy) {
+    const rect = canvas.getBoundingClientRect();
     return {
-      x: (x - offsetX) / scale,
-      y: (y - offsetY) / scale
+      x: (sx - rect.left - offsetX) / scale,
+      y: (sy - rect.top - offsetY) / scale
     };
   }
 
-  // ===== STATUS BAR HELPERS =====
-  function showStatus(msg, color = "gold") {
-    if (!statusEl) return;
-    statusEl.textContent = msg;
-    statusEl.style.background = color;
-    statusEl.classList.remove("hidden");
-  }
-  function hideStatus() {
-    if (!statusEl) return;
-    statusEl.textContent = "";
-    statusEl.classList.add("hidden");
-  }
-
-  // ===== FETCH DATA =====
-  const { data: members, error: memberError } = await supabase
-    .from("community")
-    .select("id, name, skills, bio, availability, endorsements, image_url, x, y");
-
-  if (memberError || !members) {
-    console.error("[Synapse] Error fetching members:", memberError);
-    return;
-  }
-
-  // Scale endorsements into radius
-  const endorsementsArray = members.map(m => m.endorsements || 0);
-  const minEnd = Math.min(...endorsementsArray);
-  const maxEnd = Math.max(...endorsementsArray);
-  function scaleRadius(val) {
-    if (maxEnd === minEnd) return 14;
-    const norm = (val - minEnd) / (maxEnd - minEnd);
-    return 10 + norm * 20; // between 10 and 30px
-  }
-
-  const nodes = members.map((m, i) => ({
-    id: m.id,
-    name: m.name || `User ${i + 1}`,
-    skills: m.skills || "",
-    bio: m.bio || "",
-    availability: m.availability || "Available",
-    endorsements: m.endorsements || 0,
-    image_url: m.image_url || null,
-    x: m.x ?? Math.random() * width,
-    y: m.y ?? Math.random() * height,
-    vx: 0,
-    vy: 0,
-    radius: scaleRadius(m.endorsements || 0)
-  }));
-  const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
-
-  const { data: connections, error: connError } = await supabase
-    .from("connections")
-    .select("from_id, to_id");
-
-  if (connError) {
-    console.error("[Synapse] Error fetching connections:", connError);
-    return;
-  }
-
-  const edges = [];
-  (connections || []).forEach(c => {
-    const src = nodeById[c.from_id];
-    const tgt = nodeById[c.to_id];
-    if (src && tgt) {
-      if (!edges.find(e => (e.source.id === src.id && e.target.id === tgt.id) ||
-                           (e.source.id === tgt.id && e.target.id === src.id))) {
-        edges.push({ source: src, target: tgt });
-      }
-    }
-  });
-
-  // ===== FORCE LAYOUT =====
-  const repulsion = 2000;
-  const springLength = 120;
-  const springStrength = 0.02;
-  const damping = 0.85;
-
-  function applyForces() {
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[j].x - nodes[i].x;
-        const dy = nodes[j].y - nodes[i].y;
-        const distSq = dx * dx + dy * dy;
-        if (distSq === 0) continue;
-        const dist = Math.sqrt(distSq);
-        const force = repulsion / distSq;
-        const fx = force * (dx / dist);
-        const fy = force * (dy / dist);
-
-        nodes[i].vx -= fx;
-        nodes[i].vy -= fy;
-        nodes[j].vx += fx;
-        nodes[j].vy += fy;
-      }
-    }
-
-    edges.forEach(e => {
-      const dx = e.target.x - e.source.x;
-      const dy = e.target.y - e.source.y;
-      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      const diff = dist - springLength;
-      const force = springStrength * diff;
-      const fx = force * (dx / dist);
-      const fy = force * (dy / dist);
-
-      e.source.vx += fx;
-      e.source.vy += fy;
-      e.target.vx -= fx;
-      e.target.vy -= fy;
-    });
-
-    nodes.forEach(n => {
-      n.vx *= damping;
-      n.vy *= damping;
-      n.x += n.vx;
-      n.y += n.vy;
-    });
-  }
-
-  // ===== INTERACTION =====
-  let draggingNode = null;
-  let hoverNode = null;
-  let pendingConnection = null;
-  let isPanning = false;
-  let startPanX, startPanY;
-  let mouseWorld = { x: 0, y: 0 };
-  let touchMode = false;
-
-  // --- batch save positions ---
-  let saveTimeout = null;
-  function scheduleSave(node) {
-    if (saveTimeout) clearTimeout(saveTimeout);
-    saveTimeout = setTimeout(async () => {
-      await supabase.from("community")
-        .update({ x: node.x, y: node.y })
-        .eq("id", node.id);
-      saveTimeout = null;
-    }, 1200);
-  }
-
-  function getNodeAt(x, y) {
-    return nodes.find(n => {
-      const dx = n.x - x;
-      const dy = n.y - y;
-      return Math.sqrt(dx * dx + dy * dy) < n.radius;
-    });
-  }
-
-  // Mouse down
-  canvas.addEventListener("mousedown", e => {
-    const { x, y } = screenToWorld(e.clientX, e.clientY);
-    const node = getNodeAt(x, y);
-    if (node) {
-      draggingNode = node;
-    } else {
-      isPanning = true;
-      startPanX = e.clientX;
-      startPanY = e.clientY;
-    }
-  });
-
-  // Mouse move
+  // Mouse move (hover tooltip)
   canvas.addEventListener("mousemove", e => {
     const { x, y } = screenToWorld(e.clientX, e.clientY);
-    mouseWorld = { x, y };
-    hoverNode = getNodeAt(x, y);
-
-    if (draggingNode) {
-      draggingNode.x = x;
-      draggingNode.y = y;
-    } else if (isPanning) {
-      offsetX += e.clientX - startPanX;
-      offsetY += e.clientY - startPanY;
-      startPanX = e.clientX;
-      startPanY = e.clientY;
-    }
-  });
-
-  // Mouse up
-  canvas.addEventListener("mouseup", e => {
-    if (draggingNode) {
-      scheduleSave(draggingNode);
-      draggingNode = null;
-      return;
-    }
-    isPanning = false;
-
-    const { x, y } = screenToWorld(e.clientX, e.clientY);
     const node = getNodeAt(x, y);
+
     if (node) {
-      if (!pendingConnection) {
-        pendingConnection = node;
-        showStatus("Select another node to connect, or cancel.", "gold");
-      } else if (pendingConnection.id !== node.id) {
-        if (!edges.find(e => (e.source.id === pendingConnection.id && e.target.id === node.id) ||
-                             (e.source.id === node.id && e.target.id === pendingConnection.id))) {
-          supabase.from("connections")
-            .insert([{ from_id: pendingConnection.id, to_id: node.id }]);
-          edges.push({ source: pendingConnection, target: node });
-        }
-        pendingConnection = null;
-        showStatus("Connection created!", "limegreen");
-        setTimeout(hideStatus, 1500);
-      }
+      tooltip.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="${node.imageUrl}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+          <div>
+            <strong>${node.label}</strong><br>
+            <span style="font-size:0.9em;opacity:0.8;">Click to connect</span>
+          </div>
+        </div>
+      `;
+      tooltip.classList.remove("hidden");
+      tooltip.classList.add("visible");
+      tooltip.style.left = e.pageX + 15 + "px";
+      tooltip.style.top = e.pageY + 15 + "px";
+    } else {
+      tooltip.classList.remove("visible");
+      tooltip.classList.add("hidden");
     }
   });
 
-  // Smooth zoom
+  // Mobile tap for tooltip
+  canvas.addEventListener("touchstart", e => {
+    const touch = e.touches[0];
+    const { x, y } = screenToWorld(touch.clientX, touch.clientY);
+    const node = getNodeAt(x, y);
+
+    if (node) {
+      tooltip.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="${node.imageUrl}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+          <div>
+            <strong>${node.label}</strong><br>
+            <span style="font-size:0.9em;opacity:0.8;">Tap to connect</span>
+          </div>
+        </div>
+      `;
+      tooltip.classList.remove("hidden");
+      tooltip.classList.add("visible");
+      tooltip.style.left = touch.pageX + 15 + "px";
+      tooltip.style.top = touch.pageY + 15 + "px";
+
+      setTimeout(() => {
+        tooltip.classList.remove("visible");
+        tooltip.classList.add("hidden");
+      }, 2000);
+    }
+  });
+
+  // Zoom
   canvas.addEventListener("wheel", e => {
     e.preventDefault();
     const zoomFactor = 0.05;
@@ -255,127 +157,30 @@ export async function initSynapseView() {
     scale = Math.max(0.2, Math.min(5, scale));
   });
 
-  // ===== RENDER =====
-  function draw() {
-    ctx.save();
-    ctx.clearRect(0, 0, width, height);
-    applyTransform();
-
-    // edges
-    ctx.strokeStyle = "rgba(255,255,255,0.3)";
-    edges.forEach(e => {
-      ctx.beginPath();
-      ctx.moveTo(e.source.x, e.source.y);
-      ctx.lineTo(e.target.x, e.target.y);
-      ctx.stroke();
-    });
-
-    // pending connection line
-    if (pendingConnection) {
-      ctx.beginPath();
-      ctx.moveTo(pendingConnection.x, pendingConnection.y);
-      ctx.lineTo(mouseWorld.x, mouseWorld.y);
-      ctx.strokeStyle = "rgba(255,255,0,0.6)";
-      ctx.setLineDash([5, 5]);
-      ctx.stroke();
-      ctx.setLineDash([]);
+  // Drag to pan
+  canvas.addEventListener("mousedown", e => {
+    isDragging = true;
+    dragStart.x = e.clientX - offsetX;
+    dragStart.y = e.clientY - offsetY;
+  });
+  canvas.addEventListener("mouseup", () => isDragging = false);
+  canvas.addEventListener("mouseleave", () => isDragging = false);
+  canvas.addEventListener("mousemove", e => {
+    if (isDragging) {
+      offsetX = e.clientX - dragStart.x;
+      offsetY = e.clientY - dragStart.y;
     }
+  });
 
-    // nodes
-    nodes.forEach(n => {
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.radius, 0, 2 * Math.PI);
-
-      let fillColor = "#0ff";
-      if (n.availability === "Available") fillColor = "limegreen";
-      else if (n.availability === "Busy") fillColor = "orange";
-      else if (n.availability === "Not Looking") fillColor = "gray";
-
-      ctx.fillStyle = fillColor;
-      ctx.fill();
-      ctx.strokeStyle = "#fff";
-      ctx.stroke();
-
-      ctx.fillStyle = "#fff";
-      ctx.font = "11px sans-serif";
-      ctx.fillText(n.name, n.x + n.radius + 4, n.y + 4);
-    });
-
-    // tooltip
-    if (hoverNode && !touchMode) {
-      const lines = [
-        `Skills: ${hoverNode.skills || "N/A"}`,
-        hoverNode.bio ? `Bio: ${hoverNode.bio}` : null,
-        `Endorsements: ${hoverNode.endorsements}`
-      ].filter(Boolean);
-
-      let tooltipX = hoverNode.x + 25;
-      let tooltipY = hoverNode.y - 15;
-      const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 60;
-      const h = lines.length * 16 + (hoverNode.image_url ? 70 : 30);
-
-      ctx.fillStyle = "rgba(0,0,0,0.85)";
-      ctx.fillRect(tooltipX, tooltipY, w, h);
-      ctx.strokeStyle = "#0ff";
-      ctx.strokeRect(tooltipX, tooltipY, w, h);
-
-      if (hoverNode.image_url) {
-        const img = new Image();
-        img.src = hoverNode.image_url;
-        img.onload = () => {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(tooltipX + 30, tooltipY + 30, 25, 0, Math.PI * 2);
-          ctx.closePath();
-          ctx.clip();
-          ctx.drawImage(img, tooltipX + 5, tooltipY + 5, 50, 50);
-          ctx.restore();
-        };
-        tooltipY += 60;
-      }
-
-      ctx.fillStyle = "#fff";
-      lines.forEach((l, i) => {
-        ctx.fillText(l, tooltipX + (hoverNode.image_url ? 65 : 10), tooltipY + 20 + i * 16);
-      });
-    }
-
-    ctx.restore();
+  // Resize
+  function resizeCanvas() {
+    width = canvas.clientWidth;
+    height = canvas.clientHeight;
+    canvas.width = width;
+    canvas.height = height;
   }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
 
-  function tick() {
-    applyForces();
-    draw();
-    requestAnimationFrame(tick);
-  }
-
-  tick();
-
-  // ===== AUTO-CENTER GRAPH =====
-  setTimeout(() => {
-    const xs = nodes.map(n => n.x);
-    const ys = nodes.map(n => n.y);
-    const minX = Math.min(...xs), maxX = Math.max(...xs);
-    const minY = Math.min(...ys), maxY = Math.max(...ys);
-
-    const graphWidth = maxX - minX;
-    const graphHeight = maxY - minY;
-
-    const scaleX = (width * 0.8) / graphWidth;
-    const scaleY = (height * 0.8) / graphHeight;
-    scale = Math.min(scaleX, scaleY);
-
-    offsetX = width / 2 - ((minX + maxX) / 2) * scale;
-    offsetY = height / 2 - ((minY + maxY) / 2) * scale;
-  }, 500);
+  draw();
 }
-
-// Hook init to Synapse tab
-document.addEventListener("DOMContentLoaded", () => {
-  const synapseTabBtn = document.querySelector('[data-tab="synapse"]');
-  if (synapseTabBtn) {
-    synapseTabBtn.addEventListener("click", () => {
-      initSynapseView();
-    }, { once: true });
-  }
-});
