@@ -1861,6 +1861,21 @@ main, .main-wrapper, .media-container {
   background: black;
   border-radius: 10px;
 }
+#synapse.panel,
+#synapse.panel.large {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  flex: 1;
+}
+#synapse {
+  flex: 1;
+  align-items: stretch;
+}
+.panels-wrapper {
+  align-items: stretch;
+}
+
 
 
 
