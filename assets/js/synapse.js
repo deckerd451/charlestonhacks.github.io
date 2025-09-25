@@ -37,11 +37,15 @@ export async function initSynapseView() {
     skills: m.skills || [],
   }));
 
-  const links = (connections || []).map(c => ({
+  let links = (connections || []).map(c => ({
     source: c.from_user_id,
     target: c.to_user_id,
     created_at: c.created_at
   }));
+
+  // ✅ Filter out invalid links
+  const nodeIds = new Set(nodes.map(n => n.id));
+  links = links.filter(l => nodeIds.has(l.source) && nodeIds.has(l.target));
 
   // === 4. Setup SVG ===
   const container = document.getElementById("synapseCanvas");
@@ -62,7 +66,7 @@ export async function initSynapseView() {
     .attr("viewBox", [0, 0, width, height])
     .call(
       d3.zoom()
-        .scaleExtent([0.2, 4]) // smoother zoom range
+        .scaleExtent([0.2, 4])
         .on("zoom", (event) => g.attr("transform", event.transform))
     );
 
