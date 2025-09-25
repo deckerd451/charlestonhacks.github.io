@@ -76,7 +76,6 @@ export async function initSynapseView() {
   const damping = 0.85;
 
   function applyForces() {
-    // Node repulsion
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const dx = nodes[j].x - nodes[i].x;
@@ -85,7 +84,6 @@ export async function initSynapseView() {
         if (distSq === 0) continue;
         const dist = Math.sqrt(distSq);
         const force = repulsion / distSq;
-
         const fx = force * (dx / dist);
         const fy = force * (dy / dist);
 
@@ -96,14 +94,12 @@ export async function initSynapseView() {
       }
     }
 
-    // Edge springs
     edges.forEach(e => {
       const dx = e.target.x - e.source.x;
       const dy = e.target.y - e.source.y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
       const diff = dist - springLength;
       const force = springStrength * diff;
-
       const fx = force * (dx / dist);
       const fy = force * (dy / dist);
 
@@ -113,7 +109,6 @@ export async function initSynapseView() {
       e.target.vy -= fy;
     });
 
-    // Integrate velocities
     nodes.forEach(n => {
       n.vx *= damping;
       n.vy *= damping;
@@ -128,6 +123,8 @@ export async function initSynapseView() {
   let pendingConnection = null;
   let isPanning = false;
   let startPanX, startPanY;
+  let mouseWorld = { x: 0, y: 0 };
+  let touchMode = false;
 
   function getNodeAt(x, y) {
     return nodes.find(n => {
@@ -137,6 +134,7 @@ export async function initSynapseView() {
     });
   }
 
+  // ==== DESKTOP MOUSE EVENTS ====
   canvas.addEventListener("mousedown", e => {
     const { x, y } = screenToWorld(e.clientX, e.clientY);
     const node = getNodeAt(x, y);
@@ -151,6 +149,7 @@ export async function initSynapseView() {
 
   canvas.addEventListener("mousemove", e => {
     const { x, y } = screenToWorld(e.clientX, e.clientY);
+    mouseWorld = { x, y };
     hoverNode = getNodeAt(x, y);
 
     if (draggingNode) {
@@ -194,6 +193,79 @@ export async function initSynapseView() {
     scale *= zoom;
   });
 
+  canvas.addEventListener("contextmenu", e => {
+    e.preventDefault();
+    pendingConnection = null; // cancel with right click
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      pendingConnection = null; // cancel with ESC
+    }
+  });
+
+  // ==== MOBILE TOUCH EVENTS ====
+  let lastTouchDistance = null;
+  canvas.addEventListener("touchstart", e => {
+    touchMode = true;
+    if (e.touches.length === 1) {
+      const { x, y } = screenToWorld(e.touches[0].clientX, e.touches[0].clientY);
+      const node = getNodeAt(x, y);
+      if (node) {
+        draggingNode = node;
+      } else {
+        isPanning = true;
+        startPanX = e.touches[0].clientX;
+        startPanY = e.touches[0].clientY;
+      }
+    } else if (e.touches.length === 2) {
+      lastTouchDistance = Math.hypot(
+        e.touches[1].clientX - e.touches[0].clientX,
+        e.touches[1].clientY - e.touches[0].clientY
+      );
+    }
+  });
+
+  canvas.addEventListener("touchmove", e => {
+    if (e.touches.length === 1 && draggingNode) {
+      const { x, y } = screenToWorld(e.touches[0].clientX, e.touches[0].clientY);
+      draggingNode.x = x;
+      draggingNode.y = y;
+    } else if (e.touches.length === 1 && isPanning) {
+      offsetX += e.touches[0].clientX - startPanX;
+      offsetY += e.touches[0].clientY - startPanY;
+      startPanX = e.touches[0].clientX;
+      startPanY = e.touches[0].clientY;
+    } else if (e.touches.length === 2) {
+      const newDist = Math.hypot(
+        e.touches[1].clientX - e.touches[0].clientX,
+        e.touches[1].clientY - e.touches[0].clientY
+      );
+      if (lastTouchDistance) {
+        scale *= newDist / lastTouchDistance;
+      }
+      lastTouchDistance = newDist;
+    }
+  });
+
+  canvas.addEventListener("touchend", async e => {
+    if (draggingNode) {
+      await supabase.from("community")
+        .update({ x: draggingNode.x, y: draggingNode.y })
+        .eq("id", draggingNode.id);
+      draggingNode = null;
+    }
+    isPanning = false;
+    lastTouchDistance = null;
+  });
+
+  // Two-finger tap cancels pending connection
+  canvas.addEventListener("touchend", e => {
+    if (e.touches.length === 0 && e.changedTouches.length === 2) {
+      pendingConnection = null;
+    }
+  });
+
   // ===== RENDER =====
   function draw() {
     ctx.save();
@@ -209,28 +281,53 @@ export async function initSynapseView() {
       ctx.stroke();
     });
 
+    // live "rubber-band" line
+    if (pendingConnection) {
+      ctx.beginPath();
+      ctx.moveTo(pendingConnection.x, pendingConnection.y);
+      ctx.lineTo(mouseWorld.x, mouseWorld.y);
+      ctx.strokeStyle = "rgba(255,255,0,0.6)";
+      ctx.setLineDash([5, 5]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
     // nodes
     nodes.forEach(n => {
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.radius, 0, 2 * Math.PI);
-      ctx.fillStyle = (n === hoverNode) ? "#ff0" : "#0ff";
+
+      if (n === pendingConnection) {
+        ctx.fillStyle = "#0ff";
+        ctx.shadowColor = "#ff0";
+        ctx.shadowBlur = 20;
+      } else if (n === hoverNode && !touchMode) {
+        ctx.fillStyle = "#ff0";
+        ctx.shadowColor = "#fff";
+        ctx.shadowBlur = 10;
+      } else {
+        ctx.fillStyle = "#0ff";
+        ctx.shadowBlur = 0;
+      }
+
       ctx.fill();
       ctx.strokeStyle = "#fff";
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
       ctx.fillStyle = "#fff";
       ctx.font = "11px sans-serif";
       ctx.fillText(n.name, n.x + n.radius + 4, n.y + 4);
     });
 
-    // tooltip
-    if (hoverNode) {
+    // tooltip (desktop hover only for now)
+    if (hoverNode && !touchMode) {
       const lines = [`${hoverNode.skills}`, `${hoverNode.bio}`].filter(Boolean);
       if (lines.length) {
-        const width = Math.max(...lines.map(l => ctx.measureText(l).width)) + 10;
-        const height = lines.length * 16 + 10;
+        const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 10;
+        const h = lines.length * 16 + 10;
         ctx.fillStyle = "rgba(0,0,0,0.8)";
-        ctx.fillRect(hoverNode.x + 20, hoverNode.y - 10, width, height);
+        ctx.fillRect(hoverNode.x + 20, hoverNode.y - 10, w, h);
         ctx.fillStyle = "#fff";
         lines.forEach((l, i) => {
           ctx.fillText(l, hoverNode.x + 25, hoverNode.y + 10 + i * 16);
