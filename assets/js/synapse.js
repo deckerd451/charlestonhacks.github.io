@@ -100,4 +100,7 @@ export async function initSynapseView() {
 
   await loadNeurons();
   draw();
+
+  // ✅ Success banner
+  console.log("%c[Synapse] View initialized ✅", "color: lime; font-weight: bold;");
 }
