@@ -1849,25 +1849,19 @@ main, .main-wrapper, .media-container {
    Synapse View Fullscreen Below Header
    ========================================================================== */
 #synapse {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 150px); /* adjust based on header/nav size */
 }
 
-/* Synapse canvas takes full viewport height minus header+tabs */
 #synapseCanvas {
+  flex: 1;
   width: 100% !important;
-  height: calc(100vh - 140px) !important; /* adjust 140px if header+tabs taller/shorter */
-  display: block;
-  margin: 0 auto;
-  background: transparent !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+  height: 100% !important;
+  background: black;
+  border-radius: 10px;
 }
+
 
 
 /* ==========================================================================
