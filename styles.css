@@ -1849,9 +1849,7 @@ main, .main-wrapper, .media-container {
    Synapse View Fullscreen Below Header
    ========================================================================== */
 #synapse {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 150px); /* adjust based on header/nav size */
+  height: calc(100vh - var(--header-height, 100px));
 }
 
 #synapseCanvas {
@@ -1872,6 +1870,22 @@ main, .main-wrapper, .media-container {
 .panels-wrapper {
   align-items: stretch !important;
 }
+.connection-status {
+  background: rgba(255, 215, 0, 0.9);
+  color: black;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  text-align: center;
+  font-size: 14px;
+  transition: opacity 0.3s ease;
+}
+.connection-status.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 
 
