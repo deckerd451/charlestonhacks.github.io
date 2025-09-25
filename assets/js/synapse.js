@@ -1,186 +1,273 @@
-// synapse.js — Synapse View with HTML tooltips + zoom/pan
-export function initSynapseView() {
+// assets/js/synapse.js
+import { supabaseClient as supabase } from "./supabaseClient.js";
+
+let synapseInitialized = false;
+
+export async function initSynapseView() {
+  if (synapseInitialized) return;
+  synapseInitialized = true;
+
   const canvas = document.getElementById("synapseCanvas");
+  if (!canvas) return;
   const ctx = canvas.getContext("2d");
 
-  let width = canvas.clientWidth;
-  let height = canvas.clientHeight;
-  canvas.width = width;
-  canvas.height = height;
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
 
-  // Tooltip element (reuse CSS .tooltip from your styles.css)
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - getHeaderHeight();
+  }
+  function getHeaderHeight() {
+    const rootStyles = getComputedStyle(document.documentElement);
+    return parseInt(rootStyles.getPropertyValue("--header-height") || "100", 10);
+  }
+
+  // === Fetch members ===
+  const { data: members, error: memberError } = await supabase
+    .from("community")
+    .select("id, name, role, skills, image_url, endorsements");
+
+  if (memberError) {
+    console.error("[Synapse] Error fetching members:", memberError);
+    return;
+  }
+
+  const nodes = members.map((m, i) => ({
+    id: m.id,
+    label: m.name || `User ${i + 1}`,
+    role: m.role || "Member",
+    skills: m.skills || [],
+    image: m.image_url || null,
+    endorsements: m.endorsements || 0,
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: 0,
+    vy: 0,
+  }));
+  const nodeById = Object.fromEntries(nodes.map((n) => [n.id, n]));
+
+  // === Fetch connections ===
+  const { data: connections, error: connError } = await supabase
+    .from("connections")
+    .select("from_id, to_id");
+
+  if (connError) {
+    console.error("[Synapse] Error fetching connections:", connError);
+    return;
+  }
+
+  const edges = [];
+  (connections || []).forEach((c) => {
+    const src = nodeById[c.from_id];
+    const tgt = nodeById[c.to_id];
+    if (src && tgt) edges.push({ source: src, target: tgt });
+  });
+
+  // === Forces ===
+  const repulsion = 2000;
+  const springLength = 120;
+  const springStrength = 0.02;
+  const damping = 0.85;
+
+  function applyForces() {
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[j].x - nodes[i].x;
+        const dy = nodes[j].y - nodes[i].y;
+        const distSq = dx * dx + dy * dy;
+        if (!distSq) continue;
+        const dist = Math.sqrt(distSq);
+        const force = repulsion / distSq;
+
+        const fx = force * (dx / dist);
+        const fy = force * (dy / dist);
+
+        nodes[i].vx -= fx;
+        nodes[i].vy -= fy;
+        nodes[j].vx += fx;
+        nodes[j].vy += fy;
+      }
+    }
+
+    edges.forEach((e) => {
+      const dx = e.target.x - e.source.x;
+      const dy = e.target.y - e.source.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const diff = dist - springLength;
+      const force = springStrength * diff;
+
+      const fx = force * (dx / dist);
+      const fy = force * (dy / dist);
+
+      e.source.vx += fx;
+      e.source.vy += fy;
+      e.target.vx -= fx;
+      e.target.vy -= fy;
+    });
+
+    nodes.forEach((n) => {
+      n.vx *= damping;
+      n.vy *= damping;
+      n.x += n.vx;
+      n.y += n.vy;
+    });
+  }
+
+  // === Interaction ===
+  let hoveredNode = null;
+  let draggedNode = null;
+  let offsetX = 0, offsetY = 0;
+
   const tooltip = document.createElement("div");
-  tooltip.className = "tooltip hidden";
+  tooltip.id = "neuron-tooltip";
+  tooltip.classList.add("tooltip", "hidden");
   document.body.appendChild(tooltip);
 
-  // Pan & Zoom
-  let offsetX = 0, offsetY = 0;
-  let scale = 1;
-  let isDragging = false;
-  let dragStart = { x: 0, y: 0 };
+  const profileCard = document.createElement("div");
+  profileCard.id = "profile-card";
+  profileCard.classList.add("hidden");
+  document.body.appendChild(profileCard);
 
-  // Graph Data
-  const nodes = [];
-  const edges = [];
-
-  function addNode(id, x, y, label, imageUrl) {
-    nodes.push({ id, x, y, label, imageUrl });
-  }
-
-  function addEdge(source, target) {
-    edges.push({ source, target });
-  }
-
-  // Demo Data
-  addNode(1, 100, 100, "Alice", "images/avatar1.png");
-  addNode(2, 300, 200, "Bob", "images/avatar2.png");
-  addNode(3, 200, 400, "Carol", "images/avatar3.png");
-  addEdge(1, 2);
-  addEdge(2, 3);
-
-  // Drawing
-  function draw() {
-    ctx.save();
-    ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
-    ctx.clearRect(-offsetX / scale, -offsetY / scale, width / scale, height / scale);
-
-    // Draw edges
-    ctx.strokeStyle = "rgba(255,255,255,0.4)";
-    ctx.lineWidth = 2 / scale;
-    edges.forEach(e => {
-      const src = nodes.find(n => n.id === e.source);
-      const tgt = nodes.find(n => n.id === e.target);
-      if (src && tgt) {
-        ctx.beginPath();
-        ctx.moveTo(src.x, src.y);
-        ctx.lineTo(tgt.x, tgt.y);
-        ctx.stroke();
-      }
-    });
-
-    // Draw nodes
-    nodes.forEach(n => {
-      ctx.beginPath();
-      ctx.fillStyle = "#0ff";
-      ctx.arc(n.x, n.y, 20, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 2 / scale;
-      ctx.stroke();
-
-      ctx.fillStyle = "white";
-      ctx.font = `${14 / scale}px sans-serif`;
-      ctx.textAlign = "center";
-      ctx.fillText(n.label, n.x, n.y + 35 / scale);
-    });
-
-    ctx.restore();
-    requestAnimationFrame(draw);
-  }
-
-  // Hit test
-  function getNodeAt(x, y) {
-    const radius = 20 / scale;
-    return nodes.find(
-      n => Math.hypot(x - n.x, y - n.y) < radius
-    );
-  }
-
-  // Screen ↔ World coords
-  function screenToWorld(sx, sy) {
+  canvas.addEventListener("mousemove", (e) => {
     const rect = canvas.getBoundingClientRect();
-    return {
-      x: (sx - rect.left - offsetX) / scale,
-      y: (sy - rect.top - offsetY) / scale
-    };
-  }
-
-  // Mouse move (hover tooltip)
-  canvas.addEventListener("mousemove", e => {
-    const { x, y } = screenToWorld(e.clientX, e.clientY);
-    const node = getNodeAt(x, y);
-
-    if (node) {
-      tooltip.innerHTML = `
-        <div style="display:flex;align-items:center;gap:10px;">
-          <img src="${node.imageUrl}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
-          <div>
-            <strong>${node.label}</strong><br>
-            <span style="font-size:0.9em;opacity:0.8;">Click to connect</span>
-          </div>
-        </div>
-      `;
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    hoveredNode = nodes.find((n) => Math.hypot(mx - n.x, my - n.y) < 10);
+    if (hoveredNode) {
       tooltip.classList.remove("hidden");
-      tooltip.classList.add("visible");
-      tooltip.style.left = e.pageX + 15 + "px";
-      tooltip.style.top = e.pageY + 15 + "px";
+      tooltip.style.left = `${e.pageX + 15}px`;
+      tooltip.style.top = `${e.pageY + 15}px`;
+      tooltip.innerHTML = `
+        ${hoveredNode.image ? `<img src="${hoveredNode.image}" style="width:40px;height:40px;border-radius:50%;margin-bottom:6px;" />` : ""}
+        <div class="member-name">${hoveredNode.label}</div>
+        <div class="user-status">${hoveredNode.role}</div>
+        <div class="skill-tags">${Array.isArray(hoveredNode.skills) ? hoveredNode.skills.map(s => `<span class="skill-tag">${s}</span>`).join("") : ""}</div>
+      `;
     } else {
-      tooltip.classList.remove("visible");
       tooltip.classList.add("hidden");
     }
   });
 
-  // Mobile tap for tooltip
-  canvas.addEventListener("touchstart", e => {
-    const touch = e.touches[0];
-    const { x, y } = screenToWorld(touch.clientX, touch.clientY);
-    const node = getNodeAt(x, y);
+  canvas.addEventListener("mousedown", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    draggedNode = nodes.find((n) => Math.hypot(mx - n.x, my - n.y) < 10);
+    if (draggedNode) {
+      offsetX = mx - draggedNode.x;
+      offsetY = my - draggedNode.y;
+    }
+  });
+  canvas.addEventListener("mouseup", () => (draggedNode = null));
+  canvas.addEventListener("mouseleave", () => (draggedNode = null));
+  canvas.addEventListener("mousemove", (e) => {
+    if (draggedNode) {
+      const rect = canvas.getBoundingClientRect();
+      draggedNode.x = e.clientX - rect.left - offsetX;
+      draggedNode.y = e.clientY - rect.top - offsetY;
+    }
+  });
 
-    if (node) {
-      tooltip.innerHTML = `
-        <div style="display:flex;align-items:center;gap:10px;">
-          <img src="${node.imageUrl}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
-          <div>
-            <strong>${node.label}</strong><br>
-            <span style="font-size:0.9em;opacity:0.8;">Tap to connect</span>
-          </div>
-        </div>
+  // === Click to show profile card ===
+  canvas.addEventListener("click", async (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const clickedNode = nodes.find((n) => Math.hypot(mx - n.x, my - n.y) < 10);
+    if (clickedNode) {
+      profileCard.classList.remove("hidden");
+      profileCard.style.position = "fixed";
+      profileCard.style.bottom = "20px";
+      profileCard.style.right = "20px";
+      profileCard.style.background = "rgba(0,0,0,0.9)";
+      profileCard.style.color = "#fff";
+      profileCard.style.padding = "16px";
+      profileCard.style.border = "1px solid #0ff";
+      profileCard.style.borderRadius = "10px";
+      profileCard.style.width = "260px";
+      profileCard.innerHTML = `
+        ${clickedNode.image ? `<img src="${clickedNode.image}" style="width:60px;height:60px;border-radius:50%;margin-bottom:8px;" />` : ""}
+        <h3>${clickedNode.label}</h3>
+        <p>${clickedNode.role}</p>
+        <div class="skill-tags">${Array.isArray(clickedNode.skills) ? clickedNode.skills.map(s => `<span class="skill-tag">${s}</span>`).join("") : ""}</div>
+        <div class="endorsements">⭐ ${clickedNode.endorsements || 0}</div>
+        <button id="endorse-btn">Endorse</button>
+        <button id="connect-btn">Connect</button>
       `;
-      tooltip.classList.remove("hidden");
-      tooltip.classList.add("visible");
-      tooltip.style.left = touch.pageX + 15 + "px";
-      tooltip.style.top = touch.pageY + 15 + "px";
 
-      setTimeout(() => {
-        tooltip.classList.remove("visible");
-        tooltip.classList.add("hidden");
-      }, 2000);
+      // endorse button
+      document.getElementById("endorse-btn").onclick = async () => {
+        const { error } = await supabase
+          .from("community")
+          .update({ endorsements: (clickedNode.endorsements || 0) + 1 })
+          .eq("id", clickedNode.id);
+        if (!error) {
+          clickedNode.endorsements++;
+          profileCard.querySelector(".endorsements").textContent = `⭐ ${clickedNode.endorsements}`;
+        }
+      };
+
+      // connect button
+      document.getElementById("connect-btn").onclick = async () => {
+        const { error } = await supabase
+          .from("connections")
+          .insert([{ from_id: "CURRENT_USER_ID", to_id: clickedNode.id }]);
+        if (!error) {
+          alert(`Connected to ${clickedNode.label}!`);
+        }
+      };
     }
   });
 
-  // Zoom
-  canvas.addEventListener("wheel", e => {
+  // === Zoom ===
+  let scale = 1;
+  canvas.addEventListener("wheel", (e) => {
     e.preventDefault();
-    const zoomFactor = 0.05;
-    const zoom = e.deltaY < 0 ? (1 + zoomFactor) : (1 - zoomFactor);
+    const zoomIntensity = 0.1;
+    const wheel = e.deltaY < 0 ? 1 : -1;
+    const zoom = Math.exp(wheel * zoomIntensity);
     scale *= zoom;
-    scale = Math.max(0.2, Math.min(5, scale));
+    ctx.scale(zoom, zoom);
   });
 
-  // Drag to pan
-  canvas.addEventListener("mousedown", e => {
-    isDragging = true;
-    dragStart.x = e.clientX - offsetX;
-    dragStart.y = e.clientY - offsetY;
-  });
-  canvas.addEventListener("mouseup", () => isDragging = false);
-  canvas.addEventListener("mouseleave", () => isDragging = false);
-  canvas.addEventListener("mousemove", e => {
-    if (isDragging) {
-      offsetX = e.clientX - dragStart.x;
-      offsetY = e.clientY - dragStart.y;
-    }
-  });
+  function draw() {
+    ctx.save();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Resize
-  function resizeCanvas() {
-    width = canvas.clientWidth;
-    height = canvas.clientHeight;
-    canvas.width = width;
-    canvas.height = height;
+    ctx.strokeStyle = "rgba(255,255,255,0.3)";
+    edges.forEach((e) => {
+      ctx.beginPath();
+      ctx.moveTo(e.source.x, e.source.y);
+      ctx.lineTo(e.target.x, e.target.y);
+      ctx.stroke();
+    });
+
+    nodes.forEach((n) => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 8, 0, Math.PI * 2);
+      ctx.fillStyle = n === hoveredNode ? "#0ff" : "#FFD700";
+      ctx.fill();
+    });
+
+    ctx.restore();
   }
-  window.addEventListener("resize", resizeCanvas);
-  resizeCanvas();
 
-  draw();
+  function tick() {
+    applyForces();
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  tick();
 }
+
+// attach to tab
+document.addEventListener("DOMContentLoaded", () => {
+  const synapseTabBtn = document.querySelector('[data-tab="synapse"]');
+  if (synapseTabBtn) {
+    synapseTabBtn.addEventListener("click", () => {
+      initSynapseView();
+    }, { once: true });
+  }
+});
