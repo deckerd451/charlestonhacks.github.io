@@ -56,7 +56,7 @@ export async function initSynapseView() {
   // ===== FETCH DATA =====
   const { data: members, error: memberError } = await supabase
     .from("community")
-    .select("id, name, skills, bio, availability, endorsements, x, y");
+    .select("id, name, skills, bio, availability, endorsements, image_url, x, y");
 
   if (memberError || !members) {
     console.error("[Synapse] Error fetching members:", memberError);
@@ -80,6 +80,7 @@ export async function initSynapseView() {
     bio: m.bio || "",
     availability: m.availability || "Available",
     endorsements: m.endorsements || 0,
+    image_url: m.image_url || null,
     x: m.x ?? Math.random() * width,
     y: m.y ?? Math.random() * height,
     vx: 0,
@@ -186,7 +187,7 @@ export async function initSynapseView() {
     });
   }
 
-  // Desktop events
+  // Mouse down
   canvas.addEventListener("mousedown", e => {
     const { x, y } = screenToWorld(e.clientX, e.clientY);
     const node = getNodeAt(x, y);
@@ -199,6 +200,7 @@ export async function initSynapseView() {
     }
   });
 
+  // Mouse move
   canvas.addEventListener("mousemove", e => {
     const { x, y } = screenToWorld(e.clientX, e.clientY);
     mouseWorld = { x, y };
@@ -215,6 +217,7 @@ export async function initSynapseView() {
     }
   });
 
+  // Mouse up
   canvas.addEventListener("mouseup", e => {
     if (draggingNode) {
       scheduleSave(draggingNode);
@@ -243,7 +246,7 @@ export async function initSynapseView() {
     }
   });
 
-  // Zoom smoothing
+  // Smooth zoom
   canvas.addEventListener("wheel", e => {
     e.preventDefault();
     const zoomFactor = 0.05;
@@ -278,7 +281,7 @@ export async function initSynapseView() {
       ctx.setLineDash([]);
     }
 
-    // nodes with availability colors and endorsements sizing
+    // nodes
     nodes.forEach(n => {
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.radius, 0, 2 * Math.PI);
@@ -298,7 +301,7 @@ export async function initSynapseView() {
       ctx.fillText(n.name, n.x + n.radius + 4, n.y + 4);
     });
 
-    // ===== TOOLTIP (desktop only) =====
+    // tooltip
     if (hoverNode && !touchMode) {
       const lines = [
         `Skills: ${hoverNode.skills || "N/A"}`,
@@ -306,15 +309,34 @@ export async function initSynapseView() {
         `Endorsements: ${hoverNode.endorsements}`
       ].filter(Boolean);
 
-      const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 10;
-      const h = lines.length * 16 + 10;
+      let tooltipX = hoverNode.x + 25;
+      let tooltipY = hoverNode.y - 15;
+      const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 60;
+      const h = lines.length * 16 + (hoverNode.image_url ? 70 : 30);
 
-      ctx.fillStyle = "rgba(0,0,0,0.8)";
-      ctx.fillRect(hoverNode.x + 20, hoverNode.y - 10, w, h);
+      ctx.fillStyle = "rgba(0,0,0,0.85)";
+      ctx.fillRect(tooltipX, tooltipY, w, h);
+      ctx.strokeStyle = "#0ff";
+      ctx.strokeRect(tooltipX, tooltipY, w, h);
+
+      if (hoverNode.image_url) {
+        const img = new Image();
+        img.src = hoverNode.image_url;
+        img.onload = () => {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(tooltipX + 30, tooltipY + 30, 25, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(img, tooltipX + 5, tooltipY + 5, 50, 50);
+          ctx.restore();
+        };
+        tooltipY += 60;
+      }
 
       ctx.fillStyle = "#fff";
       lines.forEach((l, i) => {
-        ctx.fillText(l, hoverNode.x + 25, hoverNode.y + 10 + i * 16);
+        ctx.fillText(l, tooltipX + (hoverNode.image_url ? 65 : 10), tooltipY + 20 + i * 16);
       });
     }
 
