@@ -56,11 +56,21 @@ export async function initSynapseView() {
   // ===== FETCH DATA =====
   const { data: members, error: memberError } = await supabase
     .from("community")
-    .select("id, name, skills, bio, availability, x, y");
+    .select("id, name, skills, bio, availability, endorsements, x, y");
 
   if (memberError || !members) {
     console.error("[Synapse] Error fetching members:", memberError);
     return;
+  }
+
+  // Scale endorsements into radius
+  const endorsementsArray = members.map(m => m.endorsements || 0);
+  const minEnd = Math.min(...endorsementsArray);
+  const maxEnd = Math.max(...endorsementsArray);
+  function scaleRadius(val) {
+    if (maxEnd === minEnd) return 14; // fallback
+    const norm = (val - minEnd) / (maxEnd - minEnd);
+    return 10 + norm * 20; // between 10 and 30px
   }
 
   const nodes = members.map((m, i) => ({
@@ -69,11 +79,12 @@ export async function initSynapseView() {
     skills: m.skills || "",
     bio: m.bio || "",
     availability: m.availability || "Available",
+    endorsements: m.endorsements || 0,
     x: m.x ?? Math.random() * width,
     y: m.y ?? Math.random() * height,
     vx: 0,
     vy: 0,
-    radius: 14
+    radius: scaleRadius(m.endorsements || 0)
   }));
   const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
 
@@ -175,7 +186,7 @@ export async function initSynapseView() {
     });
   }
 
-  // Desktop Events
+  // Desktop events
   canvas.addEventListener("mousedown", e => {
     const { x, y } = screenToWorld(e.clientX, e.clientY);
     const node = getNodeAt(x, y);
@@ -267,7 +278,7 @@ export async function initSynapseView() {
       ctx.setLineDash([]);
     }
 
-    // nodes with availability colors
+    // nodes with availability colors and endorsements sizing
     nodes.forEach(n => {
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.radius, 0, 2 * Math.PI);
