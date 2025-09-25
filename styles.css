@@ -1861,6 +1861,7 @@ main, .main-wrapper, .media-container {
   background: black;
   border-radius: 10px;
 }
+/* Synapse full expansion override */
 #synapse.panel,
 #synapse.panel.large {
   width: 100% !important;
@@ -1868,14 +1869,9 @@ main, .main-wrapper, .media-container {
   margin: 0 !important;
   flex: 1;
 }
-#synapse {
-  flex: 1;
-  align-items: stretch;
-}
 .panels-wrapper {
-  align-items: stretch;
+  align-items: stretch !important;
 }
-
 
 
 
