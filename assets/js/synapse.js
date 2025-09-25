@@ -1,10 +1,11 @@
 // synapse.js
 // Full interactive Synapse View with Supabase integration, D3.js force simulation,
-// zoom/pan, tooltips, click-to-connect, responsive behavior, and fallback.
+// zoom/pan, drag, tooltips, click-to-connect, responsive behavior, and fallback.
 
 import { supabaseClient as supabase } from './supabaseClient.js';
 
 let simulation;
+let selectedNode = null; // for click-to-connect
 
 // Initialize Synapse View
 export async function initSynapseView() {
@@ -36,7 +37,6 @@ export async function initSynapseView() {
     )
     .append('g');
 
-  // Group for links + nodes
   const g = svg.append('g');
 
   // Tooltip
@@ -53,11 +53,12 @@ export async function initSynapseView() {
     .style('font-size', '12px')
     .style('opacity', 0);
 
-  // Fetch data
+  // Fetch nodes
   const { data: nodes, error: nodeError } = await supabase
     .from('community')
-    .select('id, name, skills');
+    .select('id, name, skills, role, interests, image_url');
 
+  // Fetch connections
   const { data: links, error: linkError } = await supabase
     .from('connections')
     .select('from_user_id, to_user_id');
@@ -77,7 +78,6 @@ export async function initSynapseView() {
     return;
   }
 
-  // Transform links into D3 format
   const d3Links = (links || []).map((l) => ({
     source: l.from_user_id,
     target: l.to_user_id,
@@ -85,7 +85,7 @@ export async function initSynapseView() {
 
   console.log(`[Synapse] Loaded ${nodes.length} nodes, ${d3Links.length} links`);
 
-  // D3 link + node elements
+  // Draw links
   const link = g
     .append('g')
     .attr('stroke', '#999')
@@ -96,6 +96,7 @@ export async function initSynapseView() {
     .append('line')
     .attr('stroke-width', 1.5);
 
+  // Draw nodes
   const node = g
     .append('g')
     .attr('stroke', '#fff')
@@ -104,7 +105,7 @@ export async function initSynapseView() {
     .data(nodes)
     .enter()
     .append('circle')
-    .attr('r', 8)
+    .attr('r', 10)
     .attr('fill', '#1f77b4')
     .call(
       d3
@@ -116,15 +117,19 @@ export async function initSynapseView() {
     .on('mouseover', (event, d) => {
       tooltip
         .style('opacity', 1)
-        .html(`<strong>${d.name}</strong><br/>${d.skills || 'No skills listed'}`);
+        .html(
+          `<strong>${d.name}</strong><br/>
+           ${d.role || ''}<br/>
+           ${d.skills || ''}<br/>
+           ${d.interests || ''}`
+        );
     })
     .on('mousemove', (event) => {
       tooltip.style('top', event.pageY + 10 + 'px').style('left', event.pageX + 10 + 'px');
     })
     .on('mouseout', () => tooltip.style('opacity', 0))
-    .on('click', (event, d) => {
-      console.log('[Synapse] Clicked node:', d);
-      // TODO: add click-to-connect logic
+    .on('click', async (event, d) => {
+      await handleNodeClick(d, node);
     });
 
   // Labels
@@ -140,13 +145,10 @@ export async function initSynapseView() {
     .attr('dy', '.35em')
     .style('fill', '#fff');
 
-  // D3 Force Simulation
+  // Force simulation
   simulation = d3
     .forceSimulation(nodes)
-    .force(
-      'link',
-      d3.forceLink(d3Links).id((d) => d.id).distance(120)
-    )
+    .force('link', d3.forceLink(d3Links).id((d) => d.id).distance(120))
     .force('charge', d3.forceManyBody().strength(-300))
     .force('center', d3.forceCenter(width / 2, height / 2))
     .on('tick', ticked);
@@ -163,7 +165,6 @@ export async function initSynapseView() {
     label.attr('x', (d) => d.x).attr('y', (d) => d.y);
   }
 
-  // Dragging behavior
   function dragStarted(event, d) {
     if (!event.active) simulation.alphaTarget(0.3).restart();
     d.fx = d.x;
@@ -182,6 +183,47 @@ export async function initSynapseView() {
   }
 
   console.log('[Synapse] View initialized ✅');
+}
+
+// Handle node click for connections
+async function handleNodeClick(d, nodeSelection) {
+  if (!selectedNode) {
+    selectedNode = d;
+    console.log(`[Synapse] Selected source: ${d.name}`);
+    highlightNode(d.id, nodeSelection, true);
+  } else if (selectedNode.id === d.id) {
+    console.log('[Synapse] Deselected node');
+    highlightNode(d.id, nodeSelection, false);
+    selectedNode = null;
+  } else {
+    console.log(`[Synapse] Connecting ${selectedNode.name} → ${d.name}`);
+
+    // Insert into Supabase
+    const { error } = await supabase.from('connections').insert([
+      {
+        from_user_id: selectedNode.id,
+        to_user_id: d.id,
+      },
+    ]);
+
+    if (error) {
+      console.error('[Synapse] Error creating connection:', error.message);
+    } else {
+      console.log('[Synapse] Connection created successfully ✅');
+    }
+
+    // Reset selection
+    highlightNode(selectedNode.id, nodeSelection, false);
+    selectedNode = null;
+  }
+}
+
+// Highlight node when selected
+function highlightNode(id, nodeSelection, active) {
+  nodeSelection
+    .filter((n) => n.id === id)
+    .attr('stroke', active ? 'yellow' : '#fff')
+    .attr('stroke-width', active ? 3 : 1.5);
 }
 
 // Fallback message
