@@ -31,6 +31,7 @@ export async function initSynapseView() {
     .attr('width', '100%')
     .attr('height', '100%')
     .attr('viewBox', [0, 0, width, height])
+    .style('background', '#111') // ✅ visible background
     .call(
       d3.zoom().on('zoom', (event) => {
         g.attr('transform', event.transform);
@@ -57,7 +58,7 @@ export async function initSynapseView() {
   // Fetch nodes
   const { data: nodes, error: nodeError } = await supabase
     .from('community')
-    .select('id, name, skills, interests, image_url');
+    .select('id, name, skills, interests, image_url'); // ✅ no role
 
   // Fetch connections
   const { data: links, error: linkError } = await supabase
@@ -106,8 +107,8 @@ export async function initSynapseView() {
     .data(nodes)
     .enter()
     .append('circle')
-    .attr('r', 10)
-    .attr('fill', '#1f77b4')
+    .attr('r', 12) // ✅ slightly larger
+    .attr('fill', '#ff4081') // ✅ test color
     .call(
       d3
         .drag()
@@ -141,7 +142,7 @@ export async function initSynapseView() {
     .append('text')
     .text((d) => d.name)
     .attr('font-size', 10)
-    .attr('dx', 12)
+    .attr('dx', 14)
     .attr('dy', '.35em')
     .style('fill', '#fff');
 
