@@ -120,7 +120,6 @@ export async function initSynapseView() {
         .style('opacity', 1)
         .html(
           `<strong>${d.name}</strong><br/>
-           ${d.role || ''}<br/>
            ${d.skills || ''}<br/>
            ${d.interests || ''}`
         );
