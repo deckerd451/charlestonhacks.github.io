@@ -12,8 +12,18 @@ export async function initSynapseView() {
 
   const statusEl = document.getElementById("connection-status");
 
-  let width = canvas.width;
-  let height = canvas.height;
+  let width = canvas.clientWidth;
+  let height = canvas.clientHeight;
+
+  // ===== RESIZE HANDLER =====
+  function resizeCanvas() {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+    width = canvas.width;
+    height = canvas.height;
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
 
   // ===== CAMERA (zoom/pan) =====
   let scale = 1;
@@ -79,9 +89,7 @@ export async function initSynapseView() {
   (connections || []).forEach(c => {
     const src = nodeById[c.from_id];
     const tgt = nodeById[c.to_id];
-    if (src && tgt) {
-      edges.push({ source: src, target: tgt });
-    }
+    if (src && tgt) edges.push({ source: src, target: tgt });
   });
 
   // ===== FORCE LAYOUT =====
@@ -207,8 +215,10 @@ export async function initSynapseView() {
 
   canvas.addEventListener("wheel", e => {
     e.preventDefault();
-    const zoom = e.deltaY < 0 ? 1.1 : 0.9;
+    const zoomFactor = 0.05;
+    const zoom = e.deltaY < 0 ? (1 + zoomFactor) : (1 - zoomFactor);
     scale *= zoom;
+    scale = Math.max(0.2, Math.min(5, scale));
   });
 
   canvas.addEventListener("contextmenu", e => {
@@ -266,6 +276,7 @@ export async function initSynapseView() {
         e.touches[1].clientY - e.touches[0].clientY
       );
       if (lastTouchDistance) scale *= newDist / lastTouchDistance;
+      scale = Math.max(0.2, Math.min(5, scale));
       lastTouchDistance = newDist;
     }
   });
