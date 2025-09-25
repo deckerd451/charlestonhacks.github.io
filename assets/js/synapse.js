@@ -1,6 +1,7 @@
 // synapse.js
 // Full interactive Synapse View with Supabase integration, D3.js force simulation,
 // zoom/pan, drag, tooltips, click-to-connect, responsive behavior, and fallback.
+import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 
 import { supabaseClient as supabase } from './supabaseClient.js';
 
