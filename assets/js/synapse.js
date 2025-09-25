@@ -7,8 +7,10 @@ export async function initSynapseView() {
   synapseInitialized = true;
 
   const canvas = document.getElementById("synapseCanvas");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas?.getContext("2d");
+  if (!canvas || !ctx) return;
+
+  const statusEl = document.getElementById("connection-status");
 
   let width = canvas.width;
   let height = canvas.height;
@@ -26,6 +28,19 @@ export async function initSynapseView() {
       x: (x - offsetX) / scale,
       y: (y - offsetY) / scale
     };
+  }
+
+  // ===== STATUS BAR HELPERS =====
+  function showStatus(msg, color = "gold") {
+    if (!statusEl) return;
+    statusEl.textContent = msg;
+    statusEl.style.background = color;
+    statusEl.classList.remove("hidden");
+  }
+  function hideStatus() {
+    if (!statusEl) return;
+    statusEl.textContent = "";
+    statusEl.classList.add("hidden");
   }
 
   // ===== FETCH DATA =====
@@ -69,7 +84,7 @@ export async function initSynapseView() {
     }
   });
 
-  // ===== FORCE LAYOUT PARAMS =====
+  // ===== FORCE LAYOUT =====
   const repulsion = 2000;
   const springLength = 120;
   const springStrength = 0.02;
@@ -134,7 +149,7 @@ export async function initSynapseView() {
     });
   }
 
-  // ==== DESKTOP MOUSE EVENTS ====
+  // ---- Desktop events ----
   canvas.addEventListener("mousedown", e => {
     const { x, y } = screenToWorld(e.clientX, e.clientY);
     const node = getNodeAt(x, y);
@@ -178,11 +193,14 @@ export async function initSynapseView() {
     if (node) {
       if (!pendingConnection) {
         pendingConnection = node;
+        showStatus("Select another node to connect, or cancel.", "gold");
       } else if (pendingConnection.id !== node.id) {
         await supabase.from("connections")
           .insert([{ from_id: pendingConnection.id, to_id: node.id }]);
         edges.push({ source: pendingConnection, target: node });
         pendingConnection = null;
+        showStatus("Connection created!", "limegreen");
+        setTimeout(hideStatus, 1500);
       }
     }
   });
@@ -195,16 +213,22 @@ export async function initSynapseView() {
 
   canvas.addEventListener("contextmenu", e => {
     e.preventDefault();
-    pendingConnection = null; // cancel with right click
-  });
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") {
-      pendingConnection = null; // cancel with ESC
+    if (pendingConnection) {
+      pendingConnection = null;
+      showStatus("Connection cancelled.", "crimson");
+      setTimeout(hideStatus, 1500);
     }
   });
 
-  // ==== MOBILE TOUCH EVENTS ====
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && pendingConnection) {
+      pendingConnection = null;
+      showStatus("Connection cancelled.", "crimson");
+      setTimeout(hideStatus, 1500);
+    }
+  });
+
+  // ---- Mobile touch events ----
   let lastTouchDistance = null;
   canvas.addEventListener("touchstart", e => {
     touchMode = true;
@@ -241,9 +265,7 @@ export async function initSynapseView() {
         e.touches[1].clientX - e.touches[0].clientX,
         e.touches[1].clientY - e.touches[0].clientY
       );
-      if (lastTouchDistance) {
-        scale *= newDist / lastTouchDistance;
-      }
+      if (lastTouchDistance) scale *= newDist / lastTouchDistance;
       lastTouchDistance = newDist;
     }
   });
@@ -257,12 +279,12 @@ export async function initSynapseView() {
     }
     isPanning = false;
     lastTouchDistance = null;
-  });
 
-  // Two-finger tap cancels pending connection
-  canvas.addEventListener("touchend", e => {
-    if (e.touches.length === 0 && e.changedTouches.length === 2) {
+    // two-finger tap cancel
+    if (e.touches.length === 0 && e.changedTouches.length === 2 && pendingConnection) {
       pendingConnection = null;
+      showStatus("Connection cancelled.", "crimson");
+      setTimeout(hideStatus, 1500);
     }
   });
 
@@ -320,7 +342,7 @@ export async function initSynapseView() {
       ctx.fillText(n.name, n.x + n.radius + 4, n.y + 4);
     });
 
-    // tooltip (desktop hover only for now)
+    // tooltip (desktop only)
     if (hoverNode && !touchMode) {
       const lines = [`${hoverNode.skills}`, `${hoverNode.bio}`].filter(Boolean);
       if (lines.length) {
@@ -347,7 +369,7 @@ export async function initSynapseView() {
   tick();
 }
 
-// Hook up init to Synapse tab
+// Hook init to Synapse tab
 document.addEventListener("DOMContentLoaded", () => {
   const synapseTabBtn = document.querySelector('[data-tab="synapse"]');
   if (synapseTabBtn) {
