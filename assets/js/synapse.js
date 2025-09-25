@@ -3,12 +3,33 @@ import { supabaseClient as supabase } from './supabaseClient.js';
 
 export async function initSynapseView() {
   const canvas = document.getElementById('synapseCanvas');
+  const statusEl = document.getElementById('connection-status');
+
   if (!canvas) {
-    console.error("[Synapse] No canvas element with id='synapseCanvas' found.");
+    console.error("[Synapse] No canvas element found.");
     return;
+  }
+  if (!statusEl) {
+    console.warn("[Synapse] No connection-status element found.");
   }
 
   const ctx = canvas.getContext('2d');
+
+  function setStatus(text, type = "info") {
+    if (!statusEl) return;
+    statusEl.textContent = text;
+    statusEl.classList.remove("hidden");
+    if (type === "error") {
+      statusEl.style.background = "rgba(255, 50, 50, 0.9)";
+      statusEl.style.color = "white";
+    } else if (type === "success") {
+      statusEl.style.background = "rgba(0, 255, 150, 0.9)";
+      statusEl.style.color = "black";
+    } else {
+      statusEl.style.background = "rgba(255, 215, 0, 0.9)";
+      statusEl.style.color = "black";
+    }
+  }
 
   function resizeCanvas() {
     canvas.width = canvas.clientWidth || window.innerWidth;
@@ -21,6 +42,7 @@ export async function initSynapseView() {
   let connections = [];
 
   async function loadNeurons() {
+    setStatus("Connecting…");
     try {
       const { data, error } = await supabase
         .from('community')
@@ -36,13 +58,16 @@ export async function initSynapseView() {
           x: n.x || Math.random() * canvas.width,
           y: n.y || Math.random() * canvas.height,
         }));
+        setStatus("Connected ✓", "success");
       } else {
         console.warn("[Synapse] No Supabase data, using fallback nodes");
         fallbackNeurons();
+        setStatus("No data — fallback mode", "error");
       }
     } catch (err) {
       console.error("[Synapse] Error fetching data:", err);
       fallbackNeurons();
+      setStatus("Error — fallback mode", "error");
     }
   }
 
@@ -100,7 +125,5 @@ export async function initSynapseView() {
 
   await loadNeurons();
   draw();
-
-  // ✅ Success banner
   console.log("%c[Synapse] View initialized ✅", "color: lime; font-weight: bold;");
 }
