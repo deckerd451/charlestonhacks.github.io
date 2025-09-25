@@ -56,7 +56,7 @@ export async function initSynapseView() {
   // ===== FETCH DATA =====
   const { data: members, error: memberError } = await supabase
     .from("community")
-    .select("id, name, skills, bio, x, y");
+    .select("id, name, skills, bio, availability, x, y");
 
   if (memberError || !members) {
     console.error("[Synapse] Error fetching members:", memberError);
@@ -68,6 +68,7 @@ export async function initSynapseView() {
     name: m.name || `User ${i + 1}`,
     skills: m.skills || "",
     bio: m.bio || "",
+    availability: m.availability || "Available",
     x: m.x ?? Math.random() * width,
     y: m.y ?? Math.random() * height,
     vx: 0,
@@ -89,7 +90,12 @@ export async function initSynapseView() {
   (connections || []).forEach(c => {
     const src = nodeById[c.from_id];
     const tgt = nodeById[c.to_id];
-    if (src && tgt) edges.push({ source: src, target: tgt });
+    if (src && tgt) {
+      if (!edges.find(e => (e.source.id === src.id && e.target.id === tgt.id) ||
+                           (e.source.id === tgt.id && e.target.id === src.id))) {
+        edges.push({ source: src, target: tgt });
+      }
+    }
   });
 
   // ===== FORCE LAYOUT =====
@@ -149,6 +155,18 @@ export async function initSynapseView() {
   let mouseWorld = { x: 0, y: 0 };
   let touchMode = false;
 
+  // --- batch save positions ---
+  let saveTimeout = null;
+  function scheduleSave(node) {
+    if (saveTimeout) clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(async () => {
+      await supabase.from("community")
+        .update({ x: node.x, y: node.y })
+        .eq("id", node.id);
+      saveTimeout = null;
+    }, 1200);
+  }
+
   function getNodeAt(x, y) {
     return nodes.find(n => {
       const dx = n.x - x;
@@ -157,7 +175,7 @@ export async function initSynapseView() {
     });
   }
 
-  // ---- Desktop events ----
+  // Desktop Events
   canvas.addEventListener("mousedown", e => {
     const { x, y } = screenToWorld(e.clientX, e.clientY);
     const node = getNodeAt(x, y);
@@ -186,11 +204,9 @@ export async function initSynapseView() {
     }
   });
 
-  canvas.addEventListener("mouseup", async e => {
+  canvas.addEventListener("mouseup", e => {
     if (draggingNode) {
-      await supabase.from("community")
-        .update({ x: draggingNode.x, y: draggingNode.y })
-        .eq("id", draggingNode.id);
+      scheduleSave(draggingNode);
       draggingNode = null;
       return;
     }
@@ -203,9 +219,12 @@ export async function initSynapseView() {
         pendingConnection = node;
         showStatus("Select another node to connect, or cancel.", "gold");
       } else if (pendingConnection.id !== node.id) {
-        await supabase.from("connections")
-          .insert([{ from_id: pendingConnection.id, to_id: node.id }]);
-        edges.push({ source: pendingConnection, target: node });
+        if (!edges.find(e => (e.source.id === pendingConnection.id && e.target.id === node.id) ||
+                             (e.source.id === node.id && e.target.id === pendingConnection.id))) {
+          supabase.from("connections")
+            .insert([{ from_id: pendingConnection.id, to_id: node.id }]);
+          edges.push({ source: pendingConnection, target: node });
+        }
         pendingConnection = null;
         showStatus("Connection created!", "limegreen");
         setTimeout(hideStatus, 1500);
@@ -213,90 +232,13 @@ export async function initSynapseView() {
     }
   });
 
+  // Zoom smoothing
   canvas.addEventListener("wheel", e => {
     e.preventDefault();
     const zoomFactor = 0.05;
     const zoom = e.deltaY < 0 ? (1 + zoomFactor) : (1 - zoomFactor);
     scale *= zoom;
     scale = Math.max(0.2, Math.min(5, scale));
-  });
-
-  canvas.addEventListener("contextmenu", e => {
-    e.preventDefault();
-    if (pendingConnection) {
-      pendingConnection = null;
-      showStatus("Connection cancelled.", "crimson");
-      setTimeout(hideStatus, 1500);
-    }
-  });
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && pendingConnection) {
-      pendingConnection = null;
-      showStatus("Connection cancelled.", "crimson");
-      setTimeout(hideStatus, 1500);
-    }
-  });
-
-  // ---- Mobile touch events ----
-  let lastTouchDistance = null;
-  canvas.addEventListener("touchstart", e => {
-    touchMode = true;
-    if (e.touches.length === 1) {
-      const { x, y } = screenToWorld(e.touches[0].clientX, e.touches[0].clientY);
-      const node = getNodeAt(x, y);
-      if (node) {
-        draggingNode = node;
-      } else {
-        isPanning = true;
-        startPanX = e.touches[0].clientX;
-        startPanY = e.touches[0].clientY;
-      }
-    } else if (e.touches.length === 2) {
-      lastTouchDistance = Math.hypot(
-        e.touches[1].clientX - e.touches[0].clientX,
-        e.touches[1].clientY - e.touches[0].clientY
-      );
-    }
-  });
-
-  canvas.addEventListener("touchmove", e => {
-    if (e.touches.length === 1 && draggingNode) {
-      const { x, y } = screenToWorld(e.touches[0].clientX, e.touches[0].clientY);
-      draggingNode.x = x;
-      draggingNode.y = y;
-    } else if (e.touches.length === 1 && isPanning) {
-      offsetX += e.touches[0].clientX - startPanX;
-      offsetY += e.touches[0].clientY - startPanY;
-      startPanX = e.touches[0].clientX;
-      startPanY = e.touches[0].clientY;
-    } else if (e.touches.length === 2) {
-      const newDist = Math.hypot(
-        e.touches[1].clientX - e.touches[0].clientX,
-        e.touches[1].clientY - e.touches[0].clientY
-      );
-      if (lastTouchDistance) scale *= newDist / lastTouchDistance;
-      scale = Math.max(0.2, Math.min(5, scale));
-      lastTouchDistance = newDist;
-    }
-  });
-
-  canvas.addEventListener("touchend", async e => {
-    if (draggingNode) {
-      await supabase.from("community")
-        .update({ x: draggingNode.x, y: draggingNode.y })
-        .eq("id", draggingNode.id);
-      draggingNode = null;
-    }
-    isPanning = false;
-    lastTouchDistance = null;
-
-    // two-finger tap cancel
-    if (e.touches.length === 0 && e.changedTouches.length === 2 && pendingConnection) {
-      pendingConnection = null;
-      showStatus("Connection cancelled.", "crimson");
-      setTimeout(hideStatus, 1500);
-    }
   });
 
   // ===== RENDER =====
@@ -314,7 +256,7 @@ export async function initSynapseView() {
       ctx.stroke();
     });
 
-    // live "rubber-band" line
+    // pending connection line
     if (pendingConnection) {
       ctx.beginPath();
       ctx.moveTo(pendingConnection.x, pendingConnection.y);
@@ -325,48 +267,25 @@ export async function initSynapseView() {
       ctx.setLineDash([]);
     }
 
-    // nodes
+    // nodes with availability colors
     nodes.forEach(n => {
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.radius, 0, 2 * Math.PI);
 
-      if (n === pendingConnection) {
-        ctx.fillStyle = "#0ff";
-        ctx.shadowColor = "#ff0";
-        ctx.shadowBlur = 20;
-      } else if (n === hoverNode && !touchMode) {
-        ctx.fillStyle = "#ff0";
-        ctx.shadowColor = "#fff";
-        ctx.shadowBlur = 10;
-      } else {
-        ctx.fillStyle = "#0ff";
-        ctx.shadowBlur = 0;
-      }
+      let fillColor = "#0ff";
+      if (n.availability === "Available") fillColor = "limegreen";
+      else if (n.availability === "Busy") fillColor = "orange";
+      else if (n.availability === "Not Looking") fillColor = "gray";
 
+      ctx.fillStyle = fillColor;
       ctx.fill();
       ctx.strokeStyle = "#fff";
       ctx.stroke();
-      ctx.shadowBlur = 0;
 
       ctx.fillStyle = "#fff";
       ctx.font = "11px sans-serif";
       ctx.fillText(n.name, n.x + n.radius + 4, n.y + 4);
     });
-
-    // tooltip (desktop only)
-    if (hoverNode && !touchMode) {
-      const lines = [`${hoverNode.skills}`, `${hoverNode.bio}`].filter(Boolean);
-      if (lines.length) {
-        const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 10;
-        const h = lines.length * 16 + 10;
-        ctx.fillStyle = "rgba(0,0,0,0.8)";
-        ctx.fillRect(hoverNode.x + 20, hoverNode.y - 10, w, h);
-        ctx.fillStyle = "#fff";
-        lines.forEach((l, i) => {
-          ctx.fillText(l, hoverNode.x + 25, hoverNode.y + 10 + i * 16);
-        });
-      }
-    }
 
     ctx.restore();
   }
@@ -378,6 +297,24 @@ export async function initSynapseView() {
   }
 
   tick();
+
+  // ===== AUTO-CENTER GRAPH =====
+  setTimeout(() => {
+    const xs = nodes.map(n => n.x);
+    const ys = nodes.map(n => n.y);
+    const minX = Math.min(...xs), maxX = Math.max(...xs);
+    const minY = Math.min(...ys), maxY = Math.max(...ys);
+
+    const graphWidth = maxX - minX;
+    const graphHeight = maxY - minY;
+
+    const scaleX = (width * 0.8) / graphWidth;
+    const scaleY = (height * 0.8) / graphHeight;
+    scale = Math.min(scaleX, scaleY);
+
+    offsetX = width / 2 - ((minX + maxX) / 2) * scale;
+    offsetY = height / 2 - ((minY + maxY) / 2) * scale;
+  }, 500);
 }
 
 // Hook init to Synapse tab
