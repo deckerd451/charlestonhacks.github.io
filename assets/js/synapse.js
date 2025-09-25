@@ -1,208 +1,232 @@
 // synapse.js
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+// Full interactive Synapse View with Supabase integration, D3.js force simulation,
+// zoom/pan, drag, tooltips, click-to-connect, responsive behavior, and fallback.
+
 import { supabaseClient as supabase } from './supabaseClient.js';
 
-let synapseInitialized = false;
+let simulation;
+let selectedNode = null; // for click-to-connect
 
+// Initialize Synapse View
 export async function initSynapseView() {
-  if (synapseInitialized) return;
-  synapseInitialized = true;
-
   console.log('[Synapse] Initializing…');
 
-  // === 1. Fetch community members ===
-  const { data: members, error: memberError } = await supabase
-    .from("community")
-    .select("id, name, skills");
-
-  if (memberError || !members) {
-    console.error("[Synapse] Error fetching members:", memberError);
-    return;
-  }
-
-  // === 2. Fetch connections ===
-  const { data: connections, error: connError } = await supabase
-    .from("connections")
-    .select("from_user_id, to_user_id, created_at");
-
-  if (connError) {
-    console.error("[Synapse] Error fetching connections:", connError);
-    return;
-  }
-
-  // === 3. Build graph data ===
-  const nodes = members.map(m => ({
-    id: m.id,
-    label: m.name || "Unnamed",
-    skills: m.skills || [],
-  }));
-
-  let links = (connections || []).map(c => ({
-    source: c.from_user_id,
-    target: c.to_user_id,
-    created_at: c.created_at
-  }));
-
-  // ✅ Filter out invalid links
-  const nodeIds = new Set(nodes.map(n => n.id));
-  links = links.filter(l => nodeIds.has(l.source) && nodeIds.has(l.target));
-
-  // === 4. Setup SVG ===
-  const container = document.getElementById("synapseCanvas");
+  const container = document.getElementById('synapseCanvas');
   if (!container) {
-    console.error("[Synapse] No canvas container found.");
+    console.error('[Synapse] No #synapseCanvas found in DOM.');
     return;
   }
 
-  container.innerHTML = ""; // clear old renders
+  // Clear container
+  container.innerHTML = '';
 
-  const width = container.clientWidth;
-  const height = container.clientHeight;
+  // Setup SVG
+  const width = container.clientWidth || 800;
+  const height = container.clientHeight || 600;
 
-  const svg = d3.select(container)
-    .append("svg")
-    .attr("width", "100%")
-    .attr("height", "100%")
-    .attr("viewBox", [0, 0, width, height])
+  const svg = d3
+    .select(container)
+    .append('svg')
+    .attr('width', '100%')
+    .attr('height', '100%')
+    .attr('viewBox', [0, 0, width, height])
     .call(
-      d3.zoom()
-        .scaleExtent([0.2, 4])
-        .on("zoom", (event) => g.attr("transform", event.transform))
-    );
+      d3.zoom().on('zoom', (event) => {
+        g.attr('transform', event.transform);
+      })
+    )
+    .append('g');
 
-  const g = svg.append("g");
+  const g = svg.append('g');
 
-  // === 5. Force Simulation ===
-  const simulation = d3.forceSimulation(nodes)
-    .force("link", d3.forceLink(links).id(d => d.id).distance(140))
-    .force("charge", d3.forceManyBody().strength(-250))
-    .force("center", d3.forceCenter(width / 2, height / 2));
+  // Tooltip
+  const tooltip = d3
+    .select('body')
+    .append('div')
+    .attr('class', 'synapse-tooltip')
+    .style('position', 'absolute')
+    .style('padding', '6px 10px')
+    .style('background', 'rgba(0,0,0,0.75)')
+    .style('color', '#fff')
+    .style('border-radius', '6px')
+    .style('pointer-events', 'none')
+    .style('font-size', '12px')
+    .style('opacity', 0);
 
-  // === 6. Draw links ===
-  const link = g.append("g")
-    .attr("stroke", "rgba(255,255,255,0.3)")
-    .attr("stroke-width", 1)
-    .selectAll("line")
-    .data(links)
-    .join("line");
+  // Fetch nodes
+  const { data: nodes, error: nodeError } = await supabase
+    .from('community')
+    .select('id, name, skills, role, interests, image_url');
 
-  // === 7. Tooltips ===
-  const tooltip = d3.select("body").append("div")
-    .attr("class", "synapse-tooltip")
-    .style("position", "absolute")
-    .style("padding", "6px 10px")
-    .style("background", "rgba(0,0,0,0.7)")
-    .style("color", "#fff")
-    .style("border-radius", "6px")
-    .style("font-size", "12px")
-    .style("pointer-events", "none")
-    .style("opacity", 0);
+  // Fetch connections
+  const { data: links, error: linkError } = await supabase
+    .from('connections')
+    .select('from_user_id, to_user_id');
 
-  // === 8. Draw nodes ===
-  const node = g.append("g")
-    .attr("stroke", "#fff")
-    .attr("stroke-width", 1.5)
-    .selectAll("circle")
+  if (nodeError) {
+    console.error('[Synapse] Error fetching nodes:', nodeError);
+    return;
+  }
+  if (linkError) {
+    console.error('[Synapse] Error fetching links:', linkError);
+    return;
+  }
+
+  if (!nodes || nodes.length === 0) {
+    console.warn('[Synapse] No community nodes found.');
+    showFallback(container, 'No community members available');
+    return;
+  }
+
+  const d3Links = (links || []).map((l) => ({
+    source: l.from_user_id,
+    target: l.to_user_id,
+  }));
+
+  console.log(`[Synapse] Loaded ${nodes.length} nodes, ${d3Links.length} links`);
+
+  // Draw links
+  const link = g
+    .append('g')
+    .attr('stroke', '#999')
+    .attr('stroke-opacity', 0.6)
+    .selectAll('line')
+    .data(d3Links)
+    .enter()
+    .append('line')
+    .attr('stroke-width', 1.5);
+
+  // Draw nodes
+  const node = g
+    .append('g')
+    .attr('stroke', '#fff')
+    .attr('stroke-width', 1.5)
+    .selectAll('circle')
     .data(nodes)
-    .join("circle")
-    .attr("r", 10)
-    .attr("fill", "#00BFFF")
-    .call(drag(simulation))
-    .on("mouseover", (event, d) => {
-      tooltip.transition().duration(150).style("opacity", 1);
-      tooltip.html(`
-        <b>${d.label}</b><br>
-        Skills: ${Array.isArray(d.skills) ? d.skills.join(", ") : d.skills || "N/A"}
-      `)
-        .style("left", (event.pageX + 10) + "px")
-        .style("top", (event.pageY - 20) + "px");
+    .enter()
+    .append('circle')
+    .attr('r', 10)
+    .attr('fill', '#1f77b4')
+    .call(
+      d3
+        .drag()
+        .on('start', dragStarted)
+        .on('drag', dragged)
+        .on('end', dragEnded)
+    )
+    .on('mouseover', (event, d) => {
+      tooltip
+        .style('opacity', 1)
+        .html(
+          `<strong>${d.name}</strong><br/>
+           ${d.role || ''}<br/>
+           ${d.skills || ''}<br/>
+           ${d.interests || ''}`
+        );
     })
-    .on("mousemove", (event) => {
-      tooltip.style("left", (event.pageX + 10) + "px")
-             .style("top", (event.pageY - 20) + "px");
+    .on('mousemove', (event) => {
+      tooltip.style('top', event.pageY + 10 + 'px').style('left', event.pageX + 10 + 'px');
     })
-    .on("mouseout", () => {
-      tooltip.transition().duration(200).style("opacity", 0);
-    })
-    .on("click", handleNodeClick);
+    .on('mouseout', () => tooltip.style('opacity', 0))
+    .on('click', async (event, d) => {
+      await handleNodeClick(d, node);
+    });
 
-  // === 9. Labels ===
-  const label = g.append("g")
-    .attr("class", "labels")
-    .selectAll("text")
+  // Labels
+  const label = g
+    .append('g')
+    .selectAll('text')
     .data(nodes)
-    .join("text")
-    .attr("dy", -12)
-    .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .style("font-size", "11px")
-    .style("pointer-events", "none")
-    .text(d => d.label);
+    .enter()
+    .append('text')
+    .text((d) => d.name)
+    .attr('font-size', 10)
+    .attr('dx', 12)
+    .attr('dy', '.35em')
+    .style('fill', '#fff');
 
-  // === 10. Simulation tick ===
-  simulation.on("tick", () => {
+  // Force simulation
+  simulation = d3
+    .forceSimulation(nodes)
+    .force('link', d3.forceLink(d3Links).id((d) => d.id).distance(120))
+    .force('charge', d3.forceManyBody().strength(-300))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .on('tick', ticked);
+
+  function ticked() {
     link
-      .attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
+      .attr('x1', (d) => d.source.x)
+      .attr('y1', (d) => d.source.y)
+      .attr('x2', (d) => d.target.x)
+      .attr('y2', (d) => d.target.y);
 
-    node
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
+    node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
 
-    label
-      .attr("x", d => d.x)
-      .attr("y", d => d.y);
-  });
-
-  console.log(`[Synapse] Loaded ${nodes.length} nodes, ${links.length} links`);
-  console.log("[Synapse] View initialized ✅");
-
-  // === 11. Dragging helper ===
-  function drag(simulation) {
-    function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-    function dragged(event, d) {
-      d.fx = event.x;
-      d.fy = event.y;
-    }
-    function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
-    return d3.drag()
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended);
+    label.attr('x', (d) => d.x).attr('y', (d) => d.y);
   }
 
-  // === 12. Click-to-Connect ===
-  let firstSelected = null;
-
-  async function handleNodeClick(event, d) {
-    if (!firstSelected) {
-      firstSelected = d;
-      d3.select(this).attr("fill", "#FFD700"); // highlight
-    } else if (firstSelected.id !== d.id) {
-      try {
-        const { error } = await supabase
-          .from("connections")
-          .insert([{ from_user_id: firstSelected.id, to_user_id: d.id }]);
-
-        if (error) throw error;
-
-        console.log(`[Synapse] Connection created: ${firstSelected.label} → ${d.label}`);
-        link.data([...links, { source: firstSelected.id, target: d.id }]).join("line");
-      } catch (err) {
-        console.error("[Synapse] Error creating connection:", err.message);
-      }
-      d3.selectAll("circle").attr("fill", "#00BFFF");
-      firstSelected = null;
-    }
+  function dragStarted(event, d) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
   }
+
+  function dragged(event, d) {
+    d.fx = event.x;
+    d.fy = event.y;
+  }
+
+  function dragEnded(event, d) {
+    if (!event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+
+  console.log('[Synapse] View initialized ✅');
+}
+
+// Handle node click for connections
+async function handleNodeClick(d, nodeSelection) {
+  if (!selectedNode) {
+    selectedNode = d;
+    console.log(`[Synapse] Selected source: ${d.name}`);
+    highlightNode(d.id, nodeSelection, true);
+  } else if (selectedNode.id === d.id) {
+    console.log('[Synapse] Deselected node');
+    highlightNode(d.id, nodeSelection, false);
+    selectedNode = null;
+  } else {
+    console.log(`[Synapse] Connecting ${selectedNode.name} → ${d.name}`);
+
+    // Insert into Supabase
+    const { error } = await supabase.from('connections').insert([
+      {
+        from_user_id: selectedNode.id,
+        to_user_id: d.id,
+      },
+    ]);
+
+    if (error) {
+      console.error('[Synapse] Error creating connection:', error.message);
+    } else {
+      console.log('[Synapse] Connection created successfully ✅');
+    }
+
+    // Reset selection
+    highlightNode(selectedNode.id, nodeSelection, false);
+    selectedNode = null;
+  }
+}
+
+// Highlight node when selected
+function highlightNode(id, nodeSelection, active) {
+  nodeSelection
+    .filter((n) => n.id === id)
+    .attr('stroke', active ? 'yellow' : '#fff')
+    .attr('stroke-width', active ? 3 : 1.5);
+}
+
+// Fallback message
+function showFallback(container, message) {
+  container.innerHTML = `<div style="color: white; text-align: center; padding: 20px;">${message}</div>`;
 }
