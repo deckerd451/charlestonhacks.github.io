@@ -57,7 +57,7 @@ export async function initSynapseView() {
   // Fetch nodes
   const { data: nodes, error: nodeError } = await supabase
     .from('community')
-    .select('id, name, skills, role, interests, image_url');
+    .select('id, name, skills, interests, image_url');
 
   // Fetch connections
   const { data: links, error: linkError } = await supabase
