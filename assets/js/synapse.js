@@ -68,7 +68,7 @@ export async function initSynapseView() {
   const minEnd = Math.min(...endorsementsArray);
   const maxEnd = Math.max(...endorsementsArray);
   function scaleRadius(val) {
-    if (maxEnd === minEnd) return 14; // fallback
+    if (maxEnd === minEnd) return 14;
     const norm = (val - minEnd) / (maxEnd - minEnd);
     return 10 + norm * 20; // between 10 and 30px
   }
@@ -297,6 +297,26 @@ export async function initSynapseView() {
       ctx.font = "11px sans-serif";
       ctx.fillText(n.name, n.x + n.radius + 4, n.y + 4);
     });
+
+    // ===== TOOLTIP (desktop only) =====
+    if (hoverNode && !touchMode) {
+      const lines = [
+        `Skills: ${hoverNode.skills || "N/A"}`,
+        hoverNode.bio ? `Bio: ${hoverNode.bio}` : null,
+        `Endorsements: ${hoverNode.endorsements}`
+      ].filter(Boolean);
+
+      const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 10;
+      const h = lines.length * 16 + 10;
+
+      ctx.fillStyle = "rgba(0,0,0,0.8)";
+      ctx.fillRect(hoverNode.x + 20, hoverNode.y - 10, w, h);
+
+      ctx.fillStyle = "#fff";
+      lines.forEach((l, i) => {
+        ctx.fillText(l, hoverNode.x + 25, hoverNode.y + 10 + i * 16);
+      });
+    }
 
     ctx.restore();
   }
