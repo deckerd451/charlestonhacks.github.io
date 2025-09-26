@@ -107,8 +107,8 @@ export async function initSynapseView() {
     return;
   }
 
-  console.log('[Synapse] Nodes:', nodes);
-  console.log('[Synapse] Links:', links);
+  console.log('[Synapse] Raw nodes:', nodes);
+  console.log('[Synapse] Raw links:', links);
 
   if (!nodes || nodes.length === 0) {
     console.warn('[Synapse] No community nodes found.');
@@ -122,6 +122,8 @@ export async function initSynapseView() {
   }));
 
   console.log(`[Synapse] Loaded ${nodes.length} nodes, ${d3Links.length} links`);
+  console.log('[Synapse] First node example:', nodes[0]);
+  console.log('[Synapse] First link example:', d3Links[0]);
 
   // --- Graph Rendering ---
 
