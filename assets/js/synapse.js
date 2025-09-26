@@ -25,21 +25,22 @@ export async function initSynapseView() {
   const width = container.clientWidth || 800;
   const height = container.clientHeight || 600;
 
-  const svg = d3
+  const svgRoot = d3
     .select(container)
     .append('svg')
     .attr('width', '100%')
     .attr('height', '100%')
     .attr('viewBox', [0, 0, width, height])
-    .style('background', '#111') // ✅ visible background
-    .call(
-      d3.zoom().on('zoom', (event) => {
-        g.attr('transform', event.transform);
-      })
-    )
-    .append('g');
+    .style('background', '#111'); // ✅ visible background
 
-  const g = svg.append('g');
+  const g = svgRoot.append('g'); // ✅ group exists before zoom
+
+  // Attach zoom AFTER g is defined
+  svgRoot.call(
+    d3.zoom().on('zoom', (event) => {
+      g.attr('transform', event.transform);
+    })
+  );
 
   // Tooltip
   const tooltip = d3
@@ -107,8 +108,8 @@ export async function initSynapseView() {
     .data(nodes)
     .enter()
     .append('circle')
-    .attr('r', 12) // ✅ slightly larger
-    .attr('fill', '#ff4081') // ✅ test color
+    .attr('r', 12) // ✅ slightly larger for visibility
+    .attr('fill', '#ff4081') // ✅ bright color for testing
     .call(
       d3
         .drag()
@@ -126,7 +127,9 @@ export async function initSynapseView() {
         );
     })
     .on('mousemove', (event) => {
-      tooltip.style('top', event.pageY + 10 + 'px').style('left', event.pageX + 10 + 'px');
+      tooltip
+        .style('top', event.pageY + 10 + 'px')
+        .style('left', event.pageX + 10 + 'px');
     })
     .on('mouseout', () => tooltip.style('opacity', 0))
     .on('click', async (event, d) => {
@@ -162,7 +165,6 @@ export async function initSynapseView() {
       .attr('y2', (d) => d.target.y);
 
     node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
-
     label.attr('x', (d) => d.x).attr('y', (d) => d.y);
   }
 
