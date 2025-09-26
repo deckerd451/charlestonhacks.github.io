@@ -1,9 +1,8 @@
 // synapse.js
 // Full interactive Synapse View with Supabase integration, D3.js force simulation,
 // zoom/pan, drag, tooltips, click-to-connect, responsive behavior, and fallback.
-// ✅ DEBUG VERSION with visible nodes/links
-
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
+
 import { supabaseClient as supabase } from './supabaseClient.js';
 
 let simulation;
@@ -22,28 +21,58 @@ export async function initSynapseView() {
   // Clear container
   container.innerHTML = '';
 
-  // Ensure container has dimensions
+  // Setup SVG + group
   const width = container.clientWidth || 800;
   const height = container.clientHeight || 600;
-  container.style.minWidth = width + 'px';
-  container.style.minHeight = height + 'px';
 
-  // Setup SVG with debug border
-  const svgRoot = d3
+  const svg = d3
     .select(container)
     .append('svg')
     .attr('width', '100%')
     .attr('height', '100%')
     .attr('viewBox', [0, 0, width, height])
-    .style('background', '#222') // dark gray background
-    .style('border', '2px solid red') // DEBUG: see canvas bounds
-    .call(
-      d3.zoom().on('zoom', (event) => {
-        g.attr('transform', event.transform);
-      })
-    );
+    .style('background', '#111')
+    .style('border', '2px solid red'); // ✅ visible border
 
-  const g = svgRoot.append('g');
+  const g = svg.append('g');
+
+  svg.call(
+    d3.zoom().on('zoom', (event) => {
+      g.attr('transform', event.transform);
+    })
+  );
+
+  // Background grid ✅
+  const gridSize = 50;
+  const grid = g.append('g').attr('class', 'grid');
+  for (let x = 0; x <= width; x += gridSize) {
+    grid
+      .append('line')
+      .attr('x1', x)
+      .attr('y1', 0)
+      .attr('x2', x)
+      .attr('y2', height)
+      .attr('stroke', '#333')
+      .attr('stroke-width', 0.5);
+  }
+  for (let y = 0; y <= height; y += gridSize) {
+    grid
+      .append('line')
+      .attr('x1', 0)
+      .attr('y1', y)
+      .attr('x2', width)
+      .attr('y2', y)
+      .attr('stroke', '#333')
+      .attr('stroke-width', 0.5);
+  }
+
+  // Debug circle ✅
+  g.append('circle')
+    .attr('cx', 100)
+    .attr('cy', 100)
+    .attr('r', 30)
+    .attr('fill', 'lime');
+  console.log('[Synapse] Debug circle + grid drawn ✅');
 
   // Tooltip
   const tooltip = d3
@@ -62,7 +91,7 @@ export async function initSynapseView() {
   // Fetch nodes
   const { data: nodes, error: nodeError } = await supabase
     .from('community')
-    .select('id, name, skills, interests, image_url'); // ✅ no "role"
+    .select('id, name, skills, interests, image_url');
 
   // Fetch connections
   const { data: links, error: linkError } = await supabase
@@ -78,6 +107,9 @@ export async function initSynapseView() {
     return;
   }
 
+  console.log('[Synapse] Nodes:', nodes);
+  console.log('[Synapse] Links:', links);
+
   if (!nodes || nodes.length === 0) {
     console.warn('[Synapse] No community nodes found.');
     showFallback(container, 'No community members available');
@@ -91,27 +123,30 @@ export async function initSynapseView() {
 
   console.log(`[Synapse] Loaded ${nodes.length} nodes, ${d3Links.length} links`);
 
-  // Draw links (debug color: lime green)
+  // --- Graph Rendering ---
+
+  // Draw links
   const link = g
     .append('g')
-    .attr('stroke', 'lime')
-    .attr('stroke-opacity', 1)
+    .attr('stroke', '#999')
+    .attr('stroke-opacity', 0.6)
     .selectAll('line')
     .data(d3Links)
     .enter()
     .append('line')
-    .attr('stroke-width', 3);
+    .attr('stroke-width', 1.5);
 
-  // Draw nodes (debug: big orange circles)
+  // Draw nodes
   const node = g
+    .append('g')
+    .attr('stroke', '#fff')
+    .attr('stroke-width', 1.5)
     .selectAll('circle')
     .data(nodes)
     .enter()
     .append('circle')
-    .attr('r', 25) // large radius
-    .attr('fill', 'orange') // visible color
-    .attr('stroke', 'white')
-    .attr('stroke-width', 3)
+    .attr('r', 12)
+    .attr('fill', '#ff4081') // test color
     .call(
       d3
         .drag()
@@ -129,7 +164,9 @@ export async function initSynapseView() {
         );
     })
     .on('mousemove', (event) => {
-      tooltip.style('top', event.pageY + 10 + 'px').style('left', event.pageX + 10 + 'px');
+      tooltip
+        .style('top', event.pageY + 10 + 'px')
+        .style('left', event.pageX + 10 + 'px');
     })
     .on('mouseout', () => tooltip.style('opacity', 0))
     .on('click', async (event, d) => {
@@ -144,8 +181,8 @@ export async function initSynapseView() {
     .enter()
     .append('text')
     .text((d) => d.name)
-    .attr('font-size', 14)
-    .attr('dx', 30)
+    .attr('font-size', 10)
+    .attr('dx', 14)
     .attr('dy', '.35em')
     .style('fill', '#fff');
 
@@ -165,6 +202,7 @@ export async function initSynapseView() {
       .attr('y2', (d) => d.target.y);
 
     node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
+
     label.attr('x', (d) => d.x).attr('y', (d) => d.y);
   }
 
@@ -201,6 +239,7 @@ async function handleNodeClick(d, nodeSelection) {
   } else {
     console.log(`[Synapse] Connecting ${selectedNode.name} → ${d.name}`);
 
+    // Insert into Supabase
     const { error } = await supabase.from('connections').insert([
       {
         from_user_id: selectedNode.id,
@@ -214,6 +253,7 @@ async function handleNodeClick(d, nodeSelection) {
       console.log('[Synapse] Connection created successfully ✅');
     }
 
+    // Reset selection
     highlightNode(selectedNode.id, nodeSelection, false);
     selectedNode = null;
   }
@@ -223,8 +263,8 @@ async function handleNodeClick(d, nodeSelection) {
 function highlightNode(id, nodeSelection, active) {
   nodeSelection
     .filter((n) => n.id === id)
-    .attr('stroke', active ? 'yellow' : 'white')
-    .attr('stroke-width', active ? 6 : 3);
+    .attr('stroke', active ? 'yellow' : '#fff')
+    .attr('stroke-width', active ? 3 : 1.5);
 }
 
 // Fallback message
