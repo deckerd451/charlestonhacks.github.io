@@ -1896,6 +1896,10 @@ main, .main-wrapper, .media-container {
   z-index: 9999 !important; /* stay on top */
   overflow: visible !important; /* allow nodes to render outside bounds */
 }
+.synapse-tooltip {
+  z-index: 10000 !important;
+}
+
 
 
 
