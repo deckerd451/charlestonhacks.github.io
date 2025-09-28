@@ -1923,51 +1923,36 @@ main, .main-wrapper, .media-container {
 .two-card-page .autocomplete-box div:hover {
   background: rgba(255, 215, 0, 0.15);
 }
-/* ==========================================================================
-   UNIVERSAL ACTION BUTTON
-   ========================================================================== */
-.action-btn {
+/* REMOVE THIS */
+.input-container button {
   padding: 12px 24px;
   font-size: 16px;
-  background: #ffd700;        /* gold */
-  color: #121212;             /* dark text */
+  background: #ffd700;
+  color: #121212;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.input-container button:hover {
+  background: #FFC000;
+}
+
+/* REMOVE THIS */
+#login-section button {
+  padding: 12px 24px;
+  font-size: 16px;
+  background: #ffd700;
+  color: #121212;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
   transition: background 0.3s;
-  margin-top: 10px;
-  display: inline-block;
 }
 
-.action-btn:hover {
-  background: #FFC000;        /* lighter gold on hover */
+#login-section button:hover {
+  background: #ffc000;
 }
-
-/* ==========================================================================
-   LOGOUT BUTTON (optional override – keep grey if you want it distinct)
-   ========================================================================== */
-.logout-btn {
-  background: #444;
-  color: #eee;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.logout-btn:hover {
-  background: #3a3a4a;
-  color: #ffd700;
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
-}
-
-.logout-btn i {
-  font-size: 0.9em;
-}
-
