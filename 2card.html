@@ -157,20 +157,37 @@
 </div>
 
 
-          <!-- Team Builder Tab -->
-          <div id="team-builder" class="tab-content-pane">
-            <h2 class="section-title">Team Builder</h2>
-            <div class="input-container">
-              <p class="instructions">Enter required skills and team size.</p>
-              <div class="input-wrapper">
-                <input type="text" id="team-skills-input" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
-                <div id="autocomplete-team-builder" class="autocomplete-box"></div>
-              </div>
-              <input type="number" id="teamSize" placeholder="Team size" min="1" max="6">
-              <button id="buildTeamBtn" type="button">Build Team</button>
-            </div>
-            <div class="card-container" id="bestTeamContainer" role="list"></div>
-          </div>
+ <!-- Team Builder Tab -->
+<div id="team-builder" class="tab-content-pane">
+  <h2 class="section-title">Team Builder</h2>
+  <div class="input-container">
+    <p class="instructions">Enter required skills and team size.</p>
+
+    <!-- Skills Input with predictive dropdown -->
+    <div class="input-wrapper">
+      <input 
+        type="text" 
+        id="team-skills-input" 
+        placeholder="e.g. aws, fullstack, java, python" 
+        autocomplete="off">
+      <div id="autocomplete-team-builder" class="autocomplete-box"></div>
+    </div>
+
+    <!-- Team Size -->
+    <input 
+      type="number" 
+      id="teamSize" 
+      placeholder="Team size" 
+      min="1" 
+      max="6">
+
+    <button id="buildTeamBtn" type="button">Build Team</button>
+  </div>
+
+  <!-- Generated Team Cards -->
+  <div class="card-container" id="bestTeamContainer" role="list"></div>
+</div>
+
 
           <!-- Leaderboard Tab -->
           <div id="leaderboard" class="tab-content-pane">
