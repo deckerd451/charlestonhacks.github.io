@@ -108,23 +108,49 @@
             </section>
           </div>
 
-          <!-- Search Tab -->
-          <div id="search" class="tab-content-pane">
-            <h2 class="section-title">Individual Search</h2>
-            <div class="input-container">
-              <label for="teamSkillsInput">Required Skills</label>
-              <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
-              <div id="autocomplete-team-skills" class="autocomplete-box"></div>
-              <button id="find-team-btn" type="button">Get People</button><br><br>
+     <!-- Search Tab -->
+<div id="search" class="tab-content-pane">
+  <h2 class="section-title">Individual Search</h2>
 
-              <label for="nameInput">Search by First/Last Name</label>
-              <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
-              <button id="search-name-btn" type="button">Find by Name</button>
-            </div>
-            <div id="matchNotification" class="notification match-notification hidden"></div>
-            <div id="noResults" class="notification no-results-notification hidden"></div>
-            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
-          </div>
+  <!-- Skills Search -->
+  <div class="input-wrapper">
+    <label for="teamSkillsInput">Required Skills</label>
+    <input 
+      type="text" 
+      id="teamSkillsInput" 
+      placeholder="e.g. aws, fullstack, java, python" 
+      autocomplete="off">
+    
+    <!-- Predictive dropdown for skills -->
+    <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+  </div>
+
+  <button id="find-team-btn" type="button">Get People</button>
+  <br><br>
+
+  <!-- Name Search -->
+  <div class="input-wrapper">
+    <label for="nameInput">Search by First/Last Name</label>
+    <input 
+      type="text" 
+      id="nameInput" 
+      placeholder="e.g. John, Doug, Will, Dave" 
+      autocomplete="off">
+    
+    <!-- Predictive dropdown for names (optional, if you want) -->
+    <div id="autocomplete-names" class="autocomplete-box"></div>
+  </div>
+
+  <button id="search-name-btn" type="button">Find by Name</button>
+
+  <!-- Notifications -->
+  <div id="matchNotification" class="notification match-notification hidden"></div>
+  <div id="noResults" class="notification no-results-notification hidden"></div>
+
+  <!-- Search Results -->
+  <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+</div>
+
 
           <!-- Team Builder Tab -->
           <div id="team-builder" class="tab-content-pane">
