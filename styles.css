@@ -1875,17 +1875,6 @@ main, .main-wrapper, .media-container {
   opacity: 0;
   pointer-events: none;
 }
-/* Synapse Canvas Debug Styles */
-#synapseCanvas {
-  position: relative;       /* stay inside layout */
-  width: 100%;              /* take full width */
-  height: 600px;            /* fixed height for visibility */
-  min-height: 600px;        /* ensure it never collapses */
-  background: #111 !important;  /* dark debug background */
-  border: 3px solid red !important; /* debug border */
-  z-index: 9999 !important; /* stay on top */
-  overflow: visible !important; /* allow nodes to render outside bounds */
-}
 .synapse-tooltip {
   z-index: 10000 !important;
 }
