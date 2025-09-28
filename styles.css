@@ -1920,50 +1920,36 @@ main, .main-wrapper, .media-container {
   z-index: 10000 !important;
 }
 /* ==========================================================================
-   Scoped Autocomplete for Innovation Engine (2card.html)
+   Scoped Autocomplete Fix (Two Card Page Only)
    ========================================================================== */
 .two-card-page .input-wrapper {
   position: relative;
   width: 100%;
-  margin-bottom: 20px;
 }
 
-.two-card-page .input-wrapper input {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  background: #2c2c2c;
-  border: 2px solid #ffd700;
-  border-radius: 5px;
-  color: white;
-  z-index: 1;
-  position: relative;
-}
-
-/* Predictive dropdown */
 .two-card-page .autocomplete-box {
   position: absolute;
-  top: calc(100% + 5px);
+  top: calc(100% + 4px);   /* directly below the input */
   left: 0;
   right: 0;
-  background: rgba(20,20,20,0.95);
+  max-width: 100%;         /* ensures it stays aligned with input */
+  background: rgba(0, 0, 0, 0.95);
   border: 1px solid #ffd700;
   border-radius: 6px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-  max-height: 200px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+  display: none;           /* hidden until JS shows it */
+  z-index: 2000;           /* stays above other UI elements */
   overflow-y: auto;
-  display: none;
-  z-index: 9999;
+  max-height: 220px;
 }
 
 .two-card-page .autocomplete-box div {
-  padding: 10px;
+  padding: 10px 12px;
   cursor: pointer;
   color: #fff;
   font-size: 15px;
 }
 
 .two-card-page .autocomplete-box div:hover {
-  background: rgba(255,215,0,0.2);
+  background: rgba(255, 215, 0, 0.15);
 }
-
