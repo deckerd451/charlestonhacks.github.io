@@ -36,7 +36,7 @@
       <p>Making Invisible Networks Visible</p>
       <div class="auth-controls">
         <span class="user-badge hidden" id="user-badge"></span>
-        <button class="logout-btn hidden" id="logout-btn">
+        <button class="logout-btn action-btn hidden" id="logout-btn">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
@@ -50,7 +50,7 @@
           <h2 class="section-title">Login</h2>
           <form id="login-form">
             <input type="email" id="login-email" placeholder="Enter your email" autocomplete="email" />
-            <button id="login-button" type="submit">Send Magic Link</button>
+            <button id="login-button" type="submit" class="action-btn">Send Magic Link</button>
           </form>
         </div>
 
@@ -101,7 +101,7 @@
                     <input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter
                   </label>
 
-                  <button type="submit">Save Profile</button>
+                  <button type="submit" class="action-btn">Save Profile</button>
                 </div>
                 <div class="profile-bar"><div class="profile-bar-inner"></div></div>
                 <div id="profile-progress-msg" class="profile-incomplete"></div>
@@ -127,7 +127,7 @@
     <div id="autocomplete-team-skills" class="autocomplete-box"></div>
   </div>
 
-  <button id="find-team-btn" type="button">Get People</button>
+  <button id="find-team-btn" type="button" class="action-btn">Get People</button>
   <br><br>
 
   <!-- Name Search -->
@@ -143,7 +143,7 @@
     <div id="autocomplete-names" class="autocomplete-box"></div>
   </div>
 
-  <button id="search-name-btn" type="button">Find by Name</button>
+  <button id="search-name-btn" type="button" class="action-btn">Find by Name</button>
 
   <!-- Notifications -->
   <div id="matchNotification" class="notification match-notification hidden"></div>
@@ -181,7 +181,7 @@
       min="1" 
       max="6">
 
-    <button id="buildTeamBtn" type="button">Build Team</button>
+    <button id="buildTeamBtn" type="button" class="action-btn">Build Team</button>
   </div>
 
   <!-- Generated Team Cards -->
