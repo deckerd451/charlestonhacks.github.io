@@ -1816,23 +1816,55 @@ main, .main-wrapper, .media-container {
   background: #ffc000;
 }
 /* ==========================================================================
-  Autocomplete UI for skills input
+   Autocomplete UI for skills input
    ========================================================================== */
 .input-wrapper {
   position: relative; /* anchor point for dropdown */
+  width: 100%;
   margin-bottom: 20px;
 }
 
-.autocomplete-item {
-  padding: 8px 12px;
-  line-height: 1.2;
-  cursor: pointer;
-  color: #fff;
+/* Input should stay styled as before */
+.input-wrapper input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background: #2c2c2c;
+  border: 2px solid #ffd700;
+  border-radius: 5px;
+  color: white;
+  z-index: 1;
+  position: relative;
 }
 
-.autocomplete-item:hover {
-  background: rgba(255,255,255,0.08);
+/* Predictive/autocomplete dropdown */
+.autocomplete-box {
+  position: absolute;
+  top: calc(100% + 5px);  /* directly below input */
+  left: 0;
+  right: 0;
+  background: rgba(20,20,20,0.95); /* dark to match theme */
+  border: 1px solid #ffd700;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  max-height: 200px;
+  overflow-y: auto;
+  display: none; /* hidden until JS shows it */
+  z-index: 9999; /* force it on top of everything */
 }
+
+/* Dropdown items */
+.autocomplete-box div {
+  padding: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+}
+
+.autocomplete-box div:hover {
+  background: rgba(255,215,0,0.2);
+}
+
 /* ==========================================================================
    Synapse View Fullscreen Below Header
    ========================================================================== */
