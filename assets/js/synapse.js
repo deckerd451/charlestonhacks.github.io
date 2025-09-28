@@ -22,25 +22,34 @@ export async function initSynapseView() {
     return;
   }
 
+  // ✅ Ensure container has size
+  if (!container.style.height) {
+    container.style.height = '600px';
+  }
+  console.log('[Synapse] Container size:', container.clientWidth, container.clientHeight);
+
   container.innerHTML = ''; // clear
 
   const width = container.clientWidth || 800;
   const height = container.clientHeight || 600;
 
+  // Setup SVG + group
   const svg = d3
     .select(container)
     .append('svg')
     .attr('width', '100%')
     .attr('height', '100%')
     .attr('viewBox', [0, 0, width, height])
-    .style('background', '#111')
-    .call(
-      d3.zoom().on('zoom', (event) => {
-        g.attr('transform', event.transform);
-      })
-    );
+    .style('background', '#111');
 
   const g = svg.append('g');
+
+  // ✅ Attach zoom AFTER g exists
+  svg.call(
+    d3.zoom().on('zoom', (event) => {
+      g.attr('transform', event.transform);
+    })
+  );
 
   // Tooltip
   const tooltip = d3
@@ -90,6 +99,8 @@ export async function initSynapseView() {
   }));
 
   console.log(`[Synapse] Loaded ${nodes.length} nodes, ${d3Links.length} links`);
+  console.log('[Synapse] Example node:', nodes[0]);
+  console.log('[Synapse] Example link:', d3Links[0]);
 
   // Draw links
   const link = g
@@ -114,8 +125,7 @@ export async function initSynapseView() {
     .attr('r', 10)
     .attr('fill', '#ff4081')
     .call(
-      d3
-        .drag()
+      d3.drag()
         .on('start', dragStarted)
         .on('drag', dragged)
         .on('end', dragEnded)
