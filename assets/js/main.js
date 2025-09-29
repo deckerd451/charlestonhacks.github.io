@@ -551,9 +551,19 @@ initSynapseView();
   initSearch();
 
   // Team builder button (and attach autocomplete for that tab too)
+  // Attach the build team handler and the correct autocomplete dropdown to the team builder skills field.
   const teamBtn = document.getElementById('buildTeamBtn');
-  if (teamBtn) teamBtn.addEventListener('click', () => buildBestTeam());
-  attachAutocomplete('team-builder', 'team-skills-input', '#autocomplete-team-skills');
+  if (teamBtn) {
+    teamBtn.addEventListener('click', () => buildBestTeam());
+  }
+  // NB: the third parameter here should target the team builder's autocomplete box (#autocomplete-team-builder),
+  // not the search tab's box (#autocomplete-team-skills).  Using the wrong selector would result in
+  // no suggestions appearing for the team builder tab.
+  attachAutocomplete('team-builder', 'team-skills-input', '#autocomplete-team-builder');
+
+  // Provide autocomplete on the profile skills input so users can reuse existing skill suggestions when
+  // creating their profile.  Without this, only the search and team builder tabs offer suggestions.
+  attachAutocomplete('profile', 'skills-input', '#autocomplete-skills-input');
 
   // Note: we do NOT call any profile form init here; login.js/profile.js handle it to avoid double-binding.
 });
