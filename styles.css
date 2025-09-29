@@ -1591,7 +1591,8 @@ main, .main-wrapper, .media-container {
   text-align: left;
 }
 
-.leaderboard-skill {
+/* renamed from leaderboard-skill → generic key */
+.leaderboard-key {
   text-align: left;
   padding-left: 10px;
 }
@@ -1601,6 +1602,35 @@ main, .main-wrapper, .media-container {
   text-align: right;
   color: #4cafef;
 }
+
+/* === Leaderboard Tabs === */
+.leaderboard-tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.lb-tab {
+  background: #2a2a3a;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lb-tab:hover {
+  background: #3a3a4a;
+}
+
+.lb-tab.active {
+  background: #ff0000; /* primary color */
+  color: #fff;
+  font-weight: bold;
+}
+
 /* === User Cards === */
 .user-card {
   background-color: #1e1e2f;
