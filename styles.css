@@ -1989,3 +1989,74 @@ main, .main-wrapper, .media-container {
 .logout-btn i {
   font-size: 0.9em;
 }
+/* ==========================================================================
+   USER CARD SKILLS (Chip Fixes)
+   ========================================================================== */
+
+/* Skills container */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;                /* consistent spacing between chips */
+  justify-content: center; /* keeps layout balanced */
+  margin-top: 10px;
+  padding: 4px;
+  max-width: 100%;
+  word-break: break-word;  /* avoids overflow on long names */
+}
+
+/* Individual skill chip */
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #2a2a3a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #eee;
+  border: 1px solid #444;
+  max-width: 100%;         /* ensures chips don’t spill out */
+  white-space: nowrap;     /* keeps name + count + button inline */
+}
+
+/* Skill name inside chip */
+.skill-chip .skill-name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;        /* prevents super-long names from breaking layout */
+}
+
+/* Endorsement count */
+.skill-chip .endorsement-count {
+  color: #4cafef;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Endorse button */
+.skill-chip .endorse-btn {
+  background-color: #ffd700;
+  color: #222;
+  border: none;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1.2;
+  transition: background-color 0.2s ease;
+}
+
+.skill-chip .endorse-btn:hover {
+  background-color: #e0b800;
+}
+
+/* Responsive tweak for small screens */
+@media (max-width: 480px) {
+  .skill-chip .skill-name {
+    max-width: 80px;
+  }
+}
+
