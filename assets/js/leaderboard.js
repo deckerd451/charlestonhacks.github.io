@@ -1,6 +1,28 @@
 import { supabaseClient as supabase } from './supabaseClient.js';
 
 /**
+ * Synonym / normalization dictionary
+ * Keys = lowercase variants, Values = standardized label
+ */
+const SKILL_SYNONYMS = {
+  "js": "JavaScript",
+  "javascript": "JavaScript",
+  "javascript programming": "JavaScript",
+  "node": "Node.js",
+  "nodejs": "Node.js",
+  "python programming": "Python",
+  "ml": "Machine Learning",
+  "ai": "Artificial Intelligence",
+  "a.i.": "Artificial Intelligence",
+  "ux": "UX Design",
+  "ui": "UI Design",
+  "full-stack": "Fullstack",
+  "full stack": "Fullstack",
+  "fullstack developer": "Fullstack",
+  "fullstack engineer": "Fullstack"
+};
+
+/**
  * Load leaderboard by type.
  * @param {string} type - "skills" | "connectors" | "rising"
  * @param {string} range - "week" | "month" | "all"
@@ -33,7 +55,6 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "skill");
 
     } else if (type === "connectors") {
-      // Count who created the most connections
       let query = supabase.from('connections').select('from_user_id, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -49,7 +70,6 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "user", users);
 
     } else if (type === "rising") {
-      // Rising Stars = endorsements gained this week vs last week
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
       const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
@@ -87,18 +107,18 @@ export async function loadLeaderboard(type = "skills", range = "month") {
 
 function applyRangeFilter(query, range) {
   if (range === "week") {
-    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
     return query.gte('created_at', weekAgo.toISOString());
   }
   if (range === "month") {
-    const monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1);
+    const monthAgo = new Date(); monthAgo.setMonth(now.getMonth() - 1);
     return query.gte('created_at', monthAgo.toISOString());
   }
   return query;
 }
 
 /**
- * Normalize skills by removing duplicates, casing differences, and suffixes.
+ * Normalize skills with synonyms, suffix stripping, and title case.
  */
 function normalizeSkill(raw) {
   if (!raw) return null;
@@ -107,10 +127,10 @@ function normalizeSkill(raw) {
   // Unify separators
   skill = skill.replace(/[-_]/g, " ");
 
-  // Remove role suffixes
+  // Remove generic role suffixes
   skill = skill.replace(/\b(developer|engineer|specialist|programmer)\b/g, "").trim();
 
-  // Remove generic words
+  // Remove filler words
   skill = skill.replace(/\b(programming|coding|tech|technology)\b/g, "").trim();
 
   // Collapse multiple spaces
@@ -118,7 +138,12 @@ function normalizeSkill(raw) {
 
   if (!skill) return null;
 
-  // Title-case for display
+  // Apply synonym dictionary if match
+  if (SKILL_SYNONYMS[skill]) {
+    return { key: SKILL_SYNONYMS[skill].toLowerCase(), label: SKILL_SYNONYMS[skill] };
+  }
+
+  // Default to Title Case
   const display = skill.split(" ")
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
