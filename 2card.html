@@ -189,16 +189,26 @@
 </div>
 
 
-         <!-- Leaderboard Tab -->
+<!-- Leaderboard Tab -->
 <div id="leaderboard" class="tab-content-pane">
   <div class="leaderboard">
     <h2>Leaderboard</h2>
+
+    <!-- Leaderboard Tabs -->
     <div class="leaderboard-tabs">
-      <button class="lb-tab active" data-type="skills">Top Skills</button>
-      <button class="lb-tab" data-type="connectors">Top Connectors</button>
-      <button class="lb-tab" data-type="rising">Rising Stars</button>
+      <button class="lb-tab active" data-type="skills">
+        <i class="fas fa-star"></i> Top Skills
+      </button>
+      <button class="lb-tab" data-type="connectors">
+        <i class="fas fa-link"></i> Top Connectors
+      </button>
+      <button class="lb-tab" data-type="rising">
+        <i class="fas fa-rocket"></i> Rising Stars
+      </button>
     </div>
-    <div id="leaderboard-rows"></div>
+
+    <!-- Results -->
+    <div id="leaderboard-rows" class="leaderboard-rows"></div>
   </div>
 </div>
 
