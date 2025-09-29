@@ -2,6 +2,9 @@
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { showNotification } from './utils.js';
 
+/**
+ * Initialize profile form and saving logic
+ */
 export function initProfileForm() {
   const form = document.getElementById("skills-form");
   if (!form) return;
@@ -59,7 +62,7 @@ export function initProfileForm() {
             user_id: userId,
             name: `${fname} ${lname}`,
             email,
-            skills,
+            skills, // saves as Postgres array
             bio,
             availability,
             image_url: imageUrl,
@@ -101,4 +104,24 @@ export function initProfileForm() {
       showNotification("Unexpected error saving profile.", "error");
     }
   });
+}
+
+/**
+ * Render skills as neat tags (instead of comma string)
+ * @param {string[]|string} skills
+ * @returns {string} HTML markup for skill tags
+ */
+export function renderSkills(skills) {
+  if (!skills) return "";
+  let list = Array.isArray(skills)
+    ? skills
+    : String(skills).split(",").map(s => s.trim()).filter(Boolean);
+
+  if (list.length === 0) {
+    return `<span class="skill-tag">No skills listed</span>`;
+  }
+
+  return list
+    .map(skill => `<span class="skill-tag">${skill}</span>`)
+    .join(" ");
 }
