@@ -1,29 +1,5 @@
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { SKILL_SYNONYMS } from './skillsDictionary.js';
-
-
-/**
- * Synonym / normalization dictionary
- * Keys = lowercase variants, Values = standardized label
- */
-const SKILL_SYNONYMS = {
-  "js": "JavaScript",
-  "javascript": "JavaScript",
-  "javascript programming": "JavaScript",
-  "node": "Node.js",
-  "nodejs": "Node.js",
-  "python programming": "Python",
-  "ml": "Machine Learning",
-  "ai": "Artificial Intelligence",
-  "a.i.": "Artificial Intelligence",
-  "ux": "UX Design",
-  "ui": "UI Design",
-  "full-stack": "Fullstack",
-  "full stack": "Fullstack",
-  "fullstack developer": "Fullstack",
-  "fullstack engineer": "Fullstack"
-};
-
 /**
  * Load leaderboard by type.
  * @param {string} type - "skills" | "connectors" | "rising"
