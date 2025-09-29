@@ -1,4 +1,6 @@
 import { supabaseClient as supabase } from './supabaseClient.js';
+import { SKILL_SYNONYMS } from './skillsDictionary.js';
+
 
 /**
  * Synonym / normalization dictionary
