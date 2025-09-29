@@ -10,6 +10,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     let data, error;
 
     if (type === "skills") {
+      // Aggregate by skill from endorsements
       let query = supabase.from('endorsements').select('skill, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -20,38 +21,39 @@ export async function loadLeaderboard(type = "skills", range = "month") {
         if (!row.skill) return;
         totals[row.skill] = (totals[row.skill] || 0) + 1;
       });
+
       renderLeaderboard(totals, "skill");
 
     } else if (type === "connectors") {
-      let query = supabase.from('connections').select('from_user, created_at');
+      // Count who started the most connections
+      let query = supabase.from('connections').select('from_user_id, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
       if (error) throw error;
 
       const totals = {};
       data?.forEach(row => {
-        if (!row.from_user) return;
-        totals[row.from_user] = (totals[row.from_user] || 0) + 1;
+        if (!row.from_user_id) return;
+        totals[row.from_user_id] = (totals[row.from_user_id] || 0) + 1;
       });
 
-      // 🔑 Resolve user IDs into names
       const users = await fetchUserNames(Object.keys(totals));
       renderLeaderboard(totals, "user", users);
 
     } else if (type === "rising") {
-      // Compare this week vs. last week endorsements
+      // Compare endorsements this week vs last week
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
       const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
 
       const { data: recent, error: err1 } = await supabase
         .from('endorsements')
-        .select('user_id, created_at')
+        .select('to_user_id, created_at')
         .gte('created_at', weekAgo.toISOString());
 
       const { data: prev, error: err2 } = await supabase
         .from('endorsements')
-        .select('user_id, created_at')
+        .select('to_user_id, created_at')
         .gte('created_at', twoWeeksAgo.toISOString())
         .lt('created_at', weekAgo.toISOString());
 
@@ -59,11 +61,11 @@ export async function loadLeaderboard(type = "skills", range = "month") {
 
       const growth = {};
       const lastWeekCounts = {};
-      prev?.forEach(r => lastWeekCounts[r.user_id] = (lastWeekCounts[r.user_id] || 0) + 1);
+      prev?.forEach(r => lastWeekCounts[r.to_user_id] = (lastWeekCounts[r.to_user_id] || 0) + 1);
       recent?.forEach(r => {
-        const before = lastWeekCounts[r.user_id] || 0;
+        const before = lastWeekCounts[r.to_user_id] || 0;
         const delta = 1 - before;
-        growth[r.user_id] = (growth[r.user_id] || 0) + delta;
+        growth[r.to_user_id] = (growth[r.to_user_id] || 0) + delta;
       });
 
       const users = await fetchUserNames(Object.keys(growth));
