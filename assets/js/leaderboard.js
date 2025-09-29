@@ -129,7 +129,7 @@ function normalizeSkill(raw) {
   // Unify separators
   skill = skill.replace(/[-_]/g, " ");
 
-  // Remove generic role suffixes
+  // Remove role suffixes
   skill = skill.replace(/\b(developer|engineer|specialist|programmer)\b/g, "").trim();
 
   // Remove filler words
@@ -145,7 +145,7 @@ function normalizeSkill(raw) {
     return { key: SKILL_SYNONYMS[skill].toLowerCase(), label: SKILL_SYNONYMS[skill] };
   }
 
-  // Default to Title Case
+  // Default: Title Case
   const display = skill.split(" ")
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
