@@ -1,5 +1,6 @@
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { SKILL_SYNONYMS } from './skillsDictionary.js';
+
 /**
  * Load leaderboard by type.
  * @param {string} type - "skills" | "connectors" | "rising"
@@ -10,7 +11,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     let data, error;
 
     if (type === "skills") {
-      // Aggregate by skill (split and normalize)
+      // Aggregate by skill (split, normalize, deduplicate)
       let query = supabase.from('endorsements').select('skill, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -33,6 +34,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "skill");
 
     } else if (type === "connectors") {
+      // Count who created the most connections
       let query = supabase.from('connections').select('from_user_id, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -48,6 +50,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "user", users);
 
     } else if (type === "rising") {
+      // Rising Stars = endorsements gained this week vs last week
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
       const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
@@ -83,13 +86,18 @@ export async function loadLeaderboard(type = "skills", range = "month") {
   }
 }
 
+/**
+ * Apply date filters for week/month ranges.
+ */
 function applyRangeFilter(query, range) {
   if (range === "week") {
-    const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
     return query.gte('created_at', weekAgo.toISOString());
   }
   if (range === "month") {
-    const monthAgo = new Date(); monthAgo.setMonth(now.getMonth() - 1);
+    const monthAgo = new Date();
+    monthAgo.setMonth(monthAgo.getMonth() - 1);
     return query.gte('created_at', monthAgo.toISOString());
   }
   return query;
@@ -152,6 +160,9 @@ async function fetchUserNames(ids) {
   return map;
 }
 
+/**
+ * Render leaderboard rows.
+ */
 function renderLeaderboard(totals, type, userMap = {}) {
   const container = document.getElementById('leaderboard-rows');
   if (!container) return;
@@ -190,6 +201,9 @@ function renderLeaderboard(totals, type, userMap = {}) {
     });
 }
 
+/**
+ * Render an empty leaderboard state.
+ */
 function renderEmpty() {
   const container = document.getElementById('leaderboard-rows');
   if (!container) return;
