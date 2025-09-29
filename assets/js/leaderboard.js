@@ -1,3 +1,4 @@
+// leaderboard.js
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { SKILL_SYNONYMS } from './skillsDictionary.js';
 
@@ -11,8 +12,11 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     let data, error;
 
     if (type === "skills") {
-      // Aggregate by skill (split, normalize, deduplicate)
-      let query = supabase.from('endorsements').select('skill, created_at');
+      // Aggregate by skill
+      let query = supabase.from('endorsements')
+        .select('skill, created_at, endorsed_user_id')
+        .not('endorsed_user_id', 'is', null); // 🚫 skip anon
+
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
       if (error) throw error;
@@ -23,7 +27,6 @@ export async function loadLeaderboard(type = "skills", range = "month") {
         row.skill.split(',').forEach(s => {
           const normalized = normalizeSkill(s);
           if (!normalized) return;
-
           if (!totals[normalized.key]) {
             totals[normalized.key] = { count: 0, label: normalized.label };
           }
@@ -35,7 +38,10 @@ export async function loadLeaderboard(type = "skills", range = "month") {
 
     } else if (type === "connectors") {
       // Count who created the most connections
-      let query = supabase.from('connections').select('from_user_id, created_at');
+      let query = supabase.from('connections')
+        .select('from_user_id, created_at')
+        .not('from_user_id', 'is', null); // 🚫 skip anon
+
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
       if (error) throw error;
@@ -50,39 +56,41 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "user", users);
 
     } else if (type === "rising") {
-      // Rising Stars = users who gained more endorsements this week vs last week
+      // Rising Stars = users with endorsement growth
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
       const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
 
-      // Get endorsements received this week
+      // This week
       const { data: recent, error: err1 } = await supabase
         .from('endorsements')
         .select('endorsed_user_id, created_at')
+        .not('endorsed_user_id', 'is', null)
         .gte('created_at', weekAgo.toISOString());
 
-      // Get endorsements received last week
+      // Last week
       const { data: prev, error: err2 } = await supabase
         .from('endorsements')
         .select('endorsed_user_id, created_at')
+        .not('endorsed_user_id', 'is', null)
         .gte('created_at', twoWeeksAgo.toISOString())
         .lt('created_at', weekAgo.toISOString());
 
       if (err1 || err2) throw (err1 || err2);
 
-      const growth = {};
       const lastWeekCounts = {};
-
-      // Count last week's endorsements
       prev?.forEach(r => {
-        lastWeekCounts[r.endorsed_user_id] = (lastWeekCounts[r.endorsed_user_id] || 0) + 1;
+        lastWeekCounts[r.endorsed_user_id] =
+          (lastWeekCounts[r.endorsed_user_id] || 0) + 1;
       });
 
-      // Compare with this week
+      const growth = {};
       recent?.forEach(r => {
         const before = lastWeekCounts[r.endorsed_user_id] || 0;
         const delta = 1 - before;
-        growth[r.endorsed_user_id] = (growth[r.endorsed_user_id] || 0) + delta;
+        if (delta > 0) {
+          growth[r.endorsed_user_id] = (growth[r.endorsed_user_id] || 0) + delta;
+        }
       });
 
       const users = await fetchUserNames(Object.keys(growth));
@@ -132,7 +140,7 @@ function normalizeSkill(raw) {
 
   if (!skill) return null;
 
-  // Apply synonym dictionary if match
+  // Apply synonym dictionary
   if (SKILL_SYNONYMS[skill]) {
     return { key: SKILL_SYNONYMS[skill].toLowerCase(), label: SKILL_SYNONYMS[skill] };
   }
@@ -147,14 +155,14 @@ function normalizeSkill(raw) {
 
 /**
  * Fetch user names from the community table (using user_id).
- * Falls back to email if name missing.
  */
 async function fetchUserNames(ids) {
   if (!ids || ids.length === 0) return {};
   const { data, error } = await supabase
     .from('community')
     .select('user_id, name, email')
-    .in('user_id', ids);
+    .in('user_id', ids)
+    .not('name', 'eq', 'Anonymous User'); // 🚫 skip placeholder
 
   if (error) {
     console.error('[Leaderboard] Error fetching user names:', error);
@@ -163,6 +171,8 @@ async function fetchUserNames(ids) {
 
   const map = {};
   data?.forEach(u => {
+    if (!u || !u.user_id) return;
+    if (u.name?.trim() === "Anonymous User") return;
     map[u.user_id] = u.name?.trim() || u.email || `User ${u.user_id}`;
   });
   return map;
@@ -194,7 +204,8 @@ function renderLeaderboard(totals, type, userMap = {}) {
         display = value.label || key;
         total = value.count;
       } else {
-        display = userMap[key] || `User ${key}`;
+        display = userMap[key] || null;
+        if (!display) return; // 🚫 skip users without valid names
         total = value;
       }
 
