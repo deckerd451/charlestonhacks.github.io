@@ -90,16 +90,17 @@ function applyRangeFilter(query, range) {
 }
 
 /**
- * Fetch user names from the community table.
+ * Fetch user names from the community table (using user_id).
+ * Falls back to email if no first/last name.
  * @param {string[]} ids
- * @returns {Promise<Object>} mapping { id: "First Last" }
+ * @returns {Promise<Object>} mapping { user_id: "Best Display Name" }
  */
 async function fetchUserNames(ids) {
   if (!ids || ids.length === 0) return {};
   const { data, error } = await supabase
     .from('community')
-    .select('id, first_name, last_name')
-    .in('id', ids);
+    .select('user_id, first_name, last_name, email')
+    .in('user_id', ids);
 
   if (error) {
     console.error('[Leaderboard] Error fetching user names:', error);
@@ -108,7 +109,8 @@ async function fetchUserNames(ids) {
 
   const map = {};
   data?.forEach(u => {
-    map[u.id] = `${u.first_name || ''} ${u.last_name || ''}`.trim() || `User ${u.id}`;
+    const name = `${u.first_name || ''} ${u.last_name || ''}`.trim();
+    map[u.user_id] = name || u.email || `User ${u.user_id}`;
   });
   return map;
 }
