@@ -10,7 +10,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     let data, error;
 
     if (type === "skills") {
-      // Aggregate by skill
+      // Aggregate by skill (split comma-separated values)
       let query = supabase.from('endorsements').select('skill, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -19,7 +19,13 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       const totals = {};
       data?.forEach(row => {
         if (!row.skill) return;
-        totals[row.skill] = (totals[row.skill] || 0) + 1;
+        // Split on commas, trim whitespace
+        row.skill.split(',').forEach(s => {
+          const skill = s.trim().toLowerCase();
+          if (skill) {
+            totals[skill] = (totals[skill] || 0) + 1;
+          }
+        });
       });
 
       renderLeaderboard(totals, "skill");
@@ -91,15 +97,13 @@ function applyRangeFilter(query, range) {
 
 /**
  * Fetch user names from the community table (using user_id).
- * Falls back to email if no first/last name.
- * @param {string[]} ids
- * @returns {Promise<Object>} mapping { user_id: "Best Display Name" }
+ * Falls back to email if name missing.
  */
 async function fetchUserNames(ids) {
   if (!ids || ids.length === 0) return {};
   const { data, error } = await supabase
     .from('community')
-    .select('user_id, first_name, last_name, email')
+    .select('user_id, name, email')
     .in('user_id', ids);
 
   if (error) {
@@ -109,8 +113,7 @@ async function fetchUserNames(ids) {
 
   const map = {};
   data?.forEach(u => {
-    const name = `${u.first_name || ''} ${u.last_name || ''}`.trim();
-    map[u.user_id] = name || u.email || `User ${u.user_id}`;
+    map[u.user_id] = u.name?.trim() || u.email || `User ${u.user_id}`;
   });
   return map;
 }
