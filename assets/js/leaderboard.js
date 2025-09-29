@@ -20,19 +20,13 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       data?.forEach(row => {
         if (!row.skill) return;
         row.skill.split(',').forEach(s => {
-          const raw = s.trim();
-          if (!raw) return;
+          const normalized = normalizeSkill(s);
+          if (!normalized) return;
 
-          // Normalize: lowercase for counting
-          const key = raw.toLowerCase();
-
-          // Title-case for display
-          const display = raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
-
-          if (!totals[key]) {
-            totals[key] = { count: 0, label: display };
+          if (!totals[normalized.key]) {
+            totals[normalized.key] = { count: 0, label: normalized.label };
           }
-          totals[key].count++;
+          totals[normalized.key].count++;
         });
       });
 
@@ -101,6 +95,35 @@ function applyRangeFilter(query, range) {
     return query.gte('created_at', monthAgo.toISOString());
   }
   return query;
+}
+
+/**
+ * Normalize skills by removing duplicates, casing differences, and suffixes.
+ */
+function normalizeSkill(raw) {
+  if (!raw) return null;
+  let skill = raw.trim().toLowerCase();
+
+  // Unify separators
+  skill = skill.replace(/[-_]/g, " ");
+
+  // Remove role suffixes
+  skill = skill.replace(/\b(developer|engineer|specialist|programmer)\b/g, "").trim();
+
+  // Remove generic words
+  skill = skill.replace(/\b(programming|coding|tech|technology)\b/g, "").trim();
+
+  // Collapse multiple spaces
+  skill = skill.replace(/\s+/g, " ");
+
+  if (!skill) return null;
+
+  // Title-case for display
+  const display = skill.split(" ")
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+
+  return { key: skill, label: display };
 }
 
 /**
