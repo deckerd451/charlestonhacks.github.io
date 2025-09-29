@@ -48,12 +48,12 @@ export async function loadLeaderboard(type = "skills", range = "month") {
 
       const { data: recent, error: err1 } = await supabase
         .from('endorsements')
-        .select('to_user_id, created_at')
+        .select('endorsed_user_id, created_at')
         .gte('created_at', weekAgo.toISOString());
 
       const { data: prev, error: err2 } = await supabase
         .from('endorsements')
-        .select('to_user_id, created_at')
+        .select('endorsed_user_id, created_at')
         .gte('created_at', twoWeeksAgo.toISOString())
         .lt('created_at', weekAgo.toISOString());
 
@@ -61,11 +61,11 @@ export async function loadLeaderboard(type = "skills", range = "month") {
 
       const growth = {};
       const lastWeekCounts = {};
-      prev?.forEach(r => lastWeekCounts[r.to_user_id] = (lastWeekCounts[r.to_user_id] || 0) + 1);
+      prev?.forEach(r => lastWeekCounts[r.endorsed_user_id] = (lastWeekCounts[r.endorsed_user_id] || 0) + 1);
       recent?.forEach(r => {
-        const before = lastWeekCounts[r.to_user_id] || 0;
+        const before = lastWeekCounts[r.endorsed_user_id] || 0;
         const delta = 1 - before;
-        growth[r.to_user_id] = (growth[r.to_user_id] || 0) + delta;
+        growth[r.endorsed_user_id] = (growth[r.endorsed_user_id] || 0) + delta;
       });
 
       const users = await fetchUserNames(Object.keys(growth));
