@@ -10,7 +10,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     let data, error;
 
     if (type === "skills") {
-      // Aggregate by skill (split comma-separated values)
+      // Aggregate by skill (split and normalize)
       let query = supabase.from('endorsements').select('skill, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -19,12 +19,20 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       const totals = {};
       data?.forEach(row => {
         if (!row.skill) return;
-        // Split on commas, trim whitespace
         row.skill.split(',').forEach(s => {
-          const skill = s.trim().toLowerCase();
-          if (skill) {
-            totals[skill] = (totals[skill] || 0) + 1;
+          const raw = s.trim();
+          if (!raw) return;
+
+          // Normalize: lowercase for counting
+          const key = raw.toLowerCase();
+
+          // Title-case for display
+          const display = raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
+
+          if (!totals[key]) {
+            totals[key] = { count: 0, label: display };
           }
+          totals[key].count++;
         });
       });
 
@@ -129,11 +137,22 @@ function renderLeaderboard(totals, type, userMap = {}) {
   }
 
   Object.entries(totals)
-    .sort(([, a], [, b]) => b - a)
-    .forEach(([key, total], index) => {
-      const display = (type === "skill")
-        ? key
-        : userMap[key] || `User ${key}`;
+    .sort(([, a], [, b]) => {
+      const countA = typeof a === 'object' ? a.count : a;
+      const countB = typeof b === 'object' ? b.count : b;
+      return countB - countA;
+    })
+    .forEach(([key, value], index) => {
+      let display, total;
+
+      if (type === "skill") {
+        display = value.label || key;
+        total = value.count;
+      } else {
+        display = userMap[key] || `User ${key}`;
+        total = value;
+      }
+
       const row = document.createElement('div');
       row.className = 'leaderboard-row';
       row.innerHTML = `
