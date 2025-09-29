@@ -1,64 +1,137 @@
-// leaderboard.js
 import { supabaseClient as supabase } from './supabaseClient.js';
 
 /**
- * Load leaderboard grouped by skill.
+ * Load leaderboard by type.
+ * @param {string} type - "skills" | "connectors" | "rising"
  * @param {string} range - "week" | "month" | "all"
  */
-export async function loadLeaderboard(range = "month") {  // 👈 Default is "month"
+export async function loadLeaderboard(type = "skills", range = "month") {
   try {
-    // Build date filter if needed
-    let query = supabase.from('endorsements').select('skill, created_at');
+    let data, error;
 
-    if (range === "week") {
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      query = query.gte('created_at', weekAgo.toISOString());
-    } else if (range === "month") {
-      const monthAgo = new Date();
-      monthAgo.setMonth(monthAgo.getMonth() - 1);
-      query = query.gte('created_at', monthAgo.toISOString());
+    if (type === "skills") {
+      let query = supabase.from('endorsements').select('skill, created_at');
+      query = applyRangeFilter(query, range);
+      ({ data, error } = await query);
+      if (error) throw error;
+
+      const totals = {};
+      data?.forEach(row => {
+        if (!row.skill) return;
+        totals[row.skill] = (totals[row.skill] || 0) + 1;
+      });
+      renderLeaderboard(totals, "skill");
+
+    } else if (type === "connectors") {
+      let query = supabase.from('connections').select('from_user, created_at');
+      query = applyRangeFilter(query, range);
+      ({ data, error } = await query);
+      if (error) throw error;
+
+      const totals = {};
+      data?.forEach(row => {
+        if (!row.from_user) return;
+        totals[row.from_user] = (totals[row.from_user] || 0) + 1;
+      });
+
+      // 🔑 Resolve user IDs into names
+      const users = await fetchUserNames(Object.keys(totals));
+      renderLeaderboard(totals, "user", users);
+
+    } else if (type === "rising") {
+      // Compare this week vs. last week endorsements
+      const now = new Date();
+      const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
+      const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
+
+      const { data: recent, error: err1 } = await supabase
+        .from('endorsements')
+        .select('user_id, created_at')
+        .gte('created_at', weekAgo.toISOString());
+
+      const { data: prev, error: err2 } = await supabase
+        .from('endorsements')
+        .select('user_id, created_at')
+        .gte('created_at', twoWeeksAgo.toISOString())
+        .lt('created_at', weekAgo.toISOString());
+
+      if (err1 || err2) throw (err1 || err2);
+
+      const growth = {};
+      const lastWeekCounts = {};
+      prev?.forEach(r => lastWeekCounts[r.user_id] = (lastWeekCounts[r.user_id] || 0) + 1);
+      recent?.forEach(r => {
+        const before = lastWeekCounts[r.user_id] || 0;
+        const delta = 1 - before;
+        growth[r.user_id] = (growth[r.user_id] || 0) + delta;
+      });
+
+      const users = await fetchUserNames(Object.keys(growth));
+      renderLeaderboard(growth, "user", users);
     }
-
-    const { data, error } = await query;
-    if (error) throw error;
-
-    if (!data || data.length === 0) {
-      console.warn(`[Leaderboard] No endorsements found for range: ${range}`);
-      renderEmpty();
-      return;
-    }
-
-    // Aggregate counts by skill
-    const totals = {};
-    data.forEach(row => {
-      if (!row.skill) return;
-      totals[row.skill] = (totals[row.skill] || 0) + 1;
-    });
-
-    // Render leaderboard
-    renderLeaderboard(totals);
   } catch (err) {
     console.error('[Leaderboard] Error loading leaderboard:', err);
+    renderEmpty();
   }
 }
 
-function renderLeaderboard(totals) {
+function applyRangeFilter(query, range) {
+  if (range === "week") {
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    return query.gte('created_at', weekAgo.toISOString());
+  }
+  if (range === "month") {
+    const monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1);
+    return query.gte('created_at', monthAgo.toISOString());
+  }
+  return query;
+}
+
+/**
+ * Fetch user names from the community table.
+ * @param {string[]} ids
+ * @returns {Promise<Object>} mapping { id: "First Last" }
+ */
+async function fetchUserNames(ids) {
+  if (!ids || ids.length === 0) return {};
+  const { data, error } = await supabase
+    .from('community')
+    .select('id, first_name, last_name')
+    .in('id', ids);
+
+  if (error) {
+    console.error('[Leaderboard] Error fetching user names:', error);
+    return {};
+  }
+
+  const map = {};
+  data?.forEach(u => {
+    map[u.id] = `${u.first_name || ''} ${u.last_name || ''}`.trim() || `User ${u.id}`;
+  });
+  return map;
+}
+
+function renderLeaderboard(totals, type, userMap = {}) {
   const container = document.getElementById('leaderboard-rows');
-  if (!container) {
-    console.warn('[Leaderboard] No container found in DOM.');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (!totals || Object.keys(totals).length === 0) {
+    renderEmpty();
     return;
   }
-  container.innerHTML = '';
 
   Object.entries(totals)
     .sort(([, a], [, b]) => b - a)
-    .forEach(([skill, total], index) => {
+    .forEach(([key, total], index) => {
+      const display = (type === "skill")
+        ? key
+        : userMap[key] || `User ${key}`;
       const row = document.createElement('div');
       row.className = 'leaderboard-row';
       row.innerHTML = `
         <span class="leaderboard-rank">${index + 1}.</span>
-        <span class="leaderboard-skill">${skill}</span>
+        <span class="leaderboard-key">${display}</span>
         <span class="leaderboard-count">${total}</span>
       `;
       container.appendChild(row);
@@ -68,5 +141,18 @@ function renderLeaderboard(totals) {
 function renderEmpty() {
   const container = document.getElementById('leaderboard-rows');
   if (!container) return;
-  container.innerHTML = `<div class="leaderboard-row">No endorsements yet</div>`;
+  container.innerHTML = `<div class="leaderboard-row">No data yet</div>`;
 }
+
+// Tab control
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('lb-tab')) {
+    document.querySelectorAll('.lb-tab').forEach(btn => btn.classList.remove('active'));
+    e.target.classList.add('active');
+    const type = e.target.dataset.type;
+    loadLeaderboard(type);
+  }
+});
+
+// Default load
+loadLeaderboard("skills");
