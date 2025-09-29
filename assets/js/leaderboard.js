@@ -10,7 +10,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     let data, error;
 
     if (type === "skills") {
-      // Aggregate by skill from endorsements
+      // Aggregate by skill
       let query = supabase.from('endorsements').select('skill, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -25,7 +25,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "skill");
 
     } else if (type === "connectors") {
-      // Count who started the most connections
+      // Count who created the most connections
       let query = supabase.from('connections').select('from_user_id, created_at');
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -41,7 +41,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "user", users);
 
     } else if (type === "rising") {
-      // Compare endorsements this week vs last week
+      // Rising Stars = endorsements gained this week vs last week
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
       const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
