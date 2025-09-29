@@ -50,16 +50,18 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "user", users);
 
     } else if (type === "rising") {
-      // Rising Stars = endorsements gained this week vs last week
+      // Rising Stars = users who gained more endorsements this week vs last week
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
       const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
 
+      // Get endorsements received this week
       const { data: recent, error: err1 } = await supabase
         .from('endorsements')
         .select('endorsed_user_id, created_at')
         .gte('created_at', weekAgo.toISOString());
 
+      // Get endorsements received last week
       const { data: prev, error: err2 } = await supabase
         .from('endorsements')
         .select('endorsed_user_id, created_at')
@@ -70,7 +72,13 @@ export async function loadLeaderboard(type = "skills", range = "month") {
 
       const growth = {};
       const lastWeekCounts = {};
-      prev?.forEach(r => lastWeekCounts[r.endorsed_user_id] = (lastWeekCounts[r.endorsed_user_id] || 0) + 1);
+
+      // Count last week's endorsements
+      prev?.forEach(r => {
+        lastWeekCounts[r.endorsed_user_id] = (lastWeekCounts[r.endorsed_user_id] || 0) + 1;
+      });
+
+      // Compare with this week
       recent?.forEach(r => {
         const before = lastWeekCounts[r.endorsed_user_id] || 0;
         const delta = 1 - before;
