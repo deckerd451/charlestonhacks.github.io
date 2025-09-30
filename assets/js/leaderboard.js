@@ -2,20 +2,14 @@
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { SKILL_SYNONYMS } from './skillsDictionary.js';
 
-/**
- * Load leaderboard by type.
- * @param {string} type - "skills" | "connectors" | "rising"
- * @param {string} range - "week" | "month" | "all"
- */
 export async function loadLeaderboard(type = "skills", range = "month") {
   try {
     let data, error;
 
     if (type === "skills") {
-      // Aggregate by skill
       let query = supabase.from('endorsements')
         .select('skill, created_at, endorsed_user_id')
-        .not('endorsed_user_id', 'is', null); // 🚫 skip anon
+        .not('endorsed_user_id', 'is', null);
 
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -37,10 +31,9 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "skill");
 
     } else if (type === "connectors") {
-      // Count who created the most connections
       let query = supabase.from('connections')
         .select('from_user_id, created_at')
-        .not('from_user_id', 'is', null); // 🚫 skip anon
+        .not('from_user_id', 'is', null);
 
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -56,19 +49,16 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       renderLeaderboard(totals, "user", users);
 
     } else if (type === "rising") {
-      // Rising Stars = users with endorsement growth
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
       const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
 
-      // This week
       const { data: recent, error: err1 } = await supabase
         .from('endorsements')
         .select('endorsed_user_id, created_at')
         .not('endorsed_user_id', 'is', null)
         .gte('created_at', weekAgo.toISOString());
 
-      // Last week
       const { data: prev, error: err2 } = await supabase
         .from('endorsements')
         .select('endorsed_user_id, created_at')
@@ -102,9 +92,6 @@ export async function loadLeaderboard(type = "skills", range = "month") {
   }
 }
 
-/**
- * Apply date filters for week/month ranges.
- */
 function applyRangeFilter(query, range) {
   if (range === "week") {
     const weekAgo = new Date();
@@ -119,73 +106,50 @@ function applyRangeFilter(query, range) {
   return query;
 }
 
-/**
- * Normalize skills with synonyms, suffix stripping, and title case.
- */
 function normalizeSkill(raw) {
   if (!raw) return null;
   let skill = raw.trim().toLowerCase();
-
-  // Unify separators
   skill = skill.replace(/[-_]/g, " ");
-
-  // Remove role suffixes
   skill = skill.replace(/\b(developer|engineer|specialist|programmer)\b/g, "").trim();
-
-  // Remove filler words
   skill = skill.replace(/\b(programming|coding|tech|technology)\b/g, "").trim();
-
-  // Collapse multiple spaces
   skill = skill.replace(/\s+/g, " ");
-
   if (!skill) return null;
 
-  // Apply synonym dictionary
   if (SKILL_SYNONYMS[skill]) {
     return { key: SKILL_SYNONYMS[skill].toLowerCase(), label: SKILL_SYNONYMS[skill] };
   }
 
-  // Default: Title Case
   const display = skill.split(" ")
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
-
   return { key: skill, label: display };
 }
 
-/**
- * Fetch user names from the community table (using user_id).
- */
 async function fetchUserNames(ids) {
   if (!ids || ids.length === 0) return {};
   const { data, error } = await supabase
     .from('community')
-    .select('user_id, name, email')
-    .in('user_id', ids)
-    .not('name', 'eq', 'Anonymous User'); // 🚫 skip placeholder
-
+    .select('id, name, email')
+    .in('id', ids)
+    .not('name', 'eq', 'Anonymous User');
   if (error) {
     console.error('[Leaderboard] Error fetching user names:', error);
     return {};
   }
-
   const map = {};
   data?.forEach(u => {
-    if (!u || !u.user_id) return;
+    if (!u || !u.id) return;
     if (u.name?.trim() === "Anonymous User") return;
-    map[u.user_id] = u.name?.trim() || u.email || `User ${u.user_id}`;
+    map[u.id] = u.name?.trim() || u.email || `User ${u.id}`;
   });
   return map;
 }
 
-/**
- * Render leaderboard rows.
- */
 function renderLeaderboard(totals, type, userMap = {}) {
   const container = document.getElementById('leaderboard-rows');
   if (!container) return;
-  container.innerHTML = '';
 
+  container.innerHTML = '';
   if (!totals || Object.keys(totals).length === 0) {
     renderEmpty();
     return;
@@ -199,13 +163,12 @@ function renderLeaderboard(totals, type, userMap = {}) {
     })
     .forEach(([key, value], index) => {
       let display, total;
-
       if (type === "skill") {
         display = value.label || key;
         total = value.count;
       } else {
         display = userMap[key] || null;
-        if (!display) return; // 🚫 skip users without valid names
+        if (!display) return;
         total = value;
       }
 
@@ -220,16 +183,13 @@ function renderLeaderboard(totals, type, userMap = {}) {
     });
 }
 
-/**
- * Render an empty leaderboard state.
- */
 function renderEmpty() {
   const container = document.getElementById('leaderboard-rows');
   if (!container) return;
   container.innerHTML = `<div class="leaderboard-row">No data yet</div>`;
 }
 
-// Tab control
+// Tab event listener
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains('lb-tab')) {
     document.querySelectorAll('.lb-tab').forEach(btn => btn.classList.remove('active'));
@@ -239,5 +199,5 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Default load
+// Load default leaderboard
 loadLeaderboard("skills");
