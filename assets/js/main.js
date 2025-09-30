@@ -1,14 +1,13 @@
 // assets/js/main.js
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { showNotification } from './utils.js';
-import { initDocsModal } from './docsModal.js';
 import { loadLeaderboard } from './leaderboard.js';
-import { generateUserCardHTML } from './cardRenderer.js';
 import { initSynapseView } from './synapse.js';
+import { initProfileForm } from './profile.js';
 
 /* =========================================================
-   0) Skill helpers + autocomplete (Search & Team Builder)
-   ========================================================= */
+0) Skill helpers + autocomplete
+========================================================= */
 let SKILL_SUGGESTIONS = [];
 
 function debounce(fn, ms = 150) {
@@ -32,7 +31,6 @@ function parseRequiredSkills(raw) {
     .filter(Boolean);
 }
 
-// Returns only people whose (skills ∪ interests) ⊇ requiredSkills
 function filterAllOfRequired(candidates, requiredSkills) {
   return (candidates || []).filter(p => {
     const have = new Set([...normaliseArray(p.skills), ...normaliseArray(p.interests)]);
@@ -47,19 +45,16 @@ async function loadSkillSuggestions() {
       console.warn("[Suggest] load error:", error.message);
       return;
     }
-
     const bag = new Set();
     (data || []).forEach(r => {
-      // Normalize both arrays and comma-joined strings
       const allVals = []
         .concat(r.skills || [])
         .concat(r.interests || []);
 
       allVals.forEach(val => {
         if (!val) return;
-        // if it's a string like "leadership, additive manufacturing"
         String(val)
-          .split(/[,;|]/) // split on commas/semicolons/pipes
+          .split(/[,;|]/)
           .map(s => s.trim().toLowerCase())
           .filter(Boolean)
           .forEach(skill => bag.add(skill));
@@ -72,11 +67,6 @@ async function loadSkillSuggestions() {
   }
 }
 
-
-/**
- * Scoped autocomplete under a given root so identical IDs in
- * different tabs don't clash. `boxSelector` should be "#autocomplete-team-skills".
- */
 function attachAutocomplete(rootId, inputId, boxSelector) {
   const root = document.getElementById(rootId);
   if (!root) return;
@@ -84,7 +74,6 @@ function attachAutocomplete(rootId, inputId, boxSelector) {
   const box = root.querySelector(boxSelector);
   if (!input || !box) return;
 
-  // ensure the parent is positioned for absolute dropdown
   const wrapper = input.parentElement;
   if (getComputedStyle(wrapper).position === 'static') {
     wrapper.style.position = 'relative';
@@ -96,7 +85,6 @@ function attachAutocomplete(rootId, inputId, boxSelector) {
   const render = debounce(() => {
     const parts = (input.value || '').split(',');
     const lastRaw = parts[parts.length - 1].trim().toLowerCase();
-
     if (!lastRaw) { closeBox(); return; }
 
     const matches = SKILL_SUGGESTIONS
@@ -113,7 +101,6 @@ function attachAutocomplete(rootId, inputId, boxSelector) {
     box.querySelectorAll('.autocomplete-item').forEach(el => {
       el.addEventListener('click', () => {
         parts[parts.length - 1] = ' ' + el.dataset.skill;
-        // normalise spacing and add trailing comma-space for continued typing
         input.value = parts.map(p => p.trim()).filter(Boolean).join(', ') + ', ';
         input.focus();
         closeBox();
@@ -127,8 +114,8 @@ function attachAutocomplete(rootId, inputId, boxSelector) {
 }
 
 /* ============================================
-   1) AUTH & UI TOGGLE (matches 2card.html IDs)
-   ============================================ */
+AUTH & UI TOGGLE
+============================================ */
 async function initAuth() {
   const loginForm = document.getElementById('login-form');
   const loginSection = document.getElementById('login-section');
@@ -197,17 +184,15 @@ async function initAuth() {
 }
 
 /* ===========================
-   2) Tabs
-   =========================== */
+2) Tabs
+=========================== */
 function initTabs() {
   const buttons = document.querySelectorAll('.tab-button');
   const panes = document.querySelectorAll('.tab-content-pane');
-
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
       buttons.forEach((b) => b.classList.remove('active'));
       panes.forEach((p) => p.classList.remove('active-tab-pane'));
-
       btn.classList.add('active');
       const target = btn.dataset.tab;
       document.getElementById(target)?.classList.add('active-tab-pane');
@@ -216,13 +201,55 @@ function initTabs() {
 }
 
 /* ============================================
-   3) Results rendering (cards)
-   ============================================ */
+3) Card Rendering
+============================================ */
+async function generateUserCardHTML(person) {
+  const avatar = person.image_url || 'https://via.placeholder.com/80';
+  const name = person.name || 'Anonymous';
+  const availability = person.availability || 'Unknown';
+  const bio = person.bio || 'No bio provided';
+  const skillsArr = normaliseArray(person.skills);
+  const interestsArr = normaliseArray(person.interests);
+  const allSkills = [...new Set([...skillsArr, ...interestsArr])];
+
+  // Fetch endorsement counts
+  const { data: endorsements } = await supabase
+    .from('endorsements')
+    .select('skill, count')
+    .eq('endorsed_user_id', person.id);
+
+  const endorsementMap = {};
+  (endorsements || []).forEach(e => {
+    const normalized = e.skill.toLowerCase().trim();
+    endorsementMap[normalized] = (endorsementMap[normalized] || 0) + (e.count || 0);
+  });
+
+  const skillChips = allSkills.map(skill => {
+    const count = endorsementMap[skill] || 0;
+    return `
+      <div class="skill-chip">
+        <span class="skill-name">${skill}</span>
+        <span class="endorsement-count">${count}</span>
+        <button class="endorse-btn" data-user-id="${person.id}" data-skill="${skill}">+</button>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="card user-card" data-user-id="${person.id}">
+      <img src="${avatar}" alt="${name}" class="user-avatar">
+      <h3>${name}</h3>
+      <p class="availability">${availability}</p>
+      <p class="bio">${bio}</p>
+      <div class="skills-list">${skillChips}</div>
+    </div>
+  `;
+}
+
 async function renderResults(data) {
   const cardContainer = document.getElementById('cardContainer');
   const noResults = document.getElementById('noResults');
   const matchNotification = document.getElementById('matchNotification');
-
   if (!cardContainer || !noResults || !matchNotification) return;
 
   cardContainer.innerHTML = '';
@@ -244,10 +271,8 @@ async function renderResults(data) {
       wrapper.innerHTML = cardHTML.trim();
       const cardEl = wrapper.firstElementChild;
 
-      // Open modal on card click (excluding clicks on endorse buttons)
       cardEl.addEventListener('click', () => openEndorseModal(person));
 
-      // Attach endorse button handlers (direct endorse via plus button)
       cardEl.querySelectorAll('.endorse-btn').forEach((btn) => {
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
@@ -265,23 +290,20 @@ async function renderResults(data) {
 }
 
 /* ============================================
-   4) Search (strict ALL-OF + suggestions)
-   ============================================ */
+4) Search
+============================================ */
 function initSearch() {
   const root = document.getElementById('search');
   if (!root) return;
-
   const findTeamBtn = root.querySelector('#find-team-btn');
   const searchNameBtn = root.querySelector('#search-name-btn');
   const skillsInput = root.querySelector('#teamSkillsInput');
 
-  // Strict ALL-OF across skills+interests, typed as "aws, fullstack"
   if (findTeamBtn && skillsInput) {
     findTeamBtn.addEventListener('click', async () => {
       const required = parseRequiredSkills(skillsInput.value);
       if (required.length === 0) return;
 
-      // Broad fetch (ANY overlap), then client-side ALL-OF on union(skills, interests)
       const ors = [
         `skills.ov.{${required.join(',')}}`,
         `interests.ov.{${required.join(',')}}`
@@ -299,7 +321,6 @@ function initSearch() {
     });
   }
 
-  // Name search
   if (searchNameBtn) {
     searchNameBtn.addEventListener('click', async () => {
       const name = root.querySelector('#nameInput')?.value.trim();
@@ -315,13 +336,12 @@ function initSearch() {
     });
   }
 
-  // Autocomplete for Search tab input
   attachAutocomplete('search', 'teamSkillsInput', '#autocomplete-team-skills');
 }
 
 /* ============================================
-   5) Endorsement modal + actions
-   ============================================ */
+5) Endorsement Modal
+============================================ */
 function openEndorseModal(person) {
   const modal = document.getElementById('endorseSkillModal');
   const list = document.getElementById('endorse-skill-list');
@@ -363,6 +383,7 @@ function openEndorseModal(person) {
 
   const closeBtn = modal.querySelector('.close-button');
   if (closeBtn) closeBtn.onclick = () => (modal.style.display = 'none');
+
   window.onclick = (evt) => {
     if (evt.target === modal) modal.style.display = 'none';
   };
@@ -376,7 +397,6 @@ async function endorseSkill(endorsedUserId, skill) {
       return;
     }
 
-    // Lookup endorser's community ID
     const { data: profile, error: profileError } = await supabase
       .from('community')
       .select('id')
@@ -384,14 +404,12 @@ async function endorseSkill(endorsedUserId, skill) {
       .single();
 
     if (profileError || !profile) {
-      console.warn('[Endorse] Profile lookup failed:', profileError);
       showNotification('Please create your profile before endorsing others.', 'error');
       return;
     }
 
     const endorserId = profile.id;
 
-    // Existing endorsement?
     const { data: existing, error: selectError } = await supabase
       .from('endorsements')
       .select('count')
@@ -425,7 +443,6 @@ async function endorseSkill(endorsedUserId, skill) {
       if (insertError) throw insertError;
     }
 
-    // Recompute total for this user+skill
     const { data: records } = await supabase
       .from('endorsements')
       .select('count')
@@ -452,17 +469,13 @@ function updateCardCount(endorsedUserId, skill, newCount) {
 }
 
 /* ============================================
-   6) Team builder (keeps your behavior; AND logic optional)
-   ============================================ */
+6) Team Builder
+============================================ */
 async function buildBestTeam() {
   const skillsInput = document.getElementById('team-skills-input');
   const teamSizeInput = document.getElementById('teamSize');
   const container = document.getElementById('bestTeamContainer');
-
-  if (!skillsInput || !container) {
-    console.warn('[TeamBuilder] Required elements not found.');
-    return;
-  }
+  if (!skillsInput || !container) return;
 
   const required = parseRequiredSkills(skillsInput.value);
   if (required.length === 0) {
@@ -473,7 +486,6 @@ async function buildBestTeam() {
   const teamSize = teamSizeInput ? parseInt(teamSizeInput.value, 10) || 3 : 3;
 
   try {
-    // Broad fetch (ANY overlap), then strict ALL-OF filter on union
     const ors = [
       `skills.ov.{${required.join(',')}}`,
       `interests.ov.{${required.join(',')}}`
@@ -525,45 +537,28 @@ async function buildBestTeam() {
     showNotification('Unexpected error building team.', 'error');
   }
 }
-
-// Expose globally for any non-module listeners (safe for now)
 globalThis.buildBestTeam = buildBestTeam;
 
 /* ============================================
-   7) Bootstrap
-   ============================================ */
+7) Bootstrap
+============================================ */
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('[Main] App Initialized');
   await initAuth();
   initTabs();
-   // Initialize synapse view after DOM ready
-initSynapseView();
-
-
-  if (document.getElementById('docsModal') || document.getElementById('docs-modal')) {
-    initDocsModal();
-  }
-
+  initSynapseView();
   loadLeaderboard();
-
-  // Load skill dictionary once, then wire search + autocompletes
   await loadSkillSuggestions();
   initSearch();
 
-  // Team builder button (and attach autocomplete for that tab too)
-  // Attach the build team handler and the correct autocomplete dropdown to the team builder skills field.
   const teamBtn = document.getElementById('buildTeamBtn');
   if (teamBtn) {
     teamBtn.addEventListener('click', () => buildBestTeam());
   }
-  // NB: the third parameter here should target the team builder's autocomplete box (#autocomplete-team-builder),
-  // not the search tab's box (#autocomplete-team-skills).  Using the wrong selector would result in
-  // no suggestions appearing for the team builder tab.
-  attachAutocomplete('team-builder', 'team-skills-input', '#autocomplete-team-builder');
 
-  // Provide autocomplete on the profile skills input so users can reuse existing skill suggestions when
-  // creating their profile.  Without this, only the search and team builder tabs offer suggestions.
+  attachAutocomplete('team-builder', 'team-skills-input', '#autocomplete-team-builder');
   attachAutocomplete('profile', 'skills-input', '#autocomplete-skills-input');
 
-  // Note: we do NOT call any profile form init here; login.js/profile.js handle it to avoid double-binding.
+  // Initialize profile form
+  initProfileForm();
 });
