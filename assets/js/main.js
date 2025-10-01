@@ -206,6 +206,7 @@ function initTabs() {
 async function generateUserCardHTML(person) {
   const avatar = person.image_url || 'https://via.placeholder.com/80';
   const name = person.name || 'Anonymous';
+  const email = person.email || '';   // ✅ added
   const availability = person.availability || 'Unknown';
   const bio = person.bio || 'No bio provided';
   const skillsArr = normaliseArray(person.skills);
@@ -239,12 +240,14 @@ async function generateUserCardHTML(person) {
     <div class="card user-card" data-user-id="${person.id}">
       <img src="${avatar}" alt="${name}" class="user-avatar">
       <h3>${name}</h3>
+      ${email ? `<p class="email"><a href="mailto:${email}">${email}</a></p>` : ""}
       <p class="availability">${availability}</p>
       <p class="bio">${bio}</p>
       <div class="skills-list">${skillChips}</div>
     </div>
   `;
 }
+
 
 async function renderResults(data) {
   const cardContainer = document.getElementById('cardContainer');
