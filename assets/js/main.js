@@ -201,19 +201,18 @@ function initTabs() {
 }
 
 /* ============================================
-3) Card Rendering
+3) Card Rendering-Generate User Card
 ============================================ */
 async function generateUserCardHTML(person) {
   const avatar = person.image_url || 'https://via.placeholder.com/80';
   const name = person.name || 'Anonymous';
-  const email = person.email || '';   // ✅ added
   const availability = person.availability || 'Unknown';
   const bio = person.bio || 'No bio provided';
   const skillsArr = normaliseArray(person.skills);
   const interestsArr = normaliseArray(person.interests);
   const allSkills = [...new Set([...skillsArr, ...interestsArr])];
 
-  // Fetch endorsement counts
+  // Fetch endorsements
   const { data: endorsements } = await supabase
     .from('endorsements')
     .select('skill, count')
@@ -240,15 +239,17 @@ async function generateUserCardHTML(person) {
     <div class="card user-card" data-user-id="${person.id}">
       <img src="${avatar}" alt="${name}" class="user-avatar">
       <h3>${name}</h3>
-      ${email ? `<p class="email"><a href="mailto:${email}">${email}</a></p>` : ""}
+      ${person.email ? `<p class="email">${person.email}</p>` : ""}
       <p class="availability">${availability}</p>
       <p class="bio">${bio}</p>
       <div class="skills-list">${skillChips}</div>
+      <button class="connect-btn" data-user-id="${person.id}">🤝 Connect</button>
     </div>
   `;
 }
-
-
+/* ============================================
+Render Results (Search / Cards)
+============================================ */
 async function renderResults(data) {
   const cardContainer = document.getElementById('cardContainer');
   const noResults = document.getElementById('noResults');
@@ -274,8 +275,10 @@ async function renderResults(data) {
       wrapper.innerHTML = cardHTML.trim();
       const cardEl = wrapper.firstElementChild;
 
+      // Card click opens endorse modal
       cardEl.addEventListener('click', () => openEndorseModal(person));
 
+      // Endorse buttons
       cardEl.querySelectorAll('.endorse-btn').forEach((btn) => {
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
@@ -284,6 +287,16 @@ async function renderResults(data) {
           await endorseSkill(userId, skill);
         });
       });
+
+      // ✅ Connect button
+      const connectBtn = cardEl.querySelector('.connect-btn');
+      if (connectBtn) {
+        connectBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const targetId = connectBtn.getAttribute('data-user-id');
+          await connectToUser(targetId);
+        });
+      }
 
       cardContainer.appendChild(cardEl);
     } catch (err) {
@@ -472,6 +485,50 @@ function updateCardCount(endorsedUserId, skill, newCount) {
 }
 
 /* ============================================
+Connections
+============================================ */
+async function connectToUser(targetUserId) {
+  try {
+    const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
+    if (!currentUser || userError) {
+      showNotification('Please log in to connect.', 'error');
+      return;
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from('community')
+      .select('id')
+      .eq('email', currentUser.email)
+      .single();
+
+    if (profileError || !profile) {
+      showNotification('Please create your profile before connecting.', 'error');
+      return;
+    }
+
+    const fromUserId = profile.id;
+
+    const { error: insertError } = await supabase
+      .from('connections')
+      .insert({
+        from_user_id: fromUserId,
+        to_user_id: targetUserId,
+        created_at: new Date().toISOString()
+      });
+
+    if (insertError) {
+      console.error('[Connections] Insert error:', insertError);
+      showNotification('Connection failed.', 'error');
+    } else {
+      showNotification('Connection created!', 'success');
+    }
+  } catch (err) {
+    console.error('[Connections] Unexpected:', err);
+    showNotification('Unexpected error creating connection.', 'error');
+  }
+}
+
+/* ============================================
 6) Team Builder
 ============================================ */
 async function buildBestTeam() {
@@ -521,6 +578,8 @@ async function buildBestTeam() {
         const cardEl = wrapper.firstElementChild;
 
         cardEl.addEventListener('click', () => openEndorseModal(person));
+
+        // endorse
         cardEl.querySelectorAll('.endorse-btn').forEach((btn) => {
           btn.addEventListener('click', async (e) => {
             e.stopPropagation();
@@ -529,6 +588,16 @@ async function buildBestTeam() {
             await endorseSkill(userId, skill);
           });
         });
+
+        // connect
+        const connectBtn = cardEl.querySelector('.connect-btn');
+        if (connectBtn) {
+          connectBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const targetId = connectBtn.getAttribute('data-user-id');
+            await connectToUser(targetId);
+          });
+        }
 
         container.appendChild(cardEl);
       } catch (err) {
