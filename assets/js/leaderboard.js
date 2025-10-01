@@ -18,14 +18,19 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       const totals = {};
       data?.forEach(row => {
         if (!row.skill) return;
-        row.skill.split(',').forEach(s => {
-          const normalized = normalizeSkill(s);
-          if (!normalized) return;
-          if (!totals[normalized.key]) {
-            totals[normalized.key] = { count: 0, label: normalized.label };
-          }
-          totals[normalized.key].count++;
-        });
+
+        row.skill
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean)
+          .forEach(s => {
+            const normalized = normalizeSkill(s);
+            if (!normalized) return;
+            if (!totals[normalized.key]) {
+              totals[normalized.key] = { count: 0, label: normalized.label };
+            }
+            totals[normalized.key].count++;
+          });
       });
 
       renderLeaderboard(totals, "skill");
@@ -108,20 +113,29 @@ function applyRangeFilter(query, range) {
 
 function normalizeSkill(raw) {
   if (!raw) return null;
-  let skill = raw.trim().toLowerCase();
+
+  let skill = raw
+    .toString()
+    .trim()
+    .replace(/^[{\["']+|[}\]"']+$/g, "") // strip { } [ ] " '
+    .toLowerCase();
+
   skill = skill.replace(/[-_]/g, " ");
   skill = skill.replace(/\b(developer|engineer|specialist|programmer)\b/g, "").trim();
   skill = skill.replace(/\b(programming|coding|tech|technology)\b/g, "").trim();
   skill = skill.replace(/\s+/g, " ");
+
   if (!skill) return null;
 
   if (SKILL_SYNONYMS[skill]) {
     return { key: SKILL_SYNONYMS[skill].toLowerCase(), label: SKILL_SYNONYMS[skill] };
   }
 
-  const display = skill.split(" ")
+  const display = skill
+    .split(" ")
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
+
   return { key: skill, label: display };
 }
 
