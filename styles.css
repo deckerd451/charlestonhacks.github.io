@@ -1790,11 +1790,6 @@ main, .main-wrapper, .media-container {
     padding: 6px 10px;
   }
 }
-
-
-
-
-
 /* ==========================================================================
    LOGIN SECTION (Magic Link UI)
    ========================================================================== */
@@ -2037,73 +2032,81 @@ main, .main-wrapper, .media-container {
   font-size: 0.9em;
 }
 /* ==========================================================================
-   USER CARD SKILLS (Chip Fixes)
+   USER CARDS
    ========================================================================== */
 
-/* Skills container */
+.user-card {
+  background-color: #1e1e2f;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 12px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+  border: 2px solid #ffd700;
+}
+
+.user-card h3 {
+  margin: 6px 0 2px;   /* tighter spacing */
+  font-size: 1.2rem;
+  color: #ffd700;
+}
+
+/* ✅ Email as subtle subtitle under name */
+.user-card .email {
+  font-size: 0.85rem;
+  color: #aaa;          /* slightly lighter gray */
+  margin: 0 0 6px;      /* snug under name */
+  line-height: 1.2;
+}
+
+.user-card .email a {
+  color: inherit;       /* match gray */
+  text-decoration: none;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+
+.user-card .email a:hover {
+  color: #ffd700;       /* highlight gold on hover */
+  text-decoration: underline;
+}
+
+.user-card p {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin: 4px 0;
+}
+
+/* Availability badge */
+.user-card .availability {
+  margin-top: 6px;
+  font-weight: bold;
+  color: #4cafef;
+}
+
+/* Skills section */
 .skills-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;                /* consistent spacing between chips */
-  justify-content: center; /* keeps layout balanced */
-  margin-top: 10px;
-  padding: 4px;
-  max-width: 100%;
-  word-break: break-word;  /* avoids overflow on long names */
-}
-
-/* Individual skill chip */
-.skill-chip {
-  display: inline-flex;
-  align-items: center;
   gap: 6px;
-  background-color: #2a2a3a;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  color: #eee;
-  border: 1px solid #444;
-  max-width: 100%;         /* ensures chips don’t spill out */
-  white-space: nowrap;     /* keeps name + count + button inline */
+  margin-top: 10px;
+  justify-content: center;
 }
-
-/* Skill name inside chip */
-.skill-chip .skill-name {
-  flex: 1 1 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 120px;        /* prevents super-long names from breaking layout */
-}
-
-/* Endorsement count */
-.skill-chip .endorsement-count {
-  color: #4cafef;
-  font-weight: bold;
-  font-size: 0.8rem;
-}
-
-/* Endorse button */
-.skill-chip .endorse-btn {
-  background-color: #ffd700;
-  color: #222;
-  border: none;
-  padding: 2px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: bold;
-  line-height: 1.2;
-  transition: background-color 0.2s ease;
-}
-
-.skill-chip .endorse-btn:hover {
-  background-color: #e0b800;
-}
-
-/* Responsive tweak for small screens */
-@media (max-width: 480px) {
-  .skill-chip .skill-name {
-    max-width: 80px;
-  }
-}
-
