@@ -5,11 +5,11 @@ import { loadLeaderboard } from './leaderboard.js';
 import { initSynapseView } from './synapse.js';
 import { initProfileForm } from './profile.js';
 
+let SKILL_SUGGESTIONS = [];
+
 /* =========================================================
 0) Helpers
 ========================================================= */
-let SKILL_SUGGESTIONS = [];
-
 function debounce(fn, ms = 150) {
   let t;
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
@@ -91,7 +91,6 @@ function attachAutocomplete(rootId, inputId, boxSelector) {
   input.addEventListener('focus', render);
   input.addEventListener('blur', () => setTimeout(closeBox, 120));
 }
-
 /* =========================================================
 1) Auth
 ========================================================= */
@@ -156,7 +155,13 @@ async function initAuth() {
 async function getMyProfileId() {
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return null;
-  const { data: profile } = await supabase.from('community').select('id').eq('user_id', user.id).single();
+
+  const { data: profile } = await supabase
+    .from('community')
+    .select('id')
+    .eq('user_id', user.id)
+    .single();
+
   return profile?.id || null;
 }
 
@@ -166,10 +171,17 @@ async function connectToUser(targetId) {
   if (me === targetId) return showNotification('Cannot connect to yourself.', 'error');
 
   const { error } = await supabase.from('connections').insert({
-    user_a: me, user_b: targetId, status: 'pending', context: 'manual'
+    from_id: me,
+    to_id: targetId,
+    status: 'pending',
+    context: 'manual'
   });
-  if (error) showNotification('Request already exists or failed.', 'warning');
-  else showNotification('Connection request sent!', 'success');
+
+  if (error) {
+    showNotification('Request already exists or failed.', 'warning');
+  } else {
+    showNotification('Connection request sent!', 'success');
+  }
 }
 
 /* =========================================================
@@ -182,16 +194,22 @@ async function initNotifications() {
   const list = document.getElementById('notifications-list');
   if (!btn || !badge || !dropdown || !list) return;
 
+  // Toggle dropdown visibility
   btn.addEventListener('click', () => dropdown.classList.toggle('hidden'));
 
   async function loadNotifications() {
     const me = await getMyProfileId();
-    if (!me) { badge.classList.add('hidden'); list.textContent = 'Login required'; return; }
+    if (!me) {
+      badge.classList.add('hidden');
+      list.textContent = 'Login required';
+      return;
+    }
 
+    // Fetch pending requests directed to the current user
     const { data, error } = await supabase
       .from('connections')
-      .select('id, user_a')
-      .eq('user_b', me)
+      .select('id, from_id')
+      .eq('to_id', me)
       .eq('status', 'pending');
 
     if (error || !data?.length) {
@@ -200,44 +218,66 @@ async function initNotifications() {
       return;
     }
 
+    // Update badge count
     badge.textContent = data.length;
     badge.classList.remove('hidden');
 
-    const ids = data.map(r => r.user_a);
-    const { data: users } = await supabase.from('community').select('id,name,email').in('id', ids);
-    const names = {}; users?.forEach(u => { names[u.id] = u.name || u.email; });
+    // Fetch names of senders
+    const ids = data.map(r => r.from_id);
+    const { data: users } = await supabase
+      .from('community')
+      .select('id, name, email')
+      .in('id', ids);
 
+    const names = {};
+    users?.forEach(u => {
+      names[u.id] = u.name || u.email || `User ${u.id}`;
+    });
+
+    // Build dropdown items
     list.innerHTML = '';
     data.forEach(req => {
       const el = document.createElement('div');
       el.className = 'notif-item';
       el.innerHTML = `
-        <span>${names[req.user_a] || req.user_a}</span>
+        <span>${names[req.from_id] || req.from_id}</span>
         <button class="accept-btn" data-id="${req.id}">Accept</button>
         <button class="decline-btn" data-id="${req.id}">Decline</button>
       `;
       list.appendChild(el);
     });
 
+    // Accept button handler
     list.querySelectorAll('.accept-btn').forEach(btn => {
       btn.onclick = async () => {
-        await supabase.from('connections').update({ status: 'accepted' }).eq('id', btn.dataset.id);
+        await supabase
+          .from('connections')
+          .update({ status: 'accepted' })
+          .eq('id', btn.dataset.id);
+
         showNotification('Connection accepted!', 'success');
         loadNotifications();
         loadLeaderboard('connectors');
       };
     });
+
+    // Decline button handler
     list.querySelectorAll('.decline-btn').forEach(btn => {
       btn.onclick = async () => {
-        await supabase.from('connections').delete().eq('id', btn.dataset.id);
+        await supabase
+          .from('connections')
+          .delete()
+          .eq('id', btn.dataset.id);
+
         showNotification('Request declined.', 'info');
         loadNotifications();
       };
     });
   }
 
+  // Initial load + polling
   loadNotifications();
-  setInterval(loadNotifications, 30000); // fallback polling
+  setInterval(loadNotifications, 30000);
 }
 
 function initNotificationsRealtime() {
@@ -247,20 +287,20 @@ function initNotificationsRealtime() {
     })
     .subscribe();
 }
-
 /* =========================================================
 4) Bootstrap
 ========================================================= */
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('[Main] App Initialized');
-  await initAuth();
-  initTabs();
-  initSynapseView();
-  loadLeaderboard();
-  await loadSkillSuggestions();
-  initSearch();
-  initProfileForm();
 
-  initNotifications();
-  initNotificationsRealtime();
+  await initAuth();
+  initTabs();               // Your existing tab switching logic
+  initSynapseView();        // Graph canvas
+  loadLeaderboard();        // Default skills leaderboard
+  await loadSkillSuggestions();
+  initSearch();             // Search/autocomplete logic
+  initProfileForm();        // Profile onboarding form
+
+  initNotifications();      // Notifications dropdown
+  initNotificationsRealtime(); // Realtime sync
 });
