@@ -2110,3 +2110,73 @@ main, .main-wrapper, .media-container {
   margin-top: 10px;
   justify-content: center;
 }
+/* =============================
+   Notifications
+   ============================= */
+.notifications-container {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.notifications-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #ffd700;
+  position: relative;
+}
+
+.notifications-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+.notifications-dropdown {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  background: #1e1e2f;
+  border: 1px solid #333;
+  border-radius: 8px;
+  width: 260px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000;
+  padding: 10px;
+}
+
+.notifications-dropdown h4 {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  color: #ffd700;
+}
+
+.notifications-dropdown .request {
+  padding: 6px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.notifications-dropdown .request button {
+  background: #ffd700;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
