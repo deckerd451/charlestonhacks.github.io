@@ -400,17 +400,18 @@ function initSearch() {
       const required = parseRequiredSkills(skillsInput.value);
       if (!required.length) return;
 
-      const ors = [
-        `skills.ov.{${required.join(',')}}`,
-        `interests.ov.{${required.join(',')}}`
-      ].join(',');
+      // ✅ Properly format skills into a Postgres array literal
+      const arrayLiteral = `{${required.map(s => `"${s}"`).join(',')}}`;
 
       const { data, error } = await supabase
         .from('community')
         .select('*')
-        .or(ors);
+        .or(`skills.ov.${arrayLiteral},interests.ov.${arrayLiteral}`);
 
-      if (error) return console.error('[Search] Supabase error:', error);
+      if (error) {
+        console.error('[Search] Supabase error:', error);
+        return;
+      }
 
       const strict = filterAllOfRequired(data, required);
       await renderResults(strict);
@@ -427,7 +428,10 @@ function initSearch() {
         .select('*')
         .ilike('name', `%${name}%`);
 
-      if (error) return console.error('[Search] Name error:', error);
+      if (error) {
+        console.error('[Search] Name error:', error);
+        return;
+      }
       await renderResults(data);
     });
   }
@@ -443,12 +447,12 @@ async function endorseSkill(userId, skill) {
   if (!me) return showNotification('Login required.', 'error');
   if (!skill) return showNotification('Invalid skill.', 'error');
 
-  const { error } = await supabase.from('endorsements').insert({
-    endorsed_user: userId,
-    endorsed_by: me,
-    skill,
-    created_at: new Date().toISOString()
-  });
+ const { error } = await supabase.from('endorsements').insert({
+  endorsed_user_id: userId,
+  endorsed_by: me,
+  skill,
+  created_at: new Date().toISOString()
+});
 
   if (error) {
     console.error('[Endorse] Error:', error);
