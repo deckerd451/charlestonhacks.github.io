@@ -5,11 +5,11 @@ import { loadLeaderboard } from './leaderboard.js';
 import { initSynapseView } from './synapse.js';
 import { initProfileForm } from './profile.js';
 
-let SKILL_SUGGESTIONS = [];
-
 /* =========================================================
 0) Helpers
 ========================================================= */
+let SKILL_SUGGESTIONS = [];
+
 function debounce(fn, ms = 150) {
   let t;
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
@@ -91,6 +91,7 @@ function attachAutocomplete(rootId, inputId, boxSelector) {
   input.addEventListener('focus', render);
   input.addEventListener('blur', () => setTimeout(closeBox, 120));
 }
+
 /* =========================================================
 1) Auth
 ========================================================= */
@@ -156,13 +157,15 @@ async function getMyProfileId() {
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return null;
 
-  const { data: profile } = await supabase
+  // Grab community row linked to this Supabase user
+  const { data: profile, error: profileError } = await supabase
     .from('community')
     .select('id')
     .eq('user_id', user.id)
     .single();
 
-  return profile?.id || null;
+  if (profileError || !profile) return null;
+  return profile.id;
 }
 
 async function connectToUser(targetId) {
@@ -171,13 +174,14 @@ async function connectToUser(targetId) {
   if (me === targetId) return showNotification('Cannot connect to yourself.', 'error');
 
   const { error } = await supabase.from('connections').insert({
-    from_id: me,
-    to_id: targetId,
+    user_a: me,
+    user_b: targetId,
     status: 'pending',
     context: 'manual'
   });
 
   if (error) {
+    console.error('[Connect] Insert error:', error);
     showNotification('Request already exists or failed.', 'warning');
   } else {
     showNotification('Connection request sent!', 'success');
@@ -194,22 +198,21 @@ async function initNotifications() {
   const list = document.getElementById('notifications-list');
   if (!btn || !badge || !dropdown || !list) return;
 
-  // Toggle dropdown visibility
   btn.addEventListener('click', () => dropdown.classList.toggle('hidden'));
 
   async function loadNotifications() {
     const me = await getMyProfileId();
-    if (!me) {
-      badge.classList.add('hidden');
-      list.textContent = 'Login required';
-      return;
+    if (!me) { 
+      badge.classList.add('hidden'); 
+      list.textContent = 'Login required'; 
+      return; 
     }
 
-    // Fetch pending requests directed to the current user
+    // 🔎 Look for connection requests sent TO me
     const { data, error } = await supabase
       .from('connections')
-      .select('id, from_id')
-      .eq('to_id', me)
+      .select('id, user_a')
+      .eq('user_b', me)
       .eq('status', 'pending');
 
     if (error || !data?.length) {
@@ -218,66 +221,58 @@ async function initNotifications() {
       return;
     }
 
-    // Update badge count
     badge.textContent = data.length;
     badge.classList.remove('hidden');
 
-    // Fetch names of senders
-    const ids = data.map(r => r.from_id);
+    // Fetch names for requesting users
+    const ids = data.map(r => r.user_a);
     const { data: users } = await supabase
       .from('community')
       .select('id, name, email')
       .in('id', ids);
 
     const names = {};
-    users?.forEach(u => {
-      names[u.id] = u.name || u.email || `User ${u.id}`;
-    });
+    users?.forEach(u => { names[u.id] = u.name || u.email; });
 
-    // Build dropdown items
+    // Build notification list
     list.innerHTML = '';
     data.forEach(req => {
       const el = document.createElement('div');
       el.className = 'notif-item';
       el.innerHTML = `
-        <span>${names[req.from_id] || req.from_id}</span>
+        <span>${names[req.user_a] || req.user_a}</span>
         <button class="accept-btn" data-id="${req.id}">Accept</button>
         <button class="decline-btn" data-id="${req.id}">Decline</button>
       `;
       list.appendChild(el);
     });
 
-    // Accept button handler
+    // Accept connection → update status
     list.querySelectorAll('.accept-btn').forEach(btn => {
       btn.onclick = async () => {
-        await supabase
-          .from('connections')
+        await supabase.from('connections')
           .update({ status: 'accepted' })
           .eq('id', btn.dataset.id);
-
         showNotification('Connection accepted!', 'success');
         loadNotifications();
         loadLeaderboard('connectors');
       };
     });
 
-    // Decline button handler
+    // Decline connection → delete row
     list.querySelectorAll('.decline-btn').forEach(btn => {
       btn.onclick = async () => {
-        await supabase
-          .from('connections')
+        await supabase.from('connections')
           .delete()
           .eq('id', btn.dataset.id);
-
         showNotification('Request declined.', 'info');
         loadNotifications();
       };
     });
   }
 
-  // Initial load + polling
   loadNotifications();
-  setInterval(loadNotifications, 30000);
+  setInterval(loadNotifications, 30000); // fallback polling
 }
 
 function initNotificationsRealtime() {
@@ -290,17 +285,83 @@ function initNotificationsRealtime() {
 /* =========================================================
 4) Bootstrap
 ========================================================= */
+function initTabs() {
+  const buttons = document.querySelectorAll('.tab-button');
+  const panes = document.querySelectorAll('.tab-content-pane');
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((b) => b.classList.remove('active'));
+      panes.forEach((p) => p.classList.remove('active-tab-pane'));
+      btn.classList.add('active');
+      const target = btn.dataset.tab;
+      document.getElementById(target)?.classList.add('active-tab-pane');
+    });
+  });
+}
+
+function initSearch() {
+  const root = document.getElementById('search');
+  if (!root) return;
+
+  const findTeamBtn = root.querySelector('#find-team-btn');
+  const searchNameBtn = root.querySelector('#search-name-btn');
+  const skillsInput = root.querySelector('#teamSkillsInput');
+
+  if (findTeamBtn && skillsInput) {
+    findTeamBtn.addEventListener('click', async () => {
+      const required = parseRequiredSkills(skillsInput.value);
+      if (!required.length) return;
+
+      const ors = [
+        `skills.ov.{${required.join(',')}}`,
+        `interests.ov.{${required.join(',')}}`
+      ].join(',');
+
+      const { data, error } = await supabase
+        .from('community')
+        .select('*')
+        .or(ors);
+
+      if (error) return console.error('[Search] Supabase error:', error);
+
+      const strict = filterAllOfRequired(data, required);
+      await renderResults(strict);
+    });
+  }
+
+  if (searchNameBtn) {
+    searchNameBtn.addEventListener('click', async () => {
+      const name = root.querySelector('#nameInput')?.value.trim();
+      if (!name) return;
+
+      const { data, error } = await supabase
+        .from('community')
+        .select('*')
+        .ilike('name', `%${name}%`);
+
+      if (error) return console.error('[Search] Name error:', error);
+      await renderResults(data);
+    });
+  }
+
+  attachAutocomplete('search', 'teamSkillsInput', '#autocomplete-team-skills');
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('[Main] App Initialized');
 
+  // Auth + UI setup
   await initAuth();
-  initTabs();               // Your existing tab switching logic
-  initSynapseView();        // Graph canvas
-  loadLeaderboard();        // Default skills leaderboard
-  await loadSkillSuggestions();
-  initSearch();             // Search/autocomplete logic
-  initProfileForm();        // Profile onboarding form
+  initTabs();
+  initSynapseView();
+  initProfileForm();
 
-  initNotifications();      // Notifications dropdown
-  initNotificationsRealtime(); // Realtime sync
+  // Core features
+  loadLeaderboard();
+  await loadSkillSuggestions();
+  initSearch();
+
+  // Notifications
+  initNotifications();
+  initNotificationsRealtime();
 });
