@@ -342,6 +342,74 @@ function initSearch() {
 
   attachAutocomplete('search', 'teamSkillsInput', '#autocomplete-team-skills');
 }
+async function renderResults(data) {
+  const cardContainer = document.getElementById('cardContainer');
+  const noResults = document.getElementById('noResults');
+  const matchNotification = document.getElementById('matchNotification');
+
+  if (!cardContainer || !noResults || !matchNotification) return;
+
+  // reset display
+  cardContainer.innerHTML = '';
+  noResults.classList.add('hidden');
+  matchNotification.classList.add('hidden');
+
+  if (!data || data.length === 0) {
+    noResults.textContent = 'No matching users found.';
+    noResults.classList.remove('hidden');
+    return;
+  }
+
+  matchNotification.textContent = `Found ${data.length} result(s).`;
+  matchNotification.classList.remove('hidden');
+
+  data.forEach(person => {
+    const card = document.createElement('div');
+    card.className = 'user-card';
+
+    const avatar = person.image_url || 'https://via.placeholder.com/80';
+    const name = person.name || 'Anonymous User';
+    const email = person.email || '';
+    const availability = person.availability || 'Unknown';
+    const skills = person.skills ? person.skills.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+    card.innerHTML = `
+      <img src="${avatar}" alt="${name}" class="user-avatar">
+      <h3>${name}</h3>
+      ${email ? `<p class="email">${email}</p>` : ''}
+      <p class="availability">Availability: ${availability}</p>
+      <div class="skills-list">
+        ${skills.map(skill => `
+          <div class="skill-chip">
+            <span>${skill}</span>
+            <button class="endorse-btn" data-user-id="${person.id}" data-skill="${skill}">+</button>
+          </div>`).join('')}
+      </div>
+      <button class="connect-btn" data-user-id="${person.id}">🤝 Connect</button>
+    `;
+
+    // Endorse buttons
+    card.querySelectorAll('.endorse-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const targetId = btn.getAttribute('data-user-id');
+        const skill = btn.getAttribute('data-skill');
+        await endorseSkill(targetId, skill);
+      });
+    });
+
+    // Connect button
+    card.querySelectorAll('.connect-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const targetId = btn.getAttribute('data-user-id');
+        await connectToUser(targetId);
+      });
+    });
+
+    cardContainer.appendChild(card);
+  });
+}
 
 /* =========================================================
 5) Bootstrap
