@@ -34,12 +34,11 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       });
 
       renderLeaderboard(totals, "skill");
-
     } else if (type === "connectors") {
-      // ✅ FIXED: use from_user_id / to_user_id
+      // ✅ Only include accepted mutual connections
       let query = supabase.from('connections')
-        .select('from_user_id, created_at, status')
-        .eq('status', 'accepted'); // only count real connections
+        .select('from_user_id, to_user_id, created_at, status')
+        .eq('status', 'accepted');
 
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -47,13 +46,16 @@ export async function loadLeaderboard(type = "skills", range = "month") {
 
       const totals = {};
       data?.forEach(row => {
-        if (!row.from_user_id) return;
-        totals[row.from_user_id] = (totals[row.from_user_id] || 0) + 1;
+        if (row.from_user_id) {
+          totals[row.from_user_id] = (totals[row.from_user_id] || 0) + 1;
+        }
+        if (row.to_user_id) {
+          totals[row.to_user_id] = (totals[row.to_user_id] || 0) + 1;
+        }
       });
 
       const users = await fetchUserNames(Object.keys(totals));
       renderLeaderboard(totals, "user", users);
-
     } else if (type === "rising") {
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
@@ -97,7 +99,6 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     renderEmpty();
   }
 }
-
 function applyRangeFilter(query, range) {
   if (range === "week") {
     const weekAgo = new Date();
@@ -118,7 +119,7 @@ function normalizeSkill(raw) {
   let skill = raw
     .toString()
     .trim()
-    .replace(/^[{\["']+|[}\]"']+$/g, "") // strip { } [ ] " '
+    .replace(/^[{\["']+|[}\]"']+$/g, "")
     .toLowerCase();
 
   skill = skill.replace(/[-_]/g, " ");
@@ -139,7 +140,6 @@ function normalizeSkill(raw) {
 
   return { key: skill, label: display };
 }
-
 async function fetchUserNames(ids) {
   if (!ids || ids.length === 0) return {};
   const { data, error } = await supabase
