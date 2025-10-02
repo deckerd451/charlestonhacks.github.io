@@ -157,7 +157,6 @@ async function getMyProfileId() {
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return null;
 
-  // Grab community row linked to this Supabase user
   const { data: profile, error: profileError } = await supabase
     .from('community')
     .select('id')
@@ -174,10 +173,10 @@ async function connectToUser(targetId) {
   if (me === targetId) return showNotification('Cannot connect to yourself.', 'error');
 
   const { error } = await supabase.from('connections').insert({
-    user_a: me,
-    user_b: targetId,
+    from_user_id: me,
+    to_user_id: targetId,
     status: 'pending',
-    context: 'manual'
+    type: 'manual'
   });
 
   if (error) {
@@ -208,11 +207,11 @@ async function initNotifications() {
       return; 
     }
 
-    // 🔎 Look for connection requests sent TO me
+    // look for requests sent TO me
     const { data, error } = await supabase
       .from('connections')
-      .select('id, user_a')
-      .eq('user_b', me)
+      .select('id, from_user_id')
+      .eq('to_user_id', me)
       .eq('status', 'pending');
 
     if (error || !data?.length) {
@@ -224,8 +223,7 @@ async function initNotifications() {
     badge.textContent = data.length;
     badge.classList.remove('hidden');
 
-    // Fetch names for requesting users
-    const ids = data.map(r => r.user_a);
+    const ids = data.map(r => r.from_user_id);
     const { data: users } = await supabase
       .from('community')
       .select('id, name, email')
@@ -234,20 +232,18 @@ async function initNotifications() {
     const names = {};
     users?.forEach(u => { names[u.id] = u.name || u.email; });
 
-    // Build notification list
     list.innerHTML = '';
     data.forEach(req => {
       const el = document.createElement('div');
       el.className = 'notif-item';
       el.innerHTML = `
-        <span>${names[req.user_a] || req.user_a}</span>
+        <span>${names[req.from_user_id] || req.from_user_id}</span>
         <button class="accept-btn" data-id="${req.id}">Accept</button>
         <button class="decline-btn" data-id="${req.id}">Decline</button>
       `;
       list.appendChild(el);
     });
 
-    // Accept connection → update status
     list.querySelectorAll('.accept-btn').forEach(btn => {
       btn.onclick = async () => {
         await supabase.from('connections')
@@ -259,7 +255,6 @@ async function initNotifications() {
       };
     });
 
-    // Decline connection → delete row
     list.querySelectorAll('.decline-btn').forEach(btn => {
       btn.onclick = async () => {
         await supabase.from('connections')
@@ -272,7 +267,7 @@ async function initNotifications() {
   }
 
   loadNotifications();
-  setInterval(loadNotifications, 30000); // fallback polling
+  setInterval(loadNotifications, 30000);
 }
 
 function initNotificationsRealtime() {
@@ -282,8 +277,9 @@ function initNotificationsRealtime() {
     })
     .subscribe();
 }
+
 /* =========================================================
-4) Bootstrap
+4) Tabs + Search
 ========================================================= */
 function initTabs() {
   const buttons = document.querySelectorAll('.tab-button');
@@ -347,21 +343,21 @@ function initSearch() {
   attachAutocomplete('search', 'teamSkillsInput', '#autocomplete-team-skills');
 }
 
+/* =========================================================
+5) Bootstrap
+========================================================= */
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('[Main] App Initialized');
 
-  // Auth + UI setup
   await initAuth();
   initTabs();
   initSynapseView();
   initProfileForm();
 
-  // Core features
   loadLeaderboard();
   await loadSkillSuggestions();
   initSearch();
 
-  // Notifications
   initNotifications();
   initNotificationsRealtime();
 });
