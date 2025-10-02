@@ -35,11 +35,26 @@
       <h1>Innovation Engine</h1>
       <p>Making Invisible Networks Visible</p>
       <div class="auth-controls">
-        <span class="user-badge hidden" id="user-badge"></span>
-        <button class="logout-btn action-btn hidden" id="logout-btn">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-      </div>
+  <span class="user-badge hidden" id="user-badge"></span>
+  
+  <!-- 🔔 Notifications -->
+  <div id="notifications" class="notifications-container">
+    <button id="notifications-btn" class="notifications-btn">
+      🔔
+      <span id="notifications-badge" class="notifications-badge hidden">0</span>
+    </button>
+
+    <div id="notifications-dropdown" class="notifications-dropdown hidden">
+      <h4>Connection Requests</h4>
+      <div id="notifications-list">No new requests</div>
+    </div>
+  </div>
+
+  <button class="logout-btn action-btn hidden" id="logout-btn">
+    <i class="fas fa-sign-out-alt"></i> Logout
+  </button>
+</div>
+
     </header>
 
     <main class="panels-wrapper">
