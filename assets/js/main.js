@@ -1,4 +1,3 @@
-// assets/js/main.js
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { showNotification } from './utils.js';
 import { loadLeaderboard } from './leaderboard.js';
@@ -6,10 +5,49 @@ import { initSynapseView } from './synapse.js';
 import { initProfileForm } from './profile.js';
 
 /* =========================================================
-0) Helpers
+0) Helpers + Globals
 ========================================================= */
 let SKILL_SUGGESTIONS = [];
+let SKILL_COLORS = {}; // { skill: hexColor }
 
+/**
+ * Load color codes for skills from the DB
+ */
+async function loadSkillColors() {
+  try {
+    const { data, error } = await supabase.from('skill_colors').select('skill, color');
+    if (error) throw error;
+    SKILL_COLORS = {};
+    data?.forEach(row => {
+      if (row.skill && row.color) {
+        SKILL_COLORS[row.skill.toLowerCase()] = row.color;
+      }
+    });
+  } catch (err) {
+    console.warn('[Skill Colors] Load error:', err);
+  }
+}
+
+/**
+ * Safe normalize any skill/interest field into array of strings
+ */
+function normalizeField(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) {
+    return value.map(s => String(s).trim()).filter(Boolean);
+  }
+  if (typeof value === 'string') {
+    return value.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
+  }
+  if (typeof value === 'object') {
+    return Object.values(value).map(s => String(s).trim()).filter(Boolean);
+  }
+  return [];
+}
+
+/**
+ * Debounce util
+ */
 function debounce(fn, ms = 150) {
   let t;
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
@@ -45,7 +83,7 @@ async function loadSkillSuggestions() {
       const allVals = [].concat(r.skills || []).concat(r.interests || []);
       allVals.forEach(val => {
         if (!val) return;
-        String(val).split(/[,;|]/).map(s => s.trim().toLowerCase()).filter(Boolean).forEach(skill => bag.add(skill));
+        normalizeField(val).forEach(skill => bag.add(skill.toLowerCase()));
       });
     });
     SKILL_SUGGESTIONS = Array.from(bag).sort();
@@ -207,7 +245,6 @@ async function initNotifications() {
       return; 
     }
 
-    // look for requests sent TO me
     const { data, error } = await supabase
       .from('connections')
       .select('id, from_user_id')
@@ -279,6 +316,61 @@ function initNotificationsRealtime() {
 }
 
 /* =========================================================
+Helper: Build User Card with Skills + Connect Button
+========================================================= */
+function generateUserCard(person) {
+  const card = document.createElement('div');
+  card.className = 'user-card';
+
+  const avatar = person.image_url || 'https://via.placeholder.com/80';
+  const name = person.name || 'Anonymous User';
+  const email = person.email || '';
+  const availability = person.availability || 'Unknown';
+
+  // Normalize both skills & interests
+  const skills = normalizeField(person.skills);
+  const interests = normalizeField(person.interests);
+
+  const skillChips = [...skills, ...interests].map(skill => {
+    const lower = skill.toLowerCase();
+    const color = SKILL_COLORS[lower] || '#555'; // default grey
+    return `
+      <div class="skill-chip" style="background-color:${color}">
+        <span>${skill}</span>
+        <button class="endorse-btn" data-user-id="${person.id}" data-skill="${skill}">+</button>
+      </div>
+    `;
+  }).join('');
+
+  card.innerHTML = `
+    <img src="${avatar}" alt="${name}" class="user-avatar">
+    <h3>${name}</h3>
+    ${email ? `<p class="email">${email}</p>` : ''}
+    <p class="availability">Availability: ${availability}</p>
+    <div class="skills-list">${skillChips}</div>
+    <button class="connect-btn" data-user-id="${person.id}">🤝 Connect</button>
+  `;
+
+  // Endorse buttons
+  card.querySelectorAll('.endorse-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const targetId = btn.getAttribute('data-user-id');
+      const skill = btn.getAttribute('data-skill');
+      await endorseSkill(targetId, skill);
+    });
+  });
+
+  // Connect button
+  card.querySelector('.connect-btn').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const targetId = e.target.getAttribute('data-user-id');
+    await connectToUser(targetId);
+  });
+
+  return card;
+}
+/* =========================================================
 4) Tabs + Search
 ========================================================= */
 function initTabs() {
@@ -342,6 +434,33 @@ function initSearch() {
 
   attachAutocomplete('search', 'teamSkillsInput', '#autocomplete-team-skills');
 }
+
+/* =========================================================
+5) Endorsements
+========================================================= */
+async function endorseSkill(userId, skill) {
+  const me = await getMyProfileId();
+  if (!me) return showNotification('Login required.', 'error');
+  if (!skill) return showNotification('Invalid skill.', 'error');
+
+  const { error } = await supabase.from('endorsements').insert({
+    endorsed_user: userId,
+    endorsed_by: me,
+    skill,
+    created_at: new Date().toISOString()
+  });
+
+  if (error) {
+    console.error('[Endorse] Error:', error);
+    showNotification('Could not endorse.', 'error');
+  } else {
+    showNotification(`You endorsed ${skill}`, 'success');
+  }
+}
+
+/* =========================================================
+6) Render Results
+========================================================= */
 async function renderResults(data) {
   const cardContainer = document.getElementById('cardContainer');
   const noResults = document.getElementById('noResults');
@@ -349,7 +468,6 @@ async function renderResults(data) {
 
   if (!cardContainer || !noResults || !matchNotification) return;
 
-  // reset display
   cardContainer.innerHTML = '';
   noResults.classList.add('hidden');
   matchNotification.classList.add('hidden');
@@ -364,55 +482,13 @@ async function renderResults(data) {
   matchNotification.classList.remove('hidden');
 
   data.forEach(person => {
-    const card = document.createElement('div');
-    card.className = 'user-card';
-
-    const avatar = person.image_url || 'https://via.placeholder.com/80';
-    const name = person.name || 'Anonymous User';
-    const email = person.email || '';
-    const availability = person.availability || 'Unknown';
-    const skills = person.skills ? person.skills.split(',').map(s => s.trim()).filter(Boolean) : [];
-
-    card.innerHTML = `
-      <img src="${avatar}" alt="${name}" class="user-avatar">
-      <h3>${name}</h3>
-      ${email ? `<p class="email">${email}</p>` : ''}
-      <p class="availability">Availability: ${availability}</p>
-      <div class="skills-list">
-        ${skills.map(skill => `
-          <div class="skill-chip">
-            <span>${skill}</span>
-            <button class="endorse-btn" data-user-id="${person.id}" data-skill="${skill}">+</button>
-          </div>`).join('')}
-      </div>
-      <button class="connect-btn" data-user-id="${person.id}">🤝 Connect</button>
-    `;
-
-    // Endorse buttons
-    card.querySelectorAll('.endorse-btn').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const targetId = btn.getAttribute('data-user-id');
-        const skill = btn.getAttribute('data-skill');
-        await endorseSkill(targetId, skill);
-      });
-    });
-
-    // Connect button
-    card.querySelectorAll('.connect-btn').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const targetId = btn.getAttribute('data-user-id');
-        await connectToUser(targetId);
-      });
-    });
-
+    const card = generateUserCard(person);
     cardContainer.appendChild(card);
   });
 }
 
 /* =========================================================
-5) Bootstrap
+7) Bootstrap
 ========================================================= */
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('[Main] App Initialized');
