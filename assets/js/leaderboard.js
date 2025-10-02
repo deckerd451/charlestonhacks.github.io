@@ -7,6 +7,7 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     let data, error;
 
     if (type === "skills") {
+      // --- Top Skills Leaderboard ---
       let query = supabase.from('endorsements')
         .select('skill, created_at, endorsed_user_id')
         .not('endorsed_user_id', 'is', null);
@@ -34,11 +35,12 @@ export async function loadLeaderboard(type = "skills", range = "month") {
       });
 
       renderLeaderboard(totals, "skill");
-
     } else if (type === "connectors") {
+      // --- Top Connectors Leaderboard ---
       let query = supabase.from('connections')
-        .select('from_user_id, created_at')
-        .not('from_user_id', 'is', null);
+        .select('user_a, created_at')
+        .not('user_a', 'is', null)
+        .eq('status', 'accepted'); // only count accepted connections
 
       query = applyRangeFilter(query, range);
       ({ data, error } = await query);
@@ -46,13 +48,12 @@ export async function loadLeaderboard(type = "skills", range = "month") {
 
       const totals = {};
       data?.forEach(row => {
-        if (!row.from_user_id) return;
-        totals[row.from_user_id] = (totals[row.from_user_id] || 0) + 1;
+        if (!row.user_a) return;
+        totals[row.user_a] = (totals[row.user_a] || 0) + 1;
       });
 
       const users = await fetchUserNames(Object.keys(totals));
       renderLeaderboard(totals, "user", users);
-
     } else if (type === "rising") {
       const now = new Date();
       const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
@@ -96,7 +97,6 @@ export async function loadLeaderboard(type = "skills", range = "month") {
     renderEmpty();
   }
 }
-
 function applyRangeFilter(query, range) {
   if (range === "week") {
     const weekAgo = new Date();
@@ -117,7 +117,7 @@ function normalizeSkill(raw) {
   let skill = raw
     .toString()
     .trim()
-    .replace(/^[{\["']+|[}\]"']+$/g, "") // strip { } [ ] " '
+    .replace(/^[{\["']+|[}\]"']+$/g, "")
     .toLowerCase();
 
   skill = skill.replace(/[-_]/g, " ");
