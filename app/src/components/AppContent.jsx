@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { Navigation } from './Navigation';
 import { HomePage } from './HomePage';
@@ -7,7 +7,6 @@ import { AuthCallback } from './AuthCallback';
 import { ProfileForm } from './ProfileForm';
 import { ProfileView } from './ProfileView';
 import { DirectorySearch } from './DirectorySearch';
-import { LegacyPageWrapper } from './LegacyPageWrapper';
 
 export function AppContent() {
   const { initialize, loading } = useAuthStore();
@@ -36,14 +35,14 @@ export function AppContent() {
           {/* Directory route */}
           <Route path="/directory" element={<DirectorySearch />} />
 
-          {/* Legacy pages wrapped in iframes */}
+          {/* Legacy pages - redirect to root HTML files */}
           <Route
             path="/innovation-engine"
-            element={<LegacyPageWrapper pagePath="/2card.html" title="Innovation Engine" />}
+            element={<Navigate to="/2card.html" replace />}
           />
           <Route
             path="/neural"
-            element={<LegacyPageWrapper pagePath="/neural.html" title="Neural Network" />}
+            element={<Navigate to="/neural.html" replace />}
           />
         </Routes>
       </main>

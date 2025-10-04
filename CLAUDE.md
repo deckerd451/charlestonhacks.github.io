@@ -174,13 +174,14 @@ import { UserCard } from './components/UserCard';
 <UserCard user={user} endorsements={endorsements} />
 ```
 
-**Legacy Page Wrapping**
+**Legacy Page Links**
 ```javascript
-// app/src/components/LegacyPageWrapper.jsx
-<LegacyPageWrapper pagePath="/2card.html" title="Innovation Engine" />
+// Legacy pages redirect to root HTML files
+<Route path="/innovation-engine" element={<Navigate to="/2card.html" replace />} />
+<Route path="/neural" element={<Navigate to="/neural.html" replace />} />
 
-// Renders legacy page in iframe within React shell
-// Auto-adjusts height to content
+// Users navigate directly to legacy HTML pages
+// React and legacy pages coexist but don't share navigation
 ```
 
 **Routing**
@@ -299,13 +300,13 @@ No formal tests. Manual testing in browser.
 ## Migration Strategy (Strangler Fig)
 
 1. **React Shell** ✅ DONE - Navigation, auth, routing
-2. **Legacy Wrapping** ✅ DONE - Wrap old pages in iframes
+2. **Legacy Coexistence** ✅ DONE - React and legacy pages redirect to each other
 3. **OAuth Auth** ✅ DONE - Multi-provider login modal
 4. **Shared Supabase** ✅ DONE - Singleton client
 5. **Mantine UI** ✅ DONE - Custom theme configuration
 6. **Profile System** ✅ DONE - Create/edit/view profiles (React)
 7. **Directory** ✅ DONE - Search users by skills/name/availability (React)
-8. **Next Steps** → See `TODO.md` and `PROFILE-DIRECTORY-REQUIREMENTS.md`
+8. **Next Steps** → Gradually migrate legacy features to React
 
 **Key Principles**:
 - Keep legacy code functional during migration
