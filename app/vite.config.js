@@ -17,6 +17,10 @@ export default defineConfig({
         target: 'http://localhost:4000',
         changeOrigin: true,
       }
+    },
+    // Serve files from parent directory (for legacy HTML files)
+    fs: {
+      allow: ['..']
     }
   }
 })

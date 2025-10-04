@@ -15,7 +15,7 @@ export function LegacyPageWrapper({ pagePath, title }) {
             iframe.style.height = `${height}px`;
           }
         } catch (e) {
-          console.warn('Cannot access iframe content:', e);
+          console.warn('Cannot access iframe content (CORS restriction):', e);
         }
       };
 

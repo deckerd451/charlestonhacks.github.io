@@ -314,6 +314,7 @@ No formal tests. Manual testing in browser.
 - Shared Supabase client prevents auth conflicts
 - Use `community` table as single source of truth
 - Mantine UI for consistent, accessible components
+- **NO INLINE COMPONENTS**: Every component must have its own file in `app/src/components/`
 
 ## Important Notes
 
@@ -328,6 +329,48 @@ No formal tests. Manual testing in browser.
 - **Legacy Compatibility**: React components can communicate with legacy via window events
 - **No TypeScript**: Pure JavaScript (React and legacy)
 - **Testing**: React has full test coverage, legacy is manual only
+
+## Code Style Rules
+
+### Component Organization
+
+**RULE: No Inline Components**
+- ❌ NEVER define components inside other files (especially App.jsx)
+- ✅ ALWAYS create a separate file in `app/src/components/` for each component
+- ✅ Use named exports: `export function MyComponent() { }`
+
+**Example - Wrong**:
+```javascript
+// ❌ Bad: Inline component in App.jsx
+function App() {
+  function MyComponent() {
+    return <div>Hello</div>;
+  }
+
+  return <MyComponent />;
+}
+```
+
+**Example - Correct**:
+```javascript
+// ✅ Good: app/src/components/MyComponent.jsx
+export function MyComponent() {
+  return <div>Hello</div>;
+}
+
+// app/src/App.jsx
+import { MyComponent } from './components/MyComponent';
+
+function App() {
+  return <MyComponent />;
+}
+```
+
+**Why**: Separate files improve:
+- Code organization and discoverability
+- Testing (easier to import and test)
+- Reusability across the app
+- Code splitting and bundle optimization
 
 ## Next Steps for AI
 

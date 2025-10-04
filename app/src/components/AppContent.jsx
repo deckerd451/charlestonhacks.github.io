@@ -39,11 +39,11 @@ export function AppContent() {
           {/* Legacy pages wrapped in iframes */}
           <Route
             path="/innovation-engine"
-            element={<LegacyPageWrapper pagePath="../2card.html" title="Innovation Engine" />}
+            element={<LegacyPageWrapper pagePath="/2card.html" title="Innovation Engine" />}
           />
           <Route
             path="/neural"
-            element={<LegacyPageWrapper pagePath="../neural.html" title="Neural Network" />}
+            element={<LegacyPageWrapper pagePath="/neural.html" title="Neural Network" />}
           />
         </Routes>
       </main>
