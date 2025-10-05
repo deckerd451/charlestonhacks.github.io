@@ -59,6 +59,7 @@
       will-change: transform, opacity;
       image-rendering: optimizeSpeed;
     }
+
     /* ✅ Accessible skip link */
     .skip-link {
       position: absolute;
@@ -73,6 +74,15 @@
     }
     .skip-link:focus {
       top: 10px;
+    }
+
+    /* ✅ Optional flash animation */
+    body.flash {
+      animation: flashOut 0.3s ease-in-out;
+    }
+    @keyframes flashOut {
+      0% { background-color: rgba(255,255,255,0.8); }
+      100% { background-color: transparent; }
     }
   </style>
 </head>
@@ -142,6 +152,30 @@
         localStorage.setItem(splashKey, dontShowCheckbox.checked ? 'never' : 'yes');
       }
 
+      // ✅ Sound functions
+      function playChime() {
+        const chime = document.getElementById('chimeSound');
+        try {
+          chime.volume = 0;
+          chime.currentTime = 0;
+          chime.play().then(() => {
+            const fade = setInterval(() => {
+              if (chime.volume < 0.5) chime.volume += 0.05;
+              else clearInterval(fade);
+            }, 100);
+          });
+        } catch (e) { /* fail silently */ }
+      }
+
+      function playKeySound() {
+        const keys = document.getElementById('keysSound');
+        try {
+          keys.currentTime = 0;
+          keys.volume = 0.4;
+          keys.play();
+        } catch (e) { /* ignore if autoplay blocked */ }
+      }
+
       // ✅ Improved hideSplash: fade + focus restore + ambient fade-in
       function hideSplash(immediate = false) {
         splashOverlay.classList.add('fade-out');
@@ -174,31 +208,43 @@
         }
       }
 
-      // ✅ Enter Community Button
+      // ✅ Enter Community Button with Chime
       enterBtn.addEventListener('click', () => {
         savePref();
         trackEvent('splash_enter_clicked');
-        hideSplash();
+        playChime();
+        setTimeout(() => hideSplash(), 150);
       });
       enterBtn.addEventListener('keyup', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           savePref();
           trackEvent('splash_enter_keypress');
-          hideSplash();
+          playChime();
+          setTimeout(() => hideSplash(), 150);
         }
       });
 
-      // ✅ Learn More Button
+      // ✅ Learn More Button with Key Sound + Flash
       learnMoreBtn.addEventListener('click', () => {
         savePref();
         trackEvent('learn_more_clicked');
-        window.location.href = 'https://charlestonhacks.mailchimpsites.com/';
+        playKeySound();
+        document.body.classList.add('flash');
+        setTimeout(() => document.body.classList.remove('flash'), 300);
+        setTimeout(() => {
+          window.location.href = 'https://charlestonhacks.mailchimpsites.com/';
+        }, 200);
       });
       learnMoreBtn.addEventListener('keyup', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           savePref();
           trackEvent('learn_more_keypress');
-          window.location.href = 'https://charlestonhacks.mailchimpsites.com/';
+          playKeySound();
+          document.body.classList.add('flash');
+          setTimeout(() => document.body.classList.remove('flash'), 300);
+          setTimeout(() => {
+            window.location.href = 'https://charlestonhacks.mailchimpsites.com/';
+          }, 200);
         }
       });
 
