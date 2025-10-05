@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
+  <!-- ✅ Early Redirect: only fires before rendering -->
   <script>
-    // ⏩ If redirected here by mistake, forward to neural.html
     const params = new URLSearchParams(window.location.search);
     if (params.get('source') === 'neuron') {
       window.location.href = '/neural.html?' + params.toString();
     }
   </script>
-  <!-- Google Analytics -->
+
+  <!-- ✅ Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NDKG07DY6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -16,6 +17,8 @@
     gtag('js', new Date());
     gtag('config', 'G-6NDKG07DY6');
   </script>
+
+  <!-- ✅ Basic Meta & SEO -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>CharlestonHacks - Home</title>
@@ -30,54 +33,102 @@
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#ff6600">
   <link rel="canonical" href="https://charlestonhacks.com" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- ✅ Performance Preloads -->
+  <link rel="preload" as="image" href="images/charlestonhackslogo.svg">
+  <link rel="preload" as="script" href="assets/js/neuralBackground.js">
+
+  <!-- ✅ Deferred FontAwesome load -->
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
+
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ✅ Smooth fade and GPU optimization */
+    #splash-overlay {
+      opacity: 1;
+      display: flex;
+      transition: opacity 0.7s ease-in-out;
+    }
+    #splash-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #neural-bg {
+      will-change: transform, opacity;
+      image-rendering: optimizeSpeed;
+    }
+    /* ✅ Accessible skip link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 10px;
+      background: #fff;
+      color: #000;
+      padding: 8px;
+      border-radius: 5px;
+      transition: top 0.3s;
+      z-index: 10000;
+    }
+    .skip-link:focus {
+      top: 10px;
+    }
+  </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <canvas id="neural-bg"></canvas>
+
   <noscript>
-    <div style="background: #111; color: white; text-align: center; padding: 1em; font-size: 1rem;">
-      ⚠️ JavaScript is disabled. For the full CharlestonHacks experience, please enable JavaScript in your browser.
+    <div style="background:#111;color:white;text-align:center;padding:1em;font-size:1rem;">
+      ⚠️ JavaScript is disabled. For the full CharlestonHacks experience, please enable JavaScript.
     </div>
   </noscript>
 
-  <!-- Splash screen -->
-  <div id="splash-overlay" role="dialog" aria-modal="true" aria-labelledby="splash-title" aria-describedby="splash-desc" tabindex="-1">
+  <!-- ✅ Splash Screen -->
+  <div id="splash-overlay"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="splash-title"
+       aria-describedby="splash-desc"
+       aria-live="polite"
+       tabindex="-1">
     <div id="splash-content">
       <img id="splash-logo" src="images/charlestonhackslogo.svg" alt="CharlestonHacks Logo" />
       <h1 id="splash-title">Welcome to CharlestonHacks</h1>
       <p id="splash-desc">Loading...</p>
 
       <!-- Don't show again checkbox -->
-      <label id="dont-show-label" style="margin-top:1em; display: flex; align-items: center; gap: 0.5em; font-size: 0.9rem;">
+      <label id="dont-show-label" style="margin-top:1em;display:flex;align-items:center;gap:0.5em;font-size:0.9rem;">
         <input type="checkbox" id="dont-show-again" />
         Don't show this welcome screen again
       </label>
 
       <!-- Option buttons -->
-      <div id="splash-buttons" style="margin-top:1.5em; display:flex; gap:1em;">
+      <div id="splash-buttons" style="margin-top:1.5em;display:flex;gap:1em;">
         <button id="enter-community-btn" type="button" aria-label="Enter CharlestonHacks Community Site">Enter Community Site</button>
         <button id="learn-more-btn" type="button" aria-label="Learn More about CharlestonHacks">Learn More</button>
       </div>
 
       <p id="splash-copyright"
-         style="font-size: 0.8rem; opacity: 0.7; margin-top: 2rem;">
+         style="font-size:0.8rem;opacity:0.7;margin-top:2rem;">
         © 2025 CharlestonHacks. All rights reserved.
       </p>
     </div>
   </div>
 
-  <!-- Audio assets -->
-  <audio id="cardflipSound" src="assets/atmospherel.m4a" preload="auto"></audio>
+  <!-- ✅ Audio Assets -->
+  <audio id="ambientSound" src="assets/atmospherel.m4a" preload="auto"></audio>
   <audio id="chimeSound" src="assets/chime.mp3" preload="auto"></audio>
   <audio id="keysSound" src="assets/keys.m4a" preload="auto"></audio>
 
-  <!-- Main content -->
-  <main>
+  <!-- ✅ Main Content -->
+  <main id="main-content" tabindex="-1">
     <!-- (unchanged interactive card markup) -->
   </main>
 
-  <!-- Splash logic -->
+  <!-- ✅ Splash Logic -->
   <script>
     (function () {
       const splashOverlay = document.getElementById('splash-overlay');
@@ -85,48 +136,73 @@
       const learnMoreBtn = document.getElementById('learn-more-btn');
       const dontShowCheckbox = document.getElementById('dont-show-again');
       const splashKey = 'chs_splash_seen_v2';
+      const ambient = document.getElementById('ambientSound');
 
       function savePref() {
-        if (dontShowCheckbox.checked) {
-          localStorage.setItem(splashKey, 'never');
-        } else {
-          localStorage.setItem(splashKey, 'yes');
-        }
+        localStorage.setItem(splashKey, dontShowCheckbox.checked ? 'never' : 'yes');
       }
 
+      // ✅ Improved hideSplash: fade + focus restore + ambient fade-in
       function hideSplash(immediate = false) {
         splashOverlay.classList.add('fade-out');
         document.body.classList.remove('splash-active');
         setTimeout(() => {
           splashOverlay.style.display = 'none';
           splashOverlay.style.pointerEvents = 'none';
+          const main = document.querySelector('main');
+          if (main) {
+            main.setAttribute('tabindex', '-1');
+            main.focus();
+          }
+          // Soft fade-in of ambient audio
+          try {
+            ambient.volume = 0;
+            ambient.play().then(() => {
+              const fadeIn = setInterval(() => {
+                if (ambient.volume < 0.15) ambient.volume += 0.01;
+                else clearInterval(fadeIn);
+              }, 200);
+            });
+          } catch(e) { /* ignored */ }
         }, immediate ? 0 : 700);
       }
 
-      // Enter shows the community content by hiding splash
+      // ✅ Track events to GA
+      function trackEvent(action) {
+        if (typeof gtag === 'function') {
+          gtag('event', action, { event_category: 'UX' });
+        }
+      }
+
+      // ✅ Enter Community Button
       enterBtn.addEventListener('click', () => {
         savePref();
+        trackEvent('splash_enter_clicked');
         hideSplash();
       });
       enterBtn.addEventListener('keyup', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           savePref();
+          trackEvent('splash_enter_keypress');
           hideSplash();
         }
       });
 
-      // Learn More navigates externally
+      // ✅ Learn More Button
       learnMoreBtn.addEventListener('click', () => {
         savePref();
+        trackEvent('learn_more_clicked');
         window.location.href = 'https://charlestonhacks.mailchimpsites.com/';
       });
       learnMoreBtn.addEventListener('keyup', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           savePref();
+          trackEvent('learn_more_keypress');
           window.location.href = 'https://charlestonhacks.mailchimpsites.com/';
         }
       });
 
+      // ✅ On Ready (DOMContentLoaded)
       window.addEventListener('DOMContentLoaded', () => {
         const pref = localStorage.getItem(splashKey);
         if (pref === 'never') {
@@ -144,17 +220,18 @@
 
         document.body.classList.add('splash-active');
         splashOverlay.style.display = 'flex';
+        trackEvent('splash_shown');
 
         const delay = isReturning ? 3000 : 5000;
         setTimeout(() => {
           savePref();
           hideSplash();
         }, delay);
-      });
+      }, { passive: true });
     })();
   </script>
 
-  <!-- Rest of your existing scripts -->
+  <!-- ✅ Neural Background Animation -->
   <script type="module" src="assets/js/neuralBackground.js"></script>
 </body>
 </html>
