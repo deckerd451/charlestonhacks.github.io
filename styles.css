@@ -1241,3 +1241,43 @@ html, footer, .icons-container {
     transition: none !important;
   }
 }
+/* ==========================================================================
+   CARD VIDEO FIX (replaces old .media-container video rule)
+   ========================================================================== */
+
+.media-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  overflow: hidden;        /* keeps video inside card */
+  border-radius: 12px;     /* optional, matches card shape */
+}
+
+/* Video styling */
+.media-container video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: contain;     /* keeps correct proportions */
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 2;
+}
+
+/* When video is visible */
+.media-container video.active,
+.media-container video.showing {
+  opacity: 1;
+  display: block;
+}
+
+/* Fallback for JS toggling display: block inline */
+#missionVideo[style*="display: block"] {
+  opacity: 1 !important;
+}
+
