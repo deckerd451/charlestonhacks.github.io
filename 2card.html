@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CharlestonHacks | Innovation Engine</title>
+  <meta name="description" content="CharlestonHacks Innovation Engine connects innovators through data, design, and collaboration.">
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  <!-- Layered Background -->
+  <div id="background-container">
+    <div id="static-bg"></div>
+    <canvas id="neuralBackground"></canvas>
+  </div>
+
+  <main id="innovation-engine">
+    <header class="top-bar">
+      <div class="signed-in-banner" id="user-banner">Signed in as <span id="user-email">guest</span></div>
+      <nav class="nav-buttons">
+        <button id="createProfileBtn">Create Profile</button>
+        <button id="individualSearchBtn">Individual Search</button>
+        <button id="teamBuilderBtn">Team Builder</button>
+        <button id="leaderboardBtn">Leaderboard</button>
+        <button id="synapseViewBtn">Synapse View</button>
+      </nav>
+    </header>
+
+    <section id="card-content" class="card-section">
+      <div class="tab" id="individual-search">
+        <h2>Find People by Skill</h2>
+        <input type="text" id="skillInput" placeholder="Enter a skill..." />
+        <div id="autocomplete-list" class="autocomplete-list"></div>
+        <button id="getPeopleBtn">Get People</button>
+      </div>
+
+      <div class="tab" id="team-builder" style="display:none;">
+        <h2>Team Builder</h2>
+        <p>Find the best team of N people based on skills.</p>
+      </div>
+
+      <div class="tab" id="leaderboard" style="display:none;">
+        <h2>Leaderboard</h2>
+        <div id="leaderboard-list"></div>
+      </div>
+
+      <div class="tab" id="synapse-view" style="display:none;">
+        <h2>Synapse View</h2>
+        <p>Interactive community network visualization.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/neuralBackground.js"></script>
+</body>
+</html>
