@@ -2184,11 +2184,11 @@ main, .main-wrapper, .media-container {
    ========================================================================== */
 
 /* Center the main card on screen */
-main, .main-wrapper {
+.main-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh; /* fixed height avoids layout snap */
 }
 
 
