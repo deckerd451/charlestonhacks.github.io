@@ -2197,16 +2197,6 @@ main, .main-wrapper {
   transform-style: preserve-3d;
 }
 
-/* Keep card layout consistent */
-.media-container {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 12px;
-  z-index: 0;
-}
 
 /* Card image base layer */
 .media-container img {
