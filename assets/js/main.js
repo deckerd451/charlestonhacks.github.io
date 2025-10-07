@@ -395,49 +395,67 @@ function initSearch() {
   const searchNameBtn = root.querySelector('#search-name-btn');
   const skillsInput = root.querySelector('#teamSkillsInput');
 
+  // --- Search by Required Skills ---
   if (findTeamBtn && skillsInput) {
     findTeamBtn.addEventListener('click', async () => {
       const required = parseRequiredSkills(skillsInput.value);
       if (!required.length) return;
 
-      // ✅ Properly format skills into a Postgres array literal
-      const arrayLiteral = `{${required.map(s => `"${s}"`).join(',')}}`;
+      try {
+        // Proper use of .cs. for ARRAY columns
+        const { data, error } = await supabase
+          .from('community')
+          .select('*')
+          .or(`skills.cs.{${required.join(',')}},interests.cs.{${required.join(',')}}`);
 
-      const { data, error } = await supabase
-        .from('community')
-        .select('*')
-        .or(`skills.ov.${arrayLiteral},interests.ov.${arrayLiteral}`);
+        if (error) {
+          console.error('[Search] Supabase error:', error);
+          showNotification('Search failed: ' + error.message, 'error');
+          return;
+        }
 
-      if (error) {
-        console.error('[Search] Supabase error:', error);
-        return;
+        // Filter users that have *all* required skills
+        const strictMatches = filterAllOfRequired(data, required);
+        await renderResults(strictMatches);
+
+      } catch (err) {
+        console.error('[Search] Unexpected error:', err);
+        showNotification('Unexpected search error', 'error');
       }
-
-      const strict = filterAllOfRequired(data, required);
-      await renderResults(strict);
     });
   }
 
+  // --- Search by Name ---
   if (searchNameBtn) {
     searchNameBtn.addEventListener('click', async () => {
       const name = root.querySelector('#nameInput')?.value.trim();
       if (!name) return;
 
-      const { data, error } = await supabase
-        .from('community')
-        .select('*')
-        .ilike('name', `%${name}%`);
+      try {
+        const { data, error } = await supabase
+          .from('community')
+          .select('*')
+          .ilike('name', `%${name}%`);
 
-      if (error) {
-        console.error('[Search] Name error:', error);
-        return;
+        if (error) {
+          console.error('[Search] Name error:', error);
+          showNotification('Name search failed: ' + error.message, 'error');
+          return;
+        }
+
+        await renderResults(data);
+
+      } catch (err) {
+        console.error('[Search] Unexpected error:', err);
+        showNotification('Unexpected name search error', 'error');
       }
-      await renderResults(data);
     });
   }
 
+  // --- Autocomplete setup ---
   attachAutocomplete('search', 'teamSkillsInput', '#autocomplete-team-skills');
 }
+
 
 /* =========================================================
 5) Endorsements
