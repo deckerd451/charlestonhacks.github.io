@@ -2179,4 +2179,95 @@ main, .main-wrapper, .media-container {
   font-size: 0.75rem;
   cursor: pointer;
 }
+/* ==========================================================================
+   CHARLESTONHACKS CARD FLIP + VIDEO FINAL FIX
+   ========================================================================== */
+
+/* Center the main card on screen */
+main, .main-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Maintain 3D perspective for flip animation */
+.panel, .media-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* Keep card layout consistent */
+.media-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 12px;
+  z-index: 0;
+}
+
+/* Card image base layer */
+.media-container img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* Video layer — fits within card bounds */
+.media-container video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: inherit;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* Fade-in when JS adds class */
+.media-container video.active,
+.media-container video.showing {
+  opacity: 1;
+  display: block;
+}
+
+/* Fallback if JS toggles display inline */
+#missionVideo[style*="display: block"] {
+  opacity: 1 !important;
+}
+
+/* Keep clickable buttons above all */
+.clickable-area {
+  position: absolute;
+  z-index: 5;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+.clickable-area:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+.clickable-area:active {
+  transform: scale(0.95);
+  filter: brightness(1.2);
+}
+
+/* Smooth fade-in sequence (slightly delayed for visibility) */
+.clickable-area {
+  animation: fadeInScaleUp 1.2s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+/* Info line fade smoothing */
+.info-line {
+  transition: opacity 0.4s ease;
+}
 
