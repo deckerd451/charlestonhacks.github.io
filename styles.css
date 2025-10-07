@@ -2191,26 +2191,5 @@ main, .main-wrapper {
   min-height: 100vh;
 }
 
-/* Maintain 3D perspective for flip animation */
-.panel, .media-container {
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
 
-/* Fallback if JS toggles display inline */
-#missionVideo[style*="display: block"] {
-  opacity: 1 !important;
-}
-
-
-/* Smooth fade-in sequence (slightly delayed for visibility) */
-.clickable-area {
-  animation: fadeInScaleUp 1.2s ease-out forwards;
-  animation-delay: 0.3s;
-}
-
-/* Info line fade smoothing */
-.info-line {
-  transition: opacity 0.4s ease;
-}
 
