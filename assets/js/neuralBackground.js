@@ -1,75 +1,101 @@
-// assets/js/neuralBackground.js
-// Subtle neural background with gentle parallax motion
-export function startNeuralBackground() {
-  const canvas = document.getElementById('neuralBackground');
-  const ctx = canvas.getContext('2d');
-  let width, height, mouse = { x: 0, y: 0 };
+// neuralBackground.js
+const canvas = document.getElementById('neural-bg');
+const ctx = canvas.getContext('2d');
+let width, height;
+let nodes = [];
 
-  const nodes = [];
-  const numNodes = 80;
-  const maxDistance = 140;
-
-  function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  }
-
-  function init() {
-    resize();
-    nodes.length = 0;
-    for (let i = 0; i < numNodes; i++) {
-      nodes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: (Math.random() - 0.5) * 0.2
-      });
-    }
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "rgba(255,255,255,0.2)";
-    nodes.forEach(n => {
-      n.x += n.vx;
-      n.y += n.vy;
-
-      if (n.x < 0 || n.x > width) n.vx *= -1;
-      if (n.y < 0 || n.y > height) n.vy *= -1;
-
-      const dx = n.x - mouse.x / 20;
-      const dy = n.y - mouse.y / 20;
-      ctx.beginPath();
-      ctx.arc(n.x - dx * 0.005, n.y - dy * 0.005, 1.2, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    ctx.strokeStyle = "rgba(255,255,255,0.1)";
-    for (let i = 0; i < numNodes; i++) {
-      for (let j = i + 1; j < numNodes; j++) {
-        const a = nodes[i], b = nodes[j];
-        const dist = Math.hypot(a.x - b.x, a.y - b.y);
-        if (dist < maxDistance) {
-          ctx.globalAlpha = 1 - dist / maxDistance;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-        }
-      }
-    }
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
-  }
-
-  window.addEventListener('mousemove', e => {
-    mouse.x = e.clientX - width / 2;
-    mouse.y = e.clientY - height / 2;
-  });
-
-  window.addEventListener('resize', resize);
-  init();
-  draw();
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
 }
 
-window.addEventListener('DOMContentLoaded', startNeuralBackground);
+window.addEventListener('resize', resize);
+resize();
+
+class Node {
+  constructor(index) {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.label = `Node ${index}`;
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > width) this.vx *= -1;
+    if (this.y < 0 || this.y > height) this.vy *= -1;
+  }
+
+  draw() {
+    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 8);
+    gradient.addColorStop(0, '#0ff');
+    gradient.addColorStop(1, 'transparent');
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+  }
+
+  isHovered(mx, my) {
+    const dx = this.x - mx;
+    const dy = this.y - my;
+    return dx * dx + dy * dy < 9 ** 2;
+  }
+}
+
+function connectNodes() {
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      let dx = nodes[i].x - nodes[j].x;
+      let dy = nodes[i].y - nodes[j].y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100) {
+        ctx.strokeStyle = `rgba(0, 255, 255, ${1 - dist / 100})`;
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function drawTooltip(text, x, y) {
+  ctx.font = '12px sans-serif';
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+  ctx.fillRect(x + 10, y - 20, ctx.measureText(text).width + 10, 20);
+  ctx.fillStyle = '#fff';
+  ctx.fillText(text, x + 15, y - 5);
+}
+
+let mouseX = -1, mouseY = -1;
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = e.clientX - rect.left;
+  mouseY = e.clientY - rect.top;
+});
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+  nodes.forEach(n => n.update());
+  connectNodes();
+  nodes.forEach(n => n.draw());
+
+  // Hover logic
+  for (let node of nodes) {
+    if (node.isHovered(mouseX, mouseY)) {
+      drawTooltip(node.label, node.x, node.y);
+      break;
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// Initialize nodes and start animation
+for (let i = 0; i < 80; i++) nodes.push(new Node(i + 1));
+animate();
