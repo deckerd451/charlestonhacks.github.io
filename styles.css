@@ -2235,4 +2235,52 @@ main, .main-wrapper, .media-container {
 .hidden {
   display: none;
 }
+/* ===== Individual Search Alignment Fix ===== */
+.search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-section input[type="text"] {
+  width: 400px;
+  max-width: 90%;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+}
+
+/* Align the autocomplete box under the input */
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: black;
+  border-radius: 8px;
+  border: 1px solid #666;
+  z-index: 10;
+  color: white;
+  font-size: 0.95rem;
+}
+
+/* Ensure dropdown aligns perfectly */
+.autocomplete-container {
+  position: relative;
+  width: 400px;
+  max-width: 90%;
+}
+
+/* Fix button alignment */
+.search-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
 
