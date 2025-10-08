@@ -1,19 +1,25 @@
 // UPDATED FILE: assets/js/profile.js
-// This version of profile.js uses maybeSingle() when loading an existing
-// profile to avoid 406 errors and automatically pre-fills the profile form
-// when data exists. It also keeps the newsletter opt-in logic intact.
+// This version of profile.js prevents duplicate submit listeners, uses maybeSingle()
+// to avoid 406 errors, and pre-fills the profile form automatically when data exists.
+// Newsletter opt-in logic and image upload handling remain intact.
 
 import { supabaseClient as supabase } from './supabaseClient.js';
 import { showNotification } from './utils.js';
 
 /**
- * Initialize profile form and saving logic. When the form is loaded it
- * pre-populates existing profile data if available. Using maybeSingle()
- * ensures that missing profiles do not trigger 406 errors.
+ * Initialize profile form and saving logic.
+ * This function is idempotent — it will only attach one listener per session.
  */
 export function initProfileForm() {
   const form = document.getElementById('skills-form');
   if (!form) return;
+
+  // 🧠 Prevent duplicate event listeners
+  if (form.dataset.listenerAdded === 'true') {
+    console.log('[Profile] Listener already attached, skipping rebind.');
+    return;
+  }
+  form.dataset.listenerAdded = 'true';
 
   // Prefill the profile form on load
   autoFillProfileForm();
@@ -22,14 +28,14 @@ export function initProfileForm() {
     event.preventDefault();
 
     try {
-      // 🔑 Get logged in user from magic link
+      // 🔑 Get logged-in user
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) {
         showNotification('You must be logged in to create a profile.', 'error');
         return;
       }
 
-      const userId = user.id; // This matches community.user_id
+      const userId = user.id;
       const fname = document.getElementById('first-name').value.trim();
       const lname = document.getElementById('last-name').value.trim();
       const email = document.getElementById('email').value.trim();
@@ -41,31 +47,24 @@ export function initProfileForm() {
       const availability = document.getElementById('availability-input').value;
       const newsletterOptIn = document.getElementById('newsletter-opt-in')?.checked || false;
 
-      // Fetch existing profile to determine if we need to insert or update. We try by user_id first,
-      // then fall back to email if no record is found. We also capture the existing row's id and
-      // image_url to preserve old avatars when no new photo is uploaded.
+      // 🔍 Check for existing profile
       let existingProfileRecord = null;
       let existingImageUrl = null;
       try {
-        // Attempt lookup by user_id
         const resp = await supabase
           .from('community')
           .select('id, image_url, user_id, email')
           .eq('user_id', userId)
           .maybeSingle();
-        if (resp.data) {
-          existingProfileRecord = resp.data;
-        }
-        // If not found and an email is provided, try lookup by email (handles old profiles without user_id)
-        if (!existingProfileRecord && email) {
+
+        if (resp.data) existingProfileRecord = resp.data;
+        else if (email) {
           const respEmail = await supabase
             .from('community')
             .select('id, image_url, user_id, email')
             .eq('email', email)
             .maybeSingle();
-          if (respEmail.data) {
-            existingProfileRecord = respEmail.data;
-          }
+          if (respEmail.data) existingProfileRecord = respEmail.data;
         }
       } catch (err) {
         console.warn('[Profile] Unexpected error loading profile:', err);
@@ -73,15 +72,14 @@ export function initProfileForm() {
 
       if (existingProfileRecord && existingProfileRecord.image_url) {
         existingImageUrl = existingProfileRecord.image_url;
-        console.log('[Profile] Existing profile found, updating record.');
+        console.log('[Profile] Updating existing record.');
       } else {
-        console.log('[Profile] No existing profile found, creating new record.');
+        console.log('[Profile] Creating new profile record.');
       }
 
-      // Optional: handle image upload
+      // 🖼️ Optional: handle image upload
       let imageUrl = existingImageUrl;
       const photoInput = document.getElementById('photo-input');
-
       if (photoInput && photoInput.files.length > 0) {
         const photoFile = photoInput.files[0];
         const filePath = `profiles/${userId}/${Date.now()}-${photoFile.name}`;
@@ -99,19 +97,14 @@ export function initProfileForm() {
             .getPublicUrl(filePath);
           imageUrl = publicUrlData.publicUrl;
 
-          // Delete old image if replaced
+          // Remove old image if replaced
           if (existingImageUrl && existingImageUrl.includes('/avatars/')) {
             try {
-              const pathParts = existingImageUrl.split('/avatars/');
-              if (pathParts.length > 1) {
-                const oldPath = decodeURIComponent(pathParts[1]);
-                const { error: deleteError } = await supabase.storage
-                  .from('avatars')
-                  .remove([oldPath]);
-                if (deleteError) {
-                  console.warn('[Profile] Failed to delete old image:', deleteError.message);
-                }
-              }
+              const oldPath = decodeURIComponent(existingImageUrl.split('/avatars/')[1]);
+              const { error: deleteError } = await supabase.storage
+                .from('avatars')
+                .remove([oldPath]);
+              if (deleteError) console.warn('[Profile] Failed to delete old image:', deleteError.message);
             } catch (deleteErr) {
               console.warn('[Profile] Unexpected error deleting old image:', deleteErr);
             }
@@ -119,12 +112,12 @@ export function initProfileForm() {
         }
       }
 
-      // Build the record payload. We always include user_id so it gets set on older rows.
+      // 🧱 Build record payload
       const recordData = {
         user_id: userId,
         name: `${fname} ${lname}`,
         email,
-        skills, // saves as Postgres array
+        skills,
         bio,
         availability,
         image_url: imageUrl,
@@ -132,18 +125,19 @@ export function initProfileForm() {
         newsletter_opt_in_at: newsletterOptIn ? new Date().toISOString() : null,
       };
 
+      // 📝 Save to Supabase
       let saveError = null;
       try {
         if (existingProfileRecord) {
-          // Update the existing row by id. This preserves uniqueness on email and other fields.
           const { error: updateError } = await supabase
             .from('community')
             .update(recordData)
             .eq('id', existingProfileRecord.id);
           saveError = updateError;
         } else {
-          // Insert a new row
-          const { error: insertError } = await supabase.from('community').insert(recordData);
+          const { error: insertError } = await supabase
+            .from('community')
+            .insert(recordData);
           saveError = insertError;
         }
       } catch (err) {
@@ -157,33 +151,31 @@ export function initProfileForm() {
         return;
       }
 
-      // ✅ If opted-in, send to Mailchimp
+      // 📬 Optional: Mailchimp subscription
       if (newsletterOptIn) {
         const mcForm = document.createElement('form');
         mcForm.action =
           'https://charlestonhacks.us12.list-manage.com/subscribe/post?u=79363b7a43970f760d61360fd&id=3b95e0177a';
         mcForm.method = 'POST';
         mcForm.target = '_blank';
-
         mcForm.innerHTML = `
           <input type="hidden" name="FNAME" value="${fname}">
           <input type="hidden" name="LNAME" value="${lname}">
           <input type="hidden" name="EMAIL" value="${email}">
         `;
-
         document.body.appendChild(mcForm);
         mcForm.submit();
         document.body.removeChild(mcForm);
       }
 
+      // ✅ Success feedback
       showNotification('Profile saved successfully!', 'success');
-
-      // Show success message
       const successMessageEl = document.getElementById('success-message');
       if (successMessageEl) {
         successMessageEl.classList.remove('hidden');
         successMessageEl.style.display = 'block';
       }
+
     } catch (err) {
       console.error('[Profile] Unexpected error:', err);
       showNotification('Unexpected error saving profile.', 'error');
@@ -192,13 +184,7 @@ export function initProfileForm() {
 }
 
 /**
- * Auto-fill the profile form with existing data if a profile exists.
- *
- * Exported so other modules (e.g. main.js) can trigger a refill after
- * authentication events. When called, it attempts to fetch the current
- * user's profile from the community table and populate the form. If no
- * profile exists (status 406), the form remains blank and a console
- * message is printed.
+ * Auto-fill the profile form with existing data if available.
  */
 export async function autoFillProfileForm() {
   try {
@@ -206,8 +192,6 @@ export async function autoFillProfileForm() {
     if (error || !user) return;
 
     const userId = user.id;
-
-    // Attempt to fetch by user_id first
     let profile = null;
     let profileError = null;
     let status = null;
@@ -225,7 +209,6 @@ export async function autoFillProfileForm() {
       console.warn('[Profile] Prefill error (by user_id):', err);
     }
 
-    // If nothing found by user_id and an email is available, fall back to email lookup
     if ((!profile || status === 406) && user.email) {
       try {
         const respEmail = await supabase
@@ -243,7 +226,6 @@ export async function autoFillProfileForm() {
       }
     }
 
-    // Handle unexpected errors
     if (profileError && status !== 406) {
       console.warn('[Profile] Prefill error:', profileError.message);
       return;
@@ -253,9 +235,7 @@ export async function autoFillProfileForm() {
       return;
     }
 
-    console.log('[Profile] Prefilling form with existing data:', profile);
-
-    // Split name into first and last components
+    console.log('[Profile] Prefilling form with:', profile);
     const [firstName, ...rest] = (profile.name || '').split(' ');
     document.getElementById('first-name').value = firstName || '';
     document.getElementById('last-name').value = rest.join(' ') || '';
@@ -264,7 +244,6 @@ export async function autoFillProfileForm() {
     document.getElementById('bio-input').value = profile.bio || '';
     document.getElementById('availability-input').value = profile.availability || '';
 
-    // Optional: preview avatar
     const photoPreview = document.getElementById('preview');
     if (photoPreview && profile.image_url) {
       photoPreview.src = profile.image_url;
@@ -276,11 +255,7 @@ export async function autoFillProfileForm() {
 }
 
 // -------------------------------------------------------------------------
-// Automatically trigger autoFillProfileForm when a user logs in.  Without
-// this listener, the prefill only runs once on initial page load, which can
-// occur before the session has been restored. Listening for auth state
-// changes ensures that any logged-in user will see their saved profile
-// populated immediately after sign-in.
+// Auto-prefill when auth state changes
 supabase.auth.onAuthStateChange((_event, session) => {
   if (session?.user) {
     autoFillProfileForm();
@@ -288,9 +263,7 @@ supabase.auth.onAuthStateChange((_event, session) => {
 });
 
 /**
- * Render skills as neat tags (instead of comma string)
- * @param {string[]|string} skills
- * @returns {string} HTML markup for skill tags
+ * Render skills as tags
  */
 export function renderSkills(skills) {
   if (!skills) return '';
@@ -302,7 +275,5 @@ export function renderSkills(skills) {
     return `<span class="skill-tag">No skills listed</span>`;
   }
 
-  return list
-    .map(skill => `<span class="skill-tag">${skill}</span>`)
-    .join(' ');
+  return list.map(skill => `<span class="skill-tag">${skill}</span>`).join(' ');
 }
