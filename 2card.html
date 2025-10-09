@@ -6,57 +6,54 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   />
-  <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-  <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
-  <meta property="og:description" content="CharlestonHacks promotes tech events. Join us for exciting events and stay updated." />
-  <meta property="og:image" content="images/reactiveh.png" />
-  <meta property="og:url" content="https://charlestonhacks.com" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="description" content="CharlestonHacks Innovation Engine: Making Invisible Networks Visible.">
   <title>Innovation Engine - CharlestonHacks</title>
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="manifest" href="manifest.json" />
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+
   <style>
-    /* Center tab buttons evenly */
+    body { color: white; background: black; overflow-x: hidden; }
+
     .tab-nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
     }
     .tab-button {
-      flex: 1 1 22%;
-      text-align: center;
-      min-width: 160px;
+      flex: 1 1 22%; min-width: 160px; text-align: center; padding: 8px 12px;
+      border-radius: 6px; border: none; cursor: pointer;
+    }
+    .tab-button.active { background: #879EF2; color: #000; }
+
+    .team-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 16px; width: 240px;
+      text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .team-card img {
+      width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;
     }
 
-    /* Improve Team Builder layout */
-    #team-builder .input-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      text-align: center;
+    .leaderboard-entry {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .leaderboard-entry img {
+      width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;
     }
 
-    #team-builder .card-container {
-      margin-top: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
+    .leaderboard-tabs {
+      display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;
     }
+    .leaderboard-tabs button {
+      background: rgba(255,255,255,0.1); border: none; padding: 10px 20px;
+      border-radius: 8px; cursor: pointer; color: white;
+    }
+    .leaderboard-tabs button.active { background: #879EF2; color:#000; }
 
-    #team-builder .instructions {
-      font-size: 0.95rem;
-      color: #ddd;
-    }
+    .welcome-message { text-align: right; font-size: 0.9rem; color: #bbb; margin-right: 20px; }
+
+    .input-container { display:flex; flex-direction:column; gap:8px; align-items:center; }
   </style>
 </head>
 
@@ -67,226 +64,97 @@
     <i class="fas fa-home home-icon" aria-hidden="true"></i>
   </a>
 
-  <div id="achievements" class="achievements" aria-live="polite"></div>
-
   <div class="container">
     <header class="header">
       <h1>Innovation Engine</h1>
       <p>Making Invisible Networks Visible</p>
-
-      <div class="auth-controls">
-        <span class="user-badge hidden" id="user-badge"></span>
-
-        <!-- 🔔 Notifications -->
-        <div id="notifications" class="notifications-container hidden">
-          <button id="notifications-btn" class="notifications-btn">
-            🔔
-            <span id="notifications-badge" class="notifications-badge hidden">0</span>
-          </button>
-
-          <div id="notifications-dropdown" class="notifications-dropdown hidden">
-            <h4>Connection Requests</h4>
-            <div id="notifications-list">No new requests</div>
-          </div>
-        </div>
-
-        <button class="logout-btn action-btn hidden" id="logout-btn">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-      </div>
+      <div class="welcome-message" id="welcome-message"></div>
     </header>
 
     <main class="panels-wrapper">
       <div class="panel large">
+
         <!-- LOGIN SECTION -->
         <div id="login-section">
-          <h2 class="section-title">Login</h2>
+          <h2>Login</h2>
           <form id="login-form">
-            <input type="email" id="login-email" placeholder="Enter your email" autocomplete="email" />
+            <input type="email" id="login-email" placeholder="Enter your email" autocomplete="email" required />
             <button id="login-button" type="submit" class="action-btn">Send Magic Link</button>
           </form>
+          <p id="login-info" style="color:#aaa;font-size:0.9rem;text-align:center;"></p>
         </div>
 
-        <!-- PROFILE SECTION -->
+        <!-- MAIN APP SECTION -->
         <div id="profile-section" class="hidden">
-          <!-- Tab Navigation -->
           <div class="tab-nav" role="tablist">
-            <button class="tab-button active" role="tab" aria-selected="true" aria-controls="profile" id="tab-profile" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
-            <button class="tab-button" role="tab" aria-selected="false" aria-controls="search" id="tab-search" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
-            <button class="tab-button" role="tab" aria-selected="false" aria-controls="team-builder" id="tab-team-builder" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
-            <button class="tab-button" role="tab" aria-selected="false" aria-controls="leaderboard" id="tab-leaderboard" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
+            <button class="tab-button active" data-tab="profile" aria-selected="true"><i class="fas fa-user"></i> Profile</button>
+            <button class="tab-button" data-tab="team-builder" aria-selected="false"><i class="fas fa-users"></i> Team Builder</button>
+            <button class="tab-button" data-tab="leaderboard" aria-selected="false"><i class="fas fa-trophy"></i> Leaderboard</button>
           </div>
 
-          <!-- Profile Tab -->
-          <div id="profile" class="tab-content-pane active-tab-pane" role="tabpanel" aria-labelledby="tab-profile">
-            <section id="matchmaking-section">
-              <h2 class="section-title">Create Your Profile</h2>
-              <form id="skills-form">
-                <div class="input-container">
-                  <input type="text" id="first-name" placeholder="First Name" required>
-                  <input type="text" id="last-name" placeholder="Last Name" required>
-                  <input type="email" id="email" placeholder="Email" required>
+          <!-- PROFILE TAB -->
+          <div id="profile" class="tab-content-pane active-tab-pane" role="tabpanel">
+            <h2>Your Profile</h2>
+            <form id="skills-form" class="input-container">
+              <input type="text" id="first-name" placeholder="First Name" required />
+              <input type="text" id="last-name" placeholder="Last Name" required />
+              <input type="email" id="email" placeholder="Email" required disabled />
 
-                  <label for="skills-input">Professional Skills</label>
-                  <div class="input-wrapper">
-                    <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off">
-                    <div id="autocomplete-skills-input" class="autocomplete-box"></div>
-                  </div>
-                  <div id="skills-proficiency-container"></div>
+              <label>Skills (comma-separated)</label>
+              <input type="text" id="skills-input" placeholder="e.g. AWS, Python, UX" required />
 
-                  <div class="photo-upload">
-                    <label for="photo-input">Upload Your Photo</label>
-                    <input type="file" id="photo-input" accept="image/*" />
-                    <img id="preview" alt="Image Preview" class="image-preview hidden" />
-                  </div>
+              <label>Short Bio</label>
+              <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" />
 
-                  <label for="bio-input">Short Bio</label>
-                  <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120">
+              <label>Upload Photo</label>
+              <input type="file" id="photo-input" accept="image/*" />
+              <img id="preview" class="hidden" style="width:100px;border-radius:8px;" />
 
-                  <label for="availability-input">Current Availability</label>
-                  <select id="availability-input">
-                    <option value="Available">Available</option>
-                    <option value="Busy">Busy</option>
-                    <option value="Not Looking">Not Looking</option>
-                  </select>
+              <label><input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter</label>
 
-                  <label><input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter</label>
-                  <button type="submit" class="action-btn">Save Profile</button>
-                </div>
-                <div class="profile-bar"><div class="profile-bar-inner"></div></div>
-                <div id="profile-progress-msg" class="profile-incomplete"></div>
-              </form>
-              <p id="success-message" class="success-message hidden">Profile saved successfully!</p>
-            </section>
+              <button type="submit" class="action-btn">Save Profile</button>
+              <p id="profile-status" style="color:#ccc;"></p>
+            </form>
           </div>
 
-          <!-- Search Tab -->
-          <div id="search" class="tab-content-pane" role="tabpanel" aria-labelledby="tab-search">
-            <h2 class="section-title">Individual Search</h2>
-            <div class="input-wrapper">
-              <label for="teamSkillsInput">Required Skills</label>
-              <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
-              <div id="autocomplete-team-skills" class="autocomplete-box"></div>
+          <!-- TEAM BUILDER TAB -->
+          <div id="team-builder" class="tab-content-pane hidden" role="tabpanel">
+            <h2>Team Builder</h2>
+            <div style="text-align:center;">
+              <input type="text" id="team-builder-skills" placeholder="Enter skill (e.g. AI, UX, Cloud)" />
+              <input type="number" id="teamSize" placeholder="Team size (optional)" min="1" max="10" />
+              <button id="buildTeamBtn" class="action-btn">Build Team</button>
+              <button id="clearTeamBtn" class="action-btn">Clear</button>
             </div>
-            <button id="find-team-btn" type="button" class="action-btn">Get People</button>
-            <br><br>
-            <div class="input-wrapper">
-              <label for="nameInput">Search by Name</label>
-              <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
-              <div id="autocomplete-names" class="autocomplete-box"></div>
-            </div>
-            <button id="search-name-btn" type="button" class="action-btn">Find by Name</button>
-            <button id="clear-search-btn" type="button" class="action-btn">Clear</button>
-
-            <div id="matchNotification" class="notification match-notification hidden"></div>
-            <div id="noResults" class="notification no-results-notification hidden"></div>
-            <div id="resultCount" class="result-count hidden"></div>
-
-            <div id="cardContainer" class="card-container" role="list"></div>
-          </div>
-
-          <!-- Team Builder Tab -->
-          <div id="team-builder" class="tab-content-pane" role="tabpanel" aria-labelledby="tab-team-builder">
-            <h2 class="section-title">Team Builder</h2>
-            <div class="input-container">
-              <p class="instructions">Enter required skills and team size.</p>
-              <div class="input-wrapper">
-                <input type="text" id="team-builder-skills" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
-                <div id="autocomplete-team-builder" class="autocomplete-box"></div>
-              </div>
-              <input type="number" id="teamSize" placeholder="Team size" min="1" max="6">
-              <button id="buildTeamBtn" type="button" class="action-btn">Build Team</button>
-              <button id="clearTeamBtn" type="button" class="action-btn">Clear</button>
-            </div>
-            <div class="card-container" id="bestTeamContainer" role="list"></div>
+            <div id="bestTeamContainer" class="card-container"></div>
             <div id="teamResultCount" class="result-count hidden"></div>
           </div>
 
-          <!-- Leaderboard Tab -->
-          <div id="leaderboard" class="tab-content-pane" role="tabpanel" aria-labelledby="tab-leaderboard">
-            <div class="leaderboard">
-              <h2>Leaderboard</h2>
-              <div class="leaderboard-tabs">
-                <button class="lb-tab active" data-type="skills"><i class="fas fa-star"></i> Top Skills</button>
-                <button class="lb-tab" data-type="connectors"><i class="fas fa-link"></i> Top Connectors</button>
-                <button class="lb-tab" data-type="rising"><i class="fas fa-rocket"></i> Rising Stars</button>
-              </div>
-              <div id="leaderboard-rows" class="leaderboard-rows"></div>
+          <!-- LEADERBOARD TAB -->
+          <div id="leaderboard" class="tab-content-pane hidden" role="tabpanel">
+            <h2>Leaderboard</h2>
+            <div class="leaderboard-tabs">
+              <button class="lb-tab active" data-type="skills"><i class="fas fa-star"></i> Top Skills</button>
+              <button class="lb-tab" data-type="connectors"><i class="fas fa-link"></i> Top Connectors</button>
+              <button class="lb-tab" data-type="rising"><i class="fas fa-rocket"></i> Rising Stars</button>
             </div>
+            <div id="leaderboard-rows"></div>
           </div>
-        </div><!-- /profile-section -->
+        </div>
       </div>
     </main>
   </div>
 
-  <!-- Endorse Skill Modal -->
-  <div id="endorseSkillModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="close-button" aria-label="Close modal">&times;</button>
-      <h2>Endorse Skills</h2>
-      <div id="endorse-skill-list"></div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script type="module" src="assets/js/main.js"></script>
+  <!-- Modular Script Imports -->
+  <script type="module" src="assets/js/neuralBackground.js"></script>
+  <script type="module" src="assets/js/supabaseClient.js"></script>
   <script type="module" src="assets/js/login.js"></script>
   <script type="module" src="assets/js/profile.js"></script>
-  <script type="module" src="assets/js/neuralBackground.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const resultCount = document.getElementById('resultCount');
-      const cardContainer = document.getElementById('cardContainer');
-      const bestTeamContainer = document.getElementById('bestTeamContainer');
-      const teamResultCount = document.getElementById('teamResultCount');
-
-      function updateResultCount(container, countEl) {
-        const count = container?.children.length || 0;
-        if (count > 0) {
-          countEl.textContent = `${count} ${count === 1 ? 'result' : 'results'} found`;
-          countEl.classList.remove('hidden');
-        } else countEl.classList.add('hidden');
-      }
-
-      // Fake Team Builder logic demo (replace with your Supabase fetch)
-      const buildBtn = document.getElementById('buildTeamBtn');
-      const clearBtn = document.getElementById('clearTeamBtn');
-      if (buildBtn) {
-        buildBtn.addEventListener('click', () => {
-          bestTeamContainer.innerHTML = '';
-          for (let i = 1; i <= 3; i++) {
-            const card = document.createElement('div');
-            card.className = 'team-card';
-            card.innerHTML = `<h3>Teammate ${i}</h3><p>Skillset: Example</p>`;
-            bestTeamContainer.appendChild(card);
-          }
-          updateResultCount(bestTeamContainer, teamResultCount);
-        });
-      }
-      if (clearBtn) {
-        clearBtn.addEventListener('click', () => {
-          bestTeamContainer.innerHTML = '';
-          updateResultCount(bestTeamContainer, teamResultCount);
-        });
-      }
-
-      // Escape closes modals
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-          document.getElementById('notifications-dropdown')?.classList.add('hidden');
-          document.getElementById('endorseSkillModal')?.classList.add('hidden');
-        }
-      });
-
-      // Tab aria sync
-      document.querySelectorAll('.tab-nav .tab-button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.tab-nav .tab-button').forEach(b => b.setAttribute('aria-selected', 'false'));
-          btn.setAttribute('aria-selected', 'true');
-        });
-      });
-    });
-  </script>
+  <script type="module" src="assets/js/teamBuilder.js"></script>
+  <script type="module" src="assets/js/teamSearch.js"></script>
+  <script type="module" src="assets/js/leaderboard.js"></script>
+  <script type="module" src="assets/js/endorsements.js"></script>
+  <script type="module" src="assets/js/eventListeners.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>
