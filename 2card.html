@@ -12,8 +12,10 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+
   <style>
     body { color: white; background: black; overflow-x: hidden; }
+
     .tab-nav {
       display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
     }
@@ -24,12 +26,14 @@
     .tab-button.active { background: #879EF2; color: #000; }
 
     .team-card {
-      background: rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 16px;
-      width: 240px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 16px; width: 240px;
+      text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
     .team-card img {
       width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;
     }
+
     .leaderboard-entry {
       display: flex; align-items: center; justify-content: space-between;
       padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -37,6 +41,7 @@
     .leaderboard-entry img {
       width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;
     }
+
     .leaderboard-tabs {
       display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;
     }
@@ -45,7 +50,9 @@
       border-radius: 8px; cursor: pointer; color: white;
     }
     .leaderboard-tabs button.active { background: #879EF2; color:#000; }
+
     .welcome-message { text-align: right; font-size: 0.9rem; color: #bbb; margin-right: 20px; }
+
     .input-container { display:flex; flex-direction:column; gap:8px; align-items:center; }
   </style>
 </head>
@@ -67,7 +74,7 @@
     <main class="panels-wrapper">
       <div class="panel large">
 
-        <!-- LOGIN -->
+        <!-- LOGIN SECTION -->
         <div id="login-section">
           <h2>Login</h2>
           <form id="login-form">
@@ -77,7 +84,7 @@
           <p id="login-info" style="color:#aaa;font-size:0.9rem;text-align:center;"></p>
         </div>
 
-        <!-- MAIN APP -->
+        <!-- MAIN APP SECTION -->
         <div id="profile-section" class="hidden">
           <div class="tab-nav" role="tablist">
             <button class="tab-button active" data-tab="profile" aria-selected="true"><i class="fas fa-user"></i> Profile</button>
@@ -88,10 +95,10 @@
           <!-- PROFILE TAB -->
           <div id="profile" class="tab-content-pane active-tab-pane" role="tabpanel">
             <h2>Your Profile</h2>
-            <form id="profile-form" class="input-container">
+            <form id="skills-form" class="input-container">
               <input type="text" id="first-name" placeholder="First Name" required />
               <input type="text" id="last-name" placeholder="Last Name" required />
-              <input type="email" id="profile-email" placeholder="Email" required disabled />
+              <input type="email" id="email" placeholder="Email" required disabled />
 
               <label>Skills (comma-separated)</label>
               <input type="text" id="skills-input" placeholder="e.g. AWS, Python, UX" required />
@@ -101,7 +108,9 @@
 
               <label>Upload Photo</label>
               <input type="file" id="photo-input" accept="image/*" />
-              <img id="photo-preview" class="hidden" style="width:100px;border-radius:8px;" />
+              <img id="preview" class="hidden" style="width:100px;border-radius:8px;" />
+
+              <label><input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter</label>
 
               <button type="submit" class="action-btn">Save Profile</button>
               <p id="profile-status" style="color:#ccc;"></p>
@@ -136,220 +145,16 @@
     </main>
   </div>
 
-  <!-- Scripts -->
-  <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-    const supabase = createClient(
-      'https://hvmotpzhliufzomewzfl.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'
-    );
-
-    const loginSection = document.getElementById('login-section');
-    const profileSection = document.getElementById('profile-section');
-    const welcomeMsg = document.getElementById('welcome-message');
-    const loginInfo = document.getElementById('login-info');
-
-    // --- Handle magic link return ---
-    async function handleMagicLink() {
-      const hashParams = new URLSearchParams(window.location.hash.substring(1));
-      if (hashParams.get('access_token')) {
-        const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.hash);
-        if (error) console.error('Magic link error', error);
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-    }
-
-    // --- Session check ---
-    async function checkSession() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        loginSection.classList.add('hidden');
-        profileSection.classList.remove('hidden');
-        welcomeMsg.textContent = `Welcome back, ${user.email}`;
-        document.getElementById('profile-email').value = user.email;
-        loadProfile(user.id);
-      } else {
-        profileSection.classList.add('hidden');
-        loginSection.classList.remove('hidden');
-        loginInfo.textContent = "Check your email for a magic link to log in.";
-      }
-    }
-
-    await handleMagicLink();
-    await checkSession();
-
-    // --- Magic link send ---
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
-      if (!email) return;
-      const { error } = await supabase.auth.signInWithOtp({ email });
-      if (error) alert('Login error: ' + error.message);
-      else alert('Magic link sent! Check your inbox.');
-    });
-
-    // --- Tabs ---
-    document.querySelectorAll('.tab-button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content-pane').forEach(p => p.classList.add('hidden'));
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.remove('hidden');
-      });
-    });
-
-    // --- Profile Save & Load ---
-    async function loadProfile(userId) {
-      const { data, error } = await supabase.from('community').select('*').eq('id', userId).maybeSingle();
-      if (error) console.error(error);
-      if (data) {
-        document.getElementById('first-name').value = data.name?.split(' ')[0] || '';
-        document.getElementById('last-name').value = data.name?.split(' ')[1] || '';
-        document.getElementById('skills-input').value = data.skills || '';
-        document.getElementById('bio-input').value = data.bio || '';
-        if (data.image_url) {
-          const img = document.getElementById('photo-preview');
-          img.src = data.image_url; img.classList.remove('hidden');
-        }
-      }
-    }
-
-    document.getElementById('photo-input').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const preview = document.getElementById('photo-preview');
-      preview.src = URL.createObjectURL(file);
-      preview.classList.remove('hidden');
-    });
-
-    document.getElementById('profile-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return alert('Not logged in');
-      const first = document.getElementById('first-name').value.trim();
-      const last = document.getElementById('last-name').value.trim();
-      const skills = document.getElementById('skills-input').value.trim();
-      const bio = document.getElementById('bio-input').value.trim();
-      const file = document.getElementById('photo-input').files[0];
-
-      let image_url = '';
-      if (file) {
-        const fileName = `${user.id}_${Date.now()}`;
-        const { error: uploadErr } = await supabase.storage.from('avatars').upload(fileName, file);
-        if (!uploadErr) {
-          const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
-          image_url = data.publicUrl;
-        }
-      }
-
-      const { error } = await supabase.from('community').upsert({
-        id: user.id,
-        name: `${first} ${last}`,
-        email: user.email,
-        skills, bio, image_url
-      });
-      document.getElementById('profile-status').textContent = error ? 'Save failed.' : 'Profile saved successfully.';
-    });
-
-    // --- Team Builder ---
-    const buildBtn = document.getElementById('buildTeamBtn');
-    const clearBtn = document.getElementById('clearTeamBtn');
-    const teamContainer = document.getElementById('bestTeamContainer');
-    const teamResultCount = document.getElementById('teamResultCount');
-
-    function updateResultCount(count) {
-      teamResultCount.textContent = count > 0 ? `${count} results found` : '';
-      teamResultCount.classList.toggle('hidden', count === 0);
-    }
-
-    buildBtn.addEventListener('click', async () => {
-      const skill = document.getElementById('team-builder-skills').value.trim().toLowerCase();
-      const size = parseInt(document.getElementById('teamSize').value) || 10;
-      teamContainer.innerHTML = '';
-      if (!skill) { teamContainer.innerHTML = '<p>Please enter a skill.</p>'; return; }
-
-      const { data, error } = await supabase
-        .from('community')
-        .select('id, name, role, bio, skills, image_url')
-        .ilike('skills', `%${skill}%`)
-        .limit(size);
-
-      if (error) { teamContainer.innerHTML = `<p>Error: ${error.message}</p>`; return; }
-      if (!data?.length) { teamContainer.innerHTML = '<p>No matches found.</p>'; updateResultCount(0); return; }
-
-      data.forEach(p => {
-        teamContainer.innerHTML += `
-          <div class="team-card">
-            <img src="${p.image_url || 'images/default-avatar.png'}" alt="${p.name}">
-            <h3>${p.name || 'Unnamed'}</h3>
-            <p>${p.role || ''}</p>
-            <p><small>${p.bio || ''}</small></p>
-            <p><strong>Skills:</strong> ${p.skills || ''}</p>
-          </div>`;
-      });
-      updateResultCount(data.length);
-    });
-    clearBtn.addEventListener('click', () => { teamContainer.innerHTML = ''; updateResultCount(0); });
-
-    // --- Leaderboard ---
-    const lbTabs = document.querySelectorAll('.lb-tab');
-    const lbRows = document.getElementById('leaderboard-rows');
-
-    lbTabs.forEach(tab => {
-      tab.addEventListener('click', async () => {
-        lbTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        lbRows.innerHTML = '<p>Loading...</p>';
-        const type = tab.dataset.type;
-
-        let resultHTML = '';
-        if (type === 'skills') {
-          const { data } = await supabase.from('community').select('name, image_url, skills').not('skills','is',null);
-          if (!data?.length) resultHTML = '<p>No data.</p>';
-          else {
-            const freq = {};
-            data.forEach(u => u.skills?.split(',').forEach(s => { s=s.trim().toLowerCase(); if(s) freq[s]=(freq[s]||0)+1; }));
-            const top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10);
-            resultHTML = top.map(([skill,count])=>`
-              <div class="leaderboard-entry"><div><strong>${skill}</strong></div><div>${count} members</div></div>`).join('');
-          }
-        }
-        if (type === 'connectors') {
-          const { data } = await supabase.from('community').select('name,image_url,endorsements').order('endorsements',{ascending:false}).limit(10);
-          resultHTML = data?.length ? data.map(p=>`
-            <div class="leaderboard-entry"><div><img src="${p.image_url||'images/default-avatar.png'}"><strong>${p.name}</strong></div><div>${p.endorsements||0} connections</div></div>`).join('') : '<p>No data.</p>';
-        }
-        if (type === 'rising') {
-          const { data } = await supabase.from('community').select('name,image_url,created_at').order('created_at',{ascending:false}).limit(10);
-          resultHTML = data?.length ? data.map(p=>`
-            <div class="leaderboard-entry"><div><img src="${p.image_url||'images/default-avatar.png'}"><strong>${p.name}</strong></div><div>${new Date(p.created_at).toLocaleDateString()}</div></div>`).join('') : '<p>No data.</p>';
-        }
-        lbRows.innerHTML = resultHTML;
-      });
-    });
-    lbTabs[0].click();
-  </script>
-
-  <!-- Neural background -->
+  <!-- Modular Script Imports -->
   <script type="module" src="assets/js/neuralBackground.js"></script>
-  <!-- Load Supabase client (shared across modules) -->
-<script type="module" src="assets/js/supabaseClient.js"></script>
-<!-- Handle login & auth state -->
-<script type="module" src="assets/js/login.js"></script>
-<!-- Initialize the profile form -->
-<script type="module" src="assets/js/profile.js"></script>
-<!-- Team builder and search -->
-<script type="module" src="assets/js/teamBuilder.js"></script>
-<script type="module" src="assets/js/teamSearch.js"></script>
-<!-- Leaderboard and endorsements -->
-<script type="module" src="assets/js/leaderboard.js"></script>
-<script type="module" src="assets/js/endorsements.js"></script>
-<!-- Central event binding / UI glue -->
-<script type="module" src="assets/js/eventListeners.js"></script>
-<!-- Optionally import main.js if it orchestrates initialization -->
-<script type="module" src="assets/js/main.js"></script>
-
-  
+  <script type="module" src="assets/js/supabaseClient.js"></script>
+  <script type="module" src="assets/js/login.js"></script>
+  <script type="module" src="assets/js/profile.js"></script>
+  <script type="module" src="assets/js/teamBuilder.js"></script>
+  <script type="module" src="assets/js/teamSearch.js"></script>
+  <script type="module" src="assets/js/leaderboard.js"></script>
+  <script type="module" src="assets/js/endorsements.js"></script>
+  <script type="module" src="assets/js/eventListeners.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>
