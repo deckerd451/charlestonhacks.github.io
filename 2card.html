@@ -21,6 +21,43 @@
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Center tab buttons evenly */
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tab-button {
+      flex: 1 1 22%;
+      text-align: center;
+      min-width: 160px;
+    }
+
+    /* Improve Team Builder layout */
+    #team-builder .input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    #team-builder .card-container {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    #team-builder .instructions {
+      font-size: 0.95rem;
+      color: #ddd;
+    }
+  </style>
 </head>
 
 <body class="two-card-page">
@@ -70,7 +107,7 @@
           </form>
         </div>
 
-        <!-- PROFILE SECTION (hidden until logged in) -->
+        <!-- PROFILE SECTION -->
         <div id="profile-section" class="hidden">
           <!-- Tab Navigation -->
           <div class="tab-nav" role="tablist">
@@ -86,11 +123,11 @@
               <h2 class="section-title">Create Your Profile</h2>
               <form id="skills-form">
                 <div class="input-container">
-                  <input type="text" id="first-name" aria-label="First Name" placeholder="First Name" required autocomplete="given-name">
-                  <input type="text" id="last-name" aria-label="Last Name" placeholder="Last Name" required autocomplete="family-name">
-                  <input type="email" id="email" aria-label="Email address" placeholder="Email" required autocomplete="email">
+                  <input type="text" id="first-name" placeholder="First Name" required>
+                  <input type="text" id="last-name" placeholder="Last Name" required>
+                  <input type="email" id="email" placeholder="Email" required>
 
-                  <label for="skills-input">Professional Skills (comma separated)</label>
+                  <label for="skills-input">Professional Skills</label>
                   <div class="input-wrapper">
                     <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off">
                     <div id="autocomplete-skills-input" class="autocomplete-box"></div>
@@ -103,7 +140,7 @@
                     <img id="preview" alt="Image Preview" class="image-preview hidden" />
                   </div>
 
-                  <label for="bio-input">Short Bio (optional)</label>
+                  <label for="bio-input">Short Bio</label>
                   <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120">
 
                   <label for="availability-input">Current Availability</label>
@@ -113,10 +150,7 @@
                     <option value="Not Looking">Not Looking</option>
                   </select>
 
-                  <label>
-                    <input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter
-                  </label>
-
+                  <label><input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter</label>
                   <button type="submit" class="action-btn">Save Profile</button>
                 </div>
                 <div class="profile-bar"><div class="profile-bar-inner"></div></div>
@@ -129,22 +163,18 @@
           <!-- Search Tab -->
           <div id="search" class="tab-content-pane" role="tabpanel" aria-labelledby="tab-search">
             <h2 class="section-title">Individual Search</h2>
-
             <div class="input-wrapper">
               <label for="teamSkillsInput">Required Skills</label>
               <input type="text" id="teamSkillsInput" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
               <div id="autocomplete-team-skills" class="autocomplete-box"></div>
             </div>
-
             <button id="find-team-btn" type="button" class="action-btn">Get People</button>
             <br><br>
-
             <div class="input-wrapper">
-              <label for="nameInput">Search by First/Last Name</label>
+              <label for="nameInput">Search by Name</label>
               <input type="text" id="nameInput" placeholder="e.g. John, Doug, Will, Dave" autocomplete="off">
               <div id="autocomplete-names" class="autocomplete-box"></div>
             </div>
-
             <button id="search-name-btn" type="button" class="action-btn">Find by Name</button>
             <button id="clear-search-btn" type="button" class="action-btn">Clear</button>
 
@@ -152,7 +182,7 @@
             <div id="noResults" class="notification no-results-notification hidden"></div>
             <div id="resultCount" class="result-count hidden"></div>
 
-            <div id="cardContainer" class="card-container" role="list" aria-label="Matching team members"></div>
+            <div id="cardContainer" class="card-container" role="list"></div>
           </div>
 
           <!-- Team Builder Tab -->
@@ -160,36 +190,27 @@
             <h2 class="section-title">Team Builder</h2>
             <div class="input-container">
               <p class="instructions">Enter required skills and team size.</p>
-
               <div class="input-wrapper">
                 <input type="text" id="team-builder-skills" placeholder="e.g. aws, fullstack, java, python" autocomplete="off">
                 <div id="autocomplete-team-builder" class="autocomplete-box"></div>
               </div>
-
               <input type="number" id="teamSize" placeholder="Team size" min="1" max="6">
               <button id="buildTeamBtn" type="button" class="action-btn">Build Team</button>
+              <button id="clearTeamBtn" type="button" class="action-btn">Clear</button>
             </div>
-
             <div class="card-container" id="bestTeamContainer" role="list"></div>
+            <div id="teamResultCount" class="result-count hidden"></div>
           </div>
 
           <!-- Leaderboard Tab -->
           <div id="leaderboard" class="tab-content-pane" role="tabpanel" aria-labelledby="tab-leaderboard">
             <div class="leaderboard">
               <h2>Leaderboard</h2>
-
               <div class="leaderboard-tabs">
-                <button class="lb-tab active" data-type="skills">
-                  <i class="fas fa-star"></i> Top Skills
-                </button>
-                <button class="lb-tab" data-type="connectors">
-                  <i class="fas fa-link"></i> Top Connectors
-                </button>
-                <button class="lb-tab" data-type="rising">
-                  <i class="fas fa-rocket"></i> Rising Stars
-                </button>
+                <button class="lb-tab active" data-type="skills"><i class="fas fa-star"></i> Top Skills</button>
+                <button class="lb-tab" data-type="connectors"><i class="fas fa-link"></i> Top Connectors</button>
+                <button class="lb-tab" data-type="rising"><i class="fas fa-rocket"></i> Rising Stars</button>
               </div>
-
               <div id="leaderboard-rows" class="leaderboard-rows"></div>
             </div>
           </div>
@@ -215,53 +236,53 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const findBtn = document.getElementById('find-team-btn');
-      const nameBtn = document.getElementById('search-name-btn');
-      const clearBtn = document.getElementById('clear-search-btn');
-      const cardContainer = document.getElementById('cardContainer');
       const resultCount = document.getElementById('resultCount');
+      const cardContainer = document.getElementById('cardContainer');
+      const bestTeamContainer = document.getElementById('bestTeamContainer');
+      const teamResultCount = document.getElementById('teamResultCount');
 
-      function updateResultCount() {
-        const count = cardContainer ? cardContainer.children.length : 0;
-        if (!resultCount) return;
+      function updateResultCount(container, countEl) {
+        const count = container?.children.length || 0;
         if (count > 0) {
-          resultCount.textContent = `${count} ${count === 1 ? 'result' : 'results'} found`;
-          resultCount.classList.remove('hidden');
-        } else {
-          resultCount.textContent = '';
-          resultCount.classList.add('hidden');
-        }
+          countEl.textContent = `${count} ${count === 1 ? 'result' : 'results'} found`;
+          countEl.classList.remove('hidden');
+        } else countEl.classList.add('hidden');
       }
 
-      if (findBtn) findBtn.addEventListener('click', () => setTimeout(updateResultCount, 0));
-      if (nameBtn) nameBtn.addEventListener('click', () => setTimeout(updateResultCount, 0));
+      // Fake Team Builder logic demo (replace with your Supabase fetch)
+      const buildBtn = document.getElementById('buildTeamBtn');
+      const clearBtn = document.getElementById('clearTeamBtn');
+      if (buildBtn) {
+        buildBtn.addEventListener('click', () => {
+          bestTeamContainer.innerHTML = '';
+          for (let i = 1; i <= 3; i++) {
+            const card = document.createElement('div');
+            card.className = 'team-card';
+            card.innerHTML = `<h3>Teammate ${i}</h3><p>Skillset: Example</p>`;
+            bestTeamContainer.appendChild(card);
+          }
+          updateResultCount(bestTeamContainer, teamResultCount);
+        });
+      }
       if (clearBtn) {
         clearBtn.addEventListener('click', () => {
-          const skillsInput = document.getElementById('teamSkillsInput');
-          const nameInput = document.getElementById('nameInput');
-          if (skillsInput) skillsInput.value = '';
-          if (nameInput) nameInput.value = '';
-          if (cardContainer) cardContainer.innerHTML = '';
-          document.getElementById('matchNotification')?.classList.add('hidden');
-          document.getElementById('noResults')?.classList.add('hidden');
-          updateResultCount();
+          bestTeamContainer.innerHTML = '';
+          updateResultCount(bestTeamContainer, teamResultCount);
         });
       }
 
-      // Close notifications dropdown and modal on Escape key
-      document.addEventListener('keydown', (e) => {
+      // Escape closes modals
+      document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
           document.getElementById('notifications-dropdown')?.classList.add('hidden');
           document.getElementById('endorseSkillModal')?.classList.add('hidden');
         }
       });
 
-      // Update aria-selected state for tabs
-      document.querySelectorAll('.tab-nav .tab-button').forEach((btn) => {
+      // Tab aria sync
+      document.querySelectorAll('.tab-nav .tab-button').forEach(btn => {
         btn.addEventListener('click', () => {
-          document.querySelectorAll('.tab-nav .tab-button').forEach((b) => {
-            b.setAttribute('aria-selected', 'false');
-          });
+          document.querySelectorAll('.tab-nav .tab-button').forEach(b => b.setAttribute('aria-selected', 'false'));
           btn.setAttribute('aria-selected', 'true');
         });
       });
