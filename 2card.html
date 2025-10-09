@@ -266,17 +266,44 @@
         const type = tab.dataset.type;
 
         if (type === 'skills') {
-          const { data } = await supabase
-            .from('community')
-            .select('name, image_url, skills')
-            .not('skills', 'is', null)
-            .limit(10);
-          lbRows.innerHTML = data.map(p => `
-            <div class="leaderboard-entry">
-              <div><img src="${p.image_url || 'images/default-avatar.png'}"><strong>${p.name}</strong></div>
-              <div>${p.skills.split(',').length} skills</div>
-            </div>`).join('');
-        }
+  const { data, error } = await supabase
+    .from('community')
+    .select('name, image_url, skills')
+    .not('skills', 'is', null)
+    .limit(10);
+
+  if (error) {
+    console.error('Error loading skills leaderboard:', error);
+    lbRows.innerHTML = `<p style="text-align:center;color:#f55;">Error loading leaderboard.</p>`;
+    return;
+  }
+
+  lbRows.innerHTML = (data || [])
+    .map(p => {
+      // 🧠 Normalize skills field to an array
+      let skills = [];
+      if (Array.isArray(p.skills)) {
+        skills = p.skills;
+      } else if (typeof p.skills === 'string') {
+        skills = p.skills.split(',').map(s => s.trim()).filter(Boolean);
+      }
+
+      const skillCount = skills.length;
+      const avatar = p.image_url || 'images/default-avatar.png';
+      const name = p.name || 'Unnamed User';
+
+      return `
+        <div class="leaderboard-entry">
+          <div>
+            <img src="${avatar}" alt="${name}" />
+            <strong>${name}</strong>
+          </div>
+          <div>${skillCount} ${skillCount === 1 ? 'skill' : 'skills'}</div>
+        </div>`;
+    })
+    .join('');
+}
+
 
         if (type === 'connectors') {
           const { data } = await supabase
