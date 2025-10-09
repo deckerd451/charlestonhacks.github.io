@@ -15,70 +15,38 @@
   <style>
     body { color: white; background: black; overflow-x: hidden; }
     .tab-nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
     }
     .tab-button {
-      flex: 1 1 22%;
-      text-align: center;
-      min-width: 160px;
+      flex: 1 1 22%; min-width: 160px; text-align: center; padding: 8px 12px;
+      border-radius: 6px; border: none; cursor: pointer;
     }
+    .tab-button.active { background: #879EF2; color: #000; }
 
     .team-card {
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 16px;
-      width: 240px;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      background: rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 16px;
+      width: 240px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
     .team-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
+      width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;
     }
-
     .leaderboard-entry {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     .leaderboard-entry img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin-right: 10px;
+      width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;
     }
     .leaderboard-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 15px;
+      display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;
     }
     .leaderboard-tabs button {
-      background: rgba(255,255,255,0.1);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: white;
+      background: rgba(255,255,255,0.1); border: none; padding: 10px 20px;
+      border-radius: 8px; cursor: pointer; color: white;
     }
-    .leaderboard-tabs button.active {
-      background: #879EF2;
-    }
-    .welcome-message {
-      text-align: right;
-      font-size: 0.9rem;
-      color: #bbb;
-      margin-right: 20px;
-    }
+    .leaderboard-tabs button.active { background: #879EF2; color:#000; }
+    .welcome-message { text-align: right; font-size: 0.9rem; color: #bbb; margin-right: 20px; }
+    .input-container { display:flex; flex-direction:column; gap:8px; align-items:center; }
   </style>
 </head>
 
@@ -98,11 +66,12 @@
 
     <main class="panels-wrapper">
       <div class="panel large">
+
         <!-- LOGIN -->
         <div id="login-section">
           <h2>Login</h2>
           <form id="login-form">
-            <input type="email" id="login-email" placeholder="Enter your email" autocomplete="email" />
+            <input type="email" id="login-email" placeholder="Enter your email" autocomplete="email" required />
             <button id="login-button" type="submit" class="action-btn">Send Magic Link</button>
           </form>
           <p id="login-info" style="color:#aaa;font-size:0.9rem;text-align:center;"></p>
@@ -110,25 +79,41 @@
 
         <!-- MAIN APP -->
         <div id="profile-section" class="hidden">
-          <div class="tab-nav">
-            <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Profile</button>
-            <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
-            <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
+          <div class="tab-nav" role="tablist">
+            <button class="tab-button active" data-tab="profile" aria-selected="true"><i class="fas fa-user"></i> Profile</button>
+            <button class="tab-button" data-tab="team-builder" aria-selected="false"><i class="fas fa-users"></i> Team Builder</button>
+            <button class="tab-button" data-tab="leaderboard" aria-selected="false"><i class="fas fa-trophy"></i> Leaderboard</button>
           </div>
 
-          <!-- Profile -->
-          <div id="profile" class="tab-content-pane active-tab-pane">
+          <!-- PROFILE TAB -->
+          <div id="profile" class="tab-content-pane active-tab-pane" role="tabpanel">
             <h2>Your Profile</h2>
-            <p>Welcome to the Innovation Engine. Manage your data, search, and connect with others.</p>
+            <form id="profile-form" class="input-container">
+              <input type="text" id="first-name" placeholder="First Name" required />
+              <input type="text" id="last-name" placeholder="Last Name" required />
+              <input type="email" id="profile-email" placeholder="Email" required disabled />
+
+              <label>Skills (comma-separated)</label>
+              <input type="text" id="skills-input" placeholder="e.g. AWS, Python, UX" required />
+
+              <label>Short Bio</label>
+              <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120" />
+
+              <label>Upload Photo</label>
+              <input type="file" id="photo-input" accept="image/*" />
+              <img id="photo-preview" class="hidden" style="width:100px;border-radius:8px;" />
+
+              <button type="submit" class="action-btn">Save Profile</button>
+              <p id="profile-status" style="color:#ccc;"></p>
+            </form>
           </div>
 
-          <!-- Team Builder -->
-          <div id="team-builder" class="tab-content-pane hidden">
-            <h2 class="section-title">Team Builder</h2>
+          <!-- TEAM BUILDER TAB -->
+          <div id="team-builder" class="tab-content-pane hidden" role="tabpanel">
+            <h2>Team Builder</h2>
             <div style="text-align:center;">
-              <p>Enter a skill to find community members who match.</p>
-              <input type="text" id="team-builder-skills" placeholder="e.g. AI, UX, Cloud">
-              <input type="number" id="teamSize" placeholder="Team size (optional)" min="1" max="6">
+              <input type="text" id="team-builder-skills" placeholder="Enter skill (e.g. AI, UX, Cloud)" />
+              <input type="number" id="teamSize" placeholder="Team size (optional)" min="1" max="10" />
               <button id="buildTeamBtn" class="action-btn">Build Team</button>
               <button id="clearTeamBtn" class="action-btn">Clear</button>
             </div>
@@ -136,8 +121,8 @@
             <div id="teamResultCount" class="result-count hidden"></div>
           </div>
 
-          <!-- Leaderboard -->
-          <div id="leaderboard" class="tab-content-pane hidden">
+          <!-- LEADERBOARD TAB -->
+          <div id="leaderboard" class="tab-content-pane hidden" role="tabpanel">
             <h2>Leaderboard</h2>
             <div class="leaderboard-tabs">
               <button class="lb-tab active" data-type="skills"><i class="fas fa-star"></i> Top Skills</button>
@@ -165,6 +150,16 @@
     const welcomeMsg = document.getElementById('welcome-message');
     const loginInfo = document.getElementById('login-info');
 
+    // --- Handle magic link return ---
+    async function handleMagicLink() {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      if (hashParams.get('access_token')) {
+        const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.hash);
+        if (error) console.error('Magic link error', error);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+
     // --- Session check ---
     async function checkSession() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -172,15 +167,19 @@
         loginSection.classList.add('hidden');
         profileSection.classList.remove('hidden');
         welcomeMsg.textContent = `Welcome back, ${user.email}`;
+        document.getElementById('profile-email').value = user.email;
+        loadProfile(user.id);
       } else {
         profileSection.classList.add('hidden');
         loginSection.classList.remove('hidden');
         loginInfo.textContent = "Check your email for a magic link to log in.";
       }
     }
-    checkSession();
 
-    // --- Magic link login ---
+    await handleMagicLink();
+    await checkSession();
+
+    // --- Magic link send ---
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
@@ -200,6 +199,59 @@
       });
     });
 
+    // --- Profile Save & Load ---
+    async function loadProfile(userId) {
+      const { data, error } = await supabase.from('community').select('*').eq('id', userId).maybeSingle();
+      if (error) console.error(error);
+      if (data) {
+        document.getElementById('first-name').value = data.name?.split(' ')[0] || '';
+        document.getElementById('last-name').value = data.name?.split(' ')[1] || '';
+        document.getElementById('skills-input').value = data.skills || '';
+        document.getElementById('bio-input').value = data.bio || '';
+        if (data.image_url) {
+          const img = document.getElementById('photo-preview');
+          img.src = data.image_url; img.classList.remove('hidden');
+        }
+      }
+    }
+
+    document.getElementById('photo-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const preview = document.getElementById('photo-preview');
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove('hidden');
+    });
+
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return alert('Not logged in');
+      const first = document.getElementById('first-name').value.trim();
+      const last = document.getElementById('last-name').value.trim();
+      const skills = document.getElementById('skills-input').value.trim();
+      const bio = document.getElementById('bio-input').value.trim();
+      const file = document.getElementById('photo-input').files[0];
+
+      let image_url = '';
+      if (file) {
+        const fileName = `${user.id}_${Date.now()}`;
+        const { error: uploadErr } = await supabase.storage.from('avatars').upload(fileName, file);
+        if (!uploadErr) {
+          const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
+          image_url = data.publicUrl;
+        }
+      }
+
+      const { error } = await supabase.from('community').upsert({
+        id: user.id,
+        name: `${first} ${last}`,
+        email: user.email,
+        skills, bio, image_url
+      });
+      document.getElementById('profile-status').textContent = error ? 'Save failed.' : 'Profile saved successfully.';
+    });
+
     // --- Team Builder ---
     const buildBtn = document.getElementById('buildTeamBtn');
     const clearBtn = document.getElementById('clearTeamBtn');
@@ -207,52 +259,38 @@
     const teamResultCount = document.getElementById('teamResultCount');
 
     function updateResultCount(count) {
-      if (count > 0) {
-        teamResultCount.textContent = `${count} ${count === 1 ? 'result' : 'results'} found`;
-        teamResultCount.classList.remove('hidden');
-      } else teamResultCount.classList.add('hidden');
+      teamResultCount.textContent = count > 0 ? `${count} results found` : '';
+      teamResultCount.classList.toggle('hidden', count === 0);
     }
 
     buildBtn.addEventListener('click', async () => {
       const skill = document.getElementById('team-builder-skills').value.trim().toLowerCase();
+      const size = parseInt(document.getElementById('teamSize').value) || 10;
       teamContainer.innerHTML = '';
-      if (!skill) {
-        teamContainer.innerHTML = '<p>Please enter a skill.</p>';
-        return;
-      }
+      if (!skill) { teamContainer.innerHTML = '<p>Please enter a skill.</p>'; return; }
+
       const { data, error } = await supabase
         .from('community')
         .select('id, name, role, bio, skills, image_url')
-        .ilike('skills', `%${skill}%`);
+        .ilike('skills', `%${skill}%`)
+        .limit(size);
 
-      if (error) {
-        teamContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-        return;
-      }
-
-      if (!data || data.length === 0) {
-        teamContainer.innerHTML = '<p>No matches found.</p>';
-        updateResultCount(0);
-        return;
-      }
+      if (error) { teamContainer.innerHTML = `<p>Error: ${error.message}</p>`; return; }
+      if (!data?.length) { teamContainer.innerHTML = '<p>No matches found.</p>'; updateResultCount(0); return; }
 
       data.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'team-card';
-        card.innerHTML = `
-          <img src="${p.image_url || 'images/default-avatar.png'}" alt="${p.name}">
-          <h3>${p.name || 'Unnamed'}</h3>
-          <p>${p.role || ''}</p>
-          <p><small>${p.bio || ''}</small></p>
-          <p><strong>Skills:</strong> ${p.skills || ''}</p>`;
-        teamContainer.appendChild(card);
+        teamContainer.innerHTML += `
+          <div class="team-card">
+            <img src="${p.image_url || 'images/default-avatar.png'}" alt="${p.name}">
+            <h3>${p.name || 'Unnamed'}</h3>
+            <p>${p.role || ''}</p>
+            <p><small>${p.bio || ''}</small></p>
+            <p><strong>Skills:</strong> ${p.skills || ''}</p>
+          </div>`;
       });
       updateResultCount(data.length);
     });
-    clearBtn.addEventListener('click', () => {
-      teamContainer.innerHTML = '';
-      updateResultCount(0);
-    });
+    clearBtn.addEventListener('click', () => { teamContainer.innerHTML = ''; updateResultCount(0); });
 
     // --- Leaderboard ---
     const lbTabs = document.querySelectorAll('.lb-tab');
@@ -265,50 +303,35 @@
         lbRows.innerHTML = '<p>Loading...</p>';
         const type = tab.dataset.type;
 
+        let resultHTML = '';
         if (type === 'skills') {
-          const { data } = await supabase
-            .from('community')
-            .select('name, image_url, skills')
-            .not('skills', 'is', null)
-            .limit(10);
-          lbRows.innerHTML = data.map(p => `
-            <div class="leaderboard-entry">
-              <div><img src="${p.image_url || 'images/default-avatar.png'}"><strong>${p.name}</strong></div>
-              <div>${p.skills.split(',').length} skills</div>
-            </div>`).join('');
+          const { data } = await supabase.from('community').select('name, image_url, skills').not('skills','is',null);
+          if (!data?.length) resultHTML = '<p>No data.</p>';
+          else {
+            const freq = {};
+            data.forEach(u => u.skills?.split(',').forEach(s => { s=s.trim().toLowerCase(); if(s) freq[s]=(freq[s]||0)+1; }));
+            const top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10);
+            resultHTML = top.map(([skill,count])=>`
+              <div class="leaderboard-entry"><div><strong>${skill}</strong></div><div>${count} members</div></div>`).join('');
+          }
         }
-
         if (type === 'connectors') {
-          const { data } = await supabase
-            .from('community')
-            .select('name, image_url, endorsements')
-            .not('endorsements', 'is', null)
-            .order('endorsements', { ascending: false })
-            .limit(10);
-          lbRows.innerHTML = data.map(p => `
-            <div class="leaderboard-entry">
-              <div><img src="${p.image_url || 'images/default-avatar.png'}"><strong>${p.name}</strong></div>
-              <div>${p.endorsements || 0} connections</div>
-            </div>`).join('');
+          const { data } = await supabase.from('community').select('name,image_url,endorsements').order('endorsements',{ascending:false}).limit(10);
+          resultHTML = data?.length ? data.map(p=>`
+            <div class="leaderboard-entry"><div><img src="${p.image_url||'images/default-avatar.png'}"><strong>${p.name}</strong></div><div>${p.endorsements||0} connections</div></div>`).join('') : '<p>No data.</p>';
         }
-
         if (type === 'rising') {
-          const { data } = await supabase
-            .from('community')
-            .select('name, image_url, created_at')
-            .order('created_at', { ascending: false })
-            .limit(10);
-          lbRows.innerHTML = data.map(p => `
-            <div class="leaderboard-entry">
-              <div><img src="${p.image_url || 'images/default-avatar.png'}"><strong>${p.name}</strong></div>
-              <div>Joined recently</div>
-            </div>`).join('');
+          const { data } = await supabase.from('community').select('name,image_url,created_at').order('created_at',{ascending:false}).limit(10);
+          resultHTML = data?.length ? data.map(p=>`
+            <div class="leaderboard-entry"><div><img src="${p.image_url||'images/default-avatar.png'}"><strong>${p.name}</strong></div><div>${new Date(p.created_at).toLocaleDateString()}</div></div>`).join('') : '<p>No data.</p>';
         }
+        lbRows.innerHTML = resultHTML;
       });
     });
-
-    // Load Top Skills leaderboard by default
     lbTabs[0].click();
   </script>
+
+  <!-- Neural background -->
+  <script type="module" src="assets/js/neuralBackground.js"></script>
 </body>
 </html>
