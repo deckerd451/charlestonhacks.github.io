@@ -1,10 +1,11 @@
 // ===============================
 // UPDATED FILE: assets/js/profile.js
 // ===============================
-// Handles profile creation, update, and photo uploads.
-// Compatible with Supabase 'hacksbucket' public bucket.
+// Handles profile creation, update, and image uploads.
+// Tracks last profile update timestamp for leaderboard.
+// Compatible with Supabase 'hacksbucket' bucket.
 //
-// Depends on: supabaseClient.js, utils.js (showNotification)
+// Dependencies: supabaseClient.js, utils.js (showNotification)
 // ===============================
 
 import { supabaseClient as supabase } from './supabaseClient.js';
@@ -12,79 +13,21 @@ import { showNotification } from './utils.js';
 
 const bucketName = 'hacksbucket';
 
+// Initialize Profile Form
 export function initProfileForm() {
   const form = document.getElementById('skills-form');
   if (!form) return;
 
-  // Autofill profile data on load
+  // Autofill on page load
   autoFillProfileForm();
 
+  // Handle profile submission
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-
-    try {
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      if (userError || !user) {
-        showNotification('You must be logged in to update your profile.', 'error');
-        return;
-      }
-
-      showNotification('Saving profile…', 'info');
-
-      // Collect form data
-      const first = document.getElementById('first-name').value.trim();
-      const last = document.getElementById('last-name').value.trim();
-      const skills = document.getElementById('skills-input').value.trim();
-      const bio = document.getElementById('bio-input').value.trim();
-      const newsletter = document.getElementById('newsletter-opt-in').checked;
-      const file = document.getElementById('photo-input').files[0];
-
-      let image_url = '';
-
-      // Upload photo if provided
-      if (file) {
-        const fileName = `${user.id}_${Date.now()}_${file.name}`;
-        const { error: uploadErr } = await supabase.storage
-          .from(bucketName)
-          .upload(fileName, file);
-
-        if (uploadErr) {
-          console.error('[Profile] Image upload failed:', uploadErr.message);
-          showNotification('Image upload failed. Check bucket permissions.', 'error');
-        } else {
-          const { data: publicData } = supabase.storage
-            .from(bucketName)
-            .getPublicUrl(fileName);
-          image_url = publicData.publicUrl;
-        }
-      }
-
-      // Save or update profile record
-      const { error: upsertError } = await supabase
-        .from('community')
-        .upsert({
-          id: user.id,
-          name: `${first} ${last}`,
-          email: user.email,
-          skills,
-          bio,
-          image_url,
-          newsletter,
-        });
-
-      if (upsertError) {
-        console.error('[Profile] Upsert error:', upsertError);
-        showNotification('Error saving profile. Try again.', 'error');
-      } else {
-        showNotification('Profile saved successfully!', 'success');
-      }
-    } catch (err) {
-      console.error('Profile save failed:', err);
-      showNotification('Unexpected error while saving profile.', 'error');
-    }
+    await saveProfile();
   });
 
-  // Preview uploaded photo
+  // Handle photo preview
   const fileInput = document.getElementById('photo-input');
   const previewImg = document.getElementById('preview');
   fileInput?.addEventListener('change', (e) => {
@@ -104,7 +47,75 @@ export function initProfileForm() {
 }
 
 // ===============================
-// Helper: Prefill profile form
+// Save Profile
+// ===============================
+async function saveProfile() {
+  try {
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      showNotification('You must be logged in to update your profile.', 'error');
+      return;
+    }
+
+    showNotification('Saving profile…', 'info');
+
+    // Collect form data
+    const first = document.getElementById('first-name').value.trim();
+    const last = document.getElementById('last-name').value.trim();
+    const skills = document.getElementById('skills-input').value.trim();
+    const bio = document.getElementById('bio-input').value.trim();
+    const newsletter = document.getElementById('newsletter-opt-in').checked;
+    const file = document.getElementById('photo-input').files[0];
+
+    let image_url = '';
+
+    // Upload photo to hacksbucket
+    if (file) {
+      const fileName = `${user.id}_${Date.now()}_${file.name}`;
+      const { error: uploadErr } = await supabase.storage
+        .from(bucketName)
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadErr) {
+        console.error('[Profile] Image upload failed:', uploadErr.message);
+        showNotification('Image upload failed. Check bucket settings.', 'error');
+      } else {
+        const { data: publicData } = supabase.storage
+          .from(bucketName)
+          .getPublicUrl(fileName);
+        image_url = publicData.publicUrl;
+      }
+    }
+
+    // Build update payload
+    const payload = {
+      id: user.id,
+      name: `${first} ${last}`,
+      email: user.email,
+      skills,
+      bio,
+      image_url,
+      newsletter,
+      updated_at: new Date().toISOString(), // ✅ Track last update
+    };
+
+    // Upsert to Supabase
+    const { error: upsertError } = await supabase.from('community').upsert(payload);
+
+    if (upsertError) {
+      console.error('[Profile] Upsert error:', upsertError);
+      showNotification('Error saving profile. Please try again.', 'error');
+    } else {
+      showNotification('✅ Profile saved successfully!', 'success');
+    }
+  } catch (err) {
+    console.error('Profile save failed:', err);
+    showNotification('Unexpected error while saving profile.', 'error');
+  }
+}
+
+// ===============================
+// Prefill existing profile data
 // ===============================
 async function autoFillProfileForm() {
   try {
