@@ -6,261 +6,309 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   />
-  <meta name="description" content="Join CharlestonHacks for transformative hackathons and tech meetups in Charleston, SC. Build, learn, and connect with local innovators.">
-  <meta property="og:title" content="CharlestonHacks | Charleston Hackathons & Tech Events" />
-  <meta property="og:description" content="CharlestonHacks promotes tech events. Join us for exciting events and stay updated." />
-  <meta property="og:image" content="images/reactiveh.png" />
-  <meta property="og:url" content="https://charlestonhacks.com" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="description" content="CharlestonHacks Innovation Engine: Making Invisible Networks Visible.">
   <title>Innovation Engine - CharlestonHacks</title>
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="manifest" href="manifest.json" />
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  <link rel="preconnect" href="https://hvmotpzhliufzomewzfl.supabase.co">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body { color: white; background: black; overflow-x: hidden; }
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tab-button {
+      flex: 1 1 22%;
+      text-align: center;
+      min-width: 160px;
+    }
+
+    .team-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 16px;
+      width: 240px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .team-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .leaderboard-entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .leaderboard-entry img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .leaderboard-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .leaderboard-tabs button {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+    }
+    .leaderboard-tabs button.active {
+      background: #879EF2;
+    }
+    .welcome-message {
+      text-align: right;
+      font-size: 0.9rem;
+      color: #bbb;
+      margin-right: 20px;
+    }
+  </style>
 </head>
 
 <body class="two-card-page">
-  <a href="index.html" title="Back to Home"><i class="fas fa-home home-icon"></i></a>
+  <canvas id="neural-bg"></canvas>
 
-  <div id="achievements" class="achievements" aria-live="polite"></div>
+  <a href="index.html" title="Back to Home" aria-label="Back to Home">
+    <i class="fas fa-home home-icon" aria-hidden="true"></i>
+  </a>
 
   <div class="container">
     <header class="header">
       <h1>Innovation Engine</h1>
       <p>Making Invisible Networks Visible</p>
-      <div class="auth-controls">
-  <span class="user-badge hidden" id="user-badge"></span>
-  
-  <!-- 🔔 Notifications -->
-  <div id="notifications" class="notifications-container">
-    <button id="notifications-btn" class="notifications-btn">
-      🔔
-      <span id="notifications-badge" class="notifications-badge hidden">0</span>
-    </button>
-
-    <div id="notifications-dropdown" class="notifications-dropdown hidden">
-      <h4>Connection Requests</h4>
-      <div id="notifications-list">No new requests</div>
-    </div>
-  </div>
-
-  <button class="logout-btn action-btn hidden" id="logout-btn">
-    <i class="fas fa-sign-out-alt"></i> Logout
-  </button>
-</div>
-
+      <div class="welcome-message" id="welcome-message"></div>
     </header>
 
     <main class="panels-wrapper">
       <div class="panel large">
-
-        <!-- LOGIN SECTION -->
+        <!-- LOGIN -->
         <div id="login-section">
-          <h2 class="section-title">Login</h2>
+          <h2>Login</h2>
           <form id="login-form">
             <input type="email" id="login-email" placeholder="Enter your email" autocomplete="email" />
             <button id="login-button" type="submit" class="action-btn">Send Magic Link</button>
           </form>
+          <p id="login-info" style="color:#aaa;font-size:0.9rem;text-align:center;"></p>
         </div>
 
-        <!-- PROFILE SECTION (hidden until logged in) -->
+        <!-- MAIN APP -->
         <div id="profile-section" class="hidden">
-
-          <!-- Tab Navigation -->
           <div class="tab-nav">
-            <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Create Profile</button>
-            <button class="tab-button" data-tab="search"><i class="fas fa-search"></i> Individual Search</button>
+            <button class="tab-button active" data-tab="profile"><i class="fas fa-user-plus"></i> Profile</button>
             <button class="tab-button" data-tab="team-builder"><i class="fas fa-users"></i> Team Builder</button>
             <button class="tab-button" data-tab="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</button>
-            <button class="tab-button" data-tab="synapse"><i class="fas fa-project-diagram"></i> Synapse View</button>
           </div>
 
-          <!-- Profile Tab -->
+          <!-- Profile -->
           <div id="profile" class="tab-content-pane active-tab-pane">
-            <section id="matchmaking-section">
-              <h2 class="section-title">Create Your Profile</h2>
-              <form id="skills-form">
-                <div class="input-container">
-                  <input type="text" id="first-name" placeholder="First Name" required autocomplete="given-name">
-                  <input type="text" id="last-name" placeholder="Last Name" required autocomplete="family-name">
-                  <input type="email" id="email" placeholder="Email" required autocomplete="email">
-
-                  <label for="skills-input">Professional Skills (comma separated)</label>
-                  <div class="input-wrapper">
-                    <input type="text" id="skills-input" placeholder="e.g. aws, fullstack, java, python" required autocomplete="off">
-                    <div id="autocomplete-skills-input" class="autocomplete-box"></div>
-                  </div>
-                  <div id="skills-proficiency-container"></div>
-
-                  <label for="photo-input">Upload Your Photo</label>
-                  <input type="file" id="photo-input" accept="image/*" required>
-                  <img id="preview" src="#" alt="Image Preview" class="image-preview hidden" />
-
-                  <label for="bio-input">Short Bio (optional)</label>
-                  <input type="text" id="bio-input" placeholder="Tell us about yourself" maxlength="120">
-
-                  <label for="availability-input">Current Availability</label>
-                  <select id="availability-input">
-                    <option value="Available">Available</option>
-                    <option value="Busy">Busy</option>
-                    <option value="Not Looking">Not Looking</option>
-                  </select>
-
-                  <label>
-                    <input type="checkbox" id="newsletter-opt-in"> Subscribe to CharlestonHacks Newsletter
-                  </label>
-
-                  <button type="submit" class="action-btn">Save Profile</button>
-                </div>
-                <div class="profile-bar"><div class="profile-bar-inner"></div></div>
-                <div id="profile-progress-msg" class="profile-incomplete"></div>
-              </form>
-              <p id="success-message" class="success-message hidden">Profile saved successfully!</p>
-            </section>
+            <h2>Your Profile</h2>
+            <p>Welcome to the Innovation Engine. Manage your data, search, and connect with others.</p>
           </div>
 
-<!-- Search Tab -->
-<div id="search" class="tab-content-pane">
-  <h2 class="section-title">Individual Search</h2>
+          <!-- Team Builder -->
+          <div id="team-builder" class="tab-content-pane hidden">
+            <h2 class="section-title">Team Builder</h2>
+            <div style="text-align:center;">
+              <p>Enter a skill to find community members who match.</p>
+              <input type="text" id="team-builder-skills" placeholder="e.g. AI, UX, Cloud">
+              <input type="number" id="teamSize" placeholder="Team size (optional)" min="1" max="6">
+              <button id="buildTeamBtn" class="action-btn">Build Team</button>
+              <button id="clearTeamBtn" class="action-btn">Clear</button>
+            </div>
+            <div id="bestTeamContainer" class="card-container"></div>
+            <div id="teamResultCount" class="result-count hidden"></div>
+          </div>
 
-  <!-- Skills Search -->
-  <div class="input-wrapper">
-    <label for="teamSkillsInput">Required Skills</label>
-    <input 
-      type="text" 
-      id="teamSkillsInput" 
-      placeholder="e.g. aws, fullstack, java, python" 
-      autocomplete="off">
-    
-    <!-- Predictive dropdown for skills -->
-    <div id="autocomplete-team-skills" class="autocomplete-box"></div>
-  </div>
-
-  <button id="find-team-btn" type="button" class="action-btn">Get People</button>
-  <br><br>
-
-  <!-- Name Search -->
-  <div class="input-wrapper">
-    <label for="nameInput">Search by First/Last Name</label>
-    <input 
-      type="text" 
-      id="nameInput" 
-      placeholder="e.g. John, Doug, Will, Dave" 
-      autocomplete="off">
-    
-    <!-- Predictive dropdown for names -->
-    <div id="autocomplete-names" class="autocomplete-box"></div>
-  </div>
-
-  <button id="search-name-btn" type="button" class="action-btn">Find by Name</button>
-
-  <!-- Notifications -->
-  <div id="matchNotification" class="notification match-notification hidden"></div>
-  <div id="noResults" class="notification no-results-notification hidden"></div>
-
-  <!-- Search Results -->
-  <div id="cardContainer" 
-       class="card-container" 
-       role="list" 
-       aria-label="Matching team members"></div>
-</div>
-
-
- <!-- Team Builder Tab -->
-<div id="team-builder" class="tab-content-pane">
-  <h2 class="section-title">Team Builder</h2>
-  <div class="input-container">
-    <p class="instructions">Enter required skills and team size.</p>
-
-    <!-- Skills Input with predictive dropdown -->
-    <div class="input-wrapper">
-      <input 
-        type="text" 
-        id="team-skills-input" 
-        placeholder="e.g. aws, fullstack, java, python" 
-        autocomplete="off">
-      <div id="autocomplete-team-builder" class="autocomplete-box"></div>
-    </div>
-
-    <!-- Team Size -->
-    <input 
-      type="number" 
-      id="teamSize" 
-      placeholder="Team size" 
-      min="1" 
-      max="6">
-
-    <button id="buildTeamBtn" type="button" class="action-btn">Build Team</button>
-  </div>
-
-  <!-- Generated Team Cards -->
-  <div class="card-container" id="bestTeamContainer" role="list"></div>
-</div>
-
-
-<!-- Leaderboard Tab -->
-<div id="leaderboard" class="tab-content-pane">
-  <div class="leaderboard">
-    <h2>Leaderboard</h2>
-
-    <!-- Leaderboard Tabs -->
-    <div class="leaderboard-tabs">
-      <button class="lb-tab active" data-type="skills">
-        <i class="fas fa-star"></i> Top Skills
-      </button>
-      <button class="lb-tab" data-type="connectors">
-        <i class="fas fa-link"></i> Top Connectors
-      </button>
-      <button class="lb-tab" data-type="rising">
-        <i class="fas fa-rocket"></i> Rising Stars
-      </button>
-    </div>
-
-    <!-- Results -->
-    <div id="leaderboard-rows" class="leaderboard-rows"></div>
-  </div>
-</div>
-
-
-         <div id="synapse" class="tab-content-pane">
-  <h2 class="section-title">Synapse View</h2>
- <canvas id="synapseCanvas" style="width:100%; height:600px;"></canvas>
-</div>
-
-
-        </div><!-- /profile-section -->
-
+          <!-- Leaderboard -->
+          <div id="leaderboard" class="tab-content-pane hidden">
+            <h2>Leaderboard</h2>
+            <div class="leaderboard-tabs">
+              <button class="lb-tab active" data-type="skills"><i class="fas fa-star"></i> Top Skills</button>
+              <button class="lb-tab" data-type="connectors"><i class="fas fa-link"></i> Top Connectors</button>
+              <button class="lb-tab" data-type="rising"><i class="fas fa-rocket"></i> Rising Stars</button>
+            </div>
+            <div id="leaderboard-rows"></div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 
-  <!-- Endorse Skill Modal -->
-  <!--
-    This modal is displayed when a user chooses to endorse another user's skills.
-    It is hidden by default via the `.hidden` class on the root element.  The
-    modal consists of a semi‑transparent backdrop and an inner content panel
-    containing a close button and a list of skills that can be endorsed.  The
-    JavaScript function `openEndorseModal` toggles this element's display.
-  -->
-  <div id="endorseSkillModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="close-button" aria-label="Close modal">&times;</button>
-      <h2>Endorse Skills</h2>
-      <!-- The list of skills for the selected user will be injected here -->
-      <div id="endorse-skill-list"></div>
-    </div>
-  </div>
+  <!-- Scripts -->
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-<!-- Scripts -->
-<script type="module" src="assets/js/main.js"></script>
-<script type="module" src="assets/js/login.js"></script>
-<script type="module" src="assets/js/profile.js"></script>
+    const supabase = createClient(
+      'https://hvmotpzhliufzomewzfl.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bW90cHpobGl1ZnpvbWV3emZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NzY2NDUsImV4cCI6MjA1ODE1MjY0NX0.foHTGZVtRjFvxzDfMf1dpp0Zw4XFfD-FPZK-zRnjc6s'
+    );
 
+    const loginSection = document.getElementById('login-section');
+    const profileSection = document.getElementById('profile-section');
+    const welcomeMsg = document.getElementById('welcome-message');
+    const loginInfo = document.getElementById('login-info');
+
+    // --- Session check ---
+    async function checkSession() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        loginSection.classList.add('hidden');
+        profileSection.classList.remove('hidden');
+        welcomeMsg.textContent = `Welcome back, ${user.email}`;
+      } else {
+        profileSection.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+        loginInfo.textContent = "Check your email for a magic link to log in.";
+      }
+    }
+    checkSession();
+
+    // --- Magic link login ---
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      if (!email) return;
+      const { error } = await supabase.auth.signInWithOtp({ email });
+      if (error) alert('Login error: ' + error.message);
+      else alert('Magic link sent! Check your inbox.');
+    });
+
+    // --- Tabs ---
+    document.querySelectorAll('.tab-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content-pane').forEach(p => p.classList.add('hidden'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.remove('hidden');
+      });
+    });
+
+    // --- Team Builder ---
+    const buildBtn = document.getElementById('buildTeamBtn');
+    const clearBtn = document.getElementById('clearTeamBtn');
+    const teamContainer = document.getElementById('bestTeamContainer');
+    const teamResultCount = document.getElementById('teamResultCount');
+
+    function updateResultCount(count) {
+      if (count > 0) {
+        teamResultCount.textContent = `${count} ${count === 1 ? 'result' : 'results'} found`;
+        teamResultCount.classList.remove('hidden');
+      } else teamResultCount.classList.add('hidden');
+    }
+
+    buildBtn.addEventListener('click', async () => {
+      const skill = document.getElementById('team-builder-skills').value.trim().toLowerCase();
+      teamContainer.innerHTML = '';
+      if (!skill) {
+        teamContainer.innerHTML = '<p>Please enter a skill.</p>';
+        return;
+      }
+      const { data, error } = await supabase
+        .from('community')
+        .select('id, name, role, bio, skills, image_url')
+        .ilike('skills', `%${skill}%`);
+
+      if (error) {
+        teamContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        teamContainer.innerHTML = '<p>No matches found.</p>';
+        updateResultCount(0);
+        return;
+      }
+
+      data.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'team-card';
+        card.innerHTML = `
+          <img src="${p.image_url || 'images/default-avatar.png'}" alt="${p.name}">
+          <h3>${p.name || 'Unnamed'}</h3>
+          <p>${p.role || ''}</p>
+          <p><small>${p.bio || ''}</small></p>
+          <p><strong>Skills:</strong> ${p.skills || ''}</p>`;
+        teamContainer.appendChild(card);
+      });
+      updateResultCount(data.length);
+    });
+    clearBtn.addEventListener('click', () => {
+      teamContainer.innerHTML = '';
+      updateResultCount(0);
+    });
+
+    // --- Leaderboard ---
+    const lbTabs = document.querySelectorAll('.lb-tab');
+    const lbRows = document.getElementById('leaderboard-rows');
+
+    lbTabs.forEach(tab => {
+      tab.addEventListener('click', async () => {
+        lbTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        lbRows.innerHTML = '<p>Loading...</p>';
+        const type = tab.dataset.type;
+
+        if (type === 'skills') {
+          const { data } = await supabase
+            .from('community')
+            .select('name, image_url, skills')
+            .not('skills', 'is', null)
+            .limit(10);
+          lbRows.innerHTML = data.map(p => `
+            <div class="leaderboard-entry">
+              <div><img src="${p.image_url || 'images/default-avatar.png'}"><strong>${p.name}</strong></div>
+              <div>${p.skills.split(',').length} skills</div>
+            </div>`).join('');
+        }
+
+        if (type === 'connectors') {
+          const { data } = await supabase
+            .from('community')
+            .select('name, image_url, endorsements')
+            .not('endorsements', 'is', null)
+            .order('endorsements', { ascending: false })
+            .limit(10);
+          lbRows.innerHTML = data.map(p => `
+            <div class="leaderboard-entry">
+              <div><img src="${p.image_url || 'images/default-avatar.png'}"><strong>${p.name}</strong></div>
+              <div>${p.endorsements || 0} connections</div>
+            </div>`).join('');
+        }
+
+        if (type === 'rising') {
+          const { data } = await supabase
+            .from('community')
+            .select('name, image_url, created_at')
+            .order('created_at', { ascending: false })
+            .limit(10);
+          lbRows.innerHTML = data.map(p => `
+            <div class="leaderboard-entry">
+              <div><img src="${p.image_url || 'images/default-avatar.png'}"><strong>${p.name}</strong></div>
+              <div>Joined recently</div>
+            </div>`).join('');
+        }
+      });
+    });
+
+    // Load Top Skills leaderboard by default
+    lbTabs[0].click();
+  </script>
 </body>
 </html>
