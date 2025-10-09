@@ -1,218 +1,174 @@
-// leaderboard.js
+// ===============================
+// UPDATED FILE: assets/js/leaderboard.js
+// ===============================
+// Builds and updates the leaderboard with three tabs:
+//  - Top Skills
+//  - Top Connectors
+//  - Rising Stars (based on updated_at timestamps)
+//
+// Depends on: supabaseClient.js, utils.js (showNotification)
+// ===============================
+
 import { supabaseClient as supabase } from './supabaseClient.js';
-import { SKILL_SYNONYMS } from './skillsDictionary.js';
+import { showNotification } from './utils.js';
 
-export async function loadLeaderboard(type = "skills", range = "month") {
-  try {
-    let data, error;
+export function initLeaderboard() {
+  const lbTabs = document.querySelectorAll('.lb-tab');
+  const lbRows = document.getElementById('leaderboard-rows');
+  if (!lbTabs || !lbRows) return;
 
-    if (type === "skills") {
-      let query = supabase.from('endorsements')
-        .select('skill, created_at, endorsed_user_id')
-        .not('endorsed_user_id', 'is', null);
+  lbTabs.forEach((tab) => {
+    tab.addEventListener('click', async () => {
+      lbTabs.forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      lbRows.innerHTML = '<p style="text-align:center;color:#aaa;">Loading...</p>';
 
-      query = applyRangeFilter(query, range);
-      ({ data, error } = await query);
-      if (error) throw error;
-
-      const totals = {};
-      data?.forEach(row => {
-        if (!row.skill) return;
-
-        row.skill
-          .split(',')
-          .map(s => s.trim())
-          .filter(Boolean)
-          .forEach(s => {
-            const normalized = normalizeSkill(s);
-            if (!normalized) return;
-            if (!totals[normalized.key]) {
-              totals[normalized.key] = { count: 0, label: normalized.label };
-            }
-            totals[normalized.key].count++;
-          });
-      });
-
-      renderLeaderboard(totals, "skill");
-    } else if (type === "connectors") {
-      // ✅ Only include accepted mutual connections
-      let query = supabase.from('connections')
-        .select('from_user_id, to_user_id, created_at, status')
-        .eq('status', 'accepted');
-
-      query = applyRangeFilter(query, range);
-      ({ data, error } = await query);
-      if (error) throw error;
-
-      const totals = {};
-      data?.forEach(row => {
-        if (row.from_user_id) {
-          totals[row.from_user_id] = (totals[row.from_user_id] || 0) + 1;
+      const type = tab.dataset.type;
+      console.log(`[Leaderboard] Loading ${type} leaderboard`);
+      try {
+        if (type === 'skills') {
+          await renderTopSkills(lbRows);
+        } else if (type === 'connectors') {
+          await renderTopConnectors(lbRows);
+        } else if (type === 'rising') {
+          await renderRisingStars(lbRows);
         }
-        if (row.to_user_id) {
-          totals[row.to_user_id] = (totals[row.to_user_id] || 0) + 1;
-        }
-      });
+      } catch (err) {
+        console.error(`[Leaderboard] Error loading ${type}:`, err);
+        lbRows.innerHTML = '<p style="text-align:center;color:#f55;">Error loading leaderboard.</p>';
+      }
+    });
+  });
 
-      const users = await fetchUserNames(Object.keys(totals));
-      renderLeaderboard(totals, "user", users);
-    } else if (type === "rising") {
-      const now = new Date();
-      const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7);
-      const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(now.getDate() - 14);
-
-      const { data: recent, error: err1 } = await supabase
-        .from('endorsements')
-        .select('endorsed_user_id, created_at')
-        .not('endorsed_user_id', 'is', null)
-        .gte('created_at', weekAgo.toISOString());
-
-      const { data: prev, error: err2 } = await supabase
-        .from('endorsements')
-        .select('endorsed_user_id, created_at')
-        .not('endorsed_user_id', 'is', null)
-        .gte('created_at', twoWeeksAgo.toISOString())
-        .lt('created_at', weekAgo.toISOString());
-
-      if (err1 || err2) throw (err1 || err2);
-
-      const lastWeekCounts = {};
-      prev?.forEach(r => {
-        lastWeekCounts[r.endorsed_user_id] =
-          (lastWeekCounts[r.endorsed_user_id] || 0) + 1;
-      });
-
-      const growth = {};
-      recent?.forEach(r => {
-        const before = lastWeekCounts[r.endorsed_user_id] || 0;
-        const delta = 1 - before;
-        if (delta > 0) {
-          growth[r.endorsed_user_id] = (growth[r.endorsed_user_id] || 0) + delta;
-        }
-      });
-
-      const users = await fetchUserNames(Object.keys(growth));
-      renderLeaderboard(growth, "user", users);
-    }
-  } catch (err) {
-    console.error('[Leaderboard] Error loading leaderboard:', err);
-    renderEmpty();
-  }
-}
-function applyRangeFilter(query, range) {
-  if (range === "week") {
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-    return query.gte('created_at', weekAgo.toISOString());
-  }
-  if (range === "month") {
-    const monthAgo = new Date();
-    monthAgo.setMonth(monthAgo.getMonth() - 1);
-    return query.gte('created_at', monthAgo.toISOString());
-  }
-  return query;
+  // Load default tab (Top Skills)
+  lbTabs[0].click();
 }
 
-function normalizeSkill(raw) {
-  if (!raw) return null;
-
-  let skill = raw
-    .toString()
-    .trim()
-    .replace(/^[{\["']+|[}\]"']+$/g, "")
-    .toLowerCase();
-
-  skill = skill.replace(/[-_]/g, " ");
-  skill = skill.replace(/\b(developer|engineer|specialist|programmer)\b/g, "").trim();
-  skill = skill.replace(/\b(programming|coding|tech|technology)\b/g, "").trim();
-  skill = skill.replace(/\s+/g, " ");
-
-  if (!skill) return null;
-
-  if (SKILL_SYNONYMS[skill]) {
-    return { key: SKILL_SYNONYMS[skill].toLowerCase(), label: SKILL_SYNONYMS[skill] };
-  }
-
-  const display = skill
-    .split(" ")
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-
-  return { key: skill, label: display };
-}
-async function fetchUserNames(ids) {
-  if (!ids || ids.length === 0) return {};
+// ===============================
+// TOP SKILLS TAB
+// ===============================
+async function renderTopSkills(container) {
   const { data, error } = await supabase
     .from('community')
-    .select('id, name, email')
-    .in('id', ids)
-    .not('name', 'eq', 'Anonymous User');
+    .select('skills')
+    .not('skills', 'is', null);
+
   if (error) {
-    console.error('[Leaderboard] Error fetching user names:', error);
-    return {};
-  }
-  const map = {};
-  data?.forEach(u => {
-    if (!u || !u.id) return;
-    if (u.name?.trim() === "Anonymous User") return;
-    map[u.id] = u.name?.trim() || u.email || `User ${u.id}`;
-  });
-  return map;
-}
-
-function renderLeaderboard(totals, type, userMap = {}) {
-  const container = document.getElementById('leaderboard-rows');
-  if (!container) return;
-
-  container.innerHTML = '';
-  if (!totals || Object.keys(totals).length === 0) {
-    renderEmpty();
+    console.error('[Leaderboard] Top Skills error:', error);
+    container.innerHTML = '<p style="text-align:center;color:#f55;">Error loading skills data.</p>';
     return;
   }
 
-  Object.entries(totals)
-    .sort(([, a], [, b]) => {
-      const countA = typeof a === 'object' ? a.count : a;
-      const countB = typeof b === 'object' ? b.count : b;
-      return countB - countA;
-    })
-    .forEach(([key, value], index) => {
-      let display, total;
-      if (type === "skill") {
-        display = value.label || key;
-        total = value.count;
-      } else {
-        display = userMap[key] || null;
-        if (!display) return;
-        total = value;
-      }
-
-      const row = document.createElement('div');
-      row.className = 'leaderboard-row';
-      row.innerHTML = `
-        <span class="leaderboard-rank">${index + 1}.</span>
-        <span class="leaderboard-key">${display}</span>
-        <span class="leaderboard-count">${total}</span>
-      `;
-      container.appendChild(row);
-    });
-}
-
-function renderEmpty() {
-  const container = document.getElementById('leaderboard-rows');
-  if (!container) return;
-  container.innerHTML = `<div class="leaderboard-row">No data yet</div>`;
-}
-
-// Tab event listener
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('lb-tab')) {
-    document.querySelectorAll('.lb-tab').forEach(btn => btn.classList.remove('active'));
-    e.target.classList.add('active');
-    const type = e.target.dataset.type;
-    loadLeaderboard(type);
+  if (!data || data.length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:#ccc;">No skill data available.</p>';
+    return;
   }
-});
 
-// Load default leaderboard
-loadLeaderboard("skills");
+  const frequency = {};
+  data.forEach((row) => {
+    row.skills
+      ?.split(',')
+      .map((s) => s.trim().toLowerCase())
+      .filter((s) => s)
+      .forEach((s) => {
+        frequency[s] = (frequency[s] || 0) + 1;
+      });
+  });
+
+  const sortedSkills = Object.entries(frequency)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
+
+  container.innerHTML = sortedSkills
+    .map(
+      ([skill, count]) => `
+      <div class="leaderboard-entry">
+        <div><strong>${skill}</strong></div>
+        <div>${count} member${count === 1 ? '' : 's'}</div>
+      </div>`
+    )
+    .join('');
+
+  console.log('[Leaderboard] Rendered Top Skills');
+}
+
+// ===============================
+// TOP CONNECTORS TAB
+// ===============================
+async function renderTopConnectors(container) {
+  const { data, error } = await supabase
+    .from('community')
+    .select('name, image_url, endorsements')
+    .order('endorsements', { ascending: false })
+    .limit(10);
+
+  if (error) {
+    console.error('[Leaderboard] Connectors error:', error);
+    container.innerHTML = '<p style="text-align:center;color:#f55;">Error loading connectors data.</p>';
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:#ccc;">No connector data available.</p>';
+    return;
+  }
+
+  container.innerHTML = data
+    .map(
+      (p) => `
+      <div class="leaderboard-entry">
+        <div style="display:flex;align-items:center;">
+          <img src="${p.image_url || 'images/default-avatar.png'}" alt="${p.name}" />
+          <strong>${p.name || 'Unnamed'}</strong>
+        </div>
+        <div>${p.endorsements || 0} connection${p.endorsements === 1 ? '' : 's'}</div>
+      </div>`
+    )
+    .join('');
+
+  console.log('[Leaderboard] Rendered Top Connectors');
+}
+
+// ===============================
+// RISING STARS TAB (based on updated_at)
+// ===============================
+async function renderRisingStars(container) {
+  const { data, error } = await supabase
+    .from('community')
+    .select('name, image_url, updated_at')
+    .not('updated_at', 'is', null)
+    .order('updated_at', { ascending: false })
+    .limit(10);
+
+  if (error) {
+    console.error('[Leaderboard] Rising Stars error:', error);
+    container.innerHTML = '<p style="text-align:center;color:#f55;">Error loading Rising Stars.</p>';
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:#ccc;">No recent updates found.</p>';
+    return;
+  }
+
+  container.innerHTML = data
+    .map((p) => {
+      const dateStr = new Date(p.updated_at).toLocaleDateString([], {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+      return `
+        <div class="leaderboard-entry">
+          <div style="display:flex;align-items:center;">
+            <img src="${p.image_url || 'images/default-avatar.png'}" alt="${p.name}" />
+            <strong>${p.name || 'Unnamed'}</strong>
+          </div>
+          <div>Updated ${dateStr}</div>
+        </div>`;
+    })
+    .join('');
+
+  console.log('[Leaderboard] Rendered Rising Stars');
+  showNotification('✨ Rising Stars updated based on recent profile changes.', 'info');
+}
