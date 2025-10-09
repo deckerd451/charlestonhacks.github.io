@@ -172,3 +172,5 @@ async function renderRisingStars(container) {
   console.log('[Leaderboard] Rendered Rising Stars');
   showNotification('✨ Rising Stars updated based on recent profile changes.', 'info');
 }
+export { initLeaderboard as loadLeaderboard };
+
