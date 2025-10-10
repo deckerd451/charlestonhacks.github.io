@@ -19,10 +19,18 @@ export async function handleEndorsementSelection(emailToEndorse, skillToEndorse)
 
     const endorsedUserId = userRow.id;
 
-    // 2. The endorser is the logged-in user
-    const endorsedByUserId = appState?.session?.user?.id;
+   // Ensure we have a current session
+let endorsedByUserId = appState?.session?.user?.id;
 
-    if (!endorsedByUserId) throw new Error("You must be signed in to endorse.");
+if (!endorsedByUserId) {
+  const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+  if (sessionError) throw new Error("Session check failed.");
+  endorsedByUserId = session?.user?.id;
+}
+
+if (!endorsedByUserId) throw new Error("You must be signed in to endorse.");
+
+ 
 
     // 3. Insert or update the endorsement
     const { error: upsertError } = await supabaseClient
