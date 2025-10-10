@@ -1,18 +1,18 @@
 // ===============================================
-// ENHANCED FILE: assets/js/login.js
+// FINAL ENHANCED FILE: assets/js/login.js
 // ===============================================
 // Improvements:
-//  - Animated login button + spinner
-//  - Inline email validation
-//  - Persistent user status bar
-//  - Enhanced notifications via utils.js
-//  - Smooth transitions for login/profile sections
+//  - Inline email validation with visual feedback
+//  - Persistent Supabase session sync (appState.session)
+//  - Smooth transitions between login and profile sections
+//  - Global session propagation to other modules
+//  - Auto-disable "Connect" / "Endorse" buttons if not logged in
 // ===============================================
 
 import { supabaseClient as supabase } from "./supabaseClient.js";
 import { showNotification, isValidEmail } from "./utils.js";
 import { initProfileForm } from "./profile.js";
-import { appState } from "./globals.js";   // ✅ this belongs here, at the top
+import { appState } from "./globals.js"; // ✅ global state sync
 
 // ===== Handle Login =====
 export async function handleLogin(email) {
@@ -57,14 +57,15 @@ export async function handleLogout() {
   document.getElementById("skills-form")?.reset();
   document.body.classList.remove("logged-in");
   document.getElementById("user-status")?.classList.add("hidden");
-  appState.session = null;   // ✅ clear global session on logout
+  appState.session = null; // ✅ clear global session
+  disableAuthDependentButtons(true); // disable Connect/Endorse buttons
 }
 
 // ===== Initialize on Page Load =====
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("[Login] Initializing…");
 
-  // Get session
+  // Get session from Supabase
   const { data: { session }, error } = await supabase.auth.getSession();
   if (error) {
     console.error("[Login] Session error:", error.message);
@@ -73,28 +74,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Restore user if already signed in
   if (session?.user) {
-    appState.session = session;     // ✅ sync global state immediately on load
+    appState.session = session; // ✅ sync global state
     handleUserSignedIn(session.user);
   } else {
     console.log("[Login] No active session.");
+    disableAuthDependentButtons(true); // disable buttons if no session
   }
 
-  // Auth state changes
+  // Listen for auth changes
   supabase.auth.onAuthStateChange((event, session) => {
     console.log("[Auth Event]", event);
 
     if (event === "SIGNED_IN" && session?.user) {
-      appState.session = session;   // ✅ global sync on new login
+      appState.session = session; // ✅ global sync on new login
       handleUserSignedIn(session.user);
+      disableAuthDependentButtons(false); // re-enable buttons
     }
 
     if (event === "SIGNED_OUT") {
       appState.session = null;
       handleLogout();
+      disableAuthDependentButtons(true);
     }
 
     if (event === "TOKEN_REFRESHED") {
-      appState.session = session;   // ✅ keep refreshed tokens
+      appState.session = session; // ✅ keep refreshed token
       console.log("[Auth] Token refreshed");
     }
 
@@ -117,5 +121,28 @@ function handleUserSignedIn(user) {
     document.body.classList.add("logged-in");
   }
 
+  disableAuthDependentButtons(false); // enable Connect/Endorse buttons
   initProfileForm();
+}
+
+// ===== Utility: Disable or enable endorsement/connect buttons =====
+function disableAuthDependentButtons(disabled = true) {
+  // Targets all buttons or links that require authentication
+  const connectButtons = document.querySelectorAll(
+    "button.connect-btn, .endorse-btn, [data-auth-required]"
+  );
+
+  connectButtons.forEach((btn) => {
+    if (disabled) {
+      btn.disabled = true;
+      btn.classList.add("disabled");
+      btn.style.opacity = "0.6";
+      btn.title = "Login required";
+    } else {
+      btn.disabled = false;
+      btn.classList.remove("disabled");
+      btn.style.opacity = "1";
+      btn.title = "";
+    }
+  });
 }
