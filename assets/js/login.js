@@ -12,6 +12,7 @@
 import { supabaseClient as supabase } from "./supabaseClient.js";
 import { showNotification, isValidEmail } from "./utils.js";
 import { initProfileForm } from "./profile.js";
+import { appState } from "./globals.js";   // ✅ this belongs here, at the top
 
 // ===== Handle Login =====
 export async function handleLogin(email) {
@@ -56,6 +57,7 @@ export async function handleLogout() {
   document.getElementById("skills-form")?.reset();
   document.body.classList.remove("logged-in");
   document.getElementById("user-status")?.classList.add("hidden");
+  appState.session = null;   // ✅ clear global session on logout
 }
 
 // ===== Initialize on Page Load =====
@@ -71,6 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Restore user if already signed in
   if (session?.user) {
+    appState.session = session;     // ✅ sync global state immediately on load
     handleUserSignedIn(session.user);
   } else {
     console.log("[Login] No active session.");
@@ -80,9 +83,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   supabase.auth.onAuthStateChange((event, session) => {
     console.log("[Auth Event]", event);
 
-    if (event === "SIGNED_IN" && session?.user) handleUserSignedIn(session.user);
-    if (event === "SIGNED_OUT") handleLogout();
-    if (event === "TOKEN_REFRESHED") console.log("[Auth] Token refreshed");
+    if (event === "SIGNED_IN" && session?.user) {
+      appState.session = session;   // ✅ global sync on new login
+      handleUserSignedIn(session.user);
+    }
+
+    if (event === "SIGNED_OUT") {
+      appState.session = null;
+      handleLogout();
+    }
+
+    if (event === "TOKEN_REFRESHED") {
+      appState.session = session;   // ✅ keep refreshed tokens
+      console.log("[Auth] Token refreshed");
+    }
+
     if (event === "USER_UPDATED") console.log("[Auth] User updated");
   });
 });
