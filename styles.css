@@ -2312,5 +2312,14 @@ main, .main-wrapper, .media-container {
 .two-card-page * {
   text-align: center;
 }
+.hidden { display: none; }
+#login-spinner { font-size: 14px; color: #888; margin-top: 5px; }
+#user-status {
+  margin-top: 20px;
+  background: rgba(0,0,0,0.05);
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
 
 
